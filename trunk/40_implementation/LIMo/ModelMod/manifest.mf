@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: nl.tno.limo.core.model
+OpenIDE-Module-Localizing-Bundle: nl/tno/limo/core/model/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
