@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+AutoUpdate-Show-In-Client: true
+OpenIDE-Module: nl.fontys.sofa.limo.domain
+OpenIDE-Module-Localizing-Bundle: nl/fontys/sofa/limo/domain/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
