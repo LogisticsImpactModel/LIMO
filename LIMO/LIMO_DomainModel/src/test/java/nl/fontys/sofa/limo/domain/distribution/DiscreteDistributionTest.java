@@ -70,5 +70,17 @@ public class DiscreteDistributionTest {
         System.out.println("Probability is: "+instance.getProbability());
         assertEquals(0.5,instance.getProbability(),0.01);
     }
+            @org.junit.Test
+        
+    public void testParameterTypes() {
+        System.out.println("calculateProbability w map");
+        //call list of parameter types
+        DiscreteDistribution instance = new DiscreteDistribution();
+        instance.getParameterTypes();
+        //instance.setParameter("x", 2);
+        //System.out.println("Present:"+instance.getParameterTypes().get("x"));
+        fail("not yet impl");
+    }
+
     
 }
