@@ -16,10 +16,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publicPackages>
-                        <publicPackage>nl.fontys.sofa.limo.domain</publicPackage>
-                        <publicPackage>nl.fontys.sofa.limo.domain.category</publicPackage>
-                        <publicPackage>nl.fontys.sofa.limo.domain.events</publicPackage>
-                        <publicPackage>nl.fontys.sofa.limo.domain.types</publicPackage>
+                        <publicPackage>nl.fontys.sofa.limo.domain.*</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
