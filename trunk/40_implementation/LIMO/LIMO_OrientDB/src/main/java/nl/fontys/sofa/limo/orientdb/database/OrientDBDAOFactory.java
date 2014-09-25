@@ -5,16 +5,21 @@
  */
 package nl.fontys.sofa.limo.orientdb.database;
 
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBLegTypeDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBEventDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBHubTypeDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBLegDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBHubDAO;
 import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
 import nl.fontys.sofa.limo.api.dao.DAOFactory;
-import nl.fontys.sofa.limo.api.dao.DelayCategoryDAO;
+import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.api.dao.HubDAO;
 import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
 import nl.fontys.sofa.limo.api.dao.LegDAO;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBCostCategoryDAO;
-import nl.fontys.sofa.limo.orientdb.dao.OrientDBDelayCategoryDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBTimeCategoryDAO;
 
 public class OrientDBDAOFactory implements DAOFactory {
 
@@ -24,8 +29,8 @@ public class OrientDBDAOFactory implements DAOFactory {
     }
 
     @Override
-    public DelayCategoryDAO getDelayCategoryDAO() {
-        return new OrientDBDelayCategoryDAO();
+    public TimeCategoryDAO getDelayCategoryDAO() {
+        return new OrientDBTimeCategoryDAO();
     }
 
     @Override
