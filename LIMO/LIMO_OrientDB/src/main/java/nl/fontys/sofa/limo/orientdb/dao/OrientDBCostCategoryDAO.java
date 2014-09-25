@@ -17,22 +17,22 @@ public class OrientDBCostCategoryDAO implements CostCategoryDAO {
     }
 
     @Override
-    public CostCategory findById() {
+    public CostCategory findById(String id) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void insert(CostCategory domainModel) {
+    public void insert(CostCategory entity) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean update(CostCategory domainModel) {
+    public boolean update(CostCategory entity) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean delete(int domainModelId) {
+    public boolean delete(String id) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
