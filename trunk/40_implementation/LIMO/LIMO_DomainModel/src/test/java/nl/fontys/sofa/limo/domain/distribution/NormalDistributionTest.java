@@ -14,11 +14,11 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Ben Stassen
+ * @author Ben
  */
-public class DiscreteDistributionTest {
+public class NormalDistributionTest {
     
-    public DiscreteDistributionTest() {
+    public NormalDistributionTest() {
     }
     
     @BeforeClass
@@ -38,17 +38,19 @@ public class DiscreteDistributionTest {
     }
 
     /**
-     * Test of calculateProbability method, of class DiscreteDistribution.
-     * In a discrete distrib, x divided by y (x out of y) represents the probability. Therefore, 1 divided by 2 should result in a probability of 0.5
+     * Test of calculateProbability method, of class NormalDistribution.
+     * Providing parameters mean, stdev and x
+     * When mean=5, stddev=1 and x=5, p should be 0.5
      */
-    @org.junit.Test
+    @Test
     public void testCalculateProbability() {
         System.out.println("calculateProbability");
-        DiscreteDistribution instance = new DiscreteDistribution();
-        instance.setParameter("x", 1);
-        instance.setParameter("y", 2);
+        NormalDistribution instance = new NormalDistribution();
+        instance.setParameter("mean",5.00);
+        instance.setParameter("standard deviation",1.00);
+        instance.setParameter("x",5.00);
         System.out.println("Probability is: "+instance.getProbability());
-        assertEquals(0.5,instance.getProbability(),0.01);
+        assertEquals(0.50,instance.getProbability(),0.01);
     }
     
 }
