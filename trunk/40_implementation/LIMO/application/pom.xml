@@ -40,7 +40,14 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-jellytools-platform</artifactId>
-            <version>${netbeans.version}</version>
+            <version>RELEASE80</version>
+            <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-modules-apisupport-harness</artifactId>
+            <version>RELEASE80</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
