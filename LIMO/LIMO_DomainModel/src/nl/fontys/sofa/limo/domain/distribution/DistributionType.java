@@ -1,6 +1,7 @@
 package nl.fontys.sofa.limo.domain.distribution;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,8 @@ public abstract class DistributionType {
     protected Double probabilityResultCache = null;
 
     public DistributionType(Map.Entry<String, Class<?>>... parameterTypes) {
+        this.parameters = new HashMap<>();
+        this.parameterTypes = new HashMap<>();
         for (Map.Entry<String, Class<?>> entry : parameterTypes) {
             this.parameterTypes.put(entry.getKey(), entry.getValue());
             try {
