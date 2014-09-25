@@ -3,7 +3,7 @@ package nl.fontys.sofa.limo.orientdb.dao;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
-import nl.fontys.sofa.limo.orientdb.database.OrientDBDAOFactory;
+import nl.fontys.sofa.limo.orientdb.database.OrientDBDAOFactoryMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
     @Before
     @Override
     public void setUp() {
-        OrientDBDAOFactory orientDBDAOFactory = new OrientDBDAOFactory();
+        OrientDBDAOFactoryMock orientDBDAOFactory = new OrientDBDAOFactoryMock();
         costCategoryDAO = orientDBDAOFactory.getCostCategoryDAO();
     }
 
@@ -59,8 +59,9 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
         costCategoryDAO.insert(costCategory);
         List<CostCategory> costCategories = costCategoryDAO.findAll();
         assertEquals(1, costCategories.size());
-        CostCategory foundCostCategory = costCategoryDAO.findById("1");
-        assertEquals(costCategory, foundCostCategory);
+        CostCategory foundCostCategory = costCategoryDAO.findById(costCategories.get(0).getId());
+        assertEquals(costCategory.getId(), foundCostCategory.getId());
+        assertEquals(costCategory.getIdentifier(), foundCostCategory.getIdentifier());
     }
 
     /**
@@ -73,11 +74,11 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
         boolean updateSuccess = costCategoryDAO.update(costCategory);
         assertFalse(updateSuccess);
         costCategoryDAO.insert(costCategory);
-        costCategory = costCategoryDAO.findById("1");
+        costCategory = costCategoryDAO.findById(costCategory.getId());
         costCategory.setIdentifier(newCategoryName);
         updateSuccess = costCategoryDAO.update(costCategory);
         assertTrue(updateSuccess);
-        costCategory = costCategoryDAO.findById("1");
+        costCategory = costCategoryDAO.findById(costCategory.getId());
         assertEquals(newCategoryName, costCategory.getIdentifier());
     }
 
@@ -92,7 +93,7 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
         assertFalse(deleteSuccess);
         CostCategory costCategory = new CostCategory("taxes");
         costCategoryDAO.insert(costCategory);
-        deleteSuccess = costCategoryDAO.delete("1");
+        deleteSuccess = costCategoryDAO.delete(costCategory.getId());
         assertTrue(deleteSuccess);
     }
 

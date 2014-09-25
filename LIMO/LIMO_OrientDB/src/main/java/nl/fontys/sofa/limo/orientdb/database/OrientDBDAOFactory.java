@@ -25,7 +25,7 @@ public class OrientDBDAOFactory implements DAOFactory {
 
     @Override
     public CostCategoryDAO getCostCategoryDAO() {
-        return new OrientDBCostCategoryDAO();
+        return new OrientDBCostCategoryDAO(OrientDBAccess.getInstance());
     }
 
     @Override

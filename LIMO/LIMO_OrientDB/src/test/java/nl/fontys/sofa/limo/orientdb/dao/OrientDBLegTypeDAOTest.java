@@ -83,7 +83,7 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
     @Test
     public void testUpdate() {
         String newLegTypeName = "international taxes";
-        LegType legType = new LegType("112233",null, null, null, null);
+        LegType legType = new LegType("112233", null, null, null, null);
         boolean updateSuccess = legTypeDAO.update(legType);
         assertFalse(updateSuccess);
         legTypeDAO.insert(legType);
@@ -100,11 +100,11 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
      */
     @Test
     public void testDelete() {
-                boolean deleteSuccess = legTypeDAO.delete("");
+        boolean deleteSuccess = legTypeDAO.delete("");
         assertFalse(deleteSuccess);
         deleteSuccess = legTypeDAO.delete("112233");
         assertFalse(deleteSuccess);
-        LegType legType = new LegType("1122334",null, null, null, null);
+        LegType legType = new LegType("1122334", null, null, null, null);
         legTypeDAO.insert(legType);
         deleteSuccess = legTypeDAO.delete("1");
         assertTrue(deleteSuccess);

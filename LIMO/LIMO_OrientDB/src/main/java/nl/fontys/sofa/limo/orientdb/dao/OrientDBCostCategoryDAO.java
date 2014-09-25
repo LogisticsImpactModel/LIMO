@@ -19,9 +19,15 @@ import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
 public class OrientDBCostCategoryDAO implements CostCategoryDAO, OrientDBMapper<CostCategory> {
 
+    private final OrientDBAccess orientDBAccess;
+
+    public OrientDBCostCategoryDAO(OrientDBAccess orientDBAccess) {
+        this.orientDBAccess = orientDBAccess;
+    }
+
     @Override
     public List<CostCategory> findAll() {
-        ORecordIteratorClass<ODocument> results = OrientDBAccess.getInstance().getConnection().browseClass(getTableName());
+        ORecordIteratorClass<ODocument> results = orientDBAccess.getConnection().browseClass(getTableName());
         ArrayList<CostCategory> resultList = new ArrayList<>();
 
         for (ODocument doc : results) {
@@ -34,7 +40,7 @@ public class OrientDBCostCategoryDAO implements CostCategoryDAO, OrientDBMapper<
     @Override
     public CostCategory findById(String id) {
         OSQLSynchQuery<ODocument> query = new OSQLSynchQuery<>("select * from " + id);
-        List<ODocument> results = OrientDBAccess.getInstance().getConnection().query(query);
+        List<ODocument> results = orientDBAccess.getConnection().query(query);
         return map(results.get(0));
     }
 
@@ -54,7 +60,7 @@ public class OrientDBCostCategoryDAO implements CostCategoryDAO, OrientDBMapper<
 
     @Override
     public boolean delete(String id) {
-        OrientDBAccess.getInstance().getConnection().delete(new ORecordId(id));
+        orientDBAccess.getConnection().delete(new ORecordId(id));
         return true;
     }
 
