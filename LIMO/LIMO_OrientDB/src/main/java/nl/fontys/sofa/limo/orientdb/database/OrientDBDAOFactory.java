@@ -29,7 +29,7 @@ public class OrientDBDAOFactory implements DAOFactory {
     }
 
     @Override
-    public TimeCategoryDAO getDelayCategoryDAO() {
+    public TimeCategoryDAO getTimeCategoryDAO() {
         return new OrientDBTimeCategoryDAO();
     }
 
