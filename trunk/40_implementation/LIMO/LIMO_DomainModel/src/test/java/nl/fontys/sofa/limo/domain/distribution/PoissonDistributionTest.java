@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author Ben
  */
-public class NormalDistributionTest {
+public class PoissonDistributionTest {
     
-    public NormalDistributionTest() {
+    public PoissonDistributionTest() {
     }
     
     @BeforeClass
@@ -38,21 +38,18 @@ public class NormalDistributionTest {
     }
 
     /**
-     * Test of calculateProbability method, of class NormalDistribution.
-     * Providing parameters mean, stdev and x
-     * When mean=5, stddev=1 and x=5, p should be 0.5
-     * 
-     * 25-9 15:30 normalDistribution seems broken, returns only 0.00
+     * Test of calculateProbability method, of class PoissonDistribution.
+     * k: poisson random variable (faculty, int)
+     * lambda: average rate of succes (double)
      */
     @Test
     public void testCalculateProbability() {
         System.out.println("calculateProbability");
-        NormalDistribution instance = new NormalDistribution();
-        instance.setParameter("mean",5.00);
-        instance.setParameter("standard deviation",1.00);
-        instance.setParameter("x",5.00);
+        PoissonDistribution instance = new PoissonDistribution();
+        instance.setParameter("lambda", 0.50);
+        instance.setParameter("k", 1);
         System.out.println("Probability is: "+instance.getProbability());
-        assertEquals(0.50,instance.getProbability(),0.01);
+        assertEquals(0.3032653298563167,instance.getProbability(),0.000000000000001);
     }
     
 }
