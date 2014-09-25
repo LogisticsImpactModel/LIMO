@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.domain;
+package nl.fontys.sofa.limo.domain.component;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.domain.events;
+package nl.fontys.sofa.limo.domain.component;
 
 /**
  *

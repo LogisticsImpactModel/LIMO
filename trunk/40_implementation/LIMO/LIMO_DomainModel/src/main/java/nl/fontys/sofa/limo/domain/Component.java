@@ -3,7 +3,7 @@ package nl.fontys.sofa.limo.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import nl.fontys.sofa.limo.domain.events.Event;
+import nl.fontys.sofa.limo.domain.component.Event;
 
 /**
  *

@@ -5,7 +5,7 @@
  */
 package nl.fontys.sofa.limo.api.dao;
 
-import nl.fontys.sofa.limo.domain.Leg;
+import nl.fontys.sofa.limo.domain.component.Leg;
 
 public interface LegDAO extends DAO<Leg> {
 
