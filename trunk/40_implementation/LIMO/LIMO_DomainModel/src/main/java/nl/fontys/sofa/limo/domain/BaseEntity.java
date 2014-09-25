@@ -7,7 +7,7 @@ package nl.fontys.sofa.limo.domain;
 public abstract class BaseEntity {
     
     protected String id;
-    protected int lastUpdate;
+    protected long lastUpdate;
 
     public String getId() {
         return id;
@@ -17,11 +17,11 @@ public abstract class BaseEntity {
         this.id = id;
     }
 
-    public int getLastUpdate() {
+    public long getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(int lastUpdate) {
+    public void setLastUpdate(long lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
     

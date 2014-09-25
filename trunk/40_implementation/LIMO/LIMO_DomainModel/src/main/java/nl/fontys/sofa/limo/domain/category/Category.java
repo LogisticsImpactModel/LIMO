@@ -10,10 +10,6 @@ public abstract class Category extends BaseEntity{
     
     protected String identifier;
 
-    public Category(String identifier) {
-        this.identifier = identifier;
-    }
-
     public String getIdentifier() {
         return identifier;
     }

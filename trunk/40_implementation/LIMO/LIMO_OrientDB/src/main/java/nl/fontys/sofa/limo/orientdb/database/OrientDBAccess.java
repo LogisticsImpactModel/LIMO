@@ -14,9 +14,14 @@ public class OrientDBAccess extends AbstractDBServer<ODatabaseDocumentTx> {
     private static OrientDBAccess instance;
 
     private OrientDBAccess() {
-        String osName = System.getProperty("os.name").toLowerCase();
         String path = System.getProperty("user.home") + File.separator + "LIMO";
-        connection = new ODatabaseDocumentTx("plocal:/tmp/bugsac");
+        connection = new ODatabaseDocumentTx("plocal:" + path);
+        
+        if (!connection.exists()) {
+            connection.create();
+        } else {
+            connection.open("admin", "admin");
+        }
     }
 
     public synchronized static OrientDBAccess getInstance() {
@@ -26,6 +31,7 @@ public class OrientDBAccess extends AbstractDBServer<ODatabaseDocumentTx> {
         return instance;
     }
 
+    @Override
     public void closeConnection() {
         connection.close();
     }
