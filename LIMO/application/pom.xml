@@ -37,14 +37,12 @@
             <version>${netbeans.version}</version>
             <scope>test</scope> <!-- beyond platform cluster, this often needs to be dropped down to compile/runtime, some other modules in IDE clusters depend on it -->
         </dependency>
-        <!-- To use Jelly Tools in your functional tests, add or replace with:
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-jellytools-platform</artifactId>
             <version>${netbeans.version}</version>
             <scope>test</scope>
         </dependency>
-        -->
     </dependencies>
 
     <build>
