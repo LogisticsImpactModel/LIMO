@@ -26,7 +26,7 @@ public abstract class DistributionType {
         for (Map.Entry<String, Class<?>> entry : parameterTypes) {
             this.parameterTypes.put(entry.getKey(), entry.getValue());
             try {
-                this.parameters.put(entry.getKey(), (Number) entry.getValue().getConstructors()[0].newInstance());
+                this.parameters.put(entry.getKey(), (Number) entry.getValue().getConstructors()[0].newInstance(0));
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger(DistributionType.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -53,7 +53,10 @@ public abstract class DistributionType {
         }
         this.probabilityResultCache = null;
     }
-    
+    /**
+     * 
+     * @return 
+     */
     public double getProbability() {
         if (this.probabilityResultCache == null) {
             calculateProbability();
