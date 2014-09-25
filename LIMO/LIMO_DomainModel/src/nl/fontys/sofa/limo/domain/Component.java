@@ -1,6 +1,7 @@
 package nl.fontys.sofa.limo.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.events.Event;
 
@@ -73,13 +74,32 @@ public abstract class Component {
     public void setIcon(byte[] icon) {
         this.icon = icon;
     }
+    
+    /* EVENT ACCESSORS */
 
+    /**
+     * Returns an unmodifiable view of the events list.
+     * @return Unmodifiable list of events.
+     */
     public List<Event> getEvents() {
-        return events;
+        return Collections.unmodifiableList(this.events);
     }
-
-    public void setEvents(List<Event> events) {
-        this.events = events;
+    
+    public void addEvent(Event event) {
+        this.events.add(event);
+        event.setParent(this);
+    }
+    
+    public void removeEvent(Event event) {
+        this.events.remove(event);
+        event.setParent(null);
+    }
+    
+    public void clearEvents() {
+        for (Event e : this.events)
+            e.setParent(null);
+        
+        this.events.clear();
     }
     
 }
