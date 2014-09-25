@@ -1,24 +1,25 @@
 package nl.fontys.sofa.limo.domain.types;
 
 import java.util.List;
+import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.Entry;
 
 /**
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public abstract class Type {
-    
+public abstract class Type extends BaseEntity {
+
     protected String identifier;
     protected List<Entry> costs;
     protected List<Entry> leadTimes;
     protected List<Entry> delays;
-    
+
     /**
      * ID of ORecordBytes entry in OrientDB.
      */
     protected String iconID;
-    
+
     /**
      * Actual bytes the icon is composed of.
      */
@@ -70,15 +71,15 @@ public abstract class Type {
 
     public byte[] getIcon() {
         // TODO test if set, if not, get from DB with iconID
-        
+
         return icon;
     }
 
     public void setIcon(byte[] icon) {
         // TODO Check references in DB, if >1 then keep, otherwise delete
         // TODO Create new ORecordBytes record in DB and link to iconID
-        
+
         this.icon = icon;
     }
-    
+
 }

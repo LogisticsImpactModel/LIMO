@@ -9,14 +9,14 @@ import nl.fontys.sofa.limo.domain.events.Event;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public abstract class Component {
-    
+public abstract class Component extends BaseEntity {
+
     protected String identifier;
     protected List<Entry> costs;
     protected List<Entry> leadTimes;
     protected List<Entry> delays;
     protected List<Event> events;
-    
+
     /**
      * Actual bytes the icon is composed of.
      */
@@ -66,7 +66,7 @@ public abstract class Component {
     public void setDelays(List<Entry> delays) {
         this.delays = delays;
     }
-    
+
     public byte[] getIcon() {
         return icon;
     }
@@ -74,32 +74,33 @@ public abstract class Component {
     public void setIcon(byte[] icon) {
         this.icon = icon;
     }
-    
-    /* EVENT ACCESSORS */
 
+    /* EVENT ACCESSORS */
     /**
      * Returns an unmodifiable view of the events list.
+     *
      * @return Unmodifiable list of events.
      */
     public List<Event> getEvents() {
         return Collections.unmodifiableList(this.events);
     }
-    
+
     public void addEvent(Event event) {
         this.events.add(event);
         event.setParent(this);
     }
-    
+
     public void removeEvent(Event event) {
         this.events.remove(event);
         event.setParent(null);
     }
-    
+
     public void clearEvents() {
-        for (Event e : this.events)
+        for (Event e : this.events) {
             e.setParent(null);
-        
+        }
+
         this.events.clear();
     }
-    
+
 }

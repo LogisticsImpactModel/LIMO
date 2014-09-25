@@ -3,9 +3,10 @@ OpenIDE-Module-Localizing-Bundle: nl/fontys/limo/limo_domainmodel/Bund
  le.properties
 OpenIDE-Module-Specification-Version: 1.0
 OpenIDE-Module-Implementation-Version: 1.0-20140925
-OpenIDE-Module-Build-Version: 201409251021
+OpenIDE-Module-Build-Version: 201409251049
 OpenIDE-Module: nl.fontys.limo.LIMO_DomainModel
-OpenIDE-Module-Public-Packages: -
+OpenIDE-Module-Public-Packages: nl.fontys.sofa.limo.domain.*, nl.fonty
+ s.sofa.limo.domain.category.*, nl.fontys.sofa.limo.domain.events.*
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
 OpenIDE-Module-Display-Category: nl.fontys.limo
 OpenIDE-Module-Name: LIMO_DomainModel
