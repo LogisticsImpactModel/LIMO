@@ -7,6 +7,10 @@
             <suite-component/>
             <module-dependencies/>
             <public-packages/>
+            <class-path-extension>
+                <runtime-relative-path>ext/commons-math3-3.3.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/commons-math3-3.3.jar</binary-origin>
+            </class-path-extension>
         </data>
     </configuration>
 </project>
