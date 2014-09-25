@@ -1,0 +1,30 @@
+Scenario: As a user I want to add master data so that I can create a
+supply chain with it.
+
+Open a wizard
+	Given Netbeans Platform has loaded
+	When I click on Data
+	And I click on Add
+	Then I see a wizard
+
+Add a new Original Equipment Manifacturer (OEM)
+	Given I have opened the wizard
+	When I select hub
+	And click on "next"
+	And I select "OEM"
+	And I fill in "OEM China" as the identifier
+	And I fill in "China" as the location
+	And I click on "finish"
+	Then I see a new hub in the hub overview
+
+Add a new port
+	Given I have opened the wizard
+	When I select "hub"
+	And click on "next"
+	And I select "port"
+	And I fill in "Seaport Rotterdam" as the identifier
+	And I fill in "Rotterdam" as the location
+	And I click on "finish"
+	Then I see a new hub in the hub overview
+
+
