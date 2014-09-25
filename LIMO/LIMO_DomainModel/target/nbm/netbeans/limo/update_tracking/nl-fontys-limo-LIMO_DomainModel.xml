@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><module codename="nl.fontys.limo.LIMO_DomainModel">
-    <module_version install_time="1411643046229" last="true" origin="installer" specification_version="1.0">
-        <file crc="3131889720" name="config/Modules/nl-fontys-limo-LIMO_DomainModel.xml"/>
-        <file crc="1522608995" name="modules/ext/nl.fontys.limo.LIMO_DomainModel/org-apache-commons/commons-math3.jar"/>
-        <file crc="2843757217" name="modules/nl-fontys-limo-LIMO_DomainModel.jar"/>
-        <file crc="3094035827" name="update_tracking/nl-fontys-limo-LIMO_DomainModel.xml"/>
-    </module_version>
-</module>
