@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain;
 
+import nl.fontys.sofa.limo.domain.component.Leg;
 import java.util.ArrayList;
 import java.util.List;
 

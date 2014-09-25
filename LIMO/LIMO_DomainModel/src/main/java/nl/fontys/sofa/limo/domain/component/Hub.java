@@ -1,7 +1,10 @@
-package nl.fontys.sofa.limo.domain;
+package nl.fontys.sofa.limo.domain.component;
 
 import java.util.HashMap;
 import java.util.Map;
+import nl.fontys.sofa.limo.domain.Actor;
+import nl.fontys.sofa.limo.domain.Component;
+import nl.fontys.sofa.limo.domain.Entry;
 import nl.fontys.sofa.limo.domain.types.HubType;
 
 /**

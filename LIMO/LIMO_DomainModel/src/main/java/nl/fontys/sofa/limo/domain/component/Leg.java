@@ -1,5 +1,7 @@
-package nl.fontys.sofa.limo.domain;
+package nl.fontys.sofa.limo.domain.component;
 
+import nl.fontys.sofa.limo.domain.Actor;
+import nl.fontys.sofa.limo.domain.Component;
 import nl.fontys.sofa.limo.domain.types.LegType;
 
 /**

@@ -7,7 +7,7 @@ package nl.fontys.sofa.limo.orientdb.database;
 
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
-import nl.fontys.sofa.limo.domain.events.Event;
+import nl.fontys.sofa.limo.domain.component.Event;
 
 public class OrientDBEventDAO implements EventDAO {
 

@@ -7,7 +7,7 @@ package nl.fontys.sofa.limo.orientdb.database;
 
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.HubDAO;
-import nl.fontys.sofa.limo.domain.Hub;
+import nl.fontys.sofa.limo.domain.component.Hub;
 
 public class OrientDBHubDAO implements HubDAO {
 

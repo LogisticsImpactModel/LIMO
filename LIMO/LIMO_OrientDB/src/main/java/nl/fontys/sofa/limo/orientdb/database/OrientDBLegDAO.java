@@ -7,7 +7,7 @@ package nl.fontys.sofa.limo.orientdb.database;
 
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.LegDAO;
-import nl.fontys.sofa.limo.domain.Leg;
+import nl.fontys.sofa.limo.domain.component.Leg;
 
 public class OrientDBLegDAO implements LegDAO {
 
