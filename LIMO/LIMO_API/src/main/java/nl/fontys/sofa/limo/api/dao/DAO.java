@@ -7,13 +7,13 @@ public interface DAO<T extends BaseEntity> {
 
     public List<T> findAll();
 
-    public T findById();
+    public T findById(String id);
 
-    public void insert(T domainModel);
+    public void insert(T entity);
 
-    public boolean update(T domainModel);
+    public boolean update(T entity);
 
-    public boolean delete(int domainModelId);
+    public boolean delete(String id);
 
     public String getTableName();
 

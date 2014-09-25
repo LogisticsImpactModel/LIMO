@@ -5,8 +5,8 @@
  */
 package nl.fontys.sofa.limo.api.dao;
 
-import nl.fontys.sofa.limo.domain.category.CostCategory;
+import nl.fontys.sofa.limo.domain.category.TimeCategory;
 
-public interface DelayCategoryDAO extends DAO<CostCategory> {
+public interface TimeCategoryDAO extends DAO<TimeCategory> {
 
 }
