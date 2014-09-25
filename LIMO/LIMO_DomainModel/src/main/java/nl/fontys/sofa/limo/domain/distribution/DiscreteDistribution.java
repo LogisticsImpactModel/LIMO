@@ -9,14 +9,14 @@ import java.util.Random;
 public class DiscreteDistribution extends DistributionType{
     
     public DiscreteDistribution(){
-        super(new AbstractMap.SimpleImmutableEntry<String, Class<?>>("x", Integer.class),
-                new AbstractMap.SimpleImmutableEntry<String, Class<?>>("y", Integer.class));
+        super(new AbstractMap.SimpleImmutableEntry<String, Class<?>>("X", Integer.class),
+                new AbstractMap.SimpleImmutableEntry<String, Class<?>>("Y", Integer.class));
     }
 
     @Override
     protected void calculateProbability() {
-        double x = (Integer) parameters.get("x");
-        double y = (Integer) parameters.get("y");
+        double x = (Integer) parameters.get("X");
+        double y = (Integer) parameters.get("Y");
         probabilityResultCache = x/y;
     }
 }

@@ -9,14 +9,14 @@ import java.util.AbstractMap;
 public class PoissonDistribution extends DistributionType {
     
     public PoissonDistribution() {
-        super(new AbstractMap.SimpleImmutableEntry<String, Class<?>>("lambda", Double.class),
-                new AbstractMap.SimpleImmutableEntry<String, Class<?>>("k", Integer.class));
+        super(new AbstractMap.SimpleImmutableEntry<String, Class<?>>("Lambda", Double.class),
+                new AbstractMap.SimpleImmutableEntry<String, Class<?>>("K", Integer.class));
     }
 
     @Override
     protected void calculateProbability() {
-        Double lambda = (Double) parameters.get("lambda");
-        int k = (int) parameters.get("k");
+        Double lambda = (Double) parameters.get("Lambda");
+        int k = (int) parameters.get("K");
         probabilityResultCache = new org.apache.commons.math3.distribution.PoissonDistribution(lambda).probability(k);
     }
 }
