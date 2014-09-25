@@ -5,6 +5,7 @@
  */
 package nl.fontys.sofa.limo.orientdb.database;
 
+import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import java.io.File;
 import nl.fontys.sofa.limo.api.database.AbstractDBServer;
 

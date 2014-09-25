@@ -46,6 +46,26 @@
             <artifactId>LIMO_DomainModel</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--- OrientDB -->
+        <dependency>
+            <groupId>com.orientechnologies</groupId>
+            <artifactId>orient-commons</artifactId>
+            <version>1.7.6</version>
+            <type>bundle</type>
+        </dependency>
+        <dependency>
+            <groupId>com.orientechnologies</groupId>
+            <artifactId>orientdb-core</artifactId>
+            <version>1.7.6</version>
+            <type>bundle</type>
+        </dependency>
+        <!-- INCLUDE THIS IF YOU'RE CONNECTING TO THE SERVER THROUGH THE REMOTE ENGINE -->
+        <dependency>
+            <groupId>com.orientechnologies</groupId>
+            <artifactId>orientdb-client</artifactId>
+            <version>1.7.6</version>
+            <type>bundle</type>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
