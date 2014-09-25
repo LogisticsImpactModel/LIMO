@@ -4,24 +4,27 @@ import com.orientechnologies.orient.core.record.impl.ODocument;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 
 /**
- * General mapping interface between domain model entities and OrientDB documents.
+ * General mapping interface between domain model entities and OrientDB
+ * documents.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public interface OrientDBMapper<T extends BaseEntity>{
-    
+public interface OrientDBMapper<T extends BaseEntity> {
+
     /**
      * Maps given ODocument to specified BaseEntity subclass.
+     *
      * @param doc ODocument to map.
      * @return Mapped entity.
      */
     public T map(ODocument doc);
-    
+
     /**
      * Maps given Entity to OrientDB document.
+     *
      * @param entity Entity to map.
      * @return Mapped ODocument.
      */
     public ODocument map(T entity);
-    
+
 }

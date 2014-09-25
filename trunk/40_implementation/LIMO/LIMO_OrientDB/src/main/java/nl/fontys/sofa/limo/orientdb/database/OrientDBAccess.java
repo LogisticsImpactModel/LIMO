@@ -11,12 +11,12 @@ import nl.fontys.sofa.limo.api.database.AbstractDBServer;
 
 public class OrientDBAccess extends AbstractDBServer<ODatabaseDocumentTx> {
 
-    private static OrientDBAccess instance;
+    protected static OrientDBAccess instance;
 
-    private OrientDBAccess() {
+    protected OrientDBAccess() {
         String path = System.getProperty("user.home") + File.separator + "LIMO";
         connection = new ODatabaseDocumentTx("plocal:" + path);
-        
+
         if (!connection.exists()) {
             connection.create();
         } else {
