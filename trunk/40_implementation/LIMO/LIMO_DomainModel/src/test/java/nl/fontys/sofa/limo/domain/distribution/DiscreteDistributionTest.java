@@ -5,6 +5,8 @@
  */
 package nl.fontys.sofa.limo.domain.distribution;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -19,10 +21,12 @@ import static org.junit.Assert.*;
 public class DiscreteDistributionTest {
     
     public DiscreteDistributionTest() {
+
     }
     
     @BeforeClass
     public static void setUpClass() {
+       
     }
     
     @AfterClass
@@ -31,6 +35,8 @@ public class DiscreteDistributionTest {
     
     @Before
     public void setUp() {
+
+         
     }
     
     @After
@@ -38,15 +44,29 @@ public class DiscreteDistributionTest {
     }
 
     /**
-     * Test of calculateProbability method, of class DiscreteDistribution.
+     * Test of calculateProbability method w/ seperate parameters specified, of class DiscreteDistribution.
      * In a discrete distrib, x divided by y (x out of y) represents the probability. Therefore, 1 divided by 2 should result in a probability of 0.5
      */
     @org.junit.Test
-    public void testCalculateProbability() {
-        System.out.println("calculateProbability");
+    public void testCalculateProbability_separateParameters() {
+        System.out.println("calculateProbability w separate parameters");
         DiscreteDistribution instance = new DiscreteDistribution();
         instance.setParameter("x", 1);
         instance.setParameter("y", 2);
+        System.out.println("Probability is: "+instance.getProbability());
+        assertEquals(0.5,instance.getProbability(),0.01);
+    }
+        @org.junit.Test
+        
+    public void testCalculateProbability_parameterMap() {
+        System.out.println("calculateProbability w map");
+        DiscreteDistribution instance = new DiscreteDistribution();
+        
+        Map<String, Number> parameters = new HashMap<>();
+        parameters.put("x",1);
+        parameters.put("y",2);
+        
+        instance.setParameters(parameters);
         System.out.println("Probability is: "+instance.getProbability());
         assertEquals(0.5,instance.getProbability(),0.01);
     }

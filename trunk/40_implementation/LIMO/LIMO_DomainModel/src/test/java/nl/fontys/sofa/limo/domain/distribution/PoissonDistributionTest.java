@@ -39,7 +39,7 @@ public class PoissonDistributionTest {
 
     /**
      * Test of calculateProbability method, of class PoissonDistribution.
-     * k: poisson random variable (faculty, int)
+     * k: poisson random variable (faculty,int)
      * lambda: average rate of succes (double)
      */
     @Test
