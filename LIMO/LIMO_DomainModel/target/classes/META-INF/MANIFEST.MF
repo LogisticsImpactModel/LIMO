@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Localizing-Bundle: nl/fontys/limo/limo_domainmodel/Bund
+ le.properties
+OpenIDE-Module-Specification-Version: 1.0
+OpenIDE-Module-Implementation-Version: 1.0-20140925
+OpenIDE-Module-Build-Version: 201409251125
+OpenIDE-Module: nl.fontys.limo.LIMO_DomainModel
+OpenIDE-Module-Public-Packages: nl.fontys.sofa.limo.domain.*, nl.fonty
+ s.sofa.limo.domain.category.*, nl.fontys.sofa.limo.domain.events.*, n
+ l.fontys.sofa.limo.domain.types.*
+OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
+OpenIDE-Module-Display-Category: nl.fontys.limo
+OpenIDE-Module-Name: LIMO_DomainModel
+OpenIDE-Module-Short-Description: <undefined>
+OpenIDE-Module-Long-Description: <undefined>
+X-Class-Path: ext/nl.fontys.limo.LIMO_DomainModel/org-apache-commons/c
+ ommons-math3.jar
+Maven-Class-Path: org.apache.commons:commons-math3:3.2
+OpenIDE-Module-Module-Dependencies: org.netbeans.api.annotations.commo
+ n/1 > 1.23.1
+
