@@ -53,7 +53,7 @@ public class NormalDistributionTest {
         instance.setParameter("x1",4.00);
         instance.setParameter("x2",6.00);
         System.out.println("Probability is: "+instance.getProbability());
-        assertEquals(0.50,instance.getProbability(),0.01);
+        assertEquals(0.682689492137086,instance.getProbability(),0.0000000001);
     }
     
 }
