@@ -50,7 +50,8 @@ public class NormalDistributionTest {
         NormalDistribution instance = new NormalDistribution();
         instance.setParameter("mean",5.00);
         instance.setParameter("standard deviation",1.00);
-        instance.setParameter("x",5.00);
+        instance.setParameter("x1",4.00);
+        instance.setParameter("x2",6.00);
         System.out.println("Probability is: "+instance.getProbability());
         assertEquals(0.50,instance.getProbability(),0.01);
     }
