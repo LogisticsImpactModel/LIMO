@@ -9,7 +9,7 @@ public interface DAOFactory {
 
     public CostCategoryDAO getCostCategoryDAO();
 
-    public DelayCategoryDAO getDelayCategoryDAO();
+    public TimeCategoryDAO getDelayCategoryDAO();
 
     public EventDAO getEventDAO();
 
