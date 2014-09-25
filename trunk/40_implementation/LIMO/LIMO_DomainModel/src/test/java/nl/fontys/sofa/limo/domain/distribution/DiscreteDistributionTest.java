@@ -51,8 +51,8 @@ public class DiscreteDistributionTest {
     public void testCalculateProbability_separateParameters() {
         System.out.println("calculateProbability w separate parameters");
         DiscreteDistribution instance = new DiscreteDistribution();
-        instance.setParameter("x", 1);
-        instance.setParameter("y", 2);
+        instance.setParameter("X", 1);
+        instance.setParameter("Y", 2);
         System.out.println("Probability is: "+instance.getProbability());
         assertEquals(0.5,instance.getProbability(),0.01);
     }
@@ -63,8 +63,8 @@ public class DiscreteDistributionTest {
         DiscreteDistribution instance = new DiscreteDistribution();
         
         Map<String, Number> parameters = new HashMap<>();
-        parameters.put("x",1);
-        parameters.put("y",2);
+        parameters.put("X",1);
+        parameters.put("Y",2);
         
         instance.setParameters(parameters);
         System.out.println("Probability is: "+instance.getProbability());

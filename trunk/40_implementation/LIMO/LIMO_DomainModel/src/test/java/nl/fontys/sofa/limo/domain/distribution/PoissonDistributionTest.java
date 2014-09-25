@@ -46,8 +46,8 @@ public class PoissonDistributionTest {
     public void testCalculateProbability() {
         System.out.println("calculateProbability");
         PoissonDistribution instance = new PoissonDistribution();
-        instance.setParameter("lambda", 0.50);
-        instance.setParameter("k", 1);
+        instance.setParameter("Lambda", 0.50);
+        instance.setParameter("K", 1);
         System.out.println("Probability is: "+instance.getProbability());
         assertEquals(0.3032653298563167,instance.getProbability(),0.000000000000001);
     }
