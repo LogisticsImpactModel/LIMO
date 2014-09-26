@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.domain;
 import nl.fontys.sofa.limo.domain.component.Leg;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Matthias Brück
@@ -23,5 +24,24 @@ public class Actor {
 
     public List<Leg> getLegsResponsibleFor() {
         return this.legsResponsibleFor;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Actor other = (Actor) obj;
+        return this.name.equals(other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.name);
+        return hash;
     }
 }
