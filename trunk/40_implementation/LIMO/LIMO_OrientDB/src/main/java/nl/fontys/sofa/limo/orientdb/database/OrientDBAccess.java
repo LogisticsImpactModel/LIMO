@@ -24,18 +24,18 @@ public class OrientDBAccess extends AbstractDBServer<ODatabaseDocumentTx> {
     public void closeConnection() {
         connection.close();
     }
-    
+
     @Override
     protected void checkConnection() {
         if (connection == null) {
             String path = System.getProperty("user.home") + File.separator + "LIMO";
             connection = new ODatabaseDocumentTx("plocal:" + path);
-            
+
             if (!connection.exists()) {
                 connection.create();
             }
         }
-        
+
         if (connection.isClosed()) {
             connection.open("admin", "admin");
         }

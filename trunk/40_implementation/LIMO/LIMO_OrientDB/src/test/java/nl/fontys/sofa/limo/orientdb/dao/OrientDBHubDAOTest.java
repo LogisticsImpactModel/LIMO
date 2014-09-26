@@ -7,7 +7,6 @@ import static junit.framework.Assert.assertTrue;
 import nl.fontys.sofa.limo.api.dao.HubDAO;
 import nl.fontys.sofa.limo.domain.Entry;
 import nl.fontys.sofa.limo.domain.component.Hub;
-import nl.fontys.sofa.limo.domain.types.HubType;
 import nl.fontys.sofa.limo.domain.value.SingleValue;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBDAOFactory;
 import org.junit.After;
