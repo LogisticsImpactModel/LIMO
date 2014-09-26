@@ -7,6 +7,7 @@ package nl.fontys.sofa.limo.orientdb.dao;
 
 import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.iterator.ORecordIteratorClass;
+import com.orientechnologies.orient.core.metadata.schema.OSchema;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import java.util.ArrayList;
@@ -17,12 +18,12 @@ import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.orientdb.OrientDBMapper;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
-public class OrientDBCostCategoryDAO implements CostCategoryDAO, OrientDBMapper<CostCategory> {
+public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO implements CostCategoryDAO, OrientDBMapper<CostCategory> {
 
-    private final OrientDBAccess orientDBAccess;
-
+    private static final String TABLE_NAME = "CostCategories";
+    
     public OrientDBCostCategoryDAO(OrientDBAccess orientDBAccess) {
-        this.orientDBAccess = orientDBAccess;
+        super(orientDBAccess, TABLE_NAME);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class OrientDBCostCategoryDAO implements CostCategoryDAO, OrientDBMapper<
     @Override
     public boolean update(CostCategory entity) {
         entity.setLastUpdate(new Date().getTime());
-        ODocument doc = map(entity).save();
+        map(entity).save();
         return true;
     }
 
@@ -65,8 +66,8 @@ public class OrientDBCostCategoryDAO implements CostCategoryDAO, OrientDBMapper<
     }
 
     @Override
-    public String getTableName() {
-        return "CostCategories";
+    public final String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
