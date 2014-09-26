@@ -74,11 +74,11 @@ public class OrientDBTimeCategoryDAOTest extends NbTestCase {
     public void testInsert() {
         TimeCategory timeCategory = new TimeCategory("time");
         timeCategoryDAO.insert(timeCategory);
-        List<TimeCategory> costCategories = timeCategoryDAO.findAll();
-        assertEquals(1, costCategories.size());
-        TimeCategory foundCostCategory = timeCategoryDAO.findById(costCategories.get(0).getId());
-        assertEquals(timeCategory.getId(), foundCostCategory.getId());
-        assertEquals(timeCategory.getIdentifier(), foundCostCategory.getIdentifier());
+        List<TimeCategory> timeCategories = timeCategoryDAO.findAll();
+        assertEquals(1, timeCategories.size());
+        TimeCategory foundTimeCategory = timeCategoryDAO.findById(timeCategories.get(0).getId());
+        assertEquals(timeCategory.getId(), foundTimeCategory.getId());
+        assertEquals(timeCategory.getIdentifier(), foundTimeCategory.getIdentifier());
     }
 
     /**
@@ -87,16 +87,16 @@ public class OrientDBTimeCategoryDAOTest extends NbTestCase {
     @Test
     public void testUpdate() {
         String newCategoryName = "international taxes";
-        TimeCategory costCategory = new TimeCategory("taxes");
-        boolean updateSuccess = timeCategoryDAO.update(costCategory);
+        TimeCategory timeCategory = new TimeCategory("taxes");
+        boolean updateSuccess = timeCategoryDAO.update(timeCategory);
         assertFalse(updateSuccess);
-        timeCategoryDAO.insert(costCategory);
-        costCategory = timeCategoryDAO.findById(costCategory.getId());
-        costCategory.setIdentifier(newCategoryName);
-        updateSuccess = timeCategoryDAO.update(costCategory);
+        timeCategoryDAO.insert(timeCategory);
+        timeCategory = timeCategoryDAO.findById(timeCategory.getId());
+        timeCategory.setIdentifier(newCategoryName);
+        updateSuccess = timeCategoryDAO.update(timeCategory);
         assertTrue(updateSuccess);
-        costCategory = timeCategoryDAO.findById(costCategory.getId());
-        assertEquals(newCategoryName, costCategory.getIdentifier());
+        timeCategory = timeCategoryDAO.findById(timeCategory.getId());
+        assertEquals(newCategoryName, timeCategory.getIdentifier());
     }
 
     /**
