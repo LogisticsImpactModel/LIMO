@@ -36,7 +36,13 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
     @Test
     public void testFindAll() {
         List<CostCategory> costCategories = costCategoryDAO.findAll();
-        assertTrue(costCategories.isEmpty());
+        assertTrue("CostCategories should be empty, is not",costCategories.isEmpty());
+        //find all if no cat has been added yet
+        //now find all if one cat is added
+        CostCategory costCategory1 = new CostCategory("tadxes");
+        costCategoryDAO.insert(costCategory1);
+        costCategories = costCategoryDAO.findAll();
+        assertTrue("CostCategories should not be empty, but is",!costCategories.isEmpty());
     }
 
     /**
@@ -45,9 +51,7 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
     @Test
     public void testFindById() {
         CostCategory costCategory = costCategoryDAO.findById("");
-        assertNull(costCategory);
-        costCategory = costCategoryDAO.findById("38129803980");
-        assertNull(costCategory);
+        assertNull("Should be no result (null)",costCategory);
     }
 
     /**
@@ -58,8 +62,9 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
         CostCategory costCategory = new CostCategory("taxes");
         costCategoryDAO.insert(costCategory);
         List<CostCategory> costCategories = costCategoryDAO.findAll();
-        assertEquals(1, costCategories.size());
-        CostCategory foundCostCategory = costCategoryDAO.findById(costCategories.get(0).getId());
+        assertTrue("There must be at least one entry, because i just inserted one",costCategories.size()>0);
+        int lastInsertedCostCategoryObject = costCategories.size()-1;
+        CostCategory foundCostCategory = costCategoryDAO.findById(costCategories.get(lastInsertedCostCategoryObject).getId());
         assertEquals(costCategory.getId(), foundCostCategory.getId());
         assertEquals(costCategory.getIdentifier(), foundCostCategory.getIdentifier());
     }
