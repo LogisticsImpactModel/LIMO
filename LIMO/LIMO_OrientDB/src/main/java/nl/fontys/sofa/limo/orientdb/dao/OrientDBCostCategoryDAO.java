@@ -6,80 +6,43 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
 import com.orientechnologies.orient.core.id.ORecordId;
-import com.orientechnologies.orient.core.iterator.ORecordIteratorClass;
-import com.orientechnologies.orient.core.metadata.schema.OSchema;
 import com.orientechnologies.orient.core.record.impl.ODocument;
-import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
-import nl.fontys.sofa.limo.orientdb.OrientDBMapper;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
-public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO implements CostCategoryDAO, OrientDBMapper<CostCategory> {
+public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO<CostCategory> implements CostCategoryDAO {
 
     private static final String TABLE_NAME = "CostCategories";
-    
+
     public OrientDBCostCategoryDAO(OrientDBAccess orientDBAccess) {
         super(orientDBAccess, TABLE_NAME);
     }
 
     @Override
     public List<CostCategory> findAll() {
-        ORecordIteratorClass<ODocument> results = orientDBAccess.getConnection().browseClass(getTableName());
-        ArrayList<CostCategory> resultList = new ArrayList<>();
-
-        for (ODocument doc : results) {
-            resultList.add(map(doc));
-        }
-
-        return resultList;
+        return super.findAll();
     }
 
     @Override
     public CostCategory findById(String id) {
-        if (!stringIsValidId(id)) {
-            return null;
-        }
-        
-        OSQLSynchQuery<ODocument> query = new OSQLSynchQuery<>("select * from " + id);
-        List<ODocument> results = orientDBAccess.getConnection().query(query);
-        return map(results.get(0));
+        return super.findById(id);
     }
 
     @Override
     public void insert(CostCategory entity) {
-        entity.setLastUpdate(new Date().getTime());
-        ODocument doc = map(entity).save();
-        entity.setId(doc.getIdentity().toString());
+        super.insert(entity);
     }
 
     @Override
     public boolean update(CostCategory entity) {
-        if (!stringIsValidId(entity.getId())) {
-            return false;
-        }
-        
-        entity.setLastUpdate(new Date().getTime());
-        map(entity).save();
-        return true;
+        return super.update(entity);
     }
 
     @Override
     public boolean delete(String id) {
-        if (!stringIsValidId(id)) {
-            return false;
-        }
-        
-        orientDBAccess.getConnection().delete(new ORecordId(id));
-        return true;
-    }
-
-    @Override
-    public final String getTableName() {
-        return TABLE_NAME;
+        return super.delete(id);
     }
 
     @Override
@@ -87,7 +50,7 @@ public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO implements Cost
         if (doc == null) {
             return null;
         }
-        
+
         CostCategory cc = new CostCategory();
         cc.setId(doc.getIdentity().toString());
         cc.setLastUpdate((long) doc.field("lastUpdate"));
@@ -100,12 +63,12 @@ public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO implements Cost
         if (entity == null) {
             return null;
         }
-        
+
         ODocument doc;
         if (entity.getId() != null) {
-            doc = new ODocument(getTableName(), new ORecordId(entity.getId()));
+            doc = new ODocument(tableName, new ORecordId(entity.getId()));
         } else {
-            doc = new ODocument(getTableName());
+            doc = new ODocument(tableName);
         }
         doc.field("lastUpdate", entity.getLastUpdate());
         doc.field("identifier", entity.getIdentifier());

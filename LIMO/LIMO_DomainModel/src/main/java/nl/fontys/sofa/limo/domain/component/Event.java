@@ -16,6 +16,10 @@ public class Event extends Component {
     private boolean executionState;
     private Actor actor;
 
+    public Event() {
+        super();
+    }
+
     public Event(String identifier) {
         super(identifier);
     }

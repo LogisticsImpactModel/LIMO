@@ -113,13 +113,4 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
         assertTrue(deleteSuccess);
     }
 
-    /**
-     * Test of getTableName method, of class OrientDBLegTypeDAO.
-     */
-    @Test
-    public void testGetTableName() {
-        assertNotNull(legTypeDAO.getTableName());
-        assertFalse(legTypeDAO.getTableName().isEmpty());
-    }
-
 }

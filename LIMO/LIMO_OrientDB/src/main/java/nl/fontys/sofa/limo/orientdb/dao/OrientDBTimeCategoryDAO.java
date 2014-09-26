@@ -14,20 +14,17 @@ import java.util.Date;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
-import nl.fontys.sofa.limo.orientdb.OrientDBMapper;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
-public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO implements TimeCategoryDAO, OrientDBMapper<TimeCategory> {
-
-    private static final String TABLE_NAME = "TimeCategories";
+public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO<TimeCategory> implements TimeCategoryDAO {
 
     public OrientDBTimeCategoryDAO(OrientDBAccess orientDBAccess) {
-        super(orientDBAccess, TABLE_NAME);
+        super(orientDBAccess, "TimeCategories");
     }
 
     @Override
     public List<TimeCategory> findAll() {
-        ORecordIteratorClass<ODocument> results = orientDBAccess.getConnection().browseClass(getTableName());
+        ORecordIteratorClass<ODocument> results = orientDBAccess.getConnection().browseClass(tableName);
         ArrayList<TimeCategory> resultList = new ArrayList<>();
 
         for (ODocument doc : results) {
@@ -77,11 +74,6 @@ public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO implements Time
     }
 
     @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
     public TimeCategory map(ODocument doc) {
         TimeCategory tc = new TimeCategory();
         tc.setId(doc.getIdentity().toString());
@@ -94,9 +86,9 @@ public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO implements Time
     public ODocument map(TimeCategory entity) {
         ODocument doc;
         if (entity.getId() != null) {
-            doc = new ODocument(getTableName(), new ORecordId(entity.getId()));
+            doc = new ODocument(tableName, new ORecordId(entity.getId()));
         } else {
-            doc = new ODocument(getTableName());
+            doc = new ODocument(tableName);
         }
         doc.field("lastUpdate", entity.getLastUpdate());
         doc.field("identifier", entity.getIdentifier());

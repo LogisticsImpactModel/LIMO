@@ -97,13 +97,4 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
         assertTrue(deleteSuccess);
     }
 
-    /**
-     * Test of getTableName method, of class OrientDBCostCategoryDAO.
-     */
-    @Test
-    public void testGetTableName() {
-        assertNotNull(costCategoryDAO.getTableName());
-        assertFalse(costCategoryDAO.getTableName().isEmpty());
-    }
-
 }

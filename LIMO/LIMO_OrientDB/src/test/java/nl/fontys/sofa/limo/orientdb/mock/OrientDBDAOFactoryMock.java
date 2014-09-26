@@ -9,6 +9,11 @@ import nl.fontys.sofa.limo.api.dao.LegDAO;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBCostCategoryDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBEventDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBHubDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBHubTypeDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBLegDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBLegTypeDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBTimeCategoryDAO;
 
 public class OrientDBDAOFactoryMock implements DAOFactory {
@@ -25,27 +30,27 @@ public class OrientDBDAOFactoryMock implements DAOFactory {
 
     @Override
     public EventDAO getEventDAO() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new OrientDBEventDAO(MockOrientDBAccess.getInstance());
     }
 
     @Override
     public HubDAO getHubDAO() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new OrientDBHubDAO(MockOrientDBAccess.getInstance());
     }
 
     @Override
     public HubTypeDAO getHubTypeDAO() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new OrientDBHubTypeDAO(MockOrientDBAccess.getInstance());
     }
 
     @Override
     public LegDAO getLegDAO() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new OrientDBLegDAO(MockOrientDBAccess.getInstance());
     }
 
     @Override
     public LegTypeDAO getLegTypeDAO() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new OrientDBLegTypeDAO(MockOrientDBAccess.getInstance());
     }
 
 }

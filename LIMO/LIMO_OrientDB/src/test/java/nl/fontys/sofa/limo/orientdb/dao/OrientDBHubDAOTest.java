@@ -121,13 +121,4 @@ public class OrientDBHubDAOTest extends NbTestCase {
 //        assertTrue(deleteSuccess);
     }
 
-    /**
-     * Test of getTableName method, of class OrientDBHubDAO.
-     */
-    @Test
-    public void testGetTableName() {
-        assertNotNull(hubDAO.getTableName());
-        assertFalse(hubDAO.getTableName().isEmpty());
-    }
-
 }

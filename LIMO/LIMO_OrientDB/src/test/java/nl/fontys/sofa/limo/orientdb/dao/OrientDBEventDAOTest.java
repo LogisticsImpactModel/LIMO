@@ -101,13 +101,4 @@ public class OrientDBEventDAOTest extends NbTestCase {
         assertTrue(deleteSuccess);
     }
 
-    /**
-     * Test of getTableName method, of class OrientDBEventDAO.
-     */
-    @Test
-    public void testGetTableName() {
-        assertNotNull(eventDAO.getTableName());
-        assertFalse(eventDAO.getTableName().isEmpty());
-    }
-
 }
