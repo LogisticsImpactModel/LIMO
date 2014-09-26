@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
  *
  * @author Matthias Brück
  */
-public class Icon implements Serializable{
+public class Icon extends BaseEntity implements Serializable{
 
     private byte[] iconByteArray;
     private transient BufferedImage iconBufferedImage = null;

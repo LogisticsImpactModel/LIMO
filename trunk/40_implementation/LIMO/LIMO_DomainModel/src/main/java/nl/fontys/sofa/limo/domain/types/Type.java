@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.domain.types;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.Entry;
+import nl.fontys.sofa.limo.domain.Icon;
 
 /**
  *
@@ -14,23 +15,22 @@ public abstract class Type extends BaseEntity {
     protected List<Entry> costs;
     protected List<Entry> leadTimes;
     protected List<Entry> delays;
+    protected Icon icon;
 
-    /**
-     * ID of ORecordBytes entry in OrientDB.
-     */
-    protected String iconID;
-
-    /**
-     * Actual bytes the icon is composed of.
-     */
-    protected byte[] icon;
-
-    public Type(String identifier, List<Entry> costs, List<Entry> leadTimes, List<Entry> delays, String iconID) {
+    public Type(String identifier, List<Entry> costs, List<Entry> leadTimes, List<Entry> delays) {
         this.identifier = identifier;
         this.costs = costs;
         this.leadTimes = leadTimes;
         this.delays = delays;
-        this.iconID = iconID;
+        icon = null;
+    }
+
+    public Type(String identifier, List<Entry> costs, List<Entry> leadTimes, List<Entry> delays, Icon icon) {
+        this.identifier = identifier;
+        this.costs = costs;
+        this.leadTimes = leadTimes;
+        this.delays = delays;
+        this.icon = icon;
     }
 
     public String getIdentifier() {
@@ -65,21 +65,11 @@ public abstract class Type extends BaseEntity {
         this.delays = delays;
     }
 
-    public String getIconID() {
-        return iconID;
-    }
-
-    public byte[] getIcon() {
-        // TODO test if set, if not, get from DB with iconID
-
+    public Icon getIcon() {
         return icon;
     }
 
-    public void setIcon(byte[] icon) {
-        // TODO Check references in DB, if >1 then keep, otherwise delete
-        // TODO Create new ORecordBytes record in DB and link to iconID
-
+    public void setIcon(Icon icon) {
         this.icon = icon;
     }
-
 }
