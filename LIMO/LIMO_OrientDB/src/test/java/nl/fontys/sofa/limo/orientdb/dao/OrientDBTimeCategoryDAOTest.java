@@ -72,12 +72,13 @@ public class OrientDBTimeCategoryDAOTest extends NbTestCase {
      */
     @Test
     public void testInsert() {
-        TimeCategory timeCategory = new TimeCategory("timeCat");
+        TimeCategory timeCategory = new TimeCategory("time");
         timeCategoryDAO.insert(timeCategory);
         List<TimeCategory> costCategories = timeCategoryDAO.findAll();
         assertEquals(1, costCategories.size());
-        TimeCategory foundCostCategory = timeCategoryDAO.findById("1");
-        assertEquals(timeCategory, foundCostCategory);
+        TimeCategory foundCostCategory = timeCategoryDAO.findById(costCategories.get(0).getId());
+        assertEquals(timeCategory.getId(), foundCostCategory.getId());
+        assertEquals(timeCategory.getIdentifier(), foundCostCategory.getIdentifier());
     }
 
     /**
