@@ -42,7 +42,7 @@ public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO<TimeCategory> i
         } else {
             doc = new ODocument(tableName);
         }
-        
+
         doc.field("lastUpdate", entity.getLastUpdate());
         doc.field("identifier", entity.getIdentifier());
         return doc;

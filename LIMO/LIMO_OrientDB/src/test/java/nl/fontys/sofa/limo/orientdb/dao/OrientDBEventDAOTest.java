@@ -1,14 +1,18 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
+import nl.fontys.sofa.limo.domain.Actor;
+import nl.fontys.sofa.limo.domain.Entry;
+import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.domain.component.Event;
-import nl.fontys.sofa.limo.orientdb.database.OrientDBDAOFactory;
+import nl.fontys.sofa.limo.domain.value.SingleValue;
+import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +29,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
     @Before
     @Override
     public void setUp() {
-        OrientDBDAOFactory orientDBDAOFactory = OrientDBDAOFactory.getInstance();
+        OrientDBDAOFactoryMock orientDBDAOFactory = new OrientDBDAOFactoryMock();
         eventDAO = orientDBDAOFactory.getEventDAO();
     }
 
@@ -60,12 +64,18 @@ public class OrientDBEventDAOTest extends NbTestCase {
      */
     @Test
     public void testInsert() {
-        Event event = new Event("pirates");
+        Event event = createEvent();
         eventDAO.insert(event);
         List<Event> events = eventDAO.findAll();
         assertEquals(1, events.size());
-        Event foundEvent = eventDAO.findById("1");
-        assertEquals(event, foundEvent);
+        Event foundEvent = eventDAO.findById(events.get(0).getId());
+        assertEquals(event.getId(), foundEvent.getId());
+        assertEquals(event.getIdentifier(), foundEvent.getIdentifier());
+        assertEquals(event.getActor().getName(), foundEvent.getActor().getName());
+        Entry expectedEntry = event.getCosts().get(0);
+        Entry foundEntry = foundEvent.getCosts().get(0);
+        assertEquals(expectedEntry.getName(), foundEntry.getName());
+        assertEquals(expectedEntry.getValue().getValue(), foundEntry.getValue().getValue());
     }
 
     /**
@@ -78,11 +88,11 @@ public class OrientDBEventDAOTest extends NbTestCase {
         boolean updateSuccess = eventDAO.update(event);
         assertFalse(updateSuccess);
         eventDAO.insert(event);
-        event = eventDAO.findById("1");
+        event = eventDAO.findById(event.getId());
         event.setIdentifier(newEventName);
         updateSuccess = eventDAO.update(event);
         assertTrue(updateSuccess);
-        event = eventDAO.findById("1");
+        event = eventDAO.findById(event.getId());
         assertEquals(newEventName, event.getIdentifier());
     }
 
@@ -97,8 +107,20 @@ public class OrientDBEventDAOTest extends NbTestCase {
         assertFalse(deleteSuccess);
         Event event = new Event("pirates");
         eventDAO.insert(event);
-        deleteSuccess = eventDAO.delete("1");
+        deleteSuccess = eventDAO.delete(event.getId());
         assertTrue(deleteSuccess);
+    }
+
+    private Event createEvent() {
+        Event event = new Event("pirates");
+        Actor actor = new Actor("Hermes");
+        ArrayList<Entry> costs = new ArrayList<>();
+        Entry entry = new Entry("Flieger", "Transport");
+        entry.setValue(new SingleValue(20000));
+        costs.add(entry);
+        event.setActor(actor);
+        event.setCosts(costs);
+        return event;
     }
 
 }
