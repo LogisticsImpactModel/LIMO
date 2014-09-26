@@ -1,12 +1,13 @@
 package nl.fontys.sofa.limo.domain;
 
+import java.io.Serializable;
 import nl.fontys.sofa.limo.domain.value.Value;
 
 /**
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class Entry {
+public class Entry implements Serializable{
     
     protected String name;
     protected String category;

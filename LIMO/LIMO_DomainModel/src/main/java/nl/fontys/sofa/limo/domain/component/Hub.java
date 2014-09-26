@@ -5,7 +5,6 @@ import java.util.Map;
 import nl.fontys.sofa.limo.domain.Actor;
 import nl.fontys.sofa.limo.domain.Component;
 import nl.fontys.sofa.limo.domain.Entry;
-import nl.fontys.sofa.limo.domain.types.HubType;
 
 /**
  * @author Matthias Brück
@@ -14,12 +13,10 @@ public class Hub extends Component {
 
     private Leg inputLeg;
     private Leg outputLeg;
-    private HubType type;
-    private final Map<Entry, Actor> costResponsibilities;
+    private final HashMap<Entry, Actor> costResponsibilities;
 
-    public Hub(String identifier, HubType type) {
+    public Hub(String identifier) {
         super(identifier);
-        this.type = type;
         this.costResponsibilities = new HashMap<>();
     }
 
@@ -29,10 +26,6 @@ public class Hub extends Component {
 
     public Leg getOutputLeg() {
         return outputLeg;
-    }
-
-    public HubType getType() {
-        return type;
     }
 
     public Map<Entry, Actor> getCostResponsibilities() {
@@ -45,9 +38,5 @@ public class Hub extends Component {
 
     public void setOutputLeg(Leg outputLeg) {
         this.outputLeg = outputLeg;
-    }
-
-    public void setType(HubType type) {
-        this.type = type;
     }
 }

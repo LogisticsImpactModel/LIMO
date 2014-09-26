@@ -1,10 +1,12 @@
 package nl.fontys.sofa.limo.domain;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable{
     
     protected String id;
     protected long lastUpdate;

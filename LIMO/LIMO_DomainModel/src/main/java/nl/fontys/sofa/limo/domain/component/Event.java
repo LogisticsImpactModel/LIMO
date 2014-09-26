@@ -9,7 +9,7 @@ import nl.fontys.sofa.limo.domain.distribution.DistributionType;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class Event extends Component {
-    
+
     private Component parent;
     private DistributionType probability;
     private EventExecutionStateDependency dependency;
@@ -65,19 +65,20 @@ public class Event extends Component {
         super.addEvent(event);
         event.setDependency(EventExecutionStateDependency.INDEPENDENT);
     }
-    
+
     public void addEvent(Event event, EventExecutionStateDependency dependency) {
         super.addEvent(event);
         event.setDependency(dependency);
     }
-    
+
     /**
      * Sets the execution state of this event and all subevents to false.
      */
     public void clearExecutionStates() {
         this.executionState = false;
-        for (Event e : this.events)
+        for (Event e : this.events) {
             e.clearExecutionStates();
+        }
     }
-    
+
 }
