@@ -1,21 +1,14 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import nl.fontys.sofa.limo.api.dao.HubDAO;
 import nl.fontys.sofa.limo.api.dao.HubDAO;
 import nl.fontys.sofa.limo.domain.Entry;
 import nl.fontys.sofa.limo.domain.component.Hub;
 import nl.fontys.sofa.limo.domain.types.HubType;
 import nl.fontys.sofa.limo.domain.value.SingleValue;
-import nl.fontys.sofa.limo.domain.value.Value;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBDAOFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -35,8 +28,7 @@ public class OrientDBHubDAOTest extends NbTestCase {
                 new Entry("Unloading", "Loading", new SingleValue(25000));
             }
         };
-        HubType hubType = new HubType("Port", costs, null, null, null);
-        hub = new Hub("Rotterdam", hubType);
+        hub = new Hub("Rotterdam");
     }
 
     public OrientDBHubDAOTest(String testCase) {
