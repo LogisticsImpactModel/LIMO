@@ -18,7 +18,7 @@ public final class AddMasterDataVisualPanel2 extends JPanel {
 
 	@Override
 	public String getName() {
-		return "Step #2";
+		return "Name and Location";
 	}
 
 	/**
@@ -29,18 +29,65 @@ public final class AddMasterDataVisualPanel2 extends JPanel {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
+    hubTypeSelect = new java.awt.Choice();
+    dataTypeLB = new javax.swing.JLabel();
+    jLabel2 = new javax.swing.JLabel();
+    jLabel3 = new javax.swing.JLabel();
+    nameTF = new javax.swing.JTextField();
+    locationTF = new javax.swing.JTextField();
+
+    org.openide.awt.Mnemonics.setLocalizedText(dataTypeLB, org.openide.util.NbBundle.getMessage(AddMasterDataVisualPanel2.class, "AddMasterDataVisualPanel2.dataTypeLB.text")); // NOI18N
+
+    org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(AddMasterDataVisualPanel2.class, "AddMasterDataVisualPanel2.jLabel2.text")); // NOI18N
+
+    org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(AddMasterDataVisualPanel2.class, "AddMasterDataVisualPanel2.jLabel3.text")); // NOI18N
+
+    nameTF.setText(org.openide.util.NbBundle.getMessage(AddMasterDataVisualPanel2.class, "AddMasterDataVisualPanel2.nameTF.text")); // NOI18N
+
+    locationTF.setText(org.openide.util.NbBundle.getMessage(AddMasterDataVisualPanel2.class, "AddMasterDataVisualPanel2.locationTF.text")); // NOI18N
+
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
     this.setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 400, Short.MAX_VALUE)
+      .addGroup(layout.createSequentialGroup()
+        .addGap(40, 40, 40)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+          .addComponent(jLabel3)
+          .addComponent(jLabel2)
+          .addComponent(dataTypeLB))
+        .addGap(38, 38, 38)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+          .addComponent(hubTypeSelect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(nameTF)
+          .addComponent(locationTF, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addContainerGap(52, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 300, Short.MAX_VALUE)
+      .addGroup(layout.createSequentialGroup()
+        .addGap(46, 46, 46)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(hubTypeSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(dataTypeLB))
+        .addGap(48, 48, 48)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(nameTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jLabel2))
+        .addGap(42, 42, 42)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(locationTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jLabel3))
+        .addContainerGap(107, Short.MAX_VALUE))
     );
   }// </editor-fold>//GEN-END:initComponents
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JLabel dataTypeLB;
+  private java.awt.Choice hubTypeSelect;
+  private javax.swing.JLabel jLabel2;
+  private javax.swing.JLabel jLabel3;
+  private javax.swing.JTextField locationTF;
+  private javax.swing.JTextField nameTF;
   // End of variables declaration//GEN-END:variables
 }
