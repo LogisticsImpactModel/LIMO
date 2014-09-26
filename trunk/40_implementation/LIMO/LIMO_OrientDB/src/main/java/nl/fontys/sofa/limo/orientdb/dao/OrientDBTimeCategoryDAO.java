@@ -24,53 +24,27 @@ public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO<TimeCategory> i
 
     @Override
     public List<TimeCategory> findAll() {
-        ORecordIteratorClass<ODocument> results = orientDBAccess.getConnection().browseClass(tableName);
-        ArrayList<TimeCategory> resultList = new ArrayList<>();
-
-        for (ODocument doc : results) {
-            resultList.add(map(doc));
-        }
-
-        return resultList;
+        return super.findAll();
     }
 
     @Override
     public TimeCategory findById(String id) {
-        if (!stringIsValidId(id)) {
-            return null;
-        }
-
-        OSQLSynchQuery<ODocument> query = new OSQLSynchQuery<>("select * from " + id);
-        List<ODocument> results = orientDBAccess.getConnection().query(query);
-        return map(results.get(0));
+        return super.findById(id);
     }
 
     @Override
     public void insert(TimeCategory entity) {
-        entity.setLastUpdate(new Date().getTime());
-        ODocument doc = map(entity).save();
-        entity.setId(doc.getIdentity().toString());
+        super.insert(entity);
     }
 
     @Override
     public boolean update(TimeCategory entity) {
-        if (!stringIsValidId(entity.getId())) {
-            return false;
-        }
-
-        entity.setLastUpdate(new Date().getTime());
-        map(entity).save();
-        return true;
+        return super.update(entity);
     }
 
     @Override
     public boolean delete(String id) {
-        if (!stringIsValidId(id)) {
-            return false;
-        }
-
-        orientDBAccess.getConnection().delete(new ORecordId(id));
-        return true;
+        return super.delete(id);
     }
 
     @Override
