@@ -3,7 +3,6 @@ package nl.fontys.sofa.limo.domain.component;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import nl.fontys.sofa.limo.domain.types.LegType;
 
 /**
  * @author Matthias Brück
@@ -11,12 +10,12 @@ import nl.fontys.sofa.limo.domain.types.LegType;
 public class ScheduledLeg extends Leg {
 
     private Date expectationTime;
-    private final List<Date> acceptanceTimes;
+    private final ArrayList<Date> acceptanceTimes;
     private Leg alternativeLeg;
     private Date waitingTimeLimit;
 
-    public ScheduledLeg(String identifier, LegType type) {
-        super(identifier, type);
+    public ScheduledLeg(String identifier) {
+        super(identifier);
         acceptanceTimes = new ArrayList<>();
     }
 

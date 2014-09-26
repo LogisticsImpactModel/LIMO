@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class MultiModeLeg extends Leg{
 
-    private final Map<Leg, Double> sublegs;
+    private final HashMap<Leg, Double> sublegs;
 
     public MultiModeLeg(String identifier) {
         super(identifier);

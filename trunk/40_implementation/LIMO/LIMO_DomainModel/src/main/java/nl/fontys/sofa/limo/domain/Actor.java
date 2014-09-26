@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain;
 
+import java.io.Serializable;
 import nl.fontys.sofa.limo.domain.component.Leg;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +9,10 @@ import java.util.Objects;
 /**
  * @author Matthias Brück
  */
-public class Actor {
+public class Actor implements Serializable{
 
     private final String name;
-    private final List<Leg> legsResponsibleFor;
+    private final ArrayList<Leg> legsResponsibleFor;
 
     public Actor(String name) {
         this.name = name;

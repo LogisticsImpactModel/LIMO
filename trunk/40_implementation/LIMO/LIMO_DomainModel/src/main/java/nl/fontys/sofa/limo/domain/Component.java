@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,21 +13,44 @@ import nl.fontys.sofa.limo.domain.component.Event;
 public abstract class Component extends BaseEntity {
 
     protected String identifier;
-    protected List<Entry> costs;
-    protected List<Entry> leadTimes;
-    protected List<Entry> delays;
-    protected List<Event> events;
-
-    /**
-     * Actual bytes the icon is composed of.
-     */
-    protected byte[] icon;
+    protected ArrayList<Entry> costs;
+    protected ArrayList<Entry> leadTimes;
+    protected ArrayList<Entry> delays;
+    protected ArrayList<Event> events;
+    protected Icon icon;
 
     public Component(String identifier) {
-        this(identifier, new ArrayList<Entry>(), new ArrayList<Entry>(), new ArrayList<Entry>(), new ArrayList<Event>(), new byte[]{});
+        this(identifier, new ArrayList<Entry>(), new ArrayList<Entry>(), new ArrayList<Entry>(), new ArrayList<Event>(), new Icon());
     }
 
-    public Component(String identifier, List<Entry> costs, List<Entry> leadTimes, List<Entry> delays, List<Event> events, byte[] icon) {
+    public Component(String identifier, ArrayList<Entry> costs, ArrayList<Entry> leadTimes, ArrayList<Entry> delays, ArrayList<Event> events, byte[] icon) {
+        this.identifier = identifier;
+        this.costs = costs;
+        this.leadTimes = leadTimes;
+        this.delays = delays;
+        this.events = events;
+        this.icon = new Icon(icon);
+    }
+
+    public Component(String identifier, ArrayList<Entry> costs, ArrayList<Entry> leadTimes, ArrayList<Entry> delays, ArrayList<Event> events, Image icon) {
+        this.identifier = identifier;
+        this.costs = costs;
+        this.leadTimes = leadTimes;
+        this.delays = delays;
+        this.events = events;
+        this.icon = new Icon(icon);
+    }
+
+    public Component(String identifier, ArrayList<Entry> costs, ArrayList<Entry> leadTimes, ArrayList<Entry> delays, ArrayList<Event> events, String iconPath) {
+        this.identifier = identifier;
+        this.costs = costs;
+        this.leadTimes = leadTimes;
+        this.delays = delays;
+        this.events = events;
+        this.icon = new Icon(iconPath);
+    }
+
+    public Component(String identifier, ArrayList<Entry> costs, ArrayList<Entry> leadTimes, ArrayList<Entry> delays, ArrayList<Event> events, Icon icon) {
         this.identifier = identifier;
         this.costs = costs;
         this.leadTimes = leadTimes;
@@ -43,35 +67,35 @@ public abstract class Component extends BaseEntity {
         this.identifier = identifier;
     }
 
-    public List<Entry> getCosts() {
+    public ArrayList<Entry> getCosts() {
         return costs;
     }
 
-    public void setCosts(List<Entry> costs) {
+    public void setCosts(ArrayList<Entry> costs) {
         this.costs = costs;
     }
 
-    public List<Entry> getLeadTimes() {
+    public ArrayList<Entry> getLeadTimes() {
         return leadTimes;
     }
 
-    public void setLeadTimes(List<Entry> leadTimes) {
+    public void setLeadTimes(ArrayList<Entry> leadTimes) {
         this.leadTimes = leadTimes;
     }
 
-    public List<Entry> getDelays() {
+    public ArrayList<Entry> getDelays() {
         return delays;
     }
 
-    public void setDelays(List<Entry> delays) {
+    public void setDelays(ArrayList<Entry> delays) {
         this.delays = delays;
     }
 
-    public byte[] getIcon() {
+    public Icon getIcon() {
         return icon;
     }
 
-    public void setIcon(byte[] icon) {
+    public void setIcon(Icon icon) {
         this.icon = icon;
     }
 

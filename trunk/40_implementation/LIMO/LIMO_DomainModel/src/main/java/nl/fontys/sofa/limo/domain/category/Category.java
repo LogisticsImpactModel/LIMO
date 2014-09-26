@@ -6,8 +6,8 @@ import nl.fontys.sofa.limo.domain.BaseEntity;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public abstract class Category extends BaseEntity{
-    
+public abstract class Category extends BaseEntity {
+
     protected String identifier;
 
     public String getIdentifier() {
@@ -17,5 +17,5 @@ public abstract class Category extends BaseEntity{
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
-    
+
 }

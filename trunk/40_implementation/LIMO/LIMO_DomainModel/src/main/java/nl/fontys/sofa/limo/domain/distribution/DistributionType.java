@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.distribution;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,11 +11,11 @@ import java.util.logging.Logger;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public abstract class DistributionType {
-    
-    protected Map<String, Number> parameters;
-    protected Map<String, Class<?>> parameterTypes;
-    
+public abstract class DistributionType implements Serializable {
+
+    protected HashMap<String, Number> parameters;
+    protected HashMap<String, Class<?>> parameterTypes;
+
     /**
      * For caching only!
      */
@@ -31,12 +32,12 @@ public abstract class DistributionType {
                 Logger.getLogger(DistributionType.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-   }
-    
+    }
+
     public Map<String, Class<?>> getParameterTypes() {
         return this.parameterTypes;
     }
-    
+
     public void setParameter(String name, Number value) {
         if (!this.parameters.containsKey(name)) {
             return;
@@ -44,7 +45,7 @@ public abstract class DistributionType {
         this.parameters.put(name, value);
         this.probabilityResultCache = null;
     }
-    
+
     public void setParameters(Map<String, Number> parameters) {
         for (Map.Entry<String, Number> entry : parameters.entrySet()) {
             if (this.parameters.containsKey(entry.getKey())) {
@@ -53,9 +54,10 @@ public abstract class DistributionType {
         }
         this.probabilityResultCache = null;
     }
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public double getProbability() {
         if (this.probabilityResultCache == null) {
@@ -63,7 +65,7 @@ public abstract class DistributionType {
         }
         return this.probabilityResultCache;
     }
-    
+
     /**
      * Calculate the specific distribution probability and save it to the cache.
      */

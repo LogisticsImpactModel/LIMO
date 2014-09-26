@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +10,7 @@ import nl.fontys.sofa.limo.domain.Actor;
  *
  * @author Matthias Brück
  */
-public class SupplyChain {
+public class SupplyChain implements Serializable {
 
     private String name;
     private Hub startHub;
@@ -19,11 +20,11 @@ public class SupplyChain {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public Hub getStartHub() {
-        return startHub;
+        return this.startHub;
     }
 
     public void setName(String name) {
@@ -49,11 +50,11 @@ public class SupplyChain {
     }
 
     public List<Leg> getAllLegs() {
-        if (startHub == null) {
+        if (this.startHub == null) {
             return new ArrayList<>();
         }
         ArrayList<Leg> legs = new ArrayList<>();
-        Hub hub = startHub;
+        Hub hub = this.startHub;
         while (hub.getOutputLeg() != null) {
             legs.add(hub.getOutputLeg());
             if (hub.getOutputLeg().getEndHub() == null) {
@@ -65,11 +66,11 @@ public class SupplyChain {
     }
 
     public List<Hub> getAllHubs() {
-        if (startHub == null) {
+        if (this.startHub == null) {
             return new ArrayList<>();
         }
         ArrayList<Hub> hubs = new ArrayList<>();
-        Hub hub = startHub;
+        Hub hub = this.startHub;
         hubs.add(hub);
         while (hub.getOutputLeg() != null) {
             if (hub.getOutputLeg().getEndHub() == null) {
