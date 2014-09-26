@@ -23,6 +23,10 @@ public abstract class OrientDBAbstractDAO{
     }
     
     protected static boolean stringIsValidId(String id) {
+        if (id == null || id.length() == 0) {
+            return false;
+        }
+        
         try {
             ORecordId orid = new ORecordId(id);
         } catch (IllegalArgumentException ex) {
