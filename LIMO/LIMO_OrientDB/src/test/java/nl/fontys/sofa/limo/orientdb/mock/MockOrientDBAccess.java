@@ -5,21 +5,32 @@ import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
 public class MockOrientDBAccess extends OrientDBAccess {
 
-    public MockOrientDBAccess() {
-        connection = new ODatabaseDocumentTx("memory:tests");
-
-        if (!connection.exists()) {
-            connection.create();
-        } else {
-            connection.open("admin", "admin");
-        }
-    }
-
     public synchronized static OrientDBAccess getInstance() {
         if (instance == null) {
             instance = new MockOrientDBAccess();
         }
         return instance;
+    }
+
+    @Override
+    public void closeConnection() {
+        connection.drop();
+        super.closeConnection();
+    }
+
+    @Override
+    protected void checkConnection() {
+        if (connection == null) {
+            connection = new ODatabaseDocumentTx("memory:tests");
+        }
+
+        if (!connection.exists()) {
+            connection.create();
+        }
+
+        if (connection.isClosed()) {
+            connection.open("admin", "admin");
+        }
     }
 
 }
