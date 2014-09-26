@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.orientdb.database;
+package nl.fontys.sofa.limo.orientdb.mock;
 
 import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
 import nl.fontys.sofa.limo.api.dao.DAOFactory;

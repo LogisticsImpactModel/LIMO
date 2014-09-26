@@ -1,6 +1,7 @@
-package nl.fontys.sofa.limo.orientdb.database;
+package nl.fontys.sofa.limo.orientdb.mock;
 
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
 public class MockOrientDBAccess extends OrientDBAccess {
 

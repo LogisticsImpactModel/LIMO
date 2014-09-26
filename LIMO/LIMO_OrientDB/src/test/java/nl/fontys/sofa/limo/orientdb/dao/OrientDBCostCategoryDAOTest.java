@@ -3,7 +3,7 @@ package nl.fontys.sofa.limo.orientdb.dao;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
-import nl.fontys.sofa.limo.orientdb.database.OrientDBDAOFactoryMock;
+import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
