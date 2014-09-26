@@ -6,12 +6,7 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
 import com.orientechnologies.orient.core.id.ORecordId;
-import com.orientechnologies.orient.core.iterator.ORecordIteratorClass;
 import com.orientechnologies.orient.core.record.impl.ODocument;
-import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;

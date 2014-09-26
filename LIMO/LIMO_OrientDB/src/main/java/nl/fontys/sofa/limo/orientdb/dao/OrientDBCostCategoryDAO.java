@@ -7,7 +7,6 @@ package nl.fontys.sofa.limo.orientdb.dao;
 
 import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.record.impl.ODocument;
-import java.util.List;
 import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
