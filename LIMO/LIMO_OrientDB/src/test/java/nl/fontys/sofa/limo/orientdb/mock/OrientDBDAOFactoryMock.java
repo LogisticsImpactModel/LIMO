@@ -9,6 +9,7 @@ import nl.fontys.sofa.limo.api.dao.LegDAO;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBCostCategoryDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBTimeCategoryDAO;
 
 public class OrientDBDAOFactoryMock implements DAOFactory {
 
@@ -19,7 +20,7 @@ public class OrientDBDAOFactoryMock implements DAOFactory {
 
     @Override
     public TimeCategoryDAO getTimeCategoryDAO() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new OrientDBTimeCategoryDAO(MockOrientDBAccess.getInstance());
     }
 
     @Override
