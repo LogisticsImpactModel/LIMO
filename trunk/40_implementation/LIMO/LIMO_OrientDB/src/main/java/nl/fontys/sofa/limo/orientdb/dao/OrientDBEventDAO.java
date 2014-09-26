@@ -8,8 +8,15 @@ package nl.fontys.sofa.limo.orientdb.dao;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.domain.component.Event;
+import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
 public class OrientDBEventDAO implements EventDAO {
+
+    private final OrientDBAccess orientDBAccess;
+
+    public OrientDBEventDAO(OrientDBAccess orientDBAccess) {
+        this.orientDBAccess = orientDBAccess;
+    }
 
     @Override
     public List<Event> findAll() {
