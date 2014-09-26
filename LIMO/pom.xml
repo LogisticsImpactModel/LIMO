@@ -62,6 +62,7 @@
         <module>LIMO_API</module>
         <module>LIMO_OrientDB</module>
         <module>LIMO_DomainModel</module>
+        <module>LIMO_view</module>
     </modules>
 
     <properties>
