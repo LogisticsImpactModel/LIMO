@@ -19,6 +19,10 @@ public abstract class Component extends BaseEntity {
     protected ArrayList<Event> events;
     protected Icon icon;
 
+    public Component() {
+
+    }
+
     public Component(String identifier) {
         this(identifier, new ArrayList<Entry>(), new ArrayList<Entry>(), new ArrayList<Entry>(), new ArrayList<Event>(), new Icon());
     }

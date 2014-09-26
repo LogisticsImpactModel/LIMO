@@ -114,13 +114,4 @@ public class OrientDBTimeCategoryDAOTest extends NbTestCase {
         assertTrue(deleteSuccess);
     }
 
-    /**
-     * Test of getTableName method, of class OrientDBTimeCategoryDAO.
-     */
-    @Test
-    public void testGetTableName() {
-        assertNotNull(timeCategoryDAO.getTableName());
-        assertFalse(timeCategoryDAO.getTableName().isEmpty());
-    }
-
 }

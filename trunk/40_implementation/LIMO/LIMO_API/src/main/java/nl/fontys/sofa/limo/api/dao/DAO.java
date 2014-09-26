@@ -48,6 +48,5 @@ public interface DAO<T extends BaseEntity> {
      *
      * @return the name as String.
      */
-    public String getTableName();
-
+    /* public String getTableName();*/
 }
