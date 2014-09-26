@@ -46,7 +46,7 @@ public class OrientDBHubDAOTest extends NbTestCase {
     @Before
     @Override
     public void setUp() {
-        OrientDBDAOFactory orientDBDAOFactory = new OrientDBDAOFactory();
+        OrientDBDAOFactory orientDBDAOFactory = OrientDBDAOFactory.getInstance();
         hubDAO = orientDBDAOFactory.getHubDAO();
     }
 

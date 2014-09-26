@@ -5,12 +5,17 @@
  */
 package nl.fontys.sofa.limo.orientdb.database;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBLegTypeDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBEventDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBHubTypeDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBLegDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBHubDAO;
 import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
+import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.api.dao.DAOFactory;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
@@ -23,9 +28,27 @@ import nl.fontys.sofa.limo.orientdb.dao.OrientDBTimeCategoryDAO;
 
 public class OrientDBDAOFactory implements DAOFactory {
 
+    private static OrientDBDAOFactory instance;
+    private final Map<Class, DAO> daosCache;
+
+    private OrientDBDAOFactory() {
+        this.daosCache = new HashMap<>();
+    }
+
+    public static OrientDBDAOFactory getInstance() {
+        if (instance == null) {
+            instance = new OrientDBDAOFactory();
+        }
+        return instance;
+    }
+
     @Override
     public CostCategoryDAO getCostCategoryDAO() {
-        return new OrientDBCostCategoryDAO(OrientDBAccess.getInstance());
+        CostCategoryDAO costCategoryDAO = (CostCategoryDAO) daosCache.get(CostCategoryDAO.class);
+        if (costCategoryDAO == null) {
+            daosCache.put(CostCategoryDAO.class, new OrientDBCostCategoryDAO(OrientDBAccess.getInstance()));
+        }
+        return costCategoryDAO;
     }
 
     @Override

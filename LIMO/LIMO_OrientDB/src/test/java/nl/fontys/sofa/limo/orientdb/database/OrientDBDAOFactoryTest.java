@@ -30,7 +30,7 @@ public class OrientDBDAOFactoryTest extends NbTestCase {
     @Before
     @Override
     public void setUp() {
-        instance = new OrientDBDAOFactory();
+        instance = OrientDBDAOFactory.getInstance();
     }
 
     @After

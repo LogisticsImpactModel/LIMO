@@ -25,7 +25,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
     @Before
     @Override
     public void setUp() {
-        OrientDBDAOFactory orientDBDAOFactory = new OrientDBDAOFactory();
+        OrientDBDAOFactory orientDBDAOFactory = OrientDBDAOFactory.getInstance();
         eventDAO = orientDBDAOFactory.getEventDAO();
     }
 
