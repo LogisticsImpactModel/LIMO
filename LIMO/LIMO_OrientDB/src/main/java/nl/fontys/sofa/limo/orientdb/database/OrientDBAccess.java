@@ -13,17 +13,6 @@ public class OrientDBAccess extends AbstractDBServer<ODatabaseDocumentTx> {
 
     protected static OrientDBAccess instance;
 
-    protected OrientDBAccess() {
-        String path = System.getProperty("user.home") + File.separator + "LIMO";
-        connection = new ODatabaseDocumentTx("plocal:" + path);
-
-        if (!connection.exists()) {
-            connection.create();
-        } else {
-            connection.open("admin", "admin");
-        }
-    }
-
     public synchronized static OrientDBAccess getInstance() {
         if (instance == null) {
             instance = new OrientDBAccess();
@@ -34,6 +23,22 @@ public class OrientDBAccess extends AbstractDBServer<ODatabaseDocumentTx> {
     @Override
     public void closeConnection() {
         connection.close();
+    }
+    
+    @Override
+    protected void checkConnection() {
+        if (connection == null) {
+            String path = System.getProperty("user.home") + File.separator + "LIMO";
+            connection = new ODatabaseDocumentTx("plocal:" + path);
+            
+            if (!connection.exists()) {
+                connection.create();
+            }
+        }
+        
+        if (connection.isClosed()) {
+            connection.open("admin", "admin");
+        }
     }
 
 }

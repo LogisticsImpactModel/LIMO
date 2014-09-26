@@ -11,10 +11,18 @@ public abstract class AbstractDBServer<S> implements DBServer<S> {
 
     @Override
     public S getConnection() {
+        checkConnection();
+        
         return connection;
     }
 
     @Override
     public abstract void closeConnection();
+
+    /**
+     * Checks if the connection object exists, and whether the connection is open. Creates and opens
+     * connection if needed.
+     */
+    protected abstract void checkConnection();
 
 }
