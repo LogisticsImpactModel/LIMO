@@ -73,13 +73,13 @@ public class DiscreteDistributionTest {
             @org.junit.Test
         
     public void testParameterTypes() {
-        System.out.println("calculateProbability w map");
+        System.out.println("getParameterTypes");
         //call list of parameter types
         DiscreteDistribution instance = new DiscreteDistribution();
-        instance.getParameterTypes();
-        //instance.setParameter("x", 2);
-        //System.out.println("Present:"+instance.getParameterTypes().get("x"));
-        fail("not yet impl");
+        assertEquals(java.lang.Integer.class,instance.getParameterTypes().get("X"));
+        //for a discrete distrib, at least param X should be present and integer
+        assertEquals(java.lang.Integer.class,instance.getParameterTypes().get("Y"));
+        //for a discrete distrib, at least param Y should be present and integer
     }
 
     
