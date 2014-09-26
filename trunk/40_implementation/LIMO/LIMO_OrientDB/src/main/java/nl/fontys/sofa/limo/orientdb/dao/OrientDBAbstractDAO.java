@@ -8,6 +8,7 @@ import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.orientdb.OrientDBMapper;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
@@ -16,7 +17,7 @@ import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements OrientDBMapper<T> {
+public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T>, OrientDBMapper<T> {
 
     protected final OrientDBAccess orientDBAccess;
     protected final String tableName;
@@ -32,6 +33,7 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements Orien
         }
     }
 
+    @Override
     public List<T> findAll() {
         ORecordIteratorClass<ODocument> results = orientDBAccess.getConnection().browseClass(tableName);
         ArrayList<T> resultList = new ArrayList<>();
@@ -43,6 +45,7 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements Orien
         return resultList;
     }
 
+    @Override
     public T findById(String id) {
         if (!stringIsValidId(id)) {
             return null;
@@ -53,12 +56,14 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements Orien
         return map(results.get(0));
     }
 
+    @Override
     public void insert(T entity) {
         entity.setLastUpdate(new Date().getTime());
         ODocument doc = map(entity).save();
         entity.setId(doc.getIdentity().toString());
     }
 
+    @Override
     public boolean update(T entity) {
         if (!stringIsValidId(entity.getId())) {
             return false;
@@ -69,6 +74,7 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements Orien
         return true;
     }
 
+    @Override
     public boolean delete(String id) {
         if (!stringIsValidId(id)) {
             return false;

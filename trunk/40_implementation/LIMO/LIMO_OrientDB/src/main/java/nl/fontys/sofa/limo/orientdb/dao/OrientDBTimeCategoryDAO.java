@@ -23,31 +23,6 @@ public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO<TimeCategory> i
     }
 
     @Override
-    public List<TimeCategory> findAll() {
-        return super.findAll();
-    }
-
-    @Override
-    public TimeCategory findById(String id) {
-        return super.findById(id);
-    }
-
-    @Override
-    public void insert(TimeCategory entity) {
-        super.insert(entity);
-    }
-
-    @Override
-    public boolean update(TimeCategory entity) {
-        return super.update(entity);
-    }
-
-    @Override
-    public boolean delete(String id) {
-        return super.delete(id);
-    }
-
-    @Override
     public TimeCategory map(ODocument doc) {
         TimeCategory tc = new TimeCategory();
         tc.setId(doc.getIdentity().toString());

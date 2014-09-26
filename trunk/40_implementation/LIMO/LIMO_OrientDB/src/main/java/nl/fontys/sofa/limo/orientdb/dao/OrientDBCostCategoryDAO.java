@@ -21,31 +21,6 @@ public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO<CostCategory> i
     }
 
     @Override
-    public List<CostCategory> findAll() {
-        return super.findAll();
-    }
-
-    @Override
-    public CostCategory findById(String id) {
-        return super.findById(id);
-    }
-
-    @Override
-    public void insert(CostCategory entity) {
-        super.insert(entity);
-    }
-
-    @Override
-    public boolean update(CostCategory entity) {
-        return super.update(entity);
-    }
-
-    @Override
-    public boolean delete(String id) {
-        return super.delete(id);
-    }
-
-    @Override
     public CostCategory map(ODocument doc) {
         if (doc == null) {
             return null;
