@@ -84,7 +84,5 @@ public class DiscreteDistributionTest {
         //for a discrete distrib, at least param X should be present and integer
         assertEquals(java.lang.Integer.class,instance.getParameterTypes().get("Y"));
         //for a discrete distrib, at least param Y should be present and integer
-    }
-
-    
+    }    
 }
