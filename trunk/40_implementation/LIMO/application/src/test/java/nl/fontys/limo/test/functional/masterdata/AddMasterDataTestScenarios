@@ -6,6 +6,7 @@ Open a wizard
 	When I click on Data
 	And I click on Add
 	Then I see a wizard
+	And I see .. steps in the wizard
 
 Add a new Original Equipment Manifacturer (OEM)
 	Given I have opened the wizard
@@ -17,7 +18,7 @@ Add a new Original Equipment Manifacturer (OEM)
 	And I click on "finish"
 	Then I see a new hub in the hub overview
 
-Add a new port
+Add a new Port
 	Given I have opened the wizard
 	When I select "hub"
 	And click on "next"
@@ -27,4 +28,10 @@ Add a new port
 	And I click on "finish"
 	Then I see a new hub in the hub overview
 
+Add a new Distribution Center (DC)
 
+Add a new Inland Terminal
+
+Add a new Airport
+
+Add a new Customer
