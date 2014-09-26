@@ -46,39 +46,70 @@ public class OrientDBDAOFactory implements DAOFactory {
     public CostCategoryDAO getCostCategoryDAO() {
         CostCategoryDAO costCategoryDAO = (CostCategoryDAO) daosCache.get(CostCategoryDAO.class);
         if (costCategoryDAO == null) {
-            daosCache.put(CostCategoryDAO.class, new OrientDBCostCategoryDAO(OrientDBAccess.getInstance()));
+            costCategoryDAO = new OrientDBCostCategoryDAO(OrientDBAccess.getInstance());
+            daosCache.put(CostCategoryDAO.class, costCategoryDAO);
         }
         return costCategoryDAO;
     }
 
     @Override
     public TimeCategoryDAO getTimeCategoryDAO() {
-        return new OrientDBTimeCategoryDAO(OrientDBAccess.getInstance());
+        TimeCategoryDAO timeCategoryDAO = (TimeCategoryDAO) daosCache.get(TimeCategoryDAO.class);
+        if (timeCategoryDAO == null) {
+            timeCategoryDAO = new OrientDBTimeCategoryDAO(OrientDBAccess.getInstance());
+            daosCache.put(TimeCategoryDAO.class, timeCategoryDAO);
+        }
+        return timeCategoryDAO;
     }
 
     @Override
     public EventDAO getEventDAO() {
-        return new OrientDBEventDAO(OrientDBAccess.getInstance());
+        EventDAO eventDAO = (EventDAO) daosCache.get(EventDAO.class);
+        if (eventDAO == null) {
+            eventDAO = new OrientDBEventDAO(OrientDBAccess.getInstance());
+            daosCache.put(EventDAO.class, eventDAO);
+        }
+        return eventDAO;
     }
 
     @Override
     public HubDAO getHubDAO() {
-        return new OrientDBHubDAO(OrientDBAccess.getInstance());
+        HubDAO hubDAO = (HubDAO) daosCache.get(HubDAO.class);
+        if (hubDAO == null) {
+            hubDAO = new OrientDBHubDAO(OrientDBAccess.getInstance());
+            daosCache.put(HubDAO.class, hubDAO);
+        }
+        return hubDAO;
     }
 
     @Override
     public HubTypeDAO getHubTypeDAO() {
-        return new OrientDBHubTypeDAO(OrientDBAccess.getInstance());
+        HubTypeDAO hubTypeDAO = (HubTypeDAO) daosCache.get(HubTypeDAO.class);
+        if (hubTypeDAO == null) {
+            hubTypeDAO = new OrientDBHubTypeDAO(OrientDBAccess.getInstance());
+            daosCache.put(HubTypeDAO.class, hubTypeDAO);
+        }
+        return hubTypeDAO;
     }
 
     @Override
     public LegDAO getLegDAO() {
-        return new OrientDBLegDAO(OrientDBAccess.getInstance());
+        LegDAO legDAO = (LegDAO) daosCache.get(LegDAO.class);
+        if (legDAO == null) {
+            legDAO = new OrientDBLegDAO(OrientDBAccess.getInstance());
+            daosCache.put(LegDAO.class, legDAO);
+        }
+        return legDAO;
     }
 
     @Override
     public LegTypeDAO getLegTypeDAO() {
-        return new OrientDBLegTypeDAO(OrientDBAccess.getInstance());
+        LegTypeDAO legTypeDAO = (LegTypeDAO) daosCache.get(LegTypeDAO.class);
+        if (legTypeDAO == null) {
+            legTypeDAO = new OrientDBLegTypeDAO(OrientDBAccess.getInstance());
+            daosCache.put(LegTypeDAO.class, legTypeDAO);
+        }
+        return legTypeDAO;
     }
 
 }
