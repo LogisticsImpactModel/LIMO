@@ -5,6 +5,7 @@
  */
 package nl.fontys.limo.view.wizard;
 
+import java.awt.Choice;
 import javax.swing.event.ChangeListener;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
@@ -62,7 +63,7 @@ public class AddMasterDataWizardPanel1 implements WizardDescriptor.Panel<WizardD
 
 	@Override
 	public void storeSettings(WizardDescriptor wiz) {
-		// use wiz.putProperty to remember current panel state
+		wiz.putProperty("masterDataType", getComponent().getMasterDataType().getSelectedItem());
 	}
 
 }

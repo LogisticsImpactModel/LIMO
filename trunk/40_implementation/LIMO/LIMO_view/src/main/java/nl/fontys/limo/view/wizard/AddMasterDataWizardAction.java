@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
 import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -30,7 +31,6 @@ public final class AddMasterDataWizardAction implements ActionListener {
 		List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
 		panels.add(new AddMasterDataWizardPanel1());
 		panels.add(new AddMasterDataWizardPanel2());
-		panels.add(new AddMasterDataWizardPanel3());
 		String[] steps = new String[panels.size()];
 		for (int i = 0; i < panels.size(); i++) {
 			Component c = panels.get(i).getComponent();
@@ -50,7 +50,8 @@ public final class AddMasterDataWizardAction implements ActionListener {
 		wiz.setTitleFormat(new MessageFormat("Add Master Data"));
 		wiz.setTitle("Add Master Data");
 		if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-			// do something
+			String masterDataType = (String) wiz.getProperty("masterDataType");
+    	DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(masterDataType));
 		}
 	}
 

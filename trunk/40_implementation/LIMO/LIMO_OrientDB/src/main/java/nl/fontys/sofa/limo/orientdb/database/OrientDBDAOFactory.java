@@ -25,6 +25,7 @@ import nl.fontys.sofa.limo.api.dao.LegDAO;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBCostCategoryDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBTimeCategoryDAO;
+import org.openide.util.lookup.ServiceProvider;
 
 public class OrientDBDAOFactory implements DAOFactory {
 

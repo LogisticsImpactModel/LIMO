@@ -5,6 +5,8 @@
  */
 package nl.fontys.limo.view.wizard;
 
+import java.awt.Choice;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 public final class AddMasterDataVisualPanel1 extends JPanel {
@@ -18,7 +20,11 @@ public final class AddMasterDataVisualPanel1 extends JPanel {
 
 	@Override
 	public String getName() {
-		return "Step #1";
+		return "Master Data Type";
+	}
+
+	public JComboBox getMasterDataType(){
+		return masterDataTypeSelect;
 	}
 
 	/**
@@ -29,18 +35,47 @@ public final class AddMasterDataVisualPanel1 extends JPanel {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
+    jLabel1 = new javax.swing.JLabel();
+    masterDataTypeSelect = new javax.swing.JComboBox();
+
+    org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(AddMasterDataVisualPanel1.class, "AddMasterDataVisualPanel1.jLabel1.text")); // NOI18N
+
+    masterDataTypeSelect.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+    masterDataTypeSelect.setName("masterDataTypeSelect"); // NOI18N
+    masterDataTypeSelect.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        masterDataTypeSelectActionPerformed(evt);
+      }
+    });
+
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
     this.setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 400, Short.MAX_VALUE)
+      .addGroup(layout.createSequentialGroup()
+        .addContainerGap()
+        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+        .addGap(1, 1, 1)
+        .addComponent(masterDataTypeSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addContainerGap())
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 300, Short.MAX_VALUE)
+      .addGroup(layout.createSequentialGroup()
+        .addGap(88, 88, 88)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jLabel1)
+          .addComponent(masterDataTypeSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addContainerGap(188, Short.MAX_VALUE))
     );
   }// </editor-fold>//GEN-END:initComponents
 
+  private void masterDataTypeSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masterDataTypeSelectActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_masterDataTypeSelectActionPerformed
+
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JLabel jLabel1;
+  private javax.swing.JComboBox masterDataTypeSelect;
   // End of variables declaration//GEN-END:variables
 }
