@@ -32,7 +32,7 @@ public class OrientDBEventDAO extends OrientDBAbstractDAO<Event> implements Even
         event.setLastUpdate((long) doc.field("lastUpdate"));
         event.setIdentifier((String) doc.field("identifier"));
         event.setActor((Actor) doc.field("actor", OType.EMBEDDED));
-        event.setCosts((ArrayList<Entry>) doc.field("costs", OType.EMBEDDEDLIST));
+        //event.setCosts(doc.fields("costs", OType.EMBEDDEDLIST));
         event.setDelays((ArrayList<Entry>) doc.field("delays", OType.EMBEDDEDLIST));
         event.setDependency((EventExecutionStateDependency) doc.field("depency"));
         event.setExecutionState((boolean) doc.field("executionState"));
