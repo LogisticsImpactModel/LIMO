@@ -40,7 +40,7 @@ public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO implements Cost
 
     @Override
     public CostCategory findById(String id) {
-        if (id == null || id.length() == 0 || !stringIsValidId(id)) {
+        if (!stringIsValidId(id)) {
             return null;
         }
         
@@ -58,6 +58,10 @@ public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO implements Cost
 
     @Override
     public boolean update(CostCategory entity) {
+        if (!stringIsValidId(entity.getId())) {
+            return false;
+        }
+        
         entity.setLastUpdate(new Date().getTime());
         map(entity).save();
         return true;
@@ -65,6 +69,10 @@ public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO implements Cost
 
     @Override
     public boolean delete(String id) {
+        if (!stringIsValidId(id)) {
+            return false;
+        }
+        
         orientDBAccess.getConnection().delete(new ORecordId(id));
         return true;
     }
