@@ -1,23 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package nl.fontys.limo.test.functional.masterdata;
 
 import junit.framework.Test;
 import org.netbeans.jellytools.JellyTestCase;
-import org.netbeans.jellytools.MainWindowOperator;
-import org.netbeans.jellytools.TopComponentOperator;
 import org.netbeans.jellytools.actions.Action;
-import org.netbeans.jemmy.operators.JButtonOperator;
-import org.netbeans.jemmy.operators.JSliderOperator;
 import org.netbeans.junit.NbModuleSuite;
 import org.netbeans.junit.NbModuleSuite.Configuration;
 
 /**
- *
+ * Functional Test for adding masterdata to the application.
+ * User scenarios can be found in the AddMasterDataTestScenario file.
+ * 
  * @author Sebastiaan Heijmann
  */
 
@@ -46,7 +38,7 @@ public class AddMasterDataTest extends JellyTestCase {
     /** Test opening a wizard. */
     public void openWizard() {
 			System.out.println("Opening a wizard");
-			new Action("Data|New", null).perform();
+//			new Action("Data|New", null).perform();
     }
 
 }
