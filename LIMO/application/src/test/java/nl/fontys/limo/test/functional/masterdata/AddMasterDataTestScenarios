@@ -6,7 +6,7 @@ Open a wizard
 	When I click on Data
 	And I click on Add
 	Then I see a wizard
-	And I see .. steps in the wizard
+	And I see 3 steps in the wizard
 
 Add a new Original Equipment Manifacturer (OEM)
 	Given I have opened the wizard
@@ -15,6 +15,8 @@ Add a new Original Equipment Manifacturer (OEM)
 	And I select "OEM"
 	And I fill in "OEM China" as the identifier
 	And I fill in "China" as the location
+	And I click on "next"
+	And I see an overview of the filled in data
 	And I click on "finish"
 	Then I see a new hub in the hub overview
 
