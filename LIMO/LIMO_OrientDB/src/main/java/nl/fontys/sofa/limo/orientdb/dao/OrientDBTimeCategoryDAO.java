@@ -24,6 +24,10 @@ public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO<TimeCategory> i
 
     @Override
     public TimeCategory map(ODocument doc) {
+        if (doc == null) {
+            return null;
+        }
+
         TimeCategory tc = new TimeCategory();
         tc.setId(doc.getIdentity().toString());
         tc.setLastUpdate((long) doc.field("lastUpdate"));
@@ -33,12 +37,17 @@ public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO<TimeCategory> i
 
     @Override
     public ODocument map(TimeCategory entity) {
+        if (entity == null) {
+            return null;
+        }
+
         ODocument doc;
         if (entity.getId() != null) {
             doc = new ODocument(tableName, new ORecordId(entity.getId()));
         } else {
             doc = new ODocument(tableName);
         }
+        
         doc.field("lastUpdate", entity.getLastUpdate());
         doc.field("identifier", entity.getIdentifier());
         return doc;

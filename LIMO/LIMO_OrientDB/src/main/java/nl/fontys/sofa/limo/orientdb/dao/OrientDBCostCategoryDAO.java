@@ -14,10 +14,8 @@ import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
 public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO<CostCategory> implements CostCategoryDAO {
 
-    private static final String TABLE_NAME = "CostCategories";
-
     public OrientDBCostCategoryDAO(OrientDBAccess orientDBAccess) {
-        super(orientDBAccess, TABLE_NAME);
+        super(orientDBAccess, "CostCategories");
     }
 
     @Override
