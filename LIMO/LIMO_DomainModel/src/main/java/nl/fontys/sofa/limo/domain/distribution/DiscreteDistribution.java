@@ -1,7 +1,6 @@
 package nl.fontys.sofa.limo.domain.distribution;
 
 import java.util.AbstractMap;
-import java.util.Random;
 
 /**
  * @author Matthias Brück
