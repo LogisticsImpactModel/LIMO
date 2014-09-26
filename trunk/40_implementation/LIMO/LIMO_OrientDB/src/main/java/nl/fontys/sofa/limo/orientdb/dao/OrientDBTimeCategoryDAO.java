@@ -8,8 +8,15 @@ package nl.fontys.sofa.limo.orientdb.dao;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
+import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
 public class OrientDBTimeCategoryDAO implements TimeCategoryDAO {
+
+    private final OrientDBAccess orientDBAccess;
+
+    public OrientDBTimeCategoryDAO(OrientDBAccess orientDBAccess) {
+        this.orientDBAccess = orientDBAccess;
+    }
 
     @Override
     public List<TimeCategory> findAll() {
