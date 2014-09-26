@@ -51,6 +51,7 @@ public class RangeValueTest {
     }
     /**
      * Test 10 times w/ random max. values whether generated values fall within the range.
+     * initiating RangeValue w/ only max range specified, so min=0
      */
     @Test
     public void testGetValue_max_val() {
@@ -73,11 +74,7 @@ public class RangeValueTest {
     public void testGetMin() {
         System.out.println("getMin");
         RangeValue instance = new RangeValue();
-        double expResult = 0.0;
-        double result = instance.getMin();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("Min should be equal to 0.00",0.00,instance.getMin(),0.000001);
     }
 
     /**
@@ -86,12 +83,12 @@ public class RangeValueTest {
     @Test
     public void testGetMax() {
         System.out.println("getMax");
-        RangeValue instance = new RangeValue();
-        double expResult = 0.0;
-        double result = instance.getMax();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Random rand = new Random(20);
+        for (int i = 0; i < 10; i++) {
+            double max = rand.nextDouble();
+            RangeValue instance = new RangeValue(max);
+            assertEquals("Max should be equal to "+max,max,instance.getMax(),0.000001);
+        }
     }
     
 }
