@@ -39,6 +39,10 @@ public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO implements Time
 
     @Override
     public TimeCategory findById(String id) {
+        if (!stringIsValidId(id)) {
+            return null;
+        }
+
         OSQLSynchQuery<ODocument> query = new OSQLSynchQuery<>("select * from " + id);
         List<ODocument> results = orientDBAccess.getConnection().query(query);
         return map(results.get(0));
@@ -53,6 +57,10 @@ public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO implements Time
 
     @Override
     public boolean update(TimeCategory entity) {
+        if (!stringIsValidId(entity.getId())) {
+            return false;
+        }
+
         entity.setLastUpdate(new Date().getTime());
         map(entity).save();
         return true;
@@ -60,6 +68,10 @@ public class OrientDBTimeCategoryDAO extends OrientDBAbstractDAO implements Time
 
     @Override
     public boolean delete(String id) {
+        if (!stringIsValidId(id)) {
+            return false;
+        }
+
         orientDBAccess.getConnection().delete(new ORecordId(id));
         return true;
     }

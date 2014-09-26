@@ -86,17 +86,17 @@ public class OrientDBTimeCategoryDAOTest extends NbTestCase {
      */
     @Test
     public void testUpdate() {
-        String newCategoryName = "overall timeCat";
-        TimeCategory timeCategory = new TimeCategory("timeCat");
-        boolean updateSuccess = timeCategoryDAO.update(timeCategory);
+        String newCategoryName = "international taxes";
+        TimeCategory costCategory = new TimeCategory("taxes");
+        boolean updateSuccess = timeCategoryDAO.update(costCategory);
         assertFalse(updateSuccess);
-        timeCategoryDAO.insert(timeCategory);
-        timeCategory = timeCategoryDAO.findById("1");
-        timeCategory.setIdentifier(newCategoryName);
-        updateSuccess = timeCategoryDAO.update(timeCategory);
+        timeCategoryDAO.insert(costCategory);
+        costCategory = timeCategoryDAO.findById(costCategory.getId());
+        costCategory.setIdentifier(newCategoryName);
+        updateSuccess = timeCategoryDAO.update(costCategory);
         assertTrue(updateSuccess);
-        timeCategory = timeCategoryDAO.findById("1");
-        assertEquals(newCategoryName, timeCategory.getIdentifier());
+        costCategory = timeCategoryDAO.findById(costCategory.getId());
+        assertEquals(newCategoryName, costCategory.getIdentifier());
     }
 
     /**
@@ -106,11 +106,11 @@ public class OrientDBTimeCategoryDAOTest extends NbTestCase {
     public void testDelete() {
         boolean deleteSuccess = timeCategoryDAO.delete("");
         assertFalse(deleteSuccess);
-        deleteSuccess = timeCategoryDAO.delete("11445566");
+        deleteSuccess = timeCategoryDAO.delete("123345");
         assertFalse(deleteSuccess);
-        TimeCategory timeCategory = new TimeCategory("timeCat");
+        TimeCategory timeCategory = new TimeCategory("TimeCat");
         timeCategoryDAO.insert(timeCategory);
-        deleteSuccess = timeCategoryDAO.delete("1");
+        deleteSuccess = timeCategoryDAO.delete(timeCategory.getId());
         assertTrue(deleteSuccess);
     }
 
