@@ -8,8 +8,15 @@ package nl.fontys.sofa.limo.orientdb.dao;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.LegDAO;
 import nl.fontys.sofa.limo.domain.component.Leg;
+import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
 public class OrientDBLegDAO implements LegDAO {
+
+    private final OrientDBAccess orientDBAccess;
+
+    public OrientDBLegDAO(OrientDBAccess orientDBAccess) {
+        this.orientDBAccess = orientDBAccess;
+    }
 
     @Override
     public List<Leg> findAll() {

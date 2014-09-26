@@ -8,8 +8,15 @@ package nl.fontys.sofa.limo.orientdb.dao;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.HubDAO;
 import nl.fontys.sofa.limo.domain.component.Hub;
+import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
 public class OrientDBHubDAO implements HubDAO {
+
+    private final OrientDBAccess orientDBAccess;
+
+    public OrientDBHubDAO(OrientDBAccess orientDBAccess) {
+        this.orientDBAccess = orientDBAccess;
+    }
 
     @Override
     public List<Hub> findAll() {

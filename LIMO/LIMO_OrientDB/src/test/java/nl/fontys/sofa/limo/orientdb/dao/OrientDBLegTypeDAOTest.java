@@ -6,7 +6,9 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
 import java.util.List;
+import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
 import nl.fontys.sofa.limo.domain.types.LegType;
+import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,7 +22,7 @@ import org.netbeans.junit.NbTestCase;
  */
 public class OrientDBLegTypeDAOTest extends NbTestCase {
 
-    private OrientDBLegTypeDAO legTypeDAO;
+    private LegTypeDAO legTypeDAO;
 
     public OrientDBLegTypeDAOTest(String testCase) {
         super(testCase);
@@ -36,7 +38,8 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
 
     @Before
     public void setUp() {
-        legTypeDAO = new OrientDBLegTypeDAO();
+        OrientDBDAOFactoryMock orientDBDAOFactory = new OrientDBDAOFactoryMock();
+        legTypeDAO = orientDBDAOFactory.getLegTypeDAO();
     }
 
     @After

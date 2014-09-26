@@ -30,32 +30,32 @@ public class OrientDBDAOFactory implements DAOFactory {
 
     @Override
     public TimeCategoryDAO getTimeCategoryDAO() {
-        return new OrientDBTimeCategoryDAO();
+        return new OrientDBTimeCategoryDAO(OrientDBAccess.getInstance());
     }
 
     @Override
     public EventDAO getEventDAO() {
-        return new OrientDBEventDAO();
+        return new OrientDBEventDAO(OrientDBAccess.getInstance());
     }
 
     @Override
     public HubDAO getHubDAO() {
-        return new OrientDBHubDAO();
+        return new OrientDBHubDAO(OrientDBAccess.getInstance());
     }
 
     @Override
     public HubTypeDAO getHubTypeDAO() {
-        return new OrientDBHubTypeDAO();
+        return new OrientDBHubTypeDAO(OrientDBAccess.getInstance());
     }
 
     @Override
     public LegDAO getLegDAO() {
-        return new OrientDBLegDAO();
+        return new OrientDBLegDAO(OrientDBAccess.getInstance());
     }
 
     @Override
     public LegTypeDAO getLegTypeDAO() {
-        return new OrientDBLegTypeDAO();
+        return new OrientDBLegTypeDAO(OrientDBAccess.getInstance());
     }
 
 }

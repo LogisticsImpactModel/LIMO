@@ -8,7 +8,9 @@ package nl.fontys.sofa.limo.orientdb.dao;
 import java.util.List;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
+import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,7 +20,7 @@ import org.netbeans.junit.NbTestCase;
 
 public class OrientDBTimeCategoryDAOTest extends NbTestCase {
 
-    private OrientDBTimeCategoryDAO timeCategoryDAO;
+    private TimeCategoryDAO timeCategoryDAO;
 
     public OrientDBTimeCategoryDAOTest(String testCase) {
         super(testCase);
@@ -35,7 +37,8 @@ public class OrientDBTimeCategoryDAOTest extends NbTestCase {
     @Before
     @Override
     public void setUp() {
-        timeCategoryDAO = new OrientDBTimeCategoryDAO();
+        OrientDBDAOFactoryMock orientDBDAOFactory = new OrientDBDAOFactoryMock();
+        timeCategoryDAO = orientDBDAOFactory.getTimeCategoryDAO();
     }
 
     @After
