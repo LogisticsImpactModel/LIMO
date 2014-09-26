@@ -70,7 +70,11 @@ public class DiscreteDistributionTest {
         System.out.println("Probability is: "+instance.getProbability());
         assertEquals(0.5,instance.getProbability(),0.01);
     }
-            @org.junit.Test
+ 
+    /**
+     * Testing whether parameterTypes are set properly in map. Necessary for test coverage.
+     */
+    @org.junit.Test
         
     public void testParameterTypes() {
         System.out.println("getParameterTypes");
