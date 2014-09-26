@@ -40,6 +40,10 @@ public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO implements Cost
 
     @Override
     public CostCategory findById(String id) {
+        if (id == null || id.length() == 0 || !stringIsValidId(id)) {
+            return null;
+        }
+        
         OSQLSynchQuery<ODocument> query = new OSQLSynchQuery<>("select * from " + id);
         List<ODocument> results = orientDBAccess.getConnection().query(query);
         return map(results.get(0));
@@ -72,6 +76,10 @@ public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO implements Cost
 
     @Override
     public CostCategory map(ODocument doc) {
+        if (doc == null) {
+            return null;
+        }
+        
         CostCategory cc = new CostCategory();
         cc.setId(doc.getIdentity().toString());
         cc.setLastUpdate((long) doc.field("lastUpdate"));
@@ -81,6 +89,10 @@ public class OrientDBCostCategoryDAO extends OrientDBAbstractDAO implements Cost
 
     @Override
     public ODocument map(CostCategory entity) {
+        if (entity == null) {
+            return null;
+        }
+        
         ODocument doc;
         if (entity.getId() != null) {
             doc = new ODocument(getTableName(), new ORecordId(entity.getId()));

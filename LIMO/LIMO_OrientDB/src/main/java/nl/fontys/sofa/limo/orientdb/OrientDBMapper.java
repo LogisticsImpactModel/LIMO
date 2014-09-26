@@ -15,7 +15,7 @@ public interface OrientDBMapper<T extends BaseEntity> {
      * Maps given ODocument to specified BaseEntity subclass.
      *
      * @param doc ODocument to map.
-     * @return Mapped entity.
+     * @return Mapped entity. Null if doc is null.
      */
     public T map(ODocument doc);
 
@@ -23,7 +23,7 @@ public interface OrientDBMapper<T extends BaseEntity> {
      * Maps given Entity to OrientDB document.
      *
      * @param entity Entity to map.
-     * @return Mapped ODocument.
+     * @return Mapped ODocument. Null if entity is null.
      */
     public ODocument map(T entity);
 

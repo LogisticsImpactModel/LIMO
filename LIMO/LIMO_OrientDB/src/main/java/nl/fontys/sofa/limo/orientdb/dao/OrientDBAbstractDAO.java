@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
+import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.metadata.schema.OSchema;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
@@ -19,6 +20,16 @@ public abstract class OrientDBAbstractDAO{
         if (!schema.existsClass(tableName)) {
             schema.createClass(tableName);
         }
+    }
+    
+    protected static boolean stringIsValidId(String id) {
+        try {
+            ORecordId orid = new ORecordId(id);
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
+        
+        return true;
     }
     
 }
