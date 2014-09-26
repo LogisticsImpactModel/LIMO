@@ -50,8 +50,13 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
      */
     @Test
     public void testFindById() {
+        //looking for unknown ID, results in null reference
         CostCategory costCategory = costCategoryDAO.findById("");
         assertNull("Should be no result (null)",costCategory);
+        //after making a CostCategory and adding it to costCategoryDAO, it should be findable
+        CostCategory cc1 = new CostCategory("Fritskosten");
+        costCategoryDAO.insert(cc1);
+        assertNotNull(costCategoryDAO.findById(cc1.getId()));
     }
 
     /**
@@ -65,8 +70,8 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
         assertTrue("There must be at least one entry, because i just inserted one",costCategories.size()>0);
         int lastInsertedCostCategoryObject = costCategories.size()-1;
         CostCategory foundCostCategory = costCategoryDAO.findById(costCategories.get(lastInsertedCostCategoryObject).getId());
-        assertEquals(costCategory.getId(), foundCostCategory.getId());
-        assertEquals(costCategory.getIdentifier(), foundCostCategory.getIdentifier());
+        assertEquals("IDs should match of costCat and foundCostCat",costCategory.getId(), foundCostCategory.getId());
+        assertEquals("Identifiers should match of costCat and foundCostCat",costCategory.getIdentifier(), foundCostCategory.getIdentifier());
     }
 
     /**
@@ -74,17 +79,20 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
      */
     @Test
     public void testUpdate() {
-        String newCategoryName = "international taxes";
         CostCategory costCategory = new CostCategory("taxes");
         boolean updateSuccess = costCategoryDAO.update(costCategory);
         assertFalse(updateSuccess);
+        //if an update command is given for a CostCat which is not yet in DB, success will be false
         costCategoryDAO.insert(costCategory);
         costCategory = costCategoryDAO.findById(costCategory.getId());
+        String newCategoryName = "international taxes";
         costCategory.setIdentifier(newCategoryName);
         updateSuccess = costCategoryDAO.update(costCategory);
         assertTrue(updateSuccess);
+        //..but after inserting the CC in DB, retrieving it from DB and then manipulating its name (=identifier), success should be true
         costCategory = costCategoryDAO.findById(costCategory.getId());
         assertEquals(newCategoryName, costCategory.getIdentifier());
+        //and then the provided new cat name (=identifier) should be equal to the identifier set for it in DB
     }
 
     /**
@@ -94,12 +102,17 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
     public void testDelete() {
         boolean deleteSuccess = costCategoryDAO.delete("");
         assertFalse(deleteSuccess);
+        //if there is no valid reference for a CostCat to delete, success will be false
+         
         deleteSuccess = costCategoryDAO.delete("798319203");
         assertFalse(deleteSuccess);
+        //bogus reference will result in success being galse
+        
         CostCategory costCategory = new CostCategory("taxes");
         costCategoryDAO.insert(costCategory);
         deleteSuccess = costCategoryDAO.delete(costCategory.getId());
         assertTrue(deleteSuccess);
+        //adding one new CC to DB and afterwards removing it should result in success
     }
 
 }
