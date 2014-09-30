@@ -11,8 +11,8 @@ public class PoissonDistribution extends DistributionType {
 
     @Override
     protected void calculateProbability() {
-        Double lambda = (Double) parameters.get("Lambda");
-        int k = (int) parameters.get("K");
+        Double lambda = (Double) parameters.get(parameterNames.indexOf("Lambda"));
+        int k = (int) parameters.get(parameterNames.indexOf("K"));
         probabilityResultCache = new org.apache.commons.math3.distribution.PoissonDistribution(lambda).probability(k);
     }
 }

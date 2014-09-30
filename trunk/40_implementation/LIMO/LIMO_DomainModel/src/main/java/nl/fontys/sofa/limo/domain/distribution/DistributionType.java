@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.domain.distribution;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -9,8 +10,9 @@ import java.util.logging.Logger;
 
 public abstract class DistributionType implements Serializable {
 
-    protected Map<String, Number> parameters;
-    protected Map<String, Class<?>> parameterTypes;
+    protected ArrayList<String> parameterNames;
+    protected ArrayList<Number> parameters;
+    protected ArrayList<Class<?>> parameterTypes;
 
     /**
      * For caching only!
@@ -18,12 +20,14 @@ public abstract class DistributionType implements Serializable {
     protected Double probabilityResultCache = null;
 
     public DistributionType(Map.Entry<String, Class<?>>... parameterTypes) {
-        this.parameters = new HashMap<>();
-        this.parameterTypes = new HashMap<>();
+        this.parameters = new ArrayList<>();
+        this.parameterNames = new ArrayList<>();
+        this.parameterTypes = new ArrayList<>();
         for (Map.Entry<String, Class<?>> entry : parameterTypes) {
-            this.parameterTypes.put(entry.getKey(), entry.getValue());
+            this.parameterNames.add(entry.getKey());
+            this.parameterTypes.add(entry.getValue());
             try {
-                this.parameters.put(entry.getKey(), (Number) entry.getValue().getConstructors()[0].newInstance(0));
+                this.parameters.add((Number) entry.getValue().getConstructors()[0].newInstance(0));
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger(DistributionType.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -31,24 +35,34 @@ public abstract class DistributionType implements Serializable {
     }
 
     public Map<String, Class<?>> getParameterTypes() {
-        return this.parameterTypes;
+        HashMap<String, Class<?>> typeMap = new HashMap<>();
+        for (int i = 0; i < parameterNames.size(); i++) {
+            typeMap.put(parameterNames.get(i), parameterTypes.get(i));
+        }
+        return typeMap;
     }
 
     public void setParameter(String name, Number value) {
-        if (!this.parameters.containsKey(name)) {
+        int position = parameterNames.indexOf(name);
+        if (position == -1) {
             return;
         }
-        this.parameters.put(name, value);
+        parameters.set(position, value);
         this.probabilityResultCache = null;
     }
 
     public void setParameters(Map<String, Number> parameters) {
         for (Map.Entry<String, Number> entry : parameters.entrySet()) {
-            if (this.parameters.containsKey(entry.getKey())) {
-                this.parameters.put(entry.getKey(), entry.getValue());
+            int position = parameterNames.indexOf(entry.getKey());
+            if (position != -1) {
+                this.parameters.set(position, entry.getValue());
             }
         }
         this.probabilityResultCache = null;
+    }
+    
+    public int getNumberOfParameters(){
+        return parameterNames.size();
     }
 
     /**

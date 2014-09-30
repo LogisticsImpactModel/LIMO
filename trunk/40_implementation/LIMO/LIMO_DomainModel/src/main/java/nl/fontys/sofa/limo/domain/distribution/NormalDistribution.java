@@ -13,10 +13,10 @@ public class NormalDistribution extends DistributionType {
 
     @Override
     protected void calculateProbability() {
-        Double mean = (Double) parameters.get("Mean");
-        Double sd = (Double) parameters.get("Standard Deviation");
-        Double x1 = (Double) parameters.get("Lower Bound");
-        Double x2 = (Double) parameters.get("Upper Bound");
+        Double mean = (Double) parameters.get(parameterNames.indexOf("Mean"));
+        Double sd = (Double) parameters.get(parameterNames.indexOf("Standard Deviation"));
+        Double x1 = (Double) parameters.get(parameterNames.indexOf("Lower Bound"));
+        Double x2 = (Double) parameters.get(parameterNames.indexOf("Upper Bound"));
         probabilityResultCache = new org.apache.commons.math3.distribution.NormalDistribution(mean, sd).probability(x1, x2);
     }
 }
