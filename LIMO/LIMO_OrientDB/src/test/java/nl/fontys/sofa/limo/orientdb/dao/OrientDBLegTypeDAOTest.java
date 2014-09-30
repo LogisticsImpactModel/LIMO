@@ -5,9 +5,13 @@
  */
 package nl.fontys.sofa.limo.orientdb.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
+import nl.fontys.sofa.limo.domain.Entry;
+import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.domain.types.LegType;
+import nl.fontys.sofa.limo.domain.value.Value;
 import nl.fontys.sofa.limo.orientdb.mock.MockOrientDBAccess;
 import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
 import org.junit.After;
@@ -66,8 +70,20 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
         LegType legType = legTypeDAO.findById("");
         assertNull(legType);
         LegType legType2 = new LegType("12345678", null, null, null);
+        List<Entry> costs = new ArrayList<>();
+        costs.add(new Entry("Costs1", "Costs"));
+        costs.add(new Entry("Costs2", "Costs"));
+        legType2.setCosts(costs);
+        List<Entry> delays = new ArrayList<>();
+        delays.add(new Entry("Delay1", "Delay"));
+        delays.add(new Entry("Delay2", "Delay"));
+        legType2.setDelays(delays);
+        List<Entry> leadTimes = new ArrayList<>();
+        leadTimes.add(new Entry("LeadTime1", "LeadTime"));
+        leadTimes.add(new Entry("LeadTime2", "LeadTime"));
+        legType2.setLeadTimes(leadTimes);
         legTypeDAO.insert(legType2);
-        legType = legTypeDAO.findById("12345678");
+        legType = legTypeDAO.findById(legType2.getId());
         assertNotNull(legType);
     }
 
@@ -80,7 +96,7 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
         legTypeDAO.insert(legType);
         List<LegType> legTypes = legTypeDAO.findAll();
         assertEquals(1, legTypes.size());
-        LegType legType1 = legTypeDAO.findById("112233");
+        LegType legType1 = legTypeDAO.findById(legType.getId());
         assertEquals(legType, legType1);
     }
 
@@ -94,11 +110,11 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
         boolean updateSuccess = legTypeDAO.update(legType);
         assertFalse(updateSuccess);
         legTypeDAO.insert(legType);
-        legType = legTypeDAO.findById("112233");
+        legType = legTypeDAO.findById(legType.getId());
         legType.setIdentifier(newLegTypeName);
         updateSuccess = legTypeDAO.update(legType);
         assertTrue(updateSuccess);
-        legType = legTypeDAO.findById("112233");
+        legType = legTypeDAO.findById(legType.getId());
         assertEquals(newLegTypeName, legType.getIdentifier());
     }
 
@@ -113,7 +129,7 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
         assertFalse(deleteSuccess);
         LegType legType = new LegType("112233", null, null, null, null);
         legTypeDAO.insert(legType);
-        deleteSuccess = legTypeDAO.delete("112233");
+        deleteSuccess = legTypeDAO.delete(legType.getId());
         assertTrue(deleteSuccess);
     }
 
