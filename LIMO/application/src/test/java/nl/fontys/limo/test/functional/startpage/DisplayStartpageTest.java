@@ -47,7 +47,7 @@ public class DisplayStartpageTest extends JellyTestCase {
     public void displayStartpage() {
 			System.out.println("Display startpage");
 			TopComponentOperator tco = new TopComponentOperator("Startpage");
-			assertEquals("Title is Startpage", "Startpage Window",	tco.getName());
+			assertEquals("Title is Startpage Window", "Startpage Window",	tco.getName());
     }
 
 }

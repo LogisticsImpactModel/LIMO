@@ -32,7 +32,7 @@ public class OrientDBDAOFactory implements DAOFactory {
     private static OrientDBDAOFactory instance;
     private final Map<Class, DAO> daosCache;
 
-    private OrientDBDAOFactory() {
+    public OrientDBDAOFactory() {
         this.daosCache = new HashMap<>();
     }
 
