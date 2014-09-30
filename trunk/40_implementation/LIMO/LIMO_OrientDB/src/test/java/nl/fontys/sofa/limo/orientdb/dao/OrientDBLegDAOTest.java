@@ -82,27 +82,27 @@ public class OrientDBLegDAOTest extends NbTestCase {
         leg.setActor(new Actor("Super Actor"));
         leg.setStartHub(new Hub("112233", new Location(Continents.AFRICA)));
         leg.setEndHub(new Hub("223311", new Location(Continents.EUROPE)));
-        ArrayList<Entry> costs = new ArrayList<Entry>();
+        ArrayList<Entry> costs = new ArrayList<>();
         costs.add(new Entry("Cost1", "Costs"));
         costs.add(new Entry("Cost2", "Costs"));
         leg.setCosts(costs);
-        ArrayList<Entry> delays = new ArrayList<Entry>();
+        ArrayList<Entry> delays = new ArrayList<>();
         delays.add(new Entry("Delay1", "Delay"));
         delays.add(new Entry("Delay2", "Delay"));
         leg.setDelays(delays);
         leg.setIcon(new Icon());
-        ArrayList<Entry> leadTimes = new ArrayList<Entry>();
+        ArrayList<Entry> leadTimes = new ArrayList<>();
         leadTimes.add(new Entry("LeadTime1", "LeadTime"));
         leadTimes.add(new Entry("LeadTime2", "LeadTime"));
         leg.setDelays(delays);
         leg.setIcon(new Icon());
-        leg.setLeadTimes(delays);
-
+        leg.setLeadTimes(leadTimes);
         legDAO.insert(leg);
         List<Leg> legs = legDAO.findAll();
         assertEquals(1, legs.size());
         Leg foundLeg = legDAO.findById(legs.get(0).getId());
         assertEquals(leg.getId(), foundLeg.getId());
+        assertEquals(leg.getIdentifier(), foundLeg.getIdentifier());
     }
 
     /**
