@@ -15,7 +15,29 @@ public class Event extends Component {
     public Event() {
         super();
     }
+    
+    @Override
+    public void addEvent(Event event) {
+        super.addEvent(event);
+        event.setDependency(EventExecutionStateDependency.INDEPENDENT);
+    }
 
+    public void addEvent(Event event, EventExecutionStateDependency dependency) {
+        super.addEvent(event);
+        event.setDependency(dependency);
+    }
+
+    /**
+     * Sets the execution state of this event and all subevents to false.
+     */
+    public void clearExecutionStates() {
+        this.executionState = false;
+        for (Event e : this.events) {
+            e.clearExecutionStates();
+        }
+    }
+    
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTER} ">
     public Event(String identifier) {
         super(identifier);
     }
@@ -59,26 +81,5 @@ public class Event extends Component {
     public void setActor(Actor actor) {
         this.actor = actor;
     }
-
-    @Override
-    public void addEvent(Event event) {
-        super.addEvent(event);
-        event.setDependency(EventExecutionStateDependency.INDEPENDENT);
-    }
-
-    public void addEvent(Event event, EventExecutionStateDependency dependency) {
-        super.addEvent(event);
-        event.setDependency(dependency);
-    }
-
-    /**
-     * Sets the execution state of this event and all subevents to false.
-     */
-    public void clearExecutionStates() {
-        this.executionState = false;
-        for (Event e : this.events) {
-            e.clearExecutionStates();
-        }
-    }
-
+    // </editor-fold>
 }

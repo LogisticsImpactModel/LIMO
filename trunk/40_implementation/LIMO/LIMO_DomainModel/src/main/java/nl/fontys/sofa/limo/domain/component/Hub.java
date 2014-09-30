@@ -1,6 +1,7 @@
 package nl.fontys.sofa.limo.domain.component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import nl.fontys.sofa.limo.domain.Actor;
 import nl.fontys.sofa.limo.domain.Component;
@@ -11,8 +12,8 @@ public class Hub extends Component {
 
     private Leg inputLeg;
     private Leg outputLeg;
-    private final Map<Entry, Actor> costResponsibilities;
-    private final Location location;
+    private Map<Entry, Actor> costResponsibilities;
+    private Location location;
 
     public Hub(String identifier, Location location) {
         super(identifier);
@@ -20,6 +21,7 @@ public class Hub extends Component {
         this.location = location;
     }
 
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public Location getLocation() {
         return location;
     }
@@ -36,6 +38,18 @@ public class Hub extends Component {
         return costResponsibilities;
     }
 
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
+    public void setCostResponsibilities(Map<Entry, Actor> costResponsibilities) {
+        this.costResponsibilities = costResponsibilities;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public void setInputLeg(Leg inputLeg) {
         this.inputLeg = inputLeg;
     }
@@ -43,4 +57,5 @@ public class Hub extends Component {
     public void setOutputLeg(Leg outputLeg) {
         this.outputLeg = outputLeg;
     }
+    // </editor-fold>
 }

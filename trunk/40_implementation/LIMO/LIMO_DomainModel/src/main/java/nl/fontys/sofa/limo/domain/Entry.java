@@ -19,6 +19,7 @@ public class Entry implements Serializable {
         this.value = value;
     }
 
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public String getName() {
         return name;
     }
@@ -42,5 +43,5 @@ public class Entry implements Serializable {
     public void setValue(Value value) {
         this.value = value;
     }
-
+    // </editor-fold>
 }

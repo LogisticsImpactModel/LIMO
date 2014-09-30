@@ -2,12 +2,13 @@ package nl.fontys.sofa.limo.domain.value;
 
 public class SingleValue implements Value {
 
-    private final double value;
+    private double value;
 
     public SingleValue() {
         this(0);
     }
 
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public SingleValue(double value) {
         this.value = value;
     }
@@ -26,5 +27,5 @@ public class SingleValue implements Value {
     public double getMax() {
         return this.value;
     }
-
+    // </editor-fold>
 }

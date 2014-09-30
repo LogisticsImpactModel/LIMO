@@ -85,7 +85,7 @@ public class IconTest {
             fileContent = Files.readAllBytes(fi.toPath());
             Icon ic3 = new Icon(fileContent);
             System.out.println("Image loaded");
-            Assert.assertArrayEquals("Identical byteArrays",fileContent,ic3.getIconBytes());
+            Assert.assertArrayEquals("Identical byteArrays",fileContent,ic3.getIconByteArray());
         } catch (IOException ex) {
             fail("Could not locate image");
         }
@@ -101,8 +101,8 @@ public class IconTest {
             fileContent = Files.readAllBytes(fi.toPath());
             System.out.println("Image loaded");
             Icon ic3 = new Icon();//create icon w/ no params, so empty
-            ic3.setIcon(fileContent);
-            Assert.assertArrayEquals("Identical byteArrays",fileContent,ic3.getIconBytes());
+            ic3.setIconByteArray(fileContent);
+            Assert.assertArrayEquals("Identical byteArrays",fileContent,ic3.getIconByteArray());
         } catch (IOException ex) {
             fail("Could not locate image");
         }

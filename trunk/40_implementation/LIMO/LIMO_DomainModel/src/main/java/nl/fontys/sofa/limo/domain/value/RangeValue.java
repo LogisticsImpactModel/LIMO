@@ -9,8 +9,8 @@ public class RangeValue implements Value {
      */
     private static Random rng;
 
-    private final double min;
-    private final double max;
+    private double min;
+    private double max;
 
     public RangeValue() {
         this(0, 1);
@@ -22,6 +22,15 @@ public class RangeValue implements Value {
 
     public RangeValue(double min, double max) {
         this.min = min;
+        this.max = max;
+    }
+
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
+    public void setMin(double min) {
+        this.min = min;
+    }
+
+    public void setMax(double max) {
         this.max = max;
     }
 
@@ -39,6 +48,7 @@ public class RangeValue implements Value {
     public double getMax() {
         return this.max;
     }
+    //</editor-fold>
 
     /**
      * Returns a random double in the specified range.
@@ -54,5 +64,4 @@ public class RangeValue implements Value {
 
         return min + (max - min) * rng.nextDouble();
     }
-
 }

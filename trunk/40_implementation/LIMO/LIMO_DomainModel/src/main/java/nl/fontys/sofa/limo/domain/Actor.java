@@ -16,6 +16,7 @@ public class Actor implements Serializable {
         legsResponsibleFor = new ArrayList<>();
     }
 
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public String getName() {
         return this.name;
     }
@@ -23,7 +24,9 @@ public class Actor implements Serializable {
     public List<Leg> getLegsResponsibleFor() {
         return this.legsResponsibleFor;
     }
+// </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc=" ${OVERRIDE EQUALS / HASMAP} ">
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -42,4 +45,5 @@ public class Actor implements Serializable {
         hash = 89 * hash + Objects.hashCode(this.name);
         return hash;
     }
+    // </editor-fold>
 }
