@@ -69,7 +69,7 @@ public class OrientDBIconDAOTest extends NbTestCase {
         assertEquals(1, icons.size());
         Icon foundIcon = iconDAO.findById(icons.get(0).getId());
         assertEquals(icon.getId(), foundIcon.getId());
-        Assert.assertArrayEquals(icon.getIconBytes(), foundIcon.getIconBytes());
+        Assert.assertArrayEquals(icon.getIconByteArray(), foundIcon.getIconByteArray());
     }
 
     /**
@@ -83,11 +83,11 @@ public class OrientDBIconDAOTest extends NbTestCase {
         assertFalse(updateSuccess);
         iconDAO.insert(icon);
         icon = iconDAO.findById(icon.getId());
-        icon.setIcon(newIconBytes);
+        icon.setIconByteArray(newIconBytes);
         updateSuccess = iconDAO.update(icon);
         assertTrue(updateSuccess);
         icon = iconDAO.findById(icon.getId());
-        Assert.assertArrayEquals(newIconBytes, icon.getIconBytes());
+        Assert.assertArrayEquals(newIconBytes, icon.getIconByteArray());
     }
 
     /**
