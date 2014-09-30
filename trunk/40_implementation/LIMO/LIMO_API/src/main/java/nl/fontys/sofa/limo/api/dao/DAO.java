@@ -24,8 +24,9 @@ public interface DAO<T extends BaseEntity> {
      * Insert a DAO into storage.
      *
      * @param entity to be inserted.
+     * @return Managed object.
      */
-    public void insert(T entity);
+    public T insert(T entity);
 
     /**
      * Update a DAO from storage.
