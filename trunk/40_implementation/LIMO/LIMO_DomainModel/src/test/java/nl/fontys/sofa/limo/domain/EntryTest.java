@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
  */
 public class EntryTest {
     Entry entry;
+    Entry entry2;
     String entryName = "nameTest";
     String entryCat = "catTest";
     Value entryVal;
@@ -30,6 +31,7 @@ public class EntryTest {
     public void setUp() {
         entryVal = new SingleValue(entryValVal);
         entry = new Entry(entryName,entryCat,entryVal);
+        entry2 = new Entry(entryName,entryCat);
     }
     
     @After
@@ -42,8 +44,8 @@ public class EntryTest {
     @Test
     public void testGetName() {
         System.out.println("getName");
-        String result = entry.getName();
-        assertEquals(this.entryName, result);
+        assertEquals(entry2.getName(),this.entryName);
+        assertEquals(entry.getName(),this.entryName);
     }
 
     /**
@@ -63,8 +65,8 @@ public class EntryTest {
     @Test
     public void testGetCategory() {
         System.out.println("getCategory");
-        String result = entry.getCategory();
-        assertEquals(entryCat, result);
+        assertEquals(entryCat, entry.getCategory());
+        assertEquals(entryCat, entry2.getCategory());
     }
 
     /**

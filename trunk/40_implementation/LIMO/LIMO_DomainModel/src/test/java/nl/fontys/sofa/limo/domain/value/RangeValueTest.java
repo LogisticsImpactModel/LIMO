@@ -22,14 +22,6 @@ public class RangeValueTest {
     public RangeValueTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
     @Before
     public void setUp() {
     }
@@ -66,7 +58,18 @@ public class RangeValueTest {
         }
     }
 
-
+    /**
+     * Test of setMin method, of class RangeValue.
+     */
+    @Test
+    public void testSetMin() {
+        System.out.println("setMin");
+        double newMin = 10.0;
+        RangeValue instance = new RangeValue();
+        instance.setMin(newMin);
+        assertEquals("Min should be equal to "+newMin,newMin,instance.getMin(),0.000001);
+    }
+    
     /**
      * Test of getMin method, of class RangeValue.
      */
@@ -77,6 +80,18 @@ public class RangeValueTest {
         assertEquals("Min should be equal to 0.00",0.00,instance.getMin(),0.000001);
     }
 
+    /**
+     * Test of getMax method, of class RangeValue.
+     */
+    @Test
+    public void testSetMax() {
+        System.out.println("setMax");
+        double newMax = 10.0;
+        RangeValue instance = new RangeValue();
+        instance.setMax(newMax);
+        assertEquals("Max should be equal to "+newMax+" but isnt",instance.getMax(),newMax,0.001);
+    }
+    
     /**
      * Test of getMax method, of class RangeValue.
      */
