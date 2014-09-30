@@ -8,10 +8,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import javax.imageio.ImageIO;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -22,16 +20,7 @@ import static org.junit.Assert.*;
 public class IconTest {
     byte[] fileContent;
     public IconTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
+    }   
     @Before
     public void setUp() {
     }
@@ -48,7 +37,7 @@ public class IconTest {
         System.out.println("getIcon");
         //testing w/ method w/o parameters
         Icon ic1 = new Icon();//icon w/ empty byteArray
-        assertNull("There should be no Image object because of an empty byte array",ic1.getIcon());
+        assertNull("There should be no Image in ic1 because of an empty byte array",ic1.getIcon());
         //testing w/ method w/ URLstring incorrect
         Icon ic2 = new Icon("notExisting.crap");
         assertNull("There should be no Image object because of an incorrect URL",ic2.getIcon());
@@ -108,10 +97,10 @@ public class IconTest {
         }
     }
     /**
-     * Test of setIcon method, of class Icon.
+     * Test of setIcon method, providing an Image object
      */
     @Test
-    public void testSetIcon_Image() {
+    public void testSetIcon_ImageObject() {
         System.out.println("setIcon_Image");
         File fi = new File("testRelatedStuff/icon.jpg");
         try {
@@ -132,10 +121,10 @@ public class IconTest {
         }
     }
     /**
-     * Test of setImage method, of class Icon.
+     * Test of setImage method, providing a URL to an image file
      */
     @Test
-    public void testSetImage() {
+    public void testSetImage_URL() {
         System.out.println("setImage");
         Icon ic1 = new Icon();//create empty icon
         ic1.setImage("testRelatedStuff/icon.jpg");//then use setImage to fill the icon object
