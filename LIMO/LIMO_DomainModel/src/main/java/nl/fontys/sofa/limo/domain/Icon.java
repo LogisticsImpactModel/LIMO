@@ -116,7 +116,7 @@ public class Icon extends BaseEntity implements Serializable {
      */
     public void setIcon(Image image) {
         if (!(image instanceof BufferedImage)) {
-            iconBufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+            iconBufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D bGr = iconBufferedImage.createGraphics();
             bGr.drawImage(image, 0, 0, null);
             bGr.dispose();
