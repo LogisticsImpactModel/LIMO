@@ -32,7 +32,6 @@ public class OrientDBLegDAOTest extends NbTestCase {
     public OrientDBLegDAOTest(String testCase) {
         super(testCase);
     }
-
     @BeforeClass
     public static void setUpClass() {
     }
@@ -42,12 +41,14 @@ public class OrientDBLegDAOTest extends NbTestCase {
     }
 
     @Before
+    @Override
     public void setUp() {
         OrientDBDAOFactoryMock orientDBDAOFactory = new OrientDBDAOFactoryMock();
         legDAO = orientDBDAOFactory.getLegDAO();
     }
 
     @After
+    @Override
     public void tearDown() {
         legDAO = null;
         MockOrientDBAccess.getInstance().closeConnection();
@@ -97,7 +98,7 @@ public class OrientDBLegDAOTest extends NbTestCase {
         leg.setDelays(delays);
         leg.setIcon(new Icon());
         leg.setLeadTimes(leadTimes);
-        legDAO.insert(leg);
+        leg = legDAO.insert(leg);
         List<Leg> legs = legDAO.findAll();
         assertEquals(1, legs.size());
         Leg foundLeg = legDAO.findById(legs.get(0).getId());
