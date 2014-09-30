@@ -15,17 +15,23 @@ public class SupplyChain implements Serializable {
         this.name = name;
     }
 
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public String getName() {
         return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Hub getStartHub() {
         return this.startHub;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStartHub(Hub startHub) {
+        this.startHub = startHub;
     }
+    // </editor-fold>
 
     public Leg getLeg(String identifier) {
         for (Leg leg : getAllLegs()) {

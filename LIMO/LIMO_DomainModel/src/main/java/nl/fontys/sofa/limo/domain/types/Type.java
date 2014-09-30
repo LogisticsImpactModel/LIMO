@@ -29,6 +29,7 @@ public abstract class Type extends BaseEntity {
         this.icon = icon;
     }
 
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public String getIdentifier() {
         return identifier;
     }
@@ -68,4 +69,5 @@ public abstract class Type extends BaseEntity {
     public void setIcon(Icon icon) {
         this.icon = icon;
     }
+    // </editor-fold>
 }

@@ -6,6 +6,7 @@ public abstract class Category extends BaseEntity {
 
     protected String identifier;
 
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public String getIdentifier() {
         return identifier;
     }
@@ -13,5 +14,5 @@ public abstract class Category extends BaseEntity {
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
-
+    // </editor-fold>
 }

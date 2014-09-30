@@ -130,6 +130,7 @@ public class Location implements Serializable {
         this.longitude = longitude;
     }
 
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public Continents getContinent() {
         return continent;
     }

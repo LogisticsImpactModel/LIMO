@@ -7,5 +7,4 @@ public enum EventExecutionStateDependency implements Serializable {
     INDEPENDENT,
     EXECUTED,
     NOT_EXECUTED;
-
 }

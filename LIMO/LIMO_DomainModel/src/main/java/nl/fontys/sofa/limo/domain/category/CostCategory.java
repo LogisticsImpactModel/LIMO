@@ -10,5 +10,4 @@ public class CostCategory extends Category {
         super();
         this.identifier = identifier;
     }
-
 }

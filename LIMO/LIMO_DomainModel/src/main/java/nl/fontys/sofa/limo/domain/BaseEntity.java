@@ -9,6 +9,7 @@ public abstract class BaseEntity implements Serializable {
     protected String id;
     protected long lastUpdate;
 
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public String getId() {
         return id;
     }
@@ -24,5 +25,5 @@ public abstract class BaseEntity implements Serializable {
     public void setLastUpdate(long lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
-
+    // </editor-fold>
 }

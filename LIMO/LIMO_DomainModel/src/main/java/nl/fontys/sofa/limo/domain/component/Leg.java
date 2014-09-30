@@ -13,27 +13,29 @@ public class Leg extends Component {
         super(identifier);
     }
 
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public Hub getStartHub() {
-        return this.startHub;
-    }
-
-    public Hub getEndHub() {
-        return this.endHub;
-    }
-
-    public Actor getActor() {
-        return this.actor;
+        return startHub;
     }
 
     public void setStartHub(Hub startHub) {
         this.startHub = startHub;
     }
 
+    public Hub getEndHub() {
+        return endHub;
+    }
+
     public void setEndHub(Hub endHub) {
         this.endHub = endHub;
+    }
+
+    public Actor getActor() {
+        return actor;
     }
 
     public void setActor(Actor actor) {
         this.actor = actor;
     }
+    // </editor-fold>
 }

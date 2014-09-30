@@ -10,5 +10,4 @@ public class TimeCategory extends Category {
         super();
         this.identifier = identifier;
     }
-
 }

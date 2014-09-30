@@ -59,6 +59,7 @@ public abstract class Component extends BaseEntity {
         this.icon = icon;
     }
 
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public String getIdentifier() {
         return identifier;
     }
@@ -98,6 +99,7 @@ public abstract class Component extends BaseEntity {
     public void setIcon(Icon icon) {
         this.icon = icon;
     }
+    // </editor-fold>
 
     /* EVENT ACCESSORS */
     /**
@@ -126,5 +128,4 @@ public abstract class Component extends BaseEntity {
 
         this.events.clear();
     }
-
 }

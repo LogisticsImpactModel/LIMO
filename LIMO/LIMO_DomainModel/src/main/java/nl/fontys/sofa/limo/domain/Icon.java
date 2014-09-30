@@ -71,25 +71,25 @@ public class Icon extends BaseEntity implements Serializable {
         return iconBufferedImage;
     }
 
-    /**
-     * Returns the byte array from the icon.
-     *
-     * @return The icon's byte array.
-     */
-    public final byte[] getIconBytes() {
-        return this.iconByteArray;
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
+    public byte[] getIconByteArray() {
+        return iconByteArray;
     }
 
-    /**
-     * Sets the icon to a specified byte array.
-     *
-     * @param icon The byte array of the new icon.
-     */
-    public final void setIcon(byte[] icon) {
-        this.iconByteArray = icon;
-        iconBufferedImage = null;
+    public void setIconByteArray(byte[] iconByteArray) {
+        this.iconByteArray = iconByteArray;
+        getIcon();
     }
 
+    public BufferedImage getIconBufferedImage() {
+        return iconBufferedImage;
+    }
+
+    public void setIconBufferedImage(BufferedImage iconBufferedImage) {
+        setIcon(iconBufferedImage);
+    }
+    // </editor-fold>
+    
     /**
      * Sets the icon to a specified image.
      *
