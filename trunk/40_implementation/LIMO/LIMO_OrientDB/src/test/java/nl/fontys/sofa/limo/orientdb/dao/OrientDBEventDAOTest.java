@@ -9,9 +9,9 @@ import static junit.framework.Assert.assertTrue;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.domain.Actor;
 import nl.fontys.sofa.limo.domain.Entry;
-import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.domain.component.Event;
 import nl.fontys.sofa.limo.domain.value.SingleValue;
+import nl.fontys.sofa.limo.orientdb.mock.MockOrientDBAccess;
 import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
 import org.junit.After;
 import org.junit.Before;
@@ -37,6 +37,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
     @Override
     public void tearDown() {
         eventDAO = null;
+        MockOrientDBAccess.getInstance().closeConnection();
     }
 
     /**

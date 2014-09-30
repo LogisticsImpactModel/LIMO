@@ -14,8 +14,11 @@ public class MockOrientDBAccess extends OrientDBAccess {
 
     @Override
     public void closeConnection() {
-        connection.drop();
-        super.closeConnection();
+        if (connection != null) {
+            if (!connection.isClosed())
+                connection.drop();
+            super.closeConnection();
+        }
     }
 
     @Override
