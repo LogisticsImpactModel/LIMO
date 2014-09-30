@@ -8,10 +8,12 @@ import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
 import nl.fontys.sofa.limo.api.dao.LegDAO;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
+import nl.fontys.sofa.limo.api.dao.IconDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBCostCategoryDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBEventDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBHubDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBHubTypeDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBIconDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBLegDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBLegTypeDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBTimeCategoryDAO;
@@ -52,5 +54,9 @@ public class OrientDBDAOFactoryMock implements DAOFactory {
     public LegTypeDAO getLegTypeDAO() {
         return new OrientDBLegTypeDAO(MockOrientDBAccess.getInstance());
     }
-
+    
+    @Override
+    public IconDAO getIconDAO(){
+        return new OrientDBIconDAO(MockOrientDBAccess.getInstance());
+    }
 }

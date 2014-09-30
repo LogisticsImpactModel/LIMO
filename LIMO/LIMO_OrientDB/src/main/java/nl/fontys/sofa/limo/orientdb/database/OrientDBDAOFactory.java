@@ -5,9 +5,7 @@
  */
 package nl.fontys.sofa.limo.orientdb.database;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBLegTypeDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBEventDAO;
@@ -21,11 +19,12 @@ import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.api.dao.HubDAO;
 import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
+import nl.fontys.sofa.limo.api.dao.IconDAO;
 import nl.fontys.sofa.limo.api.dao.LegDAO;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBCostCategoryDAO;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBIconDAO;
 import nl.fontys.sofa.limo.orientdb.dao.OrientDBTimeCategoryDAO;
-import org.openide.util.lookup.ServiceProvider;
 
 public class OrientDBDAOFactory implements DAOFactory {
 
@@ -111,6 +110,16 @@ public class OrientDBDAOFactory implements DAOFactory {
             daosCache.put(LegTypeDAO.class, legTypeDAO);
         }
         return legTypeDAO;
+    }
+
+    @Override
+    public IconDAO getIconDAO() {
+        IconDAO iconDAO = (IconDAO) daosCache.get(IconDAO.class);
+        if (iconDAO == null) {
+            iconDAO = new OrientDBIconDAO(OrientDBAccess.getInstance());
+            daosCache.put(LegTypeDAO.class, iconDAO);
+        }
+        return iconDAO;
     }
 
 }

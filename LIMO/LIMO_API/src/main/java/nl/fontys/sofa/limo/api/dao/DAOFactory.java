@@ -15,5 +15,7 @@ public interface DAOFactory {
     public LegDAO getLegDAO();
 
     public LegTypeDAO getLegTypeDAO();
+    
+    public IconDAO getIconDAO();
 
 }
