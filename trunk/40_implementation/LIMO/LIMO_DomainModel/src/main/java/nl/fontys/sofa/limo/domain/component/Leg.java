@@ -3,9 +3,6 @@ package nl.fontys.sofa.limo.domain.component;
 import nl.fontys.sofa.limo.domain.Actor;
 import nl.fontys.sofa.limo.domain.Component;
 
-/**
- * @author Matthias Brück
- */
 public class Leg extends Component {
 
     private Hub startHub;

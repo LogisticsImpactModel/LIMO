@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author Matthias Brück
- */
 public class ScheduledLeg extends Leg {
 
     private Date expectationTime;
-    private final ArrayList<Date> acceptanceTimes;
+    private final List<Date> acceptanceTimes;
     private Leg alternativeLeg;
     private Date waitingTimeLimit;
 

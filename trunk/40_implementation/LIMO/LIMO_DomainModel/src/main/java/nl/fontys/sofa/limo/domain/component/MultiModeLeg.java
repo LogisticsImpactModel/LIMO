@@ -3,12 +3,9 @@ package nl.fontys.sofa.limo.domain.component;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Matthias Brück
- */
-public class MultiModeLeg extends Leg{
+public class MultiModeLeg extends Leg {
 
-    private final HashMap<Leg, Double> sublegs;
+    private final Map<Leg, Double> sublegs;
 
     public MultiModeLeg(String identifier) {
         super(identifier);

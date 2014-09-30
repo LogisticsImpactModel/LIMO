@@ -1,13 +1,11 @@
 package nl.fontys.sofa.limo.domain;
 
 import java.io.Serializable;
+import javax.persistence.Id;
 
-/**
- *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
- */
-public abstract class BaseEntity implements Serializable{
-    
+public abstract class BaseEntity implements Serializable {
+
+    @Id
     protected String id;
     protected long lastUpdate;
 
@@ -26,5 +24,5 @@ public abstract class BaseEntity implements Serializable{
     public void setLastUpdate(long lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
-    
+
 }

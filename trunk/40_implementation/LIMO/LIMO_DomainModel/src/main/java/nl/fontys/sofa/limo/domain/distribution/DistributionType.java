@@ -7,14 +7,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
- */
 public abstract class DistributionType implements Serializable {
 
-    protected HashMap<String, Number> parameters;
-    protected HashMap<String, Class<?>> parameterTypes;
+    protected Map<String, Number> parameters;
+    protected Map<String, Class<?>> parameterTypes;
 
     /**
      * For caching only!

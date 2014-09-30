@@ -6,10 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.Actor;
 
-/**
- *
- * @author Matthias Brück
- */
 public class SupplyChain implements Serializable {
 
     private String name;

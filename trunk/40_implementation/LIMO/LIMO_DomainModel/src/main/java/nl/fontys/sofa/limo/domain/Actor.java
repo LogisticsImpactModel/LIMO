@@ -6,13 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * @author Matthias Brück
- */
-public class Actor implements Serializable{
+public class Actor implements Serializable {
 
     private final String name;
-    private final ArrayList<Leg> legsResponsibleFor;
+    private final List<Leg> legsResponsibleFor;
 
     public Actor(String name) {
         this.name = name;
