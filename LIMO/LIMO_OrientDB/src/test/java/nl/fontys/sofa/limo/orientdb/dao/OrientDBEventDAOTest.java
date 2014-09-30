@@ -9,7 +9,10 @@ import static junit.framework.Assert.assertTrue;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.domain.Actor;
 import nl.fontys.sofa.limo.domain.Entry;
+import nl.fontys.sofa.limo.domain.Icon;
 import nl.fontys.sofa.limo.domain.component.Event;
+import nl.fontys.sofa.limo.domain.distribution.PoissonDistribution;
+import nl.fontys.sofa.limo.domain.value.RangeValue;
 import nl.fontys.sofa.limo.domain.value.SingleValue;
 import nl.fontys.sofa.limo.orientdb.mock.MockOrientDBAccess;
 import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
@@ -19,6 +22,8 @@ import org.junit.Test;
 import org.netbeans.junit.NbTestCase;
 
 public class OrientDBEventDAOTest extends NbTestCase {
+
+    private static final String EVENT_NAME = "Pirates";
 
     private EventDAO eventDAO;
 
@@ -84,8 +89,8 @@ public class OrientDBEventDAOTest extends NbTestCase {
      */
     @Test
     public void testUpdate() {
-        String newEventName = "pirate attack";
-        Event event = new Event("pirates");
+        String newEventName = "Pirate attack";
+        Event event = new Event(EVENT_NAME);
         boolean updateSuccess = eventDAO.update(event);
         assertFalse(updateSuccess);
         eventDAO.insert(event);
@@ -106,21 +111,50 @@ public class OrientDBEventDAOTest extends NbTestCase {
         assertFalse(deleteSuccess);
         deleteSuccess = eventDAO.delete("798319203");
         assertFalse(deleteSuccess);
-        Event event = new Event("pirates");
+        Event event = new Event(EVENT_NAME);
         eventDAO.insert(event);
         deleteSuccess = eventDAO.delete(event.getId());
         assertTrue(deleteSuccess);
     }
 
     private Event createEvent() {
-        Event event = new Event("pirates");
+        Event event = new Event(EVENT_NAME);
+
         Actor actor = new Actor("Hermes");
-        ArrayList<Entry> costs = new ArrayList<>();
-        Entry entry = new Entry("Flieger", "Transport");
-        entry.setValue(new SingleValue(20000));
-        costs.add(entry);
         event.setActor(actor);
+
+        ArrayList<Entry> costs = new ArrayList<>();
+        Entry costEntry = new Entry("Shipping", "Transport");
+        costEntry.setValue(new SingleValue(20000));
+        costs.add(costEntry);
         event.setCosts(costs);
+
+        ArrayList<Entry> delays = new ArrayList<>();
+        Entry delayEntry = new Entry("Pirate Attack", "Unforeseeable");
+        delayEntry.setValue(new SingleValue(250000));
+        event.setDelays(delays);
+
+        Event subEvent = new Event("Repair cannonball damage");
+        List<Entry> subEventCosts = new ArrayList<>();
+        Entry rapairingEntry = new Entry("Repairing cannonball damage", "Repairing");
+        rapairingEntry.setValue(new RangeValue(2000, 10000));
+        subEventCosts.add(rapairingEntry);
+        subEvent.setCosts(subEventCosts);
+        event.addEvent(subEvent);
+
+        event.setIcon(new Icon(new byte[0]));
+
+        List<Entry> leadTimes = new ArrayList<>();
+        Entry leadTimeEntry = new Entry("", "");
+        leadTimeEntry.setValue(new SingleValue(3000));
+        leadTimes.add(leadTimeEntry);
+        event.setLeadTimes(leadTimes);
+
+        Event parentEvent = new Event("Pirate Parent Event");
+        event.setParent(parentEvent);
+
+        event.setProbability(new PoissonDistribution());
+
         return event;
     }
 
