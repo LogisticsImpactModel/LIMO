@@ -11,8 +11,8 @@ public class DiscreteDistribution extends DistributionType {
 
     @Override
     protected void calculateProbability() {
-        double x = (Integer) parameters.get("X");
-        double y = (Integer) parameters.get("Y");
+        double x = (Integer) parameters.get(parameterNames.indexOf("X"));
+        double y = (Integer) parameters.get(parameterNames.indexOf("Y"));
         probabilityResultCache = x / y;
     }
 }
