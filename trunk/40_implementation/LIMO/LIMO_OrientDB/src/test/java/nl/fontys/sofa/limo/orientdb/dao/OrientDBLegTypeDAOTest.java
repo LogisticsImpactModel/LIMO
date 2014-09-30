@@ -65,8 +65,10 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
     public void testFindById() {
         LegType legType = legTypeDAO.findById("");
         assertNull(legType);
+        LegType legType2 = new LegType("12345678", null, null, null);
+        legTypeDAO.insert(legType2);
         legType = legTypeDAO.findById("12345678");
-        assertNull(legType);
+        assertNotNull(legType);
     }
 
     /**
@@ -78,8 +80,8 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
         legTypeDAO.insert(legType);
         List<LegType> legTypes = legTypeDAO.findAll();
         assertEquals(1, legTypes.size());
-        LegType foundCostCategory = legTypeDAO.findById("1");
-        assertEquals(legType, foundCostCategory);
+        LegType legType1 = legTypeDAO.findById("112233");
+        assertEquals(legType, legType1);
     }
 
     /**
@@ -87,16 +89,16 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
      */
     @Test
     public void testUpdate() {
-        String newLegTypeName = "international taxes";
+        String newLegTypeName = "LegTypeNew";
         LegType legType = new LegType("112233", null, null, null, null);
         boolean updateSuccess = legTypeDAO.update(legType);
         assertFalse(updateSuccess);
         legTypeDAO.insert(legType);
-        legType = legTypeDAO.findById("1");
+        legType = legTypeDAO.findById("112233");
         legType.setIdentifier(newLegTypeName);
         updateSuccess = legTypeDAO.update(legType);
         assertTrue(updateSuccess);
-        legType = legTypeDAO.findById("1");
+        legType = legTypeDAO.findById("112233");
         assertEquals(newLegTypeName, legType.getIdentifier());
     }
 
@@ -109,9 +111,9 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
         assertFalse(deleteSuccess);
         deleteSuccess = legTypeDAO.delete("112233");
         assertFalse(deleteSuccess);
-        LegType legType = new LegType("1122334", null, null, null, null);
+        LegType legType = new LegType("112233", null, null, null, null);
         legTypeDAO.insert(legType);
-        deleteSuccess = legTypeDAO.delete("1");
+        deleteSuccess = legTypeDAO.delete("112233");
         assertTrue(deleteSuccess);
     }
 
