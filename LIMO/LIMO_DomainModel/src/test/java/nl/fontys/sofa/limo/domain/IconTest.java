@@ -138,4 +138,31 @@ public class IconTest {
             fail("Could not locate test icon image at URL");
         }
     }
+    /**
+     * test 
+     */
+    @Test
+    public void testGetIconBufferedImage(){
+        Icon ic1 = new Icon("testRelatedStuff/icon.jpg");
+        BufferedImage ic1Img = ic1.getIconBufferedImage();
+        assertNotNull("There should be an existing bufferedImage",ic1Img);
+    }
+    /**
+     * 
+     */
+    @Test
+    public void testSetIconBufferedImage() {
+        Icon ic1 = new Icon();
+        assertNull("Empty",ic1.getIconBufferedImage());
+        
+        File fi = new File("testRelatedStuff/icon.jpg");
+        try {
+            fileContent = Files.readAllBytes(fi.toPath());
+            BufferedImage buffImg = ImageIO.read(new ByteArrayInputStream(fileContent));
+            ic1.setIconBufferedImage(buffImg);
+        } catch(IOException ex){
+            fail("could not make img");
+        }
+        assertNotNull("Filled",ic1.getIconBufferedImage());
+    }
 }
