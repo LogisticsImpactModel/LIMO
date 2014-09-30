@@ -10,6 +10,7 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
+import nl.fontys.sofa.limo.orientdb.mock.MockOrientDBAccess;
 import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -45,6 +46,7 @@ public class OrientDBTimeCategoryDAOTest extends NbTestCase {
     @Override
     public void tearDown() {
         timeCategoryDAO = null;
+        MockOrientDBAccess.getInstance().closeConnection();
     }
 
     /**

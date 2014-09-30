@@ -8,6 +8,7 @@ package nl.fontys.sofa.limo.orientdb.dao;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
 import nl.fontys.sofa.limo.domain.types.LegType;
+import nl.fontys.sofa.limo.orientdb.mock.MockOrientDBAccess;
 import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -45,6 +46,7 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
     @After
     public void tearDown() {
         legTypeDAO = null;
+        MockOrientDBAccess.getInstance().closeConnection();
     }
 
     /**
