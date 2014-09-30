@@ -33,8 +33,7 @@
                 <version>0.7.0.201403182114</version>
                 <configuration>
                     <excludes>		
-                        <exclude>nl/fontys/sofa/limo/domain/category/*</exclude>    
-                        <exclude>nl/fontys/sofa/limo/domain/component/*</exclude>                       		
+                        <exclude>nl/fontys/sofa/limo/domain/category/*</exclude>                           		
                         <exclude>nl/fontys/sofa/limo/domain/types/*</exclude>   
                         <exclude>nl/fontys/sofa/limo/domain/location/*</exclude>     
                         <exclude>nl/fontys/sofa/limo/domain/Actor.class</exclude>      

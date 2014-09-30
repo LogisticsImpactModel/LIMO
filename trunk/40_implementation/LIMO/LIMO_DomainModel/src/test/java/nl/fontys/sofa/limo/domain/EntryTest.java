@@ -36,6 +36,8 @@ public class EntryTest {
     
     @After
     public void tearDown() {
+        entry = null;
+        entry2 = null;
     }
 
     /**

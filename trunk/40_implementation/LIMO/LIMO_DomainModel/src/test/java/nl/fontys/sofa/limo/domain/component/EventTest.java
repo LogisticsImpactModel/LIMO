@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.domain.component;
 
+import nl.fontys.sofa.limo.domain.distribution.DiscreteDistribution;
 import org.junit.After;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -18,6 +14,7 @@ public class EventTest {
 
     @Before
     public void setUp() {
+        event = new Event();//coverage
         event = new Event("Pirates");
         subEvent = new Event("Repairing");
     }
@@ -60,5 +57,4 @@ public class EventTest {
             assertFalse(e.isExecutionState());
         }
     }
-
 }
