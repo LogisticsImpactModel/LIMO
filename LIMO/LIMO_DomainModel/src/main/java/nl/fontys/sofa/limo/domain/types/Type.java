@@ -5,10 +5,6 @@ import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.Entry;
 import nl.fontys.sofa.limo.domain.Icon;
 
-/**
- *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
- */
 public abstract class Type extends BaseEntity {
 
     protected String identifier;

@@ -4,10 +4,6 @@ import nl.fontys.sofa.limo.domain.Actor;
 import nl.fontys.sofa.limo.domain.Component;
 import nl.fontys.sofa.limo.domain.distribution.DistributionType;
 
-/**
- *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
- */
 public class Event extends Component {
 
     private Component parent;

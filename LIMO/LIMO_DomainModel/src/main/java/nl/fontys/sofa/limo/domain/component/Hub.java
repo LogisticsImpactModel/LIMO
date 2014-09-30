@@ -7,14 +7,11 @@ import nl.fontys.sofa.limo.domain.Component;
 import nl.fontys.sofa.limo.domain.Entry;
 import nl.fontys.sofa.limo.domain.location.Location;
 
-/**
- * @author Matthias Brück
- */
 public class Hub extends Component {
 
     private Leg inputLeg;
     private Leg outputLeg;
-    private final HashMap<Entry, Actor> costResponsibilities;
+    private final Map<Entry, Actor> costResponsibilities;
     private final Location location;
 
     public Hub(String identifier, Location location) {

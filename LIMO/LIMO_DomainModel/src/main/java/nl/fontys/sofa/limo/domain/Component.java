@@ -6,17 +6,13 @@ import java.util.Collections;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.Event;
 
-/**
- *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
- */
 public abstract class Component extends BaseEntity {
 
     protected String identifier;
-    protected ArrayList<Entry> costs;
-    protected ArrayList<Entry> leadTimes;
-    protected ArrayList<Entry> delays;
-    protected ArrayList<Event> events;
+    protected List<Entry> costs;
+    protected List<Entry> leadTimes;
+    protected List<Entry> delays;
+    protected List<Event> events;
     protected Icon icon;
 
     public Component() {
@@ -27,7 +23,7 @@ public abstract class Component extends BaseEntity {
         this(identifier, new ArrayList<Entry>(), new ArrayList<Entry>(), new ArrayList<Entry>(), new ArrayList<Event>(), new Icon());
     }
 
-    public Component(String identifier, ArrayList<Entry> costs, ArrayList<Entry> leadTimes, ArrayList<Entry> delays, ArrayList<Event> events, byte[] icon) {
+    public Component(String identifier, List<Entry> costs, List<Entry> leadTimes, List<Entry> delays, List<Event> events, byte[] icon) {
         this.identifier = identifier;
         this.costs = costs;
         this.leadTimes = leadTimes;
@@ -36,7 +32,7 @@ public abstract class Component extends BaseEntity {
         this.icon = new Icon(icon);
     }
 
-    public Component(String identifier, ArrayList<Entry> costs, ArrayList<Entry> leadTimes, ArrayList<Entry> delays, ArrayList<Event> events, Image icon) {
+    public Component(String identifier, List<Entry> costs, List<Entry> leadTimes, List<Entry> delays, List<Event> events, Image icon) {
         this.identifier = identifier;
         this.costs = costs;
         this.leadTimes = leadTimes;
@@ -45,7 +41,7 @@ public abstract class Component extends BaseEntity {
         this.icon = new Icon(icon);
     }
 
-    public Component(String identifier, ArrayList<Entry> costs, ArrayList<Entry> leadTimes, ArrayList<Entry> delays, ArrayList<Event> events, String iconPath) {
+    public Component(String identifier, List<Entry> costs, List<Entry> leadTimes, List<Entry> delays, List<Event> events, String iconPath) {
         this.identifier = identifier;
         this.costs = costs;
         this.leadTimes = leadTimes;
@@ -54,7 +50,7 @@ public abstract class Component extends BaseEntity {
         this.icon = new Icon(iconPath);
     }
 
-    public Component(String identifier, ArrayList<Entry> costs, ArrayList<Entry> leadTimes, ArrayList<Entry> delays, ArrayList<Event> events, Icon icon) {
+    public Component(String identifier, List<Entry> costs, List<Entry> leadTimes, List<Entry> delays, List<Event> events, Icon icon) {
         this.identifier = identifier;
         this.costs = costs;
         this.leadTimes = leadTimes;
@@ -71,7 +67,7 @@ public abstract class Component extends BaseEntity {
         this.identifier = identifier;
     }
 
-    public ArrayList<Entry> getCosts() {
+    public List<Entry> getCosts() {
         return costs;
     }
 
@@ -79,7 +75,7 @@ public abstract class Component extends BaseEntity {
         this.costs = costs;
     }
 
-    public ArrayList<Entry> getLeadTimes() {
+    public List<Entry> getLeadTimes() {
         return leadTimes;
     }
 
@@ -87,7 +83,7 @@ public abstract class Component extends BaseEntity {
         this.leadTimes = leadTimes;
     }
 
-    public ArrayList<Entry> getDelays() {
+    public List<Entry> getDelays() {
         return delays;
     }
 

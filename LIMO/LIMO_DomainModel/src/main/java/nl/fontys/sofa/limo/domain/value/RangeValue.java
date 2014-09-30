@@ -2,17 +2,13 @@ package nl.fontys.sofa.limo.domain.value;
 
 import java.util.Random;
 
-/**
- *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
- */
-public class RangeValue implements Value{
-    
+public class RangeValue implements Value {
+
     /**
      * Random Number Generator.
      */
     private static Random rng;
-    
+
     private final double min;
     private final double max;
 
@@ -43,9 +39,10 @@ public class RangeValue implements Value{
     public double getMax() {
         return this.max;
     }
-    
+
     /**
      * Returns a random double in the specified range.
+     *
      * @param min Minimal value.
      * @param max Maximal value.
      * @return Double between min and max.
@@ -54,8 +51,8 @@ public class RangeValue implements Value{
         if (rng == null) {
             rng = new Random();
         }
-        
+
         return min + (max - min) * rng.nextDouble();
     }
-    
+
 }

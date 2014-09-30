@@ -1,11 +1,7 @@
 package nl.fontys.sofa.limo.domain.value;
 
-/**
- *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
- */
-public class SingleValue implements Value{
-    
+public class SingleValue implements Value {
+
     private final double value;
 
     public SingleValue() {
@@ -30,5 +26,5 @@ public class SingleValue implements Value{
     public double getMax() {
         return this.value;
     }
-    
+
 }

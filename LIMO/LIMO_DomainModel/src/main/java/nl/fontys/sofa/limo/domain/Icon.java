@@ -13,11 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-/**
- *
- * @author Matthias Brück
- */
-public class Icon extends BaseEntity implements Serializable{
+public class Icon extends BaseEntity implements Serializable {
 
     private byte[] iconByteArray;
     private transient BufferedImage iconBufferedImage = null;

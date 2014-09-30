@@ -2,12 +2,8 @@ package nl.fontys.sofa.limo.domain.distribution;
 
 import java.util.AbstractMap;
 
-/**
- *
- * @author Matthias Brück
- */
 public class PoissonDistribution extends DistributionType {
-    
+
     public PoissonDistribution() {
         super(new AbstractMap.SimpleImmutableEntry<String, Class<?>>("Lambda", Double.class),
                 new AbstractMap.SimpleImmutableEntry<String, Class<?>>("K", Integer.class));
