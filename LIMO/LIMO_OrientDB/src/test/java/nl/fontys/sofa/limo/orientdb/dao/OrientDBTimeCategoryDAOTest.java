@@ -75,7 +75,7 @@ public class OrientDBTimeCategoryDAOTest extends NbTestCase {
     @Test
     public void testInsert() {
         TimeCategory timeCategory = new TimeCategory("time");
-        timeCategoryDAO.insert(timeCategory);
+        timeCategory = timeCategoryDAO.insert(timeCategory);
         List<TimeCategory> timeCategories = timeCategoryDAO.findAll();
         assertEquals(1, timeCategories.size());
         TimeCategory foundTimeCategory = timeCategoryDAO.findById(timeCategories.get(0).getId());
@@ -92,7 +92,7 @@ public class OrientDBTimeCategoryDAOTest extends NbTestCase {
         TimeCategory timeCategory = new TimeCategory("taxes");
         boolean updateSuccess = timeCategoryDAO.update(timeCategory);
         assertFalse(updateSuccess);
-        timeCategoryDAO.insert(timeCategory);
+        timeCategory = timeCategoryDAO.insert(timeCategory);
         timeCategory = timeCategoryDAO.findById(timeCategory.getId());
         timeCategory.setIdentifier(newCategoryName);
         updateSuccess = timeCategoryDAO.update(timeCategory);
@@ -111,7 +111,7 @@ public class OrientDBTimeCategoryDAOTest extends NbTestCase {
         deleteSuccess = timeCategoryDAO.delete("123345");
         assertFalse(deleteSuccess);
         TimeCategory timeCategory = new TimeCategory("TimeCat");
-        timeCategoryDAO.insert(timeCategory);
+        timeCategory = timeCategoryDAO.insert(timeCategory);
         deleteSuccess = timeCategoryDAO.delete(timeCategory.getId());
         assertTrue(deleteSuccess);
     }

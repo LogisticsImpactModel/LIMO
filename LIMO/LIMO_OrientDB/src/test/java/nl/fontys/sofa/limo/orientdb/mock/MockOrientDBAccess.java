@@ -1,6 +1,6 @@
 package nl.fontys.sofa.limo.orientdb.mock;
 
-import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
 public class MockOrientDBAccess extends OrientDBAccess {
@@ -24,7 +24,7 @@ public class MockOrientDBAccess extends OrientDBAccess {
     @Override
     protected void checkConnection() {
         if (connection == null) {
-            connection = new ODatabaseDocumentTx("memory:tests");
+            connection = new OObjectDatabaseTx("memory:tests");
         }
 
         if (!connection.exists()) {

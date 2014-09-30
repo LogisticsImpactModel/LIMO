@@ -1,45 +1,37 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
 import com.orientechnologies.orient.core.id.ORecordId;
-import com.orientechnologies.orient.core.iterator.ORecordIteratorClass;
-import com.orientechnologies.orient.core.metadata.schema.OSchema;
-import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.orientdb.OrientDBMapper;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
 /**
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T>, OrientDBMapper<T> {
+public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T> {
 
     protected final OrientDBAccess orientDBAccess;
-    protected final String tableName;
+    protected final Class entityClass;
 
-    public OrientDBAbstractDAO(OrientDBAccess orientDBAccess, String tableName) {
+    public OrientDBAbstractDAO(OrientDBAccess orientDBAccess, Class entityClass) {
         this.orientDBAccess = orientDBAccess;
-        this.tableName = tableName;
-
-        // Create class in DB if it not yet exists
-        OSchema schema = orientDBAccess.getConnection().getMetadata().getSchema();
-        if (!schema.existsClass(tableName)) {
-            schema.createClass(tableName);
+        this.entityClass = entityClass;
+        
+        if (!orientDBAccess.getConnection().getMetadata().getSchema().existsClass(entityClass.getName())) {
+            orientDBAccess.getConnection().getEntityManager().registerEntityClass(entityClass);
         }
     }
 
     @Override
     public List<T> findAll() {
-        ORecordIteratorClass<ODocument> results = orientDBAccess.getConnection().browseClass(tableName);
         ArrayList<T> resultList = new ArrayList<>();
-
-        for (ODocument doc : results) {
-            resultList.add(map(doc));
+        for (Object entity : orientDBAccess.getConnection().browseClass(entityClass)) {
+            resultList.add((T) entity);
         }
 
         return resultList;
@@ -51,16 +43,15 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
             return null;
         }
 
-        OSQLSynchQuery<ODocument> query = new OSQLSynchQuery<>("select * from " + id);
-        List<ODocument> results = orientDBAccess.getConnection().query(query);
-        return map(results.get(0));
+        OSQLSynchQuery<T> query = new OSQLSynchQuery<>("select * from " + id);
+        List<T> results = orientDBAccess.getConnection().query(query);
+        return results.get(0);
     }
 
     @Override
-    public void insert(T entity) {
+    public T insert(T entity) {
         entity.setLastUpdate(new Date().getTime());
-        ODocument doc = map(entity).save();
-        entity.setId(doc.getIdentity().toString());
+        return orientDBAccess.getConnection().save(entity);
     }
 
     @Override
@@ -70,7 +61,7 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
         }
 
         entity.setLastUpdate(new Date().getTime());
-        map(entity).save();
+        orientDBAccess.getConnection().save(entity);
         return true;
     }
 
@@ -84,6 +75,11 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
         return true;
     }
 
+    /**
+     * Checks if the given ID string is a valid OrientDB RecordID.
+     * @param id ID string to check.
+     * @return True/false dependent on validation result.
+     */
     protected static boolean stringIsValidId(String id) {
         if (id == null || id.length() == 0) {
             return false;
