@@ -11,10 +11,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- *
- * @author Sammy Guergachi <sguergachi at gmail.com>
- */
 public class EventTest {
 
     private Event event;
