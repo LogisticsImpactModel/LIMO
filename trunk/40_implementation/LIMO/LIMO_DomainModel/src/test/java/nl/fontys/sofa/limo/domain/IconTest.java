@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.domain;
 
 import java.awt.Image;
@@ -11,9 +6,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -58,13 +50,13 @@ public class IconTest {
         Icon ic1 = new Icon();//icon w/ empty byteArray
         assertNull("There should be no Image object because of an empty byte array",ic1.getIcon());
         //testing w/ method w/ URLstring incorrect
-        Icon ic2 = new Icon("/notExisting.crap");
+        Icon ic2 = new Icon("notExisting.crap");
         assertNull("There should be no Image object because of an incorrect URL",ic2.getIcon());
         //testing w/ method w/ URLstring correct
-        Icon icX = new Icon("/icon.jpg");
+        Icon icX = new Icon("testRelatedStuff/icon.jpg");
         assertNotNull("There should be an Image object because of a correct URL",icX.getIcon());
         //lead to existing file to convert to bytes
-        File fi = new File("C:/icon.jpg");
+        File fi = new File("testRelatedStuff/icon.jpg");
         try {
             fileContent = Files.readAllBytes(fi.toPath());
             System.out.println("Image loaded");
@@ -84,7 +76,7 @@ public class IconTest {
     public void testGetIconBytes() {
         System.out.println("getIconBytes");
         //testing w/ File/Image object
-        File fi = new File("/icon.jpg");
+        File fi = new File("testRelatedStuff/icon.jpg");
         try {
             fileContent = Files.readAllBytes(fi.toPath());
             Icon ic3 = new Icon(fileContent);
@@ -100,7 +92,7 @@ public class IconTest {
     @Test
     public void testSetIcon_byteArr() {
         System.out.println("setIcon");
-                File fi = new File("/icon.jpg");
+                File fi = new File("testRelatedStuff/icon.jpg");
         try {
             fileContent = Files.readAllBytes(fi.toPath());
             System.out.println("Image loaded");
@@ -117,7 +109,7 @@ public class IconTest {
     @Test
     public void testSetIcon_Image() {
         System.out.println("setIcon");
-        File fi = new File("/icon.jpg");
+        File fi = new File("testRelatedStuff/icon.jpg");
         try {
             fileContent = Files.readAllBytes(fi.toPath());
             System.out.println("Image loaded");
@@ -128,7 +120,7 @@ public class IconTest {
             assertEquals("Identical img heights",origBuffImg.getHeight(),buffImg1.getHeight(),1);
             
             Icon ic4 = new Icon();
-            Image imgImage1  = new javax.swing.ImageIcon("/icon.jpg").getImage();
+            Image imgImage1  = new javax.swing.ImageIcon("testRelatedStuff/icon.jpg").getImage();
             ic4.setIcon(imgImage1);
             //assertEquals("Identical graphics",ic4.getIcon().getSource(),imgImage1.getSource());
             
@@ -144,9 +136,9 @@ public class IconTest {
     public void testSetImage() {
         System.out.println("setImage");
         Icon ic1 = new Icon();//create empty icon
-        ic1.setImage("C:/icon.jpg");//then use setImage to fill the icon object
+        ic1.setImage("testRelatedStuff/icon.jpg");//then use setImage to fill the icon object
         BufferedImage img1 = (BufferedImage) ic1.getIcon();//get the image from icon object back
-        File fi = new File("C:/icon.jpg");//make file to compare images
+        File fi = new File("testRelatedStuff/icon.jpg");//make file to compare images
         try {
             fileContent = Files.readAllBytes(fi.toPath());
             BufferedImage origImg = ImageIO.read(new ByteArrayInputStream(fileContent));
