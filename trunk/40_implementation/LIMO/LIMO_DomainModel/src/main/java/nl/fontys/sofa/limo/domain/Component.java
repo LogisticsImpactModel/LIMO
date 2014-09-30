@@ -71,7 +71,7 @@ public abstract class Component extends BaseEntity {
         return costs;
     }
 
-    public void setCosts(ArrayList<Entry> costs) {
+    public void setCosts(List<Entry> costs) {
         this.costs = costs;
     }
 
@@ -79,7 +79,7 @@ public abstract class Component extends BaseEntity {
         return leadTimes;
     }
 
-    public void setLeadTimes(ArrayList<Entry> leadTimes) {
+    public void setLeadTimes(List<Entry> leadTimes) {
         this.leadTimes = leadTimes;
     }
 
@@ -87,7 +87,7 @@ public abstract class Component extends BaseEntity {
         return delays;
     }
 
-    public void setDelays(ArrayList<Entry> delays) {
+    public void setDelays(List<Entry> delays) {
         this.delays = delays;
     }
 
