@@ -55,6 +55,10 @@ public class IconTest {
         //testing w/ method w/ URLstring correct
         Icon icX = new Icon("testRelatedStuff/icon.jpg");
         assertNotNull("There should be an Image object because of a correct URL",icX.getIcon());
+        //instantiating icon w/ image object present
+        Image imgImage1  = new javax.swing.ImageIcon("testRelatedStuff/icon.jpg").getImage();
+        Icon icX2 = new Icon(imgImage1);
+        assertEquals("Sources should be equal",imgImage1.getHeight(null),icX2.getIcon().getHeight(null));
         //lead to existing file to convert to bytes
         File fi = new File("testRelatedStuff/icon.jpg");
         try {
@@ -108,7 +112,7 @@ public class IconTest {
      */
     @Test
     public void testSetIcon_Image() {
-        System.out.println("setIcon");
+        System.out.println("setIcon_Image");
         File fi = new File("testRelatedStuff/icon.jpg");
         try {
             fileContent = Files.readAllBytes(fi.toPath());
@@ -122,9 +126,7 @@ public class IconTest {
             Icon ic4 = new Icon();
             Image imgImage1  = new javax.swing.ImageIcon("testRelatedStuff/icon.jpg").getImage();
             ic4.setIcon(imgImage1);
-            //assertEquals("Identical graphics",ic4.getIcon().getSource(),imgImage1.getSource());
-            
-            System.out.println("Height img: "+buffImg1.getHeight());
+            assertEquals("Identical graphics",ic4.getIcon().getHeight(null),imgImage1.getHeight(null));
         } catch (IOException ex) {
             fail("Img could not be loaded at testSetIcon_Image");
         }
