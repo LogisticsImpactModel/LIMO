@@ -12,16 +12,23 @@ public abstract class Type extends BaseEntity {
     protected List<Entry> leadTimes;
     protected List<Entry> delays;
     protected Icon icon;
+    
+    public Type() {
+        super();
+        this.identifier = null;
+    }
 
     public Type(String identifier, List<Entry> costs, List<Entry> leadTimes, List<Entry> delays) {
+        super();
         this.identifier = identifier;
         this.costs = costs;
         this.leadTimes = leadTimes;
         this.delays = delays;
-        icon = null;
+        this.icon = null;
     }
 
     public Type(String identifier, List<Entry> costs, List<Entry> leadTimes, List<Entry> delays, Icon icon) {
+        super();
         this.identifier = identifier;
         this.costs = costs;
         this.leadTimes = leadTimes;

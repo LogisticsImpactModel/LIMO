@@ -12,12 +12,12 @@ public abstract class DistributionType implements Serializable {
 
     protected ArrayList<String> parameterNames;
     protected ArrayList<Number> parameters;
-    protected ArrayList<Class<?>> parameterTypes;
+    protected ArrayList<Class<?>> parameterTypes; // PROBLEM -> Change to custom number class object
 
     /**
      * For caching only!
      */
-    protected Double probabilityResultCache = null;
+    protected transient Double probabilityResultCache = null;
 
     public DistributionType(Map.Entry<String, Class<?>>... parameterTypes) {
         this.parameters = new ArrayList<>();
@@ -34,7 +34,7 @@ public abstract class DistributionType implements Serializable {
         }
     }
 
-    public Map<String, Class<?>> getParameterTypes() {
+    public Map<String, Class<?>> getParameterTypesWithIdentifiers() {
         HashMap<String, Class<?>> typeMap = new HashMap<>();
         for (int i = 0; i < parameterNames.size(); i++) {
             typeMap.put(parameterNames.get(i), parameterTypes.get(i));
@@ -51,7 +51,7 @@ public abstract class DistributionType implements Serializable {
         this.probabilityResultCache = null;
     }
 
-    public void setParameters(Map<String, Number> parameters) {
+    public void setParametersUsingIdentifiers(Map<String, Number> parameters) {
         for (Map.Entry<String, Number> entry : parameters.entrySet()) {
             int position = parameterNames.indexOf(entry.getKey());
             if (position != -1) {
@@ -63,6 +63,30 @@ public abstract class DistributionType implements Serializable {
     
     public int getNumberOfParameters(){
         return parameterNames.size();
+    }
+
+    public ArrayList<String> getParameterNames() {
+        return parameterNames;
+    }
+
+    public void setParameterNames(ArrayList<String> parameterNames) {
+        this.parameterNames = parameterNames;
+    }
+
+    public ArrayList<Number> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(ArrayList<Number> parameters) {
+        this.parameters = parameters;
+    }
+
+    public ArrayList<Class<?>> getParameterTypes() {
+        return parameterTypes;
+    }
+
+    public void setParameterTypes(ArrayList<Class<?>> parameterTypes) {
+        this.parameterTypes = parameterTypes;
     }
 
     /**

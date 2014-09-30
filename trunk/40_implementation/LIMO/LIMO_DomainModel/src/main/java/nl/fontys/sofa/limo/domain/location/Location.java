@@ -18,6 +18,9 @@ public class Location implements Serializable {
     private float latitude;
     private float longitude;
 
+    public Location() {
+    }
+
     public Location(Continents continent) {
         this.continent = continent;
     }

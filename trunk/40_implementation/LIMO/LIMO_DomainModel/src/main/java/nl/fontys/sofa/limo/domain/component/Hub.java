@@ -15,6 +15,9 @@ public class Hub extends Component {
     private Map<Entry, Actor> costResponsibilities;
     private Location location;
 
+    public Hub() {
+    }
+
     public Hub(String identifier, Location location) {
         super(identifier);
         this.costResponsibilities = new HashMap<>();

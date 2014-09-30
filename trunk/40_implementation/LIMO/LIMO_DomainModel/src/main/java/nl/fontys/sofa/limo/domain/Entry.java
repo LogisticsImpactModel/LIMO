@@ -1,6 +1,7 @@
 package nl.fontys.sofa.limo.domain;
 
 import java.io.Serializable;
+import nl.fontys.sofa.limo.domain.value.SingleValue;
 import nl.fontys.sofa.limo.domain.value.Value;
 
 public class Entry implements Serializable {
@@ -8,6 +9,9 @@ public class Entry implements Serializable {
     protected String name;
     protected String category;
     protected Value value;
+
+    public Entry() {
+    }
 
     public Entry(String name, String category) {
         this(name, category, null);

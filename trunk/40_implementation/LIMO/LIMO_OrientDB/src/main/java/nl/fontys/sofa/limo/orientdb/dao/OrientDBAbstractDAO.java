@@ -21,10 +21,6 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
     public OrientDBAbstractDAO(OrientDBAccess orientDBAccess, Class entityClass) {
         this.orientDBAccess = orientDBAccess;
         this.entityClass = entityClass;
-        
-        if (!orientDBAccess.getConnection().getMetadata().getSchema().existsClass(entityClass.getName())) {
-            orientDBAccess.getConnection().getEntityManager().registerEntityClass(entityClass);
-        }
     }
 
     @Override

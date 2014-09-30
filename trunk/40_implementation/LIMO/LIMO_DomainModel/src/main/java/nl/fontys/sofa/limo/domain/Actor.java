@@ -8,8 +8,11 @@ import java.util.Objects;
 
 public class Actor implements Serializable {
 
-    private final String name;
-    private final List<Leg> legsResponsibleFor;
+    private String name;
+    private List<Leg> legsResponsibleFor;
+
+    public Actor() {
+    }
 
     public Actor(String name) {
         this.name = name;

@@ -9,6 +9,9 @@ public class Leg extends Component {
     private Hub endHub;
     private Actor actor;
 
+    public Leg() {
+    }
+
     public Leg(String identifier) {
         super(identifier);
     }

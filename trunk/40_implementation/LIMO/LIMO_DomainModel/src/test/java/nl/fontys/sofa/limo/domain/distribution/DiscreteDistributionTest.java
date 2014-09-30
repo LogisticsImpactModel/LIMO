@@ -66,7 +66,7 @@ public class DiscreteDistributionTest {
         parameters.put("X",1);
         parameters.put("Y",2);
         
-        instance.setParameters(parameters);
+        instance.setParametersUsingIdentifiers(parameters);
         System.out.println("Probability is: "+instance.getProbability());
         assertEquals(0.5,instance.getProbability(),0.01);
     }
@@ -80,9 +80,9 @@ public class DiscreteDistributionTest {
         System.out.println("getParameterTypes");
         //call list of parameter types
         DiscreteDistribution instance = new DiscreteDistribution();
-        assertEquals(java.lang.Integer.class,instance.getParameterTypes().get("X"));
+        assertEquals(java.lang.Integer.class,instance.getParameterTypesWithIdentifiers().get("X"));
         //for a discrete distrib, at least param X should be present and integer
-        assertEquals(java.lang.Integer.class,instance.getParameterTypes().get("Y"));
+        assertEquals(java.lang.Integer.class,instance.getParameterTypesWithIdentifiers().get("Y"));
         //for a discrete distrib, at least param Y should be present and integer
     }    
 }

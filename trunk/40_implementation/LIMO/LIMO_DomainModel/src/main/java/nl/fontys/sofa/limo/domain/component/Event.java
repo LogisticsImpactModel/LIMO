@@ -10,7 +10,7 @@ public class Event extends Component {
     private DistributionType probability;
     private EventExecutionStateDependency dependency;
     private boolean executionState;
-    private Actor actor;
+    private transient Actor actor;
 
     public Event() {
         super();
