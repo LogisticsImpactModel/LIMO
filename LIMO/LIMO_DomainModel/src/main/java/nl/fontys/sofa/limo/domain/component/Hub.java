@@ -5,6 +5,7 @@ import java.util.Map;
 import nl.fontys.sofa.limo.domain.Actor;
 import nl.fontys.sofa.limo.domain.Component;
 import nl.fontys.sofa.limo.domain.Entry;
+import nl.fontys.sofa.limo.domain.location.Location;
 
 /**
  * @author Matthias Brück
@@ -14,10 +15,16 @@ public class Hub extends Component {
     private Leg inputLeg;
     private Leg outputLeg;
     private final HashMap<Entry, Actor> costResponsibilities;
+    private final Location location;
 
-    public Hub(String identifier) {
+    public Hub(String identifier, Location location) {
         super(identifier);
         this.costResponsibilities = new HashMap<>();
+        this.location = location;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
     public Leg getInputLeg() {
