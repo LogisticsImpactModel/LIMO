@@ -32,6 +32,7 @@ public class Icon extends BaseEntity implements Serializable {
      */
     public Icon(byte[] iconByteArray) {
         this.iconByteArray = iconByteArray;
+        getIcon();
     }
 
     /**
@@ -40,17 +41,7 @@ public class Icon extends BaseEntity implements Serializable {
      * @param image The image that should be used to create this icon.
      */
     public Icon(Image image) {
-        if (!(image instanceof BufferedImage)) {
-            iconBufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D bGr = iconBufferedImage.createGraphics();
-            bGr.drawImage(image, 0, 0, null);
-            bGr.dispose();
-        } else {
-            iconBufferedImage = (BufferedImage) image;
-        }
-        WritableRaster raser = iconBufferedImage.getRaster();
-        DataBufferByte dataBufferArray = (DataBufferByte) raser.getDataBuffer();
-        this.iconByteArray = dataBufferArray.getData();
+        setIcon(image);
     }
 
     /**
@@ -61,17 +52,7 @@ public class Icon extends BaseEntity implements Serializable {
      * @param iconPath The path where of the icon.
      */
     public Icon(String iconPath) {
-        try {
-            File imageFile = new File(iconPath);
-            iconBufferedImage = ImageIO.read(imageFile);
-            WritableRaster raster = iconBufferedImage.getRaster();
-            DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
-            iconByteArray = data.getData();
-        } catch (IOException ex) {
-            System.out.println("Image: '" + iconPath + "' could not get loaded");
-            this.iconByteArray = new byte[]{};
-            iconBufferedImage = null;
-        }
+        setImage(iconPath);
     }
 
     /**
@@ -79,7 +60,7 @@ public class Icon extends BaseEntity implements Serializable {
      *
      * @return The Icon as Image.
      */
-    public Image getIcon() {
+    public final Image getIcon() {
         if (iconBufferedImage == null) {
             try {
                 iconBufferedImage = ImageIO.read(new ByteArrayInputStream(iconByteArray));
@@ -95,7 +76,7 @@ public class Icon extends BaseEntity implements Serializable {
      *
      * @return The icon's byte array.
      */
-    public byte[] getIconBytes() {
+    public final byte[] getIconBytes() {
         return this.iconByteArray;
     }
 
@@ -104,7 +85,7 @@ public class Icon extends BaseEntity implements Serializable {
      *
      * @param icon The byte array of the new icon.
      */
-    public void setIcon(byte[] icon) {
+    public final void setIcon(byte[] icon) {
         this.iconByteArray = icon;
         iconBufferedImage = null;
     }
@@ -114,7 +95,7 @@ public class Icon extends BaseEntity implements Serializable {
      *
      * @param image The image that should be used.
      */
-    public void setIcon(Image image) {
+    public final void setIcon(Image image) {
         if (!(image instanceof BufferedImage)) {
             iconBufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D bGr = iconBufferedImage.createGraphics();
@@ -134,7 +115,7 @@ public class Icon extends BaseEntity implements Serializable {
      *
      * @param iconPath The path to the new Icon.
      */
-    public void setImage(String iconPath) {
+    public final void setImage(String iconPath) {
         byte[] buffer = iconByteArray;
         try {
             File imageFile = new File(iconPath);
@@ -144,7 +125,11 @@ public class Icon extends BaseEntity implements Serializable {
             iconByteArray = data.getData();
         } catch (IOException ex) {
             System.out.println("Image: '" + iconPath + "' could not get loaded");
-            this.iconByteArray = buffer;
+            if (buffer == null) {
+                this.iconByteArray = new byte[]{};
+            } else {
+                this.iconByteArray = buffer;
+            }
             iconBufferedImage = null;
         }
     }
