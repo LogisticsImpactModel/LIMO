@@ -2,15 +2,8 @@ package nl.fontys.sofa.limo.domain.location;
 
 import java.io.Serializable;
 
-/**
- *
- * @author Matthias Brück
- */
 public class Location implements Serializable {
 
-    /**
-     * Adress
-     */
     private Continents continent;
     private String country;
     private String state;

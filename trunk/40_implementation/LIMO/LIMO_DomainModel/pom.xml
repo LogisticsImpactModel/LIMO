@@ -34,16 +34,15 @@
                 <configuration>
                     <excludes>		
                         <exclude>nl/fontys/sofa/limo/domain/category/*</exclude>    
-                        <exclude>nl/fontys/sofa/limo/domain/component/*</exclude>                        		
-                        <exclude>nl/fontys/sofa/limo/domain/types/*</exclude>     
-                        <exclude>nl/fontys/sofa/limo/domain/Actor*</exclude>      
-                        <exclude>nl/fontys/sofa/limo/domain/Component*</exclude>  
-                        <exclude>nl/fontys/sofa/limo/domain/Entry*</exclude>    
-                        <exclude>nl/fontys/sofa/limo/domain/BaseEntity*</exclude>  
+                        <exclude>nl/fontys/sofa/limo/domain/component/*</exclude>                       		
+                        <exclude>nl/fontys/sofa/limo/domain/types/*</exclude>   
+                        <exclude>nl/fontys/sofa/limo/domain/location/*</exclude>     
+                        <exclude>nl/fontys/sofa/limo/domain/Actor.class</exclude>      
+                        <exclude>nl/fontys/sofa/limo/domain/Component.class</exclude>  
+                        <exclude>nl/fontys/sofa/limo/domain/Entry.class</exclude>    
+                        <exclude>nl/fontys/sofa/limo/domain/BaseEntity.class</exclude>  
+                        <exclude>nl/fontys/sofa/limo/domain/distribution/DistributionType.class</exclude>  
                     </excludes>
-                    <includes>
-                        <include>nl/fontys/sofa/limo/domain/component/Event.class</include>
-                    </includes>
                 </configuration>
                 <executions>
                     <execution>
