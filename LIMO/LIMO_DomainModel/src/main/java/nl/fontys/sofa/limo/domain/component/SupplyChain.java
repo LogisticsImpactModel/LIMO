@@ -11,6 +11,9 @@ public class SupplyChain implements Serializable {
     private String name;
     private Hub startHub;
 
+    public SupplyChain() {
+    }
+
     public SupplyChain(String name) {
         this.name = name;
     }

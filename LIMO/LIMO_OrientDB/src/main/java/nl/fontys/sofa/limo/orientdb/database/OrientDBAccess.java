@@ -8,6 +8,8 @@ package nl.fontys.sofa.limo.orientdb.database;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.io.File;
 import nl.fontys.sofa.limo.api.database.AbstractDBServer;
+import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.domain.value.SingleValue;
 
 public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
 
@@ -20,6 +22,20 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
         return instance;
     }
 
+    public OrientDBAccess() {
+        connection = new OObjectDatabaseTx(getDatabaseURL());
+
+        if (!connection.exists()) {
+            connection.create();
+            
+            connection.getEntityManager().registerEntityClasses(BaseEntity.class.getPackage().getName());
+        }
+        
+        if (connection.isClosed()) {
+            connection.open("admin", "admin");
+        }
+    }
+
     @Override
     public void closeConnection() {
         connection.close();
@@ -28,8 +44,7 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
     @Override
     protected void checkConnection() {
         if (connection == null) {
-            String path = System.getProperty("user.home") + File.separator + "LIMO";
-            connection = new OObjectDatabaseTx("plocal:" + path);
+            connection = new OObjectDatabaseTx(getDatabaseURL());
 
             if (!connection.exists()) {
                 connection.create();
@@ -39,6 +54,11 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
         if (connection.isClosed()) {
             connection.open("admin", "admin");
         }
+    }
+
+    @Override
+    public String getDatabaseURL() {
+        return "plocal:" + System.getProperty("user.home") + File.separator + "LIMO";
     }
 
 }

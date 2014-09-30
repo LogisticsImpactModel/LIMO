@@ -11,6 +11,9 @@ public class ScheduledLeg extends Leg {
     private Leg alternativeLeg;
     private Date waitingTimeLimit;
 
+    public ScheduledLeg() {
+    }
+
     public ScheduledLeg(String identifier) {
         super(identifier);
         acceptanceTimes = new ArrayList<>();

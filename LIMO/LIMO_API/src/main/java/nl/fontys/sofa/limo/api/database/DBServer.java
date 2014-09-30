@@ -10,5 +10,7 @@ public interface DBServer<T> {
     public T getConnection();
 
     public void closeConnection();
+    
+    public String getDatabaseURL();
 
 }

@@ -7,6 +7,9 @@ public class MultiModeLeg extends Leg {
 
     private Map<Leg, Double> sublegs;
 
+    public MultiModeLeg() {
+    }
+
     public MultiModeLeg(String identifier) {
         super(identifier);
         sublegs = new HashMap<>();

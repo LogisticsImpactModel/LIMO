@@ -72,7 +72,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
     @Test
     public void testInsert() {
         Event event = createEvent();
-        eventDAO.insert(event);
+        event = eventDAO.insert(event);
         List<Event> events = eventDAO.findAll();
         assertEquals(1, events.size());
         Event foundEvent = eventDAO.findById(events.get(0).getId());
@@ -131,7 +131,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
         Event event = new Event(EVENT_NAME);
         boolean updateSuccess = eventDAO.update(event);
         assertFalse(updateSuccess);
-        eventDAO.insert(event);
+        event = eventDAO.insert(event);
         event = eventDAO.findById(event.getId());
         event.setIdentifier(newEventName);
         updateSuccess = eventDAO.update(event);
@@ -150,7 +150,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
         deleteSuccess = eventDAO.delete("798319203");
         assertFalse(deleteSuccess);
         Event event = new Event(EVENT_NAME);
-        eventDAO.insert(event);
+        event = eventDAO.insert(event);
         deleteSuccess = eventDAO.delete(event.getId());
         assertTrue(deleteSuccess);
     }

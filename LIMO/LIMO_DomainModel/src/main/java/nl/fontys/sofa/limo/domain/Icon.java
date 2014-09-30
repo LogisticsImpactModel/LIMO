@@ -22,6 +22,7 @@ public class Icon extends BaseEntity implements Serializable {
      * Creates a new Icon with an empty bytes array.
      */
     public Icon() {
+        super();
         this.iconByteArray = new byte[]{};
     }
 
