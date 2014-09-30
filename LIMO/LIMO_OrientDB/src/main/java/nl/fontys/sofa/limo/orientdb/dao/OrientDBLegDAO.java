@@ -5,41 +5,26 @@
  */
 package nl.fontys.sofa.limo.orientdb.dao;
 
+import com.orientechnologies.orient.core.record.impl.ODocument;
 import java.util.List;
+import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.api.dao.LegDAO;
+import nl.fontys.sofa.limo.domain.component.Event;
 import nl.fontys.sofa.limo.domain.component.Leg;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
-public class OrientDBLegDAO implements LegDAO {
-
-    private final OrientDBAccess orientDBAccess;
+public class OrientDBLegDAO extends OrientDBAbstractDAO<Leg> implements LegDAO {
 
     public OrientDBLegDAO(OrientDBAccess orientDBAccess) {
-        this.orientDBAccess = orientDBAccess;
+        super(orientDBAccess, "Legs");
     }
-
     @Override
-    public List<Leg> findAll() {
+    public Leg map(ODocument doc) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Leg findById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void insert(Leg entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean update(Leg entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean delete(String id) {
+    public ODocument map(Leg entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
