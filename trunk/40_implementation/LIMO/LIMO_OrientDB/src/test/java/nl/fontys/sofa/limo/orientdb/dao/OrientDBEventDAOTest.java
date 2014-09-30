@@ -8,6 +8,7 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.domain.Actor;
+import nl.fontys.sofa.limo.domain.Component;
 import nl.fontys.sofa.limo.domain.Entry;
 import nl.fontys.sofa.limo.domain.Icon;
 import nl.fontys.sofa.limo.domain.component.Event;
@@ -77,11 +78,48 @@ public class OrientDBEventDAOTest extends NbTestCase {
         Event foundEvent = eventDAO.findById(events.get(0).getId());
         assertEquals(event.getId(), foundEvent.getId());
         assertEquals(event.getIdentifier(), foundEvent.getIdentifier());
+        // Actor
         assertEquals(event.getActor().getName(), foundEvent.getActor().getName());
+        // Costs
         Entry expectedEntry = event.getCosts().get(0);
         Entry foundEntry = foundEvent.getCosts().get(0);
         assertEquals(expectedEntry.getName(), foundEntry.getName());
         assertEquals(expectedEntry.getValue().getValue(), foundEntry.getValue().getValue());
+        // Delays
+        expectedEntry = event.getDelays().get(0);
+        foundEntry = foundEvent.getDelays().get(0);
+        assertEquals(expectedEntry.getName(), foundEntry.getName());
+        assertEquals(expectedEntry.getValue().getValue(), foundEntry.getValue().getValue());
+        // Sub event
+        List<Event> subEvents = event.getEvents();
+        assertEquals(event.getEvents().size(), subEvents.size());
+        Event foundSubEvent = subEvents.get(0);
+        Event expectedSubEvent = event.getEvents().get(0);
+        assertEquals(expectedSubEvent.getId(), foundSubEvent.getId());
+        assertEquals(expectedSubEvent.getIdentifier(), foundSubEvent.getIdentifier());
+        // Sub event costs
+        List<Entry> subEventCosts = foundSubEvent.getCosts();
+        expectedEntry = subEventCosts.get(0);
+        foundEntry = foundSubEvent.getCosts().get(0);
+        assertEquals(expectedEntry.getName(), foundEntry.getName());
+        assertEquals(expectedEntry.getValue().getValue(), foundEntry.getValue().getValue());
+        // Icon
+        assertEquals(event.getIcon(), foundEvent.getIcon());
+        // Lead times
+        List<Entry> expectedLeadTimes = event.getLeadTimes();
+        List<Entry> foundLeadTimes = foundEvent.getLeadTimes();
+        assertEquals(expectedLeadTimes.size(), foundLeadTimes.size());
+        Entry expectedLeadTime = expectedLeadTimes.get(0);
+        Entry foundLeadTime = foundLeadTimes.get(0);
+        assertEquals(expectedLeadTime.getName(), foundLeadTime.getName());
+        assertEquals(expectedLeadTime.getValue().getValue(), foundLeadTime.getValue().getValue());
+        // Parent
+        Component expectedParent = event.getParent();
+        Component foundParent = event.getParent();
+        assertEquals(expectedParent.getId(), foundParent.getId());
+        assertEquals(expectedParent.getIdentifier(), foundParent.getIdentifier());
+        // Propability
+        assertEquals(event.getProbability().getClass(), foundEvent.getProbability().getClass());
     }
 
     /**
