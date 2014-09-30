@@ -122,12 +122,16 @@ public class IconTest {
             fileContent = Files.readAllBytes(fi.toPath());
             System.out.println("Image loaded");
             Icon ic3 = new Icon();//new empty icon
-            BufferedImage origImg = ImageIO.read(new ByteArrayInputStream(fileContent));
-            ic3.setIcon(origImg);//set image into icon using setIcon
-            BufferedImage img1 = (BufferedImage) ic3.getIcon();
+            BufferedImage origBuffImg = ImageIO.read(new ByteArrayInputStream(fileContent));
+            ic3.setIcon(origBuffImg);//set image into icon using setIcon
+            BufferedImage buffImg1 = (BufferedImage) ic3.getIcon();
+            assertEquals("Identical img heights",origBuffImg.getHeight(),buffImg1.getHeight(),1);
+            Icon ic4 = new Icon();
+            Image imgImage1 = ImageIO.read(new ByteArrayInputStream(fileContent));
+            ic4.setIcon(imgImage1);
+            assertEquals("Identical graphics",ic4.getIcon().getSource(),imgImage1.getSource());
             
-            assertEquals("Identical img heights",origImg.getHeight(),img1.getHeight(),1);
-            System.out.println("Height img: "+img1.getHeight());
+            System.out.println("Height img: "+buffImg1.getHeight());
         } catch (IOException ex) {
             fail("Img could not be loaded at testSetIcon_Image");
         }
