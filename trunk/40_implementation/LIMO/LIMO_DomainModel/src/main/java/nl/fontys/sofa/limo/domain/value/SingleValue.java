@@ -8,8 +8,12 @@ public class SingleValue implements Value {
         this(0);
     }
 
-    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public SingleValue(double value) {
+        this.value = value;
+    }
+
+    // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
+    public void setValue(double value) {
         this.value = value;
     }
 
