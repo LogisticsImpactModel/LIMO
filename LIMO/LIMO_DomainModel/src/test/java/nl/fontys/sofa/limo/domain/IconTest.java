@@ -58,10 +58,10 @@ public class IconTest {
         Icon ic1 = new Icon();//icon w/ empty byteArray
         assertNull("There should be no Image object because of an empty byte array",ic1.getIcon());
         //testing w/ method w/ URLstring incorrect
-        Icon ic2 = new Icon("C:\notExisting.crap");
+        Icon ic2 = new Icon("/notExisting.crap");
         assertNull("There should be no Image object because of an incorrect URL",ic2.getIcon());
         //testing w/ method w/ URLstring correct
-        Icon icX = new Icon("C:/icon.jpg");
+        Icon icX = new Icon("/icon.jpg");
         assertNotNull("There should be an Image object because of a correct URL",icX.getIcon());
         //lead to existing file to convert to bytes
         File fi = new File("C:/icon.jpg");
@@ -84,7 +84,7 @@ public class IconTest {
     public void testGetIconBytes() {
         System.out.println("getIconBytes");
         //testing w/ File/Image object
-        File fi = new File("C:/icon.jpg");
+        File fi = new File("/icon.jpg");
         try {
             fileContent = Files.readAllBytes(fi.toPath());
             Icon ic3 = new Icon(fileContent);
@@ -100,7 +100,7 @@ public class IconTest {
     @Test
     public void testSetIcon_byteArr() {
         System.out.println("setIcon");
-                File fi = new File("C:/icon.jpg");
+                File fi = new File("/icon.jpg");
         try {
             fileContent = Files.readAllBytes(fi.toPath());
             System.out.println("Image loaded");
@@ -117,7 +117,7 @@ public class IconTest {
     @Test
     public void testSetIcon_Image() {
         System.out.println("setIcon");
-        File fi = new File("C:/icon.jpg");
+        File fi = new File("/icon.jpg");
         try {
             fileContent = Files.readAllBytes(fi.toPath());
             System.out.println("Image loaded");
@@ -128,7 +128,7 @@ public class IconTest {
             assertEquals("Identical img heights",origBuffImg.getHeight(),buffImg1.getHeight(),1);
             
             Icon ic4 = new Icon();
-            Image imgImage1  = new javax.swing.ImageIcon("C:/icon.jpg").getImage();
+            Image imgImage1  = new javax.swing.ImageIcon("/icon.jpg").getImage();
             ic4.setIcon(imgImage1);
             //assertEquals("Identical graphics",ic4.getIcon().getSource(),imgImage1.getSource());
             
