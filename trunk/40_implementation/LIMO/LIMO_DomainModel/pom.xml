@@ -39,7 +39,6 @@
                         <exclude>nl/fontys/sofa/limo/domain/Actor*</exclude>      
                         <exclude>nl/fontys/sofa/limo/domain/Component*</exclude>  
                         <exclude>nl/fontys/sofa/limo/domain/Entry*</exclude>    
-                        <exclude>nl/fontys/sofa/limo/domain/Icon*</exclude>  
                         <exclude>nl/fontys/sofa/limo/domain/BaseEntity*</exclude>  
                     </excludes>
                 </configuration>
