@@ -57,7 +57,7 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
         assertNull("Should be no result (null)",costCategory);
         //after making a CostCategory and adding it to costCategoryDAO, it should be findable
         CostCategory cc1 = new CostCategory("Fritskosten");
-        costCategoryDAO.insert(cc1);
+        cc1 = costCategoryDAO.insert(cc1);
         assertNotNull(costCategoryDAO.findById(cc1.getId()));
     }
 
@@ -67,7 +67,7 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
     @Test
     public void testInsert() {
         CostCategory costCategory = new CostCategory("taxes");
-        costCategoryDAO.insert(costCategory);
+        costCategory = costCategoryDAO.insert(costCategory);
         List<CostCategory> costCategories = costCategoryDAO.findAll();
         assertTrue("There must be at least one entry, because i just inserted one",costCategories.size()>0);
         int lastInsertedCostCategoryObject = costCategories.size()-1;
@@ -85,7 +85,7 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
         boolean updateSuccess = costCategoryDAO.update(costCategory);
         assertFalse(updateSuccess);
         //if an update command is given for a CostCat which is not yet in DB, success will be false
-        costCategoryDAO.insert(costCategory);
+        costCategory = costCategoryDAO.insert(costCategory);
         costCategory = costCategoryDAO.findById(costCategory.getId());
         String newCategoryName = "international taxes";
         costCategory.setIdentifier(newCategoryName);
@@ -111,7 +111,7 @@ public class OrientDBCostCategoryDAOTest extends NbTestCase {
         //bogus reference will result in success being galse
         
         CostCategory costCategory = new CostCategory("taxes");
-        costCategoryDAO.insert(costCategory);
+        costCategory = costCategoryDAO.insert(costCategory);
         deleteSuccess = costCategoryDAO.delete(costCategory.getId());
         assertTrue(deleteSuccess);
         //adding one new CC to DB and afterwards removing it should result in success

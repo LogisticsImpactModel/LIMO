@@ -5,11 +5,11 @@
  */
 package nl.fontys.sofa.limo.orientdb.database;
 
-import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.io.File;
 import nl.fontys.sofa.limo.api.database.AbstractDBServer;
 
-public class OrientDBAccess extends AbstractDBServer<ODatabaseDocumentTx> {
+public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
 
     protected static OrientDBAccess instance;
 
@@ -29,7 +29,7 @@ public class OrientDBAccess extends AbstractDBServer<ODatabaseDocumentTx> {
     protected void checkConnection() {
         if (connection == null) {
             String path = System.getProperty("user.home") + File.separator + "LIMO";
-            connection = new ODatabaseDocumentTx("plocal:" + path);
+            connection = new OObjectDatabaseTx("plocal:" + path);
 
             if (!connection.exists()) {
                 connection.create();
