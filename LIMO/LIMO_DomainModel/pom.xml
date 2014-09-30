@@ -38,10 +38,8 @@
                         <exclude>nl/fontys/sofa/limo/domain/types/*</exclude>   
                         <exclude>nl/fontys/sofa/limo/domain/location/*</exclude>     
                         <exclude>nl/fontys/sofa/limo/domain/Actor.class</exclude>      
-                        <exclude>nl/fontys/sofa/limo/domain/Component.class</exclude>  
-                        <exclude>nl/fontys/sofa/limo/domain/Entry.class</exclude>    
+                        <exclude>nl/fontys/sofa/limo/domain/Component.class</exclude>   
                         <exclude>nl/fontys/sofa/limo/domain/BaseEntity.class</exclude>  
-                        <exclude>nl/fontys/sofa/limo/domain/distribution/DistributionType.class</exclude>  
                     </excludes>
                 </configuration>
                 <executions>
