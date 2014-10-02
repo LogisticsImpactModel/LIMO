@@ -117,7 +117,7 @@ public class OrientDBDAOFactory implements DAOFactory {
         IconDAO iconDAO = (IconDAO) daosCache.get(IconDAO.class);
         if (iconDAO == null) {
             iconDAO = new OrientDBIconDAO(OrientDBAccess.getInstance());
-            daosCache.put(LegTypeDAO.class, iconDAO);
+            daosCache.put(IconDAO.class, iconDAO);
         }
         return iconDAO;
     }
