@@ -1,31 +1,17 @@
 package nl.fontys.sofa.limo.orientdb.database;
 
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class OrientDBAccessTest {
-
-    private OrientDBAccess instance;
-
-    @Before
-    public void setUp() {
-        instance = OrientDBAccess.getInstance();
-    }
-
-    @After
-    public void tearDown() {
-        instance.closeConnection();
-        instance = null;
-    }
 
     /**
      * Test of getInstance method, of class OrientDBAccess.
      */
     @Test
     public void testGetInstance() {
+        OrientDBAccess instance = OrientDBAccess.getInstance();
         assertTrue(instance instanceof OrientDBAccess);
         assertNotNull(instance.getConnection());
         assertFalse(instance.getConnection().isClosed());
@@ -36,6 +22,7 @@ public class OrientDBAccessTest {
      */
     @Test
     public void testCloseConnection() {
+        OrientDBAccess instance = OrientDBAccess.getInstance();
         OObjectDatabaseTx connection = instance.getConnection();
         assertFalse(connection.isClosed());
         instance.closeConnection();
@@ -47,7 +34,9 @@ public class OrientDBAccessTest {
      */
     @Test
     public void testGetDatabaseURL() {
-        assertNotNull(instance.getDatabaseURL());
+        OrientDBAccess instance = OrientDBAccess.getInstance();
+        String databaseURL = instance.getDatabaseURL();
+        assertNotNull(databaseURL);
     }
 
 }
