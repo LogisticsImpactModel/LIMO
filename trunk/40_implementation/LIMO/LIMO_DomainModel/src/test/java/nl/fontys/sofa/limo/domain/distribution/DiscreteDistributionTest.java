@@ -11,7 +11,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
@@ -51,8 +50,8 @@ public class DiscreteDistributionTest {
     public void testCalculateProbability_separateParameters() {
         System.out.println("calculateProbability w separate parameters");
         DiscreteDistribution instance = new DiscreteDistribution();
-        instance.setParameter("X", 1);
-        instance.setParameter("Y", 2);
+        instance.setInputValue("X", 1);
+        instance.setInputValue("Y", 2);
         System.out.println("Probability is: "+instance.getProbability());
         assertEquals(0.5,instance.getProbability(),0.01);
     }
@@ -66,7 +65,7 @@ public class DiscreteDistributionTest {
         parameters.put("X",1);
         parameters.put("Y",2);
         
-        instance.setParametersUsingIdentifiers(parameters);
+        instance.setInputValueMap(parameters);
         System.out.println("Probability is: "+instance.getProbability());
         assertEquals(0.5,instance.getProbability(),0.01);
     }
@@ -80,9 +79,9 @@ public class DiscreteDistributionTest {
         System.out.println("getParameterTypes");
         //call list of parameter types
         DiscreteDistribution instance = new DiscreteDistribution();
-        assertEquals(java.lang.Integer.class,instance.getParameterTypesWithIdentifiers().get("X"));
+        assertEquals(java.lang.Integer.class,instance.getInputValueType("X"));
         //for a discrete distrib, at least param X should be present and integer
-        assertEquals(java.lang.Integer.class,instance.getParameterTypesWithIdentifiers().get("Y"));
+        assertEquals(java.lang.Integer.class,instance.getInputValueType("Y"));
         //for a discrete distrib, at least param Y should be present and integer
     }    
 }

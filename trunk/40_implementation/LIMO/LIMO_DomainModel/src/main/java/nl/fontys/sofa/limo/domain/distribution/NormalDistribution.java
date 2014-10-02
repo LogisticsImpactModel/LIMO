@@ -1,22 +1,23 @@
 package nl.fontys.sofa.limo.domain.distribution;
 
-import java.util.AbstractMap;
+import nl.fontys.sofa.limo.domain.distribution.input.DoubleInputValue;
 
 public class NormalDistribution extends DistributionType {
 
     public NormalDistribution() {
-        super(new AbstractMap.SimpleImmutableEntry<String, Class<?>>("Mean", Double.class),
-                new AbstractMap.SimpleImmutableEntry<String, Class<?>>("Standard Deviation", Double.class),
-                new AbstractMap.SimpleImmutableEntry<String, Class<?>>("Lower Bound", Double.class),
-                new AbstractMap.SimpleImmutableEntry<String, Class<?>>("Upper Bound", Double.class));
+        super (new DoubleInputValue("Mean", 0.0),
+               new DoubleInputValue("Standard Deviation", 0.0),
+               new DoubleInputValue("Lower Bound", 0.0),
+               new DoubleInputValue("Upper Bound", 0.0)
+        );
     }
 
     @Override
     protected void calculateProbability() {
-        Double mean = (Double) parameters.get(parameterNames.indexOf("Mean"));
-        Double sd = (Double) parameters.get(parameterNames.indexOf("Standard Deviation"));
-        Double x1 = (Double) parameters.get(parameterNames.indexOf("Lower Bound"));
-        Double x2 = (Double) parameters.get(parameterNames.indexOf("Upper Bound"));
+        Double mean = ((DoubleInputValue) inputValues.get("Mean")).getValue();
+        Double sd = ((DoubleInputValue) inputValues.get("Standard Deviation")).getValue();
+        Double x1 = ((DoubleInputValue) inputValues.get("Lower Bound")).getValue();
+        Double x2 = ((DoubleInputValue) inputValues.get("Upper Bound")).getValue();
         probabilityResultCache = new org.apache.commons.math3.distribution.NormalDistribution(mean, sd).probability(x1, x2);
     }
 }

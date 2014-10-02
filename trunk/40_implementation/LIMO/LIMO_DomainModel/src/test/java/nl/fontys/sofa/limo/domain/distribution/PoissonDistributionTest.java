@@ -46,11 +46,11 @@ public class PoissonDistributionTest {
     public void testCalculateProbability() {
         System.out.println("calculateProbability");
         PoissonDistribution instance = new PoissonDistribution();
-        instance.setParameter("Lambda", 0.50);
-        instance.setParameter("K", 1);
+        instance.setInputValue("Lambda", 0.50);
+        instance.setInputValue("K", 1);
         
         //try to insert a useless parameter for coverage
-        instance.setParameter("useless parameter",2);
+        instance.setInputValue("useless parameter",2);
         
         System.out.println("Probability is: "+instance.getProbability());
         assertEquals(0.3032653298563167,instance.getProbability(),0.000000000000001);
