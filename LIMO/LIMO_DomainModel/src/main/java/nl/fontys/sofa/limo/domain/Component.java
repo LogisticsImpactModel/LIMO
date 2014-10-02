@@ -108,7 +108,7 @@ public abstract class Component extends BaseEntity {
      * @return Unmodifiable list of events.
      */
     public List<Event> getEvents() {
-        return Collections.unmodifiableList(this.events);
+        return this.events;
     }
 
     public void addEvent(Event event) {

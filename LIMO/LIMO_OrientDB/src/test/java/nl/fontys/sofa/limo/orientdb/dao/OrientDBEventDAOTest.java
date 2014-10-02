@@ -74,11 +74,19 @@ public class OrientDBEventDAOTest extends NbTestCase {
         Event event = createEvent();
         event = eventDAO.insert(event);
         List<Event> events = eventDAO.findAll();
-        assertEquals(1, events.size());
-        Event foundEvent = eventDAO.findById(events.get(0).getId());
-        assertEquals(event.getId(), foundEvent.getId());
+        assertEquals(3, events.size());
+        Event foundEvent = null;
+        for (Event e : events) {
+            if (e.getId().equals(event.getId())) {
+                foundEvent = e;
+                break;
+            }
+        }
+        assertNotNull(foundEvent);
         assertEquals(event.getIdentifier(), foundEvent.getIdentifier());
         // Actor
+        assertNotNull(event.getActor());
+        assertNotNull(foundEvent.getActor());
         assertEquals(event.getActor().getName(), foundEvent.getActor().getName());
         // Costs
         Entry expectedEntry = event.getCosts().get(0);
@@ -102,9 +110,10 @@ public class OrientDBEventDAOTest extends NbTestCase {
         expectedEntry = subEventCosts.get(0);
         foundEntry = foundSubEvent.getCosts().get(0);
         assertEquals(expectedEntry.getName(), foundEntry.getName());
-        assertEquals(expectedEntry.getValue().getValue(), foundEntry.getValue().getValue());
+        assertEquals(expectedEntry.getValue().getMin(), foundEntry.getValue().getMin());
+        assertEquals(expectedEntry.getValue().getMax(), foundEntry.getValue().getMax());
         // Icon
-        assertEquals(event.getIcon(), foundEvent.getIcon());
+        assertEquals(event.getIcon().getId(), foundEvent.getIcon().getId());
         // Lead times
         List<Entry> expectedLeadTimes = event.getLeadTimes();
         List<Entry> foundLeadTimes = foundEvent.getLeadTimes();
@@ -170,6 +179,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
         ArrayList<Entry> delays = new ArrayList<>();
         Entry delayEntry = new Entry("Pirate Attack", "Unforeseeable");
         delayEntry.setValue(new SingleValue(250000));
+        delays.add(delayEntry);
         event.setDelays(delays);
 
         Event subEvent = new Event("Repair cannonball damage");
