@@ -33,12 +33,19 @@
                 <version>0.7.0.201403182114</version>
                 <configuration>
                     <excludes>		
-                        <exclude>nl/fontys/sofa/limo/domain/category/*</exclude>                           		
+                        <exclude>nl/fontys/sofa/limo/domain/category/*</exclude>  
+                        <exclude>nl/fontys/sofa/limo/domain/distribution/input/*</exclude>                           		
                         <exclude>nl/fontys/sofa/limo/domain/types/*</exclude>   
                         <exclude>nl/fontys/sofa/limo/domain/location/*</exclude>     
                         <exclude>nl/fontys/sofa/limo/domain/Actor.class</exclude>      
                         <exclude>nl/fontys/sofa/limo/domain/Component.class</exclude>   
-                        <exclude>nl/fontys/sofa/limo/domain/BaseEntity.class</exclude>  
+                        <exclude>nl/fontys/sofa/limo/domain/BaseEntity.class</exclude>
+                        <exclude>nl/fontys/sofa/limo/domain/component/EventExecutionStateDependency.class</exclude>
+                        <exclude>nl/fontys/sofa/limo/domain/component/Hub.class</exclude>
+                        <exclude>nl/fontys/sofa/limo/domain/component/Leg.class</exclude>
+                        <exclude>nl/fontys/sofa/limo/domain/component/MultiModeLeg.class</exclude>
+                        <exclude>nl/fontys/sofa/limo/domain/component/ScheduledLeg.class</exclude>
+                        <exclude>nl/fontys/sofa/limo/domain/component/SupplyChain.class</exclude>  
                     </excludes>
                 </configuration>
                 <executions>

@@ -1,24 +1,26 @@
 package nl.fontys.sofa.limo.domain.component;
 
+import nl.fontys.sofa.limo.domain.Actor;
 import nl.fontys.sofa.limo.domain.distribution.DiscreteDistribution;
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
 public class EventTest {
-
+    
     private Event event;
     private Event subEvent;
-
+    
     @Before
     public void setUp() {
-        event = new Event();//coverage
-        event = new Event("Pirates");
+        event = new Event();
+        event.setIdentifier("Pirates");
         subEvent = new Event("Repairing");
     }
-
+    
     @After
     public void tearDown() {
         event = null;
@@ -34,6 +36,7 @@ public class EventTest {
         event.addEvent(subEvent);
         assertTrue(event.getEvents().contains(subEvent));
         assertTrue(subEvent.getDependency().equals(EventExecutionStateDependency.INDEPENDENT));
+        assertEquals(event.getId(), subEvent.getParent().getId());
     }
 
     /**
@@ -57,4 +60,43 @@ public class EventTest {
             assertFalse(e.isExecutionState());
         }
     }
+
+    /**
+     * Test of setParent method, of class Event.
+     */
+    @Test
+    public void testSetParent() {
+        subEvent.setParent(event);
+        assertEquals(event.getId(), subEvent.getParent().getId());
+    }
+
+    /**
+     * Test of setProbability method, of class Event.
+     */
+    @Test
+    public void testSetProbability() {
+        DiscreteDistribution discreteDistribution = new DiscreteDistribution();
+        event.setProbability(discreteDistribution);
+        assertEquals(discreteDistribution, event.getProbability());
+    }
+
+    /**
+     * Test of setExecutionState method, of class Event.
+     */
+    @Test
+    public void testSetExecutionState() {
+        event.setExecutionState(true);
+        assertTrue(event.isExecutionState());
+    }
+
+    /**
+     * Test of getActor method, of class Event.
+     */
+    @Test
+    public void testGetActor() {
+        Actor actor = new Actor("Captain");
+        event.setActor(actor);
+        assertEquals(actor, event.getActor());
+    }
+    
 }

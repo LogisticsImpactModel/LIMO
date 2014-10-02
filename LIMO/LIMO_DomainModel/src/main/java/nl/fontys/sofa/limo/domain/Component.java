@@ -16,7 +16,7 @@ public abstract class Component extends BaseEntity {
     protected Icon icon;
 
     public Component() {
-
+        this(null);
     }
 
     public Component(String identifier) {

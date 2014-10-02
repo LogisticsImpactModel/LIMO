@@ -18,13 +18,16 @@ public abstract class DistributionType implements Serializable {
 
     public DistributionType(InputValue... inputValues) {
         this.inputValues = new HashMap<>();
-        for (InputValue iv : inputValues) {
-            this.inputValues.put(iv.getName(), iv);
+        if (inputValues != null) {
+            for (InputValue iv : inputValues) {
+                this.inputValues.put(iv.getName(), iv);
+            }
         }
     }
 
     /**
      * FOR ORIENTDB USE ONLY! USE OTHER METHODS TO GET INFORMATION!
+     *
      * @return
      */
     public Map<String, InputValue> getInputValues() {
@@ -33,60 +36,71 @@ public abstract class DistributionType implements Serializable {
 
     /**
      * FOR ORIENTDB USE ONLY! USE OTHER METHODS TO PUT IN VALUES!
-     * @param inputValues 
+     *
+     * @param inputValues
      */
     public void setInputValues(Map<String, InputValue> inputValues) {
         this.inputValues = inputValues;
         this.probabilityResultCache = null;
     }
-    
+
     /**
      * Gets the input type for a given input value.
+     *
      * @param name Name of input value.
      * @return Type of input value. NULL if not known.
      */
     public Class<Number> getInputValueType(String name) {
-        if (!this.inputValues.containsKey(name))
+        if (!this.inputValues.containsKey(name)) {
             return null;
-        
+        }
+
         return this.inputValues.get(name).getValueType();
     }
-    
+
     /**
      * Gets the value for a given input value.
+     *
      * @param name Name of input value.
      * @return Value of input value. NULL if not known.
      */
     public Number getInputValue(String name) {
-        if (!this.inputValues.containsKey(name))
+        if (!this.inputValues.containsKey(name)) {
             return null;
-        
+        }
+
         return this.inputValues.get(name).getValue();
     }
-    
+
     /**
      * Gets the available input values for the distribution type.
+     *
      * @return Names of all available input values.
      */
     public List<String> getInputValueNames() {
         return new ArrayList<>(this.inputValues.keySet());
     }
-    
+
     /**
-     * Sets the value for the input value with the given name. Unknown input values are ignored.
+     * Sets the value for the input value with the given name. Unknown input
+     * values are ignored.
+     *
      * @param name Name of input value to set.
      * @param value New value of input value.
      */
     public void setInputValue(String name, Number value) {
-        if (!this.inputValues.containsKey(name))
+        if (!this.inputValues.containsKey(name)) {
             return;
-        
+        }
+
         this.inputValues.get(name).setValue(value);
         this.probabilityResultCache = null;
     }
-    
+
     /**
-     * Sets the values for the input values with the given names. Unknown input values are ignored.
+     * Sets the values for the input values with the given names. Unknown input
+     * values are ignored.
+     *
      * @param inputValues Map of input value names and their new values.
      */
     public void setInputValueMap(Map<String, Number> inputValues) {
@@ -96,8 +110,8 @@ public abstract class DistributionType implements Serializable {
     }
 
     /**
-     * Gets the probability for the set distribution type and its parameters. Result is cached as
-     * long as the parameters do not change.
+     * Gets the probability for the set distribution type and its parameters.
+     * Result is cached as long as the parameters do not change.
      *
      * @return (Cached) proability result.
      */

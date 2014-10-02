@@ -18,57 +18,40 @@ import static org.junit.Assert.*;
  * @author Ben
  */
 public class SingleValueTest {
+
     Random rand = new Random();
-    
-    public SingleValueTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
 
     /**
-     * Test of getValue method, of class SingleValue.\
-     * Testing 10 times w/ random values whether all is good
+     * Test of getValue method, of class SingleValue.\ Testing 10 times w/
+     * random values whether all is good
      */
     @Test
     public void testGetValue() {
         //testing w/o value provided, setting it to 0
         System.out.println("getValue");
         SingleValue instance = new SingleValue();
-        assertEquals("Instance should have value of 0",0.00,instance.getValue(),0.00);
-        
+        assertEquals("Instance should have value of 0", 0.00, instance.getValue(), 0.00);
+
         //testing w/ value provided
-        SingleValue instance2 = new SingleValue();//to make NB shut up
+        SingleValue instance2;
         for (int i = 0; i < 10; i++) {
             double testValue = rand.nextDouble();
-            instance2 = new SingleValue(testValue);
-            assertEquals("Instance should have value of "+testValue,testValue,instance2.getValue(),0.00);
+            instance2 = new SingleValue();
+            instance2.setValue(testValue);
+            assertEquals("Instance should have value of " + testValue, testValue, instance2.getValue(), 0.00);
         }
     }
 
     /**
-     * Test of getMin method, of class SingleValue.
-     * In singleValue, min=max=value
+     * Test of getMin method, of class SingleValue. In singleValue,
+     * min=max=value
      */
     @Test
     public void testGetMin() {
         System.out.println("getMin");
         double testValue = rand.nextDouble();
         SingleValue instance = new SingleValue(testValue);
-        assertEquals("Min should be equal to max, equal to value "+testValue,instance.getValue(),instance.getMin(),0.00001);
+        assertEquals("Min should be equal to max, equal to value " + testValue, instance.getValue(), instance.getMin(), 0.00001);
     }
 
     /**
@@ -79,7 +62,7 @@ public class SingleValueTest {
         System.out.println("getMax");
         double testValue = rand.nextDouble();
         SingleValue instance = new SingleValue(testValue);
-        assertEquals("Max should be equal to min and equal to value "+testValue,instance.getValue(),instance.getMax(),0.00001);
+        assertEquals("Max should be equal to min and equal to value " + testValue, instance.getValue(), instance.getMax(), 0.00001);
     }
-    
+
 }

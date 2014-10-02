@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Location implements Serializable {
 
     private Continents continent;
-    private String country;
+    private CountryCode country;
     private String state;
     private String town;
     private String postcode;
@@ -31,25 +31,25 @@ public class Location implements Serializable {
         this.longitude = longitude;
     }
 
-    public Location(Continents continent, String country) {
+    public Location(Continents continent, CountryCode country) {
         this.continent = continent;
         this.country = country;
     }
 
-    public Location(Continents continent, String country, float latitude, float longitude) {
+    public Location(Continents continent, CountryCode country, float latitude, float longitude) {
         this.continent = continent;
         this.country = country;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public Location(Continents continent, String country, String state) {
+    public Location(Continents continent, CountryCode country, String state) {
         this.continent = continent;
         this.country = country;
         this.state = state;
     }
 
-    public Location(Continents continent, String country, String state, float latitude, float longitude) {
+    public Location(Continents continent, CountryCode country, String state, float latitude, float longitude) {
         this.continent = continent;
         this.country = country;
         this.state = state;
@@ -57,14 +57,14 @@ public class Location implements Serializable {
         this.longitude = longitude;
     }
 
-    public Location(Continents continent, String country, String state, String town) {
+    public Location(Continents continent, CountryCode country, String state, String town) {
         this.continent = continent;
         this.country = country;
         this.state = state;
         this.town = town;
     }
 
-    public Location(Continents continent, String country, String state, String town, float latitude, float longitude) {
+    public Location(Continents continent, CountryCode country, String state, String town, float latitude, float longitude) {
         this.continent = continent;
         this.country = country;
         this.state = state;
@@ -73,7 +73,7 @@ public class Location implements Serializable {
         this.longitude = longitude;
     }
 
-    public Location(Continents continent, String country, String state, String town, String postcode) {
+    public Location(Continents continent, CountryCode country, String state, String town, String postcode) {
         this.continent = continent;
         this.country = country;
         this.state = state;
@@ -81,7 +81,7 @@ public class Location implements Serializable {
         this.postcode = postcode;
     }
 
-    public Location(Continents continent, String country, String state, String town, String postcode, float latitude, float longitude) {
+    public Location(Continents continent, CountryCode country, String state, String town, String postcode, float latitude, float longitude) {
         this.continent = continent;
         this.country = country;
         this.state = state;
@@ -91,27 +91,27 @@ public class Location implements Serializable {
         this.longitude = longitude;
     }
 
-    public Location(Continents continent, String country, String state, String town, String postcode, String street) {
-        this.continent = continent;
-        this.country = country;
-        this.state = state;
-        this.town = town;
-        this.postcode = postcode;
-        this.street = street;
-    }
-
-    public Location(Continents continent, String country, String state, String town, String postcode, String street, float latitude, float longitude) {
+    public Location(Continents continent, CountryCode country, String state, String town, String postcode, String street) {
         this.continent = continent;
         this.country = country;
         this.state = state;
         this.town = town;
         this.postcode = postcode;
         this.street = street;
+    }
+
+    public Location(Continents continent, CountryCode country, String state, String town, String postcode, String street, float latitude, float longitude) {
+        this.continent = continent;
+        this.country = country;
+        this.state = state;
+        this.town = town;
+        this.postcode = postcode;
+        this.street = street;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public Location(Continents continent, String country, String state, String town, String postcode, String street, String housenumber) {
+    public Location(Continents continent, CountryCode country, String state, String town, String postcode, String street, String housenumber) {
         this.continent = continent;
         this.country = country;
         this.state = state;
@@ -121,7 +121,7 @@ public class Location implements Serializable {
         this.housenumber = housenumber;
     }
 
-    public Location(Continents continent, String country, String state, String town, String postcode, String street, String housenumber, float latitude, float longitude) {
+    public Location(Continents continent, CountryCode country, String state, String town, String postcode, String street, String housenumber, float latitude, float longitude) {
         this.continent = continent;
         this.country = country;
         this.state = state;
@@ -142,11 +142,11 @@ public class Location implements Serializable {
         this.continent = continent;
     }
 
-    public String getCountry() {
+    public CountryCode getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(CountryCode country) {
         this.country = country;
     }
 
