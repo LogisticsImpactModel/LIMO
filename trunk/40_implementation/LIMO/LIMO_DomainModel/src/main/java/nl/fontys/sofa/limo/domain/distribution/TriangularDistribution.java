@@ -20,6 +20,6 @@ public class TriangularDistribution extends DistributionType {
         double c = ((DoubleInputValue) inputValues.get("C")).getValue();
         double x0 = ((DoubleInputValue) inputValues.get("Lower Bound")).getValue();
         double x1 = ((DoubleInputValue) inputValues.get("Upper Bound")).getValue();
-        probabilityResultCache = new org.apache.commons.math3.distribution.TriangularDistribution(a, c, b).probability(x0, x1);
+        probabilityResultCache = new org.apache.commons.math3.distribution.TriangularDistribution(a, b, c).probability(x0, x1);
     }
 }
