@@ -115,7 +115,7 @@ public class OrientDBLegDAOTest extends NbTestCase {
         Leg leg = new Leg("1234");
         boolean updateSuccess = legDAO.update(leg);
         assertFalse(updateSuccess);
-        legDAO.insert(leg);
+        leg = legDAO.insert(leg);
         leg = legDAO.findById(leg.getId());
         leg.setIdentifier(newLegName);
         updateSuccess = legDAO.update(leg);
@@ -134,7 +134,7 @@ public class OrientDBLegDAOTest extends NbTestCase {
         deleteSuccess = legDAO.delete("798319203");
         assertFalse(deleteSuccess);
         Leg leg = new Leg("112233");
-        legDAO.insert(leg);
+        leg = legDAO.insert(leg);
         deleteSuccess = legDAO.delete(leg.getId());
         assertTrue(deleteSuccess);
     }
