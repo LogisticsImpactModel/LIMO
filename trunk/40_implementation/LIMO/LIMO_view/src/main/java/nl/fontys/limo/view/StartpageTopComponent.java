@@ -67,12 +67,15 @@ public final class StartpageTopComponent extends TopComponent {
 
     setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 100, 75, 100));
     setDisplayName(org.openide.util.NbBundle.getMessage(StartpageTopComponent.class, "StartpageTopComponent.displayName")); // NOI18N
+    setMaximumSize(new java.awt.Dimension(10000, 5000));
+    setMinimumSize(new java.awt.Dimension(1000, 500));
     setName("Startpage"); // NOI18N
+    setPreferredSize(new java.awt.Dimension(10000, 500));
     setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
 
     jPanel1.setBackground(new java.awt.Color(0, 70, 70));
     jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true), javax.swing.BorderFactory.createEmptyBorder(15, 1, 1, 1)));
-    jPanel1.setMaximumSize(new java.awt.Dimension(32767, 75));
+    jPanel1.setMaximumSize(new java.awt.Dimension(10000, 75));
     jPanel1.setMinimumSize(new java.awt.Dimension(800, 75));
     jPanel1.setName(""); // NOI18N
     jPanel1.setPreferredSize(new java.awt.Dimension(10000, 75));
@@ -87,21 +90,23 @@ public final class StartpageTopComponent extends TopComponent {
     add(jPanel1);
 
     jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-    jPanel2.setMinimumSize(new java.awt.Dimension(10, 200));
-    jPanel2.setPreferredSize(new java.awt.Dimension(10, 200));
+    jPanel2.setMaximumSize(new java.awt.Dimension(10000, 300));
+    jPanel2.setMinimumSize(new java.awt.Dimension(1000, 300));
+    jPanel2.setPreferredSize(new java.awt.Dimension(10000, 300));
     jPanel2.setLayout(new java.awt.BorderLayout());
 
     jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
     jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/nl/fontys/limo/view/image/logo.png"))); // NOI18N
     org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(StartpageTopComponent.class, "StartpageTopComponent.jLabel2.text")); // NOI18N
     jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 25));
-    jLabel2.setMaximumSize(new java.awt.Dimension(300, 300));
-    jLabel2.setMinimumSize(new java.awt.Dimension(300, 300));
-    jLabel2.setPreferredSize(new java.awt.Dimension(300, 200));
+    jLabel2.setMaximumSize(new java.awt.Dimension(5000, 300));
+    jLabel2.setMinimumSize(new java.awt.Dimension(400, 300));
+    jLabel2.setPreferredSize(new java.awt.Dimension(400, 300));
     jPanel2.add(jLabel2, java.awt.BorderLayout.CENTER);
 
     jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-    jPanel4.setMinimumSize(new java.awt.Dimension(300, 300));
+    jPanel4.setMaximumSize(new java.awt.Dimension(5000, 300));
+    jPanel4.setMinimumSize(new java.awt.Dimension(200, 300));
     jPanel4.setPreferredSize(new java.awt.Dimension(200, 300));
     jPanel2.add(jPanel4, java.awt.BorderLayout.LINE_START);
 
@@ -109,8 +114,9 @@ public final class StartpageTopComponent extends TopComponent {
 
     jPanel3.setBackground(new java.awt.Color(0, 134, 136));
     jPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
-    jPanel3.setMinimumSize(new java.awt.Dimension(10, 25));
-    jPanel3.setPreferredSize(new java.awt.Dimension(10, 25));
+    jPanel3.setMaximumSize(new java.awt.Dimension(10000, 40));
+    jPanel3.setMinimumSize(new java.awt.Dimension(800, 40));
+    jPanel3.setPreferredSize(new java.awt.Dimension(10000, 40));
     add(jPanel3);
   }// </editor-fold>//GEN-END:initComponents
 

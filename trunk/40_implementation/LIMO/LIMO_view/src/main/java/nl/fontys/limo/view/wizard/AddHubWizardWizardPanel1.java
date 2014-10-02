@@ -9,22 +9,22 @@ import javax.swing.event.ChangeListener;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
-public class AddMasterDataWizardPanel2 implements WizardDescriptor.Panel<WizardDescriptor> {
+public class AddHubWizardWizardPanel1 implements WizardDescriptor.Panel<WizardDescriptor> {
 
 	/**
 	 * The visual component that displays this panel. If you need to access the
 	 * component from this class, just use getComponent().
 	 */
-	private AddMasterDataVisualPanel2 component;
+	private AddHubWizardVisualPanel1 component;
 
     // Get the visual component for the panel. In this template, the component
 	// is kept separate. This can be more efficient: if the wizard is created
 	// but never displayed, or not all panels are displayed, it is better to
 	// create only those which really need to be visible.
 	@Override
-	public AddMasterDataVisualPanel2 getComponent() {
+	public AddHubWizardVisualPanel1 getComponent() {
 		if (component == null) {
-			component = new AddMasterDataVisualPanel2();
+			component = new AddHubWizardVisualPanel1();
 		}
 		return component;
 	}
@@ -62,7 +62,9 @@ public class AddMasterDataWizardPanel2 implements WizardDescriptor.Panel<WizardD
 
 	@Override
 	public void storeSettings(WizardDescriptor wiz) {
-		// use wiz.putProperty to remember current panel state
+		wiz.putProperty("hubType", (String)getComponent().getHubType().getSelectedItem());
+		wiz.putProperty("hubName", getComponent().getHubName().getText());
+		wiz.putProperty("hubLocation", getComponent().getHubLocation().getText());
 	}
 
 }

@@ -2,9 +2,7 @@ package nl.fontys.limo.test.functional.masterdata;
 
 import junit.framework.Test;
 import org.netbeans.jellytools.JellyTestCase;
-import org.netbeans.jellytools.NbDialogOperator;
 import org.netbeans.jellytools.WizardOperator;
-import org.netbeans.jellytools.actions.Action;
 import org.netbeans.jellytools.actions.ActionNoBlock;
 import org.netbeans.junit.NbModuleSuite;
 import org.netbeans.junit.NbModuleSuite.Configuration;
@@ -43,7 +41,7 @@ public class AddMasterDataTest extends JellyTestCase {
 			System.out.println("Opening a wizard");
 			new ActionNoBlock("Data|Add Master Data", null).perform();
 			WizardOperator wo = new WizardOperator("Add Master Data");
-			assertEquals("Title should be Add Master Data", "Add Master Data", wo.getTitle());
+			assertEquals("Title should be Add Hub", "Add Hub", wo.getTitle());
     }
 
 }
