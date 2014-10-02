@@ -55,10 +55,16 @@ public class Hub extends Component {
 
     public void setInputLeg(Leg inputLeg) {
         this.inputLeg = inputLeg;
+        if (inputLeg.getStartHub() == null || !inputLeg.getEndHub().equals(this)) {
+            inputLeg.setEndHub(this);
+        }
     }
 
     public void setOutputLeg(Leg outputLeg) {
         this.outputLeg = outputLeg;
+        if (outputLeg.getStartHub() == null || !outputLeg.getStartHub().equals(this)) {
+            outputLeg.setStartHub(this);
+        }
     }
     // </editor-fold>
 }
