@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.orientdb.database;
 
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.io.File;
 import nl.fontys.sofa.limo.api.database.AbstractDBServer;
 import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.domain.value.SingleValue;
 
 public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
 
@@ -22,15 +16,15 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
         return instance;
     }
 
-    public OrientDBAccess() {
+    protected OrientDBAccess() {
         connection = new OObjectDatabaseTx(getDatabaseURL());
 
         if (!connection.exists()) {
             connection.create();
-            
+
             connection.getEntityManager().registerEntityClasses(BaseEntity.class.getPackage().getName());
         }
-        
+
         if (connection.isClosed()) {
             connection.open("admin", "admin");
         }
