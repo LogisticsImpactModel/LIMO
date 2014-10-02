@@ -13,24 +13,24 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
 import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
+import org.openide.util.ImageUtilities;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
- @ActionID(category="MasterData", id="nl.fontys.limo.view.wizard.AddMasterDataWizardAction")
- @ActionRegistration(displayName="Add Master Data")
- @ActionReference(path="Menu/Data", position=10)
-public final class AddMasterDataWizardAction implements ActionListener {
+@ActionID(category="MasterData", id="nl.fontys.limo.view.wizard.AddHubWizardWizardAction")
+@ActionRegistration(displayName="Add Hub")
+@ActionReference(path="Menu/Data", position=10)
+public final class AddHubWizardWizardAction implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
-		panels.add(new AddMasterDataWizardPanel1());
-		panels.add(new AddMasterDataWizardPanel2());
+		panels.add(new AddHubWizardWizardPanel1());
+		panels.add(new AddHubWizardWizardPanel2());
 		String[] steps = new String[panels.size()];
 		for (int i = 0; i < panels.size(); i++) {
 			Component c = panels.get(i).getComponent();
@@ -47,11 +47,12 @@ public final class AddMasterDataWizardAction implements ActionListener {
 		}
 		WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
 		// {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
-		wiz.setTitleFormat(new MessageFormat("Add Master Data"));
-		wiz.setTitle("Add Master Data");
+		wiz.setTitleFormat(new MessageFormat("{0}"));
+		wiz.setTitle("Add Hub");
+		wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("/nl/fontys/limo/view/image/logo_small.png", true));
 		if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-			String masterDataType = (String) wiz.getProperty("masterDataType");
-    	DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(masterDataType));
+			String name = (String) wiz.getProperty("hubName");
+			String location = (String) wiz.getProperty("hubLocation");
 		}
 	}
 
