@@ -39,9 +39,9 @@ public class AddMasterDataTest extends JellyTestCase {
     /** Test opening a wizard. */
     public void openWizard() throws InterruptedException {
 			System.out.println("Opening a wizard");
-//			new ActionNoBlock("Data|Add Master Data", null).perform();
-//			WizardOperator wo = new WizardOperator("Add Master Data");
-//			assertEquals("Title should be Add Hub", "Add Hub", wo.getTitle());
+			new ActionNoBlock("Data|Add Master Data", null).perform();
+			WizardOperator wo = new WizardOperator("Add Master Data");
+			assertEquals("Title should be Add Hub", "Add Hub", wo.getTitle());
     }
 
 }
