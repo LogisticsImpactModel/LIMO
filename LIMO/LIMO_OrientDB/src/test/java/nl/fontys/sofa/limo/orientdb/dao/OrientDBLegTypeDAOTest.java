@@ -10,36 +10,20 @@ import java.util.List;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
 import nl.fontys.sofa.limo.domain.Entry;
 import nl.fontys.sofa.limo.domain.Icon;
-import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.domain.types.LegType;
-import nl.fontys.sofa.limo.domain.value.Value;
 import nl.fontys.sofa.limo.orientdb.mock.MockOrientDBAccess;
 import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.netbeans.junit.NbTestCase;
 
-/**
- *
- * @author lnx
- */
 public class OrientDBLegTypeDAOTest extends NbTestCase {
 
     private LegTypeDAO legTypeDAO;
 
     public OrientDBLegTypeDAOTest(String testCase) {
         super(testCase);
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
     }
 
     @Before
