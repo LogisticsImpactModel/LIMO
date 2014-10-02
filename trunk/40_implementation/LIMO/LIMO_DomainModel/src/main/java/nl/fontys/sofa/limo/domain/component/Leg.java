@@ -23,6 +23,9 @@ public class Leg extends Component {
 
     public void setStartHub(Hub startHub) {
         this.startHub = startHub;
+        if (startHub.getInputLeg() == null || !startHub.getOutputLeg().equals(this)) {
+            startHub.setOutputLeg(this);
+        }
     }
 
     public Hub getEndHub() {
@@ -31,6 +34,9 @@ public class Leg extends Component {
 
     public void setEndHub(Hub endHub) {
         this.endHub = endHub;
+        if (endHub.getInputLeg() == null || !endHub.getInputLeg().equals(this)) {
+            endHub.setInputLeg(this);
+        }
     }
 
     public Actor getActor() {
