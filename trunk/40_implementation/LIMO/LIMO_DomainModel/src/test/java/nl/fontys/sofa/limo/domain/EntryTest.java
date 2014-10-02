@@ -7,9 +7,7 @@ package nl.fontys.sofa.limo.domain;
 
 import nl.fontys.sofa.limo.domain.value.*;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,26 +16,26 @@ import static org.junit.Assert.*;
  * @author Ben
  */
 public class EntryTest {
-    Entry entry;
-    Entry entry2;
+
+    Entry entry, entry2, entry3;
     String entryName = "nameTest";
     String entryCat = "catTest";
     Value entryVal;
     double entryValVal = 10.00;
-    public EntryTest() {
-    }
-        
+
     @Before
     public void setUp() {
         entryVal = new SingleValue(entryValVal);
-        entry = new Entry(entryName,entryCat,entryVal);
-        entry2 = new Entry(entryName,entryCat);
+        entry = new Entry(entryName, entryCat, entryVal);
+        entry2 = new Entry(entryName, entryCat);
+        entry3 = new Entry();
     }
-    
+
     @After
     public void tearDown() {
         entry = null;
         entry2 = null;
+        entry3 = null;
     }
 
     /**
@@ -46,8 +44,8 @@ public class EntryTest {
     @Test
     public void testGetName() {
         System.out.println("getName");
-        assertEquals(entry2.getName(),this.entryName);
-        assertEquals(entry.getName(),this.entryName);
+        assertEquals(entry2.getName(), this.entryName);
+        assertEquals(entry.getName(), this.entryName);
     }
 
     /**
@@ -58,7 +56,7 @@ public class EntryTest {
         System.out.println("setName");
         String newName = "Test2";
         entry.setName(newName);
-        assertEquals(entry.getName(),newName);
+        assertEquals(entry.getName(), newName);
     }
 
     /**
@@ -89,7 +87,7 @@ public class EntryTest {
     @Test
     public void testGetValue() {
         System.out.println("getValue");
-        assertEquals(entry.getValue().getValue(),this.entryValVal,0.001);
+        assertEquals(entry.getValue().getValue(), this.entryValVal, 0.001);
     }
 
     /**
@@ -100,7 +98,7 @@ public class EntryTest {
         System.out.println("setValue");
         entryVal = new SingleValue(11.0);
         entry.setValue(entryVal);
-        assertEquals(entry.getValue().getValue(),entryVal.getValue(),0.001);
+        assertEquals(entry.getValue().getValue(), entryVal.getValue(), 0.001);
     }
-    
+
 }
