@@ -5,9 +5,16 @@
  */
 package nl.fontys.limo.view;
 
+import java.awt.BorderLayout;
+import nl.fontys.limo.view.factory.CostCategoryFactory;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.explorer.ExplorerManager;
+import org.openide.explorer.view.OutlineView;
+import org.openide.nodes.AbstractNode;
+import org.openide.nodes.Children;
+import org.openide.nodes.Node;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
@@ -32,16 +39,35 @@ import org.openide.util.NbBundle.Messages;
 )
 @Messages({
 	"CTL_CategoryAction=Category",
-	"CTL_CategoryTopComponent=Category Window",
-	"HINT_CategoryTopComponent=This is a Category window"
+	"CTL_CategoryTopComponent=Category Overview",
+	"HINT_CategoryTopComponent=Manage your categories"
 })
-public final class CategoryTopComponent extends TopComponent {
+public final class CategoryTopComponent extends TopComponent implements 
+				ExplorerManager.Provider{
+	private final ExplorerManager em;
 
 	public CategoryTopComponent() {
 		initComponents();
 		setName(Bundle.CTL_CategoryTopComponent());
 		setToolTipText(Bundle.HINT_CategoryTopComponent());
+		em = new ExplorerManager();
+		em.getRootContext().setDisplayName("Cost and Time Categories");
+		setName(Bundle.CTL_CategoryTopComponent());
+		setToolTipText(Bundle.HINT_CategoryTopComponent());
+		OutlineView ov = new OutlineView("Categories");
+		ov.setPropertyColumns("identifier", "Name");
+		ov.getOutline().setRootVisible(false);
+//		add(new IconView(), BorderLayout.EAST);
+		add(ov, BorderLayout.CENTER);
+		Children costCategoryChildren = Children.create(new CostCategoryFactory(), true);
+		Node rootNode = new AbstractNode(costCategoryChildren);
+		rootNode.setDisplayName("Category");
+		em.setRootContext(rootNode);
+	}
 
+	@Override
+	public ExplorerManager getExplorerManager() {
+		return em;
 	}
 
 	/**
@@ -52,16 +78,7 @@ public final class CategoryTopComponent extends TopComponent {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-    this.setLayout(layout);
-    layout.setHorizontalGroup(
-      layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 400, Short.MAX_VALUE)
-    );
-    layout.setVerticalGroup(
-      layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 300, Short.MAX_VALUE)
-    );
+    setLayout(new java.awt.BorderLayout());
   }// </editor-fold>//GEN-END:initComponents
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -87,4 +104,5 @@ public final class CategoryTopComponent extends TopComponent {
 		String version = p.getProperty("version");
 		// TODO read your settings according to their version
 	}
+
 }
