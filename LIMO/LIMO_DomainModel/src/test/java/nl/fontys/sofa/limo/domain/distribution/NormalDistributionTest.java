@@ -48,10 +48,10 @@ public class NormalDistributionTest {
     public void testCalculateProbability() {
         System.out.println("calculateProbability");
         NormalDistribution instance = new NormalDistribution();
-        instance.setParameter("Mean",5.00);
-        instance.setParameter("Standard Deviation",1.00);
-        instance.setParameter("Lower Bound",4.00);
-        instance.setParameter("Upper Bound",6.00);
+        instance.setInputValue("Mean",5.00);
+        instance.setInputValue("Standard Deviation",1.00);
+        instance.setInputValue("Lower Bound",4.00);
+        instance.setInputValue("Upper Bound",6.00);
         System.out.println("Probability is: "+instance.getProbability());
         assertEquals(0.682689492137086,instance.getProbability(),0.0000000001);
     }

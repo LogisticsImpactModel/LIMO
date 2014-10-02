@@ -1,97 +1,105 @@
 package nl.fontys.sofa.limo.domain.distribution;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import nl.fontys.sofa.limo.domain.distribution.input.InputValue;
 
 public abstract class DistributionType implements Serializable {
 
-    protected ArrayList<String> parameterNames;
-    protected ArrayList<Number> parameters;
-    protected ArrayList<Class<?>> parameterTypes; // PROBLEM -> Change to custom number class object
+    protected Map<String, InputValue> inputValues;
 
     /**
      * For caching only!
      */
     protected transient Double probabilityResultCache = null;
 
-    public DistributionType(Map.Entry<String, Class<?>>... parameterTypes) {
-        this.parameters = new ArrayList<>();
-        this.parameterNames = new ArrayList<>();
-        this.parameterTypes = new ArrayList<>();
-        for (Map.Entry<String, Class<?>> entry : parameterTypes) {
-            this.parameterNames.add(entry.getKey());
-            this.parameterTypes.add(entry.getValue());
-            try {
-                this.parameters.add((Number) entry.getValue().getConstructors()[0].newInstance(0));
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                Logger.getLogger(DistributionType.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    public DistributionType(InputValue... inputValues) {
+        this.inputValues = new HashMap<>();
+        for (InputValue iv : inputValues) {
+            this.inputValues.put(iv.getName(), iv);
         }
-    }
-
-    public Map<String, Class<?>> getParameterTypesWithIdentifiers() {
-        HashMap<String, Class<?>> typeMap = new HashMap<>();
-        for (int i = 0; i < parameterNames.size(); i++) {
-            typeMap.put(parameterNames.get(i), parameterTypes.get(i));
-        }
-        return typeMap;
-    }
-
-    public void setParameter(String name, Number value) {
-        int position = parameterNames.indexOf(name);
-        if (position == -1) {
-            return;
-        }
-        parameters.set(position, value);
-        this.probabilityResultCache = null;
-    }
-
-    public void setParametersUsingIdentifiers(Map<String, Number> parameters) {
-        for (Map.Entry<String, Number> entry : parameters.entrySet()) {
-            int position = parameterNames.indexOf(entry.getKey());
-            if (position != -1) {
-                this.parameters.set(position, entry.getValue());
-            }
-        }
-        this.probabilityResultCache = null;
-    }
-    
-    public int getNumberOfParameters(){
-        return parameterNames.size();
-    }
-
-    public ArrayList<String> getParameterNames() {
-        return parameterNames;
-    }
-
-    public void setParameterNames(ArrayList<String> parameterNames) {
-        this.parameterNames = parameterNames;
-    }
-
-    public ArrayList<Number> getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(ArrayList<Number> parameters) {
-        this.parameters = parameters;
-    }
-
-    public ArrayList<Class<?>> getParameterTypes() {
-        return parameterTypes;
-    }
-
-    public void setParameterTypes(ArrayList<Class<?>> parameterTypes) {
-        this.parameterTypes = parameterTypes;
     }
 
     /**
-     *
+     * FOR ORIENTDB USE ONLY! USE OTHER METHODS TO GET INFORMATION!
      * @return
+     */
+    public Map<String, InputValue> getInputValues() {
+        return inputValues;
+    }
+
+    /**
+     * FOR ORIENTDB USE ONLY! USE OTHER METHODS TO PUT IN VALUES!
+     * @param inputValues 
+     */
+    public void setInputValues(Map<String, InputValue> inputValues) {
+        this.inputValues = inputValues;
+        this.probabilityResultCache = null;
+    }
+    
+    /**
+     * Gets the input type for a given input value.
+     * @param name Name of input value.
+     * @return Type of input value. NULL if not known.
+     */
+    public Class<Number> getInputValueType(String name) {
+        if (!this.inputValues.containsKey(name))
+            return null;
+        
+        return this.inputValues.get(name).getValueType();
+    }
+    
+    /**
+     * Gets the value for a given input value.
+     * @param name Name of input value.
+     * @return Value of input value. NULL if not known.
+     */
+    public Number getInputValue(String name) {
+        if (!this.inputValues.containsKey(name))
+            return null;
+        
+        return this.inputValues.get(name).getValue();
+    }
+    
+    /**
+     * Gets the available input values for the distribution type.
+     * @return Names of all available input values.
+     */
+    public List<String> getInputValueNames() {
+        return new ArrayList<>(this.inputValues.keySet());
+    }
+    
+    /**
+     * Sets the value for the input value with the given name. Unknown input values are ignored.
+     * @param name Name of input value to set.
+     * @param value New value of input value.
+     */
+    public void setInputValue(String name, Number value) {
+        if (!this.inputValues.containsKey(name))
+            return;
+        
+        this.inputValues.get(name).setValue(value);
+        this.probabilityResultCache = null;
+    }
+    
+    /**
+     * Sets the values for the input values with the given names. Unknown input values are ignored.
+     * @param inputValues Map of input value names and their new values.
+     */
+    public void setInputValueMap(Map<String, Number> inputValues) {
+        for (Map.Entry<String, Number> entry : inputValues.entrySet()) {
+            setInputValue(entry.getKey(), entry.getValue());
+        }
+    }
+
+    /**
+     * Gets the probability for the set distribution type and its parameters. Result is cached as
+     * long as the parameters do not change.
+     *
+     * @return (Cached) proability result.
      */
     public double getProbability() {
         if (this.probabilityResultCache == null) {
