@@ -20,6 +20,13 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <extensions>true</extensions>
+                <configuration>
+                    <publicPackages>
+                        <publicPackage>nl.fontys.sofa.limo.orientdb.dao</publicPackage>
+                        <publicPackage>nl.fontys.sofa.limo.orientdb.database</publicPackage>
+                        <publicPackage>nl.fontys.sofa.limo.orientdb.mock</publicPackage>
+                    </publicPackages>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
