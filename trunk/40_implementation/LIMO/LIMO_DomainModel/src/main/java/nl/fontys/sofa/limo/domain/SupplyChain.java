@@ -1,10 +1,20 @@
-package nl.fontys.sofa.limo.domain.component;
+package nl.fontys.sofa.limo.domain;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import nl.fontys.sofa.limo.domain.Actor;
+import nl.fontys.sofa.limo.domain.component.Hub;
+import nl.fontys.sofa.limo.domain.component.Leg;
 
 public class SupplyChain implements Serializable {
 
@@ -100,5 +110,47 @@ public class SupplyChain implements Serializable {
         ArrayList<Actor> actors = new ArrayList<>();
         actors.addAll(map.keySet());
         return actors;
+    }
+    
+    /**
+     * Opens the file at given path and tries to deserialize into a supply chain object.
+     * @param filepath Path to serialized supply chain object.
+     * @return SupplyChain in file. NULL if not possible to deserialize.
+     */
+    public static SupplyChain createFromFile(String filepath) {
+        SupplyChain supplyChain = null;
+        try {
+            FileInputStream fin = new FileInputStream(filepath);
+            ObjectInputStream oin = new ObjectInputStream(fin);
+            supplyChain = (SupplyChain) oin.readObject();
+            oin.close();
+            fin.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SupplyChain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(SupplyChain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return supplyChain;
+    }
+    
+    /**
+     * Saves the given supply chain to the given file path.
+     * @param supplyChain SupplyChain to serialize.
+     * @param filepath Path to where the serialized object should be saved.
+     */
+    public static void saveToFile(SupplyChain supplyChain, String filepath) {
+        try {
+            FileOutputStream fos = new FileOutputStream(filepath);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(supplyChain);
+            oos.close();
+            fos.close();
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SupplyChain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(SupplyChain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }
