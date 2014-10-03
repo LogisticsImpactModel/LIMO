@@ -14,36 +14,37 @@ import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
 /**
- * Top component which displays the cost categories.
+ * Top component which displays the time categories.
  */
 @ConvertAsProperties(
-				dtd = "-//nl.fontys.limo.view//Category//EN",
+				dtd = "-//nl.fontys.limo.view//TimeCategory//EN",
 				autostore = false
 )
 @TopComponent.Description(
-				preferredID = "CategoryTopComponent",
+				preferredID = "TimeCategoryTopComponent",
 				//iconBase="SET/PATH/TO/ICON/HERE", 
 				persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
-@ActionID(category = "Window", id = "nl.fontys.limo.view.CategoryTopComponent")
-@ActionReference(path = "Menu/Data/Categories" , position = 10 )
+@ActionID(category = "Window", id = "nl.fontys.limo.view.TimeCategoryTopComponent")
+@ActionReference(path = "Menu/Data/Categories" /*, position = 333 */)
 @TopComponent.OpenActionRegistration(
-				displayName = "#CTL_CategoryAction",
-				preferredID = "CategoryTopComponent"
+				displayName = "#CTL_TimeCategoryAction",
+				preferredID = "TimeCategoryTopComponent"
 )
 @Messages({
-	"CTL_CategoryAction=Cost Category",
-	"CTL_CategoryTopComponent=Category Window",
-	"HINT_CategoryTopComponent=Manage cost categories"
+	"CTL_TimeCategoryAction=Time Category",
+	"CTL_TimeCategoryTopComponent=TimeCategory Window",
+	"HINT_TimeCategoryTopComponent=Manage time categories"
 })
-public final class CostCategoryTopComponent extends TopComponent implements ExplorerManager.Provider{
+public final class TimeCategoryTopComponent extends TopComponent implements ExplorerManager.Provider{
 	private ExplorerManager em;
 
-	public CostCategoryTopComponent() {
+	public TimeCategoryTopComponent() {
 		initComponents();
-		setName(Bundle.CTL_CategoryTopComponent());
-		setToolTipText(Bundle.HINT_CategoryTopComponent());
+		setName(Bundle.CTL_TimeCategoryTopComponent());
+		setToolTipText(Bundle.HINT_TimeCategoryTopComponent());
+
 		em = new ExplorerManager();
 		OutlineView ov = new OutlineView("Categories");
 		ov.setPropertyColumns("description", "Description");
@@ -51,15 +52,16 @@ public final class CostCategoryTopComponent extends TopComponent implements Expl
 		add(ov, BorderLayout.CENTER);
 		Children costCategoryChildren = Children.create(new CostCategoryChildFactory(), true);
 		Node rootNode = new AbstractNode(costCategoryChildren);
-		rootNode.setDisplayName("Categories");
+		rootNode.setDisplayName("Time Categories");
 		em.setRootContext(rootNode);
+
 	}
 
 	@Override
 	public ExplorerManager getExplorerManager() {
 		return em;
 	}
-	
+
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,6 +77,7 @@ public final class CostCategoryTopComponent extends TopComponent implements Expl
   // End of variables declaration//GEN-END:variables
 	@Override
 	public void componentOpened() {
+		// TODO add custom code on component opening
 	}
 
 	@Override
