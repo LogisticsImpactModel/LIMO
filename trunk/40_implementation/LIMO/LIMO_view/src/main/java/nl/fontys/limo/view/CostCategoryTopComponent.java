@@ -5,9 +5,17 @@
  */
 package nl.fontys.limo.view;
 
+import java.awt.BorderLayout;
+import nl.fontys.limo.view.factory.CostCategoryChildFactory;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.explorer.ExplorerManager;
+import org.openide.explorer.view.BeanTreeView;
+import org.openide.explorer.view.OutlineView;
+import org.openide.nodes.AbstractNode;
+import org.openide.nodes.Children;
+import org.openide.nodes.Node;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
@@ -25,7 +33,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.limo.view.CategoryTopComponent")
-@ActionReference(path = "Menu/Window" /*, position = 333 */)
+@ActionReference(path = "Menu/Data/Categories/Costs" , position = 10 )
 @TopComponent.OpenActionRegistration(
 				displayName = "#CTL_CategoryAction",
 				preferredID = "CategoryTopComponent"
@@ -33,17 +41,31 @@ import org.openide.util.NbBundle.Messages;
 @Messages({
 	"CTL_CategoryAction=Category",
 	"CTL_CategoryTopComponent=Category Window",
-	"HINT_CategoryTopComponent=This is a Category window"
+	"HINT_CategoryTopComponent=Manage cost categories"
 })
-public final class CategoryTopComponent extends TopComponent {
+public final class CostCategoryTopComponent extends TopComponent implements ExplorerManager.Provider{
+	private ExplorerManager em;
 
-	public CategoryTopComponent() {
+	public CostCategoryTopComponent() {
 		initComponents();
 		setName(Bundle.CTL_CategoryTopComponent());
 		setToolTipText(Bundle.HINT_CategoryTopComponent());
-
+		em = new ExplorerManager();
+		OutlineView ov = new OutlineView("Categories");
+		ov.setPropertyColumns("description", "Description");
+		ov.getOutline().setRootVisible(false);
+		add(ov, BorderLayout.CENTER);
+		Children costCategoryChildren = Children.create(new CostCategoryChildFactory(), true);
+		Node rootNode = new AbstractNode(costCategoryChildren);
+		rootNode.setDisplayName("Categories");
+		em.setRootContext(rootNode);
 	}
 
+	@Override
+	public ExplorerManager getExplorerManager() {
+		return em;
+	}
+	
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,23 +74,13 @@ public final class CategoryTopComponent extends TopComponent {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-    this.setLayout(layout);
-    layout.setHorizontalGroup(
-      layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 400, Short.MAX_VALUE)
-    );
-    layout.setVerticalGroup(
-      layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 300, Short.MAX_VALUE)
-    );
+    setLayout(new java.awt.BorderLayout());
   }// </editor-fold>//GEN-END:initComponents
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   // End of variables declaration//GEN-END:variables
 	@Override
 	public void componentOpened() {
-		// TODO add custom code on component opening
 	}
 
 	@Override
@@ -87,4 +99,5 @@ public final class CategoryTopComponent extends TopComponent {
 		String version = p.getProperty("version");
 		// TODO read your settings according to their version
 	}
+
 }
