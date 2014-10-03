@@ -34,7 +34,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @Messages({
 	"CTL_CategoryAction=Cost Category",
-	"CTL_CategoryTopComponent=Category Window",
+	"CTL_CategoryTopComponent=Cost Categories",
 	"HINT_CategoryTopComponent=Manage cost categories"
 })
 public final class CostCategoryTopComponent extends TopComponent implements ExplorerManager.Provider{

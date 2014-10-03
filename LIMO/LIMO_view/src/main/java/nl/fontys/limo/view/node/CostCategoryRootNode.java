@@ -36,7 +36,7 @@ public class CostCategoryRootNode extends AbstractNode{
 
 			@Override
 			public String getName() {
-				return "CostCategory";
+				return "Cost Category";
 			}
 
 			@Override

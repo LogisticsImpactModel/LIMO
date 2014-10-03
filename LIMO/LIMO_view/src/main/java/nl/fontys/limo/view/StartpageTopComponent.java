@@ -76,7 +76,7 @@ public final class StartpageTopComponent extends TopComponent {
         jPanel1.setRequestFocusEnabled(false);
 
         jLabel1.setFont(new java.awt.Font("DejaVu Serif", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+    jLabel1.setForeground(new java.awt.Color(255, 65, 0));
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(StartpageTopComponent.class, "StartpageTopComponent.jLabel1.text")); // NOI18N
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(jLabel1);
@@ -107,7 +107,7 @@ public final class StartpageTopComponent extends TopComponent {
         add(jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(0, 134, 136));
-        jPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
+    jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 65, 0), null));
         jPanel3.setMaximumSize(new java.awt.Dimension(10000, 40));
         jPanel3.setMinimumSize(new java.awt.Dimension(800, 40));
         jPanel3.setPreferredSize(new java.awt.Dimension(10000, 40));
