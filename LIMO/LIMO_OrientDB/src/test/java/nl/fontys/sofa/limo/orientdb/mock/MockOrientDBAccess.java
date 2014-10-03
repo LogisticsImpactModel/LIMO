@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.orientdb.mock;
 
+import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
 public final class MockOrientDBAccess extends OrientDBAccess {
@@ -24,6 +25,21 @@ public final class MockOrientDBAccess extends OrientDBAccess {
                 connection.drop();
             }
             super.closeConnection();
+        }
+    }
+
+    @Override
+    protected void checkConnection() {
+        if (connection == null) {
+            connection = new OObjectDatabaseTx(getDatabaseURL());
+        }
+
+        if (!connection.exists()) {
+            connection.create();
+        }
+
+        if (connection.isClosed()) {
+            connection.open("admin", "admin");
         }
     }
 

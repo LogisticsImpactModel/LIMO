@@ -39,10 +39,11 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
     protected void checkConnection() {
         if (connection == null) {
             connection = new OObjectDatabaseTx(getDatabaseURL());
-        }
 
-        if (!connection.exists()) {
-            connection.create();
+            if (!connection.exists()) {
+                connection.create();
+            }
+
         }
 
         if (connection.isClosed()) {

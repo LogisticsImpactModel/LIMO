@@ -6,6 +6,7 @@ public abstract class AbstractDBServer<S> implements DBServer<S> {
 
     @Override
     public S getConnection() {
+        checkConnection();
         return connection;
     }
 
