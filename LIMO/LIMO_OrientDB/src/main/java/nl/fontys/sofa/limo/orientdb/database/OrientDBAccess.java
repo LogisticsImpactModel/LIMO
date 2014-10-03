@@ -4,6 +4,7 @@ import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.io.File;
 import nl.fontys.sofa.limo.api.database.AbstractDBServer;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.domain.category.CostCategory;
 
 public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
 
@@ -22,7 +23,14 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
         if (!connection.exists()) {
             connection.create();
 
-            connection.getEntityManager().registerEntityClasses(BaseEntity.class.getPackage().getName());
+            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain");
+            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.category");
+            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.component");
+            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.distribution");
+            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.distribution.input");
+            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.location");
+            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.types");
+            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.value");
         }
 
         if (connection.isClosed()) {
