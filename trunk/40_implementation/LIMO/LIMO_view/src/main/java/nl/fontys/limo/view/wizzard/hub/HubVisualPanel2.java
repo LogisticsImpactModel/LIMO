@@ -35,19 +35,19 @@ public final class HubVisualPanel2 extends JPanel {
         lblPreview = new javax.swing.JLabel();
         btnSelect = new javax.swing.JButton();
         fc = new JFileChooser();
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+//        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         org.openide.awt.Mnemonics.setLocalizedText(lblName, org.openide.util.NbBundle.getMessage(HubVisualPanel2.class, "HubVisualPanel2.lblName.text_1")); // NOI18N
-        add(lblName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, 30));
+//        add(lblName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, 30));
 
         tfName.setText(org.openide.util.NbBundle.getMessage(HubVisualPanel2.class, "HubVisualPanel2.tfName.text_1")); // NOI18N
-        add(tfName, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 200, -1));
+//        add(tfName, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 200, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(lblIcon, org.openide.util.NbBundle.getMessage(HubVisualPanel2.class, "HubVisualPanel2.lblIcon.text_1")); // NOI18N
-        add(lblIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, 30));
+//        add(lblIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, 30));
 
         org.openide.awt.Mnemonics.setLocalizedText(lblPreview, org.openide.util.NbBundle.getMessage(HubVisualPanel2.class, "HubVisualPanel2.lblPreview.text_1")); // NOI18N
-        add(lblPreview, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 60, 60));
+//        add(lblPreview, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 60, 60));
 
         org.openide.awt.Mnemonics.setLocalizedText(btnSelect, org.openide.util.NbBundle.getMessage(HubVisualPanel2.class, "HubVisualPanel2.btnSelect.text_1")); // NOI18N
         btnSelect.addActionListener(new ActionListener() {
@@ -61,7 +61,7 @@ public final class HubVisualPanel2 extends JPanel {
                 }
             }
         });
-        add(btnSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 130, -1));
+//        add(btnSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 130, -1));
 
     }
 

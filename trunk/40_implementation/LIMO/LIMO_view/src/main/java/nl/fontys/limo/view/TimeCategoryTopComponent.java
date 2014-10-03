@@ -2,6 +2,7 @@ package nl.fontys.limo.view;
 
 import java.awt.BorderLayout;
 import nl.fontys.limo.view.factory.CostCategoryChildFactory;
+import nl.fontys.limo.view.node.TimeCategoryRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -34,7 +35,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @Messages({
 	"CTL_TimeCategoryAction=Time Category",
-	"CTL_TimeCategoryTopComponent=TimeCategory Window",
+	"CTL_TimeCategoryTopComponent=Time Categories",
 	"HINT_TimeCategoryTopComponent=Manage time categories"
 })
 public final class TimeCategoryTopComponent extends TopComponent implements ExplorerManager.Provider{
@@ -51,7 +52,7 @@ public final class TimeCategoryTopComponent extends TopComponent implements Expl
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
 		Children costCategoryChildren = Children.create(new CostCategoryChildFactory(), true);
-		Node rootNode = new AbstractNode(costCategoryChildren);
+		Node rootNode = new TimeCategoryRootNode(costCategoryChildren);
 		rootNode.setDisplayName("Time Categories");
 		em.setRootContext(rootNode);
 

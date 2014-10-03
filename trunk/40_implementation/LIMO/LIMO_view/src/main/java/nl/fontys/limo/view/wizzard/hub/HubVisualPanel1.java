@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.types.HubType;
-import org.netbeans.lib.awtextra.AbsoluteLayout;
+//import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 public final class HubVisualPanel1 extends JPanel {
 
@@ -33,11 +33,11 @@ public final class HubVisualPanel1 extends JPanel {
         rbFromHubType = new javax.swing.JRadioButton();
         cmbHubType = new javax.swing.JComboBox();
 
-        setLayout(new AbsoluteLayout());
+//        setLayout(new AbsoluteLayout());
 
         buttonGroup1.add(rbFromScratch);
         rbFromScratch.setText("From Scratch");
-        add(rbFromScratch, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
+//        add(rbFromScratch, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
         rbFromScratch.setSelected(true);
         rbFromScratch.addActionListener(new ActionListener() {
 
@@ -51,7 +51,7 @@ public final class HubVisualPanel1 extends JPanel {
 
         buttonGroup1.add(rbFromHubType);
         rbFromHubType.setText("From Hub Type");
-        add(rbFromHubType, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
+//        add(rbFromHubType, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
         rbFromHubType.addActionListener(new ActionListener() {
 
             @Override
@@ -63,7 +63,7 @@ public final class HubVisualPanel1 extends JPanel {
         });
 
         cmbHubType.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
-        add(cmbHubType, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 240, -1));
+//        add(cmbHubType, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 240, -1));
         cmbHubType.setEnabled(false);
     }
 
