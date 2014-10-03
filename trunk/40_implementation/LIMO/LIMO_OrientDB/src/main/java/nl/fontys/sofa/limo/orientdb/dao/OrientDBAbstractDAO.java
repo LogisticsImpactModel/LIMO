@@ -9,10 +9,6 @@ import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
 
-/**
- *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
- */
 public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T> {
 
     protected final OrientDBAccess orientDBAccess;
@@ -73,6 +69,7 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
 
     /**
      * Checks if the given ID string is a valid OrientDB RecordID.
+     *
      * @param id ID string to check.
      * @return True/false dependent on validation result.
      */

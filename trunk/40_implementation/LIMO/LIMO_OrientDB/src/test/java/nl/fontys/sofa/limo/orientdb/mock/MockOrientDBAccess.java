@@ -11,10 +11,6 @@ public final class MockOrientDBAccess extends OrientDBAccess {
         return instance;
     }
 
-    protected MockOrientDBAccess() {
-        super();
-    }
-
     @Override
     public void closeConnection() {
         checkConnection();
