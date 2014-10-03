@@ -10,6 +10,7 @@ import nl.fontys.sofa.limo.domain.distribution.input.InputValue;
 public abstract class DistributionType implements Serializable {
 
     protected Map<String, InputValue> inputValues;
+    protected String description;
 
     /**
      * For caching only!
@@ -126,4 +127,12 @@ public abstract class DistributionType implements Serializable {
      * Calculate the specific distribution probability and save it to the cache.
      */
     protected abstract void calculateProbability();
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
