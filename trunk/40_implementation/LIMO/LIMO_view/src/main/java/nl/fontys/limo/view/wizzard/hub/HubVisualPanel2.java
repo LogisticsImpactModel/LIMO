@@ -8,12 +8,10 @@ package nl.fontys.limo.view.wizzard.hub;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.types.HubType;
-import org.openide.WizardDescriptor;
 
 public final class HubVisualPanel2 extends JPanel {
 

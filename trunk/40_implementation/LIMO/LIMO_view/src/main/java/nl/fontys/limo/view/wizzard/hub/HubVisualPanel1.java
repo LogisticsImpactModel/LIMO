@@ -8,10 +8,9 @@ package nl.fontys.limo.view.wizzard.hub;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.GroupLayout;
 import javax.swing.JPanel;
-import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
 import nl.fontys.sofa.limo.domain.types.HubType;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 public final class HubVisualPanel1 extends JPanel {
 
@@ -34,7 +33,7 @@ public final class HubVisualPanel1 extends JPanel {
         rbFromHubType = new javax.swing.JRadioButton();
         cmbHubType = new javax.swing.JComboBox();
 
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setLayout(new AbsoluteLayout());
 
         buttonGroup1.add(rbFromScratch);
         rbFromScratch.setText("From Scratch");
