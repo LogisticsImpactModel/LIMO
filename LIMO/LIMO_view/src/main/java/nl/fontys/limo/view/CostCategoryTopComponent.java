@@ -2,12 +2,12 @@ package nl.fontys.limo.view;
 
 import java.awt.BorderLayout;
 import nl.fontys.limo.view.factory.CostCategoryChildFactory;
+import nl.fontys.limo.view.node.CostCategoryRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.view.OutlineView;
-import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.windows.TopComponent;
@@ -50,7 +50,7 @@ public final class CostCategoryTopComponent extends TopComponent implements Expl
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
 		Children costCategoryChildren = Children.create(new CostCategoryChildFactory(), true);
-		Node rootNode = new AbstractNode(costCategoryChildren);
+		Node rootNode = new CostCategoryRootNode(costCategoryChildren);
 		rootNode.setDisplayName("Categories");
 		em.setRootContext(rootNode);
 	}
