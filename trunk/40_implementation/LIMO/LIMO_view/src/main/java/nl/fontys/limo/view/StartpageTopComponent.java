@@ -33,7 +33,7 @@ import org.openide.util.NbBundle.Messages;
 @Messages({
 	"CTL_StartpageAction=Startpage",
 	"CTL_StartpageTopComponent=Startpage Window",
-	"HINT_StartpageTopComponent=This is a Startpage window"
+	"HINT_StartpageTopComponent=Welcome to LIMO"
 })
 public final class StartpageTopComponent extends TopComponent {
 
