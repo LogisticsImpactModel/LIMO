@@ -19,6 +19,7 @@ public class Location implements Serializable {
     private float longitude;
 
     public Location() {
+        continent = Continents.EUROPE;
     }
 
     public Location(Continents continent) {
