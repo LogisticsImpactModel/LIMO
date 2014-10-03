@@ -8,19 +8,19 @@ import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 
 /**
- * Factory for creating the Cost Category children.
+ * Factor for creating the Time Category children.
  *
  * @author Sebastiaan Heijmann
  */
-public class CostCategoryChildFactory extends ChildFactory<String>{
+public class TimeCategoryChildFactory extends ChildFactory<String>{
 
 	@Override
 	protected boolean createKeys(List<String> list) {
 //		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-//		CostCategoryDAO ccd = df.getCostCategoryDAO();
-//		List<CostCategory> ccl = ccd.findAll();
-//		for(CostCategory cc : ccl){
-//			list.add(cc.getIdentifier());
+//		TimeCategoryDAO tcd = df.getTimeCategoryDAO();
+//		List<TimeCategory> tcl = tcd.findAll();
+//		for(TimeCategory tc : tcl){
+//			list.add(tc.getIdentifier());
 //		}
 		list.add("Test");
 		list.add("Test2");
