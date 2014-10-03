@@ -18,16 +18,16 @@ import org.openide.util.Lookup;
  */
 public class CostCategoryChildFactory extends ChildFactory<String> {
 
-    @Override
-    protected boolean createKeys(List<String> list) {
-        DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-        CostCategoryDAO ccd = df.getCostCategoryDAO();
-        List<CostCategory> ccl = ccd.findAll();
-        for (CostCategory cc : ccl) {
-            list.add(cc.getIdentifier());
-        }
-        return true;
-    }
+	@Override
+	protected boolean createKeys(List<String> list) {
+		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
+		CostCategoryDAO ccd = df.getCostCategoryDAO();
+		List<CostCategory> ccl = ccd.findAll();
+			for(CostCategory cc : ccl){
+				list.add(cc.getIdentifier());
+		}
+		return true;
+	}
 
     @Override
     protected Node createNodeForKey(String key) {

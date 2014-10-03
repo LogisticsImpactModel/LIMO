@@ -16,5 +16,6 @@ public class CostCategoryNode extends BeanNode{
 		setDisplayName(bean.getIdentifier());
 		setShortDescription(bean.getDescription());
 	}
+	
 
 }
