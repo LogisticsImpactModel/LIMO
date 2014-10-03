@@ -9,9 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import nl.fontys.sofa.limo.domain.types.HubType;
+import nl.fontys.sofa.limo.domain.Icon;
+import nl.fontys.sofa.limo.domain.component.Hub;
 
 public final class HubVisualPanel2 extends JPanel {
 
@@ -66,13 +66,14 @@ public final class HubVisualPanel2 extends JPanel {
     }
 
     public void updatePanel() {
-        if (hubType == null) {
-            JOptionPane.showMessageDialog(this, "Leer");
-        }
+        //Update Labels
     }
 
-    public void setHubType(HubType hubType) {
-        this.hubType = hubType;
+    public Hub getHub() {
+        hub = new Hub();
+        hub.setIdentifier(tfName.getText());
+        hub.setIcon(new Icon(icon.getAbsolutePath()));
+        return hub;
     }
 
     public File getIcon() {
@@ -85,6 +86,6 @@ public final class HubVisualPanel2 extends JPanel {
     private javax.swing.JLabel lblPreview;
     private javax.swing.JTextField tfName;
     private JFileChooser fc;
-    private HubType hubType;
+    private Hub hub;
     private File icon;
 }
