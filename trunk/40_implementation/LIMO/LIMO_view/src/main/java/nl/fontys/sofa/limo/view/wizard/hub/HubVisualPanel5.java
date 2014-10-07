@@ -5,6 +5,10 @@
  */
 package nl.fontys.sofa.limo.view.wizard.hub;
 
+import java.awt.BorderLayout;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
 
 public final class HubVisualPanel5 extends JPanel {
@@ -18,10 +22,27 @@ public final class HubVisualPanel5 extends JPanel {
 
     @Override
     public String getName() {
-        return "Add Events";
+        return "Events";
     }
 
-  private void initComponents() {
+    private void initComponents() {
+        listbox = new JList();
+        btnAdd = new JButton("Add");
+        btnEdit = new JButton("Edit");
+        btnDelete = new JButton("Delete");
+        panelLeft = new JPanel();
+        setLayout(new BorderLayout());
+        panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
+        add(listbox, BorderLayout.CENTER);
+        panelLeft.add(btnAdd);
+        panelLeft.add(btnEdit);
+        panelLeft.add(btnDelete);
+        add(panelLeft, BorderLayout.EAST);
+    }
 
-  }                                       
+    JList listbox;
+    JButton btnAdd;
+    JButton btnEdit;
+    JButton btnDelete;
+    JPanel panelLeft;
 }

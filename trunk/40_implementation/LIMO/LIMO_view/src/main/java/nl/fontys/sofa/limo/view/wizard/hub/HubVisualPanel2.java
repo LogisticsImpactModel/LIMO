@@ -27,7 +27,7 @@ public final class HubVisualPanel2 extends JPanel {
 
     @Override
     public String getName() {
-        return "Set Name and Icon";
+        return "Name and Icon";
     }
 
     private void initComponents() {
