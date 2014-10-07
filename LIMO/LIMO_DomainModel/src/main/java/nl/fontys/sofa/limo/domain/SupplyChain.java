@@ -29,6 +29,15 @@ public class SupplyChain implements Serializable {
     public SupplyChain(String name) {
         this.name = name;
     }
+    
+    public SupplyChain(Hub startHub) {
+        this.startHub = startHub;
+    }
+    
+    public SupplyChain(String name, Hub startHub) {
+        this.name = name;
+        this.startHub = startHub;
+    }
 
     // <editor-fold defaultstate="collapsed" desc=" ${GETTERS AND SETTERS} ">
     public String getName() {
