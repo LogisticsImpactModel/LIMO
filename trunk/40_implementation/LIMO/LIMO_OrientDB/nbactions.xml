@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Build with Stacktrace</actionName>
+            <displayName>Build with Stacktrace</displayName>
+            <goals>
+                <goal>install</goal>
+                <goal>-e</goal>
+                <goal>-X</goal>
+            </goals>
+        </action>
+    </actions>
