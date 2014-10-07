@@ -6,6 +6,7 @@
 package nl.fontys.sofa.limo.view.wizard.hub;
 
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.domain.component.Hub;
 import nl.fontys.sofa.limo.domain.types.HubType;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
