@@ -16,7 +16,7 @@ import nl.fontys.sofa.limo.domain.component.Event;
 import nl.fontys.sofa.limo.domain.component.EventExecutionStateDependency;
 import nl.fontys.sofa.limo.domain.component.Hub;
 import nl.fontys.sofa.limo.domain.component.Leg;
-import nl.fontys.sofa.limo.domain.exceptions.LogicalOperationException;
+import nl.fontys.sofa.limo.domain.exceptions.SupplyChainException;
 
 public class SupplyChain implements Serializable {
 
@@ -64,16 +64,16 @@ public class SupplyChain implements Serializable {
      * the last object is a hub as well.
      *
      * @param hub The hub to add.
-     * @throws LogicalOperationException Gets thrown when the last object is
+     * @throws SupplyChainException Gets thrown when the last object is
      * also a hub.
      */
-    public void addHub(Hub hub) throws LogicalOperationException {
+    public void addHub(Hub hub) throws SupplyChainException {
         Component lastComponent = getLastComponent();
         if (lastComponent == null) {
             startHub = hub;
         } else {
             if (lastComponent instanceof Hub) {
-                throw new LogicalOperationException("Last Element is a Hub."
+                throw new SupplyChainException("Last Element is a Hub."
                         + "Can't append a Hub.");
             }
             ((Leg) lastComponent).setEndHub(hub);
@@ -85,17 +85,17 @@ public class SupplyChain implements Serializable {
      * the last object is a leg as well.
      *
      * @param leg The leg to add.
-     * @throws LogicalOperationException Gets thrown when the last object is
+     * @throws SupplyChainException Gets thrown when the last object is
      * also a leg.
      */
-    public void addLeg(Leg leg) throws LogicalOperationException {
+    public void addLeg(Leg leg) throws SupplyChainException {
         Component lastComponent = getLastComponent();
         if (lastComponent == null) {
-            throw new LogicalOperationException("There are no elements in the"
+            throw new SupplyChainException("There are no elements in the"
                     + "supply chain. First object has to be a hub.");
         }
         if (lastComponent instanceof Leg) {
-            throw new LogicalOperationException("Last Element is a Leg. Can't"
+            throw new SupplyChainException("Last Element is a Leg. Can't"
                     + "append a Leg.");
         }
         ((Hub) lastComponent).setOutputLeg(leg);
