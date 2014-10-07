@@ -5,6 +5,8 @@
  */
 package nl.fontys.sofa.limo.view.wizard.hub;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -32,15 +34,18 @@ public final class HubVisualPanel1 extends JPanel {
         rbFromScratch = new javax.swing.JRadioButton();
         rbFromHubType = new javax.swing.JRadioButton();
         cmbHubType = new javax.swing.JComboBox();
-
-//        setLayout(new AbsoluteLayout());
-
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 0;
         buttonGroup1.add(rbFromScratch);
         rbFromScratch.setText("From Scratch");
-//        add(rbFromScratch, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
+        add(rbFromScratch, c);
         rbFromScratch.setSelected(true);
+        
         rbFromScratch.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (rbFromScratch.isSelected()) {
@@ -51,9 +56,12 @@ public final class HubVisualPanel1 extends JPanel {
 
         buttonGroup1.add(rbFromHubType);
         rbFromHubType.setText("From Hub Type");
-//        add(rbFromHubType, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        add(rbFromHubType, c);
+        
         rbFromHubType.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (rbFromHubType.isSelected()) {
@@ -63,7 +71,10 @@ public final class HubVisualPanel1 extends JPanel {
         });
 
         cmbHubType.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
-//        add(cmbHubType, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 240, -1));
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 2;
+        add(cmbHubType, c);
         cmbHubType.setEnabled(false);
     }
 

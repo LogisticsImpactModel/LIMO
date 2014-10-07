@@ -5,9 +5,12 @@
  */
 package nl.fontys.sofa.limo.view.wizard.hub;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.Icon;
@@ -29,40 +32,46 @@ public final class HubVisualPanel2 extends JPanel {
 
     private void initComponents() {
 
-        lblName = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel("Name");
         tfName = new javax.swing.JTextField();
-        lblIcon = new javax.swing.JLabel();
+        lblIcon = new javax.swing.JLabel("Icon");
         lblPreview = new javax.swing.JLabel();
-        btnSelect = new javax.swing.JButton();
+        btnSelect = new javax.swing.JButton("Choose");
         fc = new JFileChooser();
-//        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.3;
+        c.gridx = 0;
+        c.gridy = 0;
+        add(lblName, c);
+        c.weightx = 0.7;
+        c.gridx = 1;
+        c.gridy = 0;
+        add(tfName, c);
+        c.weightx = 0.3;
+        c.gridx = 0;
+        c.gridy = 1;
+        add(lblIcon, c);
+        c.weightx = 0.4;
+        c.gridx = 1;
+        c.gridy = 1;
+        add(lblPreview, c);
+        c.weightx = 0.3;
+        c.gridx = 2;
+        c.gridy = 1;
+        add(btnSelect, c);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblName, org.openide.util.NbBundle.getMessage(HubVisualPanel2.class, "HubVisualPanel2.lblName.text_1")); // NOI18N
-//        add(lblName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, 30));
-
-        tfName.setText(org.openide.util.NbBundle.getMessage(HubVisualPanel2.class, "HubVisualPanel2.tfName.text_1")); // NOI18N
-//        add(tfName, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 200, -1));
-
-        org.openide.awt.Mnemonics.setLocalizedText(lblIcon, org.openide.util.NbBundle.getMessage(HubVisualPanel2.class, "HubVisualPanel2.lblIcon.text_1")); // NOI18N
-//        add(lblIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, 30));
-
-        org.openide.awt.Mnemonics.setLocalizedText(lblPreview, org.openide.util.NbBundle.getMessage(HubVisualPanel2.class, "HubVisualPanel2.lblPreview.text_1")); // NOI18N
-//        add(lblPreview, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 60, 60));
-
-        org.openide.awt.Mnemonics.setLocalizedText(btnSelect, org.openide.util.NbBundle.getMessage(HubVisualPanel2.class, "HubVisualPanel2.btnSelect.text_1")); // NOI18N
         btnSelect.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 int returnVal = fc.showOpenDialog(HubVisualPanel2.this);
-
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     icon = fc.getSelectedFile();
+                    lblPreview.setIcon(new ImageIcon(icon.getAbsolutePath()));
                 }
             }
         });
-//        add(btnSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 130, -1));
-
     }
 
     public void updatePanel() {
@@ -72,7 +81,9 @@ public final class HubVisualPanel2 extends JPanel {
     public Hub getHub() {
         hub = new Hub();
         hub.setIdentifier(tfName.getText());
-        hub.setIcon(new Icon(icon.getAbsolutePath()));
+        if (icon == null) {
+            hub.setIcon(new Icon(icon.getAbsolutePath()));
+        }
         return hub;
     }
 
