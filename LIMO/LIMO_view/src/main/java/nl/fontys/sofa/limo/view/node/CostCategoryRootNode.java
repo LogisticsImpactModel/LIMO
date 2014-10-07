@@ -5,7 +5,7 @@ import javax.swing.Action;
 import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
 import nl.fontys.sofa.limo.api.dao.DAOFactory;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
-import nl.fontys.sofa.limo.view.custom.components.NameDescriptionDialogInputPane;
+import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.actions.NewAction;

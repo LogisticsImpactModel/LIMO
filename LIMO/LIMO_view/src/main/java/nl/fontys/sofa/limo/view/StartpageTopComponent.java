@@ -5,7 +5,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import nl.fontys.sofa.limo.view.custom.components.StartPageButton;
+import nl.fontys.sofa.limo.view.custom.button.StartPageButton;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
