@@ -16,7 +16,7 @@ import org.openide.util.Lookup;
  *
  * @author Sebastiaan Heijmann
  */
-public class TimeCategoryChildFactory extends ChildFactory<String>{
+public class TimeCategoryChildFactory extends ChildFactory<String> {
 
 	@Override
 	protected boolean createKeys(List<String> list) {
@@ -40,4 +40,5 @@ public class TimeCategoryChildFactory extends ChildFactory<String>{
 		}
 		return node;
 	}
+
 }
