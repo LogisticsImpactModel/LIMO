@@ -25,7 +25,7 @@ public final class HubVisualPanel1 extends JPanel {
 
     @Override
     public String getName() {
-        return "Add Hub";
+        return "Hub";
     }
 
     private void initComponents() {

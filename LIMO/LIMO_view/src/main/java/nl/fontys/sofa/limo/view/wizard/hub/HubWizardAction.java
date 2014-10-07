@@ -52,7 +52,8 @@ public final class HubWizardAction implements ActionListener {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle("Add Hub");
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            // do something
+            
+      //      wiz.getProperty("hub");
         }
     }
 

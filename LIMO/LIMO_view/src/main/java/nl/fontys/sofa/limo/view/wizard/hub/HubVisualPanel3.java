@@ -24,7 +24,7 @@ public final class HubVisualPanel3 extends JPanel {
 
     @Override
     public String getName() {
-        return "Set Location";
+        return "Location";
     }
 
     /**
@@ -101,6 +101,7 @@ public final class HubVisualPanel3 extends JPanel {
         c.gridy = 4;
         add(cmbContinent, c);
 
+       codes = CountryCode.values();
         ArrayList<String> countryList = new ArrayList();
         for (CountryCode countryCode : CountryCode.values()) {
             countryList.add(countryCode.getName());
@@ -129,7 +130,7 @@ public final class HubVisualPanel3 extends JPanel {
         }
 
         if (cmbCountry.getSelectedIndex() != 0) {
-            location.setCountry((CountryCode) cmbCountry.getSelectedItem());
+            location.setCountry(codes[cmbCountry.getSelectedIndex()]);
         }
         return location;
     }
@@ -149,4 +150,5 @@ public final class HubVisualPanel3 extends JPanel {
     private javax.swing.JTextField tfStreet;
     private javax.swing.JTextField tfZip;
     private Location location;
+    private CountryCode[] codes;
 }
