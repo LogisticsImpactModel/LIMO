@@ -5,6 +5,7 @@ import java.util.List;
 import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
 import nl.fontys.sofa.limo.api.dao.DAOFactory;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
+import nl.fontys.sofa.limo.view.node.CostCategoryNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Node;
@@ -12,29 +13,28 @@ import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 
 /**
- * Factory for creating the Cost Category children.
+ * Factory for creating the cost category children.
  *
  * @author Sebastiaan Heijmann
  */
-public class CostCategoryChildFactory extends ChildFactory<String> {
+public class CostCategoryChildFactory extends ChildFactory<CostCategory> {
 
 	@Override
-	protected boolean createKeys(List<String> list) {
+	protected boolean createKeys(List<CostCategory> list) {
 		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
 		CostCategoryDAO ccd = df.getCostCategoryDAO();
 		List<CostCategory> ccl = ccd.findAll();
 			for(CostCategory cc : ccl){
-				list.add(cc.getIdentifier());
+				list.add(cc);
 		}
 		return true;
 	}
 
     @Override
-    protected Node createNodeForKey(String key) {
+    protected Node createNodeForKey(CostCategory key) {
         BeanNode node = null;
         try {
-            node = new BeanNode(key);
-            node.setDisplayName(key);
+			node = new CostCategoryNode(key);
         } catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
         }

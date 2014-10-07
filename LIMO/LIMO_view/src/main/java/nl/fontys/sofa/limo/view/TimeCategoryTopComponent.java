@@ -29,7 +29,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.TimeCategoryTopComponent")
-@ActionReference(path = "Menu/Data/Categories" , position = 20 )
+@ActionReference(path = "Menu/Data" , position = 30 )
 @TopComponent.OpenActionRegistration(
 				displayName = "#CTL_TimeCategoryAction",
 				preferredID = "TimeCategoryTopComponent"
@@ -48,7 +48,7 @@ public final class TimeCategoryTopComponent extends TopComponent implements Expl
 		setToolTipText(Bundle.HINT_TimeCategoryTopComponent());
 
 		setLayout(new BorderLayout());
-		OutlineView ov = new OutlineView("Categories");
+		OutlineView ov = new OutlineView("Time Categories");
 		ov.setPropertyColumns("description", "Description");
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
