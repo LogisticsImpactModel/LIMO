@@ -64,7 +64,13 @@
         <module>LIMO_DomainModel</module>
         <module>LIMO_view</module>
     </modules>
-
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LIMO_DependencyWrapper</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
     <properties>
         <netbeans.version>RELEASE80</netbeans.version>
         <brandingToken>limo</brandingToken>

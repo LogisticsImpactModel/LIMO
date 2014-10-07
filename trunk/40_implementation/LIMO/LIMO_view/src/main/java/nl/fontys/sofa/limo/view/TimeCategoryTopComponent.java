@@ -2,7 +2,7 @@ package nl.fontys.sofa.limo.view;
 
 import java.awt.BorderLayout;
 import javax.swing.ActionMap;
-import nl.fontys.sofa.limo.view.factory.CostCategoryChildFactory;
+import nl.fontys.sofa.limo.view.factory.TimeCategoryChildFactory;
 import nl.fontys.sofa.limo.view.node.TimeCategoryRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
@@ -53,8 +53,8 @@ public final class TimeCategoryTopComponent extends TopComponent implements Expl
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
 
-		Children costCategoryChildren = Children.create(new CostCategoryChildFactory(), true);
-		Node rootNode = new TimeCategoryRootNode(costCategoryChildren);
+		Children timeCategoryChildren = Children.create(new TimeCategoryChildFactory(), true);
+		Node rootNode = new TimeCategoryRootNode(timeCategoryChildren);
 		rootNode.setDisplayName("Time Categories");
 
 		em.setRootContext(rootNode);

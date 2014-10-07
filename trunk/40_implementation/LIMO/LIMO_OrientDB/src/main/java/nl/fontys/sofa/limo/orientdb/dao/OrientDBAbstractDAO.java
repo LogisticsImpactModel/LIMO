@@ -1,7 +1,10 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
+import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
+import com.orientechnologies.orient.core.db.record.ODatabaseRecord;
 import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
+import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,8 +45,11 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
 
     @Override
     public T insert(T entity) {
+        OObjectDatabaseTx con = orientDBAccess.getConnection();
+        ODatabaseRecordThreadLocal.INSTANCE.set((ODatabaseRecord) con.getUnderlying().getUnderlying());
+        
         entity.setLastUpdate(new Date().getTime());
-        return orientDBAccess.getConnection().save(entity);
+        return con.save(entity);
     }
 
     @Override
