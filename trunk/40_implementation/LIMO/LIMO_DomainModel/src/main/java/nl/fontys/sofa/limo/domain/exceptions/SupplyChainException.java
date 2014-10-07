@@ -4,13 +4,13 @@ package nl.fontys.sofa.limo.domain.exceptions;
  *
  * @author Matthias Brück
  */
-public class LogicalOperationException extends Exception {
+public class SupplyChainException extends Exception {
 
     /**
      * Creates a new instance of <code>LogicalOperationException</code> without
      * detail message.
      */
-    public LogicalOperationException() {
+    public SupplyChainException() {
     }
 
     /**
@@ -19,7 +19,7 @@ public class LogicalOperationException extends Exception {
      *
      * @param msg the detail message.
      */
-    public LogicalOperationException(String msg) {
+    public SupplyChainException(String msg) {
         super(msg);
     }
 }
