@@ -2,10 +2,9 @@ package nl.fontys.sofa.limo.view.node;
 
 import java.io.IOException;
 import javax.swing.Action;
-import javax.swing.JPanel;
 import nl.fontys.sofa.limo.api.dao.DAOFactory;
-import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
-import nl.fontys.sofa.limo.domain.category.TimeCategory;
+import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
+import nl.fontys.sofa.limo.domain.types.LegType;
 import nl.fontys.sofa.limo.view.custom.components.NameDescriptionDialogInputPane;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
@@ -17,13 +16,13 @@ import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 
 /**
- * Root node view representation of the TimeCategory class.
+ * Root node view representation of the LegType class.
  *
  * @author Sebastiaan Heijmann
  */
-public class TimeCategoryRootNode extends AbstractNode{
+public class LegTypeRootNode extends AbstractNode{
 
-	public TimeCategoryRootNode(Children children) {
+	public LegTypeRootNode(Children children) {
 		super(children);
 	}
 
@@ -38,24 +37,24 @@ public class TimeCategoryRootNode extends AbstractNode{
 
 			@Override
 			public String getName() {
-				return "Time Category";
+				return "LegType";
 			}
 
 			@Override
 			public void create() throws IOException {
 				NameDescriptionDialogInputPane inputPane = new NameDescriptionDialogInputPane();
-				DialogDescriptor dd = new DialogDescriptor(inputPane, "Time Category");
+				DialogDescriptor dd = new DialogDescriptor(inputPane, "Leg Type");
 				Object result = DialogDisplayer.getDefault().notify(dd);
 	
 				String name = inputPane.getNameFieldValue();
 				String description = inputPane.getDescriptionFieldValue();
-				TimeCategory tc = new TimeCategory();
-				tc.setIdentifier(name);
-				tc.setDescription(description);
+				LegType lt = new LegType();
+				lt.setIdentifier(name);
+				lt.setDescription(description);
 				
 				DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-				TimeCategoryDAO tcd = df.getTimeCategoryDAO();
-				tcd.insert(tc);
+				LegTypeDAO ltd = df.getLegTypeDAO();
+				ltd.insert(lt);
 			}
 		}};
 	}

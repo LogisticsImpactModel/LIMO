@@ -6,8 +6,8 @@
 package nl.fontys.sofa.limo.view;
 
 import java.awt.BorderLayout;
-import nl.fontys.sofa.limo.view.factory.HubTypeChildFactory;
-import nl.fontys.sofa.limo.view.node.HubTypeRootNode;
+import nl.fontys.sofa.limo.view.factory.LegTypeChildFactory;
+import nl.fontys.sofa.limo.view.node.LegTypeRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -19,47 +19,47 @@ import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
 /**
- * Top component which displays the hub types.
+ * Top component which displays the leg types.
  */
 @ConvertAsProperties(
-		dtd = "-//nl.fontys.sofa.limo.view//HubType//EN",
+		dtd = "-//nl.fontys.sofa.limo.view//LegType//EN",
 		autostore = false
 )
 @TopComponent.Description(
-		preferredID = "HubTypeTopComponent",
+		preferredID = "LegTypeTopComponent",
 		//iconBase="SET/PATH/TO/ICON/HERE", 
 		persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
-@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.HubTypeTopComponent")
-@ActionReference(path = "Menu/Data" , position = 10)
+@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.LegTypeTopComponent")
+@ActionReference(path = "Menu/Data" , position = 40 )
 @TopComponent.OpenActionRegistration(
-		displayName = "#CTL_HubTypeAction",
-		preferredID = "HubTypeTopComponent"
+		displayName = "#CTL_LegTypeAction",
+		preferredID = "LegTypeTopComponent"
 )
 @Messages({
-	"CTL_HubTypeAction=HubType",
-	"CTL_HubTypeTopComponent=HubTypes",
-	"HINT_HubTypeTopComponent=Manage Hub Types"
+	"CTL_LegTypeAction=LegType",
+	"CTL_LegTypeTopComponent=LegType",
+	"HINT_LegTypeTopComponent=Manage Leg Types"
 })
-public final class HubTypeTopComponent extends TopComponent
-		implements ExplorerManager.Provider{
+public final class LegTypeTopComponent extends TopComponent 
+			implements ExplorerManager.Provider{
 	private final ExplorerManager em = new ExplorerManager();
 
-	public HubTypeTopComponent() {
+	public LegTypeTopComponent() {
 		initComponents();
-		setName(Bundle.CTL_HubTypeTopComponent());
-		setToolTipText(Bundle.HINT_HubTypeTopComponent());
+		setName(Bundle.CTL_LegTypeTopComponent());
+		setToolTipText(Bundle.HINT_LegTypeTopComponent());
 		setLayout(new BorderLayout());
 
-		OutlineView ov = new OutlineView("Hubtypes");
+		OutlineView ov = new OutlineView("Legtypes");
 		ov.setPropertyColumns("description", "Description");
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
 
-		Children hubTypechildren = Children.create(new HubTypeChildFactory(), true);
-		Node rootNode = new HubTypeRootNode(hubTypechildren);
-		rootNode.setDisplayName("Hubtypes");
+		Children legTypeChildren = Children.create(new LegTypeChildFactory(), true);
+		Node rootNode = new LegTypeRootNode(legTypeChildren);
+		rootNode.setDisplayName("Legtypes");
 
 		em.setRootContext(rootNode);
 	}
@@ -68,7 +68,7 @@ public final class HubTypeTopComponent extends TopComponent
 	public ExplorerManager getExplorerManager() {
 		return em;
 	}
-	
+
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always

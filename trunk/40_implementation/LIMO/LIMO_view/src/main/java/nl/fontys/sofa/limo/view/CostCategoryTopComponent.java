@@ -27,7 +27,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.CategoryTopComponent")
-@ActionReference(path = "Menu/Data/Categories" , position = 10 )
+@ActionReference(path = "Menu/Data" , position = 20 )
 @TopComponent.OpenActionRegistration(
 				displayName = "#CTL_CategoryAction",
 				preferredID = "CategoryTopComponent"
@@ -46,7 +46,7 @@ public final class CostCategoryTopComponent extends TopComponent implements Expl
 		setToolTipText(Bundle.HINT_CategoryTopComponent());
 
 		setLayout(new BorderLayout());
-		OutlineView ov = new OutlineView("Categories");
+		OutlineView ov = new OutlineView("Cost Categories");
 		ov.setPropertyColumns("description", "Description");
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);

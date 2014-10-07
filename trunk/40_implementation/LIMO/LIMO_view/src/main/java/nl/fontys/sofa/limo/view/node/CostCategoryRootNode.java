@@ -8,7 +8,6 @@ import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.view.custom.components.NameDescriptionDialogInputPane;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
 import org.openide.actions.NewAction;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
@@ -17,7 +16,7 @@ import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 
 /**
- * Root node class for cost category. Defines actions which can be invoked.
+ * Root node view representation of the CostCategory class.
  *
  * @author Sebastiaan Heijmann
  */
