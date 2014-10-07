@@ -49,7 +49,9 @@ public class SupplyChain implements Serializable {
     // </editor-fold>
 
     /**
-     * Adds a hub to the supply chain. Throws an LogicalOperationException when
+     * Adds a hub to the supply chain. If the starthub is "null" e.g. there is
+     * no start hub, the start hub will get set to the given one.
+     * Throws an LogicalOperationException when
      * the last object is a hub as well.
      *
      * @param hub The hub to add.
