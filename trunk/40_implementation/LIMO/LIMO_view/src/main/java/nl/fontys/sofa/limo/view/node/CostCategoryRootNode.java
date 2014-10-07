@@ -44,7 +44,7 @@ public class CostCategoryRootNode extends AbstractNode{
 			@Override
 			public void create() throws IOException {
 				NameDescriptionDialogInputPane inputPane = new NameDescriptionDialogInputPane();
-				DialogDescriptor dd = new DialogDescriptor(inputPane, "Time category");
+				DialogDescriptor dd = new DialogDescriptor(inputPane, "Cost Category");
 				Object result = DialogDisplayer.getDefault().notify(dd);
 	
 				String name = inputPane.getNameFieldValue();

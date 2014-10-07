@@ -1,12 +1,14 @@
 package nl.fontys.sofa.limo.view;
 
 import java.awt.BorderLayout;
+import javax.swing.ActionMap;
 import nl.fontys.sofa.limo.view.factory.CostCategoryChildFactory;
 import nl.fontys.sofa.limo.view.node.TimeCategoryRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
+import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.OutlineView;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
@@ -27,7 +29,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.TimeCategoryTopComponent")
-@ActionReference(path = "Menu/Data/Categories" /*, position = 333 */)
+@ActionReference(path = "Menu/Data/Categories" , position = 20 )
 @TopComponent.OpenActionRegistration(
 				displayName = "#CTL_TimeCategoryAction",
 				preferredID = "TimeCategoryTopComponent"
@@ -38,23 +40,28 @@ import org.openide.util.NbBundle.Messages;
 	"HINT_TimeCategoryTopComponent=Manage time categories"
 })
 public final class TimeCategoryTopComponent extends TopComponent implements ExplorerManager.Provider{
-	private ExplorerManager em;
+	private ExplorerManager em = new ExplorerManager();
 
 	public TimeCategoryTopComponent() {
 		initComponents();
 		setName(Bundle.CTL_TimeCategoryTopComponent());
 		setToolTipText(Bundle.HINT_TimeCategoryTopComponent());
 
-		em = new ExplorerManager();
+		setLayout(new BorderLayout());
 		OutlineView ov = new OutlineView("Categories");
 		ov.setPropertyColumns("description", "Description");
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
+
 		Children costCategoryChildren = Children.create(new CostCategoryChildFactory(), true);
 		Node rootNode = new TimeCategoryRootNode(costCategoryChildren);
 		rootNode.setDisplayName("Time Categories");
+
 		em.setRootContext(rootNode);
 
+		ActionMap map = getActionMap();
+		map.put("delete", ExplorerUtils.actionDelete(em, true));
+		associateLookup(ExplorerUtils.createLookup(em, map)); 
 	}
 
 	@Override
@@ -77,12 +84,10 @@ public final class TimeCategoryTopComponent extends TopComponent implements Expl
   // End of variables declaration//GEN-END:variables
 	@Override
 	public void componentOpened() {
-		// TODO add custom code on component opening
 	}
 
 	@Override
 	public void componentClosed() {
-		// TODO add custom code on component closing
 	}
 
 	void writeProperties(java.util.Properties p) {

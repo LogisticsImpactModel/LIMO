@@ -44,14 +44,18 @@ public final class CostCategoryTopComponent extends TopComponent implements Expl
 		initComponents();
 		setName(Bundle.CTL_CategoryTopComponent());
 		setToolTipText(Bundle.HINT_CategoryTopComponent());
-		em = new ExplorerManager();
+
+		setLayout(new BorderLayout());
 		OutlineView ov = new OutlineView("Categories");
 		ov.setPropertyColumns("description", "Description");
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
+
 		Children costCategoryChildren = Children.create(new CostCategoryChildFactory(), true);
 		Node rootNode = new CostCategoryRootNode(costCategoryChildren);
 		rootNode.setDisplayName("Categories");
+
+		em = new ExplorerManager();
 		em.setRootContext(rootNode);
 	}
 
