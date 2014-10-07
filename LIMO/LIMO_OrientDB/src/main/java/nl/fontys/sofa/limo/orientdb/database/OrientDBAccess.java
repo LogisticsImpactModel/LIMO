@@ -6,6 +6,7 @@ import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.io.File;
 import nl.fontys.sofa.limo.api.database.AbstractDBServer;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.domain.category.Category;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
 
@@ -65,6 +66,8 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
 
     protected void registerClasses() {
         connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain");
+        connection.getEntityManager().registerEntityClass(BaseEntity.class);
+        connection.getEntityManager().registerEntityClass(Category.class);
         connection.getEntityManager().registerEntityClass(TimeCategory.class);
     }
 

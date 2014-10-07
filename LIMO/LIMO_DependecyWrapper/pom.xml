@@ -6,7 +6,7 @@
         <artifactId>LIMO-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>LIMO_DependencyWrapper</artifactId>
+    <artifactId>LIMO_DependecyWrapper</artifactId>
     <packaging>nbm</packaging>
     <build>
         <plugins>
