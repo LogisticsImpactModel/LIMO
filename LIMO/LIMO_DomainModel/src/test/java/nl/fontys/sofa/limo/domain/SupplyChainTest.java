@@ -214,23 +214,22 @@ public class SupplyChainTest {
 
     /**
      * Test of createFromFile method, of class SupplyChain.
-     */
+     *//*
     @Test
     public void testCreateFromFile() {
         SupplyChain.saveToFile(supplyChain, System.getProperty("user.home") + "/test");
         SupplyChain supplyChain2 = SupplyChain.createFromFile(System.getProperty("user.home") + "/test");
         assertEquals(supplyChain.getName(), supplyChain2.getName());
 
-    }
+    }*/
 
     /**
      * Test of saveToFile method, of class SupplyChain.
-     */
+     *//*
     @Test
     public void testSaveToFile() {
         SupplyChain.saveToFile(supplyChain, System.getProperty("user.home") + "/test");
         SupplyChain supplyChain2 = SupplyChain.createFromFile(System.getProperty("user.home") + "/test");
         assertEquals(supplyChain.getName(), supplyChain2.getName());
-    }
-
+    }*/
 }

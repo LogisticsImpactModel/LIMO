@@ -1,11 +1,13 @@
 package nl.fontys.sofa.limo.orientdb.database;
 
 import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
+import com.orientechnologies.orient.object.db.OObjectDatabasePool;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.io.File;
 import nl.fontys.sofa.limo.api.database.AbstractDBServer;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
+import nl.fontys.sofa.limo.domain.category.TimeCategory;
 
 public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
 
@@ -20,23 +22,16 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
 
     protected OrientDBAccess() {
         connection = new OObjectDatabaseTx(getDatabaseURL());
-		ODatabaseRecordThreadLocal.INSTANCE.set(connection.getUnderlying());
+        ODatabaseRecordThreadLocal.INSTANCE.set(connection.getUnderlying());
 
         if (!connection.exists()) {
             connection.create();
-
-            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain");
-            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.category");
-            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.component");
-            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.distribution");
-            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.distribution.input");
-            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.location");
-            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.types");
-            connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain.value");
+            registerClasses();
         }
 
         if (connection.isClosed()) {
             connection.open("admin", "admin");
+            registerClasses();
         }
     }
 
@@ -49,7 +44,7 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
     protected void checkConnection() {
         if (connection == null) {
             connection = new OObjectDatabaseTx(getDatabaseURL());
-			ODatabaseRecordThreadLocal.INSTANCE.set(connection.getUnderlying());
+            ODatabaseRecordThreadLocal.INSTANCE.set(connection.getUnderlying());
 
             if (!connection.exists()) {
                 connection.create();
@@ -59,12 +54,18 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
 
         if (connection.isClosed()) {
             connection.open("admin", "admin");
+            registerClasses();
         }
     }
 
     @Override
     public String getDatabaseURL() {
         return "plocal:" + System.getProperty("user.home") + File.separator + "LIMO";
+    }
+
+    protected void registerClasses() {
+        connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain");
+        connection.getEntityManager().registerEntityClass(TimeCategory.class);
     }
 
 }

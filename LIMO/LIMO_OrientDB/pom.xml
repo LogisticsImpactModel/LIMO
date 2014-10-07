@@ -22,8 +22,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publicPackages>
-                        <publicPackage>nl.fontys.sofa.limo.orientdb.dao</publicPackage>
-                        <publicPackage>nl.fontys.sofa.limo.orientdb.database</publicPackage>
+                        <publicPackage>nl.fontys.sofa.limo.orientdb.*</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
@@ -62,11 +61,6 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-api-annotations-common</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
@@ -92,15 +86,14 @@
             <version>RELEASE80</version>
         </dependency>
         <dependency>
-            <groupId>nl.fontys.limo</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>LIMO_DomainModel</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.orientechnologies</groupId>
-            <artifactId>orientdb-object</artifactId>
-            <version>1.7.6</version>
-            <type>jar</type>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LIMO_DependencyWrapper</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <properties>
