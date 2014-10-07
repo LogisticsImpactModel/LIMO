@@ -73,11 +73,6 @@
             <scope>test</scope>
         </dependency>
         <!--- OrientDB -->
-        <dependency>
-            <groupId>com.orientechnologies</groupId>
-            <artifactId>orientdb-object</artifactId>
-            <version>1.7.9</version>
-        </dependency>
         <!---->
         <dependency>
             <groupId>org.netbeans.api</groupId>
@@ -100,6 +95,12 @@
             <groupId>nl.fontys.limo</groupId>
             <artifactId>LIMO_DomainModel</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.orientechnologies</groupId>
+            <artifactId>orientdb-object</artifactId>
+            <version>1.7.6</version>
+            <type>jar</type>
         </dependency>
     </dependencies>
     <properties>

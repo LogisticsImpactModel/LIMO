@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.orientdb.database;
 
+import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.io.File;
 import nl.fontys.sofa.limo.api.database.AbstractDBServer;
@@ -19,6 +20,7 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
 
     protected OrientDBAccess() {
         connection = new OObjectDatabaseTx(getDatabaseURL());
+		ODatabaseRecordThreadLocal.INSTANCE.set(connection.getUnderlying());
 
         if (!connection.exists()) {
             connection.create();
@@ -47,6 +49,7 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
     protected void checkConnection() {
         if (connection == null) {
             connection = new OObjectDatabaseTx(getDatabaseURL());
+			ODatabaseRecordThreadLocal.INSTANCE.set(connection.getUnderlying());
 
             if (!connection.exists()) {
                 connection.create();

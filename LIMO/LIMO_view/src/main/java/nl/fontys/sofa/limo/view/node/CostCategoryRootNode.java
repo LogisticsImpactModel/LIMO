@@ -5,6 +5,8 @@ import javax.swing.Action;
 import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
 import nl.fontys.sofa.limo.api.dao.DAOFactory;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
+import nl.fontys.sofa.limo.view.custom.components.NameDescriptionDialogInputPane;
+import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.actions.NewAction;
@@ -41,18 +43,16 @@ public class CostCategoryRootNode extends AbstractNode{
 
 			@Override
 			public void create() throws IOException {
-				NotifyDescriptor.InputLine name =
-								new NotifyDescriptor.InputLine("Name",
-												"New Cost Category");
-				NotifyDescriptor.InputLine description =
-								new NotifyDescriptor.InputLine("Description",
-												"New Cost Category");
-				DialogDisplayer.getDefault().notify(name);
-				DialogDisplayer.getDefault().notify(description);
+				NameDescriptionDialogInputPane inputPane = new NameDescriptionDialogInputPane();
+				DialogDescriptor dd = new DialogDescriptor(inputPane, "Time category");
+				Object result = DialogDisplayer.getDefault().notify(dd);
+	
+				String name = inputPane.getNameFieldValue();
+				String description = inputPane.getDescriptionFieldValue();
 
 				CostCategory cc = new CostCategory();
-				cc.setIdentifier(name.getInputText());
-				cc.setDescription(description.getInputText());
+				cc.setIdentifier(name);
+				cc.setDescription(description);
 				
 				DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
 				CostCategoryDAO ccd = df.getCostCategoryDAO();

@@ -3,12 +3,16 @@ package nl.fontys.sofa.limo.view.node;
 import java.io.IOException;
 import javax.swing.Action;
 import javax.swing.JPanel;
+import nl.fontys.sofa.limo.api.dao.DAOFactory;
+import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
+import nl.fontys.sofa.limo.domain.category.TimeCategory;
 import nl.fontys.sofa.limo.view.custom.components.NameDescriptionDialogInputPane;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.actions.NewAction;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
+import org.openide.util.Lookup;
 import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 
@@ -43,15 +47,15 @@ public class TimeCategoryRootNode extends AbstractNode{
 				DialogDescriptor dd = new DialogDescriptor(inputPane, "Time category");
 				Object result = DialogDisplayer.getDefault().notify(dd);
 	
-				System.out.println(inputPane.getNameFieldValue());
-				System.out.println(inputPane.getDescriptionFieldValue());
-//				TimeCategory tc = new TimeCategory();
-//				tc.setIdentifier(name.getInputText());
-//				tc.setDescription(description.getInputText());
+				String name = inputPane.getNameFieldValue();
+				String description = inputPane.getDescriptionFieldValue();
+				TimeCategory tc = new TimeCategory();
+				tc.setIdentifier(name);
+				tc.setDescription(description);
 				
-//				DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-//				TimeCategoryDAO tcd = df.getTimeCategoryDAO();
-//				tcd.insert(tc);
+				DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
+				TimeCategoryDAO tcd = df.getTimeCategoryDAO();
+				tcd.insert(tc);
 			}
 		}};
 	}
