@@ -69,6 +69,7 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
         connection.getEntityManager().registerEntityClass(BaseEntity.class);
         connection.getEntityManager().registerEntityClass(Category.class);
         connection.getEntityManager().registerEntityClass(TimeCategory.class);
+        connection.getEntityManager().registerEntityClass(CostCategory.class);
     }
 
 }

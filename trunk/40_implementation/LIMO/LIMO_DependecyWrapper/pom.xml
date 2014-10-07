@@ -47,4 +47,5 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <name>LIMO_DependencyWrapper</name>
 </project>

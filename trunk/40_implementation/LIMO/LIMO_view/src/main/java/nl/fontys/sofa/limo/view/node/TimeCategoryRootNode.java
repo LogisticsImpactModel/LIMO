@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 import nl.fontys.sofa.limo.api.dao.DAOFactory;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
-import nl.fontys.sofa.limo.view.custom.components.NameDescriptionDialogInputPane;
+import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.actions.NewAction;
