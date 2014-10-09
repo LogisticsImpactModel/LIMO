@@ -99,7 +99,7 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
                 return CountryCode.valueOf(dbtype);
             }
         });
-        OObjectSerializerHelper.bindSerializerContext(null, serializer);
+        OObjectSerializerHelper.bindSerializerContext(CountryCode.class, serializer);
         
         connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain");
         connection.getEntityManager().registerEntityClass(BaseEntity.class);

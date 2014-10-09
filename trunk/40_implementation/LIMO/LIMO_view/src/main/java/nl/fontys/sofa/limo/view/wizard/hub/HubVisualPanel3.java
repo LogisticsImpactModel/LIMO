@@ -114,7 +114,7 @@ public final class HubVisualPanel3 extends JPanel {
         ArrayList<String> continentList = new ArrayList();
         continentList.add("None");
         for (int i = 0; i < Continents.values().length; ++i) {
-            continentList.add(Continents.values()[i] + " ");
+            continentList.add(Continents.values()[i].toString());
         }
         cmbContinent.setModel(new javax.swing.DefaultComboBoxModel(continentList.toArray()));
     }
@@ -129,7 +129,7 @@ public final class HubVisualPanel3 extends JPanel {
             if (location.getCountry() != null) {
                 cmbCountry.setSelectedItem((location.getCountry().getName()));
             }
-            cmbContinent.setSelectedItem(location.getContinent());
+            cmbContinent.setSelectedItem(location.getContinent().name());
         }
     }
 
