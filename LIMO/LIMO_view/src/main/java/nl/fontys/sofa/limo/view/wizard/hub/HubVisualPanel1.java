@@ -10,8 +10,14 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
+import nl.fontys.sofa.limo.api.dao.DAOFactory;
+import nl.fontys.sofa.limo.api.dao.HubDAO;
+import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
+import nl.fontys.sofa.limo.domain.component.Hub;
 import nl.fontys.sofa.limo.domain.types.HubType;
+import org.openide.util.Lookup;
 //import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 public final class HubVisualPanel1 extends JPanel {
@@ -33,7 +39,9 @@ public final class HubVisualPanel1 extends JPanel {
         buttonGroup1 = new javax.swing.ButtonGroup();
         rbFromScratch = new javax.swing.JRadioButton();
         rbFromHubType = new javax.swing.JRadioButton();
+        rbCopyFrom = new javax.swing.JRadioButton();
         cmbHubType = new javax.swing.JComboBox();
+        cmbHub = new javax.swing.JComboBox();
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -44,51 +52,105 @@ public final class HubVisualPanel1 extends JPanel {
         rbFromScratch.setText("From Scratch");
         add(rbFromScratch, c);
         rbFromScratch.setSelected(true);
-        
+
         rbFromScratch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (rbFromScratch.isSelected()) {
                     cmbHubType.setEnabled(false);
+                    cmbHub.setEnabled(false);
                 }
             }
         });
+
+        buttonGroup1.add(rbCopyFrom);
+        rbCopyFrom.setText("Copy Hub");
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        add(rbCopyFrom, c);
+
+        rbCopyFrom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rbCopyFrom.isSelected()) {
+                    cmbHubType.setEnabled(false);
+                    cmbHub.setEnabled(true);
+
+                }
+            }
+        });
+
+        DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
+        Lookup.getDefault().lookup(DAOFactory.class);
+        HubDAO hd = df.getHubDAO();
+        hl = hd.findAll();
+        ArrayList<String> hubList = new ArrayList<>();
+        for (Hub hub : hl) {
+            hubList.add(hub.getIdentifier());
+        }
+
+        cmbHub.setModel(new javax.swing.DefaultComboBoxModel(hubList.toArray()));
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 2;
+        add(cmbHub, c);
+        cmbHub.setEnabled(false);
 
         buttonGroup1.add(rbFromHubType);
         rbFromHubType.setText("From Hub Type");
         c.weightx = 1;
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 3;
         add(rbFromHubType, c);
-        
+
         rbFromHubType.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (rbFromHubType.isSelected()) {
                     cmbHubType.setEnabled(true);
+                    cmbHub.setEnabled(false);
                 }
             }
         });
+        HubTypeDAO htd = df.getHubTypeDAO();
+        htl = htd.findAll();
+        ArrayList<String> hubTypeList = new ArrayList<>();
+        for (HubType hubType : htl) {
+            hubTypeList.add(hubType.getIdentifier());
+        }
 
-        cmbHubType.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+        cmbHubType.setModel(new javax.swing.DefaultComboBoxModel(hubTypeList.toArray()));
         c.weightx = 1;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 4;
         add(cmbHubType, c);
         cmbHubType.setEnabled(false);
+
     }
 
     public HubType getHubType() {
         if (rbFromHubType.isSelected()) {
-            return hubTypes.get(cmbHubType.getSelectedIndex());
+            return htl.get(cmbHubType.getSelectedIndex());
         } else {
-            return new HubType();
+            return null;
+        }
+    }
+
+    public Hub getHub() {
+        if (rbCopyFrom.isSelected()) {
+            return hl.get(cmbHub.getSelectedIndex());
+        } else {
+            return null;
         }
     }
 
     javax.swing.ButtonGroup buttonGroup1;
     javax.swing.JComboBox cmbHubType;
+    javax.swing.JComboBox cmbHub;
     javax.swing.JRadioButton rbFromHubType;
     javax.swing.JRadioButton rbFromScratch;
-    private ArrayList<HubType> hubTypes;
+    javax.swing.JRadioButton rbCopyFrom;
+    private List<Hub> hl;
+    private List<HubType> htl;
 }

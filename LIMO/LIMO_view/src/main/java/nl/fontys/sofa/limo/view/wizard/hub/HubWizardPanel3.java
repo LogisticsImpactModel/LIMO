@@ -58,7 +58,10 @@ public class HubWizardPanel3 implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        // use wiz.getProperty to retrieve previous panel state
+        Hub hub = (Hub) wiz.getProperty("hubCopy");
+        if (hub != null) {
+            getComponent().updateLabel(hub.getLocation());
+        }
     }
 
     @Override

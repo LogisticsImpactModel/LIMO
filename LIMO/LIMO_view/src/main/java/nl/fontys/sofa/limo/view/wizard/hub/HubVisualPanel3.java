@@ -7,7 +7,6 @@ package nl.fontys.sofa.limo.view.wizard.hub;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.location.Continents;
 import nl.fontys.sofa.limo.domain.location.CountryCode;
@@ -92,29 +91,40 @@ public final class HubVisualPanel3 extends JPanel {
         add(lblCountry, c);
         c.gridx = 1;
         c.gridy = 3;
-        c.weightx=0;
+        c.gridwidth = 3;
+        c.weightx = 0;
         add(cmbCountry, c);
+        c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 4;
         add(lblContinent, c);
         c.gridx = 1;
         c.gridy = 4;
+        c.gridwidth = 3;
         add(cmbContinent, c);
 
-       codes = CountryCode.values();
-        ArrayList<String> countryList = new ArrayList();
-        for (CountryCode countryCode : CountryCode.values()) {
-            countryList.add(countryCode.getName());
-        }
-        cmbCountry.setModel(new javax.swing.DefaultComboBoxModel(countryList.toArray()));
+        codes = CountryCode.values();
+        cmbCountry.setModel(new javax.swing.DefaultComboBoxModel(CountryCode.getSortedNames().toArray()));
         cmbContinent.setModel(new javax.swing.DefaultComboBoxModel(Continents.values()));
+    }
+
+    public void updateLabel(Location location) {
+        if (location != null) {
+            tfStreet.setText(location.getStreet());
+            tfNumber.setText(location.getHousenumber());
+            tfCity.setText(location.getTown());
+            tfZip.setText(location.getPostcode());
+            tfState.setText(location.getState());
+            cmbCountry.setSelectedItem((location.getCountry().getName()));
+            cmbContinent.setSelectedItem(location.getContinent());
+        }
     }
 
     public Location getHubLocation() {
         location = new Location((Continents) cmbContinent.getSelectedItem());
 
         if (!tfStreet.getText().isEmpty()) {
-            location.setStreet(tfState.getText());
+            location.setStreet(tfStreet.getText());
         }
         if (!tfNumber.getText().isEmpty()) {
             location.setHousenumber(tfNumber.getText());
@@ -130,7 +140,7 @@ public final class HubVisualPanel3 extends JPanel {
         }
 
         if (cmbCountry.getSelectedIndex() != 0) {
-            location.setCountry(codes[cmbCountry.getSelectedIndex()]);
+            location.setCountry(CountryCode.getByName(cmbCountry.getSelectedItem().toString()));
         }
         return location;
     }
