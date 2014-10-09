@@ -33,6 +33,13 @@ public class DistributionTypeTest {
         distributionType = null;
     }
 
+    @Test
+    public void setGetDescription(){
+        assertTrue(distributionType.getDescription().equals(""));
+        distributionType.setDescription("TEST");
+        assertTrue(distributionType.getDescription().equals("TEST"));
+    }
+    
     /**
      * Test of getInputValueType method, of class DistributionType.
      */
