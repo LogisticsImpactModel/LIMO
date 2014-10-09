@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import nl.fontys.sofa.limo.domain.component.Event;
+import nl.fontys.sofa.limo.domain.component.EventExecutionStateDependency;
 import nl.fontys.sofa.limo.domain.component.Hub;
 import nl.fontys.sofa.limo.domain.component.Leg;
 import nl.fontys.sofa.limo.domain.exceptions.SupplyChainException;
@@ -308,6 +310,93 @@ public class SupplyChainTest {
         } catch (SupplyChainException ex) {
             fail("Could not append a leg to the hub");
         }
+    }
+
+    @Test
+    public void addEvent() {
+        Hub hub = new Hub("1", null);
+        Leg leg = new Leg("L");
+        Hub hub2 = new Hub("2", null);
+        Leg leg2 = new Leg("L2");
+        Event e1 = new Event("E1");
+        Event e2 = new Event("E2");
+        Event e3 = new Event("E3");
+        Event e4 = new Event("E4");
+        Event e5 = new Event("E5");
+        Event e6 = new Event("E6");
+        try {
+            supplyChain.addHub(hub);
+            supplyChain.addLeg(leg);
+            supplyChain.addHub(hub2);
+            supplyChain.addLeg(leg2);
+        } catch (SupplyChainException ex) {
+            fail("Couldn't add hubs/legs");
+        }
+        assertTrue(hub.getEvents().isEmpty());
+        try {
+            //INDEPENDENT TO HUB
+            supplyChain.addEvent(e1, EventExecutionStateDependency.INDEPENDENT);
+            fail("Adding should not work.");
+        } catch (SupplyChainException ex) {
+        }
+        e1.setParent(hub);
+        try {
+            supplyChain.addEvent(e1, EventExecutionStateDependency.INDEPENDENT);
+        } catch (SupplyChainException ex) {
+            fail("Adding should work.");
+        }
+        assertTrue(hub.getEvents().size() == 1);
+        assertTrue(e1.getEvents().isEmpty());
+        //EXECUTED TO EVENT
+        e2.setParent(e1);
+        try {
+            supplyChain.addEvent(e2, EventExecutionStateDependency.EXECUTED);
+        } catch (SupplyChainException ex) {
+            fail("Adding should work.");
+        }
+        assertTrue(hub.getEvents().size() == 1);
+        assertTrue(e1.getEvents().size() == 1);
+        //INDEPENDENT TO EVENT
+        e3.setParent(e1);
+        try {
+            supplyChain.addEvent(e2, EventExecutionStateDependency.INDEPENDENT);
+        } catch (SupplyChainException ex) {
+            fail("Adding should work.");
+        }
+        assertTrue(hub.getEvents().size() == 2);
+        assertTrue(e1.getEvents().size() == 1);
+        //NOT ECECUTED TO EVENT
+        e4.setParent(e1);
+        try {
+            supplyChain.addEvent(e4, EventExecutionStateDependency.NOT_EXECUTED);
+        } catch (SupplyChainException ex) {
+            fail("Adding should work.");
+        }
+        assertTrue(hub.getEvents().size() == 2);
+        assertTrue(e1.getEvents().size() == 2);
+        assertTrue(hub2.getEvents().isEmpty());
+        //EXECUTED TO HUB
+        e5.setParent(hub2);
+        try {
+            supplyChain.addEvent(e5, EventExecutionStateDependency.EXECUTED);
+        } catch (SupplyChainException ex) {
+            fail("Adding should work.");
+        }
+        assertTrue(hub.getEvents().size() == 2);
+        assertTrue(e1.getEvents().size() == 2);
+        assertTrue(hub2.getEvents().size() == 1);
+        assertTrue(e4.getEvents().isEmpty());
+        //EXECUTED TO EVENT
+        e6.setParent(e4);
+        try {
+            supplyChain.addEvent(e6, EventExecutionStateDependency.EXECUTED);
+        } catch (SupplyChainException ex) {
+            fail("Adding should work.");
+        }
+        assertTrue(hub.getEvents().size() == 2);
+        assertTrue(e1.getEvents().size() == 2);
+        assertTrue(hub2.getEvents().size() == 1);
+        assertTrue(e4.getEvents().size() == 1);
     }
 
     /**
