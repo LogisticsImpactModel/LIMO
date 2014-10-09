@@ -7,7 +7,6 @@ package nl.fontys.sofa.limo.domain.distribution;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import nl.fontys.sofa.limo.domain.distribution.input.InputValue;
 import nl.fontys.sofa.limo.domain.distribution.input.IntegerInputValue;
 import org.junit.After;
@@ -41,6 +40,7 @@ public class DistributionTypeTest {
     public void testGetInputValueType() {
         Class<Number> inputValueType = distributionType.getInputValueType("Pirates");
         assertEquals(Integer.class.getSimpleName(), inputValueType.getSimpleName());
+        assertNull(distributionType.getInputValueType("NOT_EXISTING"));
     }
 
     @Test
