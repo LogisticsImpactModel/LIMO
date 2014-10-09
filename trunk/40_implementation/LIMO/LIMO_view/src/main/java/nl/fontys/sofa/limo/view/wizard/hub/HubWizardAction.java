@@ -22,7 +22,7 @@ import org.openide.awt.ActionRegistration;
 // your code. You can move the code below wherever you need, or register an action:
  @ActionID(category="Hub", id="nl.fontys.limo.view.wizzard.hub.HubWizardAction")
  @ActionRegistration(displayName="Add Hub")
- @ActionReference(path="Menu/Wizard/Hub"/*, position=30*/)
+ @ActionReference(path="Menu/Data/Hub"/*, position=30*/)
 public final class HubWizardAction implements ActionListener {
 
     @Override

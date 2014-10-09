@@ -61,6 +61,7 @@ public final class HubVisualPanel2 extends JPanel {
         c.gridx = 2;
         c.gridy = 1;
         add(btnSelect, c);
+        icon = new File("");
 
         btnSelect.addActionListener(new ActionListener() {
             @Override
@@ -81,7 +82,7 @@ public final class HubVisualPanel2 extends JPanel {
     public Hub getHub() {
         hub = new Hub();
         hub.setIdentifier(tfName.getText());
-        if (icon == null) {
+        if (icon != null) {
             hub.setIcon(new Icon(icon.getAbsolutePath()));
         }
         return hub;
