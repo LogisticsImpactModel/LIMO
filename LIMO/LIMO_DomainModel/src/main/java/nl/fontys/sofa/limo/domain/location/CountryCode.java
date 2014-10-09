@@ -15,7 +15,10 @@ package nl.fontys.sofa.limo.domain.location;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,19 +48,19 @@ import java.util.Map;
  *
  * <span style="color: darkgreen;">// Country name</span>
  * System.out.println("Country name = " + cc.{@link #getName()});
- *                  <span style="color: darkgreen;">// "Japan"</span>
+ * <span style="color: darkgreen;">// "Japan"</span>
  *
  * <span style="color: darkgreen;">// ISO 3166-1 alpha-2 code</span>
  * System.out.println("ISO 3166-1 alpha-2 code = " + cc.{@link #getAlpha2()});
- *     <span style="color: darkgreen;">// "JP"</span>
+ * <span style="color: darkgreen;">// "JP"</span>
  *
  * <span style="color: darkgreen;">// ISO 3166-1 alpha-3 code</span>
  * System.out.println("ISO 3166-1 alpha-3 code = " + cc.{@link #getAlpha3()});
- *     <span style="color: darkgreen;">// "JPN"</span>
+ * <span style="color: darkgreen;">// "JPN"</span>
  *
  * <span style="color: darkgreen;">// ISO 3166-1 numeric code</span>
  * System.out.println("ISO 3166-1 numeric code = " + cc.{@link #getNumeric()});
- *    <span style="color: darkgreen;">// 392</span>
+ * <span style="color: darkgreen;">// 392</span>
  * </pre>
  *
  * @author Takahiko Kawasaki
@@ -65,7 +68,6 @@ import java.util.Map;
 public enum CountryCode {
 
     // @formatter:off
-
     /**
      * <a href="http://en.wikipedia.org/wiki/Andorra">Andorra</a>
      */
@@ -236,7 +238,8 @@ public enum CountryCode {
      */
     CC("Cocos Islands", "CCK", 166),
     /**
-     *      * <a href="http://en.wikipedia.org/wiki/Democratic_Republic_of_the_Congo">The
+     *      *
+     * <a href="http://en.wikipedia.org/wiki/Democratic_Republic_of_the_Congo">The
      * Democratic Republic of the Congo</a>
      */
     CD("The Democratic Republic of the Congo", "COD", 180),
@@ -374,7 +377,8 @@ public enum CountryCode {
      */
     FK("Falkland Islands", "FLK", 238),
     /**
-     *      * <a href="http://en.wikipedia.org/wiki/Federated_States_of_Micronesia">Federated
+     *      *
+     * <a href="http://en.wikipedia.org/wiki/Federated_States_of_Micronesia">Federated
      * States of Micronesia</a>
      */
     FM("Federated States of Micronesia", "FSM", 583),
@@ -444,7 +448,8 @@ public enum CountryCode {
      */
     GR("Greece", "GRC", 300),
     /**
-     *      * <a href="http://en.wikipedia.org/wiki/South_Georgia_and_the_South_Sandwich_Islands">South
+     *      *
+     * <a href="http://en.wikipedia.org/wiki/South_Georgia_and_the_South_Sandwich_Islands">South
      * Georgia and the South Sandwich Islands</a>
      */
     GS("South Georgia and the South Sandwich Islands", "SGS", 239),
@@ -469,7 +474,8 @@ public enum CountryCode {
      */
     HK("Hong Kong", "HKG", 344),
     /**
-     *      * <a href="http://en.wikipedia.org/wiki/Heard_Island_and_McDonald_Islands">Heard
+     *      *
+     * <a href="http://en.wikipedia.org/wiki/Heard_Island_and_McDonald_Islands">Heard
      * Island and McDonald Islands</a>
      */
     HM("Heard Island and McDonald Islands", "HMD", 334),
@@ -510,7 +516,8 @@ public enum CountryCode {
      */
     IN("India", "IND", 356),
     /**
-     *      * <a href="http://en.wikipedia.org/wiki/British_Indian_Ocean_Territory">British
+     *      *
+     * <a href="http://en.wikipedia.org/wiki/British_Indian_Ocean_Territory">British
      * Indian Ocean Territory</a>
      */
     IO("British Indian Ocean Territory", "IOT", 86),
@@ -895,7 +902,8 @@ public enum CountryCode {
      */
     SG("Singapore", "SGP", 702),
     /**
-     *      * <a href="http://en.wikipedia.org/wiki/Saint_Helena,_Ascension_and_Tristan_da_Cunha">Saint
+     *      *
+     * <a href="http://en.wikipedia.org/wiki/Saint_Helena,_Ascension_and_Tristan_da_Cunha">Saint
      * Helena, Ascension and Tristan da Cunha</a>
      */
     SH("Saint Helena, Ascension and Tristan da Cunha", "SHN", 654),
@@ -937,7 +945,8 @@ public enum CountryCode {
      */
     SS("South Sudan", "SSD", 728),
     /**
-     *      * <a href="http://en.wikipedia.org/wiki/S%C3%A3o_Tom%C3%A9_and_Pr%C3%ADncipe">Sao
+     *      *
+     * <a href="http://en.wikipedia.org/wiki/S%C3%A3o_Tom%C3%A9_and_Pr%C3%ADncipe">Sao
      * Tome and Principe</a>
      */
     ST("Sao Tome and Principe", "STP", 678),
@@ -968,7 +977,8 @@ public enum CountryCode {
      */
     TD("Chad", "TCD", 148),
     /**
-     *      * <a href="http://en.wikipedia.org/wiki/French_Southern_and_Antarctic_Lands">French
+     *      *
+     * <a href="http://en.wikipedia.org/wiki/French_Southern_and_Antarctic_Lands">French
      * Southern Territories</a>
      */
     TF("French Southern Territories", "ATF", 260),
@@ -1036,7 +1046,8 @@ public enum CountryCode {
      */
     UG("Uganda", "UGA", 800),
     /**
-     *      * <a href="http://en.wikipedia.org/wiki/United_States_Minor_Outlying_Islands">United
+     *      *
+     * <a href="http://en.wikipedia.org/wiki/United_States_Minor_Outlying_Islands">United
      * States Minor Outlying Islands</a>
      */
     UM("United States Minor Outlying Islands", "UMI", 581),
@@ -1058,7 +1069,8 @@ public enum CountryCode {
      */
     VA("Holy See", "VAT", 336),
     /**
-     *      * <a href="http://en.wikipedia.org/wiki/Saint_Vincent_and_the_Grenadines">Saint
+     *      *
+     * <a href="http://en.wikipedia.org/wiki/Saint_Vincent_and_the_Grenadines">Saint
      * Vincent and the Grenadines</a>
      */
     VC("Saint Vincent and the Grenadines", "VCT", 670),
@@ -1073,7 +1085,8 @@ public enum CountryCode {
      */
     VG("British Virgin Islands", "VGB", 92),
     /**
-     *      * <a href="http://en.wikipedia.org/wiki/United_States_Virgin_Islands">Virgin
+     *      *
+     * <a href="http://en.wikipedia.org/wiki/United_States_Virgin_Islands">Virgin
      * Islands, U.S.</a>
      */
     VI("Virgin Islands, U.S.", "VIR", 850),
@@ -1231,5 +1244,18 @@ public enum CountryCode {
      */
     public static CountryCode getByCode(int code) {
         return numericMap.get(code);
+    }
+
+    /**
+     * Returns the sorted names of all countries.
+     * @return A List containing all sorted countries.
+     */
+    public List<String> getSortedNames() {
+        ArrayList<String> countries = new ArrayList<>();
+        for (CountryCode country : CountryCode.values()) {
+            countries.add(country.name);
+        }
+        Collections.sort(countries);
+        return countries;
     }
 }
