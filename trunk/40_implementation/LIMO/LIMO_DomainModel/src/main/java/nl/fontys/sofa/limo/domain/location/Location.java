@@ -206,4 +206,5 @@ public class Location implements Serializable {
     public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
+    //</editor-fold>
 }
