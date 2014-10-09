@@ -24,6 +24,7 @@ public abstract class DistributionType implements Serializable {
                 this.inputValues.put(iv.getName(), iv);
             }
         }
+        description = "";
     }
 
     /**
