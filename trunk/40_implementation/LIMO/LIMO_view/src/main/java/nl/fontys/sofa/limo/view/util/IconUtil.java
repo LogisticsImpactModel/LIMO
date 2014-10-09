@@ -5,7 +5,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
+import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
+import nl.fontys.sofa.limo.domain.component.Event;
+import nl.fontys.sofa.limo.domain.types.HubType;
+import nl.fontys.sofa.limo.domain.types.LegType;
 
 /**
  *
@@ -32,6 +36,10 @@ public class IconUtil {
         icons = new HashMap<>();
         
         icons.put(TimeCategory.class, new IconHolder("TimeCategory"));
+        icons.put(CostCategory.class, new IconHolder("CostCategory"));
+        icons.put(LegType.class, new IconHolder("LegType"));
+        icons.put(HubType.class, new IconHolder("HubType"));
+        icons.put(Event.class, new IconHolder("Event"));
         
         isSetUp = true;
     }
