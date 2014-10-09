@@ -7,6 +7,7 @@ package nl.fontys.sofa.limo.view.wizard.hub;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -76,11 +77,12 @@ public final class HubVisualPanel2 extends JPanel {
         });
     }
 
-    public void updateLabel(Hub hub) {
-        if (hub != null) {
-            tfName.setText(hub.getIdentifier());
-            if (hub.getIcon() != null && hub.getIcon().getIcon() != null) {
-                lblPreview.setIcon(new ImageIcon(hub.getIcon().getIcon()));
+    public void updateLabel(String identifire, Icon ic) {
+        if (!identifire.isEmpty()) {
+            tfName.setText(identifire);
+            if (ic != null && ic.getIcon() != null) {
+                Image img = ic.getIcon();
+                lblPreview.setIcon(new ImageIcon(img));
             }
         }
     }

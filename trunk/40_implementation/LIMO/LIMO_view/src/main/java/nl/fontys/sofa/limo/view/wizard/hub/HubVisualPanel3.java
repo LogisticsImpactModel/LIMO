@@ -7,6 +7,8 @@ package nl.fontys.sofa.limo.view.wizard.hub;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.location.Continents;
 import nl.fontys.sofa.limo.domain.location.CountryCode;
@@ -103,9 +105,18 @@ public final class HubVisualPanel3 extends JPanel {
         c.gridwidth = 3;
         add(cmbContinent, c);
 
-        codes = CountryCode.values();
-        cmbCountry.setModel(new javax.swing.DefaultComboBoxModel(CountryCode.getSortedNames().toArray()));
-        cmbContinent.setModel(new javax.swing.DefaultComboBoxModel(Continents.values()));
+        // codes = CountryCode.values();     
+        ArrayList<String> countryList = new ArrayList();
+        countryList.add("None");
+        countryList.addAll(CountryCode.getSortedNames());
+        cmbCountry.setModel(new javax.swing.DefaultComboBoxModel(countryList.toArray()));
+
+        ArrayList<String> continentList = new ArrayList();
+        continentList.add("None");
+        for (int i = 0; i < Continents.values().length; ++i) {
+            continentList.add(Continents.values()[i] + " ");
+        }
+        cmbContinent.setModel(new javax.swing.DefaultComboBoxModel(continentList.toArray()));
     }
 
     public void updateLabel(Location location) {
@@ -115,32 +126,36 @@ public final class HubVisualPanel3 extends JPanel {
             tfCity.setText(location.getTown());
             tfZip.setText(location.getPostcode());
             tfState.setText(location.getState());
-            cmbCountry.setSelectedItem((location.getCountry().getName()));
+            if (location.getCountry() != null) {
+                cmbCountry.setSelectedItem((location.getCountry().getName()));
+            }
             cmbContinent.setSelectedItem(location.getContinent());
         }
     }
 
     public Location getHubLocation() {
-        location = new Location((Continents) cmbContinent.getSelectedItem());
+        if (cmbContinent.getSelectedIndex() > 0) {
+            location = new Location(Continents.values()[cmbContinent.getSelectedIndex() - 1]);
 
-        if (!tfStreet.getText().isEmpty()) {
-            location.setStreet(tfStreet.getText());
-        }
-        if (!tfNumber.getText().isEmpty()) {
-            location.setHousenumber(tfNumber.getText());
-        }
-        if (!tfCity.getText().isEmpty()) {
-            location.setTown(tfCity.getText());
-        }
-        if (!tfZip.getText().isEmpty()) {
-            location.setPostcode(tfZip.getText());
-        }
-        if (!tfState.getText().isEmpty()) {
-            location.setState(tfState.getText());
-        }
+            if (!tfStreet.getText().isEmpty()) {
+                location.setStreet(tfStreet.getText());
+            }
+            if (!tfNumber.getText().isEmpty()) {
+                location.setHousenumber(tfNumber.getText());
+            }
+            if (!tfCity.getText().isEmpty()) {
+                location.setTown(tfCity.getText());
+            }
+            if (!tfZip.getText().isEmpty()) {
+                location.setPostcode(tfZip.getText());
+            }
+            if (!tfState.getText().isEmpty()) {
+                location.setState(tfState.getText());
+            }
 
-        if (cmbCountry.getSelectedIndex() != 0) {
-            location.setCountry(CountryCode.getByName(cmbCountry.getSelectedItem().toString()));
+            if (cmbCountry.getSelectedIndex() > 0) {
+                location.setCountry(CountryCode.getByName(cmbCountry.getSelectedItem().toString()));
+            }
         }
         return location;
     }
@@ -160,5 +175,5 @@ public final class HubVisualPanel3 extends JPanel {
     private javax.swing.JTextField tfStreet;
     private javax.swing.JTextField tfZip;
     private Location location;
-    private CountryCode[] codes;
+  //  private CountryCode[] codes;
 }
