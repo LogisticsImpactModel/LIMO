@@ -1,7 +1,6 @@
 package nl.fontys.sofa.limo.orientdb.database;
 
 import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
-import com.orientechnologies.orient.object.db.OObjectDatabasePool;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.io.File;
 import nl.fontys.sofa.limo.api.database.AbstractDBServer;
@@ -9,6 +8,9 @@ import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.category.Category;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
+import nl.fontys.sofa.limo.domain.component.Event;
+import nl.fontys.sofa.limo.domain.component.Hub;
+import nl.fontys.sofa.limo.domain.types.HubType;
 
 public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
 
@@ -70,6 +72,9 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
         connection.getEntityManager().registerEntityClass(Category.class);
         connection.getEntityManager().registerEntityClass(TimeCategory.class);
         connection.getEntityManager().registerEntityClass(CostCategory.class);
+        connection.getEntityManager().registerEntityClass(Hub.class);
+        connection.getEntityManager().registerEntityClass(HubType.class);
+        connection.getEntityManager().registerEntityClass(Event.class);
     }
 
 }
