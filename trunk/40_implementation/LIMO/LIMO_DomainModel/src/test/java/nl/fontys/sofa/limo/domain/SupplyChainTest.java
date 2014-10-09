@@ -10,8 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import nl.fontys.sofa.limo.domain.component.Hub;
 import nl.fontys.sofa.limo.domain.component.Leg;
+import nl.fontys.sofa.limo.domain.exceptions.SupplyChainException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -190,7 +193,7 @@ public class SupplyChainTest {
         HashMap<Entry, Actor> map = new HashMap<Entry, Actor>();
         map.put(new Entry("Test", "Cat1"), new Actor("Actor3"));
         startHub.setCostResponsibilities(map);
-        
+
         Hub middleHub = new Hub("2", null);
         Hub endHub = new Hub("3", null);
         Leg outputStartHub = new Leg("1.2");
@@ -212,24 +215,120 @@ public class SupplyChainTest {
         assertEquals(3, actors.size());
     }
 
+    @Test
+    public void addHub() {
+        Hub hub = new Hub("1", null);
+        Leg leg = new Leg("L");
+        Hub hub2 = new Hub("2", null);
+        assertTrue(supplyChain.getAllHubs().isEmpty());
+        assertTrue(supplyChain.getAllLegs().isEmpty());
+        assertTrue(supplyChain.getLastComponent() == null);
+        try {
+            supplyChain.addHub(hub);
+            assertTrue(supplyChain.getAllHubs().size() == 1);
+            assertEquals(supplyChain.getHub("1"), hub);
+            assertEquals(supplyChain.getStartHub(), hub);
+            assertEquals(supplyChain.getLastComponent(), hub);
+        } catch (SupplyChainException ex) {
+            fail("Could not add a hub to an empty supply chain.");
+        }
+        try {
+            supplyChain.addHub(hub2);
+            assertEquals(supplyChain.getLastComponent(), hub);
+            fail("Could add a hub when it shouldn't work");
+        } catch (SupplyChainException ex) {
+        }
+        try {
+            supplyChain.addLeg(leg);
+            assertEquals(supplyChain.getLastComponent(), leg);
+        } catch (SupplyChainException ex) {
+            fail("Could not add a leg when it should work.");
+        }
+        assertEquals(supplyChain.getLastComponent(), leg);
+        try {
+            supplyChain.addHub(hub2);
+            assertTrue(supplyChain.getAllHubs().size() == 2);
+            assertEquals(supplyChain.getHub("2"), hub2);
+            assertEquals(supplyChain.getLastComponent(), hub2);
+        } catch (SupplyChainException ex) {
+            fail("Could not add a hub when it should work");
+        }
+    }
+
+    @Test
+    public void addLeg() {
+        Hub hub = new Hub("1", null);
+        Leg leg = new Leg("L");
+        Hub hub2 = new Hub("2", null);
+        Leg leg2 = new Leg("L2");
+        assertTrue(supplyChain.getAllHubs().isEmpty());
+        assertTrue(supplyChain.getAllLegs().isEmpty());
+        assertTrue(supplyChain.getLastComponent() == null);
+        try {
+            supplyChain.addLeg(leg);
+            fail("Should not be able to add a leg");
+        } catch (SupplyChainException ex) {
+            assertTrue(supplyChain.getAllHubs().isEmpty());
+            assertTrue(supplyChain.getAllLegs().isEmpty());
+            assertTrue(supplyChain.getLastComponent() == null);
+        }
+        try {
+            supplyChain.addHub(hub);
+            assertEquals(supplyChain.getLastComponent(), hub);
+        } catch (SupplyChainException ex) {
+            fail("Couldn't add a starthub");
+        }
+        try {
+            supplyChain.addLeg(leg);
+            assertTrue(supplyChain.getAllLegs().size() == 1);
+            assertEquals(supplyChain.getLeg("L"), leg);
+            assertEquals(supplyChain.getLastComponent(), leg);
+        } catch (SupplyChainException ex) {
+            fail("Could not append a leg to the starthub");
+        }
+        try {
+            supplyChain.addLeg(leg2);
+            fail("Should not be able to add a leg");
+        } catch (SupplyChainException ex) {
+            assertTrue(supplyChain.getAllLegs().size() == 1);
+            assertEquals(supplyChain.getLeg("L"), leg);
+            assertEquals(supplyChain.getLastComponent(), leg);
+        }
+        try {
+            supplyChain.addHub(hub2);
+            assertEquals(supplyChain.getLastComponent(), hub2);
+        } catch (SupplyChainException ex) {
+            fail("Couldn't add a hub to the leg");
+        }
+        try {
+            supplyChain.addLeg(leg2);
+            assertTrue(supplyChain.getAllLegs().size() == 2);
+            assertEquals(supplyChain.getLeg("L2"), leg2);
+            assertEquals(supplyChain.getLastComponent(), leg2);
+        } catch (SupplyChainException ex) {
+            fail("Could not append a leg to the hub");
+        }
+    }
+
     /**
      * Test of createFromFile method, of class SupplyChain.
      *//*
-    @Test
-    public void testCreateFromFile() {
-        SupplyChain.saveToFile(supplyChain, System.getProperty("user.home") + "/test");
-        SupplyChain supplyChain2 = SupplyChain.createFromFile(System.getProperty("user.home") + "/test");
-        assertEquals(supplyChain.getName(), supplyChain2.getName());
+     @Test
+     public void testCreateFromFile() {
+     SupplyChain.saveToFile(supplyChain, System.getProperty("user.home") + "/test");
+     SupplyChain supplyChain2 = SupplyChain.createFromFile(System.getProperty("user.home") + "/test");
+     assertEquals(supplyChain.getName(), supplyChain2.getName());
 
-    }*/
+     }*/
 
     /**
      * Test of saveToFile method, of class SupplyChain.
      *//*
-    @Test
-    public void testSaveToFile() {
-        SupplyChain.saveToFile(supplyChain, System.getProperty("user.home") + "/test");
-        SupplyChain supplyChain2 = SupplyChain.createFromFile(System.getProperty("user.home") + "/test");
-        assertEquals(supplyChain.getName(), supplyChain2.getName());
-    }*/
+     @Test
+     public void testSaveToFile() {
+     SupplyChain.saveToFile(supplyChain, System.getProperty("user.home") + "/test");
+     SupplyChain supplyChain2 = SupplyChain.createFromFile(System.getProperty("user.home") + "/test");
+     assertEquals(supplyChain.getName(), supplyChain2.getName());
+     }*/
+
 }
