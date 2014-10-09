@@ -1,7 +1,10 @@
 package nl.fontys.sofa.limo.orientdb.database;
 
 import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
+import com.orientechnologies.orient.core.serialization.serializer.object.OObjectSerializer;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
+import com.orientechnologies.orient.object.serialization.OObjectSerializerContext;
+import com.orientechnologies.orient.object.serialization.OObjectSerializerHelper;
 import java.io.File;
 import nl.fontys.sofa.limo.api.database.AbstractDBServer;
 import nl.fontys.sofa.limo.domain.BaseEntity;
@@ -11,6 +14,8 @@ import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
 import nl.fontys.sofa.limo.domain.component.Event;
 import nl.fontys.sofa.limo.domain.component.Hub;
+import nl.fontys.sofa.limo.domain.location.Continents;
+import nl.fontys.sofa.limo.domain.location.CountryCode;
 import nl.fontys.sofa.limo.domain.location.Location;
 import nl.fontys.sofa.limo.domain.types.HubType;
 
@@ -69,6 +74,33 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
     }
 
     protected void registerClasses() {
+        OObjectSerializerContext serializer = new OObjectSerializerContext();
+        serializer.bind(new OObjectSerializer<CountryCode, String>() {
+
+            @Override
+            public Object serializeFieldValue(Class<?> type, CountryCode lcltp) {
+                return lcltp.name();
+            }
+
+            @Override
+            public Object unserializeFieldValue(Class<?> type, String dbtype) {
+                return CountryCode.valueOf(dbtype);
+            }
+        });
+        serializer.bind(new OObjectSerializer<Continents, String>() {
+
+            @Override
+            public Object serializeFieldValue(Class<?> type, Continents lcltp) {
+                return lcltp.name();
+            }
+
+            @Override
+            public Object unserializeFieldValue(Class<?> type, String dbtype) {
+                return CountryCode.valueOf(dbtype);
+            }
+        });
+        OObjectSerializerHelper.bindSerializerContext(null, serializer);
+        
         connection.getEntityManager().registerEntityClasses("nl.fontys.sofa.limo.domain");
         connection.getEntityManager().registerEntityClass(BaseEntity.class);
         connection.getEntityManager().registerEntityClass(Category.class);
