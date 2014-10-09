@@ -67,6 +67,7 @@ import java.util.Map;
  */
 public enum CountryCode {
 
+    // <editor-fold defaultstate="collapsed" desc=" ${ENUMS} ">
     // @formatter:off
     /**
      * <a href="http://en.wikipedia.org/wiki/Andorra">Andorra</a>
@@ -1128,14 +1129,17 @@ public enum CountryCode {
      */
     ZW("Zimbabwe", "ZWE", 716),;
     // @formatter:on
+    //</editor-fold>
 
     private static final Map<String, CountryCode> alpha3Map = new HashMap<String, CountryCode>();
     private static final Map<Integer, CountryCode> numericMap = new HashMap<Integer, CountryCode>();
+    private static final Map<String, CountryCode> nameMap = new HashMap<String, CountryCode>();
 
     static {
         for (CountryCode cc : values()) {
             alpha3Map.put(cc.getAlpha3(), cc);
             numericMap.put(cc.getNumeric(), cc);
+            nameMap.put(cc.getName(), cc);
         }
     }
 
@@ -1218,6 +1222,18 @@ public enum CountryCode {
             default:
                 return null;
         }
+    }
+    
+    /**
+     * Returns the enum you are searching for.
+     * @param name The countries name.
+     * @return The CountryCode you are looking for.
+     */
+    public static CountryCode getByName(String name){
+        if (name == null) {
+            return null;
+        }
+        return nameMap.get(name);
     }
 
     private static CountryCode getByAlpha2Code(String code) {
