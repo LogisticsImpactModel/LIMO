@@ -26,7 +26,7 @@ public class CostCategoryNode extends BeanNode{
 	@Override
 	public Image getIcon(int type) {
 		try {
-			return ImageIO.read(getClass().getClassLoader().getResource("nl/fontys/sofa/limo/view/images/icons/cost01-24x24.png"));
+			return ImageIO.read(getClass().getClassLoader().getResource("nl/fontys/sofa/limo/view/images/icons/cost01-24x24.png")).getScaledInstance(16, 16, Image.SCALE_SMOOTH);
 		} catch (IOException ex) {
 			Exceptions.printStackTrace(ex);
 		}
