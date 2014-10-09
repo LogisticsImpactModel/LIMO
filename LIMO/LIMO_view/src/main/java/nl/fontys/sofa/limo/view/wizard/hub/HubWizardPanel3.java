@@ -8,9 +8,10 @@ package nl.fontys.sofa.limo.view.wizard.hub;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.Hub;
 import org.openide.WizardDescriptor;
+import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class HubWizardPanel3 implements WizardDescriptor.Panel<WizardDescriptor> {
+public class HubWizardPanel3 implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     /**
      * The visual component that displays this panel. If you need to access the
@@ -69,6 +70,13 @@ public class HubWizardPanel3 implements WizardDescriptor.Panel<WizardDescriptor>
         Hub hub = (Hub) wiz.getProperty("hub");
         hub.setLocation(getComponent().getHubLocation());
         wiz.putProperty("hub", hub);
+    }
+
+    @Override
+    public void validate() throws WizardValidationException {
+        if (component.getHubLocation() == null) {
+            throw new WizardValidationException(null, "Echt nicht, Junge!", null);
+        }
     }
 
 }
