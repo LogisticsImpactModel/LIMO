@@ -112,22 +112,24 @@ public class SupplyChain implements Serializable {
      * @param event The event that should be added to the supply chain.
      * @param dependency The dependency of the event towards the parent
      * component.
-     * @param parentComponent The parent component of the event.
+     * @throws SupplyChainException When event got no parent or parent.
      */
-    public void addEvent(Event event, EventExecutionStateDependency dependency, Component parentComponent) {
-        if (parentComponent instanceof Event) {
+    public void addEvent(Event event, EventExecutionStateDependency dependency) throws SupplyChainException{
+        if(event.getParent() == null)
+            throw new SupplyChainException("Event got no parent.");
+        if (event.getParent() instanceof Event) {
             if (dependency.equals(EventExecutionStateDependency.INDEPENDENT)) {
                 Component parent = event.getParent();
-                while (!(parent instanceof Leg) || !(parent instanceof Hub)) {
+                while (parent instanceof Event) {
                     parent = ((Event) parent).getParent();
                 }
                 event.setDependency(EventExecutionStateDependency.INDEPENDENT);
                 parent.addEvent(event);
             } else {
-                ((Event) parentComponent).addEvent(event, dependency);
+                ((Event) event.getParent()).addEvent(event, dependency);
             }
-        } else if ((parentComponent instanceof Hub) || (parentComponent instanceof Leg)) {
-            parentComponent.addEvent(event);
+        } else if ((event.getParent() instanceof Hub) || (event.getParent() instanceof Leg)) {
+            event.getParent().addEvent(event);
             event.setDependency(EventExecutionStateDependency.INDEPENDENT);
             System.out.println("Event dependency set to INDEPENDENT because it"
                     + "got added to a Hub or Leg");
