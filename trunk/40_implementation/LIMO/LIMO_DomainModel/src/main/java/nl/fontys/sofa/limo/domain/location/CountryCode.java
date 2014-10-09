@@ -1250,7 +1250,7 @@ public enum CountryCode {
      * Returns the sorted names of all countries.
      * @return A List containing all sorted countries.
      */
-    public List<String> getSortedNames() {
+    public static List<String> getSortedNames() {
         ArrayList<String> countries = new ArrayList<>();
         for (CountryCode country : CountryCode.values()) {
             countries.add(country.name);
