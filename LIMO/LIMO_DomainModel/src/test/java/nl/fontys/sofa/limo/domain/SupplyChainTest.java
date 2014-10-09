@@ -6,12 +6,8 @@
 package nl.fontys.sofa.limo.domain;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import nl.fontys.sofa.limo.domain.component.Event;
 import nl.fontys.sofa.limo.domain.component.EventExecutionStateDependency;
 import nl.fontys.sofa.limo.domain.component.Hub;
@@ -58,6 +54,25 @@ public class SupplyChainTest {
         if (file.exists()) {
             file.delete();
         }
+    }
+
+    @Test
+    public void testConstructors() {
+        SupplyChain sc = new SupplyChain();
+        SupplyChain sc2 = new SupplyChain("TEST");
+        assertTrue(sc2.getName().equals("TEST"));
+        Hub hub1 = new Hub("1", null);
+        SupplyChain sc3 = new SupplyChain(hub1);
+        assertEquals(sc3.getStartHub(), hub1);
+        assertTrue(sc3.getAllHubs().size() == 1);
+        Hub hub2 = new Hub("2", null);
+        SupplyChain sc4 = new SupplyChain("TEST2", hub2);
+        assertTrue(sc4.getName().equals("TEST2"));
+        assertEquals(sc4.getStartHub(), hub2);
+        assertTrue(sc4.getAllHubs().size() == 1);
+        //EXCEPTION TEST!
+        SupplyChainException ex = new SupplyChainException();
+        SupplyChainException ex2 = new SupplyChainException("MESSAGE");
     }
 
     /**
@@ -172,6 +187,7 @@ public class SupplyChainTest {
 
         Leg outputStartHub = new Leg("1.2");
         Leg outputMiddleHub = new Leg("2.2");
+        Leg outputEndHub = new Leg("3.2");
 
         List<Hub> hubs = supplyChain.getAllHubs();
         assertEquals(0, hubs.size());
@@ -183,6 +199,8 @@ public class SupplyChainTest {
         startHub.setOutputLeg(outputStartHub);
         supplyChain.setStartHub(startHub);
         hubs = supplyChain.getAllHubs();
+        assertEquals(3, hubs.size());
+        endHub.setOutputLeg(outputEndHub);
         assertEquals(3, hubs.size());
     }
 
