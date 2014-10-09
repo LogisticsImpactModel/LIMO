@@ -59,6 +59,7 @@ public class HubWizardPanel2 implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
+        getComponent().updateLabel((Hub) wiz.getProperty("hubCopy"));
     }
 
     @Override

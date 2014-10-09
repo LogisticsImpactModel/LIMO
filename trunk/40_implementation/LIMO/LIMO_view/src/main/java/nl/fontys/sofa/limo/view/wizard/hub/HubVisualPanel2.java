@@ -31,7 +31,6 @@ public final class HubVisualPanel2 extends JPanel {
     }
 
     private void initComponents() {
-
         lblName = new javax.swing.JLabel("Name");
         tfName = new javax.swing.JTextField();
         lblIcon = new javax.swing.JLabel("Icon");
@@ -48,7 +47,9 @@ public final class HubVisualPanel2 extends JPanel {
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 0;
+        c.gridwidth = 3;
         add(tfName, c);
+        c.gridwidth = 1;
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 1;
@@ -61,35 +62,32 @@ public final class HubVisualPanel2 extends JPanel {
         c.gridx = 2;
         c.gridy = 1;
         add(btnSelect, c);
-        icon = new File("");
-
+        hub = new Hub();
         btnSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int returnVal = fc.showOpenDialog(HubVisualPanel2.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    icon = fc.getSelectedFile();
-                    lblPreview.setIcon(new ImageIcon(icon.getAbsolutePath()));
+                    File icon = fc.getSelectedFile();
+                    hub.setIcon(new Icon(icon.getAbsolutePath()));
+                    lblPreview.setIcon(new ImageIcon(hub.getIcon().getIcon()));
                 }
             }
         });
     }
 
-    public void updatePanel() {
-        //Update Labels
+    public void updateLabel(Hub hub) {
+        if (hub != null) {
+            tfName.setText(hub.getIdentifier());
+            if (hub.getIcon() != null && hub.getIcon().getIcon() != null) {
+                lblPreview.setIcon(new ImageIcon(hub.getIcon().getIcon()));
+            }
+        }
     }
 
     public Hub getHub() {
-        hub = new Hub();
         hub.setIdentifier(tfName.getText());
-        if (icon != null) {
-            hub.setIcon(new Icon(icon.getAbsolutePath()));
-        }
         return hub;
-    }
-
-    public File getIcon() {
-        return icon;
     }
 
     private javax.swing.JButton btnSelect;
@@ -99,5 +97,4 @@ public final class HubVisualPanel2 extends JPanel {
     private javax.swing.JTextField tfName;
     private JFileChooser fc;
     private Hub hub;
-    private File icon;
 }

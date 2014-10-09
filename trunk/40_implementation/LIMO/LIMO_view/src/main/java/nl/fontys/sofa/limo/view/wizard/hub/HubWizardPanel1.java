@@ -62,7 +62,8 @@ public class HubWizardPanel1 implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-            wiz.putProperty("hubType", getComponent().getHubType());
+        wiz.putProperty("hubCopy", getComponent().getHub());
+        wiz.putProperty("hubType", getComponent().getHubType());
     }
 
 }

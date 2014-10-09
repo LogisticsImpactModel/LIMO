@@ -5,11 +5,13 @@ import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.io.File;
 import nl.fontys.sofa.limo.api.database.AbstractDBServer;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.domain.Icon;
 import nl.fontys.sofa.limo.domain.category.Category;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
 import nl.fontys.sofa.limo.domain.component.Event;
 import nl.fontys.sofa.limo.domain.component.Hub;
+import nl.fontys.sofa.limo.domain.location.Location;
 import nl.fontys.sofa.limo.domain.types.HubType;
 
 public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
@@ -75,6 +77,8 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
         connection.getEntityManager().registerEntityClass(Hub.class);
         connection.getEntityManager().registerEntityClass(HubType.class);
         connection.getEntityManager().registerEntityClass(Event.class);
+        connection.getEntityManager().registerEntityClass(Location.class);
+        connection.getEntityManager().registerEntityClass(Icon.class);
     }
 
 }

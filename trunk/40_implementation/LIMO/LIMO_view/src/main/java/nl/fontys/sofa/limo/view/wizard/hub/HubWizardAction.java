@@ -12,17 +12,21 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
+import nl.fontys.sofa.limo.api.dao.DAOFactory;
+import nl.fontys.sofa.limo.api.dao.HubDAO;
+import nl.fontys.sofa.limo.domain.component.Hub;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
+import org.openide.util.Lookup;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
- @ActionID(category="Hub", id="nl.fontys.limo.view.wizzard.hub.HubWizardAction")
- @ActionRegistration(displayName="Add Hub")
- @ActionReference(path="Menu/Data/Hub"/*, position=30*/)
+@ActionID(category = "Hub", id = "nl.fontys.limo.view.wizzard.hub.HubWizardAction")
+@ActionRegistration(displayName = "Add Hub")
+@ActionReference(path = "Menu/Data/Hub"/*, position=30*/)
 public final class HubWizardAction implements ActionListener {
 
     @Override
@@ -52,8 +56,10 @@ public final class HubWizardAction implements ActionListener {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle("Add Hub");
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            
-      //      wiz.getProperty("hub");
+            DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
+            Lookup.getDefault().lookup(DAOFactory.class);
+            HubDAO hd = df.getHubDAO();
+            hd.insert((Hub) wiz.getProperty("hub"));
         }
     }
 
