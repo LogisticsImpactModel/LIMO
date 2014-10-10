@@ -27,12 +27,11 @@ public class TimeCategoryNode extends BeanNode {
 
     @Override
     public Image getIcon(int type) {
-        Image icon = IconUtil.getIcon(TimeCategory.class, type);
-        if (icon == null) {
-            return super.getIcon(type);
-        } else {
-            return icon;
-        }
+		Image icon = IconUtil.getIcon(TimeCategory.class, type);
+		if(icon == null){
+			return super.getIcon(type);
+		}
+		return icon;
     }
 
 }

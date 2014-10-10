@@ -2,8 +2,9 @@ package nl.fontys.sofa.limo.api.dao;
 
 import java.util.List;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import org.openide.util.Lookup;
 
-public interface DAO<T extends BaseEntity> {
+public interface DAO<T extends BaseEntity> extends Lookup.Provider{
 
     /**
      * Find a list of all DAOs. If there is no one, the list is empty.

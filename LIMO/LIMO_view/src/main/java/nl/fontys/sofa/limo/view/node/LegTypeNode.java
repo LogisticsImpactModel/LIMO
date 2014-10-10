@@ -5,6 +5,7 @@ import java.beans.IntrospectionException;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import nl.fontys.sofa.limo.domain.types.LegType;
+import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.nodes.BeanNode;
 import org.openide.util.Exceptions;
 
@@ -23,12 +24,11 @@ public class LegTypeNode extends BeanNode{
 
 	@Override
 	public Image getIcon(int type) {
-		try {
-			return ImageIO.read(getClass().getClassLoader().getResource("nl/fontys/sofa/limo/view/images/icons/legtype01-24x24.png"));
-		} catch (IOException ex) {
-			Exceptions.printStackTrace(ex);
+		Image icon = IconUtil.getIcon(LegType.class, type);
+		if(icon == null){
+			return super.getIcon(type);
 		}
-		return super.getIcon(type);
+		return icon;
 	}
 
 }
