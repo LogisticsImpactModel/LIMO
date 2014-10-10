@@ -60,8 +60,7 @@ public final class TimeCategoryTopComponent extends TopComponent implements Expl
 		em.setRootContext(rootNode);
 
 		ActionMap map = getActionMap();
-		map.put("delete", ExplorerUtils.actionDelete(em, true));
-		associateLookup(ExplorerUtils.createLookup(em, map)); 
+		associateLookup(ExplorerUtils.createLookup(em, getActionMap()));
 	}
 
 	@Override

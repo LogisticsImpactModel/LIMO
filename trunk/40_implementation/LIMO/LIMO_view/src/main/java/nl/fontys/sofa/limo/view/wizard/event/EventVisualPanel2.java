@@ -18,7 +18,7 @@ import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
-import nl.fontys.sofa.limo.api.domain.distribution.DistributionTypeFactory;
+import nl.fontys.sofa.limo.api.service.distribution.DistributionTypeFactory;
 import nl.fontys.sofa.limo.domain.component.Event;
 import org.openide.util.Lookup;
 
@@ -196,15 +196,15 @@ public final class EventVisualPanel2 extends JPanel {
     }
 
     public void update(Event event) {
-        if (event != null) {
-            tfName.setText(event.getIdentifier());
-            if (event.getProbability() != null) {
-                cbDistributionType.setSelectedItem(dtf.getNameForDistributionType(event.getProbability().getClass()));
-            } else {
-                cbDistributionType.setSelectedIndex(0);
-            }
-            ((AbstractTableModel) tParameters.getModel()).fireTableDataChanged();
-        }
+//        if (event != null) {
+//            tfName.setText(event.getIdentifier());
+//            if (event.getProbability() != null) {
+//                cbDistributionType.setSelectedItem(dtf.getNameForDistributionType(event.getProbability().getClass()));
+//            } else {
+//                cbDistributionType.setSelectedIndex(0);
+//            }
+//            ((AbstractTableModel) tParameters.getModel()).fireTableDataChanged();
+//        }
     }
 
     public Event getEvent() {

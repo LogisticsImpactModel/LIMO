@@ -7,6 +7,7 @@ import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
+import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.OutlineView;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
@@ -57,6 +58,8 @@ public final class CostCategoryTopComponent extends TopComponent implements Expl
 
 		em = new ExplorerManager();
 		em.setRootContext(rootNode);
+
+		associateLookup(ExplorerUtils.createLookup(em, getActionMap()));
 	}
 
 	@Override
