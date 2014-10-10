@@ -5,7 +5,11 @@
  */
 package nl.fontys.sofa.limo.view.wizard.hub;
 
+import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import nl.fontys.sofa.limo.domain.Component;
+import nl.fontys.sofa.limo.domain.component.Hub;
+import nl.fontys.sofa.limo.view.custom.TabbedComponentEntries;
 
 public final class HubVisualPanel4 extends JPanel {
 
@@ -21,7 +25,18 @@ public final class HubVisualPanel4 extends JPanel {
         return "Costs/Delays/Leads";
     }
 
-  private void initComponents() {
-
-  }                 
+    private void initComponents() {
+        setLayout(new BorderLayout());
+    }
+    
+    public void setComponent(Component comp){
+        removeAll();
+        tce = new TabbedComponentEntries(comp);
+        add(tce);
+    }
+    
+//    public Component getComponent(){
+//    }
+//    
+    private TabbedComponentEntries tce;
 }

@@ -5,7 +5,9 @@
  */
 package nl.fontys.sofa.limo.view.wizard.hub;
 
+import java.awt.ComponentOrientation;
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.domain.component.Hub;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -58,6 +60,13 @@ public class HubWizardPanel4 implements WizardDescriptor.Panel<WizardDescriptor>
     @Override
     public void readSettings(WizardDescriptor wiz) {
         // use wiz.getProperty to retrieve previous panel state
+        Hub hub = (Hub) wiz.getProperty("hubCopy");
+        if (hub != null) {
+            getComponent().setComponent(hub);
+        } else {
+            Hub hubNew = (Hub) wiz.getProperty("hub");
+            getComponent().setComponent(hubNew);
+        }
     }
 
     @Override
