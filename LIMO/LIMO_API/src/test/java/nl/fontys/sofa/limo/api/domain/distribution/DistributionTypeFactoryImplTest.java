@@ -41,15 +41,37 @@ public class DistributionTypeFactoryImplTest {
 
     /**
      * Test of getDistributionTypes method, of class DistributionTypeFactoryImpl.
+     * All calls of testDistributionTypeAvailability call testGetDistributionTypes and check whether the requested distribType is available in the string[]
      */
     @Test
     public void testGetDistributionTypes() {
         System.out.println("getDistributionTypes");
-        DistributionTypeFactoryImpl instance = new DistributionTypeFactoryImpl();
-        System.out.println("1st entry: "+instance.getDistributionTypes()[0]);
-
+        testDistributionTypeAvailability("Cauchy");
+        testDistributionTypeAvailability("Chi Squared");
+        testDistributionTypeAvailability("Discrete");
+        testDistributionTypeAvailability("Exponential");
+        testDistributionTypeAvailability("F");
+        testDistributionTypeAvailability("Gamma");
+        testDistributionTypeAvailability("Log Normal");
+        testDistributionTypeAvailability("Normal");
+        testDistributionTypeAvailability("Poisson");
+        testDistributionTypeAvailability("Triangular");
+        testDistributionTypeAvailability("Weibull");
     }
-
+    /**
+     * needed by testGetDistributionTypes to easily check whether a distribType is avail in string[]
+     * @param distribName 
+     */
+    private void testDistributionTypeAvailability(String distribName){
+        DistributionTypeFactoryImpl instance = new DistributionTypeFactoryImpl();
+        boolean found = false;
+        for (String distribType : instance.getDistributionTypes()) {
+            if(distribType.equals(distribName)){
+                found=true;
+            }
+        }
+        assertTrue("DistribType "+distribName+" should be found",found);
+    }
     /**
      * Test of getDistributionTypeByName method, of class DistributionTypeFactoryImpl.
      */
