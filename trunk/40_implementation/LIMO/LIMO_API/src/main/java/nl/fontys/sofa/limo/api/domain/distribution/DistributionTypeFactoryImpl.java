@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.api.domain.distribution;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.fontys.sofa.limo.domain.distribution.*;
@@ -27,6 +28,15 @@ public class DistributionTypeFactoryImpl implements DistributionTypeFactory{
         String[] returnValue = new String[types.size()];
         types.keySet().toArray(returnValue);
         return returnValue;
+    }
+    
+    @Override
+    public String getNameForDistributionType(Class<?> type) {
+        for (Map.Entry<String, Class<?>> entry : types.entrySet()) {
+            if (type == entry.getValue())
+                return entry.getKey();
+        }
+        return null;
     }
 
     @Override
