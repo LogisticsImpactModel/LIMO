@@ -87,6 +87,8 @@ public class IconUtilTest {
         } catch (IOException ex) {
             fail("Could not locate image for comparison in case 4");
         }
+        //assert null for not existing switch case options
+        assertNull("Null expected for non existing switch case",IconUtil.getIcon(TimeCategory.class, 5));
         
     }
     
