@@ -10,6 +10,7 @@ import nl.fontys.sofa.limo.domain.category.TimeCategory;
 import nl.fontys.sofa.limo.domain.component.Event;
 import nl.fontys.sofa.limo.domain.types.HubType;
 import nl.fontys.sofa.limo.domain.types.LegType;
+import org.openide.util.Exceptions;
 
 /**
  *
@@ -18,7 +19,8 @@ import nl.fontys.sofa.limo.domain.types.LegType;
 public class IconUtil {
     
     private static boolean isSetUp = false;
-    private static HashMap<Class, IconHolder> icons;
+    private static HashMap<Class, IconHolder> typeIcons;
+    private static HashMap<UI_ICON, Image> uiIcons;
     
     private IconUtil() {}
     
@@ -27,25 +29,43 @@ public class IconUtil {
             setUp();
         }
         
-        IconHolder ih = icons.get(clazz);
+        IconHolder ih = typeIcons.get(clazz);
         Image i = ih.getIcon(type);
         return i;
     }
     
-    private static void setUp() {
-        icons = new HashMap<>();
+    public static Image getIcon(UI_ICON uiIcon) {
+        if (!isSetUp) {
+            setUp();
+        }
         
-        icons.put(TimeCategory.class, new IconHolder("TimeCategory"));
-        icons.put(CostCategory.class, new IconHolder("CostCategory"));
-        icons.put(LegType.class, new IconHolder("LegType"));
-        icons.put(HubType.class, new IconHolder("HubType"));
-        icons.put(Event.class, new IconHolder("Event"));
+        if (!uiIcons.containsKey(uiIcon)) {
+            try {
+                uiIcons.put(uiIcon, ImageIO.read(uiIcon.getClass().getClassLoader().getResource("ui/" + uiIcon.filename + ".png")));
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        }
+        
+        return uiIcons.get(uiIcon);
+    }
+    
+    private static void setUp() {
+        typeIcons = new HashMap<>();
+        
+        typeIcons.put(TimeCategory.class, new IconHolder("TimeCategory"));
+        typeIcons.put(CostCategory.class, new IconHolder("CostCategory"));
+        typeIcons.put(LegType.class, new IconHolder("LegType"));
+        typeIcons.put(HubType.class, new IconHolder("HubType"));
+        typeIcons.put(Event.class, new IconHolder("Event"));
+        
+        uiIcons = new HashMap<>();
         
         isSetUp = true;
     }
     
     /**
-     * Private class for a class' different icons. Hold an Image for each possible icon.
+     * Private class for a class' different typeIcons. Hold an Image for each possible icon.
      * Uses Lazy Loading.
      */
     private static class IconHolder {
@@ -104,6 +124,29 @@ public class IconUtil {
                 ex.printStackTrace();
                 return null;
             }
+        }
+    }
+    
+    public static enum UI_ICON {
+        
+        ADD("add"),
+        CANCEL("cancel"),
+        EDIT("edit"),
+        REFRESH("refresh"),
+        SEARCH("search"),
+        TRASH("trash"),
+        VALID("valid"),
+        WARN("warning"),
+        WARN2("warning2");
+        
+        private final String filename;
+
+        private UI_ICON(String filename) {
+            this.filename = filename;
+        }
+
+        public String getFilename() {
+            return filename;
         }
     }
     
