@@ -46,23 +46,25 @@ public class DistributionTypeFactoryImplTest {
     @Test
     public void testGetDistributionTypes() {
         System.out.println("getDistributionTypes");
-        testDistributionTypeAvailability("Cauchy");
-        testDistributionTypeAvailability("Chi Squared");
-        testDistributionTypeAvailability("Discrete");
-        testDistributionTypeAvailability("Exponential");
-        testDistributionTypeAvailability("F");
-        testDistributionTypeAvailability("Gamma");
-        testDistributionTypeAvailability("Log Normal");
-        testDistributionTypeAvailability("Normal");
-        testDistributionTypeAvailability("Poisson");
-        testDistributionTypeAvailability("Triangular");
-        testDistributionTypeAvailability("Weibull");
+        testDistributionTypeAvailability("Cauchy", true);
+        testDistributionTypeAvailability("Chi Squared",true);
+        testDistributionTypeAvailability("Discrete",true);
+        testDistributionTypeAvailability("Exponential",true);
+        testDistributionTypeAvailability("F",true);
+        testDistributionTypeAvailability("Gamma",true);
+        testDistributionTypeAvailability("Log Normal",true);
+        testDistributionTypeAvailability("Normal",true);
+        testDistributionTypeAvailability("Poisson",true);
+        testDistributionTypeAvailability("Triangular",true);
+        testDistributionTypeAvailability("Weibull",true);
+        testDistributionTypeAvailability("NotAvailableDistribType",false);
     }
     /**
      * needed by testGetDistributionTypes to easily check whether a distribType is avail in string[]
-     * @param distribName 
+     * @param distribName : the distribution name which is searched for
+     * @param shouldBeFound : whether or not it should actually be the case that a type is found based on the distribName as search input
      */
-    private void testDistributionTypeAvailability(String distribName){
+    private void testDistributionTypeAvailability(String distribName, boolean shouldBeFound){
         DistributionTypeFactoryImpl instance = new DistributionTypeFactoryImpl();
         boolean found = false;
         for (String distribType : instance.getDistributionTypes()) {
@@ -70,7 +72,13 @@ public class DistributionTypeFactoryImplTest {
                 found=true;
             }
         }
-        assertTrue("DistribType "+distribName+" should be found",found);
+        if(shouldBeFound){
+            assertTrue("DistribType "+distribName+" should be found",found);
+        } else {
+            assertFalse("DistribType "+distribName+" should NOT be found",found);
+        }
+        
+        
     }
     /**
      * Test of getDistributionTypeByName method, of class DistributionTypeFactoryImpl.
