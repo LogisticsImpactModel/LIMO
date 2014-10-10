@@ -16,6 +16,13 @@ public interface DistributionTypeFactory {
     String[] getDistributionTypes();
     
     /**
+     * Get the name of the distribution type.
+     * @param type Type of distribution to get name for.
+     * @return Name of given distribution type.
+     */
+    String getNameForDistributionType(Class<?> type);
+    
+    /**
      * Creates a new distribution type object for the given name.
      * @param name Name of distribution type to create.
      * @return 
