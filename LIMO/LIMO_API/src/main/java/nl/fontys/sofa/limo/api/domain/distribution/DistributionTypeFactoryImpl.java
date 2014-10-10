@@ -24,7 +24,9 @@ public class DistributionTypeFactoryImpl implements DistributionTypeFactory{
     public String[] getDistributionTypes() {
         initTypes();
         
-        return (String[]) types.keySet().toArray();
+        String[] returnValue = new String[types.size()];
+        types.keySet().toArray(returnValue);
+        return returnValue;
     }
 
     @Override
