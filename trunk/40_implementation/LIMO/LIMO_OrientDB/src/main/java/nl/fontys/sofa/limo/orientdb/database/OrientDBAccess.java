@@ -18,6 +18,7 @@ import nl.fontys.sofa.limo.domain.location.Continents;
 import nl.fontys.sofa.limo.domain.location.CountryCode;
 import nl.fontys.sofa.limo.domain.location.Location;
 import nl.fontys.sofa.limo.domain.types.HubType;
+import nl.fontys.sofa.limo.domain.types.LegType;
 
 public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
 
@@ -111,6 +112,7 @@ public class OrientDBAccess extends AbstractDBServer<OObjectDatabaseTx> {
         connection.getEntityManager().registerEntityClass(Event.class);
         connection.getEntityManager().registerEntityClass(Location.class);
         connection.getEntityManager().registerEntityClass(Icon.class);
+        connection.getEntityManager().registerEntityClass(LegType.class);
     }
 
 }

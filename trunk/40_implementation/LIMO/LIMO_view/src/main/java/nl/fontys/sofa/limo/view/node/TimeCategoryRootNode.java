@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.node;
 
+import java.awt.Image;
 import java.io.IOException;
 import javax.swing.Action;
 import javax.swing.JPanel;
@@ -7,6 +8,7 @@ import nl.fontys.sofa.limo.api.dao.DAOFactory;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
+import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.actions.NewAction;
@@ -26,6 +28,15 @@ public class TimeCategoryRootNode extends AbstractNode{
 	public TimeCategoryRootNode(Children children) {
 		super(children);
 	}
+
+    @Override
+    public Image getIcon(int type) {
+		Image icon = IconUtil.getIcon(TimeCategory.class, type);
+		if(icon == null){
+			return super.getIcon(type);
+		}
+		return icon;
+    }
 
 	@Override
 	public Action[] getActions(boolean context) {

@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
+import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.nodes.BeanNode;
 import org.openide.util.Exceptions;
 
@@ -25,12 +26,11 @@ public class CostCategoryNode extends BeanNode{
 	
 	@Override
 	public Image getIcon(int type) {
-		try {
-			return ImageIO.read(getClass().getClassLoader().getResource("nl/fontys/sofa/limo/view/images/icons/cost01-24x24.png")).getScaledInstance(16, 16, Image.SCALE_SMOOTH);
-		} catch (IOException ex) {
-			Exceptions.printStackTrace(ex);
+		Image icon = IconUtil.getIcon(CostCategory.class, type);
+		if(icon == null){
+			return super.getIcon(type);
 		}
-		return super.getIcon(type);
+		return icon;
 	}
 
 	
