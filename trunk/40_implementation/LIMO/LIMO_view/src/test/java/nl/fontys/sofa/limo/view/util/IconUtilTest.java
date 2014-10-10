@@ -7,12 +7,14 @@ package nl.fontys.sofa.limo.view.util;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,9 +45,27 @@ public class IconUtilTest {
     @After
     public void tearDown() {
     }
-
+    
     /**
-     * Test of getIcon method, of class IconUtil.
+     * getFileName 
+     */
+    @Test
+    public void testGetFilename(){
+        assertEquals("Filename should be Edit for enum EDIT","edit",IconUtil.UI_ICON.EDIT.getFilename());
+    }
+    /**
+     * getIcon based on enum
+     */
+    @Test
+    public void testGetIcon_enum (){
+        //TODO: make all icons strictly 16x16 or 32x32 in files, so that height can be verified based on pixels
+        BufferedImage buffImg5 = (BufferedImage) IconUtil.getIcon(IconUtil.UI_ICON.EDIT);
+        assertTrue("Height should be more than 0 pixels",buffImg5.getHeight()>0);
+        BufferedImage buffImg6 = (BufferedImage) IconUtil.getIcon(IconUtil.UI_ICON.ADD);
+        assertTrue("Height should be more than 0 pixels",buffImg6.getHeight()>0);
+    }
+    /**
+     * getIcon based on class and req. size
      */
     @Test
     public void testGetIcon() {
@@ -54,7 +74,7 @@ public class IconUtilTest {
             BufferedImage sourceImg = ImageIO.read(new File("src/main/resources/icons/TimeCategory_16x16.png"));
             assertEquals("OrigImg must have height of 16",16,sourceImg.getHeight());
             BufferedImage buffImg = (BufferedImage) IconUtil.getIcon(TimeCategory.class, 1);
-            assertEquals("Images should be the same height",sourceImg.getHeight(),buffImg.getHeight());
+            Assert.assertArrayEquals("Images should consist out of identical byteArrays",((DataBufferByte) sourceImg.getData().getDataBuffer()).getData(),((DataBufferByte) buffImg.getData().getDataBuffer()).getData());
         } catch (IOException ex) {
             fail("Could not locate image for comparison in case 1");
         }
@@ -64,7 +84,7 @@ public class IconUtilTest {
             BufferedImage sourceImg2 = ImageIO.read(new File("src/main/resources/icons/TimeCategory_32x32.png"));
             assertEquals("OrigImg must have height of 32",32,sourceImg2.getHeight());
             BufferedImage buffImg2 = (BufferedImage) IconUtil.getIcon(TimeCategory.class, 2);
-            assertEquals("Images should be the same height",sourceImg2.getHeight(),buffImg2.getHeight());
+            Assert.assertArrayEquals("Images should consist out of identical byteArrays",((DataBufferByte) sourceImg2.getData().getDataBuffer()).getData(),((DataBufferByte) buffImg2.getData().getDataBuffer()).getData());
         } catch (IOException ex) {
             fail("Could not locate image for comparison in case 2");
         }
@@ -74,7 +94,7 @@ public class IconUtilTest {
             BufferedImage sourceImg3 = ImageIO.read(new File("src/main/resources/icons/TimeCategory_SW_16x16.png"));
             assertEquals("OrigImg must have height of 16",16,sourceImg3.getHeight());
             BufferedImage buffImg3 = (BufferedImage) IconUtil.getIcon(TimeCategory.class, 3);
-            assertEquals("Images should be the same height",sourceImg3.getHeight(),buffImg3.getHeight());
+            Assert.assertArrayEquals("Images should consist out of identical byteArrays",((DataBufferByte) sourceImg3.getData().getDataBuffer()).getData(),((DataBufferByte) buffImg3.getData().getDataBuffer()).getData());
         } catch (IOException ex) {
             fail("Could not locate image for comparison in case 3");
         }
@@ -83,13 +103,14 @@ public class IconUtilTest {
             BufferedImage sourceImg4 = ImageIO.read(new File("src/main/resources/icons/TimeCategory_SW_32x32.png"));
             assertEquals("OrigImg must have height of 32",32,sourceImg4.getHeight());
             BufferedImage buffImg4 = (BufferedImage) IconUtil.getIcon(TimeCategory.class, 4);
-            assertEquals("Images should be the same height",sourceImg4.getHeight(),buffImg4.getHeight());
+            Assert.assertArrayEquals("Images should consist out of identical byteArrays",((DataBufferByte) sourceImg4.getData().getDataBuffer()).getData(),((DataBufferByte) buffImg4.getData().getDataBuffer()).getData());
         } catch (IOException ex) {
             fail("Could not locate image for comparison in case 4");
         }
         //assert null for not existing switch case options
         assertNull("Null expected for non existing switch case",IconUtil.getIcon(TimeCategory.class, 5));
-        
+    
     }
+
     
 }
