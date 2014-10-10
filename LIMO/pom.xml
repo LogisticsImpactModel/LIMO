@@ -64,6 +64,7 @@
         <module>LIMO_DomainModel</module>
         <module>LIMO_view</module>
         <module>LIMO_DependecyWrapper</module>
+        <module>LIMO_Service</module>
     </modules>
     <properties>
         <netbeans.version>RELEASE80</netbeans.version>
