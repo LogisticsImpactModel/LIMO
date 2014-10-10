@@ -10,6 +10,10 @@ public class GammaDistribution extends DistributionType {
 
     public GammaDistribution() {
         super(new DoubleInputValue("Alpha", 0.0), new DoubleInputValue("Beta", 0.0), new DoubleInputValue("Lower Bound", 0.0), new DoubleInputValue("Upper Bound", 0.0));
+        this.description = "The gamma distribution is a two-parameter\n"
+                + "family of continuous probability distributions.\n"
+                + "Alpha > 0\n"
+                + "Beta > 0";
     }
 
     @Override

@@ -10,6 +10,14 @@ public class ExponentionalDistribution extends DistributionType {
 
     public ExponentionalDistribution() {
         super(new DoubleInputValue("Lambda", 0.0), new DoubleInputValue("Lower Bound", 0.0), new DoubleInputValue("Upper Bound", 0.0));
+        this.description = "The exponential distribution is the\n"
+                + "probability distribution that describes the time\n"
+                + "between events in a Poisson process, i.e. a process\n"
+                + "in which events occur continuously and independently\n"
+                + "at a constant average rate. It is the continuous\n"
+                + "analogue of the geometric distribution, and it has\n"
+                + "the key property of being memoryless.\n"
+                + "Lambda > 0\n";
     }
 
     @Override

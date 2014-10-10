@@ -10,6 +10,13 @@ public class NormalDistribution extends DistributionType {
                new DoubleInputValue("Lower Bound", 0.0),
                new DoubleInputValue("Upper Bound", 0.0)
         );
+        this.description = "The normal (or Gaussian) distribution is\n"
+                + "a function that tells the probability that any\n"
+                + "real observation will fall between any two real\n"
+                + "limits or real numbers, as the curve approaches\n"
+                + "zero on either side.\n"
+                + "Mean is a real value\n"
+                + "variance > 0\n";
     }
 
     @Override

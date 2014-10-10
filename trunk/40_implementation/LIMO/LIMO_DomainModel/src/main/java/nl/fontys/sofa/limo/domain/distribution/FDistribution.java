@@ -10,6 +10,13 @@ public class FDistribution extends DistributionType {
 
     public FDistribution() {
         super(new DoubleInputValue("D1", 0.0), new DoubleInputValue("D2", 0.0), new DoubleInputValue("Lower Bound", 0.0), new DoubleInputValue("Upper Bound", 0.0));
+        this.description = "The F-distribution is a continuous\n"
+                + "probability distribution. The F-distribution arises\n"
+                + "frequently as the null distribution of a test\n"
+                + "statistic, most notably in the analysis of\n"
+                + "variance.\n"
+                + "D1 > 0\n"
+                + "D2 > 0";
     }
 
     @Override
