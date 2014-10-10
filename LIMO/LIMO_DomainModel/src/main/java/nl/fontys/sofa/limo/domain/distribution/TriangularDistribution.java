@@ -10,7 +10,13 @@ public class TriangularDistribution extends DistributionType {
 
     public TriangularDistribution() {
         super(new DoubleInputValue("A", 0.0), new DoubleInputValue("B", 0.0), new DoubleInputValue("C", 0.0), new DoubleInputValue("Lower Bound", 0.0), new DoubleInputValue("Upper Bound", 0.0));
-
+        this.description = "The triangular distribution is a\n"
+                + "continuous probability distribution with lower\n"
+                + "limit a, upper limit b and mode c, where a < b\n"
+                + "and a ≤ c ≤ b.\n"
+                + "A is element of (negative infinity,positive infinity)\n"
+                + "B is smaller than A\n"
+                + "C is smaller than B";
     }
 
     @Override

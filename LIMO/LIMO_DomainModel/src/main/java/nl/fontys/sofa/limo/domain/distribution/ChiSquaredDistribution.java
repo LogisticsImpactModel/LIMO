@@ -10,6 +10,11 @@ public class ChiSquaredDistribution extends DistributionType {
 
     public ChiSquaredDistribution() {
         super(new DoubleInputValue("K", 0.0), new DoubleInputValue("Lower Bound", 0.0), new DoubleInputValue("Upper Bound", 0.0));
+        this.description = "The chi-squared distribution with k degrees\n"
+                + "of freedom is the distribution of a sum of the\n"
+                + "squares of k independent standard normal random\n"
+                + "variables.\n"
+                + "k is element of N* (known as \"degrees of freedom\")";
     }
 
     @Override

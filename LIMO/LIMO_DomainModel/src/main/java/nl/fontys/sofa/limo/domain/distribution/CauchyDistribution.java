@@ -10,6 +10,12 @@ public class CauchyDistribution extends DistributionType {
 
     public CauchyDistribution() {
         super(new DoubleInputValue("Median", 0.0), new DoubleInputValue("Scale", 0.0), new DoubleInputValue("Lower Bound", 0.0), new DoubleInputValue("Upper Bound", 0.0));
+        this.description = "Acontinuous probability distribution.\n"
+                + "It is the distribution of a random variable\n"
+                + "that is the ratio of two independent standard\n"
+                + "normal variables"
+                + "x0 -> location (real number)\n"
+                + "γ > 0 scale (real number)";
     }
 
     @Override

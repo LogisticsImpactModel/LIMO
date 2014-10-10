@@ -10,6 +10,10 @@ public class WeibullDistribution extends DistributionType {
 
     public WeibullDistribution() {
         super(new DoubleInputValue("Alpha", 0.0), new DoubleInputValue("Beta", 0.0), new DoubleInputValue("Lower Bound", 0.0), new DoubleInputValue("Upper Bound", 0.0));
+        this.description = "The Weibull distribution is a continuous\n"
+                + "probability distribution.\n"
+                + "Lambda (scale) is element of (0, positiv infinity)\n"
+                + "K (shape) is element of (0, positiv infinity)";
     }
 
     @Override
