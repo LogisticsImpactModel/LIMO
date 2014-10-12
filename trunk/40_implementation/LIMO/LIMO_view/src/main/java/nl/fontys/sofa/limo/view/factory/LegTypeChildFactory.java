@@ -31,8 +31,9 @@ public class LegTypeChildFactory extends ChildFactory<LegType>
 		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
 		ltd = df.getLegTypeDAO();
 
-		lookupResult = ltd.getLookup().lookupResult(BaseEntity.class);
-		lookupResult.addLookupListener(this);
+		lookupResult = null;
+//		lookupResult = ltd.getLookup().lookupResult(BaseEntity.class);
+//		lookupResult.addLookupListener(this);
 	}
 
 	@Override

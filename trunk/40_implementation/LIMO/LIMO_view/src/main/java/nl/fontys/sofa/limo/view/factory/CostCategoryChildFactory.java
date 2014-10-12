@@ -1,9 +1,9 @@
 package nl.fontys.sofa.limo.view.factory;
 
 import java.beans.IntrospectionException;
+import java.util.Collection;
 import java.util.List;
-import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
-import nl.fontys.sofa.limo.api.dao.DAOFactory;
+import nl.fontys.sofa.limo.api.service.provider.CategoryService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.category.CostCategory;
 import nl.fontys.sofa.limo.view.node.CostCategoryNode;
@@ -24,23 +24,19 @@ import org.openide.util.LookupListener;
 public class CostCategoryChildFactory extends ChildFactory<CostCategory>
 		implements LookupListener{
 
-	private final Result<BaseEntity> lookupResult;
-	private CostCategoryDAO ccd; 
+	private final Result<CostCategory> lookupResult;
+	private CategoryService service; 
 
 	public CostCategoryChildFactory() {
-		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-		ccd = df.getCostCategoryDAO();
-
-		lookupResult = ccd.getLookup().lookupResult(BaseEntity.class);
+		service = Lookup.getDefault().lookup(CategoryService.class);
+		lookupResult = service.getLookup().lookupResult(CostCategory.class);
 		lookupResult.addLookupListener(this);
 	}
 	
 	@Override
 	protected boolean createKeys(List<CostCategory> list) {
-		List<CostCategory> ccl = ccd.findAll();
-			for(CostCategory cc : ccl){
-				list.add(cc);
-		}
+		Collection<? extends CostCategory> tcl = service.findAllCostCategories();
+		list.addAll(tcl);
 		return true;
 	}
 

@@ -2,12 +2,9 @@ package nl.fontys.sofa.limo.view.node;
 
 import java.awt.Image;
 import java.beans.IntrospectionException;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import nl.fontys.sofa.limo.domain.types.LegType;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.nodes.BeanNode;
-import org.openide.util.Exceptions;
 
 /**
  * View representation of the LegType class. 

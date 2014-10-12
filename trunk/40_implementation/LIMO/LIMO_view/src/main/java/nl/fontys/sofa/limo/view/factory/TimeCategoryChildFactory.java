@@ -1,10 +1,11 @@
 package nl.fontys.sofa.limo.view.factory;
 
 import java.beans.IntrospectionException;
+import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.DAOFactory;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
-import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.api.service.provider.CategoryService;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
 import nl.fontys.sofa.limo.view.node.TimeCategoryNode;
 import org.openide.nodes.BeanNode;
@@ -24,25 +25,19 @@ import org.openide.util.LookupListener;
 public class TimeCategoryChildFactory extends ChildFactory<TimeCategory> 
 		implements LookupListener{
 
-	private final Result<BaseEntity> lookupResult;
-	private TimeCategoryDAO tcd; 
+	private final Result<TimeCategory> lookupResult;
+	private CategoryService service; 
 
 	public TimeCategoryChildFactory() {
-		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-		tcd = df.getTimeCategoryDAO();
-
-		lookupResult = tcd.getLookup().lookupResult(BaseEntity.class);
+		service = Lookup.getDefault().lookup(CategoryService.class);
+		lookupResult = service.getLookup().lookupResult(TimeCategory.class);
 		lookupResult.addLookupListener(this);
 	}
 
 	@Override
 	protected boolean createKeys(List<TimeCategory> list) {
-		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-		TimeCategoryDAO tcd = df.getTimeCategoryDAO();
-		List<TimeCategory> tcl = tcd.findAll();
-		for(TimeCategory tc : tcl){
-			list.add(tc);
-		}
+		Collection<? extends TimeCategory> tcl = service.findAllTimeCategories();
+		list.addAll(tcl);
 		return true;
 	}
 

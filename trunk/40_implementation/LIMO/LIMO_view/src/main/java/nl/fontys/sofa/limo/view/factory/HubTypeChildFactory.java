@@ -31,8 +31,9 @@ public class HubTypeChildFactory extends ChildFactory<HubType>
 		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
 		htd = df.getHubTypeDAO();
 
-		lookupResult = htd.getLookup().lookupResult(BaseEntity.class);
-		lookupResult.addLookupListener(this);
+		lookupResult = null;
+//		lookupResult = htd.getLookup().lookupResult(BaseEntity.class);
+//		lookupResult.addLookupListener(this);
 	}
 
 	@Override
