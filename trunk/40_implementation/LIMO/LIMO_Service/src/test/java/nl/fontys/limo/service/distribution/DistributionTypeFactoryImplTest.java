@@ -7,7 +7,7 @@ package nl.fontys.limo.service.distribution;
  */
 
 
-import nl.fontys.limo.service.distribution.DistributionTypeFactoryImpl;
+import nl.fontys.sofa.limo.service.distribution.DistributionTypeFactoryImpl;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
