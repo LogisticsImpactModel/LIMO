@@ -19,6 +19,7 @@
                         <publicPackage>nl.fontys.sofa.limo.api.dao</publicPackage>
                         <publicPackage>nl.fontys.sofa.limo.api.database</publicPackage>
                         <publicPackage>nl.fontys.sofa.limo.api.service.distribution</publicPackage>
+                        <publicPackage>nl.fontys.sofa.limo.api.service.provider</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>

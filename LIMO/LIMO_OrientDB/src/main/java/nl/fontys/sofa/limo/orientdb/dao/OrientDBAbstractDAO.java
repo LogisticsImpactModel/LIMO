@@ -6,29 +6,21 @@ import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
-import org.openide.util.Lookup;
-import org.openide.util.lookup.AbstractLookup;
-import org.openide.util.lookup.InstanceContent;
 
 public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T> {
 
     protected final OrientDBAccess orientDBAccess;
     protected final Class entityClass;
-	private final InstanceContent instanceContent;
-	private final Lookup lookup;
 
 
     public OrientDBAbstractDAO(OrientDBAccess orientDBAccess, Class entityClass) {
         this.orientDBAccess = orientDBAccess;
         this.entityClass = entityClass;
-		instanceContent = new InstanceContent();
-		lookup = new AbstractLookup(instanceContent);
     }
 
     @Override
@@ -58,9 +50,6 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
         
         entity.setLastUpdate(new Date().getTime());
         T t = con.save(entity);
-
-		instanceContent.add(entity);
-
 		return t;
     }
 
@@ -72,7 +61,6 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
 
         entity.setLastUpdate(new Date().getTime());
         orientDBAccess.getConnection().save(entity);
-		instanceContent.set(findAll(), null);
         return true;
     }
 
@@ -83,7 +71,6 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
         }
 
         orientDBAccess.getConnection().delete(new ORecordId(id));
-		instanceContent.set(findAll(), null);
         return true;
     }
 
@@ -106,9 +93,4 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
 
         return true;
     }
-
-	@Override
-	public Lookup getLookup() {
-		return lookup;
-	}
 }

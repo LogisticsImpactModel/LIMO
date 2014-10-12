@@ -3,9 +3,9 @@ package nl.fontys.sofa.limo.view.node;
 import java.awt.Image;
 import java.io.IOException;
 import javax.swing.Action;
-import javax.swing.JPanel;
 import nl.fontys.sofa.limo.api.dao.DAOFactory;
 import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
+import nl.fontys.sofa.limo.api.service.provider.CategoryService;
 import nl.fontys.sofa.limo.domain.category.TimeCategory;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
 import nl.fontys.sofa.limo.view.util.IconUtil;
@@ -64,9 +64,8 @@ public class TimeCategoryRootNode extends AbstractNode{
 				tc.setIdentifier(name);
 				tc.setDescription(description);
 				
-				DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-				TimeCategoryDAO tcd = df.getTimeCategoryDAO();
-				tcd.insert(tc);
+				CategoryService ds = Lookup.getDefault().lookup(CategoryService.class);
+				ds.insertTimeCategory(tc);
 			}
 		}};
 	}
