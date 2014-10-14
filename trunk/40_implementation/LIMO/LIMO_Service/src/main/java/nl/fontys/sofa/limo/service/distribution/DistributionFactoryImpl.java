@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
-import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.*;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
@@ -61,7 +61,7 @@ public class DistributionFactoryImpl implements DistributionFactory{
             return;
         
         types = new HashMap<>();
-        /*types.put("Cauchy", CauchyDistribution.class);
+        types.put("Cauchy", CauchyDistribution.class);
         types.put("Chi Squared", ChiSquaredDistribution.class);
         types.put("Discrete", DiscreteDistribution.class);
         types.put("Exponential", ExponentionalDistribution.class);
@@ -71,7 +71,7 @@ public class DistributionFactoryImpl implements DistributionFactory{
         types.put("Normal", NormalDistribution.class);
         types.put("Poisson", PoissonDistribution.class);
         types.put("Triangular", TriangularDistribution.class);
-        types.put("Weibull", WeibullDistribution.class);*/
+        types.put("Weibull", WeibullDistribution.class);
     }
     
 }
