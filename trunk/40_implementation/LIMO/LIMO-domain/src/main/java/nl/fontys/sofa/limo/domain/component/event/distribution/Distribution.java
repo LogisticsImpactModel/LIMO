@@ -9,24 +9,26 @@ import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.component.event.distribution.input.InputValue;
 
 /**
- * A distribution that can be used for an event to generate a probability of that event happening
- * during a simulation iteration.
+ * A distribution that can be used for an event to generate a probability of
+ * that event happening during a simulation iteration.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public abstract class Distribution implements Serializable {
-    
+
     @Embedded
     protected Map<String, InputValue> inputValues;
-    
+    protected String description;
+
     /**
      * FOR CACHING ONLY!
      */
     private transient Double probabilityCache;
-    
+
     /**
      * Construct a new distribution.
-     * @param inputValues Input values. 
+     *
+     * @param inputValues Input values.
      */
     public Distribution(InputValue... inputValues) {
         this.inputValues = new HashMap<>();
@@ -134,9 +136,17 @@ public abstract class Distribution implements Serializable {
         return this.probabilityCache;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     /**
      * Calculate the specific distribution probability and save it to the cache.
      */
     protected abstract double calculateProbability();
-    
+
 }
