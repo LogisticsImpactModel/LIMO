@@ -20,6 +20,7 @@ import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.orientdb.serialization.ContinentSerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.CountrySerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.ExecutionStateSerializer;
+import nl.fontys.sofa.limo.orientdb.serialization.TimeTypeSerializer;
 
 /**
  * Singleton connection to OrientDB file database. Maintaines schema and allows for communciation to
@@ -107,6 +108,7 @@ public class OrientDBConnector {
         serializer.bind(new CountrySerializer());
         serializer.bind(new ContinentSerializer());
         serializer.bind(new ExecutionStateSerializer());
+        serializer.bind(new TimeTypeSerializer());
         OObjectSerializerHelper.bindSerializerContext(null, serializer);
 
         // Register classes
