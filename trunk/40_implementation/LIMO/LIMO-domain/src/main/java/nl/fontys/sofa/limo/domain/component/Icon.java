@@ -23,7 +23,7 @@ public final class Icon implements Serializable {
     private byte[] data;
     private transient BufferedImage image;
 
-    public Icon() {
+    /*public Icon() {
         data = new byte[]{};
     }
 
@@ -33,7 +33,7 @@ public final class Icon implements Serializable {
 
     public Icon(Image image) {
         this.setImage(image);
-    }
+    }*/
 
     public byte[] getData() {
         return data;
