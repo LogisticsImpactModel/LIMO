@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.domain.component.type;
 import java.util.List;
 import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.domain.component.Icon;
 
 /**
  * A type is a template object for either a hub or a leg.
@@ -13,6 +14,8 @@ public abstract class Type extends BaseEntity{
     
     @Embedded
     protected List<Process> processes;
+    @Embedded
+    protected Icon icon;
 
     public Type() {
     }
@@ -23,6 +26,14 @@ public abstract class Type extends BaseEntity{
 
     public void setProcesses(List<Process> processes) {
         this.processes = processes;
+    }
+
+    public Icon getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = icon;
     }
     
 }
