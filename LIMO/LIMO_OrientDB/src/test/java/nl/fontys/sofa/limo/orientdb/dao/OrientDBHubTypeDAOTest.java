@@ -1,18 +1,22 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
-import nl.fontys.sofa.limo.domain.Entry;
-import nl.fontys.sofa.limo.domain.Icon;
-import nl.fontys.sofa.limo.domain.types.HubType;
-import nl.fontys.sofa.limo.orientdb.mock.MockOrientDBAccess;
-import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
+import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.process.Procedure;
+import nl.fontys.sofa.limo.domain.component.process.ProcedureResponsibilityDirection;
+import nl.fontys.sofa.limo.domain.component.process.TimeType;
+import nl.fontys.sofa.limo.domain.component.process.value.SingleValue;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +24,7 @@ import org.netbeans.junit.NbTestCase;
 
 public class OrientDBHubTypeDAOTest extends NbTestCase {
 
-    private HubTypeDAO hubTypeDAO;
+     private OrientDBHubTypeDAO dao;
 
     public OrientDBHubTypeDAOTest(String testCase) {
         super(testCase);
@@ -29,15 +33,22 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
     @Before
     @Override
     public void setUp() {
-        OrientDBDAOFactoryMock orientDBDAOFactory = new OrientDBDAOFactoryMock();
-        hubTypeDAO = orientDBDAOFactory.getHubTypeDAO();
+        try {
+            Field databaseURLField = OrientDBConnector.class.getDeclaredField("databaseURL");
+            databaseURLField.setAccessible(true);
+            databaseURLField.set(null, "memory:tests");
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(OrientProcedureCategoryDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        dao = new OrientDBHubTypeDAO();
     }
 
     @After
     @Override
     public void tearDown() {
-        hubTypeDAO = null;
-        MockOrientDBAccess.getInstance().closeConnection();
+        dao = null;
+        OrientDBConnector.close();
     }
 
     /**
@@ -45,7 +56,7 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
      */
     @Test
     public void testFindAll() {
-        List<HubType> hubTypes = hubTypeDAO.findAll();
+        List<HubType> hubTypes = dao.findAll();
         assertTrue(hubTypes.isEmpty());
     }
 
@@ -54,25 +65,17 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
      */
     @Test
     public void testFindById() {
-        HubType hubType = hubTypeDAO.findById("");
+        HubType hubType = dao.findById("");
         assertNull(hubType);
         HubType hubType2 = new HubType();
-        hubType2.setIdentifier("12345678");
+        hubType2.setName("12345678");
         hubType2.setIcon(new Icon());
-        List<Entry> costs = new ArrayList<>();
-        costs.add(new Entry("Costs1", "Costs"));
-        costs.add(new Entry("Costs2", "Costs"));
-        hubType2.setCosts(costs);
-        List<Entry> delays = new ArrayList<>();
-        delays.add(new Entry("Delay1", "Delay"));
-        delays.add(new Entry("Delay2", "Delay"));
-        hubType2.setDelays(delays);
-        List<Entry> leadTimes = new ArrayList<>();
-        leadTimes.add(new Entry("LeadTime1", "LeadTime"));
-        leadTimes.add(new Entry("LeadTime2", "LeadTime"));
-        hubType2.setLeadTimes(leadTimes);
-        hubType2 = hubTypeDAO.insert(hubType2);
-        hubType = hubTypeDAO.findById(hubType2.getId());
+        List<Procedure> procedures = new ArrayList<>();
+        procedures.add(new Procedure("Costs1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES, ProcedureResponsibilityDirection.BOTH));
+        procedures.add(new Procedure("Costs2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT));
+        hubType2.setProcedures(procedures);
+        hubType2 = dao.insert(hubType2);
+        hubType = dao.findById(hubType2.getId());
         assertNotNull(hubType);
     }
 
@@ -81,13 +84,14 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
      */
     @Test
     public void testInsert() {
-        HubType hubType = new HubType("112233", null, null, null, null);
-        hubType = hubTypeDAO.insert(hubType);
-        List<HubType> hubTypes = hubTypeDAO.findAll();
+        HubType hubType = new HubType();
+        hubType.setName("112233");
+        hubType = dao.insert(hubType);
+        List<HubType> hubTypes = dao.findAll();
         assertEquals(1, hubTypes.size());
-        HubType legType1 = hubTypeDAO.findById(hubType.getId());
-        assertEquals(hubType.getId(), legType1.getId());
-        assertEquals(hubType.getIdentifier(), legType1.getIdentifier());
+        HubType hubType1 = dao.findById(hubType.getId());
+        assertEquals(hubType.getId(), hubType1.getId());
+        assertEquals(hubType.getName(), hubType1.getName());
     }
 
     /**
@@ -96,16 +100,17 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
     @Test
     public void testUpdate() {
         String newHubTypeName = "HubTypeNew";
-        HubType hubType = new HubType("112233", null, null, null, null);
-        boolean updateSuccess = hubTypeDAO.update(hubType);
+        HubType hubType = new HubType();
+        hubType.setName("112233");
+        boolean updateSuccess = dao.update(hubType);
         assertFalse(updateSuccess);
-        hubType = hubTypeDAO.insert(hubType);
-        hubType = hubTypeDAO.findById(hubType.getId());
-        hubType.setIdentifier(newHubTypeName);
-        updateSuccess = hubTypeDAO.update(hubType);
+        hubType = dao.insert(hubType);
+        hubType = dao.findById(hubType.getId());
+        hubType.setName(newHubTypeName);
+        updateSuccess = dao.update(hubType);
         assertTrue(updateSuccess);
-        hubType = hubTypeDAO.findById(hubType.getId());
-        assertEquals(newHubTypeName, hubType.getIdentifier());
+        hubType = dao.findById(hubType.getId());
+        assertEquals(newHubTypeName, hubType.getName());
     }
 
     /**
@@ -113,13 +118,12 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
      */
     @Test
     public void testDelete() {
-        boolean deleteSuccess = hubTypeDAO.delete("");
+        boolean deleteSuccess = dao.delete(new HubType());
         assertFalse(deleteSuccess);
-        deleteSuccess = hubTypeDAO.delete("112233");
-        assertFalse(deleteSuccess);
-        HubType hubType = new HubType("112233", null, null, null, null);
-        hubType = hubTypeDAO.insert(hubType);
-        deleteSuccess = hubTypeDAO.delete(hubType.getId());
+        HubType hubType = new HubType();
+        hubType.setName("112233");
+        hubType = dao.insert(hubType);
+        deleteSuccess = dao.delete(hubType);
         assertTrue(deleteSuccess);
     }
 }

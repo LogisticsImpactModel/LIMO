@@ -1,12 +1,14 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import nl.fontys.sofa.limo.api.dao.HubDAO;
-import nl.fontys.sofa.limo.domain.component.Hub;
-import nl.fontys.sofa.limo.orientdb.mock.MockOrientDBAccess;
-import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +16,7 @@ import org.netbeans.junit.NbTestCase;
 
 public class OrientDBHubDAOTest extends NbTestCase {
 
-    private HubDAO hubDAO;
+    private OrientDBHubDAO dao;
 
     public OrientDBHubDAOTest(String testCase) {
         super(testCase);
@@ -23,15 +25,22 @@ public class OrientDBHubDAOTest extends NbTestCase {
     @Before
     @Override
     public void setUp() {
-        OrientDBDAOFactoryMock orientDBDAOFactory = new OrientDBDAOFactoryMock();
-        hubDAO = orientDBDAOFactory.getHubDAO();
+        try {
+            Field databaseURLField = OrientDBConnector.class.getDeclaredField("databaseURL");
+            databaseURLField.setAccessible(true);
+            databaseURLField.set(null, "memory:tests");
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(OrientProcedureCategoryDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        dao = new OrientDBHubDAO();
     }
 
     @After
     @Override
     public void tearDown() {
-        hubDAO = null;
-        MockOrientDBAccess.getInstance().closeConnection();
+        dao = null;
+        OrientDBConnector.close();
     }
 
     /**
@@ -39,7 +48,7 @@ public class OrientDBHubDAOTest extends NbTestCase {
      */
     @Test
     public void testFindAll() {
-        List<Hub> hubs = hubDAO.findAll();
+        List<Hub> hubs = dao.findAll();
         assertTrue(hubs.isEmpty());
     }
 
@@ -48,9 +57,9 @@ public class OrientDBHubDAOTest extends NbTestCase {
      */
     @Test
     public void testFindById() {
-        Hub hub = hubDAO.findById("");
+        Hub hub = dao.findById("");
         assertNull(hub);
-        hub = hubDAO.findById("38129803980");
+        hub = dao.findById("38129803980");
         assertNull(hub);
     }
 
