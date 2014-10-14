@@ -43,6 +43,16 @@
             <artifactId>orientdb-object</artifactId>
             <version>1.7.9</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sksamuel</groupId>
+            <artifactId>gaia</artifactId>
+            <version>0.8</version>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
