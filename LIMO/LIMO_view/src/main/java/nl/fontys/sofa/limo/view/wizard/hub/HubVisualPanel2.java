@@ -14,8 +14,8 @@ import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import nl.fontys.sofa.limo.domain.Icon;
-import nl.fontys.sofa.limo.domain.component.Hub;
+import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
 
 public final class HubVisualPanel2 extends JPanel {
 
@@ -70,8 +70,9 @@ public final class HubVisualPanel2 extends JPanel {
                 int returnVal = fc.showOpenDialog(HubVisualPanel2.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File icon = fc.getSelectedFile();
-                    hub.setIcon(new Icon(icon.getAbsolutePath()));
-                    lblPreview.setIcon(new ImageIcon(hub.getIcon().getIcon()));
+					Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage());
+                    hub.setIcon(newIcon);
+                    lblPreview.setIcon((javax.swing.Icon) newIcon);
                 }
             }
         });
@@ -80,15 +81,15 @@ public final class HubVisualPanel2 extends JPanel {
     public void updateLabel(String identifire, Icon ic) {
         if (!identifire.isEmpty()) {
             tfName.setText(identifire);
-            if (ic != null && ic.getIcon() != null) {
-                Image img = ic.getIcon();
+            if (ic != null && ic != null) {
+                Image img = ic.getImage();
                 lblPreview.setIcon(new ImageIcon(img));
             }
         }
     }
 
     public Hub getHub() {
-        hub.setIdentifier(tfName.getText());
+        hub.setName(tfName.getText());
         return hub;
     }
 
