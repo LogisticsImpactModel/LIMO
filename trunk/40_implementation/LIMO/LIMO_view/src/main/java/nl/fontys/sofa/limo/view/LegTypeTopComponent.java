@@ -33,7 +33,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.LegTypeTopComponent")
-@ActionReference(path = "Menu/Data" , position = 40 )
+@ActionReference(path = "Menu/Data" , position = 20 )
 @TopComponent.OpenActionRegistration(
 		displayName = "#CTL_LegTypeAction",
 		preferredID = "LegTypeTopComponent"

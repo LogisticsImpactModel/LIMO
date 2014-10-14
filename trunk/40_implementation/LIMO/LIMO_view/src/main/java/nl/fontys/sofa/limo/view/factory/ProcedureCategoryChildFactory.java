@@ -3,7 +3,7 @@ package nl.fontys.sofa.limo.view.factory;
 import java.beans.IntrospectionException;
 import java.util.Collection;
 import java.util.List;
-import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
 import nl.fontys.sofa.limo.view.node.ProcedureCategoryNode;
@@ -25,10 +25,10 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
 		implements LookupListener{
 
 	private final Result<ProcedureCategory> lookupResult;
-	private ProcedureService service; 
+	private ProcedureCategoryService service; 
 
 	public ProcedureCategoryChildFactory() {
-		service = Lookup.getDefault().lookup(ProcedureService.class);
+		service = Lookup.getDefault().lookup(ProcedureCategoryService.class);
 		lookupResult = service.getLookup().lookupResult(ProcedureCategory.class);
 		lookupResult.addLookupListener(this);
 	}

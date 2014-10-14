@@ -33,7 +33,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.ProcedureCategoryTopComponent")
-@ActionReference(path = "Menu/Window" /*, position = 333 */)
+@ActionReference(path = "Menu/Data" , position = 30 )
 @TopComponent.OpenActionRegistration(
 		displayName = "#CTL_ProcedureCategoryAction",
 		preferredID = "ProcedureCategoryTopComponent"
@@ -58,8 +58,8 @@ public final class ProcedureCategoryTopComponent extends TopComponent
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
 
-		Children costCategoryChildren = Children.create(new ProcedureCategoryChildFactory(), true);
-		Node rootNode = new ProcedureCategoryRootNode(costCategoryChildren);
+		Children procedureCategoryChildren = Children.create(new ProcedureCategoryChildFactory(), true);
+		Node rootNode = new ProcedureCategoryRootNode(procedureCategoryChildren);
 		rootNode.setDisplayName("Categories");
 
 		em = new ExplorerManager();

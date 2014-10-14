@@ -11,7 +11,7 @@ import org.openide.util.Lookup;
  *
  * @author Sebastiaan Heijmann
  */
-public interface ProcedureService extends Lookup.Provider{
+public interface ProcedureCategoryService extends Lookup.Provider{
 
 	ProcedureCategory findProcedureCategoryById(int id);
 

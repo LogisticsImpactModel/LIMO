@@ -7,12 +7,14 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
+import org.openide.util.lookup.ServiceProvider;
 
 /**
  * Implementation of the HubService interface.
  *
  * @author Sebastiaan Heijmann
  */
+@ServiceProvider(service = HubService.class)
 public class HubServiceImpl implements HubService{
 	private final HubDAO hubDAO;
 	private final InstanceContent instanceContent;
