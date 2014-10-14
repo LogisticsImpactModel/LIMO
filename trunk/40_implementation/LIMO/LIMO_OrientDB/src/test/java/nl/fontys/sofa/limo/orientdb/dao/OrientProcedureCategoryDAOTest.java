@@ -3,38 +3,44 @@ package nl.fontys.sofa.limo.orientdb.dao;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import nl.fontys.sofa.limo.domain.component.process.ProcessCategory;
+import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
 import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.netbeans.junit.NbTestCase;
 
 /**
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class OrientProcessCategoryDAOTest {
+public class OrientProcedureCategoryDAOTest extends NbTestCase{
     
-    private OrientDBProcessCategoryDAO dao;
+    private OrientDBProcedureCategoryDAO dao;
+
+    public OrientProcedureCategoryDAOTest(String name) {
+        super(name);
+    }
     
     @Before
+    @Override
     public void setUp() {
         try {
             Field databaseURLField = OrientDBConnector.class.getDeclaredField("databaseURL");
             databaseURLField.setAccessible(true);
             databaseURLField.set(null, "memory:tests");
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(OrientProcessCategoryDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrientProcedureCategoryDAOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        dao = new OrientDBProcessCategoryDAO();
+        dao = new OrientDBProcedureCategoryDAO();
     }
     
     @After
+    @Override
     public void tearDown() {
         dao = null;
-        
         OrientDBConnector.close();
     }
 
@@ -51,12 +57,12 @@ public class OrientProcessCategoryDAOTest {
 
     @Test
     public void testFindById() {
-        ProcessCategory entity = dao.insert(getEntityInstance("Test Category"));
+        ProcedureCategory entity = dao.insert(getEntityInstance("Test Category"));
         assertNull("Null id", dao.findById(null));
         assertNull("Wrong id", dao.findById("asduihb"));
         assertNull("Unknown id", dao.findById("#100:100"));
         
-        ProcessCategory dbEntity = dao.findById(entity.getId());
+        ProcedureCategory dbEntity = dao.findById(entity.getId());
         assertNotNull("Entity found", dbEntity);
         assertEquals("Same uuid", entity.getUniqueIdentifier(), dbEntity.getUniqueIdentifier());
         assertEquals("Same name", entity.getName(), dbEntity.getName());
@@ -64,12 +70,12 @@ public class OrientProcessCategoryDAOTest {
 
     @Test
     public void testFindByUniqueIdentifier() {
-        ProcessCategory entity = dao.insert(getEntityInstance("Test Category"));
+        ProcedureCategory entity = dao.insert(getEntityInstance("Test Category"));
         assertNull("Null id", dao.findByUniqueIdentifier(null));
         assertNull("Wrong id", dao.findByUniqueIdentifier("asduihb"));
         assertNull("Unknown id", dao.findByUniqueIdentifier("#100:100"));
         
-        ProcessCategory dbEntity = dao.findByUniqueIdentifier(entity.getUniqueIdentifier());
+        ProcedureCategory dbEntity = dao.findByUniqueIdentifier(entity.getUniqueIdentifier());
         assertNotNull("Entity found", dbEntity);
         assertEquals("Same id", entity.getId(), dbEntity.getId());
         assertEquals("Same uuid", entity.getUniqueIdentifier(), dbEntity.getUniqueIdentifier());
@@ -78,10 +84,10 @@ public class OrientProcessCategoryDAOTest {
 
     @Test
     public void testInsert() {
-        ProcessCategory testEntity = getEntityInstance("Test Category");
+        ProcedureCategory testEntity = getEntityInstance("Test Category");
         
         // Test insert
-        ProcessCategory dbEntity = dao.insert(testEntity);
+        ProcedureCategory dbEntity = dao.insert(testEntity);
         assertNotNull("Not null dbEntity", dbEntity);
         assertNotNull("Not null ID", dbEntity.getId());
         assertEquals("Same unique identifier", testEntity.getUniqueIdentifier(), dbEntity.getUniqueIdentifier());
@@ -93,13 +99,13 @@ public class OrientProcessCategoryDAOTest {
 
     @Test
     public void testUpdate() {
-        ProcessCategory testEntity = getEntityInstance("Test Category");
+        ProcedureCategory testEntity = getEntityInstance("Test Category");
         
         // Test false update
         assertFalse("False update", dao.update(testEntity));
         
         // Test update
-        ProcessCategory dbEntity = dao.insert(testEntity);
+        ProcedureCategory dbEntity = dao.insert(testEntity);
         dbEntity.setName("Update");
         assertTrue("Update dbEntity", dao.update(dbEntity));
         assertEquals("dbEntity updated name", dbEntity.getName(), dao.findById(dbEntity.getId()).getName());
@@ -107,10 +113,10 @@ public class OrientProcessCategoryDAOTest {
 
     @Test
     public void testDelete() {
-        ProcessCategory testEntity = getEntityInstance("Test Category");
+        ProcedureCategory testEntity = getEntityInstance("Test Category");
         
         // Test insert
-        ProcessCategory dbEntity = dao.insert(testEntity);
+        ProcedureCategory dbEntity = dao.insert(testEntity);
         assertNotNull("Not null dbEntity", dbEntity);
         assertNotNull("Not null ID", dbEntity.getId());
         assertEquals("Same unique identifier", testEntity.getUniqueIdentifier(), dbEntity.getUniqueIdentifier());
@@ -137,8 +143,8 @@ public class OrientProcessCategoryDAOTest {
         System.out.println();
     }
     
-    private ProcessCategory getEntityInstance(String name) {
-        ProcessCategory entity = new ProcessCategory();
+    private ProcedureCategory getEntityInstance(String name) {
+        ProcedureCategory entity = new ProcedureCategory();
         entity.setName(name);
         return entity;
     }

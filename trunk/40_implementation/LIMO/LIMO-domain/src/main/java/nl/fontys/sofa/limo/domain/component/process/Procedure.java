@@ -10,7 +10,7 @@ import nl.fontys.sofa.limo.domain.component.process.value.Value;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class Process implements Serializable {
+public class Procedure implements Serializable {
 
     private String name;
     private String category;
@@ -21,10 +21,10 @@ public class Process implements Serializable {
     private TimeType timeType;
     private ProcessResponsibilityDirection direction;
 
-    public Process() {
+    public Procedure() {
     }
 
-    public Process(String name, String category, Value cost, Value time, TimeType timeType, ProcessResponsibilityDirection direction) {
+    public Procedure(String name, String category, Value cost, Value time, TimeType timeType, ProcessResponsibilityDirection direction) {
         this.name = name;
         this.category = category;
         this.cost = cost;

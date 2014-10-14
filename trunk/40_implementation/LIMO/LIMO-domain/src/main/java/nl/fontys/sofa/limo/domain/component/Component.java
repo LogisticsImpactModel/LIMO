@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.process.Procedure;
 
 /**
  * Base class for all main components of a supply chain: hubs, legs and events.
@@ -12,7 +13,7 @@ import nl.fontys.sofa.limo.domain.component.event.Event;
  */
 public abstract class Component extends BaseEntity {
     
-    protected List<Process> processes;
+    protected List<Procedure> processes;
     protected List<Event> events;
 
     public Component() {
@@ -21,11 +22,11 @@ public abstract class Component extends BaseEntity {
         this.events = new ArrayList<>();
     }
 
-    public List<Process> getProcesses() {
+    public List<Procedure> getProcesses() {
         return processes;
     }
 
-    public void setProcesses(List<Process> processes) {
+    public void setProcesses(List<Procedure> processes) {
         this.processes = processes;
     }
 

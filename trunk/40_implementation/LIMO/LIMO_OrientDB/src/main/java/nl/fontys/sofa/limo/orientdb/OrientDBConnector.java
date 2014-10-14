@@ -14,7 +14,7 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
-import nl.fontys.sofa.limo.domain.component.process.ProcessCategory;
+import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.orientdb.serialization.ContinentSerializer;
@@ -116,7 +116,7 @@ public class OrientDBConnector {
         this.connection.setAutomaticSchemaGeneration(false);
         entityManager.registerEntityClass(HubType.class);
         entityManager.registerEntityClass(LegType.class);
-        entityManager.registerEntityClass(ProcessCategory.class);
+        entityManager.registerEntityClass(ProcedureCategory.class);
         entityManager.registerEntityClass(Leg.class);
         entityManager.registerEntityClass(MultiModeLeg.class);
         entityManager.registerEntityClass(ScheduledLeg.class);
