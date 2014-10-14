@@ -50,6 +50,8 @@ public class OrientDBEventDAOTest extends NbTestCase {
     @After
     @Override
     public void tearDown() {
+        for (Event ht : dao.findAll())
+            dao.delete(ht);
         dao = null;
         OrientDBConnector.close();
     }

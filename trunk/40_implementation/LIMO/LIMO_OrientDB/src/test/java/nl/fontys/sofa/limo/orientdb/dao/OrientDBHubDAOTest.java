@@ -39,6 +39,8 @@ public class OrientDBHubDAOTest extends NbTestCase {
     @After
     @Override
     public void tearDown() {
+        for (Hub ht : dao.findAll())
+            dao.delete(ht);
         dao = null;
         OrientDBConnector.close();
     }

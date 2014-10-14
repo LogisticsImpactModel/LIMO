@@ -8,7 +8,6 @@ import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.netbeans.junit.NbTestCase;
 
 /**
@@ -40,6 +39,8 @@ public class OrientProcedureCategoryDAOTest extends NbTestCase{
     @After
     @Override
     public void tearDown() {
+        for (ProcedureCategory ht : dao.findAll())
+            dao.delete(ht);
         dao = null;
         OrientDBConnector.close();
     }

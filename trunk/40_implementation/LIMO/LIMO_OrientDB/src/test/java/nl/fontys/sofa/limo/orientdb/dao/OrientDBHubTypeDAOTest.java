@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
+import com.orientechnologies.orient.core.query.OQuery;
+import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ import org.netbeans.junit.NbTestCase;
 
 public class OrientDBHubTypeDAOTest extends NbTestCase {
 
-     private OrientDBHubTypeDAO dao;
+    private OrientDBHubTypeDAO dao;
 
     public OrientDBHubTypeDAOTest(String testCase) {
         super(testCase);
@@ -47,6 +49,9 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
     @After
     @Override
     public void tearDown() {
+        for (HubType ht : dao.findAll())
+            dao.delete(ht);
+        
         dao = null;
         OrientDBConnector.close();
     }
@@ -77,6 +82,8 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
         hubType2 = dao.insert(hubType2);
         hubType = dao.findById(hubType2.getId());
         assertNotNull(hubType);
+        List<HubType> hubTypes = dao.findAll();
+        assertEquals(1, hubTypes.size());
     }
 
     /**
@@ -111,6 +118,8 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
         assertTrue(updateSuccess);
         hubType = dao.findById(hubType.getId());
         assertEquals(newHubTypeName, hubType.getName());
+        List<HubType> hubTypes = dao.findAll();
+        assertEquals(1, hubTypes.size());
     }
 
     /**
