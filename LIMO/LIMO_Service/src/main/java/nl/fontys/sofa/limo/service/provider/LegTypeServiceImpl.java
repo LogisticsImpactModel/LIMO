@@ -7,12 +7,14 @@ import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
+import org.openide.util.lookup.ServiceProvider;
 
 /**
  * Implementation of the LegService interface.
  *
  * @author Sebastiaan Heijmann
  */
+@ServiceProvider(service = LegTypeService.class)
 public class LegTypeServiceImpl implements LegTypeService{
 	private final LegTypeDAO dao;
 	private final InstanceContent instanceContent;

@@ -1,10 +1,10 @@
-///*
-// * To change this license header, choose License Headers in Project Properties.
-// * To change this template file, choose Tools | Templates
-// * and open the template in the editor.
-// */
-//package nl.fontys.sofa.limo.view.wizard.event;
-//
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package nl.fontys.sofa.limo.view.wizard.event;
+
 //import java.awt.BorderLayout;
 //import java.awt.GridBagConstraints;
 //import java.awt.GridBagLayout;
@@ -20,7 +20,7 @@
 //import javax.swing.JComboBox;
 //import javax.swing.JList;
 //import javax.swing.JOptionPane;
-//import javax.swing.JPanel;
+import javax.swing.JPanel;
 //import javax.swing.JScrollPane;
 //import javax.swing.JTable;
 //import javax.swing.table.AbstractTableModel;
@@ -31,8 +31,8 @@
 //import nl.fontys.sofa.limo.domain.component.EventExecutionStateDependency;
 //import nl.fontys.sofa.limo.view.util.IconUtil;
 //import org.openide.util.Lookup;
-//
-//public final class EventVisualPanel4 extends JPanel {
+
+public final class EventVisualPanel4 extends JPanel {
 //
 //    /**
 //     * Creates new form HubVisualPanel5
@@ -40,7 +40,7 @@
 //    public EventVisualPanel4() {
 //        initComponents();
 //    }
-//
+
 //    @Override
 //    public String getName() {
 //        return "Events";
@@ -157,4 +157,4 @@
 //        }
 //
 //    }
-//}
+}

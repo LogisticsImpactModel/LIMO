@@ -2,7 +2,7 @@ package nl.fontys.sofa.limo.service.provider;
 
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
-import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
@@ -14,13 +14,13 @@ import org.openide.util.lookup.ServiceProvider;
  *
  * @author Sebastiaan Heijmann
  */
-@ServiceProvider(service = ProcedureService.class)
-public class ProcedureServiceImpl implements ProcedureService{
+@ServiceProvider(service = ProcedureCategoryService.class)
+public class ProcedureCategoryServiceImpl implements ProcedureCategoryService{
 	private final ProcedureCategoryDAO procedureCategoryDAO;
 	private final InstanceContent instanceContent;
 	private final Lookup lookup;
 
-	public ProcedureServiceImpl() {
+	public ProcedureCategoryServiceImpl() {
 		procedureCategoryDAO = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
 		instanceContent = new InstanceContent();
 		lookup = new AbstractLookup(instanceContent);
