@@ -12,15 +12,16 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
-import nl.fontys.sofa.limo.api.dao.DAOFactory;
-import nl.fontys.sofa.limo.api.dao.HubDAO;
 import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
-import nl.fontys.sofa.limo.domain.component.Hub;
-import nl.fontys.sofa.limo.domain.types.HubType;
+import nl.fontys.sofa.limo.api.service.provider.HubService;
+import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
 import org.openide.util.Lookup;
-//import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 public final class HubVisualPanel1 extends JPanel {
+    private List<Hub> hl;
+    private List<HubType> htl;
 
     /**
      * Creates new form HubVisualPanel1
@@ -81,16 +82,14 @@ public final class HubVisualPanel1 extends JPanel {
             }
         });
 
-        DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-        Lookup.getDefault().lookup(DAOFactory.class);
-        HubDAO hd = df.getHubDAO();
-        hl = hd.findAll();
-        ArrayList<String> hubList = new ArrayList<>();
-        for (Hub hub : hl) {
-            hubList.add(hub.getIdentifier());
-        }
+        HubService hubService = Lookup.getDefault().lookup(HubService.class);
+		hl = hubService.findAllHubs();
+        List<String> hubNameList = new ArrayList<>();
+		for(Hub hub : hl){
+			hubNameList.add(hub.getName());
+		}
 
-        cmbHub.setModel(new javax.swing.DefaultComboBoxModel(hubList.toArray()));
+        cmbHub.setModel(new javax.swing.DefaultComboBoxModel(hubNameList.toArray()));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 2;
@@ -113,11 +112,12 @@ public final class HubVisualPanel1 extends JPanel {
                 }
             }
         });
-        HubTypeDAO htd = df.getHubTypeDAO();
-        htl = htd.findAll();
+
+		HubTypeService hubTypeService = Lookup.getDefault().lookup(HubTypeService.class);
+        htl = hubTypeService.findAllHubTypes();
         ArrayList<String> hubTypeList = new ArrayList<>();
         for (HubType hubType : htl) {
-            hubTypeList.add(hubType.getIdentifier());
+            hubTypeList.add(hubType.getName());
         }
 
         cmbHubType.setModel(new javax.swing.DefaultComboBoxModel(hubTypeList.toArray()));
@@ -151,6 +151,4 @@ public final class HubVisualPanel1 extends JPanel {
     javax.swing.JRadioButton rbFromHubType;
     javax.swing.JRadioButton rbFromScratch;
     javax.swing.JRadioButton rbCopyFrom;
-    private List<Hub> hl;
-    private List<HubType> htl;
 }

@@ -1,15 +1,13 @@
 package nl.fontys.sofa.limo.view.util;
 
+import java.awt.Event;
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
-import nl.fontys.sofa.limo.domain.category.CostCategory;
-import nl.fontys.sofa.limo.domain.category.TimeCategory;
-import nl.fontys.sofa.limo.domain.component.Event;
-import nl.fontys.sofa.limo.domain.types.HubType;
-import nl.fontys.sofa.limo.domain.types.LegType;
+import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.util.Exceptions;
 
 /**
@@ -53,9 +51,10 @@ public class IconUtil {
     private static void setUp() {
         typeIcons = new HashMap<>();
         
-        typeIcons.put(TimeCategory.class, new IconHolder("TimeCategory"));
-        typeIcons.put(CostCategory.class, new IconHolder("CostCategory"));
+        typeIcons.put(ProcedureCategory.class, new IconHolder("ProcedureCategory"));
+        typeIcons.put(LegType.class, new IconHolder("Leg"));
         typeIcons.put(LegType.class, new IconHolder("LegType"));
+        typeIcons.put(HubType.class, new IconHolder("Hub"));
         typeIcons.put(HubType.class, new IconHolder("HubType"));
         typeIcons.put(Event.class, new IconHolder("Event"));
         

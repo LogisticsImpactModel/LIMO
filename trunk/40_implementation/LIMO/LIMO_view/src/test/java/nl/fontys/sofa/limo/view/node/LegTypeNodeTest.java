@@ -5,15 +5,13 @@
  */
 package nl.fontys.sofa.limo.view.node;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.beans.IntrospectionException;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import nl.fontys.sofa.limo.domain.types.HubType;
-import nl.fontys.sofa.limo.domain.types.LegType;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;

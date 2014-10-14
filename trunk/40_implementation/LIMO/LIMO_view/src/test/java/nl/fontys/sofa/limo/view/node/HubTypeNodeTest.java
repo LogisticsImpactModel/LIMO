@@ -5,14 +5,13 @@
  */
 package nl.fontys.sofa.limo.view.node;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.beans.IntrospectionException;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import nl.fontys.sofa.limo.domain.types.HubType;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -53,20 +52,20 @@ public class HubTypeNodeTest {
      */
     @Test
     public void testGetIcon() {
-        try {
-            HubTypeNode htn = new HubTypeNode(new HubType());
-            try {
-                //load orig. icon what we are looking for for comparison
-                BufferedImage sourceImg = ImageIO.read(new File("src/main/resources/icons/HubType_32x32.png"));
-                //get appl. icon in CostCategoryNode class w/ type 2 (32x32)
-                BufferedImage buffImg = (BufferedImage) htn.getIcon(2);
-                //compare orig. icon and icon from CCNode's byte[]s
-                Assert.assertArrayEquals("Images should consist out of identical byteArrays",((DataBufferByte) sourceImg.getData().getDataBuffer()).getData(),((DataBufferByte) buffImg.getData().getDataBuffer()).getData());
-            } catch (IOException ex) {
-                Exceptions.printStackTrace(ex);
-                fail("Could not testGetIcon");
-            }
-        } catch (IntrospectionException ex) {
+		try{
+		HubTypeNode htn = new HubTypeNode(new HubType());
+		try {
+			//load orig. icon what we are looking for for comparison
+			BufferedImage sourceImg = ImageIO.read(new File("src/main/resources/icons/HubType_32x32.png"));
+			//get appl. icon in CostCategoryNode class w/ type 2 (32x32)
+			BufferedImage buffImg = (BufferedImage) htn.getIcon(2);
+			//compare orig. icon and icon from CCNode's byte[]s
+			Assert.assertArrayEquals("Images should consist out of identical byteArrays",((DataBufferByte) sourceImg.getData().getDataBuffer()).getData(),((DataBufferByte) buffImg.getData().getDataBuffer()).getData());
+		} catch (IOException ex) {
+			Exceptions.printStackTrace(ex);
+			fail("Could not testGetIcon");
+		}
+	}catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
             fail("Could not testGetIcon");
         }  
