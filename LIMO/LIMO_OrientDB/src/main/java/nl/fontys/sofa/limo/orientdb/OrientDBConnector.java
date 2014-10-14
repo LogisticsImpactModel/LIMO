@@ -10,6 +10,8 @@ import com.orientechnologies.orient.object.serialization.OObjectSerializerHelper
 import java.io.File;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.PoissonDistribution;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
@@ -116,7 +118,7 @@ public class OrientDBConnector {
         this.connection.setAutomaticSchemaGeneration(true);
         entityManager.registerEntityClass(BaseEntity.class);
         this.connection.setAutomaticSchemaGeneration(false);
-        entityManager.registerEntityClass(HubType.class);
+        /*entityManager.registerEntityClass(HubType.class);
         entityManager.registerEntityClass(LegType.class);
         entityManager.registerEntityClass(ProcedureCategory.class);
         entityManager.registerEntityClass(Leg.class);
@@ -124,6 +126,9 @@ public class OrientDBConnector {
         entityManager.registerEntityClass(ScheduledLeg.class);
         entityManager.registerEntityClass(Hub.class);
         entityManager.registerEntityClass(Event.class);
+        entityManager.registerEntityClass(Distribution.class);
+        entityManager.registerEntityClass(PoissonDistribution.class);*/
+        entityManager.registerEntityClasses("nl.fontys.sofa.limo.domain");
 
         // Create indexes for unique identifier
         OClass clazz = this.connection.getMetadata().getSchema().getClass(BaseEntity.class);
