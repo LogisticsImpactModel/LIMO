@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.io.IOException;
 import javax.swing.Action;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
+import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
 import nl.fontys.sofa.limo.view.util.IconUtil;
@@ -22,11 +23,11 @@ import org.openide.util.datatransfer.NewType;
  * @author Sebastiaan Heijmann
  */
 public class HubTypeRootNode extends AbstractNode{
-	private HubService service;
+	private HubTypeService service;
 
 	public HubTypeRootNode(Children children) {
 		super(children);
-		service = Lookup.getDefault().lookup(HubService.class);
+		service = Lookup.getDefault().lookup(HubTypeService.class);
 	}
 
 	@Override

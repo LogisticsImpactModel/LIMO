@@ -35,7 +35,7 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
 	
 	@Override
 	protected boolean createKeys(List<ProcedureCategory> list) {
-		Collection<? extends ProcedureCategory> tcl = service.findAllProcessCategories();
+		Collection<? extends ProcedureCategory> tcl = service.findAllProcedureCategories();
 		list.addAll(tcl);
 		return true;
 	}

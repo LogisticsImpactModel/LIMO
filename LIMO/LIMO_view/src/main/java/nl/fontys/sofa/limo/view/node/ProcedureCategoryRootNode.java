@@ -65,7 +65,7 @@ public class ProcedureCategoryRootNode extends AbstractNode{
 				pc.setName(name);
 				pc.setDescription(description);
 				
-				service.insertProcessCategory(pc);
+				service.insertProcedureCategory(pc);
 			}
 		}};
 	}
