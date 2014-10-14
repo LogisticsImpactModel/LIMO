@@ -13,21 +13,21 @@ import nl.fontys.sofa.limo.domain.component.process.Procedure;
  */
 public abstract class Component extends BaseEntity {
     
-    protected List<Procedure> processes;
+    protected List<Procedure> procedures;
     protected List<Event> events;
 
     public Component() {
         super();
-        this.processes = new ArrayList<>();
+        this.procedures = new ArrayList<>();
         this.events = new ArrayList<>();
     }
 
-    public List<Procedure> getProcesses() {
-        return processes;
+    public List<Procedure> getProcedures() {
+        return procedures;
     }
 
-    public void setProcesses(List<Procedure> processes) {
-        this.processes = processes;
+    public void setProcedures(List<Procedure> procedures) {
+        this.procedures = procedures;
     }
 
     public List<Event> getEvents() {
