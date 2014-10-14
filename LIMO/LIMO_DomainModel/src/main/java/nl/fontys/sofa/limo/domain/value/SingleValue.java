@@ -32,4 +32,11 @@ public class SingleValue implements Value {
         return this.value;
     }
     // </editor-fold>
+
+    @Override
+    public Value copy() {
+        SingleValue copied = new SingleValue();
+        copied.setValue(value);
+        return copied;
+    }
 }

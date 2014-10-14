@@ -64,4 +64,12 @@ public class RangeValue implements Value {
 
         return min + (max - min) * rng.nextDouble();
     }
+
+    @Override
+    public Value copy() {
+        RangeValue copied = new RangeValue();
+        copied.setMax(max);
+        copied.setMin(min);
+        return copied;
+    }
 }
