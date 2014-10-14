@@ -6,9 +6,8 @@
 package nl.fontys.sofa.limo.view.factory;
 
 import java.util.List;
-import nl.fontys.sofa.limo.api.dao.DAOFactory;
-import nl.fontys.sofa.limo.api.dao.HubDAO;
-import nl.fontys.sofa.limo.domain.component.Hub;
+import nl.fontys.sofa.limo.api.service.provider.HubService;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import org.openide.nodes.ChildFactory;
 import org.openide.util.Lookup;
 
@@ -16,12 +15,8 @@ public class HubChildFactory extends ChildFactory<Hub> {
 
     @Override
     protected boolean createKeys(List<Hub> list) {
-        DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-        HubDAO hd = df.getHubDAO();
-        List<Hub> hl = hd.findAll();
-        for (Hub hu : hl) {
-            list.add(hu);
-        }
+        HubService service = Lookup.getDefault().lookup(HubService.class);
+        list.addAll(service.findAllHubs());
         return true;
     }
 }

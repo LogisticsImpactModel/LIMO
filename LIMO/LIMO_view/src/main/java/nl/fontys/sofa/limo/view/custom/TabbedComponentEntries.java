@@ -21,17 +21,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
-import nl.fontys.sofa.limo.api.dao.CostCategoryDAO;
-import nl.fontys.sofa.limo.api.dao.DAOFactory;
-import nl.fontys.sofa.limo.api.dao.HubDAO;
-import nl.fontys.sofa.limo.api.dao.TimeCategoryDAO;
-import nl.fontys.sofa.limo.domain.Component;
-import nl.fontys.sofa.limo.domain.Entry;
-import nl.fontys.sofa.limo.domain.category.CostCategory;
-import nl.fontys.sofa.limo.domain.category.TimeCategory;
-import nl.fontys.sofa.limo.domain.value.RangeValue;
-import nl.fontys.sofa.limo.domain.value.SingleValue;
-import nl.fontys.sofa.limo.domain.value.Value;
+import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.util.Lookup;
 

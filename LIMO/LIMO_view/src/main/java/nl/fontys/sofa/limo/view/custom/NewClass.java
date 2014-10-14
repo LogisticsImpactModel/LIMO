@@ -4,9 +4,6 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
-import nl.fontys.sofa.limo.domain.Entry;
-import nl.fontys.sofa.limo.domain.component.Event;
-import nl.fontys.sofa.limo.domain.value.SingleValue;
 
 public class NewClass {
 

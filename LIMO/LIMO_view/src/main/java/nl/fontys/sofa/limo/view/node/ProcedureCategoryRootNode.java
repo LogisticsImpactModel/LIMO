@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.io.IOException;
 import javax.swing.Action;
 import nl.fontys.sofa.limo.api.service.provider.CategoryService;
-import nl.fontys.sofa.limo.domain.category.CostCategory;
+import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.DialogDescriptor;
@@ -21,15 +21,17 @@ import org.openide.util.datatransfer.NewType;
  *
  * @author Sebastiaan Heijmann
  */
-public class CostCategoryRootNode extends AbstractNode{
+public class ProcedureCategoryRootNode extends AbstractNode{
+	private CategoryService service;
 
-	public CostCategoryRootNode(Children children) {
+	public ProcedureCategoryRootNode(Children children) {
 		super(children);
+	    service = Lookup.getDefault().lookup(CategoryService.class);
 	}
 
 	@Override
 	public Image getIcon(int type) {
-		Image icon = IconUtil.getIcon(CostCategory.class, type);
+		Image icon = IconUtil.getIcon(ProcedureCategory.class, type);
 		if(icon == null){
 			return super.getIcon(type);
 		}
@@ -59,12 +61,11 @@ public class CostCategoryRootNode extends AbstractNode{
 				String name = inputPane.getNameFieldValue();
 				String description = inputPane.getDescriptionFieldValue();
 
-				CostCategory cc = new CostCategory();
-				cc.setIdentifier(name);
-				cc.setDescription(description);
+				ProcedureCategory pc = new ProcedureCategory();
+				pc.setName(name);
+				pc.setDescription(description);
 				
-				CategoryService ds = Lookup.getDefault().lookup(CategoryService.class);
-				ds.insertCostCategory(cc);
+				service.insertProcessCategory(pc);
 			}
 		}};
 	}

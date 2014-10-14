@@ -2,10 +2,10 @@ package nl.fontys.sofa.limo.view.factory;
 
 import java.beans.IntrospectionException;
 import java.util.List;
-import nl.fontys.sofa.limo.api.dao.DAOFactory;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
+import nl.fontys.sofa.limo.api.service.provider.LegService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.domain.types.LegType;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.node.LegTypeNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
@@ -24,26 +24,18 @@ import org.openide.util.LookupListener;
 public class LegTypeChildFactory extends ChildFactory<LegType> 
 		implements LookupListener{
 
-	private final Result<BaseEntity> lookupResult;
-	private LegTypeDAO ltd; 
+	private final Result<LegType> lookupResult;
+	private LegService service; 
 
 	public LegTypeChildFactory() {
-		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-		ltd = df.getLegTypeDAO();
-
-		lookupResult = null;
-//		lookupResult = ltd.getLookup().lookupResult(BaseEntity.class);
-//		lookupResult.addLookupListener(this);
+		service = Lookup.getDefault().lookup(LegService.class);
+		lookupResult = service.getLookup().lookupResult(LegType.class);
+		lookupResult.addLookupListener(this);
 	}
 
 	@Override
 	protected boolean createKeys(List<LegType> list) {
-		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-		LegTypeDAO ltd = df.getLegTypeDAO();
-		List<LegType> htl = ltd.findAll();
-		for(LegType lt : htl){
-			list.add(lt);
-		}
+		list.addAll(lookupResult.allInstances());
 		return true;
 	}
 
