@@ -9,8 +9,18 @@ import nl.fontys.sofa.limo.domain.BaseEntity;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class ProcedureCategory extends BaseEntity {
+    
+    protected String description;
 
     public ProcedureCategory() {
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }
