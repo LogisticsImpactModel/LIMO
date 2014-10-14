@@ -2,10 +2,8 @@ package nl.fontys.sofa.limo.view.factory;
 
 import java.beans.IntrospectionException;
 import java.util.List;
-import nl.fontys.sofa.limo.api.dao.DAOFactory;
-import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
-import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.domain.types.HubType;
+import nl.fontys.sofa.limo.api.service.provider.HubService;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.node.HubTypeNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
@@ -17,33 +15,25 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
 /**
- * Factor for creating the HubType children.
+ * Factory for creating the HubType children.
  *
  * @author Sebastiaan Heijmann
  */
 public class HubTypeChildFactory extends ChildFactory<HubType> 
 		implements LookupListener{
 
-	private final Result<BaseEntity> lookupResult;
-	private HubTypeDAO htd; 
+	private final Result<HubType> lookupResult;
+	private HubService service; 
 
 	public HubTypeChildFactory() {
-		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-		htd = df.getHubTypeDAO();
-
-		lookupResult = null;
-//		lookupResult = htd.getLookup().lookupResult(BaseEntity.class);
-//		lookupResult.addLookupListener(this);
+		service = Lookup.getDefault().lookup(HubService.class);
+		lookupResult = service.getLookup().lookupResult(HubType.class);
+		lookupResult.addLookupListener(this);
 	}
 
 	@Override
 	protected boolean createKeys(List<HubType> list) {
-		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-		HubTypeDAO htd = df.getHubTypeDAO();
-		List<HubType> htl = htd.findAll();
-		for(HubType ht : htl){
-			list.add(ht);
-		}
+		list.addAll(lookupResult.allInstances());
 		return true;
 	}
 

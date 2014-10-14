@@ -16,6 +16,7 @@ public abstract class Type extends BaseEntity{
     protected List<Process> processes;
     @Embedded
     protected Icon icon;
+	protected String description;
 
     public Type() {
     }
@@ -35,5 +36,12 @@ public abstract class Type extends BaseEntity{
     public void setIcon(Icon icon) {
         this.icon = icon;
     }
-    
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

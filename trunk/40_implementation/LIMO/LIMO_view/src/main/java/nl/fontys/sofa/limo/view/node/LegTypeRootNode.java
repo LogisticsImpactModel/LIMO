@@ -3,9 +3,9 @@ package nl.fontys.sofa.limo.view.node;
 import java.awt.Image;
 import java.io.IOException;
 import javax.swing.Action;
-import nl.fontys.sofa.limo.api.dao.DAOFactory;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
-import nl.fontys.sofa.limo.domain.types.LegType;
+import nl.fontys.sofa.limo.api.service.provider.LegService;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.DialogDescriptor;
@@ -23,9 +23,11 @@ import org.openide.util.datatransfer.NewType;
  * @author Sebastiaan Heijmann
  */
 public class LegTypeRootNode extends AbstractNode{
+	private LegService service;
 
 	public LegTypeRootNode(Children children) {
 		super(children);
+		service = Lookup.getDefault().lookup(LegService.class);
 	}
 
 	@Override
@@ -59,13 +61,12 @@ public class LegTypeRootNode extends AbstractNode{
 	
 				String name = inputPane.getNameFieldValue();
 				String description = inputPane.getDescriptionFieldValue();
+
 				LegType lt = new LegType();
-				lt.setIdentifier(name);
+				lt.setName(name);
 				lt.setDescription(description);
 				
-				DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-				LegTypeDAO ltd = df.getLegTypeDAO();
-				ltd.insert(lt);
+				service.insertLegType(lt);
 			}
 		}};
 	}

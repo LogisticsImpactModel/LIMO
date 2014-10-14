@@ -29,31 +29,31 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public ProcessCategory findProcessCategoryById(int id) {
+	public ProcessCategory findProcedureCategoryById(int id) {
 		return (ProcessCategory) processCategoryDAO.findById(String.valueOf(id));
 	}
 
 	@Override
-	public List<ProcessCategory> findAllProcessCategories() {
+	public List<ProcessCategory> findAllProcedureCategories() {
 		return processCategoryDAO.findAll();
 	}
 
 	@Override
-	public ProcessCategory insertProcessCategory(ProcessCategory cc) {
+	public ProcessCategory insertProcedureCategory(ProcessCategory cc) {
 		ProcessCategory result = (ProcessCategory) processCategoryDAO.insert(cc);
 		instanceContent.add(cc);
 		return result;
 	}
 
 	@Override
-	public boolean updateProcessCategory(ProcessCategory cc) {
+	public boolean updateProcedureCategory(ProcessCategory cc) {
 		boolean result = processCategoryDAO.update(cc);
 		instanceContent.set(processCategoryDAO.findAll(), null);
 		return result;
 	}
 
 	@Override
-	public boolean deleteProcessCategory(ProcessCategory cc) {
+	public boolean deleteProcedureCategory(ProcessCategory cc) {
 		boolean result = processCategoryDAO.delete(cc);
 		instanceContent.remove(cc);
 		return result;

@@ -3,9 +3,8 @@ package nl.fontys.sofa.limo.view.node;
 import java.awt.Image;
 import java.io.IOException;
 import javax.swing.Action;
-import nl.fontys.sofa.limo.api.dao.DAOFactory;
-import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
-import nl.fontys.sofa.limo.domain.types.HubType;
+import nl.fontys.sofa.limo.api.service.provider.HubService;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.DialogDescriptor;
@@ -23,9 +22,11 @@ import org.openide.util.datatransfer.NewType;
  * @author Sebastiaan Heijmann
  */
 public class HubTypeRootNode extends AbstractNode{
+	private HubService service;
 
 	public HubTypeRootNode(Children children) {
 		super(children);
+		service = Lookup.getDefault().lookup(HubService.class);
 	}
 
 	@Override
@@ -59,13 +60,12 @@ public class HubTypeRootNode extends AbstractNode{
 	
 				String name = inputPane.getNameFieldValue();
 				String description = inputPane.getDescriptionFieldValue();
+				
 				HubType ht = new HubType();
-				ht.setIdentifier(name);
+				ht.setName(name);
 				ht.setDescription(description);
 				
-				DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-				HubTypeDAO htd = df.getHubTypeDAO();
-				htd.insert(ht);
+				service.insertHubType(ht);
 			}
 		}};
 	}

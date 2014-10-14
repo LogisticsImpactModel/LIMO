@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.CategoryService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.domain.category.CostCategory;
-import nl.fontys.sofa.limo.view.node.CostCategoryNode;
+import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
+import nl.fontys.sofa.limo.view.node.ProcedureCategoryNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Node;
@@ -21,30 +21,30 @@ import org.openide.util.LookupListener;
  *
  * @author Sebastiaan Heijmann
  */
-public class CostCategoryChildFactory extends ChildFactory<CostCategory>
+public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategory>
 		implements LookupListener{
 
-	private final Result<CostCategory> lookupResult;
+	private final Result<ProcedureCategory> lookupResult;
 	private CategoryService service; 
 
-	public CostCategoryChildFactory() {
+	public ProcedureCategoryChildFactory() {
 		service = Lookup.getDefault().lookup(CategoryService.class);
-		lookupResult = service.getLookup().lookupResult(CostCategory.class);
+		lookupResult = service.getLookup().lookupResult(ProcedureCategory.class);
 		lookupResult.addLookupListener(this);
 	}
 	
 	@Override
-	protected boolean createKeys(List<CostCategory> list) {
-		Collection<? extends CostCategory> tcl = service.findAllCostCategories();
+	protected boolean createKeys(List<ProcedureCategory> list) {
+		Collection<? extends ProcedureCategory> tcl = service.findAllProcessCategories();
 		list.addAll(tcl);
 		return true;
 	}
 
     @Override
-    protected Node createNodeForKey(CostCategory key) {
+    protected Node createNodeForKey(ProcedureCategory key) {
         BeanNode node = null;
         try {
-			node = new CostCategoryNode(key);
+			node = new ProcedureCategoryNode(key);
         } catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
         }
