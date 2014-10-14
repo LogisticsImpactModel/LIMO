@@ -18,12 +18,12 @@ import javax.imageio.ImageIO;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public final class Icon implements Serializable {
+public class Icon implements Serializable {
     
     private byte[] data;
     private transient BufferedImage image;
 
-    /*public Icon() {
+    public Icon() {
         data = new byte[]{};
     }
 
@@ -33,7 +33,7 @@ public final class Icon implements Serializable {
 
     public Icon(Image image) {
         this.setImage(image);
-    }*/
+    }
 
     public byte[] getData() {
         return data;
@@ -65,7 +65,7 @@ public final class Icon implements Serializable {
      * 
      * @param image New icon image.
      */
-    public void setImage(Image image) {
+    public final void setImage(Image image) {
         if (!(this.image instanceof BufferedImage)) {
             this.image = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D bGr = this.image.createGraphics();
