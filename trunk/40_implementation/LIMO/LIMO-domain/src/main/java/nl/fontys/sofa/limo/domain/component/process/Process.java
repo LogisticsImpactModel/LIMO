@@ -5,8 +5,8 @@ import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.component.process.value.Value;
 
 /**
- * A process is something happening inside a component with a cost and time specified. For reporting
- * purposes each process belongs to a process category.
+ * A process is something happening inside a component with a cost and time
+ * specified. For reporting purposes each process belongs to a process category.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
@@ -19,15 +19,17 @@ public class Process implements Serializable {
     @Embedded
     private Value time;
     private TimeType timeType;
+    private ProcessResponsibilityDirection direction;
 
     public Process() {
     }
 
-    public Process(String name, String category, Value cost, Value time, TimeType timeType) {
+    public Process(String name, String category, Value cost, Value time, TimeType timeType, ProcessResponsibilityDirection direction) {
         this.name = name;
         this.category = category;
         this.cost = cost;
         this.time = time;
+        this.direction = direction;
     }
 
     public String getName() {
@@ -70,4 +72,11 @@ public class Process implements Serializable {
         this.timeType = timeType;
     }
 
+    public ProcessResponsibilityDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(ProcessResponsibilityDirection direction) {
+        this.direction = direction;
+    }
 }
