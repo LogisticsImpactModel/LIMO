@@ -15,6 +15,7 @@ public abstract class Component extends BaseEntity {
     
     protected List<Procedure> procedures;
     protected List<Event> events;
+    protected String description;
 
     public Component() {
         super();
@@ -36,6 +37,14 @@ public abstract class Component extends BaseEntity {
 
     public void setEvents(List<Event> events) {
         this.events = events;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }
