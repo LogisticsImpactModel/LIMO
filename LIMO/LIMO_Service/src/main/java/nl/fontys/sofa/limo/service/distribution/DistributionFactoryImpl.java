@@ -5,20 +5,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import nl.fontys.sofa.limo.api.service.distribution.DistributionTypeFactory;
-import nl.fontys.sofa.limo.domain.distribution.*;
+import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
+import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-@ServiceProvider(service = DistributionTypeFactory.class)
-public class DistributionTypeFactoryImpl implements DistributionTypeFactory{
+@ServiceProvider(service = DistributionFactory.class)
+public class DistributionFactoryImpl implements DistributionFactory{
     
     private static HashMap<String, Class<?>> types = null;
 
-    public DistributionTypeFactoryImpl() {
+    public DistributionFactoryImpl() {
         initTypes();
     }
 
@@ -41,15 +41,15 @@ public class DistributionTypeFactoryImpl implements DistributionTypeFactory{
     }
 
     @Override
-    public DistributionType getDistributionTypeByName(String name) {
+    public Distribution getDistributionTypeByName(String name) {
         initTypes();
         
         Class<?> clazz = types.get(name);
         if (clazz != null) {
             try {
-                return (DistributionType) clazz.getConstructor().newInstance();
+                return (Distribution) clazz.getConstructor().newInstance();
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                Logger.getLogger(DistributionTypeFactoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(DistributionFactoryImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -61,7 +61,7 @@ public class DistributionTypeFactoryImpl implements DistributionTypeFactory{
             return;
         
         types = new HashMap<>();
-        types.put("Cauchy", CauchyDistribution.class);
+        /*types.put("Cauchy", CauchyDistribution.class);
         types.put("Chi Squared", ChiSquaredDistribution.class);
         types.put("Discrete", DiscreteDistribution.class);
         types.put("Exponential", ExponentionalDistribution.class);
@@ -71,7 +71,7 @@ public class DistributionTypeFactoryImpl implements DistributionTypeFactory{
         types.put("Normal", NormalDistribution.class);
         types.put("Poisson", PoissonDistribution.class);
         types.put("Triangular", TriangularDistribution.class);
-        types.put("Weibull", WeibullDistribution.class);
+        types.put("Weibull", WeibullDistribution.class);*/
     }
     
 }

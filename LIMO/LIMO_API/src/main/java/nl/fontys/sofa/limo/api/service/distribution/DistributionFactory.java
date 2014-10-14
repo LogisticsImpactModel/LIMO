@@ -1,13 +1,13 @@
 package nl.fontys.sofa.limo.api.service.distribution;
 
-import nl.fontys.sofa.limo.domain.distribution.DistributionType;
+import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 
 /**
  * Interface for the distribution type factory.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public interface DistributionTypeFactory {
+public interface DistributionFactory {
     
     /**
      * Get the possible distribution types by their names.
@@ -27,6 +27,6 @@ public interface DistributionTypeFactory {
      * @param name Name of distribution type to create.
      * @return 
      */
-    DistributionType getDistributionTypeByName(String name);
+    Distribution getDistributionTypeByName(String name);
     
 }

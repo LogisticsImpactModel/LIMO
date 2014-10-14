@@ -1,9 +1,7 @@
 package nl.fontys.sofa.limo.api.service.provider;
 
 import java.util.List;
-import nl.fontys.sofa.limo.domain.category.Category;
-import nl.fontys.sofa.limo.domain.category.CostCategory;
-import nl.fontys.sofa.limo.domain.category.TimeCategory;
+import nl.fontys.sofa.limo.domain.component.process.ProcessCategory;
 import org.openide.util.Lookup;
 
 /**
@@ -14,27 +12,15 @@ import org.openide.util.Lookup;
  */
 public interface CategoryService extends Lookup.Provider{
 
-	CostCategory findCostCategoryById(int id);
+	ProcessCategory findProcessCategoryById(int id);
 
-	TimeCategory findTimeCategoryById(int id);
+	List<ProcessCategory> findAllProcessCategories();
 
-	List<CostCategory> findAllCostCategories();
+	ProcessCategory insertProcessCategory(ProcessCategory pc);
 
-	List<TimeCategory> findAllTimeCategories();
+	boolean updateProcessCategory(ProcessCategory pc);
 
-	List<Category> findAllCategories();
-
-	CostCategory insertCostCategory(CostCategory cc);
-
-	TimeCategory insertTimeCategory(TimeCategory tc);
-
-	boolean updateCostCategory(CostCategory cc);
-
-	boolean updateTimeCategory(TimeCategory tc);
-
-	boolean deleteCostCategory(CostCategory cc);
-
-	boolean deleteTimeCategory(TimeCategory cc);
+	boolean deleteProcessCategory(ProcessCategory pc);
 
 	@Override
 	public Lookup getLookup();

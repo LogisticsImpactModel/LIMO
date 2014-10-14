@@ -1,13 +1,14 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
 import nl.fontys.sofa.limo.api.dao.HubDAO;
-import nl.fontys.sofa.limo.domain.component.Hub;
-import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import org.openide.util.lookup.ServiceProvider;
 
+@ServiceProvider(service = HubDAO.class)
 public class OrientDBHubDAO extends OrientDBAbstractDAO<Hub> implements HubDAO {
 
-    public OrientDBHubDAO(OrientDBAccess orientDBAccess) {
-        super(orientDBAccess, Hub.class);
+    public OrientDBHubDAO() {
+        super(Hub.class);
     }
 
 }

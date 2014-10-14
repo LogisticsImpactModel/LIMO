@@ -19,6 +19,14 @@ public interface DAO<T extends BaseEntity>{
      * @return one DAO or null.
      */
     public T findById(String id);
+    
+    /**
+     * Find one entity by its unique identifier.
+     * 
+     * @param uniqueIdentifier Unique identifier of entity to be found.
+     * @return Entity.
+     */
+    public T findByUniqueIdentifier(String uniqueIdentifier);
 
     /**
      * Insert a DAO into storage.
@@ -39,15 +47,8 @@ public interface DAO<T extends BaseEntity>{
     /**
      * Delete a DAO from storage.
      *
-     * @param id of the DAO which should be deleted.
+     * @param entity of the DAO which should be deleted.
      * @return true if the deletion was successful, otherwise false.
      */
-    public boolean delete(String id);
-
-    /**
-     * Get the name of the table for the storage.
-     *
-     * @return the name as String.
-     */
-    /* public String getTableName();*/
+    public boolean delete(T entity);
 }

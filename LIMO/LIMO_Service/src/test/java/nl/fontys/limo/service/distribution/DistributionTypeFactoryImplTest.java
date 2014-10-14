@@ -7,7 +7,7 @@ package nl.fontys.limo.service.distribution;
  */
 
 
-import nl.fontys.sofa.limo.service.distribution.DistributionTypeFactoryImpl;
+import nl.fontys.sofa.limo.service.distribution.DistributionFactoryImpl;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -42,7 +42,7 @@ public class DistributionTypeFactoryImplTest {
     }
 
     /**
-     * Test of getDistributionTypes method, of class DistributionTypeFactoryImpl.
+     * Test of getDistributionTypes method, of class DistributionFactoryImpl.
      * All calls of testDistributionTypeAvailability call testGetDistributionTypes and check whether the requested distribType is available in the string[]
      */
     @Test
@@ -67,7 +67,7 @@ public class DistributionTypeFactoryImplTest {
      * @param shouldBeFound : whether or not it should actually be the case that a type is found based on the distribName as search input
      */
     private void testDistributionTypeAvailability(String distribName, boolean shouldBeFound){
-        DistributionTypeFactoryImpl instance = new DistributionTypeFactoryImpl();
+        DistributionFactoryImpl instance = new DistributionFactoryImpl();
         boolean found = false;
         for (String distribType : instance.getDistributionTypes()) {
             if(distribType.equals(distribName)){
@@ -83,14 +83,14 @@ public class DistributionTypeFactoryImplTest {
         
     }
     /**
-     * Test of getDistributionTypeByName method, of class DistributionTypeFactoryImpl.
+     * Test of getDistributionTypeByName method, of class DistributionFactoryImpl.
      */
     @Test
     public void testGetDistributionTypeByName_normal() {
         System.out.println("getDistributionTypeByName_normal");
-        DistributionTypeFactoryImpl instance = new DistributionTypeFactoryImpl();
+        DistributionFactoryImpl instance = new DistributionFactoryImpl();
 
-        List<String> inputValuesNormalDistrib = instance.getDistributionTypeByName("Normal").getInputValueNames();
+        List<String> inputValuesNormalDistrib = instance.getDistributionTypeByName("Normal").getNames();
         assertTrue("For a normal distrib, Lower Bound should be input value",inputValuesNormalDistrib.contains("Lower Bound"));
         assertTrue("For a normal distrib, Standard Deviation should be input value",inputValuesNormalDistrib.contains("Standard Deviation"));
 

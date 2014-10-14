@@ -1,13 +1,9 @@
 package nl.fontys.sofa.limo.service.provider;
 
 import java.util.List;
-import nl.fontys.sofa.limo.api.dao.DAO;
-import nl.fontys.sofa.limo.api.dao.DAOFactory;
+import nl.fontys.sofa.limo.api.dao.ProcessCategoryDAO;
 import nl.fontys.sofa.limo.api.service.provider.CategoryService;
-import nl.fontys.sofa.limo.domain.category.Category;
-import nl.fontys.sofa.limo.domain.category.CostCategory;
-import nl.fontys.sofa.limo.domain.category.TimeCategory;
-import org.apache.commons.collections.ListUtils;
+import nl.fontys.sofa.limo.domain.component.process.ProcessCategory;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
@@ -20,90 +16,46 @@ import org.openide.util.lookup.ServiceProvider;
  */
 @ServiceProvider(service = CategoryService.class)
 public class CategoryServiceImpl implements CategoryService{
-	private final DAO costCategoryDAO;
-	private final DAO timeCategoryDAO;
+	private final ProcessCategoryDAO processCategoryDAO;
 	private final InstanceContent instanceContent;
 	private final Lookup lookup;
 
 	public CategoryServiceImpl() {
-		DAOFactory df = Lookup.getDefault().lookup(DAOFactory.class);
-		costCategoryDAO = df.getCostCategoryDAO();
-		timeCategoryDAO = df.getTimeCategoryDAO();
+		processCategoryDAO = Lookup.getDefault().lookup(ProcessCategoryDAO.class);
 		instanceContent = new InstanceContent();
 		lookup = new AbstractLookup(instanceContent);
 
-		instanceContent.set(ListUtils.union(costCategoryDAO.findAll(),
-				timeCategoryDAO.findAll()), null);
+		instanceContent.set(processCategoryDAO.findAll(), null);
 	}
 
 	@Override
-	public CostCategory findCostCategoryById(int id) {
-		return (CostCategory) costCategoryDAO.findById(String.valueOf(id));
+	public ProcessCategory findProcessCategoryById(int id) {
+		return (ProcessCategory) processCategoryDAO.findById(String.valueOf(id));
 	}
 
 	@Override
-	public TimeCategory findTimeCategoryById(int id) {
-		return (TimeCategory) timeCategoryDAO.findById(String.valueOf(id));
+	public List<ProcessCategory> findAllProcessCategories() {
+		return processCategoryDAO.findAll();
 	}
 
 	@Override
-	public List<CostCategory> findAllCostCategories() {
-		return costCategoryDAO.findAll();
-	}
-
-	@Override
-	public List<TimeCategory> findAllTimeCategories() {
-		return timeCategoryDAO.findAll();
-	}
-
-	@Override
-	public List<Category> findAllCategories() {
-		List<Category> categories = ListUtils.union(costCategoryDAO.findAll(),
-				timeCategoryDAO.findAll());
-		return categories;
-	}
-
-	@Override
-	public CostCategory insertCostCategory(CostCategory cc) {
-		CostCategory result = (CostCategory) costCategoryDAO.insert(cc);
+	public ProcessCategory insertProcessCategory(ProcessCategory cc) {
+		ProcessCategory result = (ProcessCategory) processCategoryDAO.insert(cc);
 		instanceContent.add(cc);
 		return result;
 	}
 
 	@Override
-	public TimeCategory insertTimeCategory(TimeCategory tc) {
-		TimeCategory result = (TimeCategory) timeCategoryDAO.insert(tc);
-		instanceContent.add(tc);
+	public boolean updateProcessCategory(ProcessCategory cc) {
+		boolean result = processCategoryDAO.update(cc);
+		instanceContent.set(processCategoryDAO.findAll(), null);
 		return result;
 	}
 
 	@Override
-	public boolean updateCostCategory(CostCategory cc) {
-		boolean result = costCategoryDAO.update(cc);
-		instanceContent.set(ListUtils.union(costCategoryDAO.findAll(),
-				timeCategoryDAO.findAll()), null);
-		return result;
-	}
-
-	@Override
-	public boolean updateTimeCategory(TimeCategory tc) {
-		boolean result = timeCategoryDAO.update(tc);
-		instanceContent.set(ListUtils.union(costCategoryDAO.findAll(),
-				timeCategoryDAO.findAll()), null);
-		return result;
-	}
-
-	@Override
-	public boolean deleteCostCategory(CostCategory cc) {
-		boolean result = costCategoryDAO.delete(cc.getId());
+	public boolean deleteProcessCategory(ProcessCategory cc) {
+		boolean result = processCategoryDAO.delete(cc);
 		instanceContent.remove(cc);
-		return result;
-	}
-
-	@Override
-	public boolean deleteTimeCategory(TimeCategory tc) {
-		boolean result = timeCategoryDAO.delete(tc.getId());
-		instanceContent.remove(tc);
 		return result;
 	}
 
