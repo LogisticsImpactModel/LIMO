@@ -8,9 +8,9 @@ import nl.fontys.sofa.limo.domain.BaseEntity;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class ProcessCategory extends BaseEntity {
+public class ProcedureCategory extends BaseEntity {
 
-    public ProcessCategory() {
+    public ProcedureCategory() {
     }
     
 }

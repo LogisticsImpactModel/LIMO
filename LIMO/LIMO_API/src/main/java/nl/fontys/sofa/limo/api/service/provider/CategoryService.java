@@ -1,7 +1,7 @@
 package nl.fontys.sofa.limo.api.service.provider;
 
 import java.util.List;
-import nl.fontys.sofa.limo.domain.component.process.ProcessCategory;
+import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
 import org.openide.util.Lookup;
 
 /**
@@ -12,15 +12,15 @@ import org.openide.util.Lookup;
  */
 public interface CategoryService extends Lookup.Provider{
 
-	ProcessCategory findProcessCategoryById(int id);
+	ProcedureCategory findProcessCategoryById(int id);
 
-	List<ProcessCategory> findAllProcessCategories();
+	List<ProcedureCategory> findAllProcessCategories();
 
-	ProcessCategory insertProcessCategory(ProcessCategory pc);
+	ProcedureCategory insertProcessCategory(ProcedureCategory pc);
 
-	boolean updateProcessCategory(ProcessCategory pc);
+	boolean updateProcessCategory(ProcedureCategory pc);
 
-	boolean deleteProcessCategory(ProcessCategory pc);
+	boolean deleteProcessCategory(ProcedureCategory pc);
 
 	@Override
 	public Lookup getLookup();
