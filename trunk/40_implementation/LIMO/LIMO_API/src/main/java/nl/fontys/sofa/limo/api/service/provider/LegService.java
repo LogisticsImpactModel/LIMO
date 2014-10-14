@@ -7,7 +7,9 @@ import org.openide.util.Lookup;
 
 /**
  * Interface which defines service methods for Legs and LegTypes and manages a
- * lookup.
+ * lookup. A LookupListener can be attached to the LookupResult to listen for
+ * changes in the datamodels.
+
  *
  * @author Sebastiaan Heijmann
  */

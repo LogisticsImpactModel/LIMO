@@ -3,7 +3,7 @@ package nl.fontys.sofa.limo.view.node;
 import java.awt.Image;
 import java.io.IOException;
 import javax.swing.Action;
-import nl.fontys.sofa.limo.api.service.provider.CategoryService;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
 import nl.fontys.sofa.limo.view.util.IconUtil;
@@ -22,11 +22,11 @@ import org.openide.util.datatransfer.NewType;
  * @author Sebastiaan Heijmann
  */
 public class ProcedureCategoryRootNode extends AbstractNode{
-	private CategoryService service;
+	private ProcedureService service;
 
 	public ProcedureCategoryRootNode(Children children) {
 		super(children);
-	    service = Lookup.getDefault().lookup(CategoryService.class);
+	    service = Lookup.getDefault().lookup(ProcedureService.class);
 	}
 
 	@Override

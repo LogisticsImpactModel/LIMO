@@ -1,9 +1,9 @@
 package nl.fontys.sofa.limo.service.provider;
 
 import java.util.List;
-import nl.fontys.sofa.limo.api.dao.ProcessCategoryDAO;
-import nl.fontys.sofa.limo.api.service.provider.CategoryService;
-import nl.fontys.sofa.limo.domain.component.process.ProcessCategory;
+import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
+import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
@@ -14,48 +14,48 @@ import org.openide.util.lookup.ServiceProvider;
  *
  * @author Sebastiaan Heijmann
  */
-@ServiceProvider(service = CategoryService.class)
-public class CategoryServiceImpl implements CategoryService{
-	private final ProcessCategoryDAO processCategoryDAO;
+@ServiceProvider(service = ProcedureService.class)
+public class CategoryServiceImpl implements ProcedureService{
+	private final ProcedureCategoryDAO procedureCategoryDAO;
 	private final InstanceContent instanceContent;
 	private final Lookup lookup;
 
 	public CategoryServiceImpl() {
-		processCategoryDAO = Lookup.getDefault().lookup(ProcessCategoryDAO.class);
+		procedureCategoryDAO = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
 		instanceContent = new InstanceContent();
 		lookup = new AbstractLookup(instanceContent);
 
-		instanceContent.set(processCategoryDAO.findAll(), null);
+		instanceContent.set(procedureCategoryDAO.findAll(), null);
 	}
 
 	@Override
-	public ProcessCategory findProcedureCategoryById(int id) {
-		return (ProcessCategory) processCategoryDAO.findById(String.valueOf(id));
+	public ProcedureCategory findProcedureCategoryById(int id) {
+		return (ProcedureCategory) procedureCategoryDAO.findById(String.valueOf(id));
 	}
 
 	@Override
-	public List<ProcessCategory> findAllProcedureCategories() {
-		return processCategoryDAO.findAll();
+	public List<ProcedureCategory> findAllProcedureCategories() {
+		return procedureCategoryDAO.findAll();
 	}
 
 	@Override
-	public ProcessCategory insertProcedureCategory(ProcessCategory cc) {
-		ProcessCategory result = (ProcessCategory) processCategoryDAO.insert(cc);
-		instanceContent.add(cc);
+	public ProcedureCategory insertProcedureCategory(ProcedureCategory procedure) {
+		ProcedureCategory result = procedureCategoryDAO.insert(procedure);
+		instanceContent.add(procedure);
 		return result;
 	}
 
 	@Override
-	public boolean updateProcedureCategory(ProcessCategory cc) {
-		boolean result = processCategoryDAO.update(cc);
-		instanceContent.set(processCategoryDAO.findAll(), null);
+	public boolean updateProcedureCategory(ProcedureCategory procedure) {
+		boolean result = procedureCategoryDAO.update(procedure);
+		instanceContent.set(procedureCategoryDAO.findAll(), null);
 		return result;
 	}
 
 	@Override
-	public boolean deleteProcedureCategory(ProcessCategory cc) {
-		boolean result = processCategoryDAO.delete(cc);
-		instanceContent.remove(cc);
+	public boolean deleteProcedureCategory(ProcedureCategory procedure) {
+		boolean result = procedureCategoryDAO.delete(procedure);
+		instanceContent.remove(procedure);
 		return result;
 	}
 

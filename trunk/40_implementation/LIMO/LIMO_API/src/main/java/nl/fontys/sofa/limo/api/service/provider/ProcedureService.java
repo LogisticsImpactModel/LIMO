@@ -11,17 +11,17 @@ import org.openide.util.Lookup;
  *
  * @author Sebastiaan Heijmann
  */
-public interface CategoryService extends Lookup.Provider{
+public interface ProcedureService extends Lookup.Provider{
 
-	ProcedureCategory findProcessCategoryById(int id);
+	ProcedureCategory findProcedureCategoryById(int id);
 
-	List<ProcedureCategory> findAllProcessCategories();
+	List<ProcedureCategory> findAllProcedureCategories();
 
-	ProcedureCategory insertProcessCategory(ProcedureCategory pc);
+	ProcedureCategory insertProcedureCategory(ProcedureCategory pc);
 
-	boolean updateProcessCategory(ProcedureCategory pc);
+	boolean updateProcedureCategory(ProcedureCategory pc);
 
-	boolean deleteProcessCategory(ProcedureCategory pc);
+	boolean deleteProcedureCategory(ProcedureCategory pc);
 
 	@Override
 	public Lookup getLookup();
