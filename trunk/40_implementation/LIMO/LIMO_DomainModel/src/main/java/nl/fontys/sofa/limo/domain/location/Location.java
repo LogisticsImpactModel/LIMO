@@ -1,8 +1,8 @@
 package nl.fontys.sofa.limo.domain.location;
 
-import java.io.Serializable;
+import nl.fontys.sofa.limo.domain.interfaces.Copyable;
 
-public class Location implements Serializable {
+public class Location implements Copyable<Location> {
 
     private Continents continent;
     private CountryCode country;
@@ -207,4 +207,19 @@ public class Location implements Serializable {
         this.longitude = longitude;
     }
     //</editor-fold>
+
+    @Override
+    public Location copy() {
+        Location copied = new Location();
+        copied.setContinent(continent);
+        copied.setCountry(country);
+        copied.setHousenumber(housenumber);
+        copied.setLatitude(latitude);
+        copied.setLongitude(longitude);
+        copied.setPostcode(postcode);
+        copied.setState(state);
+        copied.setStreet(street);
+        copied.setTown(town);
+        return copied;
+    }
 }

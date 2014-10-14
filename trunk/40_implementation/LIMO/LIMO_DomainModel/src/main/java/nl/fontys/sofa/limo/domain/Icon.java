@@ -12,8 +12,9 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import nl.fontys.sofa.limo.domain.interfaces.Copyable;
 
-public class Icon extends BaseEntity implements Serializable {
+public class Icon extends BaseEntity implements Serializable, Copyable<Icon> {
 
     private byte[] iconByteArray;
     private transient BufferedImage iconBufferedImage = null;
@@ -90,7 +91,7 @@ public class Icon extends BaseEntity implements Serializable {
         setIcon(iconBufferedImage);
     }
     // </editor-fold>
-    
+
     /**
      * Sets the icon to a specified image.
      *
@@ -133,5 +134,13 @@ public class Icon extends BaseEntity implements Serializable {
             }
             iconBufferedImage = null;
         }
+    }
+
+    @Override
+    public Icon copy() {
+        Icon copied = new Icon();
+        copied.setDescription(description);
+        copied.setIconByteArray(iconByteArray.clone());
+        return copied;
     }
 }

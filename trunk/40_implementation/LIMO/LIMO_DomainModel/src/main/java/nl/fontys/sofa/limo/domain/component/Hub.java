@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,4 +68,35 @@ public class Hub extends Component {
         }
     }
     // </editor-fold>
+
+    @Override
+    public Component copy() {
+        Hub copied = new Hub();
+        ArrayList<Entry> costsList = new ArrayList<>();
+        for (Entry cost : costs) {
+            costsList.add(cost.copy());
+        }
+        copied.setCosts(costsList);
+        ArrayList<Entry> delaysList = new ArrayList<>();
+        for (Entry delay : delays) {
+            delaysList.add(delay.copy());
+        }
+        copied.setDelays(delaysList);
+        copied.setDescription(description);
+        ArrayList<Event> eventsList = new ArrayList<>();
+        for (Event event : events) {
+            eventsList.add(event.copy());
+        }
+        copied.setEvents(eventsList);
+        copied.setIcon(icon.copy());
+        copied.setIdentifier(identifier);
+        copied.setLastUpdate(lastUpdate);
+        ArrayList<Entry> leadTimesList = new ArrayList<>();
+        for (Entry leadtime : leadTimes) {
+            leadTimesList.add(leadtime.copy());
+        }
+        copied.setLeadTimes(leadTimesList);
+        copied.setLocation(location.copy());
+        return copied;
+    }
 }

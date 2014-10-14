@@ -1,9 +1,10 @@
 package nl.fontys.sofa.limo.domain;
 
 import java.io.Serializable;
+import nl.fontys.sofa.limo.domain.interfaces.Copyable;
 import nl.fontys.sofa.limo.domain.value.Value;
 
-public class Entry implements Serializable {
+public class Entry implements Serializable, Copyable<Entry>{
 
     protected String name;
     protected String category;
@@ -47,4 +48,13 @@ public class Entry implements Serializable {
         this.value = value;
     }
     // </editor-fold>
+
+    @Override
+    public Entry copy() {
+        Entry copied = new Entry();
+        copied.setCategory(getCategory());
+        copied.setName(getName());
+        copied.setValue(getValue().copy());
+        return copied;
+    }
 }

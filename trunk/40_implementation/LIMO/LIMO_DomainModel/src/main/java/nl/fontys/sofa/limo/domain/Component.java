@@ -2,11 +2,11 @@ package nl.fontys.sofa.limo.domain;
 
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.Event;
+import nl.fontys.sofa.limo.domain.interfaces.Copyable;
 
-public abstract class Component extends BaseEntity {
+public abstract class Component extends BaseEntity implements Copyable<Component>{
 
     protected String identifier;
     protected List<Entry> costs;

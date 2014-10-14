@@ -1,13 +1,17 @@
 package nl.fontys.sofa.limo.domain.distribution;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import nl.fontys.sofa.limo.domain.distribution.input.InputValue;
+import nl.fontys.sofa.limo.domain.interfaces.Copyable;
 
-public abstract class DistributionType implements Serializable {
+public abstract class DistributionType implements Serializable, Copyable<DistributionType> {
 
     protected Map<String, InputValue> inputValues;
     protected String description;
@@ -135,5 +139,22 @@ public abstract class DistributionType implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public DistributionType copy() {
+        DistributionType copied = null;
+        try {
+            copied = this.getClass().getConstructor().newInstance();
+            copied.setDescription(description);
+            HashMap<String, InputValue> inputValuesMap = new HashMap<>();
+            for (Map.Entry<String, InputValue> inputValue : inputValuesMap.entrySet()) {
+                inputValuesMap.put(inputValue.getKey(), inputValue.getValue().copy());
+            }
+            copied.setInputValues(inputValuesMap);
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(DistributionType.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return copied;
     }
 }
