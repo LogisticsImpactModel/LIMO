@@ -5,7 +5,7 @@ package nl.fontys.sofa.limo.domain.component.process;
  *
  * @author Matthias Brück
  */
-public enum ProcessResponsibilityDirection {
+public enum ProcedureResponsibilityDirection {
 
     INPUT,
     OUTPUT,

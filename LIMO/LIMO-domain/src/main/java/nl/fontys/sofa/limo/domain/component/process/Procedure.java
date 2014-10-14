@@ -19,12 +19,12 @@ public class Procedure implements Serializable {
     @Embedded
     private Value time;
     private TimeType timeType;
-    private ProcessResponsibilityDirection direction;
+    private ProcedureResponsibilityDirection direction;
 
     public Procedure() {
     }
 
-    public Procedure(String name, String category, Value cost, Value time, TimeType timeType, ProcessResponsibilityDirection direction) {
+    public Procedure(String name, String category, Value cost, Value time, TimeType timeType, ProcedureResponsibilityDirection direction) {
         this.name = name;
         this.category = category;
         this.cost = cost;
@@ -72,11 +72,11 @@ public class Procedure implements Serializable {
         this.timeType = timeType;
     }
 
-    public ProcessResponsibilityDirection getDirection() {
+    public ProcedureResponsibilityDirection getDirection() {
         return direction;
     }
 
-    public void setDirection(ProcessResponsibilityDirection direction) {
+    public void setDirection(ProcedureResponsibilityDirection direction) {
         this.direction = direction;
     }
 }

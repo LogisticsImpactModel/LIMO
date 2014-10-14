@@ -3,17 +3,19 @@ package nl.fontys.sofa.limo.domain.component.event;
 import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
+import nl.fontys.sofa.limo.domain.component.process.Procedure;
 
 /**
- * An event inside a supply chain. An event's execution during simulation depends on two things.
- * The parent component and the execution dependency. Event with Hub or Leg parents are always
- * possible to be executed. Events with an event parent, are only possible to be executed, if their
- * parent's execution state is equal to the event's execution dependency.
+ * An event inside a supply chain. An event's execution during simulation
+ * depends on two things. The parent component and the execution dependency.
+ * Event with Hub or Leg parents are always possible to be executed. Events with
+ * an event parent, are only possible to be executed, if their parent's
+ * execution state is equal to the event's execution dependency.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class Event extends Component {
-    
+
     private Component parent;
     private ExecutionState dependency;
     @Embedded
@@ -54,5 +56,18 @@ public class Event extends Component {
     public void setExecutionState(ExecutionState executionState) {
         this.executionState = executionState;
     }
-    
+
+    public void addEvent(Event event) {
+        boolean canAdd = true;
+        for (Event e : events) {
+            if (e.getId() == event.getId()) {
+                canAdd = false;
+                break;
+            }
+        }
+        if (canAdd) {
+            events.add(event);
+        }
+    }
+
 }
