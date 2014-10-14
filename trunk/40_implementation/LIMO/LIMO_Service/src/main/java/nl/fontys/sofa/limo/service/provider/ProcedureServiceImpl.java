@@ -15,12 +15,12 @@ import org.openide.util.lookup.ServiceProvider;
  * @author Sebastiaan Heijmann
  */
 @ServiceProvider(service = ProcedureService.class)
-public class CategoryServiceImpl implements ProcedureService{
+public class ProcedureServiceImpl implements ProcedureService{
 	private final ProcedureCategoryDAO procedureCategoryDAO;
 	private final InstanceContent instanceContent;
 	private final Lookup lookup;
 
-	public CategoryServiceImpl() {
+	public ProcedureServiceImpl() {
 		procedureCategoryDAO = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
 		instanceContent = new InstanceContent();
 		lookup = new AbstractLookup(instanceContent);
