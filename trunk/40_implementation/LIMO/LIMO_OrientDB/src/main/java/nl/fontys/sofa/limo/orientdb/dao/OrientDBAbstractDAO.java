@@ -1,35 +1,31 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
-import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
-import com.orientechnologies.orient.core.db.record.ODatabaseRecord;
+import com.orientechnologies.orient.core.exception.ODatabaseException;
 import com.orientechnologies.orient.core.id.ORecordId;
+import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
-import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.orientdb.database.OrientDBAccess;
+import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
 
 public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T> {
-
-    protected final OrientDBAccess orientDBAccess;
     protected final Class entityClass;
 
 
-    public OrientDBAbstractDAO(OrientDBAccess orientDBAccess, Class entityClass) {
-        this.orientDBAccess = orientDBAccess;
+    public OrientDBAbstractDAO(Class entityClass) {
         this.entityClass = entityClass;
     }
 
     @Override
     public List<T> findAll() {
-        ArrayList<T> resultList = new ArrayList<>();
-        for (Object entity : orientDBAccess.getConnection().browseClass(entityClass)) {
-            resultList.add((T) entity);
+        ArrayList<T> results = new ArrayList<>();
+        for (Object entity : OrientDBConnector.connection().browseClass(entityClass)) {
+            results.add((T) entity);
         }
-        return resultList;
+        return results;
     }
 
     @Override
@@ -39,38 +35,57 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
         }
 
         OSQLSynchQuery<T> query = new OSQLSynchQuery<>("select * from " + id);
-        List<T> results = orientDBAccess.getConnection().query(query);
-        return results.get(0);
+        List<T> results;
+        
+        try {
+            results = OrientDBConnector.connection().query(query);
+        } catch (ODatabaseException ex) {
+            return null;
+        }
+        
+        return results.isEmpty() ? null : results.get(0);
+    }
+    
+    @Override
+    public T findByUniqueIdentifier(String uniqueIdentifier) {
+        OSQLSynchQuery<ODocument> query = new OSQLSynchQuery<>("select from index:uuid where key = '" + uniqueIdentifier + "'");
+        List<ODocument> results = OrientDBConnector.connection().query(query);
+        if (results.isEmpty()) {
+            return null;
+        }
+        
+        ODocument result = results.get(0).field("rid");
+        return (T) OrientDBConnector.connection().getUserObjectByRecord(result, "*:-1");
     }
 
     @Override
     public T insert(T entity) {
-        OObjectDatabaseTx con = orientDBAccess.getConnection();
-        ODatabaseRecordThreadLocal.INSTANCE.set((ODatabaseRecord) con.getUnderlying().getUnderlying());
-        
+        if (entity == null || entity.getId() != null) {
+            return null;
+        }
+
         entity.setLastUpdate(new Date().getTime());
-        T t = con.save(entity);
-		return t;
+        return OrientDBConnector.connection().save(entity);
     }
 
     @Override
     public boolean update(T entity) {
-        if (!stringIsValidId(entity.getId())) {
+        if (entity == null || !stringIsValidId(entity.getId())) {
             return false;
         }
 
         entity.setLastUpdate(new Date().getTime());
-        orientDBAccess.getConnection().save(entity);
+        OrientDBConnector.connection().save(entity);
         return true;
     }
 
     @Override
-    public boolean delete(String id) {
-        if (!stringIsValidId(id)) {
+    public boolean delete(T entity) {
+        if (entity == null || !stringIsValidId(entity.getId())) {
             return false;
         }
 
-        orientDBAccess.getConnection().delete(new ORecordId(id));
+        OrientDBConnector.connection().delete(new ORecordId(entity.getId()));
         return true;
     }
 

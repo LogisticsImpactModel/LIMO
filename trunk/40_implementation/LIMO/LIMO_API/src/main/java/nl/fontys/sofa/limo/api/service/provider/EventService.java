@@ -1,7 +1,7 @@
 package nl.fontys.sofa.limo.api.service.provider;
 
 import java.util.List;
-import nl.fontys.sofa.limo.domain.component.Event;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import org.openide.util.Lookup;
 
 /**

@@ -5,7 +5,7 @@
  */
 package nl.fontys.sofa.limo.api.dao;
 
-import nl.fontys.sofa.limo.domain.component.Hub;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
 
 public interface HubDAO extends DAO<Hub> {
 

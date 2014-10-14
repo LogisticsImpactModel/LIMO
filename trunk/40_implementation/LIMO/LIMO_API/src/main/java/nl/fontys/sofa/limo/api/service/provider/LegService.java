@@ -1,8 +1,8 @@
 package nl.fontys.sofa.limo.api.service.provider;
 
 import java.util.List;
-import nl.fontys.sofa.limo.domain.component.Leg;
-import nl.fontys.sofa.limo.domain.types.LegType;
+import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.util.Lookup;
 
 /**

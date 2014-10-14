@@ -5,7 +5,7 @@
  */
 package nl.fontys.sofa.limo.api.dao;
 
-import nl.fontys.sofa.limo.domain.component.Event;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 
 public interface EventDAO extends DAO<Event> {
 
