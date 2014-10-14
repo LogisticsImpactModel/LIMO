@@ -1,22 +1,24 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
-import nl.fontys.sofa.limo.domain.Actor;
-import nl.fontys.sofa.limo.domain.Component;
-import nl.fontys.sofa.limo.domain.Entry;
-import nl.fontys.sofa.limo.domain.Icon;
-import nl.fontys.sofa.limo.domain.component.Event;
-import nl.fontys.sofa.limo.domain.distribution.PoissonDistribution;
-import nl.fontys.sofa.limo.domain.value.RangeValue;
-import nl.fontys.sofa.limo.domain.value.SingleValue;
-import nl.fontys.sofa.limo.orientdb.mock.MockOrientDBAccess;
-import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
+import nl.fontys.sofa.limo.domain.component.Component;
+import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.event.distribution.PoissonDistribution;
+import nl.fontys.sofa.limo.domain.component.process.Procedure;
+import nl.fontys.sofa.limo.domain.component.process.ProcedureResponsibilityDirection;
+import nl.fontys.sofa.limo.domain.component.process.TimeType;
+import nl.fontys.sofa.limo.domain.component.process.value.RangeValue;
+import nl.fontys.sofa.limo.domain.component.process.value.SingleValue;
+import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,8 +27,7 @@ import org.netbeans.junit.NbTestCase;
 public class OrientDBEventDAOTest extends NbTestCase {
 
     private static final String EVENT_NAME = "Pirates";
-
-    private EventDAO eventDAO;
+    private OrientDBEventDAO dao;
 
     public OrientDBEventDAOTest(String testCase) {
         super(testCase);
@@ -35,15 +36,22 @@ public class OrientDBEventDAOTest extends NbTestCase {
     @Before
     @Override
     public void setUp() {
-        OrientDBDAOFactoryMock orientDBDAOFactory = new OrientDBDAOFactoryMock();
-        eventDAO = orientDBDAOFactory.getEventDAO();
+        try {
+            Field databaseURLField = OrientDBConnector.class.getDeclaredField("databaseURL");
+            databaseURLField.setAccessible(true);
+            databaseURLField.set(null, "memory:tests");
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(OrientProcedureCategoryDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        dao = new OrientDBEventDAO();
     }
 
     @After
     @Override
     public void tearDown() {
-        eventDAO = null;
-        MockOrientDBAccess.getInstance().closeConnection();
+        dao = null;
+        OrientDBConnector.close();
     }
 
     /**
@@ -51,7 +59,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
      */
     @Test
     public void testFindAll() {
-        List<Event> events = eventDAO.findAll();
+        List<Event> events = dao.findAll();
         assertTrue(events.isEmpty());
     }
 
@@ -60,9 +68,9 @@ public class OrientDBEventDAOTest extends NbTestCase {
      */
     @Test
     public void testFindById() {
-        Event event = eventDAO.findById("");
+        Event event = dao.findById("");
         assertNull(event);
-        event = eventDAO.findById("38129803980");
+        event = dao.findById("38129803980");
         assertNull(event);
     }
 
@@ -72,8 +80,8 @@ public class OrientDBEventDAOTest extends NbTestCase {
     @Test
     public void testInsert() {
         Event event = createEvent();
-        event = eventDAO.insert(event);
-        List<Event> events = eventDAO.findAll();
+        event = dao.insert(event);
+        List<Event> events = dao.findAll();
         assertEquals(3, events.size());
         Event foundEvent = null;
         for (Event e : events) {
@@ -83,51 +91,46 @@ public class OrientDBEventDAOTest extends NbTestCase {
             }
         }
         assertNotNull(foundEvent);
-        assertEquals(event.getIdentifier(), foundEvent.getIdentifier());
-        // Actor
-        assertNotNull(event.getActor());
-        assertNotNull(foundEvent.getActor());
-        assertEquals(event.getActor().getName(), foundEvent.getActor().getName());
-        // Costs
-        Entry expectedEntry = event.getCosts().get(0);
-        Entry foundEntry = foundEvent.getCosts().get(0);
-        assertEquals(expectedEntry.getName(), foundEntry.getName());
-        assertEquals(expectedEntry.getValue().getValue(), foundEntry.getValue().getValue());
-        // Delays
-        expectedEntry = event.getDelays().get(0);
-        foundEntry = foundEvent.getDelays().get(0);
-        assertEquals(expectedEntry.getName(), foundEntry.getName());
-        assertEquals(expectedEntry.getValue().getValue(), foundEntry.getValue().getValue());
-        // Sub event
+        assertEquals(event.getName(), foundEvent.getName());
+
+        // PROCEDURES
+        Procedure expectedProcedure = event.getProcedures().get(0);
+        Procedure foundProcedure = foundEvent.getProcedures().get(0);
+        assertEquals(expectedProcedure.getName(), foundProcedure.getName());
+        assertEquals(expectedProcedure.getCost().getValue(), foundProcedure.getCost().getValue());
+
+        // SUBEVENT
         List<Event> subEvents = event.getEvents();
         assertEquals(event.getEvents().size(), subEvents.size());
         Event foundSubEvent = subEvents.get(0);
         Event expectedSubEvent = event.getEvents().get(0);
         assertEquals(expectedSubEvent.getId(), foundSubEvent.getId());
-        assertEquals(expectedSubEvent.getIdentifier(), foundSubEvent.getIdentifier());
-        // Sub event costs
-        List<Entry> subEventCosts = foundSubEvent.getCosts();
-        expectedEntry = subEventCosts.get(0);
-        foundEntry = foundSubEvent.getCosts().get(0);
-        assertEquals(expectedEntry.getName(), foundEntry.getName());
-        assertEquals(expectedEntry.getValue().getMin(), foundEntry.getValue().getMin());
-        assertEquals(expectedEntry.getValue().getMax(), foundEntry.getValue().getMax());
-        // Icon
-        assertEquals(event.getIcon().getId(), foundEvent.getIcon().getId());
-        // Lead times
-        List<Entry> expectedLeadTimes = event.getLeadTimes();
-        List<Entry> foundLeadTimes = foundEvent.getLeadTimes();
-        assertEquals(expectedLeadTimes.size(), foundLeadTimes.size());
-        Entry expectedLeadTime = expectedLeadTimes.get(0);
-        Entry foundLeadTime = foundLeadTimes.get(0);
+        assertEquals(expectedSubEvent.getName(), foundSubEvent.getName());
+
+        // SUBEVENT PROCEDURES
+        List<Procedure> subEventProcedures = foundSubEvent.getProcedures();
+        expectedProcedure = subEventProcedures.get(0);
+        foundProcedure = foundSubEvent.getProcedures().get(0);
+        assertEquals(expectedProcedure.getName(), foundProcedure.getName());
+        assertEquals(expectedProcedure.getCost().getMin(), foundProcedure.getCost().getMin());
+        assertEquals(expectedProcedure.getCost().getMax(), foundProcedure.getCost().getMax());
+
+        // TIMES
+        List<Procedure> expectedProcedures = event.getProcedures();
+        List<Procedure> foundProcedures = foundEvent.getProcedures();
+        assertEquals(expectedProcedures.size(), foundProcedures.size());
+        Procedure expectedLeadTime = expectedProcedures.get(0);
+        Procedure foundLeadTime = foundProcedures.get(0);
         assertEquals(expectedLeadTime.getName(), foundLeadTime.getName());
-        assertEquals(expectedLeadTime.getValue().getValue(), foundLeadTime.getValue().getValue());
-        // Parent
+        assertEquals(expectedLeadTime.getTime().getValue(), foundLeadTime.getTime().getValue());
+
+        // PARENT EVENT
         Component expectedParent = event.getParent();
         Component foundParent = event.getParent();
         assertEquals(expectedParent.getId(), foundParent.getId());
-        assertEquals(expectedParent.getIdentifier(), foundParent.getIdentifier());
-        // Propability
+        assertEquals(expectedParent.getName(), foundParent.getName());
+
+        // PROBABILITY
         assertEquals(event.getProbability().getClass(), foundEvent.getProbability().getClass());
     }
 
@@ -137,16 +140,17 @@ public class OrientDBEventDAOTest extends NbTestCase {
     @Test
     public void testUpdate() {
         String newEventName = "Pirate attack";
-        Event event = new Event(EVENT_NAME);
-        boolean updateSuccess = eventDAO.update(event);
+        Event event = new Event();
+        event.setName(EVENT_NAME);
+        boolean updateSuccess = dao.update(event);
         assertFalse(updateSuccess);
-        event = eventDAO.insert(event);
-        event = eventDAO.findById(event.getId());
-        event.setIdentifier(newEventName);
-        updateSuccess = eventDAO.update(event);
+        event = dao.insert(event);
+        event = dao.findById(event.getId());
+        event.setName(newEventName);
+        updateSuccess = dao.update(event);
         assertTrue(updateSuccess);
-        event = eventDAO.findById(event.getId());
-        assertEquals(newEventName, event.getIdentifier());
+        event = dao.findById(event.getId());
+        assertEquals(newEventName, event.getName());
     }
 
     /**
@@ -154,54 +158,40 @@ public class OrientDBEventDAOTest extends NbTestCase {
      */
     @Test
     public void testDelete() {
-        boolean deleteSuccess = eventDAO.delete("");
+        boolean deleteSuccess = dao.delete(new Event());
         assertFalse(deleteSuccess);
-        deleteSuccess = eventDAO.delete("798319203");
-        assertFalse(deleteSuccess);
-        Event event = new Event(EVENT_NAME);
-        event = eventDAO.insert(event);
-        deleteSuccess = eventDAO.delete(event.getId());
+        Event event = new Event();
+        event.setName(EVENT_NAME);
+        event = dao.insert(event);
+        deleteSuccess = dao.delete(event);
         assertTrue(deleteSuccess);
     }
 
     private Event createEvent() {
-        Event event = new Event(EVENT_NAME);
+        //EVENT
+        Event event = new Event();
+        event.setName(EVENT_NAME);
+        event.setProbability(new PoissonDistribution());
+        ArrayList<Procedure> procedures = new ArrayList<>();
+        Procedure shipping = new Procedure("Shipping", "Transport", new SingleValue(1000), new SingleValue(9000), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT);
+        procedures.add(shipping);
+        Procedure attack = new Procedure("Pirate Attack", "Unforeseeable", new SingleValue(10000), new SingleValue(5000), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT);
+        procedures.add(attack);
+        event.setProcedures(procedures);
 
-        Actor actor = new Actor("Hermes");
-        event.setActor(actor);
-
-        ArrayList<Entry> costs = new ArrayList<>();
-        Entry costEntry = new Entry("Shipping", "Transport");
-        costEntry.setValue(new SingleValue(20000));
-        costs.add(costEntry);
-        event.setCosts(costs);
-
-        ArrayList<Entry> delays = new ArrayList<>();
-        Entry delayEntry = new Entry("Pirate Attack", "Unforeseeable");
-        delayEntry.setValue(new SingleValue(250000));
-        delays.add(delayEntry);
-        event.setDelays(delays);
-
-        Event subEvent = new Event("Repair cannonball damage");
-        List<Entry> subEventCosts = new ArrayList<>();
-        Entry rapairingEntry = new Entry("Repairing cannonball damage", "Repairing");
-        rapairingEntry.setValue(new RangeValue(2000, 10000));
-        subEventCosts.add(rapairingEntry);
-        subEvent.setCosts(subEventCosts);
+        //SUBEVENT
+        Event subEvent = new Event();
+        subEvent.setName("Repair cannonball damage");
+        ArrayList<Procedure> subEventProcedures = new ArrayList<>();
+        Procedure rapairingProcess = new Procedure("Repairing cannonball damage", "Repairing", new RangeValue(5000, 10000), new SingleValue(7500), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT);
+        subEventProcedures.add(rapairingProcess);
+        subEvent.setProcedures(subEventProcedures);
         event.addEvent(subEvent);
 
-        event.setIcon(new Icon(new byte[0]));
-
-        List<Entry> leadTimes = new ArrayList<>();
-        Entry leadTimeEntry = new Entry("", "");
-        leadTimeEntry.setValue(new SingleValue(3000));
-        leadTimes.add(leadTimeEntry);
-        event.setLeadTimes(leadTimes);
-
-        Event parentEvent = new Event("Pirate Parent Event");
+        //PARENTEVENT
+        Event parentEvent = new Event();
+        parentEvent.setName("Pirate Parent Event");
         event.setParent(parentEvent);
-
-        event.setProbability(new PoissonDistribution());
 
         return event;
     }
