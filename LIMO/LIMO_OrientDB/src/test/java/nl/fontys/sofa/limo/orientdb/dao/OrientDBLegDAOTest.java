@@ -5,53 +5,53 @@
  */
 package nl.fontys.sofa.limo.orientdb.dao;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static junit.framework.Assert.assertNull;
-import nl.fontys.sofa.limo.api.dao.LegDAO;
-import nl.fontys.sofa.limo.domain.Actor;
-import nl.fontys.sofa.limo.domain.Entry;
-import nl.fontys.sofa.limo.domain.Icon;
-import nl.fontys.sofa.limo.domain.component.Hub;
-import nl.fontys.sofa.limo.domain.component.Leg;
-import nl.fontys.sofa.limo.domain.location.Continents;
-import nl.fontys.sofa.limo.domain.location.Location;
-import nl.fontys.sofa.limo.orientdb.mock.MockOrientDBAccess;
-import nl.fontys.sofa.limo.orientdb.mock.OrientDBDAOFactoryMock;
+import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.process.Procedure;
+import nl.fontys.sofa.limo.domain.component.process.ProcedureResponsibilityDirection;
+import nl.fontys.sofa.limo.domain.component.process.TimeType;
+import nl.fontys.sofa.limo.domain.component.process.value.SingleValue;
+import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.netbeans.junit.NbTestCase;
 
 public class OrientDBLegDAOTest extends NbTestCase {
 
-    private LegDAO legDAO;
+    private OrientDBLegDAO dao;
 
     public OrientDBLegDAOTest(String testCase) {
         super(testCase);
-    }
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
     }
 
     @Before
     @Override
     public void setUp() {
-        OrientDBDAOFactoryMock orientDBDAOFactory = new OrientDBDAOFactoryMock();
-        legDAO = orientDBDAOFactory.getLegDAO();
+        try {
+            Field databaseURLField = OrientDBConnector.class.getDeclaredField("databaseURL");
+            databaseURLField.setAccessible(true);
+            databaseURLField.set(null, "memory:tests");
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(OrientProcedureCategoryDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        dao = new OrientDBLegDAO();
     }
 
     @After
     @Override
     public void tearDown() {
-        legDAO = null;
-        MockOrientDBAccess.getInstance().closeConnection();
+        for (Leg ht : dao.findAll())
+            dao.delete(ht);
+        dao = null;
+        OrientDBConnector.close();
     }
 
     /**
@@ -59,7 +59,7 @@ public class OrientDBLegDAOTest extends NbTestCase {
      */
     @Test
     public void testFindAll() {
-        List<Leg> hubs = legDAO.findAll();
+        List<Leg> hubs = dao.findAll();
         assertTrue(hubs.isEmpty());
     }
 
@@ -68,9 +68,9 @@ public class OrientDBLegDAOTest extends NbTestCase {
      */
     @Test
     public void testFindById() {
-        Leg leg = legDAO.findById("");
+        Leg leg = dao.findById("");
         assertNull(leg);
-        leg = legDAO.findById("38129803980");
+        leg = dao.findById("38129803980");
         assertNull(leg);
     }
 
@@ -79,31 +79,19 @@ public class OrientDBLegDAOTest extends NbTestCase {
      */
     @Test
     public void testInsert() {
-        Leg leg = new Leg("11112");
-        leg.setActor(new Actor("Super Actor"));
-        leg.setStartHub(new Hub("112233", new Location(Continents.AFRICA)));
-        leg.setEndHub(new Hub("223311", new Location(Continents.EUROPE)));
-        ArrayList<Entry> costs = new ArrayList<>();
-        costs.add(new Entry("Cost1", "Costs"));
-        costs.add(new Entry("Cost2", "Costs"));
-        leg.setCosts(costs);
-        ArrayList<Entry> delays = new ArrayList<>();
-        delays.add(new Entry("Delay1", "Delay"));
-        delays.add(new Entry("Delay2", "Delay"));
-        leg.setDelays(delays);
+        Leg leg = new Leg();
+        leg.setName("11112");
+        ArrayList<Procedure> procedures = new ArrayList<>();
+        procedures.add(new Procedure("Cost1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT));
+        procedures.add(new Procedure("Cost2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES, ProcedureResponsibilityDirection.OUTPUT));
+        leg.setProcedures(procedures);
         leg.setIcon(new Icon());
-        ArrayList<Entry> leadTimes = new ArrayList<>();
-        leadTimes.add(new Entry("LeadTime1", "LeadTime"));
-        leadTimes.add(new Entry("LeadTime2", "LeadTime"));
-        leg.setDelays(delays);
-        leg.setIcon(new Icon());
-        leg.setLeadTimes(leadTimes);
-        leg = legDAO.insert(leg);
-        List<Leg> legs = legDAO.findAll();
+        leg = dao.insert(leg);
+        List<Leg> legs = dao.findAll();
         assertEquals(1, legs.size());
-        Leg foundLeg = legDAO.findById(legs.get(0).getId());
+        Leg foundLeg = dao.findById(legs.get(0).getId());
         assertEquals(leg.getId(), foundLeg.getId());
-        assertEquals(leg.getIdentifier(), foundLeg.getIdentifier());
+        assertEquals(leg.getName(), foundLeg.getName());
     }
 
     /**
@@ -112,16 +100,17 @@ public class OrientDBLegDAOTest extends NbTestCase {
     @Test
     public void testUpdate() {
         String newLegName = "LegXYZ";
-        Leg leg = new Leg("1234");
-        boolean updateSuccess = legDAO.update(leg);
+        Leg leg = new Leg();
+        leg.setName("1234");
+        boolean updateSuccess = dao.update(leg);
         assertFalse(updateSuccess);
-        leg = legDAO.insert(leg);
-        leg = legDAO.findById(leg.getId());
-        leg.setIdentifier(newLegName);
-        updateSuccess = legDAO.update(leg);
+        leg = dao.insert(leg);
+        leg = dao.findById(leg.getId());
+        leg.setName(newLegName);
+        updateSuccess = dao.update(leg);
         assertTrue(updateSuccess);
-        leg = legDAO.findById(leg.getId());
-        assertEquals(newLegName, leg.getIdentifier());
+        leg = dao.findById(leg.getId());
+        assertEquals(newLegName, leg.getName());
     }
 
     /**
@@ -129,13 +118,12 @@ public class OrientDBLegDAOTest extends NbTestCase {
      */
     @Test
     public void testDelete() {
-        boolean deleteSuccess = legDAO.delete("");
+        boolean deleteSuccess = dao.delete(new Leg());
         assertFalse(deleteSuccess);
-        deleteSuccess = legDAO.delete("798319203");
-        assertFalse(deleteSuccess);
-        Leg leg = new Leg("112233");
-        leg = legDAO.insert(leg);
-        deleteSuccess = legDAO.delete(leg.getId());
+        Leg leg = new Leg();
+        leg.setName("112233");
+        leg = dao.insert(leg);
+        deleteSuccess = dao.delete(leg);
         assertTrue(deleteSuccess);
     }
 }
