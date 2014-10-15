@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.service.provider;
 
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
+import nl.fontys.sofa.limo.api.exception.DAONotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import org.openide.util.Lookup;
@@ -20,11 +21,16 @@ public class HubTypeServiceImpl implements HubTypeService{
 	private final InstanceContent instanceContent;
 	private final Lookup lookup;
 
-	public HubTypeServiceImpl() {
+	public HubTypeServiceImpl() throws DAONotFoundException {
 		dao = Lookup.getDefault().lookup(HubTypeDAO.class);
 		instanceContent = new InstanceContent();
 		lookup = new AbstractLookup(instanceContent);
-		instanceContent.set(dao.findAll(), null);
+
+		if(dao == null){
+			throw new DAONotFoundException("HubTypeDAO not found...");
+		}else{
+			instanceContent.set(dao.findAll(), null);
+		}
 	}
 
 	@Override

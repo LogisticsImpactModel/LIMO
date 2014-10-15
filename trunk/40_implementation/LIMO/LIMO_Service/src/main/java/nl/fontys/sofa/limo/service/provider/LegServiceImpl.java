@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.service.provider;
 
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.LegDAO;
+import nl.fontys.sofa.limo.api.exception.DAONotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.LegService;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import org.openide.util.Lookup;
@@ -20,11 +21,16 @@ public class LegServiceImpl implements LegService{
 	private final InstanceContent instanceContent;
 	private final Lookup lookup;
 
-	public LegServiceImpl() {
+	public LegServiceImpl() throws DAONotFoundException {
 		dao = Lookup.getDefault().lookup(LegDAO.class);
 		instanceContent = new InstanceContent();
 		lookup = new AbstractLookup(instanceContent);
-		instanceContent.set(dao.findAll(), null);
+
+		if(dao == null){
+			throw new DAONotFoundException("LegDAO not found...");
+		}else{
+			instanceContent.set(dao.findAll(), null);
+		}
 	}
 
 	@Override

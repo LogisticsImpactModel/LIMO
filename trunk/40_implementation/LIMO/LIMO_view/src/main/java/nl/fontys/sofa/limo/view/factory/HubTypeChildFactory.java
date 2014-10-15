@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.factory;
 import java.beans.IntrospectionException;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
+import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.node.HubTypeNode;
 import org.openide.nodes.BeanNode;
@@ -23,10 +24,10 @@ public class HubTypeChildFactory extends ChildFactory<HubType>
 		implements LookupListener{
 
 	private final Result<HubType> lookupResult;
-	private HubService service; 
+	private HubTypeService service; 
 
 	public HubTypeChildFactory() {
-		service = Lookup.getDefault().lookup(HubService.class);
+		service = Lookup.getDefault().lookup(HubTypeService.class);
 		lookupResult = service.getLookup().lookupResult(HubType.class);
 		lookupResult.addLookupListener(this);
 	}

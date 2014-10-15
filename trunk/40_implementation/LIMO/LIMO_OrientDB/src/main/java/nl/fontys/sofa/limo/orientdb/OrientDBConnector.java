@@ -118,7 +118,7 @@ public class OrientDBConnector {
         this.connection.setAutomaticSchemaGeneration(true);
         entityManager.registerEntityClass(BaseEntity.class);
         this.connection.setAutomaticSchemaGeneration(false);
-        /*entityManager.registerEntityClass(HubType.class);
+        entityManager.registerEntityClass(HubType.class);
         entityManager.registerEntityClass(LegType.class);
         entityManager.registerEntityClass(ProcedureCategory.class);
         entityManager.registerEntityClass(Leg.class);
@@ -127,8 +127,8 @@ public class OrientDBConnector {
         entityManager.registerEntityClass(Hub.class);
         entityManager.registerEntityClass(Event.class);
         entityManager.registerEntityClass(Distribution.class);
-        entityManager.registerEntityClass(PoissonDistribution.class);*/
-        entityManager.registerEntityClasses("nl.fontys.sofa.limo.domain");
+        entityManager.registerEntityClass(PoissonDistribution.class);
+//        entityManager.registerEntityClasses("nl.fontys.sofa.limo.domain");
 
         // Create indexes for unique identifier
         OClass clazz = this.connection.getMetadata().getSchema().getClass(BaseEntity.class);
