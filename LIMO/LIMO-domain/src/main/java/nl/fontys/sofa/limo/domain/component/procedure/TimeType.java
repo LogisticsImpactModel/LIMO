@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.domain.component.process;
+package nl.fontys.sofa.limo.domain.component.procedure;
 
 /**
  * Time type.

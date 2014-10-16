@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.domain.component.process.value;
+package nl.fontys.sofa.limo.domain.component.procedure.value;
 
 /**
  * Single value for a process object.

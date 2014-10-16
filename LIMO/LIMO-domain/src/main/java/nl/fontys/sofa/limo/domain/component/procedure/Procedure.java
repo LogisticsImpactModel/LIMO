@@ -1,8 +1,8 @@
-package nl.fontys.sofa.limo.domain.component.process;
+package nl.fontys.sofa.limo.domain.component.procedure;
 
 import java.io.Serializable;
 import javax.persistence.Embedded;
-import nl.fontys.sofa.limo.domain.component.process.value.Value;
+import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 
 /**
  * A process is something happening inside a component with a cost and time

@@ -4,7 +4,7 @@ import java.util.List;
 import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.process.Procedure;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 
 /**
  * A type is a template object for either a hub or a leg.

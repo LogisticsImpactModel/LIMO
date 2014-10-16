@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.factory;
 
 import java.beans.IntrospectionException;
 import java.util.List;
-import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.node.HubTypeNode;

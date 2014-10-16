@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.domain.component.process.Procedure;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 
 /**
  * Base class for all main components of a supply chain: hubs, legs and events.

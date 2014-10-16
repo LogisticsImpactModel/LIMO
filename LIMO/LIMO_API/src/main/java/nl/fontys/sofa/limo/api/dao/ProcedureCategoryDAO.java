@@ -1,6 +1,6 @@
 package nl.fontys.sofa.limo.api.dao;
 
-import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
+import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 
 /**
  *

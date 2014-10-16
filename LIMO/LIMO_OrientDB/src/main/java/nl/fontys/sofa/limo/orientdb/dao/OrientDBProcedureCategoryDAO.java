@@ -1,7 +1,7 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
-import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
+import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import org.openide.util.lookup.ServiceProvider;
 
 /**

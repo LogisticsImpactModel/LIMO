@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.io.IOException;
 import javax.swing.Action;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
-import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
+import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.DialogDescriptor;
@@ -65,7 +65,7 @@ public class ProcedureCategoryRootNode extends AbstractNode{
 				pc.setName(name);
 				pc.setDescription(description);
 				
-				service.insertProcedureCategory(pc);
+				service.insert(pc);
 			}
 		}};
 	}
