@@ -24,10 +24,9 @@ public final class EventWizardAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
-        panels.add(new EventWizardPanel1());
-        panels.add(new EventWizardPanel2());
-        panels.add(new EventWizardPanel3());
-        panels.add(new EventWizardPanel4());
+        panels.add(new NewOrDuplicatedEventWizard());
+        panels.add(new NameDescriptionProbabilityWizard());
+        panels.add(new SubEventsWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -42,13 +41,13 @@ public final class EventWizardAction implements ActionListener {
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
-        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
-        wiz.setTitle("Add Event");
+        wiz.setTitle(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("ADD_EVENT"));
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             EventDAO eventDAO = Lookup.getDefault().lookup(EventDAO.class);
-            eventDAO.insert((Event) wiz.getProperty("event"));
+            eventDAO.insert((Event) wiz.getProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT")));
         }
     }
 

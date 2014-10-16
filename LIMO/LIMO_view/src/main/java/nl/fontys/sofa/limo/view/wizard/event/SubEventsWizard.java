@@ -4,22 +4,22 @@ import javax.swing.event.ChangeListener;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
-public class EventWizardPanel3 implements WizardDescriptor.Panel<WizardDescriptor> {
+public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     /**
      * The visual component that displays this panel. If you need to access the component from this
      * class, just use getComponent().
      */
-    private EventVisualPanel3 component;
+    private SubEventsPanel component;
 
     // Get the visual component for the panel. In this template, the component
     // is kept separate. This can be more efficient: if the wizard is created
     // but never displayed, or not all panels are displayed, it is better to
     // create only those which really need to be visible.
     @Override
-    public EventVisualPanel3 getComponent() {
+    public SubEventsPanel getComponent() {
         if (component == null) {
-            component = new EventVisualPanel3();
+            component = new SubEventsPanel();
         }
         return component;
     }
