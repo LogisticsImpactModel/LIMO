@@ -6,6 +6,7 @@
 package nl.fontys.sofa.limo.view;
 
 import java.awt.BorderLayout;
+import javax.swing.ActionMap;
 import nl.fontys.sofa.limo.view.factory.ProcedureCategoryChildFactory;
 import nl.fontys.sofa.limo.view.node.ProcedureCategoryRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -53,7 +54,7 @@ public final class ProcedureCategoryTopComponent extends TopComponent
 		setToolTipText(Bundle.HINT_ProcedureCategoryTopComponent());
 
 		setLayout(new BorderLayout());
-		OutlineView ov = new OutlineView("Cost Categories");
+		OutlineView ov = new OutlineView("Procedure Categories");
 		ov.setPropertyColumns("description", "Description");
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
@@ -65,7 +66,9 @@ public final class ProcedureCategoryTopComponent extends TopComponent
 		em = new ExplorerManager();
 		em.setRootContext(rootNode);
 
-		associateLookup(ExplorerUtils.createLookup(em, getActionMap()));
+		ActionMap map = getActionMap();
+		map.put("delete", ExplorerUtils.actionDelete(em, true));
+		associateLookup(ExplorerUtils.createLookup(em, map));
 	}
 	
 	@Override

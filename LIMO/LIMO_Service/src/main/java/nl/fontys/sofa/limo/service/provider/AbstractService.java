@@ -26,7 +26,8 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
         if (dao == null) {
             throw new DAONotFoundException("DAO of type " + daoClass.getSimpleName() + " not found...");
         } else {
-            instanceContent.set(dao.findAll(), null);
+			List<T> instances = dao.findAll();
+            instanceContent.set(instances, null);
         }
     }
 

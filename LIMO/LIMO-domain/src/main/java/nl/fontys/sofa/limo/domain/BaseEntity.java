@@ -16,6 +16,7 @@ public class BaseEntity implements Serializable {
     protected String name;
     protected long lastUpdate;
     protected String uniqueIdentifier;
+    protected String description;
 
     public BaseEntity() {
         this.uniqueIdentifier = UUID.randomUUID().toString();
@@ -52,5 +53,13 @@ public class BaseEntity implements Serializable {
     public void setUniqueIdentifier(String uniqueIdentifier) {
         this.uniqueIdentifier = uniqueIdentifier;
     }
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
     
 }

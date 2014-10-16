@@ -2,9 +2,8 @@ package nl.fontys.sofa.limo.view.factory;
 
 import java.beans.IntrospectionException;
 import java.util.List;
-import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
+import javax.management.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.LegService;
-import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.node.LegTypeNode;
 import org.openide.nodes.BeanNode;

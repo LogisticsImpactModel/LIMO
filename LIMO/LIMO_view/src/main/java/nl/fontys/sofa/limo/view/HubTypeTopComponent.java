@@ -6,6 +6,7 @@
 package nl.fontys.sofa.limo.view;
 
 import java.awt.BorderLayout;
+import javax.swing.ActionMap;
 import nl.fontys.sofa.limo.view.factory.HubTypeChildFactory;
 import nl.fontys.sofa.limo.view.node.HubTypeRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -62,9 +63,11 @@ public final class HubTypeTopComponent extends TopComponent
 		Children hubTypechildren = Children.create(new HubTypeChildFactory(), true);
 		Node rootNode = new HubTypeRootNode(hubTypechildren);
 		rootNode.setDisplayName("Hubtypes");
-
 		em.setRootContext(rootNode);
-		associateLookup(ExplorerUtils.createLookup(em, getActionMap()));
+
+		ActionMap map = getActionMap();
+		map.put("delete", ExplorerUtils.actionDelete(em, true));
+		associateLookup(ExplorerUtils.createLookup(em, map));
 	}
 
 	@Override
