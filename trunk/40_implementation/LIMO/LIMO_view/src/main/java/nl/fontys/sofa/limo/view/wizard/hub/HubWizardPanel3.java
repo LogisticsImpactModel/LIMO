@@ -75,7 +75,7 @@ public class HubWizardPanel3 implements WizardDescriptor.Panel<WizardDescriptor>
     @Override
     public void validate() throws WizardValidationException {
         if (component.getHubLocation() == null) {
-            throw new WizardValidationException(null, "Echt nicht, Junge!", null);
+            throw new WizardValidationException(null, "Continent...?", null);
         }
     }
 
