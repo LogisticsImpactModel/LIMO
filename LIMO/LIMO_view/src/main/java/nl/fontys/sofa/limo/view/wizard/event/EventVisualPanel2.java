@@ -1,42 +1,41 @@
-///*
-// * To change this license header, choose License Headers in Project Properties.
-// * To change this template file, choose Tools | Templates
-// * and open the template in the editor.
-// */
-//package nl.fontys.sofa.limo.view.wizard.event;
-//
-//import java.awt.GridBagConstraints;
-//import java.awt.GridBagLayout;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import javax.swing.JOptionPane;
-//import javax.swing.JPanel;
-//import javax.swing.JScrollPane;
-//import javax.swing.JTable;
-//import javax.swing.event.DocumentEvent;
-//import javax.swing.event.DocumentListener;
-//import javax.swing.table.AbstractTableModel;
-//import nl.fontys.sofa.limo.api.service.distribution.DistributionTypeFactory;
-//import nl.fontys.sofa.limo.domain.component.Event;
-//import org.openide.util.Lookup;
-//
-//public final class EventVisualPanel2 extends JPanel {
-//
-//    /**
-//     * Creates new form HubVisualPanel2
-//     */
-//    public EventVisualPanel2() {
-//        initComponents();
-//    }
-//
-//    @Override
-//    public String getName() {
-//        return "Name and Probability";
-//    }
-//
-//    private void initComponents() {
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package nl.fontys.sofa.limo.view.wizard.event;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.AbstractTableModel;
+import nl.fontys.sofa.limo.domain.component.event.Event;
+import org.openide.util.Lookup;
+
+public final class EventVisualPanel2 extends JPanel {
+
+    /**
+     * Creates new form HubVisualPanel2
+     */
+    public EventVisualPanel2() {
+        initComponents();
+    }
+
+    @Override
+    public String getName() {
+        return "Name and Probability";
+    }
+
+    private void initComponents() {
 //        dtf = Lookup.getDefault().lookup(DistributionTypeFactory.class);
 //        ArrayList<String> distTypes = new ArrayList<>(Arrays.asList(dtf.getDistributionTypes()));
 //        distTypes.add(0, "-");
@@ -175,7 +174,7 @@
 //                ((AbstractTableModel) tParameters.getModel()).fireTableDataChanged();
 //            }
 //        });
-//        
+//
 //        tfName.getDocument().addDocumentListener(new DocumentListener() {
 //
 //            @Override
@@ -193,34 +192,34 @@
 //                event.setIdentifier(tfName.getText());
 //            }
 //        });
-//    }
-//
-//    public void update(Event event) {
-////        if (event != null) {
-////            tfName.setText(event.getIdentifier());
-////            if (event.getProbability() != null) {
-////                cbDistributionType.setSelectedItem(dtf.getNameForDistributionType(event.getProbability().getClass()));
-////            } else {
-////                cbDistributionType.setSelectedIndex(0);
-////            }
-////            ((AbstractTableModel) tParameters.getModel()).fireTableDataChanged();
-////        }
-//    }
-//
-//    public Event getEvent() {
-//        event.setIdentifier(tfName.getText());
-//        return event;
-//    }
-//
-//    private javax.swing.JLabel lblName;
-//    private javax.swing.JTextField tfName;
-//
-//    private javax.swing.JLabel lblDistributionType;
-//    private javax.swing.JComboBox<String> cbDistributionType;
-//
-//    private javax.swing.JLabel lblParameters;
-//    private javax.swing.JTable tParameters;
-//
-//    private Event event;
-//    private DistributionTypeFactory dtf;
-//}
+    }
+
+    public void update(Event event) {
+//        if (event != null) {
+//            tfName.setText(event.getIdentifier());
+//            if (event.getProbability() != null) {
+//                cbDistributionType.setSelectedItem(dtf.getNameForDistributionType(event.getProbability().getClass()));
+//            } else {
+//                cbDistributionType.setSelectedIndex(0);
+//            }
+//            ((AbstractTableModel) tParameters.getModel()).fireTableDataChanged();
+//        }
+    }
+
+    public Event getEvent() {
+        event.setUniqueIdentifier(tfName.getText());
+        return event;
+    }
+
+    private javax.swing.JLabel lblName;
+    private javax.swing.JTextField tfName;
+
+    private javax.swing.JLabel lblDistributionType;
+    private javax.swing.JComboBox<String> cbDistributionType;
+
+    private javax.swing.JLabel lblParameters;
+    private javax.swing.JTable tParameters;
+
+    private Event event;
+    //private DistributionTypeD dtf;
+}
