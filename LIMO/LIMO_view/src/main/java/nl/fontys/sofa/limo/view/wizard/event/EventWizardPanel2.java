@@ -53,15 +53,15 @@ public class EventWizardPanel2 implements WizardDescriptor.Panel<WizardDescripto
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Event event = (Event) wiz.getProperty("eventCopy");
+        Object event = wiz.getProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/EventWizard").getString("EVENTCOPY"));
         if (event != null) {
-            getComponent().update(event);
+            getComponent().update((Event) event);
         }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("event", getComponent().getEvent());
+        wiz.putProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/EventWizard").getString("EVENT"), getComponent().getEvent());
     }
 
 }

@@ -2,9 +2,10 @@ package nl.fontys.sofa.limo.view.wizard.event;
 
 import javax.swing.event.ChangeListener;
 import org.openide.WizardDescriptor;
+import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class EventWizardPanel1 implements WizardDescriptor.Panel<WizardDescriptor> {
+public class EventWizardPanel1 implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     /**
      * The visual component that displays this panel. If you need to access the
@@ -34,12 +35,7 @@ public class EventWizardPanel1 implements WizardDescriptor.Panel<WizardDescripto
 
     @Override
     public boolean isValid() {
-        // If it is always OK to press Next or Finish, then:
         return true;
-        // If it depends on some condition (form filled out...) and
-        // this condition changes (last form field filled in...) then
-        // use ChangeSupport to implement add/removeChangeListener below.
-        // WizardDescriptor.ERROR/WARNING/INFORMATION_MESSAGE will also be useful.
     }
 
     @Override
@@ -57,7 +53,15 @@ public class EventWizardPanel1 implements WizardDescriptor.Panel<WizardDescripto
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("eventCopy", getComponent().getEvent());
+        if (getComponent().eventCopySelection.isSelected()) {
+            wiz.putProperty("eventCopy", getComponent().getEvent());
+        }
     }
 
+    @Override
+    public void validate() throws WizardValidationException {
+        if (getComponent().eventCopySelection.isSelected() && getComponent().getEvent() == null) {
+            throw new WizardValidationException(null, null, "Event not set!");
+        }
+    }
 }

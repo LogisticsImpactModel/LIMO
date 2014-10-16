@@ -16,8 +16,6 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
-// An example action demonstrating how the wizard could be called from within
-// your code. You can move the code below wherever you need, or register an action:
 @ActionID(category = "Event", id = "nl.fontys.sofa.limo.view.wizard.event.EventWizardAction")
 @ActionRegistration(displayName = "Add Event")
 @ActionReference(path = "Menu/Data/Event")

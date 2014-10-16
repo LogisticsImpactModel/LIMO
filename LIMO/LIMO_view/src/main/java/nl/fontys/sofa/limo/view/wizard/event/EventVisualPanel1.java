@@ -13,13 +13,15 @@ import javax.swing.JRadioButton;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import org.openide.util.Lookup;
+import org.openide.util.NbBundle;
 
 public final class EventVisualPanel1 extends JPanel {
 
-    private ButtonGroup buttonGroup1;
-    private JComboBox cmbHub;
-    private JRadioButton rbFromScratch;
-    private JRadioButton rbCopyFrom;
+    ButtonGroup buttonGroup1;
+    JComboBox eventsCb;
+    JRadioButton eventFromScratchSelection;
+    JRadioButton eventCopySelection;
+
     private List<Event> eventList;
 
     public EventVisualPanel1() {
@@ -33,67 +35,71 @@ public final class EventVisualPanel1 extends JPanel {
 
     private void initComponents() {
         buttonGroup1 = new javax.swing.ButtonGroup();
-        rbFromScratch = new javax.swing.JRadioButton();
-        rbCopyFrom = new javax.swing.JRadioButton();
-        cmbHub = new javax.swing.JComboBox();
+        eventFromScratchSelection = new javax.swing.JRadioButton();
+        eventCopySelection = new javax.swing.JRadioButton();
+        eventsCb = new javax.swing.JComboBox();
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 0;
-        buttonGroup1.add(rbFromScratch);
-        rbFromScratch.setText("From Scratch");
-        add(rbFromScratch, c);
-        rbFromScratch.setSelected(true);
+        buttonGroup1.add(eventFromScratchSelection);
+        eventFromScratchSelection.setText("From Scratch");
+        add(eventFromScratchSelection, c);
+        eventFromScratchSelection.setSelected(true);
 
-        rbFromScratch.addActionListener(new ActionListener() {
+        eventFromScratchSelection.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (rbFromScratch.isSelected()) {
-                    cmbHub.setEnabled(false);
+                if (eventFromScratchSelection.isSelected()) {
+                    eventsCb.setEnabled(false);
                 }
             }
         });
 
-        buttonGroup1.add(rbCopyFrom);
-        rbCopyFrom.setText("Copy Event");
+        buttonGroup1.add(eventCopySelection);
+        eventCopySelection.setText("Copy Existing");
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
-        add(rbCopyFrom, c);
+        add(eventCopySelection, c);
 
-        rbCopyFrom.addActionListener(new ActionListener() {
+        eventCopySelection.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (rbCopyFrom.isSelected()) {
-                    cmbHub.setEnabled(true);
-
+                if (eventCopySelection.isSelected()) {
+                    eventsCb.setEnabled(true);
                 }
             }
         });
 
-        EventDAO eventDAO = Lookup.getDefault().lookup(EventDAO.class);
-        eventList = eventDAO.findAll();
-        ArrayList<String> eventList = new ArrayList<>();
-        for (Event event : this.eventList) {
-            eventList.add(event.getUniqueIdentifier());
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                EventDAO eventDAO = Lookup.getDefault().lookup(EventDAO.class);
+                eventList = eventDAO.findAll();
+                List<String> events = new ArrayList<>();
+                for (Event event : eventList) {
+                    events.add(event.getUniqueIdentifier());
+                }
+                eventsCb.setModel(new javax.swing.DefaultComboBoxModel(events.toArray()));
+            }
+        }).start();
 
-        cmbHub.setModel(new javax.swing.DefaultComboBoxModel(eventList.toArray()));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 2;
-        add(cmbHub, c);
-        cmbHub.setEnabled(false);
-
+        add(eventsCb, c);
+        eventsCb.setEnabled(false);
     }
 
     public Event getEvent() {
-        if (rbCopyFrom.isSelected()) {
-            return eventList.get(cmbHub.getSelectedIndex());
-        } else {
-            return null;
+        Event event = null;
+        try {
+            event = eventList.get(eventsCb.getSelectedIndex());
+        } catch (IndexOutOfBoundsException ex) {
         }
+        return event;
     }
 }
