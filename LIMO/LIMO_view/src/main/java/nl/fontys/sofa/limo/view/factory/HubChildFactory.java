@@ -16,7 +16,7 @@ public class HubChildFactory extends ChildFactory<Hub> {
     @Override
     protected boolean createKeys(List<Hub> list) {
         HubService service = Lookup.getDefault().lookup(HubService.class);
-        list.addAll(service.findAllHubs());
+        list.addAll(service.findAll());
         return true;
     }
 }

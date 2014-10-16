@@ -65,7 +65,7 @@ public class LegTypeRootNode extends AbstractNode{
 				lt.setName(name);
 				lt.setDescription(description);
 				
-				service.insertLegType(lt);
+				service.insert(lt);
 			}
 		}};
 	}

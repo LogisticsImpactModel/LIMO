@@ -83,7 +83,7 @@ public final class HubVisualPanel1 extends JPanel {
         });
 
         HubService hubService = Lookup.getDefault().lookup(HubService.class);
-		hl = hubService.findAllHubs();
+		hl = hubService.findAll();
         List<String> hubNameList = new ArrayList<>();
 		for(Hub hub : hl){
 			hubNameList.add(hub.getName());
@@ -114,7 +114,7 @@ public final class HubVisualPanel1 extends JPanel {
         });
 
 		HubTypeService hubTypeService = Lookup.getDefault().lookup(HubTypeService.class);
-        htl = hubTypeService.findAllHubTypes();
+        htl = hubTypeService.findAll();
         ArrayList<String> hubTypeList = new ArrayList<>();
         for (HubType hubType : htl) {
             hubTypeList.add(hubType.getName());
