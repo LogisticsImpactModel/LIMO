@@ -2,7 +2,7 @@ package nl.fontys.sofa.limo.view.node;
 
 import java.awt.Image;
 import java.beans.IntrospectionException;
-import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
+import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.nodes.BeanNode;
 

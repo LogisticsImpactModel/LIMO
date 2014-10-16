@@ -3,7 +3,7 @@ package nl.fontys.sofa.limo.orientdb.dao;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
+import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
 import org.junit.After;
 import org.junit.Before;

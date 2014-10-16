@@ -1,7 +1,7 @@
 package nl.fontys.sofa.limo.api.service.provider;
 
-import java.util.List;
-import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
+import nl.fontys.sofa.limo.api.dao.DAO;
+import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import org.openide.util.Lookup;
 
 /**
@@ -11,19 +11,5 @@ import org.openide.util.Lookup;
  *
  * @author Sebastiaan Heijmann
  */
-public interface ProcedureCategoryService extends Lookup.Provider{
-
-	ProcedureCategory findProcedureCategoryById(int id);
-
-	List<ProcedureCategory> findAllProcedureCategories();
-
-	ProcedureCategory insertProcedureCategory(ProcedureCategory pc);
-
-	boolean updateProcedureCategory(ProcedureCategory pc);
-
-	boolean deleteProcedureCategory(ProcedureCategory pc);
-
-	@Override
-	public Lookup getLookup();
-
+public interface ProcedureCategoryService extends DAO<ProcedureCategory>, Lookup.Provider{
 }

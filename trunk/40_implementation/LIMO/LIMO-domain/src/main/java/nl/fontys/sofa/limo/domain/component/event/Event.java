@@ -3,7 +3,7 @@ package nl.fontys.sofa.limo.domain.component.event;
 import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
-import nl.fontys.sofa.limo.domain.component.process.Procedure;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 
 /**
  * An event inside a supply chain. An event's execution during simulation

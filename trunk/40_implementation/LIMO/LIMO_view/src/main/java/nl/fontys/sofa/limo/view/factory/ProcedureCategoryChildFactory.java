@@ -4,8 +4,7 @@ import java.beans.IntrospectionException;
 import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
-import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
+import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.node.ProcedureCategoryNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
@@ -35,7 +34,7 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
 	
 	@Override
 	protected boolean createKeys(List<ProcedureCategory> list) {
-		Collection<? extends ProcedureCategory> tcl = service.findAllProcedureCategories();
+		Collection<? extends ProcedureCategory> tcl = service.findAll();
 		list.addAll(tcl);
 		return true;
 	}

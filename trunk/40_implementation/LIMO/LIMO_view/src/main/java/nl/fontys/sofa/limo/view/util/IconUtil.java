@@ -5,7 +5,7 @@ import java.awt.Image;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
-import nl.fontys.sofa.limo.domain.component.process.ProcedureCategory;
+import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.util.Exceptions;

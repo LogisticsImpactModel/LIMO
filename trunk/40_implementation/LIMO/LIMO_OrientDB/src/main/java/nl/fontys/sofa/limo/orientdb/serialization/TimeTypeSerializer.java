@@ -1,7 +1,7 @@
 package nl.fontys.sofa.limo.orientdb.serialization;
 
 import com.orientechnologies.orient.core.serialization.serializer.object.OObjectSerializer;
-import nl.fontys.sofa.limo.domain.component.process.TimeType;
+import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 
 /**
  *
