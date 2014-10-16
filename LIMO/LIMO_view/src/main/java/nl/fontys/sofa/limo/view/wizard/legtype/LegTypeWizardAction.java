@@ -12,9 +12,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
-import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
@@ -27,7 +25,7 @@ import org.openide.util.Lookup;
 // your code. You can move the code below wherever you need, or register an action:
  @ActionID(category="LegType", id="nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
  @ActionRegistration(displayName="Add LegType")
- @ActionReference(path="Menu/Data/Leg"/*, position=30*/)
+ @ActionReference(path="Menu/Data/LegType"/*, position=30*/)
 public final class LegTypeWizardAction implements ActionListener {
 
     @Override
