@@ -71,11 +71,6 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO_OrientDB</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>LIMO_DependecyWrapper</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -92,6 +87,11 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>LIMO-domain</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LIMO_OrientDB</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
