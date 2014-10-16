@@ -32,6 +32,13 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:${project.basedir}/repo</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.netbeans.api</groupId>
@@ -52,6 +59,11 @@
             <groupId>com.sksamuel</groupId>
             <artifactId>gaia</artifactId>
             <version>0.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mxgraph</groupId>
+            <artifactId>jgraphx</artifactId>
+            <version>3.1.0.1</version>
         </dependency>
     </dependencies>
     <properties>
