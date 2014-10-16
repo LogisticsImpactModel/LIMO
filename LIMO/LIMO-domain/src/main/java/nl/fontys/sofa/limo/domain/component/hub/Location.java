@@ -24,6 +24,10 @@ public class Location implements Serializable {
 
     public Location() {
     }
+    
+    public Location(Continent continent){
+        this.continent = continent;
+    }
 
     public Continent getContinent() {
         return continent;
