@@ -19,7 +19,7 @@ public final class HubVisualPanel4 extends JPanel {
 
     @Override
     public String getName() {
-        return "Costs/Delays/Leads";
+        return "Procedures";
     }
 
     private void initComponents() {
