@@ -13,9 +13,8 @@ import javax.swing.JRadioButton;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import org.openide.util.Lookup;
-import org.openide.util.NbBundle;
 
-public final class EventVisualPanel1 extends JPanel {
+public final class NewOrDuplicatedEventPanel extends JPanel {
 
     ButtonGroup buttonGroup1;
     JComboBox eventsCb;
@@ -24,13 +23,13 @@ public final class EventVisualPanel1 extends JPanel {
 
     private List<Event> eventList;
 
-    public EventVisualPanel1() {
+    public NewOrDuplicatedEventPanel() {
         initComponents();
     }
 
     @Override
     public String getName() {
-        return "Event";
+        return java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT");
     }
 
     private void initComponents() {
@@ -45,7 +44,7 @@ public final class EventVisualPanel1 extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         buttonGroup1.add(eventFromScratchSelection);
-        eventFromScratchSelection.setText("From Scratch");
+        eventFromScratchSelection.setText(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("FROM_SCRATCH"));
         add(eventFromScratchSelection, c);
         eventFromScratchSelection.setSelected(true);
 
@@ -59,7 +58,7 @@ public final class EventVisualPanel1 extends JPanel {
         });
 
         buttonGroup1.add(eventCopySelection);
-        eventCopySelection.setText("Copy Existing");
+        eventCopySelection.setText(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("COPY_EXISTING"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
