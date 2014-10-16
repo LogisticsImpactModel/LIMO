@@ -8,6 +8,7 @@ import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
 import com.orientechnologies.orient.core.db.record.ODatabaseRecord;
 import com.orientechnologies.orient.core.entity.OEntityManager;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
+import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import com.orientechnologies.orient.object.serialization.OObjectSerializerContext;
 import com.orientechnologies.orient.object.serialization.OObjectSerializerHelper;
@@ -158,6 +159,10 @@ public class OrientDBConnector {
         // Create indexes for unique identifier
         OClass clazz = this.connection.getMetadata().getSchema().getClass(BaseEntity.class);
         if (!clazz.areIndexed("uniqueIdentifier")) {
+            if (!clazz.existsProperty("uniqueIdentifier")) {
+                clazz.createProperty("uniqueIdentifier", OType.STRING);
+            }
+            
             clazz.createIndex("uuid", OClass.INDEX_TYPE.UNIQUE_HASH_INDEX, "uniqueIdentifier");
         }
     }
