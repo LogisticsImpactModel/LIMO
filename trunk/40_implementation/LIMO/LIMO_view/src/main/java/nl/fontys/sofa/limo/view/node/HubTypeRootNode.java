@@ -66,7 +66,7 @@ public class HubTypeRootNode extends AbstractNode{
 				ht.setName(name);
 				ht.setDescription(description);
 				
-				service.insertHubType(ht);
+				service.insert(ht);
 			}
 		}};
 	}

@@ -1,6 +1,6 @@
 package nl.fontys.sofa.limo.api.service.provider;
 
-import java.util.List;
+import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import org.openide.util.Lookup;
 
@@ -11,19 +11,5 @@ import org.openide.util.Lookup;
  *
  * @author Sebastiaan Heijmann
  */
-public interface LegService extends Lookup.Provider{
-
-	Leg findLegById(int id);
-
-	List<Leg> findAllLegs();
-
-	Leg insertLeg(Leg leg);
-
-	boolean updateLeg(Leg leg);
-
-	boolean deleteLeg(Leg leg);
-
-	@Override
-	public Lookup getLookup();
-
+public interface LegService extends Lookup.Provider, DAO<Leg>{
 }
