@@ -5,73 +5,43 @@
  */
 package nl.fontys.sofa.limo.view;
 
-import java.awt.BorderLayout;
-import javax.swing.ActionMap;
-import nl.fontys.sofa.limo.view.factory.LegTypeChildFactory;
-import nl.fontys.sofa.limo.view.node.LegTypeRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.explorer.ExplorerManager;
-import org.openide.explorer.ExplorerUtils;
-import org.openide.explorer.view.OutlineView;
-import org.openide.nodes.Children;
-import org.openide.nodes.Node;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
 /**
- * Top component which displays the leg types.
+ * Top component which displays something.
  */
 @ConvertAsProperties(
-		dtd = "-//nl.fontys.sofa.limo.view//LegType//EN",
+		dtd = "-//nl.fontys.sofa.limo.view//Event//EN",
 		autostore = false
 )
 @TopComponent.Description(
-		preferredID = "LegTypeTopComponent",
+		preferredID = "EventTopComponent",
 		//iconBase="SET/PATH/TO/ICON/HERE", 
 		persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
-@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.LegTypeTopComponent")
-@ActionReference(path = "Menu/Data" , position = 20 )
+@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.EventTopComponent")
+@ActionReference(path = "Menu/Window" /*, position = 333 */)
 @TopComponent.OpenActionRegistration(
-		displayName = "#CTL_LegTypeAction",
-		preferredID = "LegTypeTopComponent"
+		displayName = "#CTL_EventAction",
+		preferredID = "EventTopComponent"
 )
 @Messages({
-	"CTL_LegTypeAction=LegType",
-	"CTL_LegTypeTopComponent=LegType",
-	"HINT_LegTypeTopComponent=Manage Leg Types"
+	"CTL_EventAction=Event",
+	"CTL_EventTopComponent=Event Window",
+	"HINT_EventTopComponent=This is a Event window"
 })
-public final class LegTypeTopComponent extends TopComponent 
-			implements ExplorerManager.Provider{
-	private final ExplorerManager em = new ExplorerManager();
+public final class EventTopComponent extends TopComponent {
 
-	public LegTypeTopComponent() {
+	public EventTopComponent() {
 		initComponents();
-		setName(Bundle.CTL_LegTypeTopComponent());
-		setToolTipText(Bundle.HINT_LegTypeTopComponent());
-		setLayout(new BorderLayout());
+		setName(Bundle.CTL_EventTopComponent());
+		setToolTipText(Bundle.HINT_EventTopComponent());
 
-		OutlineView ov = new OutlineView("Legtypes");
-		ov.setPropertyColumns("description", "Description");
-		ov.getOutline().setRootVisible(false);
-		add(ov, BorderLayout.CENTER);
-
-		Children legTypeChildren = Children.create(new LegTypeChildFactory(), true);
-		Node rootNode = new LegTypeRootNode(legTypeChildren);
-		rootNode.setDisplayName("Legtypes");
-		em.setRootContext(rootNode);
-
-		ActionMap map = getActionMap();
-		map.put("delete", ExplorerUtils.actionDelete(em, true));
-		associateLookup(ExplorerUtils.createLookup(em, map));
-	}
-
-	@Override
-	public ExplorerManager getExplorerManager() {
-		return em;
 	}
 
 	/**
@@ -117,5 +87,4 @@ public final class LegTypeTopComponent extends TopComponent
 		String version = p.getProperty("version");
 		// TODO read your settings according to their version
 	}
-
 }

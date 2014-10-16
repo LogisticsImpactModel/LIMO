@@ -7,6 +7,8 @@ import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
 import nl.fontys.sofa.limo.view.util.IconUtil;
+import nl.fontys.sofa.limo.view.util.ValidationUtil;
+import org.netbeans.validation.api.ui.swing.ValidationPanel;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.actions.NewAction;
@@ -49,15 +51,16 @@ public class ProcedureCategoryRootNode extends AbstractNode{
 
 			@Override
 			public String getName() {
-				return "Cost Category";
+				return "Procedure Category";
 			}
 
 			@Override
 			public void create() throws IOException {
 				NameDescriptionDialogInputPane inputPane = new NameDescriptionDialogInputPane();
-				DialogDescriptor dd = new DialogDescriptor(inputPane, "Cost Category");
+				ValidationPanel vp = new ValidationPanel(inputPane.getValidationGroup());
+				DialogDescriptor dd = ValidationUtil.createDialogDescriptor(vp, inputPane, "Create Procedure Category");
 				Object result = DialogDisplayer.getDefault().notify(dd);
-	
+				
 				String name = inputPane.getNameFieldValue();
 				String description = inputPane.getDescriptionFieldValue();
 
