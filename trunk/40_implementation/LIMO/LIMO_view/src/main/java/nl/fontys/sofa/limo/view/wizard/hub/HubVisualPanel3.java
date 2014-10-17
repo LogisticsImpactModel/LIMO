@@ -9,12 +9,15 @@ import com.sksamuel.gaia.Continent;
 import com.sksamuel.gaia.Country;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
 
 public final class HubVisualPanel3 extends JPanel {
-	private Object CountryCode;
+
+    private Object CountryCode;
 
     /**
      * Creates new form HubVisualPanel3
@@ -108,21 +111,34 @@ public final class HubVisualPanel3 extends JPanel {
         // codes = CountryCode.values();     
         ArrayList<String> countryList = new ArrayList();
         countryList.add("None");
-        for(Country cou : Country.getAll()){
+        for (Country cou : Country.getAll()) {
             countryList.add(cou.getName());
         }
-     //   countryList.addAll(CountryCode.getSortedNames());
+        //   countryList.addAll(CountryCode.getSortedNames());
         cmbCountry.setModel(new javax.swing.DefaultComboBoxModel(countryList.toArray()));
 
         ArrayList<String> continentList = new ArrayList();
         continentList.add("None");
-        for(Continent cont: Continent.values()){
+        for (Continent cont : Continent.values()) {
             continentList.add(cont.getName());
         }
-  //      for (int i = 0; i < Continents.values().length; ++i) {
- //           continentList.add(Continents.values()[i].toString());
+        //      for (int i = 0; i < Continents.values().length; ++i) {
+        //           continentList.add(Continents.values()[i].toString());
 //       }
         cmbContinent.setModel(new javax.swing.DefaultComboBoxModel(continentList.toArray()));
+        cmbContinent.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<String> countryList = new ArrayList();
+                countryList.add("None");
+                for (Country cou : Continent.values()[cmbContinent.getSelectedIndex() - 1].getCountries()) {
+                    countryList.add(cou.getName());
+                }
+                cmbCountry.setModel(new javax.swing.DefaultComboBoxModel(countryList.toArray()));
+
+            }
+        });
     }
 
     public void updateLabel(Location location) {
@@ -141,7 +157,7 @@ public final class HubVisualPanel3 extends JPanel {
 
     public Location getHubLocation() {
         if (cmbContinent.getSelectedIndex() > 0) {
-            location = new Location(Continent.values()[cmbContinent.getSelectedIndex()-1]);
+            location = new Location(Continent.values()[cmbContinent.getSelectedIndex() - 1]);
 
             if (!tfStreet.getText().isEmpty()) {
                 location.setStreet(tfStreet.getText());
@@ -160,7 +176,7 @@ public final class HubVisualPanel3 extends JPanel {
             }
 
             if (cmbCountry.getSelectedIndex() > 0) {
-                location.setCountry(Country.getAll().get(cmbCountry.getSelectedIndex()-1));
+                location.setCountry(Country.getAll().get(cmbCountry.getSelectedIndex() - 1));
             }
         }
         return location;
