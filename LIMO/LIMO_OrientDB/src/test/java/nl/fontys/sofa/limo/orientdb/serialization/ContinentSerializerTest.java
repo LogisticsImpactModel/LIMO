@@ -6,6 +6,7 @@
 package nl.fontys.sofa.limo.orientdb.serialization;
 
 import com.sksamuel.gaia.Continent;
+import java.io.Serializable;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
