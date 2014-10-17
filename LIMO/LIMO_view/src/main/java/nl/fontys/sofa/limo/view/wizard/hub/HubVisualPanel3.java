@@ -132,11 +132,12 @@ public final class HubVisualPanel3 extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 ArrayList<String> countryList = new ArrayList();
                 countryList.add("None");
-                for (Country cou : Continent.values()[cmbContinent.getSelectedIndex() - 1].getCountries()) {
-                    countryList.add(cou.getName());
+                if (Continent.values()[cmbContinent.getSelectedIndex() - 1].getCountries().size() >= 0) {
+                    for (Country cou : Continent.values()[cmbContinent.getSelectedIndex() - 1].getCountries()) {
+                        countryList.add(cou.getName());
+                    }
+                    cmbCountry.setModel(new javax.swing.DefaultComboBoxModel(countryList.toArray()));
                 }
-                cmbCountry.setModel(new javax.swing.DefaultComboBoxModel(countryList.toArray()));
-
             }
         });
     }
