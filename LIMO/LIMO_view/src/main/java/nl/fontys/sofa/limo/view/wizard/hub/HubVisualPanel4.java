@@ -28,7 +28,7 @@ public final class HubVisualPanel4 extends JPanel {
 
     private void initComponents() {
         setLayout(new BorderLayout());
-        cmp = new ProcedureComponent(null);
+        cmp = new ProcedureComponent();
         add(cmp, BorderLayout.CENTER);
     }
 
