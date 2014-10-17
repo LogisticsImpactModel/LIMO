@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.domain.component;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
@@ -13,7 +14,9 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
  */
 public abstract class Component extends BaseEntity {
     
+    @Embedded
     protected List<Procedure> procedures;
+    @Embedded
     protected List<Event> events;
 
     public Component() {
