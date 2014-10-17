@@ -77,6 +77,7 @@ public class HubWizardPanel4 implements WizardDescriptor.Panel<WizardDescriptor>
     public void storeSettings(WizardDescriptor wiz) {
         Hub hub= (Hub) wiz.getProperty("hub");
         hub.setProcedures(getComponent().getProcedures());
+        wiz.putProperty("hub", hub);
     }
 
 }
