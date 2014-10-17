@@ -1,32 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.custom.table;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 /**
  *
  * @author Matthias Brück
  */
-public class DragNDropTableModel implements TableModel{
-    
-    private final String columnNames[];
-    private final Object[][] values;
-    private final Class[] classes;
+public class DragNDropTableModel extends AbstractTableModel {
 
-    public DragNDropTableModel(String[] columnNames, Object[][] values, Class[] classes){
+    private final String columnNames[];
+    private final List<List<Object>> values;
+    private final Class[] classes;
+    private final List<TableModelListener> tableModelListeners;
+
+    public DragNDropTableModel(String[] columnNames, List<List<Object>> values, Class[] classes) {
         this.columnNames = columnNames;
         this.values = values;
         this.classes = classes;
+        tableModelListeners = new ArrayList<>();
     }
-    
+
     @Override
     public int getRowCount() {
-        return values.length;
+        return values.size();
     }
 
     @Override
@@ -46,25 +46,71 @@ public class DragNDropTableModel implements TableModel{
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
+        return true;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return values[rowIndex][columnIndex];
+        if (getRowCount() > 0) {
+            if (rowIndex < getRowCount() && rowIndex >= 0) {
+                if (columnIndex < getColumnCount() && columnIndex >= 0) {
+                    return values.get(rowIndex).get(columnIndex);
+                }
+            }
+        }
+        return "";
     }
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        values[rowIndex][columnIndex] = aValue;
+        if (getRowCount() > 0) {
+            if (rowIndex < getRowCount() && rowIndex >= 0) {
+                if (columnIndex < getColumnCount() && columnIndex >= 0) {
+                    values.get(rowIndex).set(columnIndex, aValue);
+                }
+            }
+        }
     }
 
     @Override
     public void addTableModelListener(TableModelListener l) {
+        tableModelListeners.add(l);
     }
 
     @Override
     public void removeTableModelListener(TableModelListener l) {
+        tableModelListeners.remove(l);
     }
-    
+
+    public void addRow(List<Object> newRow) {
+        if (listIsOK(newRow)) {
+            values.add(newRow);
+            fireTableDataChanged();
+        }
+    }
+
+    private boolean listIsOK(List<Object> newRow) {
+        if (newRow.size() < getColumnCount()) {
+            System.out.println("ROW GOT WRONG SIZE");
+            return false;
+        }
+        for (int i = 0; i < newRow.size(); i++) {
+            if (!(classes[i]).isInstance(newRow.get(i))) {
+                System.out.println("COLUMN " + i + " SHOULD BE CLASS " + classes[i] + " BUT IS CLASS " + newRow.get(i).getClass());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void removeRow(int rowNumber) {
+        if (rowNumber < getRowCount()) {
+            values.remove(rowNumber);
+            fireTableDataChanged();
+        }
+    }
+
+    public List<List<Object>> getValues() {
+        return values;
+    }
 }
