@@ -70,7 +70,7 @@ public final class HubVisualPanel2 extends JPanel {
                 int returnVal = fc.showOpenDialog(HubVisualPanel2.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File icon = fc.getSelectedFile();
-					Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage());
+                    Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage());
                     hub.setIcon(newIcon);
                     lblPreview.setIcon((javax.swing.Icon) newIcon);
                 }
