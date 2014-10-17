@@ -13,6 +13,7 @@ import org.openide.nodes.Children;
 import org.openide.util.actions.SystemAction;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
+import org.openide.util.lookup.Lookups;
 
 /**
  * AbstractBeanNode class which defines basic Node actions and creates a lookup for
@@ -31,18 +32,11 @@ public abstract class AbstractBeanNode extends BeanNode{
 	 * @throws IntrospectionException 
 	 */
 	public AbstractBeanNode(BaseEntity bean) throws IntrospectionException{
-		this(bean, new InstanceContent());
-	}
-
-	private AbstractBeanNode(BaseEntity bean, InstanceContent ic)
-			throws IntrospectionException{
-		super(bean, Children.LEAF, new AbstractLookup(ic));
-		this.ic = ic;
-		ic.add(bean);
-
+		super(Lookups.singleton(bean), Children.LEAF);
+		setShortDescription(bean.getDescription());
 		setDisplayName(bean.getName());
 	}
-	
+
 	@Override
 	public Image getIcon(int type) {
 		Image icon = IconUtil.getIcon(ProcedureCategory.class, type);
