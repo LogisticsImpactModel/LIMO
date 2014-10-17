@@ -5,7 +5,6 @@
  */
 package nl.fontys.sofa.limo.domain.component.event;
 
-import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.event.distribution.DiscreteDistribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
@@ -74,7 +73,7 @@ public class EventTest {
      */
     @Test
     public void testGetDependency() {
-        assertEquals(ExecutionState.INDEPENDENT, event.getDependency());
+        assertNull(event.getDependency());
     }
 
     /**

@@ -19,6 +19,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import org.openide.util.Lookup;
 
 public final class NameDescriptionProbabilityPanel extends JPanel {
@@ -159,8 +160,10 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         if (event != null) {
             tfName.setText(event.getName());
             tfDescription.setText(event.getDescription());
-            if (event.getProbability() != null) {
-                cbDistributionType.setSelectedItem(dtf.getNameForDistributionType(event.getProbability().getClass()));
+            Distribution probability = event.getProbability();
+            if (probability != null) {
+                String nameForDistributionType = probability.getClass().getSimpleName();
+                cbDistributionType.setSelectedItem(nameForDistributionType);
             } else {
                 cbDistributionType.setSelectedIndex(0);
             }

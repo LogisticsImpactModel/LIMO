@@ -3,7 +3,6 @@ package nl.fontys.sofa.limo.domain.component.event;
 import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 
 /**
  * An event inside a supply chain. An event's execution during simulation
@@ -23,7 +22,6 @@ public class Event extends Component {
     private ExecutionState executionState;
 
     public Event() {
-        dependency = ExecutionState.INDEPENDENT;
     }
 
     public Component getParent() {

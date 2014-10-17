@@ -54,7 +54,7 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Object event = wiz.getProperty("eventCopy");
+        Object event = wiz.getProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT"));
         if (event != null) {
             getComponent().update((Event) event);
         }

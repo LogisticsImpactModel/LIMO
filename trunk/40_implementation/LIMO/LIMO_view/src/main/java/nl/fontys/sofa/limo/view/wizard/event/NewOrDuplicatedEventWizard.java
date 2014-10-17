@@ -54,7 +54,7 @@ public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<Wizard
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         if (getComponent().eventCopySelection.isSelected()) {
-            wiz.putProperty("eventCopy", getComponent().getEvent());
+            wiz.putProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT"), getComponent().getEvent());
         }
     }
 
