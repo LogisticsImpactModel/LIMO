@@ -137,6 +137,7 @@
             <groupId>org.netbeans.external</groupId>
             <artifactId>ValidationAPI</artifactId>
             <version>RELEASE80</version>
+            <type>jar</type>
         </dependency>
     </dependencies>
     <properties>

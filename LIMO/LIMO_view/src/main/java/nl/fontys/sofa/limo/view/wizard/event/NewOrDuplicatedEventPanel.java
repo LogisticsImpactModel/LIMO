@@ -22,6 +22,7 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
     JRadioButton eventCopySelection;
 
     private List<Event> eventList;
+    private EventDAO eventDAO;
 
     public NewOrDuplicatedEventPanel() {
         initComponents();
@@ -76,13 +77,13 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                EventDAO eventDAO = Lookup.getDefault().lookup(EventDAO.class);
+                eventDAO = Lookup.getDefault().lookup(EventDAO.class);
                 eventList = eventDAO.findAll();
                 List<String> events = new ArrayList<>();
                 for (Event event : eventList) {
                     events.add(event.getName());
                 }
-                eventsCb.setModel(new javax.swing.DefaultComboBoxModel(events.toArray()));
+                eventsCb.setModel(new javax.swing.DefaultComboBoxModel(events.toArray(new String[events.size()])));
             }
         }).start();
 
@@ -97,7 +98,9 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
         Event event = null;
         if (eventCopySelection.isSelected()) {
             try {
-                event = eventList.get(eventsCb.getSelectedIndex());
+                event = eventDAO.findById(eventList.get(eventsCb.getSelectedIndex()).getId());
+                event.setId(null);
+                event.setUniqueIdentifier("");
             } catch (IndexOutOfBoundsException ex) {
             }
         }
