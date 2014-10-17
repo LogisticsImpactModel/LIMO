@@ -4,7 +4,6 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.List;
-import javax.management.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.node.ProcedureCategoryNode;
@@ -22,7 +21,7 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
 /**
- * Factory for creating the cost category children.
+ * Factory for creating the CostCategoryNode children.
  *
  * @author Sebastiaan Heijmann
  */
