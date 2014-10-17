@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
+import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import org.openide.WizardDescriptor;
@@ -7,16 +8,13 @@ import org.openide.util.HelpCtx;
 
 public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
-    /**
-     * The visual component that displays this panel. If you need to access the
-     * component from this class, just use getComponent().
-     */
     private SubEventsPanel component;
+    private final ResourceBundle bundle;
 
-    // Get the visual component for the panel. In this template, the component
-    // is kept separate. This can be more efficient: if the wizard is created
-    // but never displayed, or not all panels are displayed, it is better to
-    // create only those which really need to be visible.
+    public SubEventsWizard() {
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
+    }
+
     @Override
     public SubEventsPanel getComponent() {
         if (component == null) {
@@ -53,7 +51,7 @@ public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Object event = wiz.getProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT"));
+        Object event = wiz.getProperty(bundle.getString("EVENT"));
         if (event != null) {
             getComponent().update((Event) event);
         }
@@ -61,7 +59,7 @@ public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT"), getComponent().getEvent());
+        wiz.putProperty(bundle.getString("EVENT"), getComponent().getEvent());
     }
 
 }
