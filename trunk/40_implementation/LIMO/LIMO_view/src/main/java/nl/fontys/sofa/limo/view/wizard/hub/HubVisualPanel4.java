@@ -6,7 +6,11 @@
 package nl.fontys.sofa.limo.view.wizard.hub;
 
 import java.awt.BorderLayout;
+import java.util.List;
 import javax.swing.JPanel;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.view.custom.ProcedureComponent;
 
 public final class HubVisualPanel4 extends JPanel {
 
@@ -24,16 +28,17 @@ public final class HubVisualPanel4 extends JPanel {
 
     private void initComponents() {
         setLayout(new BorderLayout());
+        cmp = new ProcedureComponent(null);
+        add(cmp, BorderLayout.CENTER);
     }
-    
-//    public void setComponent(Component comp){
-//        removeAll();
-//        tce = new TabbedComponentEntries(comp);
-//        add(tce);
-//    }
-    
-//    public Component getComponent(){
-//    }
-//    
-   // private TabbedComponentEntries tce;
+
+    public void update(List<Procedure> procedures) {
+
+    }
+
+    public List<Procedure> getProcedures() {
+        return cmp.getActiveTableState();
+    }
+
+    private ProcedureComponent cmp;
 }
