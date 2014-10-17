@@ -6,6 +6,7 @@
 package nl.fontys.sofa.limo.view.wizard.legtype;
 
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -57,12 +58,17 @@ public class LegTypeWizardPanel3 implements WizardDescriptor.Panel<WizardDescrip
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        // use wiz.getProperty to retrieve previous panel state
+        LegType lt = (LegType) wiz.getProperty("legTypeCopy");
+        if(lt != null){
+            getComponent().update(lt.getProcedures());
+        }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        // use wiz.putProperty to remember current panel state
+        LegType lt = (LegType) wiz.getProperty("legType");
+        lt.setProcedures(component.getProcedures());
+        wiz.putProperty("legType", lt);
     }
 
 }
