@@ -36,11 +36,15 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
 
     private DragNDropTable table;
     private DragNDropTableModel model;
-    private final JButton btn_add, btn_delete;
-    private final JScrollPane sc_pane;
+    private JButton btn_add, btn_delete;
+    private JScrollPane sc_pane;
     private ProcedureCategoryDAO procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
     private Value changedValue;
     CellConstraints cc;
+
+    public ProcedureComponent() {
+        new ProcedureComponent(null);
+    }
 
     public ProcedureComponent(List<Procedure> procedures) {
         //LAYOUT
@@ -49,15 +53,17 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         this.setLayout(layout);
         //TABLEMODEL
         List<List<Object>> valueList = new ArrayList<>();
-        for (Procedure p : procedures) {
-            ArrayList<Object> values = new ArrayList<>();
-            values.add(p.getName());
-            values.add(p.getCategory());
-            values.add(p.getTimeType());
-            values.add(p.getTime());
-            values.add(p.getCost());
-            values.add(p.getDirection());
-            valueList.add(values);
+        if (procedures != null) {
+            for (Procedure p : procedures) {
+                ArrayList<Object> values = new ArrayList<>();
+                values.add(p.getName());
+                values.add(p.getCategory());
+                values.add(p.getTimeType());
+                values.add(p.getTime());
+                values.add(p.getCost());
+                values.add(p.getDirection());
+                valueList.add(values);
+            }
         }
         model = new DragNDropTableModel(new String[]{"Name", "Category", "Time Type", "Time Cost", "Money Cost", "Direction"},
                 valueList, new Class[]{String.class, String.class, TimeType.class, Value.class, Value.class, ProcedureResponsibilityDirection.class});
@@ -121,6 +127,28 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             procedures.add(p);
         }
         return procedures;
+    }
+
+    public void setProcedureTable(List<Procedure> procedures) {
+        List<List<Object>> valueList = new ArrayList<>();
+        if (procedures != null) {
+            for (Procedure p : procedures) {
+                ArrayList<Object> values = new ArrayList<>();
+                values.add(p.getName());
+                values.add(p.getCategory());
+                values.add(p.getTimeType());
+                values.add(p.getTime());
+                values.add(p.getCost());
+                values.add(p.getDirection());
+                valueList.add(values);
+            }
+        }
+        model = new DragNDropTableModel(new String[]{"Name", "Category", "Time Type", "Time Cost", "Money Cost", "Direction"},
+                valueList, new Class[]{String.class, String.class, TimeType.class, Value.class, Value.class, ProcedureResponsibilityDirection.class});
+        table.setModel(model);
+        model.fireTableDataChanged();
+        this.revalidate();
+        this.repaint();
     }
 
     private void addProcedure() {
