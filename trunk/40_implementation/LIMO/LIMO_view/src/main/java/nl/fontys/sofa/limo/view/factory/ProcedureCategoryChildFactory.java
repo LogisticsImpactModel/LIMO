@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.view.factory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
@@ -28,7 +29,7 @@ import org.openide.util.LookupListener;
 public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategory>
 		implements LookupListener, NodeListener{
 
-	private final Result<ProcedureCategory> lookupResult;
+	private Result<ProcedureCategory> lookupResult;
 	private ProcedureCategoryService service; 
 
 	public ProcedureCategoryChildFactory() {
@@ -39,7 +40,7 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
 	
 	@Override
 	protected boolean createKeys(List<ProcedureCategory> list) {
-		Collection<? extends ProcedureCategory> tcl = service.findAll();
+		Collection<? extends ProcedureCategory> tcl = lookupResult.allInstances();
 		list.addAll(tcl);
 		return true;
 	}
@@ -58,7 +59,7 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
 
 	@Override
 	public void resultChanged(LookupEvent le) {
-	    refresh(true);
+	    refresh(false);
 	}
 
 	@Override

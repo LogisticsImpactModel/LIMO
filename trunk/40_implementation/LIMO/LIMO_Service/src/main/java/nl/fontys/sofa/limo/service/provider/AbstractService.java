@@ -49,7 +49,7 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
     @Override
     public T insert(T entity) {
         T result = (T) dao.insert(entity);
-        instanceContent.add(result);
+        instanceContent.add(entity);
         return result;
     }
 
