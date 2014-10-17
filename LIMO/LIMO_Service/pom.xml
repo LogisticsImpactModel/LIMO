@@ -14,6 +14,14 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <extensions>true</extensions>
+                <configuration>
+                    <publicPackages>
+                        <publicPackage>nl.fontys.limo.service.distribution</publicPackage>
+                        <publicPackage>nl.fontys.limo.service.provider</publicPackage>
+                        <publicPackage>nl.fontys.sofa.limo.service.distribution</publicPackage>
+                        <publicPackage>nl.fontys.sofa.limo.service.provider</publicPackage>
+                    </publicPackages>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
