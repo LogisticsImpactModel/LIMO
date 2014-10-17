@@ -6,7 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -23,14 +25,16 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
 
     private List<Event> eventList;
     private EventDAO eventDAO;
+    private final ResourceBundle bundle;
 
     public NewOrDuplicatedEventPanel() {
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
         initComponents();
     }
 
     @Override
     public String getName() {
-        return java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT");
+        return bundle.getString("EVENT");
     }
 
     private void initComponents() {
@@ -45,7 +49,7 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         buttonGroup1.add(eventFromScratchSelection);
-        eventFromScratchSelection.setText(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("FROM_SCRATCH"));
+        eventFromScratchSelection.setText(bundle.getString("FROM_SCRATCH"));
         add(eventFromScratchSelection, c);
         eventFromScratchSelection.setSelected(true);
 
@@ -59,7 +63,7 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
         });
 
         buttonGroup1.add(eventCopySelection);
-        eventCopySelection.setText(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("COPY_EXISTING"));
+        eventCopySelection.setText(bundle.getString("COPY_EXISTING"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
@@ -83,7 +87,7 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
                 for (Event event : eventList) {
                     events.add(event.getName());
                 }
-                eventsCb.setModel(new javax.swing.DefaultComboBoxModel(events.toArray(new String[events.size()])));
+                eventsCb.setModel(new DefaultComboBoxModel(events.toArray(new String[events.size()])));
             }
         }).start();
 

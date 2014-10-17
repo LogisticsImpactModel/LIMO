@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -38,14 +39,16 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
     private Event event;
     private DistributionFactory dtf;
+    private final ResourceBundle bundle;
 
     public NameDescriptionProbabilityPanel() {
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
         initComponents();
     }
 
     @Override
     public String getName() {
-        return java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("NAME_AND_PROBABILITY");
+        return bundle.getString("NAME_AND_PROBABILITY");
     }
 
     private void initComponents() {
@@ -55,16 +58,16 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         String[] cbModel = new String[distTypes.size()];
         distTypes.toArray(cbModel);
 
-        lblName = new javax.swing.JLabel(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("NAME"));
+        lblName = new javax.swing.JLabel(bundle.getString("NAME"));
         tfName = new javax.swing.JTextField();
-        lblDescription = new javax.swing.JLabel("Description");
+        lblDescription = new javax.swing.JLabel(bundle.getString("DESCRIPTION"));
         tfDescription = new javax.swing.JTextArea();
         tfDescription.setRows(4);
         tfDescription.setBorder(tfName.getBorder());
         tfDescription.setSize(tfDescription.getHeight(), tfName.getWidth());
-        lblDistributionType = new javax.swing.JLabel(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("DISTRIBUTION_TYPE"));
+        lblDistributionType = new javax.swing.JLabel(bundle.getString("DISTRIBUTION_TYPE"));
         cbDistributionType = new javax.swing.JComboBox<>(cbModel);
-        lblParameters = new javax.swing.JLabel(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("PARAMETERS"));
+        lblParameters = new javax.swing.JLabel(bundle.getString("PARAMETERS"));
         tParameters = new javax.swing.JTable();
         tParameters.setModel(new DistributionParameterTableModel());
         tParameters.setShowGrid(true);
@@ -211,7 +214,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
         @Override
         public String getColumnName(int column) {
-            return column == 0 ? java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("NAME") : java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("VALUE");
+            return column == 0 ? bundle.getString("NAME") : bundle.getString("VALUE");
         }
 
         @Override
@@ -232,14 +235,14 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                         n = Double.parseDouble((String) aValue);
                     } catch (NumberFormatException nfe) {
                         n = null;
-                        javax.swing.JOptionPane.showMessageDialog(tParameters, java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("REQUIRES_FLOATING-POINT_VALUE"), java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("NOT_FLOATING-POINT"), JOptionPane.WARNING_MESSAGE);
+                        javax.swing.JOptionPane.showMessageDialog(tParameters, bundle.getString("REQUIRES_FLOATING-POINT_VALUE"), bundle.getString("NOT_FLOATING-POINT"), JOptionPane.WARNING_MESSAGE);
                     }
                 } else if (inputType.equals(Integer.class)) {
                     try {
                         n = Integer.parseInt((String) aValue);
                     } catch (NumberFormatException nfe) {
                         n = null;
-                        javax.swing.JOptionPane.showMessageDialog(tParameters, java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("REQUIRES_INTERGER_VALUE"), java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("NOT_INTERGER"), JOptionPane.WARNING_MESSAGE);
+                        javax.swing.JOptionPane.showMessageDialog(tParameters, bundle.getString("REQUIRES_INTERGER_VALUE"), bundle.getString("NOT_INTERGER"), JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
                     n = 0;

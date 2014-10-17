@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.domain.component.event.Event;
@@ -21,12 +22,15 @@ import org.openide.util.Lookup;
 @ActionReference(path = "Menu/Data/Event")
 public final class EventWizardAction implements ActionListener {
 
+    final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
+
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         panels.add(new NewOrDuplicatedEventWizard());
         panels.add(new NameDescriptionProbabilityWizard());
         panels.add(new SubEventsWizard());
+        panels.add(new ProceduresWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -44,13 +48,13 @@ public final class EventWizardAction implements ActionListener {
         final WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
-        wiz.setTitle(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("ADD_EVENT"));
+        wiz.setTitle(bundle.getString("ADD_EVENT"));
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     EventDAO eventDAO = Lookup.getDefault().lookup(EventDAO.class);
-                    eventDAO.insert((Event) wiz.getProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT")));
+                    eventDAO.insert((Event) wiz.getProperty(bundle.getString("EVENT")));
                 }
             }).start();
         }
