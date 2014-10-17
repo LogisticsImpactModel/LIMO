@@ -124,21 +124,14 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.netbeans.external</groupId>
-            <artifactId>ValidationAPI</artifactId>
-            <version>RELEASE80</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>nl.fontys.limo</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>LIMO_DependecyWrapper</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>nl.fontys.limo</groupId>
-            <artifactId>LIMO_Service</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LIMO_OrientDB</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <properties>
