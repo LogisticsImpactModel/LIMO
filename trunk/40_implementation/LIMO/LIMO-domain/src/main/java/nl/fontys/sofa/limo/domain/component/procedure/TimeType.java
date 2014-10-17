@@ -44,5 +44,10 @@ public enum TimeType {
     public double getMinutes(double input) {
         return input * minutes;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
     
 }
