@@ -33,7 +33,7 @@ public final class HubVisualPanel4 extends JPanel {
     }
 
     public void update(List<Procedure> procedures) {
-
+        cmp.setProcedureTable(procedures);
     }
 
     public List<Procedure> getProcedures() {
