@@ -249,6 +249,8 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             btn_addTime.addActionListener(this);
             //DIALOG OPTIONS
             this.setSize(250, 300);
+            this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            this.setAlwaysOnTop(true);
             this.setVisible(true);
         }
 
@@ -375,6 +377,8 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             //DIALOG OPTIONS
             this.setModal(true);
             this.setSize(200, 250);
+            this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            this.setAlwaysOnTop(true);
             this.setVisible(true);
         }
 
