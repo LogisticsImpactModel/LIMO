@@ -67,5 +67,10 @@ public class RangeValue implements Value {
 
         return min + (max - min) * rng.nextDouble();
     }
+
+    @Override
+    public String toString() {
+        return min + " <-> " + max;
+    }
     
 }

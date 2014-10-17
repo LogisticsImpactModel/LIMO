@@ -7,7 +7,22 @@ package nl.fontys.sofa.limo.domain.component.procedure;
  */
 public enum ProcedureResponsibilityDirection {
 
-    INPUT,
-    OUTPUT,
-    BOTH;
+    INPUT("Input"),
+    OUTPUT("Output"),
+    BOTH("Both");
+
+    private final String name;
+
+    private ProcedureResponsibilityDirection(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

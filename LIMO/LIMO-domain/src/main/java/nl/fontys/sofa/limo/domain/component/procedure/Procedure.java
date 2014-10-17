@@ -29,6 +29,7 @@ public class Procedure implements Serializable {
         this.category = category;
         this.cost = cost;
         this.time = time;
+        this.timeType = timeType;
         this.direction = direction;
     }
 
