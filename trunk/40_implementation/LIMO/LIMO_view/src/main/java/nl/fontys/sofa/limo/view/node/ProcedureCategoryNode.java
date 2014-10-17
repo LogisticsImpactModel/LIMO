@@ -8,7 +8,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
  *
  * @author Sebastiaan Heijmann
  */
-public class ProcedureCategoryNode extends AbstractServiceNode{
+public class ProcedureCategoryNode extends AbstractBeanNode{
 
 	public ProcedureCategoryNode(ProcedureCategory bean) 
 			throws IntrospectionException{

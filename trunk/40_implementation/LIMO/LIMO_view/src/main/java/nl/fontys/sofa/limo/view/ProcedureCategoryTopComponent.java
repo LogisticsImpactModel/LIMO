@@ -61,7 +61,7 @@ public final class ProcedureCategoryTopComponent extends TopComponent
 
 		Children procedureCategoryChildren = Children.create(new ProcedureCategoryChildFactory(), true);
 		Node rootNode = new ProcedureCategoryRootNode(procedureCategoryChildren);
-		rootNode.setDisplayName("Categories");
+		rootNode.setDisplayName("Procedure Categories");
 
 		em = new ExplorerManager();
 		em.setRootContext(rootNode);
