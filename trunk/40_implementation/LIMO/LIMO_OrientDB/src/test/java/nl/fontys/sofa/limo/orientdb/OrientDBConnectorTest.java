@@ -29,6 +29,16 @@ public class OrientDBConnectorTest {
     
     @BeforeClass
     public static void setUpClass() {
+        
+
+    }
+    
+    @AfterClass
+    public static void tearDownClass() {
+    }
+    
+    @Before
+    public void setUp() {
         //unset databaseUrl so that the connection string starts with pLocal
         try {
             Field databaseURLField = OrientDBConnector.class.getDeclaredField("databaseURL");
@@ -40,20 +50,12 @@ public class OrientDBConnectorTest {
         }
     }
     
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
     @After
     public void tearDown() {
     }
 
     /**
-     * Test of getInstance method, of class OrientDBConnector.
+     * Test of getInstance method, of class OrientDBConnector. Implicitly tested by testConnection()
      */
     @Test
     public void testGetInstance() {
@@ -71,11 +73,8 @@ public class OrientDBConnectorTest {
     @Test
     public void testConnection() {
         System.out.println("connection");
-        //OObjectDatabaseTx expResult = null;
-        //OObjectDatabaseTx result = OrientDBConnector.connection();
-        //assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        OrientDBConnector.connection(); //initialize connection
+        assertFalse("Connection should be closed but is open", OrientDBConnector.INSTANCE.connection.isClosed());
     }
 
     /**
@@ -83,26 +82,23 @@ public class OrientDBConnectorTest {
      */
     @Test
     public void testClose() {
-        //System.out.println("close");
-        //OrientDBConnector.close();
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        testConnection();
+        OrientDBConnector.close();//then close it by getting the instance and calling closeConnection, calling close() on actual connection
+        assertTrue("DBConn instance should be closed",OrientDBConnector.INSTANCE.connection.isClosed());//..so that it should be closed
+        
     }
 
     /**
-     * Test of checkConnection method, of class OrientDBConnector.
+     * Test of checkConnection method, of class OrientDBConnector. Checkconnection is called by getConnection, which is called by connection() on OrientDBConnector. No further testing required because of implicit testing by testClose()
      */
     @Test
     public void testCheckConnection() {
         System.out.println("checkConnection");
-        //OrientDBConnector instance = new OrientDBConnector();
-        //instance.checkConnection();
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        
     }
 
     /**
-     * Test of createSchema method, of class OrientDBConnector.
+     * Test of createSchema method, of class OrientDBConnector. Implicitly tested by checkConnection
      */
     @Test
     public void testCreateSchema() {
@@ -126,12 +122,11 @@ public class OrientDBConnectorTest {
     }
 
     /**
-     * Test of getConnection method, of class OrientDBConnector.
+     * Test of getConnection method, of class OrientDBConnector. Implicitly tested by connection()
      */
     @Test
     public void testGetConnection() {
         System.out.println("getConnection");
-        //fail("FINISH");
     }
 
     /**
