@@ -23,6 +23,7 @@ public class Event extends Component {
     private ExecutionState executionState;
 
     public Event() {
+        dependency = ExecutionState.INDEPENDENT;
     }
 
     public Component getParent() {

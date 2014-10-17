@@ -7,9 +7,13 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
@@ -19,14 +23,17 @@ import org.openide.util.Lookup;
 
 public final class NameDescriptionProbabilityPanel extends JPanel {
 
-    private javax.swing.JLabel lblName;
-    javax.swing.JTextField tfName;
+    private JLabel lblName;
+    JTextField tfName;
 
-    private javax.swing.JLabel lblDistributionType;
-    private javax.swing.JComboBox<String> cbDistributionType;
+    private javax.swing.JLabel lblDescription;
+    JTextArea tfDescription;
 
-    private javax.swing.JLabel lblParameters;
-    private javax.swing.JTable tParameters;
+    private JLabel lblDistributionType;
+    private JComboBox<String> cbDistributionType;
+
+    private JLabel lblParameters;
+    private JTable tParameters;
 
     private Event event;
     private DistributionFactory dtf;
@@ -49,6 +56,11 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
         lblName = new javax.swing.JLabel(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("NAME"));
         tfName = new javax.swing.JTextField();
+        lblDescription = new javax.swing.JLabel("Description");
+        tfDescription = new javax.swing.JTextArea();
+        tfDescription.setRows(4);
+        tfDescription.setBorder(tfName.getBorder());
+        tfDescription.setSize(tfDescription.getHeight(), tfName.getWidth());
         lblDistributionType = new javax.swing.JLabel(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("DISTRIBUTION_TYPE"));
         cbDistributionType = new javax.swing.JComboBox<>(cbModel);
         lblParameters = new javax.swing.JLabel(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("PARAMETERS"));
@@ -75,30 +87,41 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 1;
-        add(lblDistributionType, c);
+        add(lblDescription, c);
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 1;
         c.gridwidth = 3;
+        add(tfDescription, c);
+
+        c.weightx = 0.3;
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        add(lblDistributionType, c);
+        c.weightx = 0.7;
+        c.gridx = 1;
+        c.gridy = 2;
+        c.gridwidth = 3;
         add(cbDistributionType, c);
 
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
         c.gridwidth = 4;
         add(new javax.swing.JLabel("   "), c);
 
         c.weightx = 1.0;
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 4;
         c.gridwidth = 4;
         add(lblParameters, c);
 
         c.weightx = 1.0;
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 5;
         c.gridwidth = 4;
         c.gridheight = 3;
-        add(new JScrollPane(tParameters), c);
+        add(tParameters, c);
 
         event = new Event();
 
@@ -115,17 +138,17 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                event.setUniqueIdentifier(tfName.getText());
+                updateEventFromInput();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                event.setUniqueIdentifier(tfName.getText());
+                updateEventFromInput();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                event.setUniqueIdentifier(tfName.getText());
+                updateEventFromInput();
             }
         });
 
@@ -134,7 +157,8 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
     public void update(Event event) {
         if (event != null) {
-            tfName.setText(event.getUniqueIdentifier());
+            tfName.setText(event.getName());
+            tfDescription.setText(event.getDescription());
             if (event.getProbability() != null) {
                 cbDistributionType.setSelectedItem(dtf.getNameForDistributionType(event.getProbability().getClass()));
             } else {
@@ -145,8 +169,13 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     }
 
     public Event getEvent() {
-        event.setUniqueIdentifier(tfName.getText());
+        updateEventFromInput();
         return event;
+    }
+
+    private void updateEventFromInput() {
+        event.setName(tfName.getText());
+        event.setDescription(tfDescription.getText());
     }
 
     private class DistributionParameterTableModel extends AbstractTableModel {

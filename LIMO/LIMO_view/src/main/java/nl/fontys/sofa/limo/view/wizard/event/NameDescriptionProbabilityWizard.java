@@ -62,7 +62,7 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("event", getComponent().getEvent());
+        wiz.putProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT"), getComponent().getEvent());
     }
 
     @Override

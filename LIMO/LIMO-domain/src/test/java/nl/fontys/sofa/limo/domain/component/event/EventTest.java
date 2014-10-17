@@ -74,7 +74,7 @@ public class EventTest {
      */
     @Test
     public void testGetDependency() {
-        assertNull(event.getDependency());
+        assertEquals(ExecutionState.INDEPENDENT, event.getDependency());
     }
 
     /**

@@ -41,13 +41,18 @@ public final class EventWizardAction implements ActionListener {
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
-        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
+        final WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("ADD_EVENT"));
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            EventDAO eventDAO = Lookup.getDefault().lookup(EventDAO.class);
-            eventDAO.insert((Event) wiz.getProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT")));
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    EventDAO eventDAO = Lookup.getDefault().lookup(EventDAO.class);
+                    eventDAO.insert((Event) wiz.getProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT")));
+                }
+            }).start();
         }
     }
 

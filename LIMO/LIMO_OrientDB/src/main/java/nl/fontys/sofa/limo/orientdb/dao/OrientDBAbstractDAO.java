@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.orientdb.dao;
 
 import com.orientechnologies.orient.core.exception.ODatabaseException;
 import com.orientechnologies.orient.core.id.ORecordId;
+import com.orientechnologies.orient.core.query.OQueryAbstract;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
     @Override
     public List<T> findAll() {
         ArrayList<T> results = new ArrayList<>();
-        for (Object entity : OrientDBConnector.connection().browseClass(entityClass)) {
+        for (Object entity : OrientDBConnector.connection().browseClass(entityClass).setFetchPlan("*:-1")) {
             results.add((T) entity);
         }
         return results;
@@ -34,7 +35,7 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
             return null;
         }
 
-        OSQLSynchQuery<T> query = new OSQLSynchQuery<>("select * from " + id);
+        OQueryAbstract query = new OSQLSynchQuery<>("select * from " + id).setFetchPlan("*:-1");
         List<T> results;
         
         try {

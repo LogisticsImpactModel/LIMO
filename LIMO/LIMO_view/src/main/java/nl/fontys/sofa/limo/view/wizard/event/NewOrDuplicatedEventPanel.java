@@ -80,7 +80,7 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
                 eventList = eventDAO.findAll();
                 List<String> events = new ArrayList<>();
                 for (Event event : eventList) {
-                    events.add(event.getUniqueIdentifier());
+                    events.add(event.getName());
                 }
                 eventsCb.setModel(new javax.swing.DefaultComboBoxModel(events.toArray()));
             }
@@ -95,9 +95,11 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
 
     public Event getEvent() {
         Event event = null;
-        try {
-            event = eventList.get(eventsCb.getSelectedIndex());
-        } catch (IndexOutOfBoundsException ex) {
+        if (eventCopySelection.isSelected()) {
+            try {
+                event = eventList.get(eventsCb.getSelectedIndex());
+            } catch (IndexOutOfBoundsException ex) {
+            }
         }
         return event;
     }
