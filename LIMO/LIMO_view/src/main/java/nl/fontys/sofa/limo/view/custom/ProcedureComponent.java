@@ -250,6 +250,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             //DIALOG OPTIONS
             this.setSize(250, 300);
             this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            this.setModal(true);
             this.setAlwaysOnTop(true);
             this.setVisible(true);
         }
@@ -262,17 +263,21 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(btn_addCost)) {
                 new EditValueDialog(costValue);
-                costValue = changedValue;
-                tf_cost.setText(costValue.toString());
-                this.revalidate();
-                this.repaint();
+                if (costValue != null) {
+                    costValue = changedValue;
+                    tf_cost.setText(costValue.toString());
+                    this.revalidate();
+                    this.repaint();
+                }
             }
             if (e.getSource().equals(btn_addTime)) {
                 new EditValueDialog(timeValue);
                 timeValue = changedValue;
-                tf_time.setText(timeValue.toString());
-                this.revalidate();
-                this.repaint();
+                if (timeValue != null) {
+                    tf_time.setText(timeValue.toString());
+                    this.revalidate();
+                    this.repaint();
+                }
             }
             if (e.getSource().equals(btn_addCancel)) {
                 this.dispose();
