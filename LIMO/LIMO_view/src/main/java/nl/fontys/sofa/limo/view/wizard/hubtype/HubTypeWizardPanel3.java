@@ -6,6 +6,7 @@
 package nl.fontys.sofa.limo.view.wizard.hubtype;
 
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -58,11 +59,17 @@ public class HubTypeWizardPanel3 implements WizardDescriptor.Panel<WizardDescrip
     @Override
     public void readSettings(WizardDescriptor wiz) {
         // use wiz.getProperty to retrieve previous panel state
+        HubType ht = (HubType) wiz.getProperty("hubTypeCopy");
+        if (ht != null) {
+            getComponent().update(ht.getProcedures());
+        }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        // use wiz.putProperty to remember current panel state
+        HubType ht = (HubType) wiz.getProperty("hubType");
+        ht.setProcedures(getComponent().getProcedures());
+        wiz.putProperty("hubType", ht);
     }
 
 }
