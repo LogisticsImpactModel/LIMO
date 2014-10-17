@@ -15,25 +15,26 @@ import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 
 /**
- * AbstractServiceNode class which defines basic Node actions and creates a lookup for
- * the underlying bean.
+ * AbstractBeanNode class which defines basic Node actions and creates a lookup for
+ the underlying bean.
  *
  * @author Sebastiaan Heijmann
  */
-public abstract class AbstractServiceNode extends BeanNode{
+public abstract class AbstractBeanNode extends BeanNode{
 	InstanceContent ic;
 
 	/**
-	 * Constructor requires a DAO implementation and an underlying datamodel.
-	 * @param service the service implementation
+	 * Abstract class which defines basic actions for all bean nodes and binds
+	 * the datamodel.
+	 * 
 	 * @param bean the underlying datamodel
 	 * @throws IntrospectionException 
 	 */
-	public AbstractServiceNode(BaseEntity bean) throws IntrospectionException{
+	public AbstractBeanNode(BaseEntity bean) throws IntrospectionException{
 		this(bean, new InstanceContent());
 	}
 
-	private AbstractServiceNode(BaseEntity bean, InstanceContent ic)
+	private AbstractBeanNode(BaseEntity bean, InstanceContent ic)
 			throws IntrospectionException{
 		super(bean, Children.LEAF, new AbstractLookup(ic));
 		this.ic = ic;

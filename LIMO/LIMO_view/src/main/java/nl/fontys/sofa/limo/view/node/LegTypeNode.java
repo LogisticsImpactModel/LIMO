@@ -8,7 +8,7 @@ import nl.fontys.sofa.limo.domain.component.type.LegType;
  *
  * @author Sebastiaan Heijmann
  */
-public class LegTypeNode extends AbstractServiceNode{
+public class LegTypeNode extends AbstractBeanNode{
 
 	public LegTypeNode(LegType bean) throws IntrospectionException{
 		super(bean);

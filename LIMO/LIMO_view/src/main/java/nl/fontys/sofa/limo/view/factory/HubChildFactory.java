@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.factory;
 
 import java.util.List;
@@ -11,6 +6,11 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import org.openide.nodes.ChildFactory;
 import org.openide.util.Lookup;
 
+/**
+ * Factory for creating the HubNode children.
+ *
+ * @author Sebastiaan Heijmann
+ */
 public class HubChildFactory extends ChildFactory<Hub> {
 
     @Override

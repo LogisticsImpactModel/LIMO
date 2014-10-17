@@ -8,7 +8,7 @@ import nl.fontys.sofa.limo.domain.component.type.HubType;
  *
  * @author Sebastiaan Heijmann
  */
-public class HubTypeNode extends AbstractServiceNode{
+public class HubTypeNode extends AbstractBeanNode{
 
 	public HubTypeNode(HubType bean) throws IntrospectionException{
 		super(bean);
