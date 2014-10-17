@@ -1,14 +1,18 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,12 +22,21 @@ import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.util.IconUtil;
+import org.openide.util.Lookup;
 
 public final class SubEventsPanel extends JPanel {
 
-    /**
-     * Creates new form HubVisualPanel5
-     */
+    private JLabel lblEvent;
+    JComboBox cbEvents;
+    JTable eventsTable;
+    JButton btnAdd;
+    JButton btnDelete;
+
+    private EventDAO eventDAO;
+    private List<Event> eventList;
+    private EventTableModel tableModel;
+    private Event event;
+
     public SubEventsPanel() {
         initComponents();
     }
@@ -34,57 +47,112 @@ public final class SubEventsPanel extends JPanel {
     }
 
     private void initComponents() {
+        lblEvent = new JLabel("Event");
+        cbEvents = new JComboBox();
+
         tableModel = new EventTableModel();
-        events = new JTable(tableModel);
-        TableColumn dependencyCol = events.getColumnModel().getColumn(1);
+        eventsTable = new JTable(tableModel);
+        TableColumn dependencyCol = eventsTable.getColumnModel().getColumn(1);
         dependencyCol.setCellEditor(new DefaultCellEditor(new JComboBox(ExecutionState.values())));
 
         btnAdd = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+        btnAdd.setEnabled(false);
         btnDelete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
+        btnDelete.setEnabled(false);
         JPanel panelLeft = new JPanel();
 
-        setLayout(new BorderLayout());
-        add(new JScrollPane(events), BorderLayout.CENTER);
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+
+        c.weightx = 0.2;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        add(lblEvent, c);
+
+        c.weightx = 0.7;
+        c.gridx = 1;
+        c.gridy = 0;
+        add(cbEvents, c);
+
+        c.weightx = 0.1;
+        c.gridx = 2;
+        c.gridy = 0;
+        add(btnAdd, c);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(new JScrollPane(eventsTable), BorderLayout.CENTER);
 
         panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
-        panelLeft.add(btnAdd);
         panelLeft.add(btnDelete);
-        add(panelLeft, BorderLayout.EAST);
+        panel.add(panelLeft, BorderLayout.EAST);
+
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 5;
+        add(panel, c);
 
         btnAdd.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
-                tableModel.getEvents().add(new Event());
+                Event selected = eventDAO.findById(eventList.get(cbEvents.getSelectedIndex()).getId());
+                selected.setId(null);
+                tableModel.getEvents().add(selected);
                 tableModel.fireTableDataChanged();
+                btnDelete.setEnabled(true);
             }
         });
 
         btnDelete.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (events.getSelectedRow() >= 0) {
-                    tableModel.getEvents().remove(events.getSelectedRow());
+                if (eventsTable.getSelectedRow() >= 0) {
+                    tableModel.getEvents().remove(eventsTable.getSelectedRow());
                     tableModel.fireTableDataChanged();
                 }
             }
         });
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                eventDAO = Lookup.getDefault().lookup(EventDAO.class);
+                eventList = eventDAO.findAll();
+                List<String> events = new ArrayList<>();
+                btnAdd.setEnabled(!eventList.isEmpty());
+                for (Event event : eventList) {
+                    events.add(event.getName());
+                }
+                cbEvents.setModel(new javax.swing.DefaultComboBoxModel(events.toArray()));
+            }
+        }).start();
     }
 
-    private EventDAO eventDAO;
-    private EventTableModel tableModel;
+    public void update(Event event) {
+        if (event != null) {
+            this.event = event;
+            tableModel.getEvents().addAll(event.getEvents());
+            tableModel.fireTableDataChanged();
+            btnDelete.setEnabled(tableModel.getRowCount() > 0);
+            this.event.setEvents(new ArrayList<Event>());
+        }
+    }
 
-    JTable events;
-    JButton btnAdd;
-    JButton btnDelete;
+    public Event getEvent() {
+        this.event.getEvents().clear();
+        this.event.getEvents().addAll(tableModel.getEvents());
+        return this.event;
+    }
 
     private static class EventTableModel extends AbstractTableModel {
 
         private ArrayList<Event> events;
 
         public EventTableModel() {
-            events = new ArrayList<>();
+            this.events = new ArrayList<>();
         }
 
         public EventTableModel(ArrayList<Event> events) {
@@ -92,7 +160,7 @@ public final class SubEventsPanel extends JPanel {
         }
 
         public ArrayList<Event> getEvents() {
-            return events;
+            return this.events;
         }
 
         public void setEvents(ArrayList<Event> events) {
@@ -102,7 +170,7 @@ public final class SubEventsPanel extends JPanel {
 
         @Override
         public int getRowCount() {
-            return events.size();
+            return this.events.size();
         }
 
         @Override
@@ -112,12 +180,12 @@ public final class SubEventsPanel extends JPanel {
 
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return true;
+            return columnIndex == 1;
         }
 
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            return columnIndex == 0 ? Event.class : String.class;
+            return String.class;
         }
 
         @Override
@@ -127,19 +195,19 @@ public final class SubEventsPanel extends JPanel {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            Event e = events.get(rowIndex);
+            Event e = this.events.get(rowIndex);
             if (e == null || e.getDependency() == null) {
                 return null;
             }
 
-            return columnIndex == 0 ? e : e.getDependency().name();
+            return columnIndex == 0 ? e.getName() : e.getDependency().name();
         }
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             switch (columnIndex) {
                 case 1:
-                    events.get(rowIndex).setDependency((ExecutionState) aValue);
+                    this.events.get(rowIndex).setDependency((ExecutionState) aValue);
             }
         }
 

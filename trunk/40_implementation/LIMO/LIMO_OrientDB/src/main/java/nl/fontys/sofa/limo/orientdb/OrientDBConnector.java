@@ -88,7 +88,6 @@ public class OrientDBConnector {
         // Create new conneciton if needed and set flags
         if (this.connection == null) {
             this.connection = new OObjectDatabaseTx(this.getDatabaseURL());
-            this.connection.setLazyLoading(false);
         }
 
         // Create database if it does not exist
@@ -102,6 +101,8 @@ public class OrientDBConnector {
             this.connection.open("admin", "admin");
             this.createSchema();
         }
+        
+        this.connection.setLazyLoading(false);
     }
 
     /**

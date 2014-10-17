@@ -1,14 +1,15 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
 public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     /**
-     * The visual component that displays this panel. If you need to access the component from this
-     * class, just use getComponent().
+     * The visual component that displays this panel. If you need to access the
+     * component from this class, just use getComponent().
      */
     private SubEventsPanel component;
 
@@ -52,12 +53,15 @@ public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        // use wiz.getProperty to retrieve previous panel state
+        Object event = wiz.getProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT"));
+        if (event != null) {
+            getComponent().update((Event) event);
+        }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        // use wiz.putProperty to remember current panel state
+        wiz.putProperty(java.util.ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT"), getComponent().getEvent());
     }
 
 }

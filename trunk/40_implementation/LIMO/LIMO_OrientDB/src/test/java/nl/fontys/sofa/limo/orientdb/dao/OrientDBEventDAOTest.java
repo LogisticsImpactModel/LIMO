@@ -84,7 +84,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
         Event event = createEvent();
         event = dao.insert(event);
         List<Event> events = dao.findAll();
-        assertEquals(3, events.size());
+        assertEquals(2, events.size());
         Event foundEvent = null;
         for (Event e : events) {
             if (e.getId().equals(event.getId())) {
