@@ -43,7 +43,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     CellConstraints cc;
 
     public ProcedureComponent() {
-        new ProcedureComponent(null);
+        this(null);
     }
 
     public ProcedureComponent(List<Procedure> procedures) {
