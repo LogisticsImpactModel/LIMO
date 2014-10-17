@@ -4,7 +4,7 @@ import java.beans.IntrospectionException;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 
 /**
- * View representation of the HubType class. 
+ * View representation of HubType. 
  *
  * @author Sebastiaan Heijmann
  */
