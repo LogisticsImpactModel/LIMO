@@ -33,6 +33,7 @@ public final class HubTypeVisualPanel3 extends JPanel {
     private void initComponents() {
         setLayout(new BorderLayout());
         cmp = new ProcedureComponent();
+        add(cmp, BorderLayout.CENTER);
     }
     
     public void update(List<Procedure> list){
