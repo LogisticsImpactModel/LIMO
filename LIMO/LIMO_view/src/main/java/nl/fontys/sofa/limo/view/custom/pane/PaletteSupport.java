@@ -23,6 +23,7 @@ import org.openide.util.Lookup;
 import org.openide.util.datatransfer.ExTransferable;
 
 /**
+ * Creates a palette to display items form where to build a chain from.
  *
  * @author Sebastiaan Heijmann
  */
