@@ -1,11 +1,10 @@
-package nl.fontys.sofa.limo.view;
+package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
 import javax.swing.ActionMap;
-import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
-import nl.fontys.sofa.limo.view.factory.ProcedureCategoryChildFactory;
-import nl.fontys.sofa.limo.view.node.ProcedureCategoryRootNode;
+import nl.fontys.sofa.limo.view.factory.HubTypeChildFactory;
+import nl.fontys.sofa.limo.view.node.HubTypeRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -21,51 +20,51 @@ import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
 /**
- * Top component which displays the procedure categories.
+ * Top component which displays the hub types.
  * 
  * @author Sebastiaan Heijmann
  */
 @ConvertAsProperties(
-		dtd = "-//nl.fontys.sofa.limo.view//ProcedureCategory//EN",
+		dtd = "-//nl.fontys.sofa.limo.view.topcomponent//HubType//EN",
 		autostore = false
 )
 @TopComponent.Description(
-		preferredID = "ProcedureCategoryTopComponent",
+		preferredID = "HubTypeTopComponent",
 		//iconBase="SET/PATH/TO/ICON/HERE", 
 		persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
-@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.ProcedureCategoryTopComponent")
-@ActionReference(path = "Menu/Data/ProcedureCategory" , position = 10 )
+@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.HubTypeTopComponent")
+@ActionReference(path = "Menu/Data/HubType" , position = 10)
 @TopComponent.OpenActionRegistration(
-		displayName = "#CTL_ProcedureCategoryAction",
-		preferredID = "ProcedureCategoryTopComponent"
+		displayName = "#CTL_HubTypeAction",
+		preferredID = "HubTypeTopComponent"
 )
 @Messages({
-	"CTL_ProcedureCategoryAction=Procedure Categories",
-	"CTL_ProcedureCategoryTopComponent=ProcedureCategory Window",
-	"HINT_ProcedureCategoryTopComponent=This is a ProcedureCategory window"
+	"CTL_HubTypeAction=HubTypes",
+	"CTL_HubTypeTopComponent=HubType window",
+	"HINT_HubTypeTopComponent=Manage Hub Types"
 })
-public final class ProcedureCategoryTopComponent extends TopComponent
-		implements ExplorerManager.Provider {
-	private ExplorerManager em = new ExplorerManager();
+public final class HubTypeTopComponent extends TopComponent
+		implements ExplorerManager.Provider{
+	private final ExplorerManager em = new ExplorerManager();
 
-	public ProcedureCategoryTopComponent() {
+	public HubTypeTopComponent() {
 		initComponents();
-		setName(Bundle.CTL_ProcedureCategoryTopComponent());
-		setToolTipText(Bundle.HINT_ProcedureCategoryTopComponent());
-
+		setName(Bundle.CTL_HubTypeTopComponent());
+		setToolTipText(Bundle.HINT_HubTypeTopComponent());
 		setLayout(new BorderLayout());
-		OutlineView ov = new OutlineView("Procedure Categories");
+
+		OutlineView ov = new OutlineView("Hubtypes");
 		ov.setPropertyColumns("description", "Description");
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
 
 		try {
 			Node rootNode;
-			Children children = Children.create(new ProcedureCategoryChildFactory(), true);
-			rootNode = new ProcedureCategoryRootNode(children);
-			rootNode.setDisplayName("Procedure Categories");
+			Children children = Children.create(new HubTypeChildFactory(), true);
+			rootNode = new HubTypeRootNode(children);
+			rootNode.setDisplayName("Hubtypes");
 			em.setRootContext(rootNode);
 		} catch (ServiceNotFoundException ex) {
 			Exceptions.printStackTrace(ex);
@@ -80,12 +79,12 @@ public final class ProcedureCategoryTopComponent extends TopComponent
 		map.put("delete", ExplorerUtils.actionDelete(em, true));
 		associateLookup(ExplorerUtils.createLookup(em, map));
 	}
-	
+
 	@Override
 	public ExplorerManager getExplorerManager() {
 		return em;
 	}
-
+	
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
@@ -129,4 +128,5 @@ public final class ProcedureCategoryTopComponent extends TopComponent
 		String version = p.getProperty("version");
 		// TODO read your settings according to their version
 	}
+
 }

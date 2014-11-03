@@ -1,8 +1,7 @@
-package nl.fontys.sofa.limo.view;
+package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
 import javax.swing.ActionMap;
-import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.factory.LegTypeChildFactory;
 import nl.fontys.sofa.limo.view.node.LegTypeRootNode;
@@ -26,7 +25,7 @@ import org.openide.util.NbBundle.Messages;
  * @author Sebastiaan Heijmann
  */
 @ConvertAsProperties(
-		dtd = "-//nl.fontys.sofa.limo.view//LegType//EN",
+		dtd = "-//nl.fontys.sofa.limo.view.topcomponent//LegType//EN",
 		autostore = false
 )
 @TopComponent.Description(
@@ -35,7 +34,7 @@ import org.openide.util.NbBundle.Messages;
 		persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
-@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.LegTypeTopComponent")
+@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.LegTypeTopComponent")
 @ActionReference(path = "Menu/Data/LegType" , position = 10 )
 @TopComponent.OpenActionRegistration(
 		displayName = "#CTL_LegTypeAction",
@@ -43,7 +42,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @Messages({
 	"CTL_LegTypeAction=LegTypes",
-	"CTL_LegTypeTopComponent=LegType",
+	"CTL_LegTypeTopComponent=LegType window",
 	"HINT_LegTypeTopComponent=Manage Leg Types"
 })
 public final class LegTypeTopComponent extends TopComponent 

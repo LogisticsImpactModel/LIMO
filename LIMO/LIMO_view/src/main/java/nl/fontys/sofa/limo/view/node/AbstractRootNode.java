@@ -9,13 +9,15 @@ import org.openide.nodes.Children;
 import org.openide.util.Lookup;
 
 /**
- * Abstract class which defines basic implementations for root nodes.
+ * Abstract class which defines basic implementations for root nodes. Override
+ * getActions and getNewTypes methods to define actions associated with this Node.
  *
  * @author Sebastiaan Heijmann
  */
 public abstract class AbstractRootNode extends AbstractNode{
 	protected DAO service;
 
+	
 	public AbstractRootNode(Children children) throws ServiceNotFoundException {
 		super(children);
 		service = (DAO) Lookup.getDefault().lookup(getServiceClass());

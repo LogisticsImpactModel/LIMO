@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view;
+package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -18,7 +18,7 @@ import org.openide.util.NbBundle.Messages;
  * @author Sebastiaan Heijmann
  */
 @ConvertAsProperties(
-        dtd = "-//nl.fontys.sofa.limo.view//Startpage//EN",
+        dtd = "-//nl.fontys.sofa.limo.view.topcomponent//Startpage//EN",
         autostore = false
 )
 @TopComponent.Description(
@@ -27,7 +27,7 @@ import org.openide.util.NbBundle.Messages;
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = true)
-@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.StartpageTopComponent")
+@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.StartpageTopComponent")
 @ActionReference(path = "Menu/Window" , position = 10 )
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_StartpageAction",

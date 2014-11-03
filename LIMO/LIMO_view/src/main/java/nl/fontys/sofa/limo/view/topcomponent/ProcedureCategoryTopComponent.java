@@ -1,10 +1,10 @@
-package nl.fontys.sofa.limo.view;
+package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
 import javax.swing.ActionMap;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
-import nl.fontys.sofa.limo.view.factory.EventChildFactory;
-import nl.fontys.sofa.limo.view.node.EventRootNode;
+import nl.fontys.sofa.limo.view.factory.ProcedureCategoryChildFactory;
+import nl.fontys.sofa.limo.view.node.ProcedureCategoryRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -20,52 +20,51 @@ import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
 /**
- * Top component which displays the events.
+ * Top component which displays the procedure categories.
  * 
  * @author Sebastiaan Heijmann
  */
 @ConvertAsProperties(
-		dtd = "-//nl.fontys.sofa.limo.view//Event//EN",
+		dtd = "-//nl.fontys.sofa.limo.view.topcomponent//ProcedureCategory//EN",
 		autostore = false
 )
 @TopComponent.Description(
-		preferredID = "EventTopComponent",
+		preferredID = "ProcedureCategoryTopComponent",
 		//iconBase="SET/PATH/TO/ICON/HERE", 
 		persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
-@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.EventTopComponent")
-@ActionReference(path = "Menu/Data/Event" , position = 10 )
+@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ProcedureCategoryTopComponent")
+@ActionReference(path = "Menu/Data/ProcedureCategory" , position = 10 )
 @TopComponent.OpenActionRegistration(
-		displayName = "#CTL_EventAction",
-		preferredID = "EventTopComponent"
+		displayName = "#CTL_ProcedureCategoryAction",
+		preferredID = "ProcedureCategoryTopComponent"
 )
 @Messages({
-	"CTL_EventAction=Events",
-	"CTL_EventTopComponent=Events",
-	"HINT_EventTopComponent=Manage Events"
+	"CTL_ProcedureCategoryAction=Procedure Categories",
+	"CTL_ProcedureCategoryTopComponent=ProcedureCategory Window",
+	"HINT_ProcedureCategoryTopComponent=Manage Procedure Categories"
 })
-public final class EventTopComponent extends TopComponent implements 
-		ExplorerManager.Provider{
+public final class ProcedureCategoryTopComponent extends TopComponent
+		implements ExplorerManager.Provider {
 	private ExplorerManager em = new ExplorerManager();
 
-	public EventTopComponent() {
+	public ProcedureCategoryTopComponent() {
 		initComponents();
-		setName(Bundle.CTL_EventTopComponent());
-		setToolTipText(Bundle.HINT_EventTopComponent());
+		setName(Bundle.CTL_ProcedureCategoryTopComponent());
+		setToolTipText(Bundle.HINT_ProcedureCategoryTopComponent());
 
 		setLayout(new BorderLayout());
-		OutlineView ov = new OutlineView("Events");
+		OutlineView ov = new OutlineView("Procedure Categories");
 		ov.setPropertyColumns("description", "Description");
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
 
 		try {
 			Node rootNode;
-			Children children =
-					Children.create(new EventChildFactory(), true);
-			rootNode = new EventRootNode(children);
-			rootNode.setDisplayName("Events");
+			Children children = Children.create(new ProcedureCategoryChildFactory(), true);
+			rootNode = new ProcedureCategoryRootNode(children);
+			rootNode.setDisplayName("Procedure Categories");
 			em.setRootContext(rootNode);
 		} catch (ServiceNotFoundException ex) {
 			Exceptions.printStackTrace(ex);
@@ -80,7 +79,7 @@ public final class EventTopComponent extends TopComponent implements
 		map.put("delete", ExplorerUtils.actionDelete(em, true));
 		associateLookup(ExplorerUtils.createLookup(em, map));
 	}
-
+	
 	@Override
 	public ExplorerManager getExplorerManager() {
 		return em;
