@@ -25,7 +25,7 @@ import org.openide.util.Lookup;
 // your code. You can move the code below wherever you need, or register an action:
  @ActionID(category="HubType", id="nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
  @ActionRegistration(displayName="Add HubType")
- @ActionReference(path="Menu/Data/HubType"/*, position=30*/)
+ @ActionReference(path="Menu/Data/HubType", position=20)
 public final class HubTypeWizardAction implements ActionListener {
 
     @Override

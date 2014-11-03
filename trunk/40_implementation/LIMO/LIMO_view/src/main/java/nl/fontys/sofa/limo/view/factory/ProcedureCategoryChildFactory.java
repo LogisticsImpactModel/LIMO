@@ -20,6 +20,7 @@ import org.openide.util.Lookup;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
+import org.openide.util.Utilities;
 
 /**
  * Factory for creating the CostCategoryNode children.
@@ -27,7 +28,7 @@ import org.openide.util.LookupListener;
  * @author Sebastiaan Heijmann
  */
 public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategory>
-		implements LookupListener, NodeListener{
+		implements LookupListener/*, NodeListener*/{
 
 	private Result<ProcedureCategory> lookupResult;
 	private ProcedureCategoryService service; 
@@ -50,7 +51,7 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
         BeanNode node = null;
         try {
 			node = new ProcedureCategoryNode(key);
-			node.addNodeListener(this);
+//			node.addNodeListener(this);
         } catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
 		}
@@ -62,30 +63,35 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
 	    refresh(false);
 	}
 
-	@Override
-	public void childrenAdded(NodeMemberEvent nme) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public void childrenRemoved(NodeMemberEvent nme) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public void childrenReordered(NodeReorderEvent nre) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public void nodeDestroyed(NodeEvent ne) {
-		Node node = ne.getNode();
-		ProcedureCategory pc = node.getLookup().lookup(ProcedureCategory.class);
-		service.delete(pc);
-		refresh(true);
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent pce) {
-	}
+//	@Override
+//	public void childrenAdded(NodeMemberEvent nme) {
+//		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//	}
+//
+//	@Override
+//	public void childrenRemoved(NodeMemberEvent nme) {
+//		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//	}
+//
+//	@Override
+//	public void childrenReordered(NodeReorderEvent nre) {
+//		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//	}
+//
+//	@Override
+//	public void nodeDestroyed(NodeEvent ne) {
+//		Node node = ne.getNode();
+//		Collection<? extends ProcedureCategoryNode> selectedNode = Utilities.actionsGlobalContext().lookupAll(ProcedureCategoryNode.class);
+//		for(Node n : selectedNode){
+//			if(n == node){
+//				ProcedureCategory pc = node.getLookup().lookup(ProcedureCategory.class);
+//				service.delete(pc);
+//			}
+//		}
+//		refresh(true);
+//	}
+//
+//	@Override
+//	public void propertyChange(PropertyChangeEvent pce) {
+//	}
 }

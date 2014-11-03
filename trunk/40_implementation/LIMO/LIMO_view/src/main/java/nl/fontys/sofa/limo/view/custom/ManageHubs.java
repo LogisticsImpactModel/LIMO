@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.sofa.limo.view;
+package nl.fontys.sofa.limo.view.custom;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +21,7 @@ import org.openide.util.NbBundle.Messages;
 @ActionRegistration(
         displayName = "#CTL_ManageHubs"
 )
-@ActionReference(path = "Menu/Data/Hub", position = 3333)
+//@ActionReference(path = "Menu/Data/Hub", position = 3333)
 @Messages("CTL_ManageHubs=Manage Hubs")
 public final class ManageHubs implements ActionListener {
 

@@ -19,7 +19,7 @@ import org.openide.util.Lookup;
 
 @ActionID(category = "Event", id = "nl.fontys.sofa.limo.view.wizard.event.EventWizardAction")
 @ActionRegistration(displayName = "Add Event")
-@ActionReference(path = "Menu/Data/Event")
+@ActionReference(path = "Menu/Data/Event", position=20)
 public final class EventWizardAction implements ActionListener {
 
     final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");

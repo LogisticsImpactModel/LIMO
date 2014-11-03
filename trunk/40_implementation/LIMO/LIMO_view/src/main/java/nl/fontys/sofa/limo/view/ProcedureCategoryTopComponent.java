@@ -1,15 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view;
 
 import java.awt.BorderLayout;
 import javax.swing.ActionMap;
+import javax.swing.JOptionPane;
+import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.factory.ProcedureCategoryChildFactory;
 import nl.fontys.sofa.limo.view.node.ProcedureCategoryRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
@@ -17,11 +16,14 @@ import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.OutlineView;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
+import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
 /**
- * Top component which displays something.
+ * Top component which displays the procedure categories.
+ * 
+ * @author Sebastiaan Heijmann
  */
 @ConvertAsProperties(
 		dtd = "-//nl.fontys.sofa.limo.view//ProcedureCategory//EN",
@@ -34,19 +36,19 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.ProcedureCategoryTopComponent")
-@ActionReference(path = "Menu/Data" , position = 30 )
+@ActionReference(path = "Menu/Data/ProcedureCategory" , position = 10 )
 @TopComponent.OpenActionRegistration(
 		displayName = "#CTL_ProcedureCategoryAction",
 		preferredID = "ProcedureCategoryTopComponent"
 )
 @Messages({
-	"CTL_ProcedureCategoryAction=ProcedureCategory",
+	"CTL_ProcedureCategoryAction=Procedure Categories",
 	"CTL_ProcedureCategoryTopComponent=ProcedureCategory Window",
 	"HINT_ProcedureCategoryTopComponent=This is a ProcedureCategory window"
 })
 public final class ProcedureCategoryTopComponent extends TopComponent
 		implements ExplorerManager.Provider {
-	private ExplorerManager em;
+	private ExplorerManager em = new ExplorerManager();
 
 	public ProcedureCategoryTopComponent() {
 		initComponents();
@@ -59,12 +61,20 @@ public final class ProcedureCategoryTopComponent extends TopComponent
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
 
-		Children procedureCategoryChildren = Children.create(new ProcedureCategoryChildFactory(), true);
-		Node rootNode = new ProcedureCategoryRootNode(procedureCategoryChildren);
-		rootNode.setDisplayName("Procedure Categories");
-
-		em = new ExplorerManager();
-		em.setRootContext(rootNode);
+		try {
+			Node rootNode;
+			Children children = Children.create(new ProcedureCategoryChildFactory(), true);
+			rootNode = new ProcedureCategoryRootNode(children);
+			rootNode.setDisplayName("Procedure Categories");
+			em.setRootContext(rootNode);
+		} catch (ServiceNotFoundException ex) {
+			Exceptions.printStackTrace(ex);
+			NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
+					+ "a problem, changes made will not be saved. Please contact "
+					+ "your administrator...",
+					NotifyDescriptor.ERROR_MESSAGE);
+ 			DialogDisplayer.getDefault().notify(d);
+		}
 
 		ActionMap map = getActionMap();
 		map.put("delete", ExplorerUtils.actionDelete(em, true));

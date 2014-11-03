@@ -5,18 +5,17 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import nl.fontys.sofa.limo.api.dao.HubDAO;
-import nl.fontys.sofa.limo.domain.SupplyChain;
 import nl.fontys.sofa.limo.view.custom.button.StartPageButton;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.util.Lookup;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
 /**
  * Top component which displays the startpage.
+ * 
+ * @author Sebastiaan Heijmann
  */
 @ConvertAsProperties(
         dtd = "-//nl.fontys.sofa.limo.view//Startpage//EN",
@@ -29,7 +28,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = true)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.StartpageTopComponent")
-@ActionReference(path = "Menu/Window" /*, position = 333 */)
+@ActionReference(path = "Menu/Window" , position = 10 )
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_StartpageAction",
         preferredID = "StartpageTopComponent"

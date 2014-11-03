@@ -11,7 +11,6 @@ import org.openide.actions.DeleteAction;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.Children;
 import org.openide.util.actions.SystemAction;
-import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 
@@ -56,6 +55,6 @@ public abstract class AbstractBeanNode extends BeanNode{
 
 	@Override
 	public void destroy() throws IOException {
-		fireNodeDestroyed();
+//		fireNodeDestroyed();
 	}
 }
