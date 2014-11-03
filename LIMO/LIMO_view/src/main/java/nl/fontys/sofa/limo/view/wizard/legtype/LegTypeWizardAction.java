@@ -25,7 +25,7 @@ import org.openide.util.Lookup;
 // your code. You can move the code below wherever you need, or register an action:
  @ActionID(category="LegType", id="nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
  @ActionRegistration(displayName="Add LegType")
- @ActionReference(path="Menu/Data/LegType"/*, position=30*/)
+ @ActionReference(path="Menu/Data/LegType", position=20)
 public final class LegTypeWizardAction implements ActionListener {
 
     @Override

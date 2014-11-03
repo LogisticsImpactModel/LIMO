@@ -1,15 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view;
 
 import java.awt.BorderLayout;
 import javax.swing.ActionMap;
+import javax.swing.JOptionPane;
+import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.factory.LegTypeChildFactory;
 import nl.fontys.sofa.limo.view.node.LegTypeRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
@@ -17,11 +16,14 @@ import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.OutlineView;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
+import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
 /**
  * Top component which displays the leg types.
+ * 
+ * @author Sebastiaan Heijmann
  */
 @ConvertAsProperties(
 		dtd = "-//nl.fontys.sofa.limo.view//LegType//EN",
@@ -34,13 +36,13 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.LegTypeTopComponent")
-@ActionReference(path = "Menu/Data" , position = 20 )
+@ActionReference(path = "Menu/Data/LegType" , position = 10 )
 @TopComponent.OpenActionRegistration(
 		displayName = "#CTL_LegTypeAction",
 		preferredID = "LegTypeTopComponent"
 )
 @Messages({
-	"CTL_LegTypeAction=LegType",
+	"CTL_LegTypeAction=LegTypes",
 	"CTL_LegTypeTopComponent=LegType",
 	"HINT_LegTypeTopComponent=Manage Leg Types"
 })
@@ -59,10 +61,20 @@ public final class LegTypeTopComponent extends TopComponent
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
 
-		Children legTypeChildren = Children.create(new LegTypeChildFactory(), true);
-		Node rootNode = new LegTypeRootNode(legTypeChildren);
-		rootNode.setDisplayName("Legtypes");
-		em.setRootContext(rootNode);
+		try {
+			Node rootNode;
+			Children children = Children.create(new LegTypeChildFactory(), true);
+			rootNode = new LegTypeRootNode(children);
+			rootNode.setDisplayName("Legtypes");
+			em.setRootContext(rootNode);
+		} catch (ServiceNotFoundException ex) {
+			Exceptions.printStackTrace(ex);
+			NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
+					+ "a problem, changes made will not be saved. Please contact "
+					+ "your administrator...",
+					NotifyDescriptor.ERROR_MESSAGE);
+ 			DialogDisplayer.getDefault().notify(d);
+		}
 
 		ActionMap map = getActionMap();
 		map.put("delete", ExplorerUtils.actionDelete(em, true));

@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.view.node;
 
+import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
+import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import org.openide.nodes.Children;
 
@@ -10,8 +12,13 @@ import org.openide.nodes.Children;
  */
 public class HubRootNode extends AbstractRootNode{
 
-	public HubRootNode(Children children) {
+	public HubRootNode(Children children) throws ServiceNotFoundException {
 		super(children);
+	}
+
+	@Override
+	Class getServiceClass() {
+		return HubService.class;
 	}
 
 	@Override

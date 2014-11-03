@@ -1,15 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view;
 
 import java.awt.BorderLayout;
 import javax.swing.ActionMap;
+import javax.swing.JOptionPane;
+import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.factory.HubTypeChildFactory;
 import nl.fontys.sofa.limo.view.node.HubTypeRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
@@ -17,12 +16,14 @@ import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.OutlineView;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
-import org.openide.util.Lookup;
+import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
 /**
  * Top component which displays the hub types.
+ * 
+ * @author Sebastiaan Heijmann
  */
 @ConvertAsProperties(
 		dtd = "-//nl.fontys.sofa.limo.view//HubType//EN",
@@ -35,13 +36,13 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.HubTypeTopComponent")
-@ActionReference(path = "Menu/Data" , position = 10)
+@ActionReference(path = "Menu/Data/HubType" , position = 10)
 @TopComponent.OpenActionRegistration(
 		displayName = "#CTL_HubTypeAction",
 		preferredID = "HubTypeTopComponent"
 )
 @Messages({
-	"CTL_HubTypeAction=HubType",
+	"CTL_HubTypeAction=HubTypes",
 	"CTL_HubTypeTopComponent=HubTypes",
 	"HINT_HubTypeTopComponent=Manage Hub Types"
 })
@@ -60,10 +61,20 @@ public final class HubTypeTopComponent extends TopComponent
 		ov.getOutline().setRootVisible(false);
 		add(ov, BorderLayout.CENTER);
 
-		Children hubTypechildren = Children.create(new HubTypeChildFactory(), true);
-		Node rootNode = new HubTypeRootNode(hubTypechildren);
-		rootNode.setDisplayName("Hubtypes");
-		em.setRootContext(rootNode);
+		try {
+			Node rootNode;
+			Children children = Children.create(new HubTypeChildFactory(), true);
+			rootNode = new HubTypeRootNode(children);
+			rootNode.setDisplayName("Hubtypes");
+			em.setRootContext(rootNode);
+		} catch (ServiceNotFoundException ex) {
+			Exceptions.printStackTrace(ex);
+			NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
+					+ "a problem, changes made will not be saved. Please contact "
+					+ "your administrator...",
+					NotifyDescriptor.ERROR_MESSAGE);
+ 			DialogDisplayer.getDefault().notify(d);
+		}
 
 		ActionMap map = getActionMap();
 		map.put("delete", ExplorerUtils.actionDelete(em, true));

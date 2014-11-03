@@ -1,18 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view;
 
+import java.awt.BorderLayout;
+import javax.swing.ActionMap;
+import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
+import nl.fontys.sofa.limo.view.factory.EventChildFactory;
+import nl.fontys.sofa.limo.view.node.EventRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.explorer.ExplorerManager;
+import org.openide.explorer.ExplorerUtils;
+import org.openide.explorer.view.OutlineView;
+import org.openide.nodes.Children;
+import org.openide.nodes.Node;
+import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
 /**
- * Top component which displays something.
+ * Top component which displays the events.
+ * 
+ * @author Sebastiaan Heijmann
  */
 @ConvertAsProperties(
 		dtd = "-//nl.fontys.sofa.limo.view//Event//EN",
@@ -25,23 +35,55 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.EventTopComponent")
-@ActionReference(path = "Menu/Window" /*, position = 333 */)
+@ActionReference(path = "Menu/Data/Event" , position = 10 )
 @TopComponent.OpenActionRegistration(
 		displayName = "#CTL_EventAction",
 		preferredID = "EventTopComponent"
 )
 @Messages({
-	"CTL_EventAction=Event",
-	"CTL_EventTopComponent=Event Window",
-	"HINT_EventTopComponent=This is a Event window"
+	"CTL_EventAction=Events",
+	"CTL_EventTopComponent=Events",
+	"HINT_EventTopComponent=Manage Events"
 })
-public final class EventTopComponent extends TopComponent {
+public final class EventTopComponent extends TopComponent implements 
+		ExplorerManager.Provider{
+	private ExplorerManager em = new ExplorerManager();
 
 	public EventTopComponent() {
 		initComponents();
 		setName(Bundle.CTL_EventTopComponent());
 		setToolTipText(Bundle.HINT_EventTopComponent());
 
+		setLayout(new BorderLayout());
+		OutlineView ov = new OutlineView("Events");
+		ov.setPropertyColumns("description", "Description");
+		ov.getOutline().setRootVisible(false);
+		add(ov, BorderLayout.CENTER);
+
+		try {
+			Node rootNode;
+			Children children =
+					Children.create(new EventChildFactory(), true);
+			rootNode = new EventRootNode(children);
+			rootNode.setDisplayName("Events");
+			em.setRootContext(rootNode);
+		} catch (ServiceNotFoundException ex) {
+			Exceptions.printStackTrace(ex);
+			NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
+					+ "a problem, changes made will not be saved. Please contact "
+					+ "your administrator...",
+					NotifyDescriptor.ERROR_MESSAGE);
+ 			DialogDisplayer.getDefault().notify(d);
+		}
+
+		ActionMap map = getActionMap();
+		map.put("delete", ExplorerUtils.actionDelete(em, true));
+		associateLookup(ExplorerUtils.createLookup(em, map));
+	}
+
+	@Override
+	public ExplorerManager getExplorerManager() {
+		return em;
 	}
 
 	/**
