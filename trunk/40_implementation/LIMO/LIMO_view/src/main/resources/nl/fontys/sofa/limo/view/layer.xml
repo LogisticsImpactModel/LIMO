@@ -9,5 +9,12 @@
     </folder>
     <folder name="Menu">
         <attr name="OpenIDE-Folder-SortMode" stringvalue="O"/>
+        <file name="Edit_hidden"/>
+        <folder name="File">
+            <file name="Separator2.instance_hidden"/>
+        </folder>
+        <file name="GoTo_hidden"/>
+        <file name="Source_hidden"/>
+        <file name="Tools_hidden"/>
     </folder>
 </filesystem>
