@@ -18,7 +18,7 @@ public abstract class Distribution implements Serializable {
 
     @Embedded
     protected Map<String, InputValue> inputValues;
-    protected String description;
+    protected transient String description;
 
     /**
      * FOR CACHING ONLY!

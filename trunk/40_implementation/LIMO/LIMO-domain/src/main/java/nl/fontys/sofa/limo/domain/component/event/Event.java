@@ -15,7 +15,7 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
  */
 public class Event extends Component {
 
-    private Component parent;
+    private transient Component parent;
     private ExecutionState dependency;
     @Embedded
     private Distribution probability;
