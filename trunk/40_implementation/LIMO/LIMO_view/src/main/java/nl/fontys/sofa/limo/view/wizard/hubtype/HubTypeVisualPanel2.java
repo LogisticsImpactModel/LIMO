@@ -84,7 +84,7 @@ public final class HubTypeVisualPanel2 extends JPanel {
                     File icon = fc.getSelectedFile();
                     Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage());
                     hubType.setIcon(newIcon);
-                    lblPreview.setIcon((javax.swing.Icon) newIcon);
+                    lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
                 }
             }
         });
