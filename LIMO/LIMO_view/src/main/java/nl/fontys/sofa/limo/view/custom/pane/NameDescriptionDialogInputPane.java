@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.custom.pane;
 
 import org.netbeans.validation.api.Problem;
 import org.netbeans.validation.api.builtin.stringvalidation.StringValidators;
-import org.netbeans.validation.api.ui.ValidationGroup;
 import org.netbeans.validation.api.ui.ValidationUI;
 import org.netbeans.validation.api.ui.swing.SwingValidationGroup;
 
