@@ -6,7 +6,6 @@ import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
-import nl.fontys.sofa.limo.view.util.ValidationUtil;
 import org.netbeans.validation.api.ui.swing.ValidationPanel;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
@@ -54,9 +53,8 @@ public class ProcedureCategoryRootNode extends AbstractRootNode{
 			@Override
 			public void create() throws IOException {
 				NameDescriptionDialogInputPane inputPane = new NameDescriptionDialogInputPane();
-				ValidationPanel vp = new ValidationPanel(inputPane.getValidationGroup());
-				DialogDescriptor dd = ValidationUtil.createDialogDescriptor(vp, inputPane, "Create Procedure Category");
-				Object result = DialogDisplayer.getDefault().notify(dd);
+				DialogDescriptor dd = new DialogDescriptor(inputPane, "Hub Type");
+				DialogDisplayer.getDefault().notify(dd);
 				
 				String name = inputPane.getNameFieldValue();
 				String description = inputPane.getDescriptionFieldValue();
@@ -68,6 +66,7 @@ public class ProcedureCategoryRootNode extends AbstractRootNode{
 					service.insert(pc);
 				}
 			}
+	
 		}};
 	}
 
