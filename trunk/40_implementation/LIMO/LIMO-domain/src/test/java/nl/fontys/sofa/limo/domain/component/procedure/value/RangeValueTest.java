@@ -55,11 +55,14 @@ public class RangeValueTest {
             assertTrue("Value must be above or equal to "+minVal,retrievedVal>=minVal);
             assertTrue("Value must be below or equal to "+maxVal,retrievedVal<=maxVal);
         }
-        
-               
-        
-        
-
+    }
+    /**
+     * Test of toString method, of class RangeValue   
+     */
+    @Test
+    public void testToString(){
+        String expectedString = "0.0 <-> 1.0";
+        assertEquals("Output string is not as should be",expectedString,rangeVal.toString());
     }
 
     
