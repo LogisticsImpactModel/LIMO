@@ -23,69 +23,75 @@ import org.openide.util.LookupListener;
 import org.openide.util.Utilities;
 
 /**
- * Factory responsible for creating the Event children. It listens
- * to changes in the service layer and in the nodes.
+ * Factory responsible for creating the Event children. It listens to changes in
+ * the service layer and in the nodes.
  *
  * @author Sebastiaan Heijmann
  */
 public class EventChildFactory extends ChildFactory<Event>
-		implements LookupListener, NodeListener {
+        implements LookupListener, NodeListener {
 
-	private final Result<Event> lookupResult;
-	private final EventService service; 
+    private final Result<Event> lookupResult;
+    private final EventService service;
 
-	public EventChildFactory() {
-		service = Lookup.getDefault().lookup(EventService.class);
-		lookupResult = service.getLookup().lookupResult(Event.class);
-		lookupResult.addLookupListener(this);
-	}
+    public EventChildFactory() {
+        service = Lookup.getDefault().lookup(EventService.class);
+        lookupResult = service.getLookup().lookupResult(Event.class);
+        lookupResult.addLookupListener(this);
+    }
 
-	@Override
-	protected boolean createKeys(List<Event> list) {
-		list.addAll(lookupResult.allInstances());
-		return true;
-	}
+    @Override
+    protected boolean createKeys(List<Event> list) {
+        list.addAll(lookupResult.allInstances());
+        return true;
+    }
 
-	@Override
-	protected Node createNodeForKey(Event key) {
-		BeanNode node = null;
-		try {
-			node = new EventNode(key);
-			node.addNodeListener(this);
-		} catch (IntrospectionException ex) {
-			Exceptions.printStackTrace(ex);
-		}
-		return node;
-	}
+    @Override
+    protected Node createNodeForKey(Event key) {
+        BeanNode node = null;
+        try {
+            node = new EventNode(key);
+            node.addNodeListener(this);
+        } catch (IntrospectionException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return node;
+    }
 
-	@Override
-	public void resultChanged(LookupEvent le) {
-		refresh(true);
-	}
+    @Override
+    public void resultChanged(LookupEvent le) {
+        refresh(true);
+    }
 
-	@Override
-	public void nodeDestroyed(NodeEvent ne) {
-		Node node = ne.getNode();
-		Event ev =
-				(Event) node.getLookup().lookup(Event.class);
+    @Override
+    public void nodeDestroyed(NodeEvent ne) {
+        Node node = ne.getNode();
+        Event ev = (Event) node.getLookup().lookup(Event.class);
 
-		Lookup.Result result = Utilities.actionsGlobalContext().lookupResult (ProcedureCategory.class);
-		Collection<Event> selectedBeans = result.allInstances();
-		for(Event bean : selectedBeans){
-			if(bean == ev){
-				service.delete(ev);
-			}	
-		}
-		refresh(true);
-	}
+        Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(Event.class);
+        Collection<Event> selectedBeans = result.allInstances();
+        for (Event bean : selectedBeans) {
+            if (bean.getId().equals(ev.getId())) {
+                service.delete(ev);
+            }
+        }
+        refresh(true);
+    }
 
-	@Override
-	public void childrenAdded(NodeMemberEvent ev) {}
-	@Override
-	public void childrenRemoved(NodeMemberEvent ev) {}
-	@Override
-	public void childrenReordered(NodeReorderEvent ev) {}
-	@Override
-	public void propertyChange(PropertyChangeEvent pce) {}
+    @Override
+    public void childrenAdded(NodeMemberEvent ev) {
+    }
+
+    @Override
+    public void childrenRemoved(NodeMemberEvent ev) {
+    }
+
+    @Override
+    public void childrenReordered(NodeReorderEvent ev) {
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+    }
 
 }
