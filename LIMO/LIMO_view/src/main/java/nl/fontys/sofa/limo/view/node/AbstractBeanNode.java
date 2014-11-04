@@ -11,6 +11,7 @@ import org.openide.actions.DeleteAction;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.Children;
 import org.openide.util.actions.SystemAction;
+import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 
@@ -21,19 +22,26 @@ import org.openide.util.lookup.Lookups;
  * @author Sebastiaan Heijmann
  */
 public abstract class AbstractBeanNode extends BeanNode{
-	InstanceContent ic;
 
 	/**
-	 * Abstract class which defines basic actions for all bean nodes and binds
-	 * the datamodel.
+ 	 * Abstract class which defines basic implementations for nodes and binds
+	 * the datamodel. Override getActions and getNewTypes methods to define
+	 * actions associated with this Node.
 	 * 
 	 * @param bean the underlying datamodel
 	 * @throws IntrospectionException 
 	 */
 	public AbstractBeanNode(BaseEntity bean) throws IntrospectionException{
-		super(Lookups.singleton(bean), Children.LEAF);
-		setShortDescription(bean.getDescription());
-		setDisplayName(bean.getName());
+		this(bean, new InstanceContent());
+	}
+
+	private AbstractBeanNode(BaseEntity bean, InstanceContent ic) throws IntrospectionException{
+		super(Lookups.singleton(bean), Children.LEAF, new AbstractLookup(ic));
+		ic.add(bean);
+		String description = bean.getDescription();
+		String name = bean.getName();
+		setShortDescription(description);
+		setDisplayName(name);
 	}
 
 	@Override
@@ -55,6 +63,7 @@ public abstract class AbstractBeanNode extends BeanNode{
 
 	@Override
 	public void destroy() throws IOException {
-//		fireNodeDestroyed();
+		fireNodeDestroyed();
 	}
+	
 }

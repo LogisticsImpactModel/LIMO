@@ -1,6 +1,8 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.ActionMap;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.factory.ProcedureCategoryChildFactory;
@@ -46,7 +48,7 @@ import org.openide.util.NbBundle.Messages;
 	"HINT_ProcedureCategoryTopComponent=Manage Procedure Categories"
 })
 public final class ProcedureCategoryTopComponent extends TopComponent
-		implements ExplorerManager.Provider {
+		implements ExplorerManager.Provider{
 	private ExplorerManager em = new ExplorerManager();
 
 	public ProcedureCategoryTopComponent() {
@@ -54,11 +56,6 @@ public final class ProcedureCategoryTopComponent extends TopComponent
 		setName(Bundle.CTL_ProcedureCategoryTopComponent());
 		setToolTipText(Bundle.HINT_ProcedureCategoryTopComponent());
 
-		setLayout(new BorderLayout());
-		OutlineView ov = new OutlineView("Procedure Categories");
-		ov.setPropertyColumns("description", "Description");
-		ov.getOutline().setRootVisible(false);
-		add(ov, BorderLayout.CENTER);
 
 		try {
 			Node rootNode;
@@ -74,6 +71,11 @@ public final class ProcedureCategoryTopComponent extends TopComponent
 					NotifyDescriptor.ERROR_MESSAGE);
  			DialogDisplayer.getDefault().notify(d);
 		}
+		setLayout(new BorderLayout());
+		OutlineView ov = new OutlineView("Procedure Categories");
+		ov.setPropertyColumns("description", "Description");
+		ov.getOutline().setRootVisible(false);
+		add(ov, BorderLayout.CENTER);
 
 		ActionMap map = getActionMap();
 		map.put("delete", ExplorerUtils.actionDelete(em, true));

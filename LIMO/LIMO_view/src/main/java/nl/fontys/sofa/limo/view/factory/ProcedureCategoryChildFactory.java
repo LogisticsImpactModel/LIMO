@@ -1,19 +1,26 @@
 package nl.fontys.sofa.limo.view.factory;
 
 import java.beans.IntrospectionException;
+import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
+import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.node.ProcedureCategoryNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Node;
+import org.openide.nodes.NodeEvent;
+import org.openide.nodes.NodeListener;
+import org.openide.nodes.NodeMemberEvent;
+import org.openide.nodes.NodeReorderEvent;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
+import org.openide.util.Utilities;
 
 /**
  * Factory responsible for creating the CostCategoryNode children.
@@ -21,17 +28,17 @@ import org.openide.util.LookupListener;
  * @author Sebastiaan Heijmann
  */
 public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategory>
-		implements LookupListener/*, NodeListener*/{
+		implements LookupListener, NodeListener {
 
 	private final Result<ProcedureCategory> lookupResult;
-	private final ProcedureCategoryService service; 
+	private final ProcedureCategoryService service;
 
 	public ProcedureCategoryChildFactory() {
 		service = Lookup.getDefault().lookup(ProcedureCategoryService.class);
 		lookupResult = service.getLookup().lookupResult(ProcedureCategory.class);
 		lookupResult.addLookupListener(this);
 	}
-	
+
 	@Override
 	protected boolean createKeys(List<ProcedureCategory> list) {
 		Collection<? extends ProcedureCategory> tcl = lookupResult.allInstances();
@@ -39,52 +46,54 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
 		return true;
 	}
 
-    @Override
-    protected Node createNodeForKey(ProcedureCategory key) {
-        BeanNode node = null;
-        try {
+	@Override
+	protected Node createNodeForKey(ProcedureCategory key) {
+		BeanNode node = null;
+		try {
 			node = new ProcedureCategoryNode(key);
-//			node.addNodeListener(this);
-        } catch (IntrospectionException ex) {
-            Exceptions.printStackTrace(ex);
+			node.addNodeListener(this);
+		} catch (IntrospectionException ex) {
+			Exceptions.printStackTrace(ex);
 		}
-        return node;
-    }
+		return node;
+	}
 
 	@Override
 	public void resultChanged(LookupEvent le) {
-	    refresh(false);
+		Lookup.Result res = (Lookup.Result) le.getSource();
+        Collection instances = res.allInstances();
+
+        if (!instances.isEmpty()) {
+			refresh(true);
+        }
 	}
 
-//	@Override
-//	public void childrenAdded(NodeMemberEvent nme) {
-//		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//	}
-//
-//	@Override
-//	public void childrenRemoved(NodeMemberEvent nme) {
-//		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//	}
-//
-//	@Override
-//	public void childrenReordered(NodeReorderEvent nre) {
-//		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//	}
-//
-//	@Override
-//	public void nodeDestroyed(NodeEvent ne) {
-//		Node node = ne.getNode();
-//		Collection<? extends ProcedureCategoryNode> selectedNode = Utilities.actionsGlobalContext().lookupAll(ProcedureCategoryNode.class);
-//		for(Node n : selectedNode){
-//			if(n == node){
-//				ProcedureCategory pc = node.getLookup().lookup(ProcedureCategory.class);
-//				service.delete(pc);
-//			}
-//		}
-//		refresh(true);
-//	}
-//
-//	@Override
-//	public void propertyChange(PropertyChangeEvent pce) {
-//	}
+	@Override
+	public void childrenAdded(NodeMemberEvent nme) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void childrenRemoved(NodeMemberEvent nme) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void childrenReordered(NodeReorderEvent nre) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void nodeDestroyed(NodeEvent ne) {
+		Node node = ne.getNode();
+		Lookup result = node.getLookup();
+		ProcedureCategory selected = Utilities.actionsGlobalContext().lookup(ProcedureCategory.class);
+		ProcedureCategory pc = (ProcedureCategory) node.getLookup().lookup(ProcedureCategory.class);
+		service.delete(pc);
+		refresh(true);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent pce) {
+	}
 }
