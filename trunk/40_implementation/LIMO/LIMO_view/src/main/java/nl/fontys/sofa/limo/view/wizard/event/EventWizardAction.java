@@ -23,7 +23,7 @@ import org.openide.util.Lookup;
 public final class EventWizardAction implements ActionListener {
 
     final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
