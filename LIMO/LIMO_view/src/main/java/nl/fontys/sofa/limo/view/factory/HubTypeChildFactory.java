@@ -50,6 +50,7 @@ public class HubTypeChildFactory extends ChildFactory<HubType>
 		BeanNode node = null;
 		try {
 			node = new HubTypeNode(key);
+			node.addNodeListener(this);
 		} catch (IntrospectionException ex) {
 			Exceptions.printStackTrace(ex);
 		}
