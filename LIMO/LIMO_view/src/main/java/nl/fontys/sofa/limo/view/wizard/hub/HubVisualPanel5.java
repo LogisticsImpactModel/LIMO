@@ -5,11 +5,10 @@
  */
 package nl.fontys.sofa.limo.view.wizard.hub;
 
-import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JList;
+import java.util.List;
 import javax.swing.JPanel;
+import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.view.wizard.event.SubEventsPanel;
 
 public final class HubVisualPanel5 extends JPanel {
 
@@ -26,23 +25,20 @@ public final class HubVisualPanel5 extends JPanel {
     }
 
     private void initComponents() {
-        listbox = new JList();
-        btnAdd = new JButton("Add");
-        btnEdit = new JButton("Edit");
-        btnDelete = new JButton("Delete");
-        panelLeft = new JPanel();
-        setLayout(new BorderLayout());
-        panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
-        add(listbox, BorderLayout.CENTER);
-        panelLeft.add(btnAdd);
-        panelLeft.add(btnEdit);
-        panelLeft.add(btnDelete);
-        add(panelLeft, BorderLayout.EAST);
+        sep = new SubEventsPanel();
+        sep.setHubView();
+        add(sep);
     }
 
-    JList listbox;
-    JButton btnAdd;
-    JButton btnEdit;
-    JButton btnDelete;
-    JPanel panelLeft;
+    public void update(List<Event> events) {
+        Event evt = new Event();
+        evt.setEvents(events);
+        sep.update(evt);
+    }
+
+    public List<Event> getEvents() {
+        return sep.getEvent().getEvents();
+    }
+
+    private SubEventsPanel sep;
 }
