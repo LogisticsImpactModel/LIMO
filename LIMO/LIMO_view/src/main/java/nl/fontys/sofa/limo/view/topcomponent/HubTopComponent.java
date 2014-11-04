@@ -44,7 +44,7 @@ import org.openide.util.NbBundle.Messages;
 		preferredID = "HubTopComponent"
 )
 @Messages({
-	"CTL_HubAction=Hub",
+	"CTL_HubAction=Hubs",
 	"CTL_HubTopComponent=Hub Window",
 	"HINT_HubTopComponent=Manage Hubs"
 })
