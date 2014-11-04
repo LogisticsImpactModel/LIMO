@@ -217,11 +217,13 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             lbl_timeType = new JLabel("Time Type:");
             cbox_timeType = new JComboBox(TimeType.values());
             lbl_time = new JLabel("Time Cost:");
-            tf_time = new JTextField();
+            timeValue = new SingleValue(0.0);
+            tf_time = new JTextField(timeValue.toString());
             tf_time.setEditable(false);
             btn_addTime = new JButton("...");
+            costValue = new SingleValue(0.0);
             lbl_cost = new JLabel("Money Cost:");
-            tf_cost = new JTextField();
+            tf_cost = new JTextField(costValue.toString());
             tf_cost.setEditable(false);
             btn_addCost = new JButton("...");
             lbl_direction = new JLabel("Direction:");
@@ -280,8 +282,8 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             }
             if (e.getSource().equals(btn_addTime)) {
                 new EditValueDialog(timeValue);
-                timeValue = changedValue;
                 if (timeValue != null) {
+                    timeValue = changedValue;
                     tf_time.setText(timeValue.toString());
                     this.revalidate();
                     this.repaint();
