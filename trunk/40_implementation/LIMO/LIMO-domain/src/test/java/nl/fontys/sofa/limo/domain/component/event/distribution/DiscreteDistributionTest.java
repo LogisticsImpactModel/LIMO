@@ -18,6 +18,8 @@ import static org.junit.Assert.*;
  */
 public class DiscreteDistributionTest {
     DiscreteDistribution distrib;
+    int x;
+    int y;
     public DiscreteDistributionTest() {
        
     }
@@ -33,6 +35,10 @@ public class DiscreteDistributionTest {
     @Before
     public void setUp() {
         distrib = new DiscreteDistribution();
+        x = 1;
+        y = 2;
+        distrib.setInputValue("X",x);
+        distrib.setInputValue("Y",y);
     }
     
     @After
@@ -44,13 +50,29 @@ public class DiscreteDistributionTest {
      */
     @Test
     public void testCalculateProbability() {
-        System.out.println("calculateProbability");
-        int x = 1;
-        int y = 2;
-        distrib.setInputValue("X",x);
-        distrib.setInputValue("Y",y);
+        System.out.println("calculateProbability");       
         assertEquals("When X=1 and Y=2, probab should be 0.5",0.5,distrib.getProbability(),0.0000001);
+    }
+    /**
+     * Test getType of abstract superclass Distribution
+     */
+    @Test
+    public void testGetDistributionType(){
+        Class paramType = distrib.getType("X");//retrieve the data type of param X
+        Class expectedType = java.lang.Integer.class;
+        assertEquals("Param X in discrete distrib should be of type int",expectedType,paramType);
+        Class paramType2 = distrib.getType("NonExistingParam");
+        assertNull("Param NonExistingParam does not exist and should not therefore not have a type for it returned",paramType2);
+    }
+    /**
+     * Test getValue of abstract superclass Distribution
+     */
+    @Test
+    public void testGetValue(){
+        int expectedValX = this.x;
+        int expectedValY = this.y;
+        assertEquals("Param X should be "+expectedValX,expectedValX,distrib.getValue("X"));
+        assertEquals("Param X should be "+expectedValY,expectedValY,distrib.getValue("Y"));
 
     }
-    
 }
