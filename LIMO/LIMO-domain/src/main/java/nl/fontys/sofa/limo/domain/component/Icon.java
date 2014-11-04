@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -19,50 +20,60 @@ import javax.imageio.ImageIO;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class Icon implements Serializable {
-    
+
     private byte[] data;
     private transient BufferedImage image;
 
+    /*
+     CONSTRUCTORS
+     */
     public Icon() {
         data = new byte[]{};
+        this.buildImageFromData();
+        this.setIconSize();
     }
 
     public Icon(byte[] data) {
         this.data = data;
+        this.buildImageFromData();
+        this.setIconSize();
     }
 
     public Icon(Image image) {
         this.setImage(image);
+        this.setIconSize();
     }
 
+    /*
+     GETTERS
+     */
     public byte[] getData() {
         return data;
     }
 
+    public BufferedImage getImage() {
+        if (this.image == null) {
+            this.buildImageFromData();
+        }
+        return this.image;
+    }
+
+    /*
+     SETTERS
+     */
     public void setData(byte[] data) {
         this.data = data;
         this.image = null;
     }
 
-    public BufferedImage getImage() {
-        if (this.image == null) {
-            try {
-                this.image = ImageIO.read(new ByteArrayInputStream(this.data));
-            } catch (IOException ex) {
-                Logger.getLogger(Icon.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return this.image;
-    }
-
     public void setImage(BufferedImage image) {
         this.image = image;
-        this.data = ((DataBufferByte)image.getData().getDataBuffer()).getData();
+        this.data = ((DataBufferByte) image.getData().getDataBuffer()).getData();
     }
 
     /**
      * Set icon by image.
-     * 
+     *
      * @param image New icon image.
      */
     public final void setImage(Image image) {
@@ -78,9 +89,10 @@ public class Icon implements Serializable {
         DataBufferByte dataBufferArray = (DataBufferByte) raster.getDataBuffer();
         this.data = dataBufferArray.getData();
     }
+
     /**
      * Set icon by path. Old one will not change upon error.
-     * 
+     *
      * @param path Path to new icon.
      */
     public void setImage(String path) {
@@ -101,5 +113,24 @@ public class Icon implements Serializable {
             image = null;
         }
     }
-    
+
+    private void buildImageFromData() {
+        try {
+            this.image = ImageIO.read(new ByteArrayInputStream(this.data));
+        } catch (IOException ex) {
+            Logger.getLogger(Icon.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void setIconSize() {
+        if (image != null) {
+            if (image.getWidth() != 64 || image.getHeight() != 64) {
+                BufferedImage resizedImage = new BufferedImage(64, 64, BufferedImage.TYPE_4BYTE_ABGR);
+                Graphics g = resizedImage.createGraphics();
+                g.drawImage(image, 0, 0, 64, 64, null);
+                this.setImage(resizedImage);
+                g.dispose();
+            }
+        }
+    }
 }
