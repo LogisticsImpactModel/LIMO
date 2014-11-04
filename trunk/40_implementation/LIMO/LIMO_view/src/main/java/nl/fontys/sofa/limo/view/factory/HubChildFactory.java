@@ -19,9 +19,11 @@ import org.openide.util.Lookup;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
+import org.openide.util.Utilities;
 
 /**
- * Factory responsible for creating the CostCategoryNode children.
+ * Factory responsible for creating the Hub children. It listens
+ * to changes in the service layer and in the nodes.
  *
  * @author Sebastiaan Heijmann
  */
@@ -61,30 +63,29 @@ public class HubChildFactory extends ChildFactory<Hub>
 	    refresh(true);
 	}
 
-	@Override
-	public void childrenAdded(NodeMemberEvent nme) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public void childrenRemoved(NodeMemberEvent nme) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public void childrenReordered(NodeReorderEvent nre) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
+		@Override
 	public void nodeDestroyed(NodeEvent ne) {
 		Node node = ne.getNode();
-		Hub pc = node.getLookup().lookup(Hub.class);
-		service.delete(pc);
+		Hub hub =
+				(Hub) node.getLookup().lookup(Hub.class);
+
+		Lookup.Result result = Utilities.actionsGlobalContext().lookupResult (Hub.class);
+		Collection<Hub> selectedBeans = result.allInstances();
+		for(Hub bean : selectedBeans){
+			if(bean == hub){
+				service.delete(hub);
+			}	
+		}
 		refresh(true);
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent pce) {
-	}
+	public void childrenAdded(NodeMemberEvent ev) {}
+	@Override
+	public void childrenRemoved(NodeMemberEvent ev) {}
+	@Override
+	public void childrenReordered(NodeReorderEvent ev) {}
+	@Override
+	public void propertyChange(PropertyChangeEvent pce) {}
+
 }
