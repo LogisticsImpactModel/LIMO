@@ -11,6 +11,7 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
 
     private NameDescriptionProbabilityPanel component;
     private final ResourceBundle bundle;
+    private boolean isValid = true;
 
     public NameDescriptionProbabilityWizard() {
         bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
@@ -31,7 +32,7 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
 
     @Override
     public boolean isValid() {
-        return true;
+        return isValid;
     }
 
     @Override
@@ -60,7 +61,10 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
     public void validate() throws WizardValidationException {
         NameDescriptionProbabilityPanel comp = getComponent();
         if (comp.nameTextField.getText().isEmpty()) {
+            isValid = false;
             throw new WizardValidationException(comp, null, bundle.getString("NAME_IS_NOT_SET!"));
+        } else {
+            isValid = true;
         }
     }
 

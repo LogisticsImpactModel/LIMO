@@ -13,6 +13,7 @@ public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<Wizard
      * component from this class, just use getComponent().
      */
     private NewOrDuplicatedEventPanel component;
+    private boolean isValid = true;
 
     // Get the visual component for the panel. In this template, the component
     // is kept separate. This can be more efficient: if the wizard is created
@@ -36,7 +37,7 @@ public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<Wizard
 
     @Override
     public boolean isValid() {
-        return true;
+        return isValid;
     }
 
     @Override
@@ -62,7 +63,10 @@ public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<Wizard
     @Override
     public void validate() throws WizardValidationException {
         if (getComponent().eventCopySelection.isSelected() && getComponent().getEvent() == null) {
+            isValid = false;
             throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT_NOT_SET"));
+        } else {
+            isValid = true;
         }
     }
 }

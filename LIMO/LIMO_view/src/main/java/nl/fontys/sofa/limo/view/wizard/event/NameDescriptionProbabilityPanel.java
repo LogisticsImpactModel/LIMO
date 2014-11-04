@@ -37,7 +37,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     private JLabel parametersLabel;
     private JTable parametersTable;
 
-    private Event event;
+    private final Event event;
     private DistributionFactory distributionFactory;
 
     private final ResourceBundle bundle;
