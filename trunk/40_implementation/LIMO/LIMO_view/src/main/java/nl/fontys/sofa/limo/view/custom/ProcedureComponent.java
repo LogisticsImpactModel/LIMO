@@ -4,14 +4,11 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
@@ -32,7 +29,6 @@ import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
-import org.apache.commons.math3.genetics.ElitisticListPopulation;
 import org.openide.util.Lookup;
 
 /**
@@ -196,10 +192,11 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
 
     private class AddProcedureDialog extends JDialog implements ActionListener {
 
-        private JButton btn_addSave, btn_addCancel, btn_addTime, btn_addCost;
+        private final JButton btn_addSave, btn_addCancel, btn_addTime, btn_addCost;
         private final JLabel lbl_name, lbl_category, lbl_timeType, lbl_time, lbl_cost, lbl_direction;
         private final JTextField tf_name, tf_cost, tf_time;
-        private JComboBox cbox_timeType, cbox_category, cbox_direction;
+        private final JComboBox cbox_timeType, cbox_direction;
+        private JComboBox cbox_category;
         private Value timeValue, costValue;
         private Procedure newProcedure;
 
