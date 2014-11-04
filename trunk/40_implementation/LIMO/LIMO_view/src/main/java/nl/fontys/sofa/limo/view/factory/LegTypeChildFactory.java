@@ -50,6 +50,7 @@ public class LegTypeChildFactory extends ChildFactory<LegType>
 		BeanNode node = null;
 		try {
 			node = new LegTypeNode(key);
+			node.addNodeListener(this);
 		} catch (IntrospectionException ex) {
 			Exceptions.printStackTrace(ex);
 		}

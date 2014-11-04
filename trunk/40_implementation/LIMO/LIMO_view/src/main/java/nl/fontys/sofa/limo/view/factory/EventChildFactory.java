@@ -51,6 +51,7 @@ public class EventChildFactory extends ChildFactory<Event>
 		BeanNode node = null;
 		try {
 			node = new EventNode(key);
+			node.addNodeListener(this);
 		} catch (IntrospectionException ex) {
 			Exceptions.printStackTrace(ex);
 		}
