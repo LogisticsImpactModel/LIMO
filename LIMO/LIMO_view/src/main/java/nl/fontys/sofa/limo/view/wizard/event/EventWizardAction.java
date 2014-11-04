@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
@@ -19,11 +20,11 @@ import org.openide.util.Lookup;
 
 @ActionID(category = "Event", id = "nl.fontys.sofa.limo.view.wizard.event.EventWizardAction")
 @ActionRegistration(displayName = "Add Event")
-@ActionReference(path = "Menu/Data/Event", position=20)
+@ActionReference(path = "Menu/Data/Event", position = 20)
 public final class EventWizardAction implements ActionListener {
 
     final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
@@ -51,8 +52,8 @@ public final class EventWizardAction implements ActionListener {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    EventDAO eventDAO = Lookup.getDefault().lookup(EventDAO.class);
-                    eventDAO.insert((Event) wiz.getProperty(bundle.getString("EVENT")));
+                    EventService service = Lookup.getDefault().lookup(EventService.class);
+                    service.insert((Event) wiz.getProperty(bundle.getString("EVENT")));
                 }
             }).start();
         }

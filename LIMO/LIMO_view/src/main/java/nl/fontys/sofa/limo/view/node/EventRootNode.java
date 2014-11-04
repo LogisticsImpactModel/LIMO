@@ -9,20 +9,20 @@ import org.openide.nodes.Children;
  *
  * @author Sebastiaan Heijmann
  */
-public class EventRootNode extends AbstractRootNode{
+public class EventRootNode extends AbstractRootNode {
 
-	public EventRootNode(Children children) throws ServiceNotFoundException {
-		super(children);
-	}
+    public EventRootNode(Children children) throws ServiceNotFoundException {
+        super(children);
+    }
 
-	@Override
-	Class getServiceClass() {
-		return EventService.class;
-	}
+    @Override
+    Class getServiceClass() {
+        return EventService.class;
+    }
 
-	@Override
-	Class getBeanClass() {
-		return Event.class;
-	}
+    @Override
+    Class getBeanClass() {
+        return Event.class;
+    }
 
 }
