@@ -21,7 +21,7 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
 /**
- * Factory for creating the CostCategoryNode children.
+ * Factory responsible for creating the CostCategoryNode children.
  *
  * @author Sebastiaan Heijmann
  */

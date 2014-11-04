@@ -8,10 +8,7 @@ import java.io.IOException;
 import javax.swing.Action;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.factory.CategoryChildFactory;
-import nl.fontys.sofa.limo.view.factory.HubTypeChildFactory;
-import nl.fontys.sofa.limo.view.node.AbstractRootNode;
 import nl.fontys.sofa.limo.view.node.CategoryRootNode;
-import nl.fontys.sofa.limo.view.node.HubTypeRootNode;
 import org.netbeans.spi.palette.DragAndDropHandler;
 import org.netbeans.spi.palette.PaletteActions;
 import org.netbeans.spi.palette.PaletteController;
@@ -38,22 +35,28 @@ public class PaletteSupport {
     }
     
     private static class MyActions extends PaletteActions {
+
+		@Override
         public Action[] getImportActions() {
             return null;
         }
         
+		@Override
         public Action[] getCustomPaletteActions() {
             return null;
         }
         
+		@Override
         public Action[] getCustomCategoryActions(Lookup lookup) {
             return null;
         }
         
+		@Override
         public Action[] getCustomItemActions(Lookup lookup) {
             return null;
         }
         
+		@Override
         public Action getPreferredAction(Lookup lookup) {
             return null;
         }
@@ -62,6 +65,7 @@ public class PaletteSupport {
     
     private static class MyDnDHandler extends DragAndDropHandler {
 
+		@Override
         public void customize(ExTransferable exTransferable, Lookup lookup) {
             Node node = lookup.lookup(Node.class);
             final Image image = (Image) node.getIcon(BeanInfo.ICON_COLOR_16x16);

@@ -15,7 +15,7 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
 /**
- * Factory for creating the HubType children.
+ * Factory responsible for creating the HubType children.
  *
  * @author Sebastiaan Heijmann
  */
