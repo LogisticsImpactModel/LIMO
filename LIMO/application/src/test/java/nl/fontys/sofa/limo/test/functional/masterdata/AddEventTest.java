@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.test.functional.masterdata;
 
+import java.util.List;
 import javax.swing.JTextField;
 import junit.framework.Test;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
@@ -51,7 +52,13 @@ public class AddEventTest extends JellyTestCase {
         // Subevents
         wo.btFinish().push();
         // Is stored?
-        assertEquals(size, eventDAO.findAll().size());
+        List<Event> findAll = eventDAO.findAll();
+        assertEquals(size, findAll.size());
+        for (Event e : findAll) {
+            if (e.getName().equals("Pirates")) {
+                eventDAO.delete(e);
+            }
+        }
     }
 
     public void fails() throws InterruptedException {
@@ -65,7 +72,7 @@ public class AddEventTest extends JellyTestCase {
         assertFalse(wo.isValid());
         new JTextFieldOperator(wo, 0).setText("Pirates");
         /*wo.btNext().push();
-        assertTrue(wo.isValid());*/
+         assertTrue(wo.isValid());*/
         wo.btCancel().push();
         assertEquals(size, eventDAO.findAll().size());
     }
