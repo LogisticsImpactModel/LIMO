@@ -90,23 +90,23 @@ public final class HubVisualPanel3 extends JPanel {
         c.gridx = 1;
         c.gridy = 2;
         add(tfState, c);
-
+        c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 3;
-        add(lblCountry, c);
+        add(lblContinent, c);
         c.gridx = 1;
         c.gridy = 3;
+        c.gridwidth = 3;
+        add(cmbContinent, c);
+        c.gridx = 0;
+        c.gridy = 4;
+        add(lblCountry, c);
+        c.gridx = 1;
+        c.gridy = 4;
         c.gridwidth = 3;
         c.weightx = 0;
         add(cmbCountry, c);
-        c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 4;
-        add(lblContinent, c);
-        c.gridx = 1;
-        c.gridy = 4;
-        c.gridwidth = 3;
-        add(cmbContinent, c);
+
 
         // codes = CountryCode.values();     
         ArrayList<String> countryList = new ArrayList();
