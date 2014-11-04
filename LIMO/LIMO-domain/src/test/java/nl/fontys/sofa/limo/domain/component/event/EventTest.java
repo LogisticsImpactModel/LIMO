@@ -119,5 +119,26 @@ public class EventTest {
         event.setExecutionState(ExecutionState.EXECUTED);
         assertEquals(ExecutionState.EXECUTED, event.getExecutionState());
     }
+    /** 
+     * Test of addEvent method, of class Event.
+     */
+    @Test
+    public void testAddEvent() {
+        Event newEvent = new Event();
+        String newEventName = "New event which is to be added";
+        newEvent.setName(newEventName);
+        event.addEvent(newEvent);//add to list for 1st time
+        boolean eventFoundInList = false;
+        for (Event e : event.getEvents()) {
+            if(e.getName().equals(newEventName)){
+                eventFoundInList = true;
+            }
+        }
+        if(!eventFoundInList){
+            fail("newEvent could not be found in eventlist for event");
+        }
+        
+        event.addEvent(newEvent);//try to add to list a 2nd time, which will not work. However, no response message will be given.
+    }
 
 }

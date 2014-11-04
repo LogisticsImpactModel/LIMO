@@ -58,14 +58,14 @@ public class Event extends Component {
 
     public void addEvent(Event event) {
         boolean canAdd = true;
-        for (Event e : events) {
-            if (e.getId() == event.getId()) {
+        for (Event e : events) {//loop through events that are already in list
+            if (e.getId() == event.getId()) { //..to make sure that the event that is to be added is not already in there
                 canAdd = false;
                 break;
             }
         }
         if (canAdd) {
-            events.add(event);
+            events.add(event); //if the event to be added was not found in the list w/ existing events, add it
         }
     }
 
