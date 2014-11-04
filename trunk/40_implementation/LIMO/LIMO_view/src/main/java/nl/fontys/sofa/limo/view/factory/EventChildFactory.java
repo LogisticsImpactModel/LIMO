@@ -15,6 +15,7 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
 /**
+ * ChildFactory responsible for creating the Event children.
  *
  * @author Sebastiaan Heijmann
  */

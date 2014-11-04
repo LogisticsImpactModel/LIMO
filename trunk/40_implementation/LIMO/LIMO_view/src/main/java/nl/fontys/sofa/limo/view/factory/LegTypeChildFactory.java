@@ -15,7 +15,7 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
 /**
- * Factory for creating the leg type children.
+ * Factory responsible for creating the leg type children.
  *
  * @author Sebastiaan Heijmann
  */
