@@ -72,7 +72,8 @@ public class DiscreteDistributionTest {
         int expectedValX = this.x;
         int expectedValY = this.y;
         assertEquals("Param X should be "+expectedValX,expectedValX,distrib.getValue("X"));
-        assertEquals("Param X should be "+expectedValY,expectedValY,distrib.getValue("Y"));
+        assertEquals("Param Y should be "+expectedValY,expectedValY,distrib.getValue("Y"));
+        assertNull("Param DoesNotExist should not return a value because it does not exist",distrib.getValue("DoesNotExist"));
 
     }
 }
