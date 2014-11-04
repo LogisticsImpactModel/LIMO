@@ -21,7 +21,6 @@ import org.openide.util.datatransfer.NewType;
  * @author Sebastiaan Heijmann
  */
 public class LegTypeRootNode extends AbstractRootNode{
-	private LegTypeService service;
 
 	public LegTypeRootNode(Children children) throws ServiceNotFoundException {
 		super(children);
@@ -53,7 +52,7 @@ public class LegTypeRootNode extends AbstractRootNode{
 			@Override
 			public void create() throws IOException {
 				NameDescriptionDialogInputPane inputPane = new NameDescriptionDialogInputPane();
-				DialogDescriptor dd = new DialogDescriptor(inputPane, "Hub Type");
+				DialogDescriptor dd = new DialogDescriptor(inputPane, "Leg Type");
 				DialogDisplayer.getDefault().notify(dd);
 	
 				String name = inputPane.getNameFieldValue();

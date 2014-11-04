@@ -19,5 +19,4 @@ public class ProcedureCategoryNode extends AbstractBeanNode{
 	public boolean canDestroy() {
 		return true;
 	}
-
 }

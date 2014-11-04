@@ -18,7 +18,7 @@ import org.netbeans.api.visual.graph.GraphScene;
 import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.api.visual.widget.general.IconNodeWidget;
-import org.openide.util.ImageUtilities;
+import org.openide.NotifyDescriptor;
 
 /**
  * The GraphScene where the chain is build on.
@@ -62,8 +62,11 @@ public class ChainScene extends GraphScene<NodeHolder, String> {
 		Object o = null;
 		try {
 			o = transferable.getTransferData(DataFlavor.imageFlavor);
-		} catch (IOException ex) {
-		} catch (UnsupportedFlavorException ex) {
+		} catch (IOException | UnsupportedFlavorException ex) {
+			NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
+					+ "a problem, ChainBuilder not correctly working. Please contact "
+					+ "your administrator...",
+					NotifyDescriptor.ERROR_MESSAGE);
 		}
 		return (Image) o;
 	}
