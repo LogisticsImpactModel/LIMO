@@ -59,7 +59,7 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
     @Override
     public void validate() throws WizardValidationException {
         NameDescriptionProbabilityPanel comp = getComponent();
-        if (comp.tfName.getText().isEmpty()) {
+        if (comp.nameTextField.getText().isEmpty()) {
             throw new WizardValidationException(comp, null, bundle.getString("NAME_IS_NOT_SET!"));
         }
     }

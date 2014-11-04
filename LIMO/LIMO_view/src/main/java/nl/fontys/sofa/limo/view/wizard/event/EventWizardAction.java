@@ -34,9 +34,8 @@ public final class EventWizardAction implements ActionListener {
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
-            // Default step name to component name of panel.
             steps[i] = c.getName();
-            if (c instanceof JComponent) { // assume Swing components
+            if (c instanceof JComponent) {
                 JComponent jc = (JComponent) c;
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, i);
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
@@ -46,7 +45,6 @@ public final class EventWizardAction implements ActionListener {
             }
         }
         final WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
-        // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle(bundle.getString("ADD_EVENT"));
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {

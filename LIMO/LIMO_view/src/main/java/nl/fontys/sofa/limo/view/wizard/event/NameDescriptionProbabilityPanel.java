@@ -25,24 +25,26 @@ import org.openide.util.Lookup;
 
 public final class NameDescriptionProbabilityPanel extends JPanel {
 
-    private JLabel lblName;
-    JTextField tfName;
+    private JLabel nameLabel;
+    JTextField nameTextField;
 
-    private javax.swing.JLabel lblDescription;
-    JTextArea tfDescription;
+    private javax.swing.JLabel descriptionLabel;
+    JTextArea descriptionTextArea;
 
-    private JLabel lblDistributionType;
-    private JComboBox<String> cbDistributionType;
+    private JLabel distributionTypeLabel;
+    private JComboBox<String> distributionTypeComboBox;
 
-    private JLabel lblParameters;
-    private JTable tParameters;
+    private JLabel parametersLabel;
+    private JTable parametersTable;
 
     private Event event;
-    private DistributionFactory dtf;
+    private DistributionFactory distributionFactory;
+
     private final ResourceBundle bundle;
 
     public NameDescriptionProbabilityPanel() {
         bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
+        event = new Event();
         initComponents();
     }
 
@@ -52,62 +54,53 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     }
 
     private void initComponents() {
-        dtf = Lookup.getDefault().lookup(DistributionFactory.class);
-        List<String> distTypes = Arrays.asList(dtf.getDistributionTypes());
-        Collections.sort(distTypes);
-        String[] cbModel = new String[distTypes.size()];
-        distTypes.toArray(cbModel);
+        GridBagConstraints c = initLayout();
+        initName();
+        initDistribution();
 
-        lblName = new javax.swing.JLabel(bundle.getString("NAME"));
-        tfName = new javax.swing.JTextField();
-        lblDescription = new javax.swing.JLabel(bundle.getString("DESCRIPTION"));
-        tfDescription = new javax.swing.JTextArea();
-        tfDescription.setRows(4);
-        tfDescription.setBorder(tfName.getBorder());
-        tfDescription.setSize(tfDescription.getHeight(), tfName.getWidth());
-        lblDistributionType = new javax.swing.JLabel(bundle.getString("DISTRIBUTION_TYPE"));
-        cbDistributionType = new javax.swing.JComboBox<>(cbModel);
-        lblParameters = new javax.swing.JLabel(bundle.getString("PARAMETERS"));
-        tParameters = new javax.swing.JTable();
-        tParameters.setModel(new DistributionParameterTableModel());
-        tParameters.setShowGrid(true);
+        descriptionLabel = new javax.swing.JLabel(bundle.getString("DESCRIPTION"));
+        descriptionTextArea = new javax.swing.JTextArea();
+        descriptionTextArea.setRows(4);
+        descriptionTextArea.setBorder(nameTextField.getBorder());
+        descriptionTextArea.setSize(descriptionTextArea.getHeight(), nameTextField.getWidth());
 
-        setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+        parametersLabel = new javax.swing.JLabel(bundle.getString("PARAMETERS"));
+        parametersTable = new javax.swing.JTable();
+        parametersTable.setModel(new DistributionParameterTableModel());
+        parametersTable.setShowGrid(true);
 
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
-        add(lblName, c);
+        add(nameLabel, c);
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 3;
-        add(tfName, c);
+        add(nameTextField, c);
 
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 1;
-        add(lblDescription, c);
+        add(descriptionLabel, c);
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 1;
         c.gridwidth = 3;
-        add(tfDescription, c);
+        add(descriptionTextArea, c);
 
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 2;
         c.gridwidth = 1;
-        add(lblDistributionType, c);
+        add(distributionTypeLabel, c);
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 2;
         c.gridwidth = 3;
-        add(cbDistributionType, c);
+        add(distributionTypeComboBox, c);
 
         c.gridx = 0;
         c.gridy = 3;
@@ -118,28 +111,29 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 4;
         c.gridwidth = 4;
-        add(lblParameters, c);
+        add(parametersLabel, c);
 
         c.weightx = 1.0;
         c.gridx = 0;
         c.gridy = 5;
         c.gridwidth = 4;
         c.gridheight = 3;
-        add(tParameters, c);
+        add(parametersTable, c);
 
-        event = new Event();
+        distributionTypeComboBox.setSelectedIndex(0);
+    }
 
-        cbDistributionType.addActionListener(new ActionListener() {
+    private GridBagConstraints initLayout() {
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        return c;
+    }
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                event.setProbability(dtf.getDistributionTypeByName((String) cbDistributionType.getSelectedItem()));
-                ((AbstractTableModel) tParameters.getModel()).fireTableDataChanged();
-            }
-        });
-
-        tfName.getDocument().addDocumentListener(new DocumentListener() {
-
+    private void initName() {
+        nameLabel = new javax.swing.JLabel(bundle.getString("NAME"));
+        nameTextField = new javax.swing.JTextField();
+        nameTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 updateEventFromInput();
@@ -155,22 +149,37 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                 updateEventFromInput();
             }
         });
+    }
 
-        cbDistributionType.setSelectedIndex(0);
+    private void initDistribution() {
+        distributionFactory = Lookup.getDefault().lookup(DistributionFactory.class);
+        List<String> distTypes = Arrays.asList(distributionFactory.getDistributionTypes());
+        Collections.sort(distTypes);
+        String[] cbModel = new String[distTypes.size()];
+        distTypes.toArray(cbModel);
+        distributionTypeLabel = new javax.swing.JLabel(bundle.getString("DISTRIBUTION_TYPE"));
+        distributionTypeComboBox = new javax.swing.JComboBox<>(cbModel);
+        distributionTypeComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                event.setProbability(distributionFactory.getDistributionTypeByName((String) distributionTypeComboBox.getSelectedItem()));
+                ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
+            }
+        });
     }
 
     public void update(Event event) {
         if (event != null) {
-            tfName.setText(event.getName());
-            tfDescription.setText(event.getDescription());
+            nameTextField.setText(event.getName());
+            descriptionTextArea.setText(event.getDescription());
             Distribution probability = event.getProbability();
             if (probability != null) {
                 String nameForDistributionType = probability.getClass().getSimpleName();
-                cbDistributionType.setSelectedItem(nameForDistributionType);
+                distributionTypeComboBox.setSelectedItem(nameForDistributionType);
             } else {
-                cbDistributionType.setSelectedIndex(0);
+                distributionTypeComboBox.setSelectedIndex(0);
             }
-            ((AbstractTableModel) tParameters.getModel()).fireTableDataChanged();
+            ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
         }
     }
 
@@ -180,8 +189,8 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     }
 
     private void updateEventFromInput() {
-        event.setName(tfName.getText());
-        event.setDescription(tfDescription.getText());
+        event.setName(nameTextField.getText());
+        event.setDescription(descriptionTextArea.getText());
     }
 
     private class DistributionParameterTableModel extends AbstractTableModel {
@@ -235,14 +244,14 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                         n = Double.parseDouble((String) aValue);
                     } catch (NumberFormatException nfe) {
                         n = null;
-                        javax.swing.JOptionPane.showMessageDialog(tParameters, bundle.getString("REQUIRES_FLOATING-POINT_VALUE"), bundle.getString("NOT_FLOATING-POINT"), JOptionPane.WARNING_MESSAGE);
+                        javax.swing.JOptionPane.showMessageDialog(parametersTable, bundle.getString("REQUIRES_FLOATING-POINT_VALUE"), bundle.getString("NOT_FLOATING-POINT"), JOptionPane.WARNING_MESSAGE);
                     }
                 } else if (inputType.equals(Integer.class)) {
                     try {
                         n = Integer.parseInt((String) aValue);
                     } catch (NumberFormatException nfe) {
                         n = null;
-                        javax.swing.JOptionPane.showMessageDialog(tParameters, bundle.getString("REQUIRES_INTERGER_VALUE"), bundle.getString("NOT_INTERGER"), JOptionPane.WARNING_MESSAGE);
+                        javax.swing.JOptionPane.showMessageDialog(parametersTable, bundle.getString("REQUIRES_INTERGER_VALUE"), bundle.getString("NOT_INTERGER"), JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
                     n = 0;
