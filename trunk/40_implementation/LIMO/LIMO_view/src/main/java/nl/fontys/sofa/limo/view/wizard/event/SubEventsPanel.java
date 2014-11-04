@@ -152,6 +152,11 @@ public final class SubEventsPanel extends JPanel {
         return this.event;
     }
 
+    public void setHubView() {
+        TableColumn tcol = eventsTable.getColumnModel().getColumn(1);
+        eventsTable.getColumnModel().removeColumn(tcol);
+    }
+
     private static class EventTableModel extends AbstractTableModel {
 
         private ArrayList<Event> events;
