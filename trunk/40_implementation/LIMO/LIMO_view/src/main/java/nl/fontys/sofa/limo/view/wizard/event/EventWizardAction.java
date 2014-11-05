@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.JComponent;
-import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import org.openide.DialogDisplayer;
@@ -23,6 +22,8 @@ import org.openide.util.Lookup;
 @ActionReference(path = "Menu/Data/Event", position = 20)
 public final class EventWizardAction implements ActionListener {
 
+    private Event event = null;
+    private boolean isUpdate = false;
     final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
 
     @Override
@@ -48,15 +49,27 @@ public final class EventWizardAction implements ActionListener {
         final WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle(bundle.getString("ADD_EVENT"));
+        if (isUpdate) {
+            wiz.putProperty(bundle.getString("EVENT"), event);
+        }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     EventService service = Lookup.getDefault().lookup(EventService.class);
-                    service.insert((Event) wiz.getProperty(bundle.getString("EVENT")));
+                    if (isUpdate) {
+                        service.update((Event) wiz.getProperty(bundle.getString("EVENT")));
+                    } else {
+                        service.insert((Event) wiz.getProperty(bundle.getString("EVENT")));
+                    }
                 }
             }).start();
         }
+    }
+
+    public void isUpdate(Event event) {
+        this.event = event;
+        this.isUpdate = true;
     }
 
 }
