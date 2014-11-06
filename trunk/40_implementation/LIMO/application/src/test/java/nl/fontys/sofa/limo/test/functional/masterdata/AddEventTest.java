@@ -5,7 +5,6 @@ import javax.swing.JTextField;
 import junit.framework.Test;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
 import org.netbeans.jellytools.JellyTestCase;
 import org.netbeans.jellytools.WizardOperator;
 import org.netbeans.jellytools.actions.ActionNoBlock;
