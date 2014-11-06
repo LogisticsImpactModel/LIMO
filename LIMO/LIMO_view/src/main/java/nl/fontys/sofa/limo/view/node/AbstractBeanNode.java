@@ -16,58 +16,60 @@ import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 
 /**
- * AbstractBeanNode class which defines basic Node actions and creates a lookup for
- the underlying bean.
+ * AbstractBeanNode class which defines basic Node actions and creates a lookup
+ * for the underlying bean.
  *
  * @author Sebastiaan Heijmann
  */
-public abstract class AbstractBeanNode extends BeanNode{
-    
-        private Class entityClass;
+public abstract class AbstractBeanNode extends BeanNode {
 
-	/**
- 	 * Abstract class which defines basic implementations for nodes and binds
-	 * the datamodel. The datamodel is available through the AbstractBeanNode's 
-	 * lookup. <p> Override getActions and getNewTypes methods to define
-	 * actions associated with this Node.
-	 * 
-	 * @param bean the underlying datamodel
-	 * @throws IntrospectionException 
-	 */
-	public AbstractBeanNode(BaseEntity bean, Class entityClass) throws IntrospectionException{
-		this(bean, new InstanceContent());
-                this.entityClass = entityClass;
-	}
+    private Class entityClass;
 
-	private AbstractBeanNode(BaseEntity bean, InstanceContent ic) throws IntrospectionException{
-		super(Lookups.singleton(bean), Children.LEAF, new AbstractLookup(ic));
-		ic.add(bean);
-		String description = bean.getDescription();
-		String name = bean.getName();
-		setShortDescription(description);
-		setDisplayName(name);
-	}
+    /**
+     * Abstract class which defines basic implementations for nodes and binds
+     * the datamodel. The datamodel is available through the AbstractBeanNode's
+     * lookup.
+     * <p>
+     * Override getActions and getNewTypes methods to define actions associated
+     * with this Node.
+     *
+     * @param bean the underlying datamodel
+     * @throws IntrospectionException
+     */
+    public AbstractBeanNode(BaseEntity bean, Class entityClass) throws IntrospectionException {
+        this(bean, new InstanceContent());
+        this.entityClass = entityClass;
+    }
 
-	@Override
-	public Image getIcon(int type) {
-		Image icon = IconUtil.getIcon(entityClass, type);
-		if(icon == null){
-			return super.getIcon(type);
-		}
-		return icon;
-	}
+    private AbstractBeanNode(BaseEntity bean, InstanceContent ic) throws IntrospectionException {
+        super(Lookups.singleton(bean), Children.LEAF, new AbstractLookup(ic));
+        ic.add(bean);
+        String description = bean.getDescription();
+        String name = bean.getName();
+        setShortDescription(description);
+        setDisplayName(name);
+    }
 
-	@Override
-	public Action[] getActions(boolean context) {
-		return new Action[]{SystemAction.get(DeleteAction.class)};
-	}
+    @Override
+    public Image getIcon(int type) {
+        Image icon = IconUtil.getIcon(entityClass, type);
+        if (icon == null) {
+            return super.getIcon(type);
+        }
+        return icon;
+    }
 
-	@Override
-	public abstract boolean canDestroy(); 
+//    @Override
+//    public Action[] getActions(boolean context) {
+//        return new Action[]{SystemAction.get(DeleteAction.class)};
+//    }
 
-	@Override
-	public void destroy() throws IOException {
-		fireNodeDestroyed();
-	}
-	
+    @Override
+    public abstract boolean canDestroy();
+
+    @Override
+    public void destroy() throws IOException {
+        fireNodeDestroyed();
+    }
+
 }

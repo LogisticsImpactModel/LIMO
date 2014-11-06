@@ -2,12 +2,15 @@ package nl.fontys.sofa.limo.view.node;
 
 import java.awt.event.ActionEvent;
 import java.beans.IntrospectionException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import org.openide.util.Lookup;
 
 public class EventNode extends AbstractBeanNode {
 
@@ -25,18 +28,24 @@ public class EventNode extends AbstractBeanNode {
 
     @Override
     public Action[] getActions(boolean context) {
-        Action[] actions = super.getActions(context);
-        Action editAction = new AbstractAction("Edit") {
+        ArrayList<Action> actionList = new ArrayList<>();
+        actionList.add(new AbstractAction("Edit") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 EventWizardAction wiz = new EventWizardAction();
-                wiz.isUpdate(event);
+                wiz.setEvent(event);
                 wiz.actionPerformed(e);
             }
-        };
-        Action[] result = Arrays.copyOf(actions, actions.length + 1);
-        result[actions.length] = editAction;
-        return result;
+        });
+        actionList.add(new AbstractAction("Delete") {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EventService service = Lookup.getDefault().lookup(EventService.class);
+                service.delete(event);
+            }
+        });
+        return actionList.toArray(new Action[actionList.size()]);
     }
 
 }

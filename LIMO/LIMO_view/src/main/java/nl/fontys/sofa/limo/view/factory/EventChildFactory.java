@@ -2,11 +2,9 @@ package nl.fontys.sofa.limo.view.factory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
-import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.node.EventNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
@@ -20,7 +18,6 @@ import org.openide.util.Lookup;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.util.Utilities;
 
 /**
  * Factory responsible for creating the Event children. It listens to changes in
@@ -65,16 +62,6 @@ public class EventChildFactory extends ChildFactory<Event>
 
     @Override
     public void nodeDestroyed(NodeEvent ne) {
-        Node node = ne.getNode();
-        Event ev = (Event) node.getLookup().lookup(Event.class);
-
-        Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(Event.class);
-        Collection<Event> selectedBeans = result.allInstances();
-        for (Event bean : selectedBeans) {
-            if (bean.getId().equals(ev.getId())) {
-                service.delete(ev);
-            }
-        }
         refresh(true);
     }
 

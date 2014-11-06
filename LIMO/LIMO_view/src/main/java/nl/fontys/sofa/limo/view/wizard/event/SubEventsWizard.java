@@ -52,14 +52,13 @@ public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor>
     @Override
     public void readSettings(WizardDescriptor wiz) {
         Object event = wiz.getProperty(bundle.getString("EVENT"));
-        if (event != null) {
-            getComponent().update((Event) event);
-        }
+        getComponent().update((Event) event);
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(bundle.getString("EVENT"), getComponent().getEvent());
+        Event event = getComponent().getEvent();
+        wiz.putProperty(bundle.getString("EVENT"), event);
     }
 
 }
