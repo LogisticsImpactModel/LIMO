@@ -72,12 +72,7 @@ public class IconTest {
             icon.setData(inputImageBytes);
      
             BufferedImage outputImg = icon.getImage();
-            //TODO: matthias: setData and afterwards retrieving img by calling getImage does not work
-            
-            
-            //assertTrue(outputImg.getHeight()>0);
-            //byte[] outputImageBytes = ((DataBufferByte) outputImg.getData().getDataBuffer()).getData();//using Icon class method getImage
-            //Assert.assertArrayEquals("Input and output image byte arrays should match but do not",inputImageBytes,outputImageBytes);
+            assertTrue(outputImg.getHeight()==64);
         } catch (IOException ex) {
             fail("Could not locate image");
         }
