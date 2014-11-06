@@ -1,10 +1,10 @@
 package nl.fontys.sofa.limo.view.util;
 
-import java.awt.Event;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
@@ -26,6 +26,9 @@ public class IconUtil {
         if (!isSetUp) {
             setUp();
         }
+        
+        if (!typeIcons.containsKey(clazz))
+            return null;
         
         IconHolder ih = typeIcons.get(clazz);
         Image i = ih.getIcon(type);

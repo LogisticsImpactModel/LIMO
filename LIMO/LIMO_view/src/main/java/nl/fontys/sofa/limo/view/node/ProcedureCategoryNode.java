@@ -12,7 +12,7 @@ public class ProcedureCategoryNode extends AbstractBeanNode{
 
 	public ProcedureCategoryNode(ProcedureCategory bean) 
 			throws IntrospectionException{
-		super(bean);
+		super(bean, ProcedureCategory.class);
 	}
 
 	@Override

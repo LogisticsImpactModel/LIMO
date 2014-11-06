@@ -11,7 +11,7 @@ import nl.fontys.sofa.limo.domain.component.type.HubType;
 public class HubTypeNode extends AbstractBeanNode{
 
 	public HubTypeNode(HubType bean) throws IntrospectionException{
-		super(bean);
+		super(bean, HubType.class);
 	}
 
 	@Override

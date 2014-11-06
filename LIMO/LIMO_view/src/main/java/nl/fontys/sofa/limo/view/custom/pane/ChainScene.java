@@ -92,6 +92,8 @@ public class ChainScene extends GraphScene<ContainerNode, String> {
 		Anchor anchor = AnchorFactory.createRectangularAnchor(widget);
 		connection.setTargetAnchor(anchor);
 	}
+        
+        private static class InitialHubAction extends WidgetAction.Adapter {
 
 	private class AcceptAction implements AcceptProvider {
 

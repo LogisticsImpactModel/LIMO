@@ -7,13 +7,14 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 
 public class EventNode extends AbstractBeanNode {
 
     private final Event event;
 
     public EventNode(Event event) throws IntrospectionException {
-        super(event);
+        super(event, Event.class);
         this.event = event;
     }
 

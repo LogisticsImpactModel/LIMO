@@ -22,6 +22,8 @@ import org.openide.util.lookup.Lookups;
  * @author Sebastiaan Heijmann
  */
 public abstract class AbstractBeanNode extends BeanNode{
+    
+        private Class entityClass;
 
 	/**
  	 * Abstract class which defines basic implementations for nodes and binds
@@ -32,8 +34,9 @@ public abstract class AbstractBeanNode extends BeanNode{
 	 * @param bean the underlying datamodel
 	 * @throws IntrospectionException 
 	 */
-	public AbstractBeanNode(BaseEntity bean) throws IntrospectionException{
+	public AbstractBeanNode(BaseEntity bean, Class entityClass) throws IntrospectionException{
 		this(bean, new InstanceContent());
+                this.entityClass = entityClass;
 	}
 
 	private AbstractBeanNode(BaseEntity bean, InstanceContent ic) throws IntrospectionException{
@@ -47,7 +50,7 @@ public abstract class AbstractBeanNode extends BeanNode{
 
 	@Override
 	public Image getIcon(int type) {
-		Image icon = IconUtil.getIcon(ProcedureCategory.class, type);
+		Image icon = IconUtil.getIcon(entityClass, type);
 		if(icon == null){
 			return super.getIcon(type);
 		}
