@@ -30,18 +30,16 @@ public class Icon implements Serializable {
     public Icon() {
         data = new byte[]{};
         this.buildImageFromData();
-        this.setIconSize();
     }
 
     public Icon(byte[] data) {
         this.data = data;
         this.buildImageFromData();
-        this.setIconSize();
     }
 
     public Icon(Image image) {
         this.setImage(image);
-        this.setIconSize();
+        this.resizeIcon();
     }
 
     /*
@@ -63,12 +61,7 @@ public class Icon implements Serializable {
      */
     public void setData(byte[] data) {
         this.data = data;
-        this.image = null;
-    }
-
-    public void setImage(BufferedImage image) {
-        this.image = image;
-        this.data = ((DataBufferByte) image.getData().getDataBuffer()).getData();
+        buildImageFromData();
     }
 
     /**
@@ -77,7 +70,7 @@ public class Icon implements Serializable {
      * @param image New icon image.
      */
     public final void setImage(Image image) {
-        if (!(this.image instanceof BufferedImage)) {
+        if (!(image instanceof BufferedImage)) {
             this.image = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D bGr = this.image.createGraphics();
             bGr.drawImage(image, 0, 0, null);
@@ -85,9 +78,7 @@ public class Icon implements Serializable {
         } else {
             this.image = (BufferedImage) image;
         }
-        Raster raster = this.image.getData();
-        DataBufferByte dataBufferArray = (DataBufferByte) raster.getDataBuffer();
-        this.data = dataBufferArray.getData();
+        resizeIcon();
     }
 
     /**
@@ -100,9 +91,7 @@ public class Icon implements Serializable {
         try {
             File imageFile = new File(path);
             this.image = ImageIO.read(imageFile);
-            Raster raster = image.getData();
-            DataBufferByte imgData = (DataBufferByte) raster.getDataBuffer();
-            this.data = imgData.getData();
+            setByteArrayFromImage();
         } catch (IOException ex) {
             System.out.println("Image: '" + path + "' could not get loaded");
             if (buffer == null) {
@@ -110,19 +99,20 @@ public class Icon implements Serializable {
             } else {
                 this.data = buffer;
             }
-            image = null;
+            buildImageFromData();
         }
     }
 
     private void buildImageFromData() {
         try {
             this.image = ImageIO.read(new ByteArrayInputStream(this.data));
+            resizeIcon();
         } catch (IOException ex) {
             Logger.getLogger(Icon.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void setIconSize() {
+    private void resizeIcon() {
         if (image != null) {
             if (image.getWidth() != 64 || image.getHeight() != 64) {
                 BufferedImage resizedImage = new BufferedImage(64, 64, BufferedImage.TYPE_4BYTE_ABGR);
@@ -131,6 +121,15 @@ public class Icon implements Serializable {
                 this.setImage(resizedImage);
                 g.dispose();
             }
+            setByteArrayFromImage();
+        }
+    }
+
+    private void setByteArrayFromImage() {
+        if (image != null) {
+            Raster raster = this.image.getData();
+            DataBufferByte dataBufferArray = (DataBufferByte) raster.getDataBuffer();
+            this.data = dataBufferArray.getData();
         }
     }
 }
