@@ -10,7 +10,7 @@ import org.netbeans.api.visual.widget.general.IconNodeWidget;
  *
  * @author Sebastiaan Heijmann
  */
-public class EventWidget extends DefaultIconNodeWidget{
+public class EventWidget extends IconNodeWidget{
 
 	/**
 	 * Constructor sets up the widget by setting the display name and image.
@@ -18,7 +18,7 @@ public class EventWidget extends DefaultIconNodeWidget{
 	 * @param container - the container for the EventNode.
 	 */
 	public EventWidget(Scene scene, ContainerNode container) {
-		super(scene, container);
+		super(scene);
 	}
 
 }
