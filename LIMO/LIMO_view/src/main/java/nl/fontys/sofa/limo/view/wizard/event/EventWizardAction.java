@@ -21,11 +21,13 @@ import org.openide.util.Lookup;
 @ActionRegistration(displayName = "Add Event")
 @ActionReference(path = "Menu/Data/Event", position = 20)
 public final class EventWizardAction implements ActionListener {
-    
+
+    public static final String EVENT = "event";
+
     private Event event = null;
     private boolean isUpdate = false;
     final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
@@ -52,11 +54,11 @@ public final class EventWizardAction implements ActionListener {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle(bundle.getString("ADD_EVENT"));
         if (isUpdate) {
-            wiz.putProperty(bundle.getString("EVENT"), event);
+            wiz.putProperty(EVENT, event);
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             EventService service = Lookup.getDefault().lookup(EventService.class);
-            Event newEvent = (Event) wiz.getProperty(bundle.getString("EVENT"));
+            Event newEvent = (Event) wiz.getProperty(EVENT);
             if (isUpdate) {
                 newEvent.setId(event.getId());
                 service.update(event);
@@ -65,10 +67,10 @@ public final class EventWizardAction implements ActionListener {
             }
         }
     }
-    
+
     public void setEvent(Event event) {
         this.event = event;
         this.isUpdate = true;
     }
-    
+
 }

@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.view.wizard.event;
 
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
+import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -54,7 +55,7 @@ public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<Wizard
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT"), getComponent().getEvent());
+        wiz.putProperty(EVENT, getComponent().getEvent());
     }
 
     @Override

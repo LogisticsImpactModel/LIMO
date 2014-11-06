@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.wizard.event;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -44,13 +45,13 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Object event = wiz.getProperty(bundle.getString("EVENT"));
+        Object event = wiz.getProperty(EVENT);
         getComponent().update((Event) event);
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(bundle.getString("EVENT"), getComponent().getEvent());
+        wiz.putProperty(EVENT, getComponent().getEvent());
     }
 
     @Override

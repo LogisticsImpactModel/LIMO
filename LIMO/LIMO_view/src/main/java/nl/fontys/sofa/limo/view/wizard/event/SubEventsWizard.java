@@ -1,19 +1,14 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
-import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
 public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     private SubEventsPanel component;
-    private final ResourceBundle bundle;
-
-    public SubEventsWizard() {
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
-    }
 
     @Override
     public SubEventsPanel getComponent() {
@@ -51,14 +46,14 @@ public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Object event = wiz.getProperty(bundle.getString("EVENT"));
+        Object event = wiz.getProperty(EVENT);
         getComponent().update((Event) event);
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         Event event = getComponent().getEvent();
-        wiz.putProperty(bundle.getString("EVENT"), event);
+        wiz.putProperty(EVENT, event);
     }
 
 }
