@@ -64,17 +64,6 @@ public class HubChildFactory extends ChildFactory<Hub>
 
 	@Override
 	public void nodeDestroyed(NodeEvent ne) {
-		Node node = ne.getNode();
-		Hub hub
-				= (Hub) node.getLookup().lookup(Hub.class);
-
-		Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(Hub.class);
-		Collection<Hub> selectedBeans = result.allInstances();
-		for (Hub bean : selectedBeans) {
-			if (bean == hub) {
-				service.delete(hub);
-			}
-		}
 		refresh(true);
 	}
 
