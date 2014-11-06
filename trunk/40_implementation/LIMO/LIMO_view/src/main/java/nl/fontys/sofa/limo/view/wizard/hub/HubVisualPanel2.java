@@ -10,12 +10,15 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.view.util.IconUtil;
 
 public final class HubVisualPanel2 extends JPanel {
 
@@ -37,6 +40,8 @@ public final class HubVisualPanel2 extends JPanel {
         lblIcon = new javax.swing.JLabel("Icon");
         lblPreview = new javax.swing.JLabel();
         btnSelect = new javax.swing.JButton("Choose");
+        btnRemove = new javax.swing.JButton("Remove");
+        btnRemove.setToolTipText("Removes the current icon and takes the standard one.");
         fc = new JFileChooser();
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -76,6 +81,23 @@ public final class HubVisualPanel2 extends JPanel {
                 }
             }
         });
+        c.weightx = 0.3;
+        c.gridx = 3;
+        c.gridy = 1;
+        add(btnRemove, c);
+        btnRemove.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Image image = IconUtil.getIcon(HubType.class, 2);
+                Icon newIcon = new Icon((BufferedImage) image);
+                hub.setIcon(newIcon);
+                lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
+            }
+        });
+        Image image = IconUtil.getIcon(HubType.class, 2);
+        Icon newIcon = new Icon((BufferedImage) image);
+        hub.setIcon(newIcon);
+        lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
     }
 
     public void updateLabel(String identifire, Icon ic) {
@@ -93,7 +115,7 @@ public final class HubVisualPanel2 extends JPanel {
         return hub;
     }
 
-    private javax.swing.JButton btnSelect;
+    private javax.swing.JButton btnSelect, btnRemove;
     private javax.swing.JLabel lblIcon;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPreview;
