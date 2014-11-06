@@ -91,7 +91,7 @@ public class Icon implements Serializable {
         try {
             File imageFile = new File(path);
             this.image = ImageIO.read(imageFile);
-            setByteArrayFromImage();
+            resizeIcon();
         } catch (IOException ex) {
             System.out.println("Image: '" + path + "' could not get loaded");
             if (buffer == null) {
