@@ -59,8 +59,8 @@ public final class EventTopComponent extends TopComponent implements
         setLayout(new BorderLayout());
         add(new BeanTreeView(), BorderLayout.CENTER);
         OutlineView ov = new OutlineView("Events");
-        ov.setPropertyColumns("description", "Description");
         ov.getOutline().setRootVisible(false);
+        ov.setPropertyColumns("description", "Description");
         add(ov, BorderLayout.CENTER);
 
         try {

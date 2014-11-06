@@ -22,70 +22,76 @@ import org.openide.util.LookupListener;
 import org.openide.util.Utilities;
 
 /**
- * Factory responsible for creating the Hub children. It listens
- * to changes in the service layer and in the nodes.
+ * Factory responsible for creating the Hub children. It listens to changes in
+ * the service layer and in the nodes.
  *
  * @author Sebastiaan Heijmann
  */
 public class HubChildFactory extends ChildFactory<Hub>
-		implements LookupListener, NodeListener{
+		implements LookupListener, NodeListener {
 
 	private final Result<Hub> lookupResult;
-	private HubService service; 
+	private final HubService service;
 
 	public HubChildFactory() {
 		service = Lookup.getDefault().lookup(HubService.class);
 		lookupResult = service.getLookup().lookupResult(Hub.class);
 		lookupResult.addLookupListener(this);
 	}
-	
+
 	@Override
 	protected boolean createKeys(List<Hub> list) {
-		Collection<? extends Hub> tcl = service.findAll();
-		list.addAll(tcl);
+		list.addAll(lookupResult.allInstances());
 		return true;
 	}
 
-    @Override
-    protected Node createNodeForKey(Hub key) {
-        BeanNode node = null;
-        try {
+	@Override
+	protected Node createNodeForKey(Hub key) {
+		BeanNode node = null;
+		try {
 			node = new HubNode(key);
 			node.addNodeListener(this);
-        } catch (IntrospectionException ex) {
-            Exceptions.printStackTrace(ex);
+		} catch (IntrospectionException ex) {
+			Exceptions.printStackTrace(ex);
 		}
-        return node;
-    }
+		return node;
+	}
 
 	@Override
 	public void resultChanged(LookupEvent le) {
-	    refresh(true);
+		refresh(true);
 	}
 
-		@Override
+	@Override
 	public void nodeDestroyed(NodeEvent ne) {
 		Node node = ne.getNode();
-		Hub hub =
-				(Hub) node.getLookup().lookup(Hub.class);
+		Hub hub
+				= (Hub) node.getLookup().lookup(Hub.class);
 
-		Lookup.Result result = Utilities.actionsGlobalContext().lookupResult (Hub.class);
+		Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(Hub.class);
 		Collection<Hub> selectedBeans = result.allInstances();
-		for(Hub bean : selectedBeans){
-			if(bean == hub){
+		for (Hub bean : selectedBeans) {
+			if (bean == hub) {
 				service.delete(hub);
-			}	
+			}
 		}
 		refresh(true);
 	}
 
 	@Override
-	public void childrenAdded(NodeMemberEvent ev) {}
+	public void childrenAdded(NodeMemberEvent ev) {
+	}
+
 	@Override
-	public void childrenRemoved(NodeMemberEvent ev) {}
+	public void childrenRemoved(NodeMemberEvent ev) {
+	}
+
 	@Override
-	public void childrenReordered(NodeReorderEvent ev) {}
+	public void childrenReordered(NodeReorderEvent ev) {
+	}
+
 	@Override
-	public void propertyChange(PropertyChangeEvent pce) {}
+	public void propertyChange(PropertyChangeEvent pce) {
+	}
 
 }
