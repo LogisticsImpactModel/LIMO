@@ -41,8 +41,7 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
 
 	@Override
 	protected boolean createKeys(List<ProcedureCategory> list) {
-		Collection<? extends ProcedureCategory> tcl = lookupResult.allInstances();
-		list.addAll(tcl);
+		list.addAll(lookupResult.allInstances());
 		return true;
 	}
 
