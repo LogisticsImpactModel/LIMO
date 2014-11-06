@@ -15,8 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.Event;
@@ -37,14 +35,13 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     private JLabel parametersLabel;
     private JTable parametersTable;
 
-    private final Event event;
+    private Event event;
     private DistributionFactory distributionFactory;
 
     private final ResourceBundle bundle;
 
     public NameDescriptionProbabilityPanel() {
         bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
-        event = new Event();
         initComponents();
     }
 
@@ -120,7 +117,6 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         c.gridheight = 3;
         add(parametersTable, c);
 
-        distributionTypeComboBox.setSelectedIndex(0);
     }
 
     private GridBagConstraints initLayout() {
@@ -133,22 +129,6 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     private void initName() {
         nameLabel = new javax.swing.JLabel(bundle.getString("NAME"));
         nameTextField = new javax.swing.JTextField();
-        nameTextField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateEventFromInput();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateEventFromInput();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                updateEventFromInput();
-            }
-        });
     }
 
     private void initDistribution() {
@@ -169,18 +149,17 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     }
 
     public void update(Event event) {
-        if (event != null) {
-            nameTextField.setText(event.getName());
-            descriptionTextArea.setText(event.getDescription());
-            Distribution probability = event.getProbability();
-            if (probability != null) {
-                String nameForDistributionType = probability.getClass().getSimpleName();
-                distributionTypeComboBox.setSelectedItem(nameForDistributionType);
-            } else {
-                distributionTypeComboBox.setSelectedIndex(0);
-            }
-            ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
+        this.event = event;
+        nameTextField.setText(event.getName());
+        descriptionTextArea.setText(event.getDescription());
+        Distribution probability = event.getProbability();
+        if (probability != null) {
+            String nameForDistributionType = probability.getClass().getSimpleName();
+            distributionTypeComboBox.setSelectedItem(nameForDistributionType);
+        } else {
+            distributionTypeComboBox.setSelectedIndex(0);
         }
+        ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
     }
 
     public Event getEvent() {

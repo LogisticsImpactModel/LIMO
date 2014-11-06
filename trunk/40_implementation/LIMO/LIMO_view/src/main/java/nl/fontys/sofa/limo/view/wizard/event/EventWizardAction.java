@@ -29,7 +29,9 @@ public final class EventWizardAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
-        panels.add(new NewOrDuplicatedEventWizard());
+        if (!isUpdate) {
+            panels.add(new NewOrDuplicatedEventWizard());
+        }
         panels.add(new NameDescriptionProbabilityWizard());
         panels.add(new SubEventsWizard());
         panels.add(new ProceduresWizard());
@@ -53,19 +55,15 @@ public final class EventWizardAction implements ActionListener {
             wiz.putProperty(bundle.getString("EVENT"), event);
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    EventService service = Lookup.getDefault().lookup(EventService.class);
-                    if (isUpdate) {
-                        service.update((Event) wiz.getProperty(bundle.getString("EVENT")));
-                    } else {
-                        service.insert((Event) wiz.getProperty(bundle.getString("EVENT")));
-                    }
-                }
-            }).start();
+            EventService service = Lookup.getDefault().lookup(EventService.class);
+            if (isUpdate) {
+                service.update((Event) wiz.getProperty(bundle.getString("EVENT")));
+            } else {
+                service.insert((Event) wiz.getProperty(bundle.getString("EVENT")));
+            }
         }
     }
+
     public void isUpdate(Event event) {
         this.event = event;
         this.isUpdate = true;

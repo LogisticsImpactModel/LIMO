@@ -12,7 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import nl.fontys.sofa.limo.api.dao.EventDAO;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import org.openide.util.Lookup;
 
@@ -24,7 +24,7 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
     JRadioButton eventCopySelection;
 
     private List<Event> eventList;
-    private EventDAO eventDAO;
+    private EventService service;
     private final ResourceBundle bundle;
 
     public NewOrDuplicatedEventPanel() {
@@ -78,18 +78,13 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
             }
         });
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                eventDAO = Lookup.getDefault().lookup(EventDAO.class);
-                eventList = eventDAO.findAll();
-                List<String> events = new ArrayList<>();
-                for (Event event : eventList) {
-                    events.add(event.getName());
-                }
-                eventsCb.setModel(new DefaultComboBoxModel(events.toArray(new String[events.size()])));
-            }
-        }).start();
+        service = Lookup.getDefault().lookup(EventService.class);
+        eventList = service.findAll();
+        List<String> events = new ArrayList<>();
+        for (Event event : eventList) {
+            events.add(event.getName());
+        }
+        eventsCb.setModel(new DefaultComboBoxModel(events.toArray(new String[events.size()])));
 
         c.weightx = 1;
         c.gridx = 0;
@@ -99,12 +94,12 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
     }
 
     public Event getEvent() {
-        Event event = null;
+        Event event = new Event();
         if (eventCopySelection.isSelected()) {
             try {
-                event = eventDAO.findById(eventList.get(eventsCb.getSelectedIndex()).getId());
+                event = service.findById(eventList.get(eventsCb.getSelectedIndex()).getId());
                 event.setId(null);
-                event.setUniqueIdentifier("");
+                event.setUniqueIdentifier(null);
             } catch (IndexOutOfBoundsException ex) {
             }
         }
