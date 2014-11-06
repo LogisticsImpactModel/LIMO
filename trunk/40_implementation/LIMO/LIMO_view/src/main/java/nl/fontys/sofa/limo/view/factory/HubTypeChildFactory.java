@@ -28,70 +28,59 @@ import org.openide.util.Utilities;
  * @author Sebastiaan Heijmann
  */
 public class HubTypeChildFactory extends ChildFactory<HubType>
-		implements LookupListener, NodeListener {
+        implements LookupListener, NodeListener {
 
-	private final Result<HubType> lookupResult;
-	private final HubTypeService service;
+    private final Result<HubType> lookupResult;
+    private final HubTypeService service;
 
-	public HubTypeChildFactory() {
-		service = Lookup.getDefault().lookup(HubTypeService.class);
-		lookupResult = service.getLookup().lookupResult(HubType.class);
-		lookupResult.addLookupListener(this);
-	}
+    public HubTypeChildFactory() {
+        service = Lookup.getDefault().lookup(HubTypeService.class);
+        lookupResult = service.getLookup().lookupResult(HubType.class);
+        lookupResult.addLookupListener(this);
+    }
 
-	@Override
-	protected boolean createKeys(List<HubType> list) {
-		list.addAll(lookupResult.allInstances());
-		return true;
-	}
+    @Override
+    protected boolean createKeys(List<HubType> list) {
+        list.addAll(lookupResult.allInstances());
+        return true;
+    }
 
-	@Override
-	protected Node createNodeForKey(HubType key) {
-		BeanNode node = null;
-		try {
-			node = new HubTypeNode(key);
-			node.addNodeListener(this);
-		} catch (IntrospectionException ex) {
-			Exceptions.printStackTrace(ex);
-		}
-		return node;
-	}
+    @Override
+    protected Node createNodeForKey(HubType key) {
+        BeanNode node = null;
+        try {
+            node = new HubTypeNode(key);
+            node.addNodeListener(this);
+        } catch (IntrospectionException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return node;
+    }
 
-	@Override
-	public void resultChanged(LookupEvent le) {
-		refresh(true);
-	}
+    @Override
+    public void resultChanged(LookupEvent le) {
+        refresh(true);
+    }
 
-	@Override
-	public void nodeDestroyed(NodeEvent ne) {
-		Node node = ne.getNode();
-		HubType ht
-				= (HubType) node.getLookup().lookup(HubType.class);
+    @Override
+    public void nodeDestroyed(NodeEvent ne) {
+        refresh(true);
+    }
 
-		Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(HubType.class);
-		Collection<HubType> selectedBeans = result.allInstances();
-		for (HubType bean : selectedBeans) {
-			if (bean == ht) {
-				service.delete(ht);
-			}
-		}
-		refresh(true);
-	}
+    @Override
+    public void childrenAdded(NodeMemberEvent ev) {
+    }
 
-	@Override
-	public void childrenAdded(NodeMemberEvent ev) {
-	}
+    @Override
+    public void childrenRemoved(NodeMemberEvent ev) {
+    }
 
-	@Override
-	public void childrenRemoved(NodeMemberEvent ev) {
-	}
+    @Override
+    public void childrenReordered(NodeReorderEvent ev) {
+    }
 
-	@Override
-	public void childrenReordered(NodeReorderEvent ev) {
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent pce) {
-	}
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+    }
 
 }
