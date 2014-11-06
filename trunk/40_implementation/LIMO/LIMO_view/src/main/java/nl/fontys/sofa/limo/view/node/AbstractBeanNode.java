@@ -25,7 +25,8 @@ public abstract class AbstractBeanNode extends BeanNode{
 
 	/**
  	 * Abstract class which defines basic implementations for nodes and binds
-	 * the datamodel. Override getActions and getNewTypes methods to define
+	 * the datamodel. The datamodel is available through the AbstractBeanNode's 
+	 * lookup. <p> Override getActions and getNewTypes methods to define
 	 * actions associated with this Node.
 	 * 
 	 * @param bean the underlying datamodel

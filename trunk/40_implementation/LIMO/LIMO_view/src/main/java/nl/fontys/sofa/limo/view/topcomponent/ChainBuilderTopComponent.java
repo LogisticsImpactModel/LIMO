@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.custom.pane.ChainScene;
-import nl.fontys.sofa.limo.view.custom.pane.PaletteSupport;
+import nl.fontys.sofa.limo.view.factory.ChainPaletteFactory;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
@@ -20,7 +15,7 @@ import org.openide.util.NbBundle.Messages;
 import org.openide.util.lookup.Lookups;
 
 /**
- * Top component which displays something.
+ * Top component which displays a GraphScene and Palette to build a chain with.
  */
 @ConvertAsProperties(
 		dtd = "-//nl.fontys.sofa.limo.view.topcomponent//ChainBuilder//EN",
@@ -35,11 +30,10 @@ import org.openide.util.lookup.Lookups;
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent")
 @ActionReference(path = "Menu/Chain" /*, position = 333 */)
 @TopComponent.OpenActionRegistration(
-		displayName = "#CTL_ChainBuilderAction",
-		preferredID = "ChainBuilderTopComponent"
+		displayName = "#CTL_ChainBuilderAction"
 )
 @Messages({
-	"CTL_ChainBuilderAction=ChainBuilder",
+	"CTL_ChainBuilderAction=New Chain",
 	"CTL_ChainBuilderTopComponent=ChainBuilder Window",
 	"HINT_ChainBuilderTopComponent=Build a chain"
 })
@@ -51,7 +45,7 @@ public final class ChainBuilderTopComponent extends TopComponent {
 		setName(Bundle.CTL_ChainBuilderTopComponent());
 		setToolTipText(Bundle.HINT_ChainBuilderTopComponent());
 		try {
-			associateLookup( Lookups.singleton(PaletteSupport.createPalette() ));
+			associateLookup(Lookups.singleton(ChainPaletteFactory.createPalette() ));
 		} catch (ServiceNotFoundException ex) {
 			Exceptions.printStackTrace(ex);
 			NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
@@ -59,7 +53,6 @@ public final class ChainBuilderTopComponent extends TopComponent {
 					+ "your administrator...",
 					NotifyDescriptor.ERROR_MESSAGE);
 		}
-
 	}
 
 	private void initCustomComponents() {
