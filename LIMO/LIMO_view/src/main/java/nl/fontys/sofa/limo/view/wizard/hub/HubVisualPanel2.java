@@ -75,6 +75,7 @@ public final class HubVisualPanel2 extends JPanel {
                     File icon = fc.getSelectedFile();
                     newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage());
                     lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
+                    btnRemove.setEnabled(true);
                 }
             }
         });
@@ -88,11 +89,13 @@ public final class HubVisualPanel2 extends JPanel {
                 Image image = IconUtil.getIcon(HubType.class, 2);
                 Icon newIcon = new Icon((BufferedImage) image);
                 lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
+                btnRemove.setEnabled(false);
             }
         });
         Image image = IconUtil.getIcon(HubType.class, 2);
         Icon newIcon = new Icon((BufferedImage) image);
         lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
+        btnRemove.setEnabled(false);
     }
 
     public void updateLabel(String identifire, Icon ic) {

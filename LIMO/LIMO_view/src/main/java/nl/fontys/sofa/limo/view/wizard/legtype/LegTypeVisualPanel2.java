@@ -90,6 +90,7 @@ public final class LegTypeVisualPanel2 extends JPanel {
                     Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage());
                     legType.setIcon(newIcon);
                     lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
+                    btnRemove.setEnabled(true);
                 }
             }
         });
@@ -104,12 +105,14 @@ public final class LegTypeVisualPanel2 extends JPanel {
                 Icon newIcon = new Icon((BufferedImage) image);
                 legType.setIcon(newIcon);
                 lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
+                btnRemove.setEnabled(false);
             }
         });
         Image image = IconUtil.getIcon(LegType.class, 2);
         Icon newIcon = new Icon((BufferedImage) image);
         legType.setIcon(newIcon);
         lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
+        btnRemove.setEnabled(false);
     }
 
     public void updateLabel(String identifire, Icon ic) {
