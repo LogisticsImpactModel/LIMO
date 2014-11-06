@@ -9,9 +9,11 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,7 +26,6 @@ import static org.junit.Assert.*;
 public class IconTest {
     Icon icon;
     String location = "testing_src/ic.png";
-    //TODO relative path
     
     public IconTest() {
     }
@@ -69,12 +70,17 @@ public class IconTest {
     @Test
     public void testGetImage() {
         System.out.println("getImage");
-        testSetImage_String();//set img
-        byte[] imageBytes = ((DataBufferByte) icon.getImage().getData().getDataBuffer()).getData();
+        testSetImage_String();//set img using other test
+        BufferedImage actualImg = icon.getImage();
+        byte[] actualImageBytes = ((DataBufferByte) actualImg.getData().getDataBuffer()).getData();//using Icon class method getImage
         
-        BufferedImage img = null;
+        BufferedImage expectedImg;
         try {
-            img = ImageIO.read(new File(this.location));
+            expectedImg = ImageIO.read(new File(this.location));
+            byte[] expectedImageBytes = ((DataBufferByte) expectedImg.getData().getDataBuffer()).getData();
+            assertTrue("Actual image should have a dimension higher than 0",actualImg.getHeight()>0);
+            System.out.println("Actual img height: "+actualImg);
+            Assert.assertArrayEquals("ByteArrays for actual and expected images should be equal but are not",expectedImageBytes,actualImageBytes);
         } catch (IOException e) {
             fail("Could not locate image at "+ this.location);
         }
