@@ -64,10 +64,14 @@ public final class HubWizardAction implements ActionListener {
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             HubService service = Lookup.getDefault().lookup(HubService.class);
+            Hub hub = (Hub) wiz.getProperty("hub");
             if (update) {
-                service.update((Hub) wiz.getProperty("hub"));
+                if (hub.getId()==null) {
+                    hub.setId(hubUpdate.getId());
+                }
+                service.update(hub);
             } else {
-                service.insert((Hub) wiz.getProperty("hub"));
+                service.insert(hub);
             }
         }
     }
