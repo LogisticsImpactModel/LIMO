@@ -10,6 +10,7 @@ public class ProceduresWizard implements WizardDescriptor.Panel<WizardDescriptor
 
     private ProceduresPanel component;
     private final ResourceBundle bundle;
+    private Event event;
 
     public ProceduresWizard() {
         bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
@@ -43,13 +44,12 @@ public class ProceduresWizard implements WizardDescriptor.Panel<WizardDescriptor
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Event event = (Event) wiz.getProperty(bundle.getString("EVENT"));
+        event = (Event) wiz.getProperty(bundle.getString("EVENT"));
         getComponent().update(event.getProcedures());
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        Event event = (Event) wiz.getProperty(bundle.getString("EVENT"));
         event.setProcedures(getComponent().getProcedures());
         wiz.putProperty(bundle.getString("EVENT"), event);
     }
