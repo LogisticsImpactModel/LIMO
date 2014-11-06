@@ -91,19 +91,7 @@ public class IconTest {
         System.out.println("getImage");
         testSetImage_String();//set img using other test
         BufferedImage actualImg = icon.getImage();
-        byte[] actualImageBytes = ((DataBufferByte) actualImg.getData().getDataBuffer()).getData();//using Icon class method getImage
-        
-        BufferedImage expectedImg;
-        try {
-            expectedImg = ImageIO.read(new File(this.location));
-            byte[] expectedImageBytes = ((DataBufferByte) expectedImg.getData().getDataBuffer()).getData();
-            assertTrue("Actual image should have a dimension higher than 0",actualImg.getHeight()>0);
-            System.out.println("Actual img height: "+actualImg);
-            Assert.assertArrayEquals("ByteArrays for actual and expected images should be equal but are not",expectedImageBytes,actualImageBytes);
-        } catch (IOException e) {
-            fail("Could not locate image at "+ this.location);
-        }
-       
+        assertTrue("Height of img must be 64 due to fixed size resizing",actualImg.getHeight()==64);
     }
 
     /**
@@ -113,16 +101,11 @@ public class IconTest {
     public void testSetImage_BufferedImage() {
         System.out.println("setImage"); 
         try {
-            BufferedImage inputImg = ImageIO.read(new File(this.location));
-            byte[] inputImageBytes = ((DataBufferByte) inputImg.getData().getDataBuffer()).getData();
-                        
-            icon.setImage(inputImg);
-            
-            BufferedImage outputImg = icon.getImage();
-            byte[] outputImageBytes = ((DataBufferByte) outputImg.getData().getDataBuffer()).getData();
-            Assert.assertArrayEquals("Byte arrays should be equal",inputImageBytes,outputImageBytes);
+            BufferedImage inputImg = ImageIO.read(new File(this.location));//orig res                        
+            icon.setImage(inputImg);//insert orig img into icon class
+            BufferedImage outputImg = icon.getImage();//has been resized to 64x64
             assertTrue("Input img height should be > 0",inputImg.getHeight()>0);
-            assertEquals("Input and output img should have same heights",inputImg.getHeight(),outputImg.getHeight());
+            assertEquals("Input and output img should have same heights",64,outputImg.getHeight());
         } catch (IOException e) {
             fail("Could not locate image at "+ this.location);
         }
