@@ -11,7 +11,7 @@ import nl.fontys.sofa.limo.domain.component.type.LegType;
 public class LegTypeNode extends AbstractBeanNode{
 
 	public LegTypeNode(LegType bean) throws IntrospectionException{
-		super(bean);
+		super(bean, LegType.class);
 	}
 
 	@Override
