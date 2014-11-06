@@ -66,7 +66,6 @@ public final class EventWizardAction implements ActionListener {
             }).start();
         }
     }
-
     public void isUpdate(Event event) {
         this.event = event;
         this.isUpdate = true;

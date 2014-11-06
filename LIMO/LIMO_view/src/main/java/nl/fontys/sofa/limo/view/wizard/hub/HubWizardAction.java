@@ -25,13 +25,15 @@ import org.openide.util.Lookup;
 // your code. You can move the code below wherever you need, or register an action:
 @ActionID(category = "Hub", id = "nl.fontys.limo.view.wizzard.hub.HubWizardAction")
 @ActionRegistration(displayName = "Add Hub")
-@ActionReference(path = "Menu/Data/Hub", position=20)
+@ActionReference(path = "Menu/Data/Hub", position = 20)
 public final class HubWizardAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
-        panels.add(new HubWizardPanel1());
+        if (!update) {
+            panels.add(new HubWizardPanel1());
+        }
         panels.add(new HubWizardPanel2());
         panels.add(new HubWizardPanel3());
         panels.add(new HubWizardPanel4());
@@ -50,14 +52,31 @@ public final class HubWizardAction implements ActionListener {
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
+
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle("Add Hub");
+        if (update) {
+            wiz.putProperty("hubCopy", hubUpdate);
+            wiz.putProperty("hub", hubUpdate);
+        }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-			HubService service = Lookup.getDefault().lookup(HubService.class);
-            service.insert((Hub) wiz.getProperty("hub"));
+            HubService service = Lookup.getDefault().lookup(HubService.class);
+            if (update) {
+                service.update((Hub) wiz.getProperty("hub"));
+            } else {
+                service.insert((Hub) wiz.getProperty("hub"));
+            }
         }
     }
 
+    public void isUpdate(boolean update, Hub hubUpdate) {
+        this.update = update;
+        this.hubUpdate = hubUpdate;
+    }
+
+    private boolean update = false;
+    private Hub hubUpdate;
 }

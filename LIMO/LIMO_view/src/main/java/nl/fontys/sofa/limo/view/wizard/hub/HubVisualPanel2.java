@@ -16,7 +16,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 
@@ -68,15 +67,13 @@ public final class HubVisualPanel2 extends JPanel {
         c.gridx = 2;
         c.gridy = 1;
         add(btnSelect, c);
-        hub = new Hub();
         btnSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int returnVal = fc.showOpenDialog(HubVisualPanel2.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File icon = fc.getSelectedFile();
-                    Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage());
-                    hub.setIcon(newIcon);
+                    newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage());
                     lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
                 }
             }
@@ -90,29 +87,34 @@ public final class HubVisualPanel2 extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 Image image = IconUtil.getIcon(HubType.class, 2);
                 Icon newIcon = new Icon((BufferedImage) image);
-                hub.setIcon(newIcon);
                 lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
             }
         });
         Image image = IconUtil.getIcon(HubType.class, 2);
         Icon newIcon = new Icon((BufferedImage) image);
-        hub.setIcon(newIcon);
         lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
     }
 
     public void updateLabel(String identifire, Icon ic) {
         if (!identifire.isEmpty()) {
             tfName.setText(identifire);
-            if (ic != null && ic != null) {
+            if (ic != null) {
+                //Why it says nullpointer?
+                try{
                 Image img = ic.getImage();
                 lblPreview.setIcon(new ImageIcon(img));
+                } catch (java.lang.NullPointerException ex){
+                }
             }
         }
     }
+    
+    public Icon getHubIcon(){
+        return newIcon;
+    }
 
-    public Hub getHub() {
-        hub.setName(tfName.getText());
-        return hub;
+    public String getHubName() {
+        return tfName.getText();
     }
 
     private javax.swing.JButton btnSelect, btnRemove;
@@ -121,5 +123,5 @@ public final class HubVisualPanel2 extends JPanel {
     private javax.swing.JLabel lblPreview;
     private javax.swing.JTextField tfName;
     private JFileChooser fc;
-    private Hub hub;
+    private Icon newIcon;
 }
