@@ -22,16 +22,16 @@ import org.openide.util.LookupListener;
 import org.openide.util.Utilities;
 
 /**
- * Factory responsible for creating the LegType children. It listens
- * to changes in the service layer and in the nodes.
+ * Factory responsible for creating the LegType children. It listens to changes
+ * in the service layer and in the nodes.
  *
  * @author Sebastiaan Heijmann
  */
 public class LegTypeChildFactory extends ChildFactory<LegType>
-		implements LookupListener, NodeListener{
+		implements LookupListener, NodeListener {
 
 	private final Result<LegType> lookupResult;
-	private LegTypeService service; 
+	private final LegTypeService service;
 
 	public LegTypeChildFactory() {
 		service = Lookup.getDefault().lookup(LegTypeService.class);
@@ -65,10 +65,10 @@ public class LegTypeChildFactory extends ChildFactory<LegType>
 	@Override
 	public void nodeDestroyed(NodeEvent ne) {
 		Node node = ne.getNode();
-		LegType lt =
-				(LegType) node.getLookup().lookup(LegType.class);
+		LegType lt
+				= (LegType) node.getLookup().lookup(LegType.class);
 
-		Lookup.Result result = Utilities.actionsGlobalContext().lookupResult (LegType.class);
+		Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(LegType.class);
 		Collection<LegType> selectedBeans = result.allInstances();
 		for(LegType bean : selectedBeans){
 			if(bean == lt){
@@ -79,12 +79,19 @@ public class LegTypeChildFactory extends ChildFactory<LegType>
 	}
 
 	@Override
-	public void childrenAdded(NodeMemberEvent ev) {}
+	public void childrenAdded(NodeMemberEvent ev) {
+	}
+
 	@Override
-	public void childrenRemoved(NodeMemberEvent ev) {}
+	public void childrenRemoved(NodeMemberEvent ev) {
+	}
+
 	@Override
-	public void childrenReordered(NodeReorderEvent ev) {}
+	public void childrenReordered(NodeReorderEvent ev) {
+	}
+
 	@Override
-	public void propertyChange(PropertyChangeEvent pce) {}
+	public void propertyChange(PropertyChangeEvent pce) {
+	}
 
 }

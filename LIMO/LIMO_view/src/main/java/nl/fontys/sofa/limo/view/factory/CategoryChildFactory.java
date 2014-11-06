@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.factory;
 import java.util.List;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.node.EventRootNode;
+import nl.fontys.sofa.limo.view.node.HubRootNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
@@ -24,8 +25,11 @@ public class CategoryChildFactory extends ChildFactory<Node>{
 			eventRootNode.setDisplayName("Events");
 			list.add(eventRootNode);
 
-			//TODO
-			// Add more components to the list
+			Children hubChildren =
+				Children.create(new HubChildFactory(), true);
+			Node hubRootNode = new HubRootNode(hubChildren);
+			hubRootNode.setDisplayName("Hubs");
+			list.add(hubRootNode);
 		} catch (ServiceNotFoundException ex) {
 			Exceptions.printStackTrace(ex);
 		}
