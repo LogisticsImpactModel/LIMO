@@ -93,8 +93,6 @@ public class ChainScene extends GraphScene<ContainerNode, String> {
 		connection.setTargetAnchor(anchor);
 	}
         
-        private static class InitialHubAction extends WidgetAction.Adapter {
-
 	private class AcceptAction implements AcceptProvider {
 
 		@Override
