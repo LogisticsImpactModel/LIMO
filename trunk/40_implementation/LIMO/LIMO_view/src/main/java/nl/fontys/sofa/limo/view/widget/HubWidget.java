@@ -10,7 +10,7 @@ import org.netbeans.api.visual.widget.general.IconNodeWidget;
  *
  * @author Sebastiaan Heijmann
  */
-public class HubWidget extends IconNodeWidget{
+public class HubWidget extends DefaultIconNodeWidget{
 
 	/**
 	 * Constructor sets up the widget by setting the display name and image.
@@ -18,8 +18,8 @@ public class HubWidget extends IconNodeWidget{
 	 * @param container - the container for the HubNode.
 	 */
 	public HubWidget(Scene scene, ContainerNode container) {
-		super(scene);
-		setLabel(container.getDisplayName());
-		setImage(container.getImage());
+		super(scene, container);
 	}
+
+
 }

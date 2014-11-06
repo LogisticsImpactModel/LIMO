@@ -17,6 +17,7 @@ import org.netbeans.api.visual.action.AcceptProvider;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectProvider;
 import org.netbeans.api.visual.action.ConnectorState;
+import org.netbeans.api.visual.action.SelectProvider;
 import org.netbeans.api.visual.anchor.Anchor;
 import org.netbeans.api.visual.anchor.AnchorFactory;
 import org.netbeans.api.visual.anchor.AnchorShape;
@@ -40,6 +41,9 @@ public class ChainScene extends GraphScene<ContainerNode, String> {
 	private final LayerWidget mainLayer;
 	private final LayerWidget connectionLayer;
 
+	/**
+	 * Constructor creates two layers and defines an acceptaction.
+	 */
 	public ChainScene() {
 		mainLayer = new LayerWidget(this);
 		addChild(mainLayer);
@@ -47,6 +51,7 @@ public class ChainScene extends GraphScene<ContainerNode, String> {
 		addChild(connectionLayer);
 
 		getActions().addAction(ActionFactory.createAcceptAction(new AcceptAction()));
+		getActions().addAction(ActionFactory.createSelectAction(null));
 //		mainLayer.setLayout(LayoutFactory.createHorizontalFlowLayout());
 //		GridGraphLayout layout = new GridGraphLayout();
 //		SceneLayout sceneLayout = LayoutFactory.createSceneGraphLayout(this, layout);
@@ -93,6 +98,10 @@ public class ChainScene extends GraphScene<ContainerNode, String> {
 		connection.setTargetAnchor(anchor);
 	}
         
+	/**
+	 * Accept action for the scene. Validates if a widget can be dropped in the
+	 * scene.
+	 */
 	private class AcceptAction implements AcceptProvider {
 
 		@Override
@@ -123,6 +132,10 @@ public class ChainScene extends GraphScene<ContainerNode, String> {
 		}
 	}
 
+	/**
+	 * Connect action for the scene. Validates and connects widgets to each
+	 * other.
+	 */
 	private class ConnectAction implements ConnectProvider {
 
 		@Override
@@ -156,4 +169,5 @@ public class ChainScene extends GraphScene<ContainerNode, String> {
 		}
 
 	}
+
 }
