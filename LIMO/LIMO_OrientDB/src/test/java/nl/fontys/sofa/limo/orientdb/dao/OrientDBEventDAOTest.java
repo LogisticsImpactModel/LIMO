@@ -50,8 +50,9 @@ public class OrientDBEventDAOTest extends NbTestCase {
     @After
     @Override
     public void tearDown() {
-        for (Event ht : dao.findAll())
+        for (Event ht : dao.findAll()) {
             dao.delete(ht);
+        }
         dao = null;
         OrientDBConnector.close();
     }
@@ -81,10 +82,12 @@ public class OrientDBEventDAOTest extends NbTestCase {
      */
     @Test
     public void testInsert() {
+        List<Event> events = dao.findAll();
+        int oldSize = events.size();
         Event event = createEvent();
         event = dao.insert(event);
-        List<Event> events = dao.findAll();
-        assertEquals(2, events.size());
+        events = dao.findAll();
+        assertEquals(oldSize + 1, events.size());
         Event foundEvent = null;
         for (Event e : events) {
             if (e.getId().equals(event.getId())) {
@@ -125,12 +128,6 @@ public class OrientDBEventDAOTest extends NbTestCase {
         Procedure foundLeadTime = foundProcedures.get(0);
         assertEquals(expectedLeadTime.getName(), foundLeadTime.getName());
         assertEquals(expectedLeadTime.getTime().getValue(), foundLeadTime.getTime().getValue());
-
-        // PARENT EVENT
-        Component expectedParent = event.getParent();
-        Component foundParent = event.getParent();
-        assertEquals(expectedParent.getId(), foundParent.getId());
-        assertEquals(expectedParent.getName(), foundParent.getName());
 
         // PROBABILITY
         assertEquals(event.getProbability().getClass(), foundEvent.getProbability().getClass());
@@ -189,11 +186,6 @@ public class OrientDBEventDAOTest extends NbTestCase {
         subEventProcedures.add(rapairingProcess);
         subEvent.setProcedures(subEventProcedures);
         event.addEvent(subEvent);
-
-        //PARENTEVENT
-        Event parentEvent = new Event();
-        parentEvent.setName("Pirate Parent Event");
-        event.setParent(parentEvent);
 
         return event;
     }

@@ -19,7 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
-import nl.fontys.sofa.limo.api.dao.EventDAO;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.util.IconUtil;
@@ -33,7 +33,7 @@ public final class SubEventsPanel extends JPanel {
     JButton btnAdd;
     JButton btnDelete;
 
-    private EventDAO eventDAO;
+    private EventService service;
     private List<Event> eventList;
     private EventTableModel tableModel;
     private Event event;
@@ -101,7 +101,7 @@ public final class SubEventsPanel extends JPanel {
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Event selected = eventDAO.findById(eventList.get(cbEvents.getSelectedIndex()).getId());
+                Event selected = service.findById(eventList.get(cbEvents.getSelectedIndex()).getId());
                 selected.setId(null);
                 selected.setDependency(ExecutionState.INDEPENDENT);
                 selected.setParent(event);
@@ -121,29 +121,24 @@ public final class SubEventsPanel extends JPanel {
             }
         });
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                eventDAO = Lookup.getDefault().lookup(EventDAO.class);
-                eventList = eventDAO.findAll();
-                List<String> events = new ArrayList<>();
-                btnAdd.setEnabled(!eventList.isEmpty());
-                for (Event event : eventList) {
-                    events.add(event.getName());
-                }
-                cbEvents.setModel(new javax.swing.DefaultComboBoxModel(events.toArray()));
+        service = Lookup.getDefault().lookup(EventService.class);
+        eventList = service.findAll();
+        List<String> events = new ArrayList<>();
+        btnAdd.setEnabled(!eventList.isEmpty());
+        for (Event e : eventList) {
+            if (event != null && !e.getId().equals(event.getId())) {
+                events.add(e.getName());
             }
-        }).start();
+        }
+        cbEvents.setModel(new javax.swing.DefaultComboBoxModel(events.toArray()));
     }
 
     public void update(Event event) {
-        if (event != null) {
-            this.event = event;
-            tableModel.getEvents().addAll(event.getEvents());
-            tableModel.fireTableDataChanged();
-            btnDelete.setEnabled(tableModel.getRowCount() > 0);
-            this.event.setEvents(new ArrayList<Event>());
-        }
+        this.event = event;
+        tableModel.getEvents().addAll(event.getEvents());
+        tableModel.fireTableDataChanged();
+        btnDelete.setEnabled(tableModel.getRowCount() > 0);
+        this.event.setEvents(new ArrayList<Event>());
     }
 
     public Event getEvent() {
