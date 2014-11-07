@@ -1,11 +1,8 @@
 package nl.fontys.sofa.limo.updatecenter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 import org.netbeans.api.autoupdate.InstallSupport;
 import org.netbeans.api.autoupdate.OperationContainer;
-import org.netbeans.api.autoupdate.UpdateElement;
 import org.openide.util.RequestProcessor;
 
 /**

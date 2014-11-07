@@ -142,10 +142,10 @@ public class Icon implements Serializable {
      */
     private void buildImageFromData() {
         try {
-            Iterator<ImageReader> imageReaderIterator = ImageIO.getImageReadersByFormatName(imageType);
+            Iterator<ImageReader> imageReaderIterator = ImageIO.getImageReadersByFormatName(getImageType());
             while (imageReaderIterator.hasNext()) {
                 ImageReader imageReader = imageReaderIterator.next();
-                imageReader.setInput(new MemoryCacheImageInputStream(new ByteArrayInputStream(data)));
+                imageReader.setInput(new MemoryCacheImageInputStream(new ByteArrayInputStream(getData())));
                 this.image = imageReader.read(imageReader.getMinIndex());
             }
             resizeIcon();
@@ -162,7 +162,7 @@ public class Icon implements Serializable {
                 BufferedImage resizedImage = new BufferedImage(ICON_WIDTH, ICON_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
                 Graphics graphics = resizedImage.createGraphics();
                 graphics.drawImage(image, 0, 0, ICON_WIDTH, ICON_HEIGHT, null);
-                this.setImage(resizedImage, imageType);
+                this.setImage(resizedImage, getImageType());
                 graphics.dispose();
             }
             setByteArrayFromImage();
