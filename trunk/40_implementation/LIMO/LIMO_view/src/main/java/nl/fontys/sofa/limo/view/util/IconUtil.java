@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
@@ -55,9 +57,9 @@ public class IconUtil {
         typeIcons = new HashMap<>();
         
         typeIcons.put(ProcedureCategory.class, new IconHolder("ProcedureCategory"));
-        typeIcons.put(LegType.class, new IconHolder("Leg"));
+        typeIcons.put(Leg.class, new IconHolder("LegType"));
         typeIcons.put(LegType.class, new IconHolder("LegType"));
-        typeIcons.put(HubType.class, new IconHolder("Hub"));
+        typeIcons.put(Hub.class, new IconHolder("HubType"));
         typeIcons.put(HubType.class, new IconHolder("HubType"));
         typeIcons.put(Event.class, new IconHolder("Event"));
         
