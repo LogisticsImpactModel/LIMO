@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -126,11 +127,11 @@ public final class SubEventsPanel extends JPanel {
         List<String> events = new ArrayList<>();
         btnAdd.setEnabled(!eventList.isEmpty());
         for (Event e : eventList) {
-            if (event != null && !e.getId().equals(event.getId())) {
+            if (event == null || (event != null && !e.getId().equals(event.getId()))) {
                 events.add(e.getName());
             }
         }
-        cbEvents.setModel(new javax.swing.DefaultComboBoxModel(events.toArray()));
+        cbEvents.setModel(new DefaultComboBoxModel(events.toArray()));
     }
 
     public void update(Event event) {

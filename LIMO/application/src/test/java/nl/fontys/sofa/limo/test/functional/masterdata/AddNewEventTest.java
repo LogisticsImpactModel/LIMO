@@ -5,16 +5,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import junit.framework.Test;
-import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.input.InputValue;
 import org.netbeans.jellytools.JellyTestCase;
 import org.netbeans.jellytools.WizardOperator;
 import org.netbeans.jellytools.actions.ActionNoBlock;
-import org.netbeans.jemmy.Timeout;
+import org.netbeans.jemmy.operators.JButtonOperator;
 import org.netbeans.jemmy.operators.JComboBoxOperator;
+import org.netbeans.jemmy.operators.JRadioButtonOperator;
 import org.netbeans.jemmy.operators.JTableOperator;
 import org.netbeans.jemmy.operators.JTextAreaOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
@@ -22,16 +23,20 @@ import org.netbeans.junit.NbModuleSuite;
 import org.netbeans.junit.NbModuleSuite.Configuration;
 import org.openide.util.Lookup;
 
-public class AddEventTest extends JellyTestCase {
+public class AddNewEventTest extends JellyTestCase {
 
-    private EventDAO eventDAO;
+    private static final String NEW_EVENT_NAME = "Pirates";
 
-    public AddEventTest(String name) {
+    private static EventService eventService;
+    private WizardOperator wo;
+    private static Event event;
+
+    public AddNewEventTest(String name) {
         super(name);
     }
 
     public static Test suite() {
-        Configuration testConfig = NbModuleSuite.createConfiguration(AddEventTest.class);
+        Configuration testConfig = NbModuleSuite.createConfiguration(AddNewEventTest.class);
         testConfig = testConfig.addTest("addEventFromScratch_success", "addEventFromScratch_fail");
         testConfig = testConfig.clusters(".*").enableModules(".*");
         return testConfig.suite();
@@ -40,28 +45,35 @@ public class AddEventTest extends JellyTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        event = new Event();
+        event.setName("Sub Events");
+        eventService = Lookup.getDefault().lookup(EventService.class);
+        event = eventService.insert(event);
         new ActionNoBlock("Data|Event|Add", null).perform();
-        eventDAO = Lookup.getDefault().lookup(EventDAO.class);
+        wo = new WizardOperator("Add Event");
+        new JRadioButtonOperator(wo, 0).setSelected(true);
+        wo.btNext().push();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        eventService.delete(event);
     }
 
     public void addEventFromScratch_success() throws InterruptedException {
-        int size = eventDAO.findAll().size();
-        // Create wizard
-        WizardOperator wo = new WizardOperator("Add Event");
-        assertEquals("Title should be Add Event", "Add Event", wo.getTitle());
-        wo.btNext().push();
-        firstPanel(wo);
-
-        wo.btNext().push();
+        int size = eventService.findAll().size();
+        nameDescritpionPropertyPanel();
+        subEventsPanel();
         // Procedures
         wo.btFinish().push();
         // Is stored?
-        List<Event> findAll = eventDAO.findAll();
+        List<Event> findAll = eventService.findAll();
 
         assertEquals(size + 1, findAll.size());
         for (Event e : findAll) {
-            if (e.getName().equals("Pirates")) {
-                eventDAO.delete(e);
+            if (e.getName().equals(NEW_EVENT_NAME)) {
+                eventService.delete(e);
             }
         }
     }
@@ -71,8 +83,8 @@ public class AddEventTest extends JellyTestCase {
      *
      * @param wo is the WizardOperator
      */
-    private void firstPanel(WizardOperator wo) {
-        new JTextFieldOperator(wo, 0).setText("Pirates");
+    private void nameDescritpionPropertyPanel() {
+        new JTextFieldOperator(wo, 0).setText(NEW_EVENT_NAME);
         new JTextAreaOperator(wo, 0).setText("Robbery by pirates");
         DistributionFactory distributionFactory = Lookup.getDefault().lookup(DistributionFactory.class);
         List<String> distTypes = Arrays.asList(distributionFactory.getDistributionTypes());
@@ -83,22 +95,27 @@ public class AddEventTest extends JellyTestCase {
         JTableOperator table = new JTableOperator(wo, 0);
         for (int i = 0; i < inputValues.size(); i++) {
             table.setValueAt("0.5", i, 1);
-            new Timeout("pause", 5000).sleep();
         }
         wo.btNext().push();
     }
 
     public void addEventFromScratch_fail() throws InterruptedException {
-        int size = eventDAO.findAll().size();
-        // Create wizard
-        WizardOperator wo = new WizardOperator("Add Event");
-        assertEquals("Title should be Add Event", "Add Event", wo.getTitle());
+        int size = eventService.findAll().size();
         wo.btNext().push();
         // Name, Description, Property
         wo.btNext().push();
         assertFalse(wo.isValid());
         wo.btCancel().push();
-        assertEquals(size, eventDAO.findAll().size());
+        assertEquals(size, eventService.findAll().size());
+    }
+
+    private void subEventsPanel() {
+        JComboBoxOperator jComboBoxOperator = new JComboBoxOperator(wo, 0);
+        jComboBoxOperator.selectItem(event.getName());
+        new JButtonOperator(wo, 0).push();
+        Object valueAt = new JTableOperator(wo, 0).getValueAt(0, 0);
+        assertEquals(event.getName(), (String) valueAt);
+        wo.btNext().push();
     }
 
 }
