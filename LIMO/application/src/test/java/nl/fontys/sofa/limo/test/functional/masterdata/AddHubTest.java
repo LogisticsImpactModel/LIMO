@@ -94,7 +94,7 @@ public class AddHubTest extends JellyTestCase {
         WizardOperator wo = new WizardOperator("Add Hub");
         new JRadioButtonOperator(wo,1).setSelected(true);
         new JComboBoxOperator(wo, 0).setEnabled(true);
-        new JComboBoxOperator(wo, 0).selectItem(1);
+        new JComboBoxOperator(wo, 0).selectItem(size-1);
         wo.btNext().push();
         new JTextFieldOperator(wo, 0).setText("TestHubCopy");
         wo.btNext().push();
