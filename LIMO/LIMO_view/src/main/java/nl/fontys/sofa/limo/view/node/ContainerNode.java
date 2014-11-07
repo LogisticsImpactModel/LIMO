@@ -2,8 +2,10 @@ package nl.fontys.sofa.limo.view.node;
 
 import java.awt.Image;
 import java.beans.BeanInfo;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.nodes.AbstractNode;
-import org.openide.nodes.Children;
 
 /**
  * Container for nodes used in a GraphScene. <p> Wrap a Node in this container
@@ -17,7 +19,7 @@ public class ContainerNode extends AbstractNode{
 	private final AbstractBeanNode node;
 
 	public ContainerNode(AbstractBeanNode node) {
-		super(Children.LEAF);
+		super(node.getChildren());
 		this.node = node;
 	}
 
@@ -26,7 +28,13 @@ public class ContainerNode extends AbstractNode{
 	 * @return image - image from the underlying Node.
 	 */
 	public Image getImage() {
-		return node.getIcon(BeanInfo.ICON_COLOR_32x32);
+		if(node.getEntityClass() == Hub.class){
+			return node.getLookup().lookup(Hub.class).getIcon().getImage();
+		}else if(node.getEntityClass() == Leg.class){
+			return node.getLookup().lookup(Leg.class).getIcon().getImage();
+		}else{
+			return IconUtil.getIcon(node.getEntityClass(), BeanInfo.ICON_COLOR_32x32);
+		}
 	}
 
 	/**
@@ -38,6 +46,10 @@ public class ContainerNode extends AbstractNode{
 		return node.getDisplayName();
 	}
 
+	/**
+	 * Get the contained BeanNode.
+	 * @return AbstractBeanNode - the contained Node.
+	 */
 	public AbstractBeanNode getBeanNode(){
 		return node;
 	}

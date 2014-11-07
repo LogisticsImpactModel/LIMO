@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.custom.pane.ChainScene;
+import nl.fontys.sofa.limo.view.custom.pane.GraphSceneImpl;
 import nl.fontys.sofa.limo.view.factory.ChainPaletteFactory;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.netbeans.api.visual.graph.GraphScene;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -57,7 +59,7 @@ public final class ChainBuilderTopComponent extends TopComponent {
 
 	private void initCustomComponents() {
 		setLayout(new BorderLayout());
-		ChainScene scene = new ChainScene();
+		GraphScene scene = new GraphSceneImpl();
 		JScrollPane shapePane = new JScrollPane();
 		shapePane.setViewportView(scene.createView());
 		add(shapePane, BorderLayout.CENTER);

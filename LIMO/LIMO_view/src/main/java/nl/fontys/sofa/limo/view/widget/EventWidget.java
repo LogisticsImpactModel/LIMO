@@ -19,6 +19,8 @@ public class EventWidget extends IconNodeWidget{
 	 */
 	public EventWidget(Scene scene, ContainerNode container) {
 		super(scene);
+		setImage(container.getImage());
+		setLabel(container.getDisplayName());
 	}
 
 }

@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.view.factory;
 
+import nl.fontys.sofa.limo.view.custom.pane.ChainScene;
+import nl.fontys.sofa.limo.view.custom.pane.GraphSceneImpl;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
 import nl.fontys.sofa.limo.view.node.EventNode;
 import nl.fontys.sofa.limo.view.node.HubNode;
@@ -30,7 +32,8 @@ public class WidgetFactory {
 		Node node = container.getBeanNode();
 		
 		if (node instanceof HubNode) {
-			return new HubWidget(scene, container);
+			HubWidget widget = new HubWidget(scene, container);
+			return widget;
 		} else if (node instanceof EventNode) {
 			return new EventWidget(scene, container);
 		}
@@ -38,4 +41,7 @@ public class WidgetFactory {
 		return null;
 	}
 
+	private static Widget createHubWidget(){
+		return new HubWidget(null, null);
+	}
 }

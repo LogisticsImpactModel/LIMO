@@ -5,6 +5,7 @@ import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Node;
 
 /**
+ * View representation of the components that are displayed in the palette.
  *
  * @author Sebastiaan Heijmann
  */

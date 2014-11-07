@@ -92,4 +92,9 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
         return this.listener;
     }
 
+	public Class getEntityClass() {
+		return entityClass;
+	}
+	
+
 }
