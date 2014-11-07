@@ -1,9 +1,12 @@
 package nl.fontys.sofa.limo.test.functional.masterdata;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import junit.framework.Test;
 import nl.fontys.sofa.limo.api.dao.EventDAO;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
@@ -11,6 +14,12 @@ import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.input.InputValue;
+import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
+import nl.fontys.sofa.limo.orientdb.dao.OrientDBEventDAO;
+import nl.fontys.sofa.limo.test.mock.service.EventMockService;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.netbeans.jellytools.JellyTestCase;
 import org.netbeans.jellytools.WizardOperator;
 import org.netbeans.jellytools.actions.ActionNoBlock;
@@ -19,6 +28,7 @@ import org.netbeans.jemmy.operators.JRadioButtonOperator;
 import org.netbeans.jemmy.operators.JTableOperator;
 import org.netbeans.jemmy.operators.JTextAreaOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
+import org.netbeans.junit.MockServices;
 import org.netbeans.junit.NbModuleSuite;
 import org.netbeans.junit.NbModuleSuite.Configuration;
 import org.openide.util.Lookup;
@@ -35,6 +45,11 @@ public class AddNewEventTest extends JellyTestCase {
         super(name);
     }
 
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        MockServices.setServices(EventMockService.class);
+    }
+
     public static Test suite() {
         Configuration testConfig = NbModuleSuite.createConfiguration(AddNewEventTest.class);
         testConfig = testConfig.addTest("addEventFromScratch_success", "addEventFromScratch_fail");
@@ -43,11 +58,11 @@ public class AddNewEventTest extends JellyTestCase {
     }
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
+        eventService = Lookup.getDefault().lookup(EventService.class);
         event = new Event();
         event.setName("Sub Events");
-        eventService = Lookup.getDefault().lookup(EventService.class);
         event = eventService.insert(event);
         new ActionNoBlock("Data|Event|Add", null).perform();
         wo = new WizardOperator("Add Event");

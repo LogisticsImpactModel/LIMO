@@ -5,17 +5,23 @@
  */
 package nl.fontys.sofa.limo.test.functional.masterdata;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import junit.framework.Test;
 import nl.fontys.sofa.limo.api.dao.HubDAO;
+import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
+import nl.fontys.sofa.limo.test.mock.service.EventMockService;
+import org.junit.BeforeClass;
 import org.netbeans.jellytools.JellyTestCase;
 import org.netbeans.jellytools.WizardOperator;
 import org.netbeans.jellytools.actions.ActionNoBlock;
 import org.netbeans.jemmy.operators.JComboBoxOperator;
 import org.netbeans.jemmy.operators.JRadioButtonOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
+import org.netbeans.junit.MockServices;
 import org.netbeans.junit.NbModuleSuite;
 import org.openide.util.Lookup;
 
@@ -25,34 +31,36 @@ import org.openide.util.Lookup;
  */
 public class AddHubTest extends JellyTestCase {
 
-    private HubDAO hubDAO;
+    private HubService hubService;
+    private WizardOperator wo;
 
     public AddHubTest(String testName) {
         super(testName);
+    }
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        //MockServices.setServices(HubMockService.class);
     }
 
     public static Test suite() {
         NbModuleSuite.Configuration testConfig = NbModuleSuite.createConfiguration(AddHubTest.class);
         testConfig = testConfig.addTest("addHubFromScratch_success", "addHubFromCopy_success");
         testConfig = testConfig.clusters(".*").enableModules(".*");
-
         return testConfig.suite();
     }
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         new ActionNoBlock("Data|Hub|Add", null).perform();
-        hubDAO = Lookup.getDefault().lookup(HubDAO.class);
+        hubService = Lookup.getDefault().lookup(HubService.class);
     }
 
-    
-    
-
     public void addHubFromScratch_success() throws InterruptedException {
-        int size = hubDAO.findAll().size();
+        int size = hubService.findAll().size();
         // Create wizard
-        WizardOperator wo = new WizardOperator("Add Hub");
+        wo = new WizardOperator("Add Hub");
         assertEquals("Title should be Add Hub", "Add Hub", wo.getTitle());
         wo.btNext().push();
         firstPanel(wo);
@@ -62,7 +70,7 @@ public class AddHubTest extends JellyTestCase {
         // Procedures
         wo.btFinish().push();
         // Is stored?
-        List<Hub> findAll = hubDAO.findAll();
+        List<Hub> findAll = hubService.findAll();
 
         assertEquals(size + 1, findAll.size());
     }
@@ -89,10 +97,10 @@ public class AddHubTest extends JellyTestCase {
     }
 
     public void addHubFromCopy_success() throws InterruptedException {
-        
-        int size = hubDAO.findAll().size();
-        WizardOperator wo = new WizardOperator("Add Hub");
-        new JRadioButtonOperator(wo,1).setSelected(true);
+
+        int size = hubService.findAll().size();
+        wo = new WizardOperator("Add Hub");
+        new JRadioButtonOperator(wo, 1).setSelected(true);
         new JComboBoxOperator(wo, 0).setEnabled(true);
         new JComboBoxOperator(wo, 0).selectItem(0);
         wo.btNext().push();
@@ -105,16 +113,16 @@ public class AddHubTest extends JellyTestCase {
         // Procedures
         wo.btFinish().push();
         // Is stored?
-        List<Hub> findAll = hubDAO.findAll();
+        List<Hub> findAll = hubService.findAll();
 
         assertEquals(size + 1, findAll.size());
 
-        assertFalse(findAll.get(findAll.size()-1).getName().equals(findAll.get(findAll.size() - 2).getName()));
-        assertFalse(findAll.get(findAll.size()-1).getLocation().getStreet().equals(findAll.get(findAll.size() - 2).getLocation().getStreet()));
-        assertTrue(findAll.get(findAll.size()-1).getLocation().getHousenumber().equals(findAll.get(findAll.size() - 2).getLocation().getHousenumber()));
-        for (Hub e : hubDAO.findAll()) {
+        assertFalse(findAll.get(findAll.size() - 1).getName().equals(findAll.get(findAll.size() - 2).getName()));
+        assertFalse(findAll.get(findAll.size() - 1).getLocation().getStreet().equals(findAll.get(findAll.size() - 2).getLocation().getStreet()));
+        assertTrue(findAll.get(findAll.size() - 1).getLocation().getHousenumber().equals(findAll.get(findAll.size() - 2).getLocation().getHousenumber()));
+        for (Hub e : hubService.findAll()) {
             if (e.getName().equals("TestHub") || e.getName().equals("TestHubCopy")) {
-                hubDAO.delete(e);
+                hubService.delete(e);
             }
         }
     }
