@@ -116,7 +116,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(3,3,3,3);
+        c.insets = new Insets(3, 3, 3, 3);
         return c;
     }
 

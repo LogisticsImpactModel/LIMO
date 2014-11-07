@@ -27,7 +27,7 @@ public class AddNewEventTest extends JellyTestCase {
 
     private static final String NEW_EVENT_NAME = "Pirates";
 
-    private static EventService eventService;
+    private EventService eventService;
     private WizardOperator wo;
     private static Event event;
 
