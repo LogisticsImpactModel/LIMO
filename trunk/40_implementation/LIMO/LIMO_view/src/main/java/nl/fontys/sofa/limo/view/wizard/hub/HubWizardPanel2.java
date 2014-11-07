@@ -61,7 +61,7 @@ public class HubWizardPanel2 implements WizardDescriptor.Panel<WizardDescriptor>
     public void readSettings(WizardDescriptor wiz) {
         Hub hub = (Hub) wiz.getProperty("hubCopy");
         if (hub != null) {
-            getComponent().updateLabel(hub.getName(), hub.getIcon());
+            getComponent().updateLabel(hub.getName(), hub.getDescription(), hub.getIcon());
         }
     }
 
@@ -73,8 +73,8 @@ public class HubWizardPanel2 implements WizardDescriptor.Panel<WizardDescriptor>
         } else{
             hub = (Hub) wiz.getProperty("hub");
         }
-            
             hub.setName(getComponent().getHubName());
+            hub.setDescription(getComponent().getDescription());
             hub.setIcon(getComponent().getHubIcon());
         wiz.putProperty("hub", hub);
     }

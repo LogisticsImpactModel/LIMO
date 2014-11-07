@@ -38,6 +38,11 @@ public final class HubVisualPanel2 extends JPanel {
     private void initComponents() {
         lblName = new javax.swing.JLabel("Name");
         tfName = new javax.swing.JTextField();
+        lblDescription = new javax.swing.JLabel("Description");
+        tfDescription = new javax.swing.JTextArea();
+        tfDescription.setRows(4);
+        tfDescription.setBorder(tfName.getBorder());
+        // tfDescription.setSize(tfDescription.getHeight(), tfName.getWidth());
         lblIcon = new javax.swing.JLabel("Icon");
         lblPreview = new javax.swing.JLabel();
         btnSelect = new javax.swing.JButton("Choose");
@@ -79,18 +84,29 @@ public final class HubVisualPanel2 extends JPanel {
         c.gridy = 0;
         c.gridwidth = 3;
         add(tfName, c);
-        c.gridwidth = 1;
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 1;
+        c.gridwidth = 1;
+        add(lblDescription, c);
+        c.gridwidth = 3;
+
+        c.weightx = 0.7;
+        c.gridx = 1;
+        c.gridy = 1;
+        add(tfDescription, c);
+        c.gridwidth = 1;
+        c.weightx = 0.3;
+        c.gridx = 0;
+        c.gridy = 2;
         add(lblIcon, c);
         c.weightx = 0.4;
         c.gridx = 1;
-        c.gridy = 1;
+        c.gridy = 2;
         add(lblPreview, c);
         c.weightx = 0.3;
         c.gridx = 2;
-        c.gridy = 1;
+        c.gridy = 2;
         add(btnSelect, c);
         btnSelect.addActionListener(new ActionListener() {
             @Override
@@ -106,7 +122,7 @@ public final class HubVisualPanel2 extends JPanel {
         });
         c.weightx = 0.3;
         c.gridx = 3;
-        c.gridy = 1;
+        c.gridy = 2;
         add(btnRemove, c);
         btnRemove.addActionListener(new ActionListener() {
             @Override
@@ -123,7 +139,7 @@ public final class HubVisualPanel2 extends JPanel {
         btnRemove.setEnabled(false);
     }
 
-    public void updateLabel(String identifire, Icon ic) {
+    public void updateLabel(String identifire,String desc ,Icon ic) {
         if (!identifire.isEmpty()) {
             tfName.setText(identifire);
             if (ic != null) {
@@ -134,6 +150,7 @@ public final class HubVisualPanel2 extends JPanel {
                 } catch (java.lang.NullPointerException ex) {
                 }
             }
+            tfDescription.setText(desc);
         }
     }
 
@@ -145,11 +162,17 @@ public final class HubVisualPanel2 extends JPanel {
         return tfName.getText();
     }
 
+    public String getDescription() {
+        return tfDescription.getText();
+    }
+
     private javax.swing.JButton btnSelect, btnRemove;
     private javax.swing.JLabel lblIcon;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPreview;
+    private javax.swing.JLabel lblDescription;
     private javax.swing.JTextField tfName;
+    private javax.swing.JTextArea tfDescription;
     private JFileChooser fc;
     private Icon newIcon;
 }
