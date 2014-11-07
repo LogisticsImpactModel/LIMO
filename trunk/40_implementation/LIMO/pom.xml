@@ -9,6 +9,11 @@
     <packaging>pom</packaging>
 
     <name>LIMO-parent</name>
+    
+    <properties>
+        <netbeans.version>RELEASE80</netbeans.version>
+        <brandingToken>limo</brandingToken>
+    </properties>
 
     <repositories>
         <!--
@@ -67,9 +72,5 @@
         <module>LIMO_Service</module>
         <module>LIMO_UpdateCenter</module>
     </modules>
-    <properties>
-        <netbeans.version>RELEASE80</netbeans.version>
-        <brandingToken>limo</brandingToken>
-    </properties>
     
 </project>
