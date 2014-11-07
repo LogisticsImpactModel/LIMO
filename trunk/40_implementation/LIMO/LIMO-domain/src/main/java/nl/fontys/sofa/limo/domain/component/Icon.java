@@ -4,15 +4,17 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.Raster;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.MemoryCacheImageInputStream;
 
 /**
  * An icon used by hubs and legs.
@@ -22,23 +24,26 @@ import javax.imageio.ImageIO;
 public class Icon implements Serializable {
 
     private byte[] data;
+    private String imageType;
     private transient BufferedImage image;
+    private static final transient int ICON_WIDTH = 64, ICON_HEIGHT = 64;
 
     /*
      CONSTRUCTORS
      */
     public Icon() {
+        imageType = "";
         data = new byte[]{};
-        this.buildImageFromData();
     }
 
-    public Icon(byte[] data) {
+    public Icon(byte[] data, String imageType) {
         this.data = data;
+        this.imageType = imageType;
         this.buildImageFromData();
     }
 
-    public Icon(Image image) {
-        this.setImage(image);
+    public Icon(Image image, String imageType) {
+        this.setImage(image, imageType);
         this.resizeIcon();
     }
 
@@ -46,7 +51,7 @@ public class Icon implements Serializable {
      GETTERS
      */
     public byte[] getData() {
-        return data;
+        return this.data;
     }
 
     public BufferedImage getImage() {
@@ -56,20 +61,31 @@ public class Icon implements Serializable {
         return this.image;
     }
 
+    public String getImageType() {
+        return this.imageType;
+    }
+
     /*
      SETTERS
      */
-    public void setData(byte[] data) {
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
+    }
+
+    public void setData(byte[] data, String imageType) {
         this.data = data;
-        buildImageFromData();
+        this.imageType = imageType;
+        this.buildImageFromData();
     }
 
     /**
      * Set icon by image.
      *
      * @param image New icon image.
+     * @param imageType Type of the image.
      */
-    public final void setImage(Image image) {
+    public final void setImage(Image image, String imageType) {
+        this.imageType = imageType;
         if (!(image instanceof BufferedImage)) {
             this.image = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D bGr = this.image.createGraphics();
@@ -84,28 +100,34 @@ public class Icon implements Serializable {
     /**
      * Set icon by path. Old one will not change upon error.
      *
-     * @param path Path to new icon.
+     * @param imagePath Path to new icon.
      */
-    public void setImage(String path) {
-        byte[] buffer = this.data;
+    public void setImage(String imagePath) {
+        byte[] dataBuffer = this.data;
+        String imageTypeBuffer = imageType;
         try {
-            File imageFile = new File(path);
-            this.image = ImageIO.read(imageFile);
-            resizeIcon();
-        } catch (IOException ex) {
-            System.out.println("Image: '" + path + "' could not get loaded");
-            if (buffer == null) {
-                this.data = new byte[]{};
-            } else {
-                this.data = buffer;
+            File imageFile = new File(imagePath);
+            if (imageFile.exists()) {
+                this.imageType = imagePath.split("\\.")[imagePath.split("\\.").length - 1];
+                this.image = ImageIO.read(imageFile);
+                resizeIcon();
             }
+        } catch (IOException ex) {
+            System.out.println("Image: '" + imagePath + "' could not get loaded");
+            this.data = dataBuffer;
+            this.imageType = imageTypeBuffer;
             buildImageFromData();
         }
     }
 
     private void buildImageFromData() {
         try {
-            this.image = ImageIO.read(new ByteArrayInputStream(this.data));
+            Iterator<ImageReader> imageReaderIterator = ImageIO.getImageReadersByFormatName(imageType);
+            while (imageReaderIterator.hasNext()) {
+                ImageReader imageReader = imageReaderIterator.next();
+                imageReader.setInput(new MemoryCacheImageInputStream(new ByteArrayInputStream(data)));
+                this.image = imageReader.read(imageReader.getMinIndex());
+            }
             resizeIcon();
         } catch (IOException ex) {
             Logger.getLogger(Icon.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,12 +136,12 @@ public class Icon implements Serializable {
 
     private void resizeIcon() {
         if (image != null) {
-            if (image.getWidth() != 64 || image.getHeight() != 64) {
-                BufferedImage resizedImage = new BufferedImage(64, 64, BufferedImage.TYPE_4BYTE_ABGR);
-                Graphics g = resizedImage.createGraphics();
-                g.drawImage(image, 0, 0, 64, 64, null);
-                this.setImage(resizedImage);
-                g.dispose();
+            if (image.getWidth() != ICON_WIDTH || image.getHeight() != ICON_HEIGHT) {
+                BufferedImage resizedImage = new BufferedImage(ICON_WIDTH, ICON_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
+                Graphics graphics = resizedImage.createGraphics();
+                graphics.drawImage(image, 0, 0, ICON_WIDTH, ICON_HEIGHT, null);
+                this.setImage(resizedImage, imageType);
+                graphics.dispose();
             }
             setByteArrayFromImage();
         }
@@ -127,9 +149,13 @@ public class Icon implements Serializable {
 
     private void setByteArrayFromImage() {
         if (image != null) {
-            Raster raster = this.image.getData();
-            DataBufferByte dataBufferArray = (DataBufferByte) raster.getDataBuffer();
-            this.data = dataBufferArray.getData();
+            try {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ImageIO.write(image, imageType, outputStream);
+                data = outputStream.toByteArray();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
 }

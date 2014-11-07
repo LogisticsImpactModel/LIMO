@@ -15,6 +15,7 @@ import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
@@ -45,6 +46,29 @@ public final class HubTypeVisualPanel2 extends JPanel {
         btnRemove = new javax.swing.JButton("Remove");
         btnRemove.setToolTipText("Removes the current icon and takes the standard one.");
         fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+
+            @Override
+            public boolean accept(File f) {
+                if(f.isDirectory()){
+                    return true;
+                }
+                if (f.getAbsolutePath().endsWith(".png")) {
+                    return true;
+                }
+                if (f.getAbsolutePath().endsWith(".bmp")) {
+                    return true;
+                }
+                return f.getAbsolutePath().endsWith(".jpg");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Filter for Images.";
+            }
+        });
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setMultiSelectionEnabled(false);
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -87,7 +111,7 @@ public final class HubTypeVisualPanel2 extends JPanel {
                 int returnVal = fc.showOpenDialog(HubTypeVisualPanel2.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File icon = fc.getSelectedFile();
-                    Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage());
+                    Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage(), icon.getPath().split("\\.")[icon.getPath().split("\\.").length - 1]);
                     hubType.setIcon(newIcon);
                     lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
                     btnRemove.setEnabled(true);
@@ -102,14 +126,14 @@ public final class HubTypeVisualPanel2 extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Image image = IconUtil.getIcon(HubType.class, 2);
-                Icon newIcon = new Icon((BufferedImage) image);
+                Icon newIcon = new Icon((BufferedImage) image, "png");
                 hubType.setIcon(newIcon);
                 lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
                 btnRemove.setEnabled(false);
             }
         });
         Image image = IconUtil.getIcon(HubType.class, 2);
-        Icon newIcon = new Icon((BufferedImage) image);
+        Icon newIcon = new Icon((BufferedImage) image, "png");
         hubType.setIcon(newIcon);
         lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
         btnRemove.setEnabled(false);
