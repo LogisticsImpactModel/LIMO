@@ -92,13 +92,50 @@ public class IconTest {
 
     /**
      * Test of getImage method, of class Icon.
+     * Using default blank constructur as initialized by setUp
      */
     @Test
-    public void testGetImage() {
+    public void testGetImage_blankConstructor() {
         System.out.println("getImage");
         testSetImage_String();//set img using other test
         BufferedImage actualImg = icon.getImage();
         assertTrue("Height of img must be 64 due to fixed size resizing", actualImg.getHeight() == 64);
+    }
+    /**
+     * Test of getImage method, of class Icon
+     * Using constructur having byteArray and imageType. Overrides already initialized icon object in setUp
+     */
+    @Test
+    public void testGetImage_byteArrayConstructor(){
+        try {
+            BufferedImage inputImg = ImageIO.read(new File(this.location));
+            
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(inputImg, "png", baos);
+            byte[] inputImageBytes = baos.toByteArray();
+            icon = new Icon(inputImageBytes,"png");//override icon object w/ new one w/ this constructor
+            BufferedImage actualImg = icon.getImage();
+            assertTrue("Height of img must be 64 due to fixed size resizing", actualImg.getHeight() == 64);
+        } catch (IOException ex) {
+            fail("Could not locate image");
+        }
+    }
+        /**
+     * Test of getImage method, of class Icon.
+     * Using default blank constructur as initialized by setUp
+     */
+    @Test
+    public void testGetImage_imageConstructor() {
+        System.out.println("getImage");
+        try {
+            BufferedImage inputImg = ImageIO.read(new File(this.location));
+            icon = new Icon(inputImg,"png");
+            BufferedImage actualImg = icon.getImage();
+            assertTrue("Height of img must be 64 due to fixed size resizing", actualImg.getHeight() == 64);
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+            fail("");
+        }
     }
 
     /**
