@@ -84,7 +84,7 @@ public class AddHubTest extends JellyTestCase {
         new JTextFieldOperator(wo, 3).setText("54321");
         new JTextFieldOperator(wo, 4).setText("TestState");
         new JComboBoxOperator(wo, 0).selectItem(4);
-        new JComboBoxOperator(wo, 1).selectItem(43);
+        new JComboBoxOperator(wo, 1).selectItem(3);
         wo.btNext().push();
     }
 
@@ -94,7 +94,7 @@ public class AddHubTest extends JellyTestCase {
         WizardOperator wo = new WizardOperator("Add Hub");
         new JRadioButtonOperator(wo,1).setSelected(true);
         new JComboBoxOperator(wo, 0).setEnabled(true);
-        new JComboBoxOperator(wo, 0).selectItem(size-1);
+        new JComboBoxOperator(wo, 0).selectItem(0);
         wo.btNext().push();
         new JTextFieldOperator(wo, 0).setText("TestHubCopy");
         wo.btNext().push();

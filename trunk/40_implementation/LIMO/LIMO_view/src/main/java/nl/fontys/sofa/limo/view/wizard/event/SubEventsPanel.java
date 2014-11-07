@@ -68,7 +68,7 @@ public final class SubEventsPanel extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        
+
         c.weightx = 0.2;
         c.gridx = 0;
         c.gridy = 0;
