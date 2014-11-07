@@ -82,7 +82,7 @@ public class HubWizardPanel2 implements WizardDescriptor.Panel<WizardDescriptor>
     @Override
     public void validate() throws WizardValidationException {
         if (component.getHubName().isEmpty()) {
-            throw new WizardValidationException(null, "Name...?", null);
+            throw new WizardValidationException(null, "Name is not set!", null);
         }
     }
 

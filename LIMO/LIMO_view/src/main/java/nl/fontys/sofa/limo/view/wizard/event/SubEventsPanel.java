@@ -68,7 +68,7 @@ public final class SubEventsPanel extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-
+        
         c.weightx = 0.2;
         c.gridx = 0;
         c.gridy = 0;
@@ -85,8 +85,7 @@ public final class SubEventsPanel extends JPanel {
         c.gridy = 0;
         add(btnAdd, c);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JScrollPane(eventsTable), BorderLayout.CENTER);
 
         panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
