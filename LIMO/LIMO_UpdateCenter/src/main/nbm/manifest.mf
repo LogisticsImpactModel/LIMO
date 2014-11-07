@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Layer: nl/fontys/limo/limo_updatecenter/layer.xml
+OpenIDE-Module-Localizing-Bundle: nl/fontys/limo/limo_updatecenter/Bundle.properties
+
