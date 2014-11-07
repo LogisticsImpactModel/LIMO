@@ -71,7 +71,11 @@ public class Icon implements Serializable {
     public void setImageType(String imageType) {
         this.imageType = imageType;
     }
-
+    /**
+     * Set data (byte[]) for image, given the imagetype (how data should be interpreted)
+     * @param data Byte[] w/ data of the image where data has to be set for
+     * @param imageType Type of the image
+     */
     public void setData(byte[] data, String imageType) {
         this.data = data;
         this.imageType = imageType;
@@ -119,7 +123,23 @@ public class Icon implements Serializable {
             buildImageFromData();
         }
     }
-
+    /**
+     * Set data var (ByteArray) from previously set image
+     */
+    private void setByteArrayFromImage() {
+        if (image != null) {
+            try {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ImageIO.write(image, imageType, outputStream);
+                data = outputStream.toByteArray();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+    /**
+     * Create/set image from previously set data (byteArray)
+     */
     private void buildImageFromData() {
         try {
             Iterator<ImageReader> imageReaderIterator = ImageIO.getImageReadersByFormatName(imageType);
@@ -133,7 +153,9 @@ public class Icon implements Serializable {
             Logger.getLogger(Icon.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /**
+     * Resize method to resize to 64x64
+     */
     private void resizeIcon() {
         if (image != null) {
             if (image.getWidth() != ICON_WIDTH || image.getHeight() != ICON_HEIGHT) {
@@ -144,18 +166,6 @@ public class Icon implements Serializable {
                 graphics.dispose();
             }
             setByteArrayFromImage();
-        }
-    }
-
-    private void setByteArrayFromImage() {
-        if (image != null) {
-            try {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                ImageIO.write(image, imageType, outputStream);
-                data = outputStream.toByteArray();
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
         }
     }
 }
