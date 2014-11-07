@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.table.AbstractTableModel;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
@@ -34,6 +35,7 @@ import org.openide.util.Lookup;
 public final class ManageHubsPanel extends JPanel {
 
     public ManageHubsPanel() {
+
         initComponents();
     }
 
@@ -85,6 +87,30 @@ public final class ManageHubsPanel extends JPanel {
             }
         });
 
+        fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                }
+                if (f.getAbsolutePath().endsWith(".png")) {
+                    return true;
+                }
+                if (f.getAbsolutePath().endsWith(".bmp")) {
+                    return true;
+                }
+                return f.getAbsolutePath().endsWith(".jpg");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Filter for Images.";
+            }
+        });
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setMultiSelectionEnabled(false);
     }
 
     public void updateHub(int rowIndex) {
@@ -130,11 +156,11 @@ public final class ManageHubsPanel extends JPanel {
         btnImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
+
                 int returnVal = fc.showOpenDialog(ManageHubsPanel.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File icon = fc.getSelectedFile();
-                    Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage());
+                    Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage(), icon.getPath().split("\\.")[icon.getPath().split("\\.").length]);
                     hub.setIcon(newIcon);
                 }
 
@@ -182,7 +208,7 @@ public final class ManageHubsPanel extends JPanel {
                 int result = JOptionPane.showConfirmDialog(null, cmp, "Cost/Delays/Times",
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
-                    hub.setProcedures(cmp.getActiveTableState());       
+                    hub.setProcedures(cmp.getActiveTableState());
                 }
             }
         });
@@ -218,6 +244,7 @@ public final class ManageHubsPanel extends JPanel {
     private JButton btnEdit;
     private JButton btnDelete;
     private JPanel panelRight;
+    private JFileChooser fc;
 
     private class HubTableModel extends AbstractTableModel {
 

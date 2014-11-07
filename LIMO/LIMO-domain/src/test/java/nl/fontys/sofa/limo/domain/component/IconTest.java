@@ -6,14 +6,12 @@
 package nl.fontys.sofa.limo.domain.component;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import javax.imageio.ImageIO;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,25 +23,26 @@ import org.openide.util.Exceptions;
  * @author Ben
  */
 public class IconTest {
+
     Icon icon;
     String location = "testing_src/ic.png";
-    
+
     public IconTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         icon = new Icon();//icon w/ empty byteArray
     }
-    
+
     @After
     public void tearDown() {
         icon = null;
@@ -63,16 +62,19 @@ public class IconTest {
      */
     @Test
     public void testSetData() {
-        System.out.println("setData"); 
+        System.out.println("setData");
         try {
             BufferedImage inputImg = ImageIO.read(new File(this.location));
-            assertTrue("Input img must have height>0 but has not",inputImg.getHeight()>0);
-            byte[] inputImageBytes = ((DataBufferByte) inputImg.getData().getDataBuffer()).getData();
+            assertTrue("Input img must have height>0 but has not", inputImg.getHeight() > 0);
             
-            icon.setData(inputImageBytes);
-     
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(inputImg, "png", baos);
+            byte[] inputImageBytes = baos.toByteArray();
+
+            icon.setData(inputImageBytes, "png");
+
             BufferedImage outputImg = icon.getImage();
-            assertTrue(outputImg.getHeight()==64);
+            assertTrue(outputImg.getHeight() == 64);
         } catch (IOException ex) {
             fail("Could not locate image");
         }
@@ -86,7 +88,7 @@ public class IconTest {
         System.out.println("getImage");
         testSetImage_String();//set img using other test
         BufferedImage actualImg = icon.getImage();
-        assertTrue("Height of img must be 64 due to fixed size resizing",actualImg.getHeight()==64);
+        assertTrue("Height of img must be 64 due to fixed size resizing", actualImg.getHeight() == 64);
     }
 
     /**
@@ -94,15 +96,15 @@ public class IconTest {
      */
     @Test
     public void testSetImage_BufferedImage() {
-        System.out.println("setImage"); 
+        System.out.println("setImage");
         try {
             BufferedImage inputImg = ImageIO.read(new File(this.location));//orig res                        
-            icon.setImage(inputImg);//insert orig img into icon class
+            icon.setImage(inputImg, "png");//insert orig img into icon class
             BufferedImage outputImg = icon.getImage();//has been resized to 64x64
-            assertTrue("Input img height should be > 0",inputImg.getHeight()>0);
-            assertEquals("Input and output img should have same heights",64,outputImg.getHeight());
+            assertTrue("Input img height should be > 0", inputImg.getHeight() > 0);
+            assertEquals("Input and output img should have same heights", 64, outputImg.getHeight());
         } catch (IOException e) {
-            fail("Could not locate image at "+ this.location);
+            fail("Could not locate image at " + this.location);
         }
     }
 
@@ -120,13 +122,20 @@ public class IconTest {
      */
     @Test
     public void testSetImage_String() {
-        System.out.println("setImage w/ string ref to existing img");
-        icon.setImage(this.location);//set image based on URL
+        try {
+            System.out.println("setImage w/ string ref to existing img");
+            icon.setImage(this.location);//set image based on URL
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(icon.getImage(), "png", baos);
+            byte[] imageBytes = baos.toByteArray();
+            assertNotNull("ByteArray of img should not be null", imageBytes);
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+            fail();
+        }
 
-        byte[] imageBytes = ((DataBufferByte) icon.getImage().getData().getDataBuffer()).getData();
-        assertNotNull("ByteArray of img should not be null",imageBytes);
-       
     }
+
     /**
      * Test of setImage method, providing string (loc) WHICH DOES NOT EXIST
      * Throws exception
@@ -135,7 +144,7 @@ public class IconTest {
     public void testSetImage_String_notExistingPath() {
         System.out.println("setImage w/ string ref to Non-existing img");
         icon.setImage("lkjadfkljasdfkljasdklfj");//non existing path, img can not be found -> exception
-        assertNull("Non existing image should not have a valid height but has",icon.getImage());        
+        assertNull("Non existing image should not have a valid height but has", icon.getImage());
     }
-    
+
 }

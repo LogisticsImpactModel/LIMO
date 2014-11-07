@@ -15,9 +15,11 @@ import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.util.IconUtil;
+import org.apache.commons.io.filefilter.FileFileFilter;
 
 public final class HubVisualPanel2 extends JPanel {
 
@@ -42,6 +44,29 @@ public final class HubVisualPanel2 extends JPanel {
         btnRemove = new javax.swing.JButton("Remove");
         btnRemove.setToolTipText("Removes the current icon and takes the standard one.");
         fc = new JFileChooser();
+        fc.setFileFilter(new FileFilter() {
+
+            @Override
+            public boolean accept(File f) {
+                if(f.isDirectory()){
+                    return true;
+                }
+                if (f.getAbsolutePath().endsWith(".png")) {
+                    return true;
+                }
+                if (f.getAbsolutePath().endsWith(".bmp")) {
+                    return true;
+                }
+                return f.getAbsolutePath().endsWith(".jpg");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Filter for Images.";
+            }
+        });
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setMultiSelectionEnabled(false);
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -73,7 +98,7 @@ public final class HubVisualPanel2 extends JPanel {
                 int returnVal = fc.showOpenDialog(HubVisualPanel2.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File icon = fc.getSelectedFile();
-                    newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage());
+                    newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage(), icon.getPath().split("\\.")[icon.getPath().split("\\.").length - 1]);
                     lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
                     btnRemove.setEnabled(true);
                 }
@@ -87,13 +112,13 @@ public final class HubVisualPanel2 extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Image image = IconUtil.getIcon(HubType.class, 2);
-                Icon newIcon = new Icon((BufferedImage) image);
+                Icon newIcon = new Icon((BufferedImage) image, "png");
                 lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
                 btnRemove.setEnabled(false);
             }
         });
         Image image = IconUtil.getIcon(HubType.class, 2);
-        Icon newIcon = new Icon((BufferedImage) image);
+        Icon newIcon = new Icon((BufferedImage) image, "png");
         lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
         btnRemove.setEnabled(false);
     }
@@ -103,16 +128,16 @@ public final class HubVisualPanel2 extends JPanel {
             tfName.setText(identifire);
             if (ic != null) {
                 //Why it says nullpointer?
-                try{
-                Image img = ic.getImage();
-                lblPreview.setIcon(new ImageIcon(img));
-                } catch (java.lang.NullPointerException ex){
+                try {
+                    Image img = ic.getImage();
+                    lblPreview.setIcon(new ImageIcon(img));
+                } catch (java.lang.NullPointerException ex) {
                 }
             }
         }
     }
-    
-    public Icon getHubIcon(){
+
+    public Icon getHubIcon() {
         return newIcon;
     }
 
