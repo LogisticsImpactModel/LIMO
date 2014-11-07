@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -55,6 +56,15 @@ public class IconTest {
     @Test
     public void testGetData() {
         System.out.println("getData");
+        testSetData();
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(icon.getImage(), "png", baos);
+            byte[] outputImageBytes = baos.toByteArray();        
+            Assert.assertArrayEquals("hi",outputImageBytes,icon.getData());
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
     }
 
     /**
@@ -110,11 +120,12 @@ public class IconTest {
 
     /**
      * Test of setImage method, of class Icon.
+     * Testing providing an image that is not instanceof BufferedImage (needs conversion)
      */
     @Test
     public void testSetImage_Image() {
         System.out.println("setImage");
-        // TODO review the generated test code and remove the default call to fail.
+        
     }
 
     /**
