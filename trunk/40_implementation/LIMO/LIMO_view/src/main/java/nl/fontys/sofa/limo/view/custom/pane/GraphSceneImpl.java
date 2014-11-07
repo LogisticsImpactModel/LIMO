@@ -42,22 +42,15 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 	private final LayerWidget connectionLayer = new LayerWidget(this);
 	private final LayerWidget interactionLayer = new LayerWidget(this);
 
-	// The actions to be invoked.
+	// The scene actions to be invoked.
 	private final WidgetAction moveAlignAction;
-	private final WidgetAction zoomAction
-			= ActionFactory.createZoomAction();
-	private final WidgetAction panAction
-			= ActionFactory.createPanAction();
-	private final WidgetAction acceptAction
-			= ActionFactory.createAcceptAction(
-					new SceneAcceptProvider());
-	private final WidgetAction connectAction
-			= ActionFactory.createExtendedConnectAction(
-					interactionLayer,
-					new SceneConnectProvider());
-	private final WidgetAction reconnectAction
-			= ActionFactory.createReconnectAction(
-					new SceneReconnectProvider());
+	private final WidgetAction zoomAction;
+	private final WidgetAction panAction;
+	private final WidgetAction acceptAction;
+	// The widget actions to be invoked. More actions can be found in existing
+	// methods in this GraphScene class eg. createSelectAction().
+	private final WidgetAction connectAction;
+	private final WidgetAction reconnectAction;
 
 	// Variables.
 	private long edgeCounter = 0;
@@ -71,7 +64,21 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 		addChild(mainLayer);
 		addChild(connectionLayer);
 		addChild(interactionLayer);
-		moveAlignAction = ActionFactory.createAlignWithMoveAction(mainLayer, interactionLayer, null);
+
+		moveAlignAction = ActionFactory.createAlignWithMoveAction(
+				mainLayer,
+				interactionLayer,
+				null);
+		zoomAction = ActionFactory.createZoomAction();
+		panAction = ActionFactory.createPanAction();
+		acceptAction = ActionFactory.createAcceptAction(
+				new SceneAcceptProvider());
+		connectAction = ActionFactory.createExtendedConnectAction(
+				interactionLayer,
+				new SceneConnectProvider());
+		reconnectAction = ActionFactory.createReconnectAction(
+				new SceneReconnectProvider());
+
 		getActions().addAction(zoomAction);
 		getActions().addAction(panAction);
 		getActions().addAction(acceptAction);
@@ -85,6 +92,7 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 		widget.getActions().addAction(connectAction);
 		widget.getActions().addAction(moveAlignAction);
 		mainLayer.addChild(widget);
+		mainLayer.repaint();
 		return widget;
 	}
 
