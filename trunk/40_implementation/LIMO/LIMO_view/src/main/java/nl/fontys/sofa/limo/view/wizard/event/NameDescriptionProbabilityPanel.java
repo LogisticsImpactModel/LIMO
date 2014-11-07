@@ -1,7 +1,9 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -47,7 +49,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
     @Override
     public String getName() {
-        return bundle.getString("NAME_AND_PROBABILITY");
+        return bundle.getString("BASIC_DATA");
     }
 
     private void initComponents() {
@@ -58,8 +60,6 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         descriptionLabel = new javax.swing.JLabel(bundle.getString("DESCRIPTION"));
         descriptionTextArea = new javax.swing.JTextArea();
         descriptionTextArea.setRows(4);
-        descriptionTextArea.setBorder(nameTextField.getBorder());
-        descriptionTextArea.setSize(descriptionTextArea.getHeight(), nameTextField.getWidth());
 
         parametersLabel = new javax.swing.JLabel(bundle.getString("PARAMETERS"));
         parametersTable = new javax.swing.JTable();
@@ -99,30 +99,24 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         c.gridwidth = 3;
         add(distributionTypeComboBox, c);
 
+        c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 3;
-        c.gridwidth = 4;
-        add(new javax.swing.JLabel("   "), c);
-
-        c.weightx = 1.0;
-        c.gridx = 0;
-        c.gridy = 4;
-        c.gridwidth = 4;
+        c.gridwidth = 1;
         add(parametersLabel, c);
 
-        c.weightx = 1.0;
-        c.gridx = 0;
-        c.gridy = 5;
-        c.gridwidth = 4;
-        c.gridheight = 3;
+        c.weightx = 0.7;
+        c.gridx = 1;
+        c.gridy = 3;
+        c.gridwidth = 3;
         add(parametersTable, c);
-
     }
 
     private GridBagConstraints initLayout() {
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(3,3,3,3);
         return c;
     }
 

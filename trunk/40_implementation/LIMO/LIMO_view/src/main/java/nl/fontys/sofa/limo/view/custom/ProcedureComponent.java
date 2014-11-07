@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -29,6 +30,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
+import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.util.Lookup;
 
 /**
@@ -80,8 +82,8 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         table.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JComboBox(ProcedureResponsibilityDirection.values())));
         //OTHER COMPONENTS
         sc_pane = new JScrollPane(table);
-        btn_add = new JButton("+");
-        btn_delete = new JButton("-");
+        btn_add = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+        btn_delete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
         //ADD COMPONENTS TO PANEL
         this.add(sc_pane, cc.xywh(2, 2, 1, 4));
         this.add(btn_add, cc.xy(4, 2));

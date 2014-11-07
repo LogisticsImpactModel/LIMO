@@ -8,6 +8,7 @@ package nl.fontys.sofa.limo.view.wizard.hub;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -32,7 +33,7 @@ public final class HubVisualPanel2 extends JPanel {
 
     @Override
     public String getName() {
-        return "Name and Icon";
+        return "Basic Data";
     }
 
     private void initComponents() {
@@ -75,6 +76,7 @@ public final class HubVisualPanel2 extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(3,3,3,3);
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 0;

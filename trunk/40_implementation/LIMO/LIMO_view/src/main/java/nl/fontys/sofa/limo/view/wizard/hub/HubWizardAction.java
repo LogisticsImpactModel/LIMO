@@ -30,14 +30,14 @@ public final class HubWizardAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
+        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!update) {
             panels.add(new HubWizardPanel1());
         }
         panels.add(new HubWizardPanel2());
         panels.add(new HubWizardPanel3());
-        panels.add(new HubWizardPanel4());
         panels.add(new HubWizardPanel5());
+        panels.add(new HubWizardPanel4());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -53,7 +53,7 @@ public final class HubWizardAction implements ActionListener {
             }
         }
 
-        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
 
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
@@ -66,7 +66,7 @@ public final class HubWizardAction implements ActionListener {
             HubService service = Lookup.getDefault().lookup(HubService.class);
             Hub hub = (Hub) wiz.getProperty("hub");
             if (update) {
-                if (hub.getId()==null) {
+                if (hub.getId() == null) {
                     hub.setId(hubUpdate.getId());
                 }
                 service.update(hub);

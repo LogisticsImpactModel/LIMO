@@ -64,7 +64,7 @@ public final class HubVisualPanel1 extends JPanel {
         });
 
         buttonGroup1.add(rbCopyFrom);
-        rbCopyFrom.setText("Copy Hub");
+        rbCopyFrom.setText("Copy Existing");
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
