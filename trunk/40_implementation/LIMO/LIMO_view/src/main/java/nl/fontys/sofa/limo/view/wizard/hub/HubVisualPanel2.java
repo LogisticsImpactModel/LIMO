@@ -130,13 +130,13 @@ public final class HubVisualPanel2 extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Image image = IconUtil.getIcon(HubType.class, 2);
-                Icon newIcon = new Icon((BufferedImage) image, "png");
+                newIcon = new Icon((BufferedImage) image, "png");
                 lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
                 btnRemove.setEnabled(false);
             }
         });
         Image image = IconUtil.getIcon(HubType.class, 2);
-        Icon newIcon = new Icon((BufferedImage) image, "png");
+        newIcon = new Icon((BufferedImage) image, "png");
         lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
         btnRemove.setEnabled(false);
     }
