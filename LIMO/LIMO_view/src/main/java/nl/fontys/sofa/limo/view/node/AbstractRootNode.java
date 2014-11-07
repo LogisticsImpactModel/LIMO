@@ -16,7 +16,6 @@ import org.openide.util.Lookup;
  */
 public abstract class AbstractRootNode extends AbstractNode{
 	protected DAO service;
-
 	
 	public AbstractRootNode(Children children) throws ServiceNotFoundException {
 		super(children);
@@ -37,5 +36,9 @@ public abstract class AbstractRootNode extends AbstractNode{
 		}
 		return icon;
 	}
+
+    public DAO getService() {
+        return service;
+    }
 }
 
