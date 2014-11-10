@@ -25,4 +25,12 @@
             <skipTests>true</skipTests>
         </properties>
     </action>
+    <action>
+            <actionName>CUSTOM-Generate Installers</actionName>
+            <displayName>Generate Installers</displayName>
+            <preAction>build-with-dependencies</preAction>
+            <goals>
+                <goal>nbm:build-installers</goal>
+            </goals>
+        </action>
 </actions>
