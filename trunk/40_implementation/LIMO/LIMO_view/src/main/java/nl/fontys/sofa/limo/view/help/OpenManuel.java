@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
@@ -19,18 +18,18 @@ import org.openide.util.NbBundle.Messages;
 
 @ActionID(
         category = "Help",
-        id = "nl.fontys.sofa.limo.view.help.OpenHandbook"
+        id = "nl.fontys.sofa.limo.view.help.OpenManuel"
 )
 @ActionRegistration(
-        displayName = "#CTL_OpenHandbook"
+        displayName = "#CTL_OpenManuel"
 )
-@ActionReference(path = "Menu/Help", position = 100)
-@Messages("CTL_OpenHandbook=Open Handbook")
-public final class OpenHandbook implements ActionListener {
+@ActionReference(path = "Menu/Help", position = 0)
+@Messages("CTL_OpenManuel=Open Manuel")
+public final class OpenManuel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
+                try {
             Desktop.getDesktop().open(new File(getClass().getResource("/help/limo_manuel.pdf").getFile()));
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
