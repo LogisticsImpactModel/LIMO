@@ -168,12 +168,19 @@ public class OrientDBConnector {
         }
         
         // Create class and property for value
-        OClass ivClass = this.connection.getMetadata().getSchema().getClass(InputValue.class);
-        if (ivClass == null) {
-            ivClass = this.connection.getMetadata().getSchema().createClass(InputValue.class);
+        OClass iivClass = this.connection.getMetadata().getSchema().getClass(IntegerInputValue.class);
+        if (iivClass == null) {
+            iivClass = this.connection.getMetadata().getSchema().createClass(InputValue.class);
         }
-        if (!ivClass.existsProperty("value")) {
-            ivClass.createProperty("value", OType.DOUBLE);
+        if (!iivClass.existsProperty("value")) {
+            iivClass.createProperty("value", OType.INTEGER);
+        }
+        OClass divClass = this.connection.getMetadata().getSchema().getClass(DoubleInputValue.class);
+        if (divClass == null) {
+            divClass = this.connection.getMetadata().getSchema().createClass(DoubleInputValue.class);
+        }
+        if (!divClass.existsProperty("value")) {
+            divClass.createProperty("value", OType.DOUBLE);
         }
     }
 
