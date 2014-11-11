@@ -30,7 +30,7 @@ public final class OpenManuel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
                 try {
-            Desktop.getDesktop().open(new File(getClass().getResource("/help/limo_manuel.pdf").getFile()));
+            Desktop.getDesktop().open(new File(getClass().getResource("help/limo_manuel.pdf").getFile()));
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
