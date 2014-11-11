@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>nl.fontys.limo</groupId>
-		<artifactId>LIMO-parent</artifactId>
-		<version>0.1-ALPHA</version>
-	</parent>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>nl.fontys.limo</groupId>
+        <artifactId>LIMO-parent</artifactId>
+        <version>0.1-ALPHA</version>
+    </parent>
 
-	<artifactId>LIMO-app</artifactId>
-	<packaging>nbm-application</packaging>
+    <artifactId>LIMO-app</artifactId>
+    <packaging>nbm-application</packaging>
 
-	<name>LIMO-app</name>
+    <name>LIMO-app</name>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<all.clusters>${project.build.directory}/${brandingToken}</all.clusters>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <all.clusters>${project.build.directory}/${brandingToken}</all.clusters>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -90,9 +90,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>nl.fontys.limo</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>LIMO-domain</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -101,53 +101,53 @@
         </dependency>
     </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>nbm-maven-plugin</artifactId>
-				<configuration>
-					<installerOsSolaris>false</installerOsSolaris>
-					<installerOsMacosx>false</installerOsMacosx>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12.2</version>
-				<configuration>
-					<systemPropertyVariables>
-						<all.clusters>${all.clusters}</all.clusters>
-						<branding.token>${brandingToken}</branding.token>
-					</systemPropertyVariables>
-				</configuration>
-			</plugin>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>nbm-maven-plugin</artifactId>
+                <configuration>
+                    <installerOsSolaris>false</installerOsSolaris>
+                    <installerOsMacosx>false</installerOsMacosx>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.2</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <all.clusters>${all.clusters}</all.clusters>
+                        <branding.token>${brandingToken}</branding.token>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
             
-		</plugins>
-	</build>
+        </plugins>
+    </build>
 
-	<profiles>
-		<profile>
-			<id>deployment</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>nbm-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>extra</id>
-								<goals>
-									<goal>autoupdate</goal>
-									<goal>webstart-app</goal>
-									<goal>build-installers</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-	<version>0.1-ALPHA</version>
+    <profiles>
+        <profile>
+            <id>deployment</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>nbm-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>extra</id>
+                                <goals>
+                                    <goal>autoupdate</goal>
+                                    <goal>webstart-app</goal>
+                                    <goal>build-installers</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <version>0.1-ALPHA</version>
 </project>
