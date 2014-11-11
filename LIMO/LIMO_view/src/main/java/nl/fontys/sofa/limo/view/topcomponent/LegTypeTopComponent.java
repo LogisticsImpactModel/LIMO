@@ -35,14 +35,14 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.LegTypeTopComponent")
-@ActionReference(path = "Menu/Data/LegType" , position = 10 )
+@ActionReference(path = "Menu/Data/Leg Type" , position = 10 )
 @TopComponent.OpenActionRegistration(
 		displayName = "#CTL_LegTypeAction",
 		preferredID = "LegTypeTopComponent"
 )
 @Messages({
-	"CTL_LegTypeAction=LegTypes",
-	"CTL_LegTypeTopComponent=LegType window",
+	"CTL_LegTypeAction=Leg Types",
+	"CTL_LegTypeTopComponent=Leg Types window",
 	"HINT_LegTypeTopComponent=Manage Leg Types"
 })
 public final class LegTypeTopComponent extends TopComponent 

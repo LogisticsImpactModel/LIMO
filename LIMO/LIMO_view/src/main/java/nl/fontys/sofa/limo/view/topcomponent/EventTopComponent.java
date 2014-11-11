@@ -43,7 +43,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @Messages({
     "CTL_EventAction=Events",
-    "CTL_EventTopComponent=Event window",
+    "CTL_EventTopComponent=Events window",
     "HINT_EventTopComponent=Manage Events"
 })
 public final class EventTopComponent extends TopComponent implements

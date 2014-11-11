@@ -23,14 +23,14 @@ import org.openide.util.Lookup;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
- @ActionID(category="HubType", id="nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
- @ActionRegistration(displayName="Add HubType")
- @ActionReference(path="Menu/Data/HubType", position=20)
+ @ActionID(category="Hub Type", id="nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
+ @ActionRegistration(displayName="Add Hub Type")
+ @ActionReference(path="Menu/Data/Hub Type", position=20)
 public final class HubTypeWizardAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
+        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         panels.add(new HubTypeWizardPanel1());
         panels.add(new HubTypeWizardPanel2());
         panels.add(new HubTypeWizardPanel3());
@@ -48,7 +48,7 @@ public final class HubTypeWizardAction implements ActionListener {
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
-        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle("Add HubType");
