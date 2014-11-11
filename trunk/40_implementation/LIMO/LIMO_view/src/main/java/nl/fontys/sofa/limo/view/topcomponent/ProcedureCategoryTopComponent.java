@@ -37,14 +37,14 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ProcedureCategoryTopComponent")
-@ActionReference(path = "Menu/Data/ProcedureCategory" , position = 10 )
+@ActionReference(path = "Menu/Data/Procedure Category" , position = 10 )
 @TopComponent.OpenActionRegistration(
 		displayName = "#CTL_ProcedureCategoryAction",
 		preferredID = "ProcedureCategoryTopComponent"
 )
 @Messages({
 	"CTL_ProcedureCategoryAction=Procedure Categories",
-	"CTL_ProcedureCategoryTopComponent=ProcedureCategory Window",
+	"CTL_ProcedureCategoryTopComponent=Procedure Categories Window",
 	"HINT_ProcedureCategoryTopComponent=Manage Procedure Categories"
 })
 public final class ProcedureCategoryTopComponent extends TopComponent

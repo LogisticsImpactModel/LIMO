@@ -23,9 +23,9 @@ import org.openide.util.Lookup;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
- @ActionID(category="LegType", id="nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
- @ActionRegistration(displayName="Add LegType")
- @ActionReference(path="Menu/Data/LegType", position=20)
+ @ActionID(category="Leg Type", id="nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
+ @ActionRegistration(displayName="Add Leg Type")
+ @ActionReference(path="Menu/Data/Leg Type", position=20)
 public final class LegTypeWizardAction implements ActionListener {
 
     @Override

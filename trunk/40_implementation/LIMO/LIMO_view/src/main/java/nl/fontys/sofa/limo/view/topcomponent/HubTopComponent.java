@@ -45,7 +45,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @Messages({
 	"CTL_HubAction=Hubs",
-	"CTL_HubTopComponent=Hub Window",
+	"CTL_HubTopComponent=Hubs Window",
 	"HINT_HubTopComponent=Manage Hubs"
 })
 public final class HubTopComponent extends TopComponent

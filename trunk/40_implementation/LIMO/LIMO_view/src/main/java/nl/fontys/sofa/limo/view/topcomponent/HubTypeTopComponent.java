@@ -35,14 +35,14 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.HubTypeTopComponent")
-@ActionReference(path = "Menu/Data/HubType" , position = 10)
+@ActionReference(path = "Menu/Data/Hub Type" , position = 10)
 @TopComponent.OpenActionRegistration(
 		displayName = "#CTL_HubTypeAction",
 		preferredID = "HubTypeTopComponent"
 )
 @Messages({
-	"CTL_HubTypeAction=HubTypes",
-	"CTL_HubTypeTopComponent=HubType window",
+	"CTL_HubTypeAction=Hub Types",
+	"CTL_HubTypeTopComponent=Hub Types window",
 	"HINT_HubTypeTopComponent=Manage Hub Types"
 })
 public final class HubTypeTopComponent extends TopComponent
