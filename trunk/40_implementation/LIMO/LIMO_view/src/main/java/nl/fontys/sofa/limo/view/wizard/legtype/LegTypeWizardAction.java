@@ -23,14 +23,14 @@ import org.openide.util.Lookup;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
- @ActionID(category="Leg Type", id="nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
+ @ActionID(category="LegType", id="nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
  @ActionRegistration(displayName="Add Leg Type")
- @ActionReference(path="Menu/Data/Leg Type", position=20)
+ @ActionReference(path="Menu/Data/LegType", position=20)
 public final class LegTypeWizardAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
+        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         panels.add(new LegTypeWizardPanel1());
         panels.add(new LegTypeWizardPanel2());
         panels.add(new LegTypeWizardPanel3());
@@ -48,7 +48,7 @@ public final class LegTypeWizardAction implements ActionListener {
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
-        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle("Add LegType");
