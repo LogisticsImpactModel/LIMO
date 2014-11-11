@@ -23,9 +23,9 @@ import org.openide.util.Lookup;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
- @ActionID(category="Hub Type", id="nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
+ @ActionID(category="HubType", id="nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
  @ActionRegistration(displayName="Add Hub Type")
- @ActionReference(path="Menu/Data/Hub Type", position=20)
+ @ActionReference(path="Menu/Data/HubType", position=20)
 public final class HubTypeWizardAction implements ActionListener {
 
     @Override

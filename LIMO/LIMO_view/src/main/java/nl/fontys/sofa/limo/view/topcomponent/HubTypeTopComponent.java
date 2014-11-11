@@ -35,7 +35,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.HubTypeTopComponent")
-@ActionReference(path = "Menu/Data/Hub Type" , position = 10)
+@ActionReference(path = "Menu/Data/HubType" , position = 10)
 @TopComponent.OpenActionRegistration(
 		displayName = "#CTL_HubTypeAction",
 		preferredID = "HubTypeTopComponent"
