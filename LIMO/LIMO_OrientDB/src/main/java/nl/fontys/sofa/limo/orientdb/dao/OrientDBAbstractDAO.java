@@ -24,7 +24,7 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
     public List<T> findAll() {
         ArrayList<T> results = new ArrayList<>();
         for (Object entity : OrientDBConnector.connection().browseClass(entityClass).setFetchPlan("*:-1")) {
-            results.add((T) OrientDBConnector.connection().detach(entity));
+            results.add((T) OrientDBConnector.connection().detachAll(entity, true));
         }
         return results;
     }
@@ -44,7 +44,7 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
             return null;
         }
         
-        return (T) (results.isEmpty() ? null : OrientDBConnector.connection().detach(results.get(0)));
+        return (T) (results.isEmpty() ? null : OrientDBConnector.connection().detachAll(results.get(0), true));
     }
     
     @Override
@@ -56,7 +56,7 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
         }
         
         ODocument result = results.get(0).field("rid");
-        return (T) OrientDBConnector.connection().detach(OrientDBConnector.connection().getUserObjectByRecord(result, "*:-1"));
+        return (T) OrientDBConnector.connection().detachAll(OrientDBConnector.connection().getUserObjectByRecord(result, "*:-1"), true);
     }
 
     @Override
@@ -66,7 +66,7 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
         }
 
         entity.setLastUpdate(new Date().getTime());
-        return OrientDBConnector.connection().detach(OrientDBConnector.connection().save(entity));
+        return OrientDBConnector.connection().detachAll(OrientDBConnector.connection().save(entity), true);
     }
 
     @Override
