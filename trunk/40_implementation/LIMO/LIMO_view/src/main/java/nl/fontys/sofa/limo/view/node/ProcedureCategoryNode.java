@@ -26,8 +26,6 @@ public class ProcedureCategoryNode extends AbstractBeanNode<ProcedureCategory> {
 
     @Override
     protected void createProperties(ProcedureCategory bean, BeanInfo info) {
-        super.createProperties(bean, info);
-        
         Sheet sets = getSheet();
         Sheet.Set set = Sheet.createPropertiesSet();
         

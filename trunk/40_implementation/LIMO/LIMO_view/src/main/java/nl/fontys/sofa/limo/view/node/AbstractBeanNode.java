@@ -5,13 +5,15 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import javax.swing.Action;
+import java.util.Date;
+import javax.swing.ImageIcon;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.util.IconUtil;
-import org.openide.actions.DeleteAction;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.Children;
-import org.openide.util.actions.SystemAction;
+import org.openide.nodes.Sheet;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 
@@ -67,34 +69,36 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
     public void destroy() throws IOException {
         fireNodeDestroyed();
     }
-    
+
     protected PropertyChangeListener getListener() {
         if (this.listener == null) {
             this.listener = new PropertyChangeListener() {
 
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                ((AbstractRootNode) getParentNode()).getService().update(getBean());
-                firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-                
-                switch (evt.getPropertyName()) {
-                    case "name":
-                        setDisplayName((String) evt.getNewValue());
-                        break;
-                    case "description":
-                        setShortDescription((String) evt.getNewValue());
-                        break;
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    ((AbstractRootNode) getParentNode()).getService().update(getBean());
+                    firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                    switch (evt.getPropertyName()) {
+                        case "name":
+                            setDisplayName((String) evt.getNewValue());
+                            break;
+                        case "description":
+                            setShortDescription((String) evt.getNewValue());
+                            break;
+                        case "icon":
+                            createProperties(getBean(), null);
+                            setSheet(getSheet());
+                            break;
+                    }
                 }
-            }
-        };
+            };
         }
-        
+
         return this.listener;
     }
 
-	public Class getEntityClass() {
-		return entityClass;
-	}
-	
+    public Class getEntityClass() {
+        return entityClass;
+    }
 
 }
