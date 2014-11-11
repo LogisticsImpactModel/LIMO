@@ -166,6 +166,15 @@ public class OrientDBConnector {
             
             clazz.createIndex("uuid", OClass.INDEX_TYPE.UNIQUE_HASH_INDEX, "uniqueIdentifier");
         }
+        
+        // Create class and property for value
+        OClass ivClass = this.connection.getMetadata().getSchema().getClass(InputValue.class);
+        if (ivClass == null) {
+            ivClass = this.connection.getMetadata().getSchema().createClass(InputValue.class);
+        }
+        if (!ivClass.existsProperty("value")) {
+            ivClass.createProperty("value", OType.DOUBLE);
+        }
     }
 
     /**
