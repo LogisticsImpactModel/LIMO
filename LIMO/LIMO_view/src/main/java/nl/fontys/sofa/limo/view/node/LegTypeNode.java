@@ -6,9 +6,7 @@ import javax.swing.ImageIcon;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
-import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import org.openide.ErrorManager;
-import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
 
 /**
@@ -58,10 +56,6 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();
         }
-        
         sets.put(set);
     }
-    
-    
-
 }
