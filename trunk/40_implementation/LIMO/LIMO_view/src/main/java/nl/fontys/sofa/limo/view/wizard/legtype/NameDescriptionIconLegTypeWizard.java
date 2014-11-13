@@ -1,22 +1,24 @@
 package nl.fontys.sofa.limo.view.wizard.legtype;
 
-import nl.fontys.sofa.limo.view.wizard.types.NameDescriptionIconTypePanel;
+import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionIconPanel;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.*;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
 public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
-    private NameDescriptionIconTypePanel component;
+    private NameDescriptionIconPanel component;
 
     @Override
-    public NameDescriptionIconTypePanel getComponent() {
+    public NameDescriptionIconPanel getComponent() {
         if (component == null) {
-            component = new NameDescriptionIconTypePanel();
+            component = new NameDescriptionIconPanel(LegType.class);
         }
         return component;
     }
@@ -49,23 +51,23 @@ public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        String typeName = (String) wiz.getProperty(LegTypeWizardAction.TYPE_NAME);
-        String typeDescr = (String) wiz.getProperty(LegTypeWizardAction.TYPE_DESCRIPTION);
-        Icon typeIcon = (Icon) wiz.getProperty(LegTypeWizardAction.TYPE_ICON);
+        String typeName = (String) wiz.getProperty(TYPE_NAME);
+        String typeDescr = (String) wiz.getProperty(TYPE_DESCRIPTION);
+        Icon typeIcon = (Icon) wiz.getProperty(TYPE_ICON);
         getComponent().update(typeName, typeDescr, typeIcon);
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(LegTypeWizardAction.TYPE_NAME, getComponent().getTypeName());
-        wiz.putProperty(LegTypeWizardAction.TYPE_DESCRIPTION, getComponent().getTypeDescription());
-        wiz.putProperty(LegTypeWizardAction.TYPE_ICON, getComponent().getTypeIcon());
+        wiz.putProperty(TYPE_NAME, getComponent().getNameInput());
+        wiz.putProperty(TYPE_DESCRIPTION, getComponent().getDescriptionInput());
+        wiz.putProperty(TYPE_ICON, getComponent().getIcon());
     }
 
     @Override
     public void validate() throws WizardValidationException {
         ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
-        if (component.getTypeName().isEmpty()) {
+        if (component.getNameInput().isEmpty()) {
             throw new WizardValidationException(null, MessageFormat.format(bundle.getString("VALUE_NOT_SET"), bundle.getString("NAME")), null);
         }
     }

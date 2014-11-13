@@ -4,10 +4,10 @@ import java.awt.event.ActionListener;
 
 public abstract class TypeWizardAction implements ActionListener {
 
-    public static final String TYPE_NAME = "hubTypeName";
-    public static final String TYPE_DESCRIPTION = "hubTypeDescription";
-    public static final String TYPE_ICON = "hubTypeIcon";
-    public static final String TYPE_PROCEDURES = "hubTypeProcedures";
+    public static final String TYPE_NAME = "typeName";
+    public static final String TYPE_DESCRIPTION = "typeDescription";
+    public static final String TYPE_ICON = "typeIcon";
+    public static final String TYPE_PROCEDURES = "typeProcedures";
 
     protected boolean isUpdate = false;
     protected boolean saveToDatabase = true;

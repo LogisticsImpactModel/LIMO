@@ -1,22 +1,21 @@
-package nl.fontys.sofa.limo.view.wizard.hubtype;
+package nl.fontys.sofa.limo.view.wizard.hub;
 
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_DESCRIPTION;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_ICON;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_NAME;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_COPY;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_TYPE;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
-public class NewOrDuplicatedHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
+public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
-    private NewOrDuplicatedHubTypePanel component;
+    private NewDuplicatedOrHubTypeHubPanel component;
 
     @Override
-    public NewOrDuplicatedHubTypePanel getComponent() {
+    public NewDuplicatedOrHubTypeHubPanel getComponent() {
         if (component == null) {
-            component = new NewOrDuplicatedHubTypePanel();
+            component = new NewDuplicatedOrHubTypeHubPanel();
         }
         return component;
     }
@@ -49,12 +48,13 @@ public class NewOrDuplicatedHubTypeWizard implements WizardDescriptor.Panel<Wiza
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
+        Hub hub = getComponent().getHub();
+        if (hub != null) {
+            wiz.putProperty(HUB_COPY, hub);
+        }
         HubType hubType = getComponent().getHubType();
         if (hubType != null) {
-            wiz.putProperty(TYPE_NAME, hubType.getName());
-            wiz.putProperty(TYPE_DESCRIPTION, hubType.getDescription());
-            wiz.putProperty(TYPE_ICON, hubType.getIcon());
-            wiz.putProperty(TYPE_PROCEDURES, hubType.getProcedures());
+            wiz.putProperty(HUB_TYPE, hubType);
         }
     }
 

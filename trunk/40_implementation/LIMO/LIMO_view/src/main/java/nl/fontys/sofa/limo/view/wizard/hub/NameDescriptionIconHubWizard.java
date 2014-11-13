@@ -1,24 +1,23 @@
-package nl.fontys.sofa.limo.view.wizard.hubtype;
+package nl.fontys.sofa.limo.view.wizard.hub;
 
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.type.HubType;
-import nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionIconPanel;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.*;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
+public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NameDescriptionIconPanel component;
 
     @Override
     public NameDescriptionIconPanel getComponent() {
         if (component == null) {
-            component = new NameDescriptionIconPanel(HubType.class);
+            component = new NameDescriptionIconPanel(Hub.class);
         }
         return component;
     }
@@ -33,12 +32,7 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
 
     @Override
     public boolean isValid() {
-        // If it is always OK to press Next or Finish, then:
         return true;
-        // If it depends on some condition (form filled out...) and
-        // this condition changes (last form field filled in...) then
-        // use ChangeSupport to implement add/removeChangeListener below.
-        // WizardDescriptor.ERROR/WARNING/INFORMATION_MESSAGE will also be useful.
     }
 
     @Override
@@ -51,17 +45,17 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        String typeName = (String) wiz.getProperty(LegTypeWizardAction.TYPE_NAME);
-        String typeDescr = (String) wiz.getProperty(LegTypeWizardAction.TYPE_DESCRIPTION);
-        Icon typeIcon = (Icon) wiz.getProperty(LegTypeWizardAction.TYPE_ICON);
-        getComponent().update(typeName, typeDescr, typeIcon);
+        Hub hub = (Hub) wiz.getProperty(HUB_COPY);
+        if (hub != null) {
+            getComponent().update(hub.getName(), hub.getDescription(), hub.getIcon());
+        }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(HubTypeWizardAction.TYPE_NAME, getComponent().getNameInput());
-        wiz.putProperty(HubTypeWizardAction.TYPE_DESCRIPTION, getComponent().getDescriptionInput());
-        wiz.putProperty(HubTypeWizardAction.TYPE_ICON, getComponent().getIcon());
+        wiz.putProperty(HUB_NAME, getComponent().getNameInput());
+        wiz.putProperty(HUB_DESCRIPTION, getComponent().getDescriptionInput());
+        wiz.putProperty(HUB_ICON, getComponent().getIcon());
     }
 
     @Override
