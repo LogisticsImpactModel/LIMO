@@ -8,7 +8,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditorSupport;
 import java.io.File;
 import javax.swing.ImageIcon;
