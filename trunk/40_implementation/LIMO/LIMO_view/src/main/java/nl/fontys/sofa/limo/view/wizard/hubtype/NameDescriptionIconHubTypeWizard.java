@@ -1,15 +1,16 @@
-package nl.fontys.sofa.limo.view.wizard.legtype;
+package nl.fontys.sofa.limo.view.wizard.hubtype;
 
-import nl.fontys.sofa.limo.view.wizard.types.NameDescriptionIconTypePanel;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction;
+import nl.fontys.sofa.limo.view.wizard.types.NameDescriptionIconTypePanel;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
+public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NameDescriptionIconTypePanel component;
 
@@ -57,9 +58,9 @@ public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(LegTypeWizardAction.TYPE_NAME, getComponent().getTypeName());
-        wiz.putProperty(LegTypeWizardAction.TYPE_DESCRIPTION, getComponent().getTypeDescription());
-        wiz.putProperty(LegTypeWizardAction.TYPE_ICON, getComponent().getTypeIcon());
+        wiz.putProperty(HubTypeWizardAction.TYPE_NAME, getComponent().getTypeName());
+        wiz.putProperty(HubTypeWizardAction.TYPE_DESCRIPTION, getComponent().getTypeDescription());
+        wiz.putProperty(HubTypeWizardAction.TYPE_ICON, getComponent().getTypeIcon());
     }
 
     @Override

@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.wizard.legtype;
 import java.util.List;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -46,13 +47,13 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        List<Procedure> procedures = (List<Procedure>) wiz.getProperty(LegTypeWizardAction.LEG_TYPE_PROCEDURES);
+        List<Procedure> procedures = (List<Procedure>) wiz.getProperty(TYPE_PROCEDURES);
         getComponent().update(procedures);
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(LegTypeWizardAction.LEG_TYPE_PROCEDURES, component.getProcedures());
+        wiz.putProperty(TYPE_PROCEDURES, component.getProcedures());
     }
 
 }

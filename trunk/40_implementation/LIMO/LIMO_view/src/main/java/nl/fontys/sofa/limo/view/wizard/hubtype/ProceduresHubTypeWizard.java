@@ -1,30 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.hubtype;
 
+import java.util.List;
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
-public class HubTypeWizardPanel1 implements WizardDescriptor.Panel<WizardDescriptor> {
+public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
-    /**
-     * The visual component that displays this panel. If you need to access the
-     * component from this class, just use getComponent().
-     */
-    private HubTypeVisualPanel1 component;
+    private ProceduresHubTypePanel component;
 
-    // Get the visual component for the panel. In this template, the component
-    // is kept separate. This can be more efficient: if the wizard is created
-    // but never displayed, or not all panels are displayed, it is better to
-    // create only those which really need to be visible.
     @Override
-    public HubTypeVisualPanel1 getComponent() {
+    public ProceduresHubTypePanel getComponent() {
         if (component == null) {
-            component = new HubTypeVisualPanel1();
+            component = new ProceduresHubTypePanel();
         }
         return component;
     }
@@ -57,12 +48,13 @@ public class HubTypeWizardPanel1 implements WizardDescriptor.Panel<WizardDescrip
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        // use wiz.getProperty to retrieve previous panel state
+        List<Procedure> procedures = (List<Procedure>) wiz.getProperty(TYPE_PROCEDURES);
+        getComponent().update(procedures);
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("hubTypeCopy", getComponent().getHubType());
+        wiz.putProperty(TYPE_PROCEDURES, component.getProcedures());
     }
 
 }
