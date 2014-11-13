@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.hub;
 
 import java.awt.GridBagConstraints;
@@ -11,37 +6,37 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPanel;
+import java.util.ResourceBundle;
+import javax.swing.*;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import org.openide.util.Lookup;
 
-public final class HubVisualPanel1 extends JPanel {
+public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
+
     private List<Hub> hl;
     private List<HubType> htl;
+    private final ResourceBundle bundle;
 
-    /**
-     * Creates new form HubVisualPanel1
-     */
-    public HubVisualPanel1() {
+    public NewDuplicatedOrHubTypeHubPanel() {
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         initComponents();
     }
 
     @Override
     public String getName() {
-        return "Hub";
+        return bundle.getString("HUB");
     }
 
     private void initComponents() {
-
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        rbFromScratch = new javax.swing.JRadioButton();
-        rbFromHubType = new javax.swing.JRadioButton();
-        rbCopyFrom = new javax.swing.JRadioButton();
-        cmbHubType = new javax.swing.JComboBox();
-        cmbHub = new javax.swing.JComboBox();
+        buttonGroup1 = new ButtonGroup();
+        rbFromScratch = new JRadioButton();
+        rbFromHubType = new JRadioButton();
+        rbCopyFrom = new JRadioButton();
+        cmbHubType = new JComboBox();
+        cmbHub = new JComboBox();
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -49,7 +44,7 @@ public final class HubVisualPanel1 extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         buttonGroup1.add(rbFromScratch);
-        rbFromScratch.setText("From Scratch");
+        rbFromScratch.setText(bundle.getString("FROM_SCRATCH"));
         add(rbFromScratch, c);
         rbFromScratch.setSelected(true);
 
@@ -64,7 +59,7 @@ public final class HubVisualPanel1 extends JPanel {
         });
 
         buttonGroup1.add(rbCopyFrom);
-        rbCopyFrom.setText("Copy Existing");
+        rbCopyFrom.setText(bundle.getString("COPY_HUB"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
@@ -82,13 +77,13 @@ public final class HubVisualPanel1 extends JPanel {
         });
 
         HubService hubService = Lookup.getDefault().lookup(HubService.class);
-		hl = hubService.findAll();
+        hl = hubService.findAll();
         List<String> hubNameList = new ArrayList<>();
-		for(Hub hub : hl){
-			hubNameList.add(hub.getName());
-		}
+        for (Hub hub : hl) {
+            hubNameList.add(hub.getName());
+        }
 
-        cmbHub.setModel(new javax.swing.DefaultComboBoxModel(hubNameList.toArray()));
+        cmbHub.setModel(new DefaultComboBoxModel(hubNameList.toArray()));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 2;
@@ -96,7 +91,7 @@ public final class HubVisualPanel1 extends JPanel {
         cmbHub.setEnabled(false);
 
         buttonGroup1.add(rbFromHubType);
-        rbFromHubType.setText("From Hub Type");
+        rbFromHubType.setText(bundle.getString("FROM_HUBTYPE"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 3;
@@ -112,14 +107,14 @@ public final class HubVisualPanel1 extends JPanel {
             }
         });
 
-		HubTypeService hubTypeService = Lookup.getDefault().lookup(HubTypeService.class);
+        HubTypeService hubTypeService = Lookup.getDefault().lookup(HubTypeService.class);
         htl = hubTypeService.findAll();
         ArrayList<String> hubTypeList = new ArrayList<>();
         for (HubType hubType : htl) {
             hubTypeList.add(hubType.getName());
         }
 
-        cmbHubType.setModel(new javax.swing.DefaultComboBoxModel(hubTypeList.toArray()));
+        cmbHubType.setModel(new DefaultComboBoxModel(hubTypeList.toArray()));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 4;
@@ -144,10 +139,10 @@ public final class HubVisualPanel1 extends JPanel {
         }
     }
 
-    javax.swing.ButtonGroup buttonGroup1;
-    javax.swing.JComboBox cmbHubType;
-    javax.swing.JComboBox cmbHub;
-    javax.swing.JRadioButton rbFromHubType;
-    javax.swing.JRadioButton rbFromScratch;
-    javax.swing.JRadioButton rbCopyFrom;
+    ButtonGroup buttonGroup1;
+    JComboBox cmbHubType;
+    JComboBox cmbHub;
+    JRadioButton rbFromHubType;
+    JRadioButton rbFromScratch;
+    JRadioButton rbCopyFrom;
 }

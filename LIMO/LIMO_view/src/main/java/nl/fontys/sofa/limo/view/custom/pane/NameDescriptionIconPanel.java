@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.wizard.types;
+package nl.fontys.sofa.limo.view.custom.pane;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,17 +12,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.util.IconFileFilter;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 
-public final class NameDescriptionIconTypePanel extends JPanel {
+public class NameDescriptionIconPanel<T extends Class> extends JPanel {
 
     private final ResourceBundle bundle;
     private Icon newIcon;
+    private final Class clazz;
 
-    public NameDescriptionIconTypePanel() {
+    public NameDescriptionIconPanel(T clazz) {
         bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
+        this.clazz = clazz;
         initComponents();
     }
 
@@ -84,7 +85,7 @@ public final class NameDescriptionIconTypePanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                int returnVal = fc.showOpenDialog(NameDescriptionIconTypePanel.this);
+                int returnVal = fc.showOpenDialog(NameDescriptionIconPanel.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File icon = fc.getSelectedFile();
                     newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage(), icon.getPath().split("\\.")[icon.getPath().split("\\.").length - 1]);
@@ -107,30 +108,30 @@ public final class NameDescriptionIconTypePanel extends JPanel {
     }
 
     private void resetIcon() {
-        Image image = IconUtil.getIcon(LegType.class, 2);
+        Image image = IconUtil.getIcon(clazz, 2);
         newIcon = new Icon((BufferedImage) image, "png");
         lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
         btnRemove.setEnabled(false);
     }
 
-    public void update(String legTypeName, String legTypeDescr, Icon legTypeIcon) {
-        tfName.setText(legTypeName);
-        tfDesc.setText(legTypeDescr);
-        if (legTypeIcon != null) {
-            Image img = legTypeIcon.getImage();
+    public void update(String legName, String legDescr, Icon legIcon) {
+        tfName.setText(legName);
+        tfDesc.setText(legDescr);
+        if (legIcon != null) {
+            Image img = legIcon.getImage();
             lblPreview.setIcon(new ImageIcon(img));
         }
     }
 
-    public String getTypeName() {
+    public String getNameInput() {
         return tfName.getText();
     }
 
-    public String getTypeDescription() {
+    public String getDescriptionInput() {
         return tfDesc.getText();
     }
 
-    public Icon getTypeIcon() {
+    public Icon getIcon() {
         return newIcon;
     }
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.hub;
 
 import java.awt.Component;
@@ -23,32 +18,40 @@ import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
-import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 
-// An example action demonstrating how the wizard could be called from within
-// your code. You can move the code below wherever you need, or register an action:
 @ActionID(category = "Hub", id = "nl.fontys.limo.view.wizzard.hub.HubWizardAction")
 @ActionRegistration(displayName = "Add Hub")
-@ActionReference(path = "Menu/Data/Hub", position = 20)
+@ActionReference(path = "Menu/Master Data/Hub", position = 20)
 public final class HubWizardAction implements ActionListener {
+
+    static final String HUB_NAME = "hubName";
+    static final String HUB_DESCRIPTION = "hubDescription";
+    static final String HUB_ICON = "hubIcon";
+    static final String HUB_PROCEDURES = "hubProcedures";
+    static final String HUB_LOCATION = "hubLocation";
+    static final String HUB_EVENTS = "hubEvents";
+    static final String HUB_COPY = "hubCopy";
+    static final String HUB_TYPE = "hubType";
+
+    private boolean update = false;
+    private Hub hubUpdate;
 
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!update) {
-            panels.add(new HubWizardPanel1());
+            panels.add(new NewDuplicatedOrHubTypeHubWizard());
         }
-        panels.add(new HubWizardPanel2());
+        panels.add(new NameDescriptionIconHubWizard());
         panels.add(new HubWizardPanel3());
         panels.add(new HubWizardPanel5());
         panels.add(new HubWizardPanel4());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
-            // Default step name to component name of panel.
             steps[i] = c.getName();
-            if (c instanceof JComponent) { // assume Swing components
+            if (c instanceof JComponent) {
                 JComponent jc = (JComponent) c;
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, i);
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
@@ -57,52 +60,43 @@ public final class HubWizardAction implements ActionListener {
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
-
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
-
-        // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle("Add Hub");
         if (update) {
-            wiz.putProperty("hubCopy", hubUpdate);
-
+            wiz.putProperty(HUB_COPY, hubUpdate);
         }
-
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-
             HubService service = Lookup.getDefault().lookup(HubService.class);
             //    Hub hub = (Hub) wiz.getProperty("hub");
             if (update) {
-                hubUpdate.setName((String) wiz.getProperty("name"));
-                hubUpdate.setDescription((String) wiz.getProperty("description"));
-                hubUpdate.setIcon((Icon) wiz.getProperty("icon"));
-                hubUpdate.setLocation((Location) wiz.getProperty("location"));
-                hubUpdate.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
-                hubUpdate.setEvents((List<Event>) wiz.getProperty("events"));
-                    //  if (hub.getId() == null) {
+                hubUpdate.setName((String) wiz.getProperty(HUB_NAME));
+                hubUpdate.setDescription((String) wiz.getProperty(HUB_DESCRIPTION));
+                hubUpdate.setIcon((Icon) wiz.getProperty(HUB_ICON));
+                hubUpdate.setLocation((Location) wiz.getProperty(HUB_LOCATION));
+                hubUpdate.setProcedures((List<Procedure>) wiz.getProperty(HUB_PROCEDURES));
+                hubUpdate.setEvents((List<Event>) wiz.getProperty(HUB_EVENTS));
+                //  if (hub.getId() == null) {
                 //      hub.setId(hubUpdate.getId());
                 //   }
                 service.update(hubUpdate);
             } else {
                 Hub hub = new Hub();
-                hub.setName((String) wiz.getProperty("name"));
-                hub.setDescription((String) wiz.getProperty("description"));
-                hub.setIcon((Icon) wiz.getProperty("icon"));
-                hub.setLocation((Location) wiz.getProperty("location"));
-                hub.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
-                hub.setEvents((List<Event>) wiz.getProperty("events"));
+                hub.setName((String) wiz.getProperty(HUB_NAME));
+                hub.setDescription((String) wiz.getProperty(HUB_DESCRIPTION));
+                hub.setIcon((Icon) wiz.getProperty(HUB_ICON));
+                hub.setLocation((Location) wiz.getProperty(HUB_LOCATION));
+                hub.setProcedures((List<Procedure>) wiz.getProperty(HUB_PROCEDURES));
+                hub.setEvents((List<Event>) wiz.getProperty(HUB_EVENTS));
                 service.insert(hub);
-
             }
         }
 
     }
 
-    public void isUpdate(boolean update, Hub hubUpdate) {
-        this.update = update;
+    public void isUpdate(Hub hubUpdate) {
+        this.update = true;
         this.hubUpdate = hubUpdate;
     }
 
-    private boolean update = false;
-    private Hub hubUpdate;
 }
