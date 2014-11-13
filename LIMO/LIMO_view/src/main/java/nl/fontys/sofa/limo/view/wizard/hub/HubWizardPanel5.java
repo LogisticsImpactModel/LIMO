@@ -62,19 +62,20 @@ public class HubWizardPanel5 implements WizardDescriptor.Panel<WizardDescriptor>
         Hub hub = (Hub) wiz.getProperty("hubCopy");
         if (hub != null) {
             getComponent().update(hub.getEvents());
-        } else {
-            Hub hubNew = (Hub) wiz.getProperty("hub");
-            if (hubNew != null) {
-                getComponent().update(hubNew.getEvents());
-            }
         }
+        //else {
+     //       Hub hubNew = (Hub) wiz.getProperty("hub");
+     //       if (hubNew != null) {
+     //           getComponent().update(hubNew.getEvents());
+     //       }
+     //   }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        Hub hub = (Hub) wiz.getProperty("hub");
-        hub.setEvents(component.getEvents());
-        wiz.putProperty("hub", hub);
+     //   Hub hub = (Hub) wiz.getProperty("hub");
+     //   hub.setEvents(component.getEvents());
+        wiz.putProperty("events", component.getEvents());
     }
 
 }

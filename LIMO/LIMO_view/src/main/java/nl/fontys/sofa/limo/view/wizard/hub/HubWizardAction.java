@@ -13,12 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
+import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.hub.Location;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
+import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 
 // An example action demonstrating how the wizard could be called from within
@@ -60,20 +65,37 @@ public final class HubWizardAction implements ActionListener {
         wiz.setTitle("Add Hub");
         if (update) {
             wiz.putProperty("hubCopy", hubUpdate);
-            wiz.putProperty("hub", hubUpdate);
+
         }
+
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
+
             HubService service = Lookup.getDefault().lookup(HubService.class);
-            Hub hub = (Hub) wiz.getProperty("hub");
+            //    Hub hub = (Hub) wiz.getProperty("hub");
             if (update) {
-                if (hub.getId() == null) {
-                    hub.setId(hubUpdate.getId());
-                }
-                service.update(hub);
+                hubUpdate.setName((String) wiz.getProperty("name"));
+                hubUpdate.setDescription((String) wiz.getProperty("description"));
+                hubUpdate.setIcon((Icon) wiz.getProperty("icon"));
+                hubUpdate.setLocation((Location) wiz.getProperty("location"));
+                hubUpdate.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
+                hubUpdate.setEvents((List<Event>) wiz.getProperty("events"));
+                    //  if (hub.getId() == null) {
+                //      hub.setId(hubUpdate.getId());
+                //   }
+                service.update(hubUpdate);
             } else {
+                Hub hub = new Hub();
+                hub.setName((String) wiz.getProperty("name"));
+                hub.setDescription((String) wiz.getProperty("description"));
+                hub.setIcon((Icon) wiz.getProperty("icon"));
+                hub.setLocation((Location) wiz.getProperty("location"));
+                hub.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
+                hub.setEvents((List<Event>) wiz.getProperty("events"));
                 service.insert(hub);
+
             }
         }
+
     }
 
     public void isUpdate(boolean update, Hub hubUpdate) {

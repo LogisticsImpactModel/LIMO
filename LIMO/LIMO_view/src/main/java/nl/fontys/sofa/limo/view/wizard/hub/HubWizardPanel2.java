@@ -67,16 +67,18 @@ public class HubWizardPanel2 implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        Hub hub;
-        if(wiz.getProperty("hub") == null){
-             hub = new Hub();
-        } else{
-            hub = (Hub) wiz.getProperty("hub");
-        }
-            hub.setName(getComponent().getHubName());
-            hub.setDescription(getComponent().getDescription());
-            hub.setIcon(getComponent().getHubIcon());
-        wiz.putProperty("hub", hub);
+    //    Hub hub;
+    //    if(wiz.getProperty("hub") == null){
+    //         hub = new Hub();
+    //    } else{
+    //        hub = (Hub) wiz.getProperty("hub");
+    //    }
+    //        hub.setName(getComponent().getHubName());
+    //        hub.setDescription(getComponent().getDescription());
+    //        hub.setIcon(getComponent().getHubIcon());
+        wiz.putProperty("name", getComponent().getHubName());
+        wiz.putProperty("description", getComponent().getDescription());
+        wiz.putProperty("icon", getComponent().getHubIcon());
     }
 
     @Override
