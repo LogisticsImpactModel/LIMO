@@ -60,16 +60,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.netbeans.api</groupId>
-			<artifactId>org-openide-util</artifactId>
-			<version>${netbeans.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.netbeans.api</groupId>
-			<artifactId>org-openide-util-lookup</artifactId>
-			<version>${netbeans.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.netbeans.api</groupId>
 			<artifactId>org-openide-awt</artifactId>
 			<version>${netbeans.version}</version>
 		</dependency>
@@ -157,6 +147,16 @@
 			<version>RELEASE80</version>
 			<type>jar</type>
 		</dependency>
+	 <dependency>
+	  <groupId>org.netbeans.api</groupId>
+	  <artifactId>org-openide-util-lookup</artifactId>
+	  <version>RELEASE80</version>
+	 </dependency>
+	 <dependency>
+	  <groupId>org.netbeans.api</groupId>
+	  <artifactId>org-openide-util</artifactId>
+	  <version>RELEASE80</version>
+	 </dependency>
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

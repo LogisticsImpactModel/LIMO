@@ -6,6 +6,7 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.nodes.AbstractNode;
+import org.openide.nodes.Node;
 
 /**
  * Container for nodes used in a GraphScene. <p> Wrap a Node in this container

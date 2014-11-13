@@ -1,10 +1,9 @@
 package nl.fontys.sofa.limo.view.factory;
 
-import nl.fontys.sofa.limo.view.custom.pane.ChainScene;
-import nl.fontys.sofa.limo.view.custom.pane.GraphSceneImpl;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
 import nl.fontys.sofa.limo.view.node.EventNode;
 import nl.fontys.sofa.limo.view.node.HubNode;
+import nl.fontys.sofa.limo.view.node.LegTypeNode;
 import nl.fontys.sofa.limo.view.widget.EventWidget;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import org.netbeans.api.visual.widget.Scene;
@@ -36,8 +35,7 @@ public class WidgetFactory {
 			return widget;
 		} else if (node instanceof EventNode) {
 			return new EventWidget(scene, container);
-		}
-
+		} 
 		return null;
 	}
 
