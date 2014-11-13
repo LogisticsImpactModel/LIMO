@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.hubtype;
 
 import java.awt.GridBagConstraints;
@@ -11,25 +6,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import org.openide.util.Lookup;
 
-public final class HubTypeVisualPanel1 extends JPanel {
+public final class NewOrDuplicatedHubTypePanel extends JPanel {
 
     private List<HubType> ht;
+    private final ResourceBundle bundle;
 
-    /**
-     * Creates new form HubTypeVisualPanel1
-     */
-    public HubTypeVisualPanel1() {
+    public NewOrDuplicatedHubTypePanel() {
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         initComponents();
     }
 
     @Override
     public String getName() {
-        return "HubType";
+        return bundle.getString("HUB_TYPE");
     }
 
     /**
@@ -50,7 +45,7 @@ public final class HubTypeVisualPanel1 extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         buttonGroup1.add(rbFromScratch);
-        rbFromScratch.setText("From Scratch");
+        rbFromScratch.setText(bundle.getString("FROM_SCRATCH"));
         add(rbFromScratch, c);
         rbFromScratch.setSelected(true);
 
@@ -64,7 +59,7 @@ public final class HubTypeVisualPanel1 extends JPanel {
         });
 
         buttonGroup1.add(rbCopyFrom);
-        rbCopyFrom.setText("Copy HubType");
+        rbCopyFrom.setText(bundle.getString("COPY_HUBTYPE"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
