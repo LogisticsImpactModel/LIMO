@@ -11,9 +11,6 @@ import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
-import nl.fontys.sofa.limo.view.wizard.hubtype.NameDescriptionIconHubTypeWizard;
-import nl.fontys.sofa.limo.view.wizard.hubtype.NewOrDuplicatedHubTypeWizard;
-import nl.fontys.sofa.limo.view.wizard.hubtype.ProceduresHubTypeWizard;
 import nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
@@ -22,7 +19,7 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
-@ActionID(category = "HubType", id = "nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
+@ActionID(category = "Hub Type", id = "nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
 @ActionRegistration(displayName = "Add Hub Type")
 @ActionReference(path = "Menu/Master Data/HubType", position = 20)
 public final class HubTypeWizardAction extends TypeWizardAction {
