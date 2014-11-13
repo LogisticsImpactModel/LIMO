@@ -1,14 +1,14 @@
-package nl.fontys.sofa.limo.view.wizard.legtype;
+package nl.fontys.sofa.limo.view.wizard.hub;
 
-import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
-import java.util.List;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.*;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
-public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
+public class ProceduresHubWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     private ProceduresPanel component;
 
@@ -30,12 +30,7 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
 
     @Override
     public boolean isValid() {
-        // If it is always OK to press Next or Finish, then:
         return true;
-        // If it depends on some condition (form filled out...) and
-        // this condition changes (last form field filled in...) then
-        // use ChangeSupport to implement add/removeChangeListener below.
-        // WizardDescriptor.ERROR/WARNING/INFORMATION_MESSAGE will also be useful.
     }
 
     @Override
@@ -48,13 +43,20 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        List<Procedure> procedures = (List<Procedure>) wiz.getProperty(TYPE_PROCEDURES);
-        getComponent().update(procedures);
+        Hub hub = (Hub) wiz.getProperty(HUB_COPY);
+        if (hub != null) {
+            getComponent().update(hub.getProcedures());
+        } else {
+            HubType htyp = (HubType) wiz.getProperty(HUB_TYPE);
+            if (htyp != null) {
+                getComponent().update(htyp.getProcedures());
+            }
+        }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(TYPE_PROCEDURES, component.getProcedures());
+        wiz.putProperty(HUB_PROCEDURES, getComponent().getProcedures());
     }
 
 }

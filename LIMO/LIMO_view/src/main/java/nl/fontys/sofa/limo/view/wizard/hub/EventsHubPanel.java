@@ -10,12 +10,12 @@ import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.view.wizard.event.SubEventsPanel;
 
-public final class HubVisualPanel5 extends JPanel {
+public final class EventsHubPanel extends JPanel {
 
     /**
      * Creates new form HubVisualPanel5
      */
-    public HubVisualPanel5() {
+    public EventsHubPanel() {
         initComponents();
     }
 

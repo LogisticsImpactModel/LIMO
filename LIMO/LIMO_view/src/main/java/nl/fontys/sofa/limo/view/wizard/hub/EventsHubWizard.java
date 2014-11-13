@@ -1,21 +1,19 @@
-package nl.fontys.sofa.limo.view.wizard.hubtype;
+package nl.fontys.sofa.limo.view.wizard.hub;
 
-import java.util.List;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
-public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
+public class EventsHubWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
-    private ProceduresPanel component;
+    private EventsHubPanel component;
 
     @Override
-    public ProceduresPanel getComponent() {
+    public EventsHubPanel getComponent() {
         if (component == null) {
-            component = new ProceduresPanel();
+            component = new EventsHubPanel();
         }
         return component;
     }
@@ -43,13 +41,15 @@ public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDes
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        List<Procedure> procedures = (List<Procedure>) wiz.getProperty(TYPE_PROCEDURES);
-        getComponent().update(procedures);
+        Hub hub = (Hub) wiz.getProperty("hubCopy");
+        if (hub != null) {
+            getComponent().update(hub.getEvents());
+        }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(TYPE_PROCEDURES, component.getProcedures());
+        wiz.putProperty("events", component.getEvents());
     }
 
 }
