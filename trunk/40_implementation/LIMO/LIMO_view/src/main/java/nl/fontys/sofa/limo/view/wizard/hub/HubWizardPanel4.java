@@ -66,20 +66,21 @@ public class HubWizardPanel4 implements WizardDescriptor.Panel<WizardDescriptor>
             HubType htyp = (HubType) wiz.getProperty("hubType");
             if (htyp != null) {
                 getComponent().update(htyp.getProcedures());
-            } else {
-                Hub hubNew = (Hub) wiz.getProperty("hub");
-                if (hubNew != null) {
-                    getComponent().update(hubNew.getProcedures());
-                }
-            }
+            } 
+            //else {
+          //      Hub hubNew = (Hub) wiz.getProperty("hub");
+          //      if (hubNew != null) {
+          //          getComponent().update(hubNew.getProcedures());
+         //       }
+        //    }
         }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        Hub hub = (Hub) wiz.getProperty("hub");
-        hub.setProcedures(getComponent().getProcedures());
-        wiz.putProperty("hub", hub);
+      //  Hub hub = (Hub) wiz.getProperty("hub");
+      //  hub.setProcedures(getComponent().getProcedures());
+        wiz.putProperty("procedures", getComponent().getProcedures());
     }
 
 }
