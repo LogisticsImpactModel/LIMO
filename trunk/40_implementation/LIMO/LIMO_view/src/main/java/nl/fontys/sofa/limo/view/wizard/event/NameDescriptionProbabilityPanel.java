@@ -18,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
@@ -148,12 +149,14 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         descriptionTextArea.setText(event.getDescription());
         Distribution probability = event.getProbability();
         if (probability != null) {
-            String nameForDistributionType = probability.getClass().getSimpleName();
+            String nameForDistributionType = distributionFactory.getNameForDistributionType(probability.getClass());
             distributionTypeComboBox.setSelectedItem(nameForDistributionType);
+            //TableModel model = parametersTable.getModel();
+            parametersTable.setModel(new DistributionParameterTableModel());
         } else {
             distributionTypeComboBox.setSelectedIndex(0);
         }
-        ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
+        //((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
     }
 
     public Event getEvent() {
@@ -233,7 +236,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                 if (n != null) {
                     event.getProbability().setInputValue(inputValueName, n);
                 }
-
+                fireTableCellUpdated(rowIndex, columnIndex);
             }
         }
     }

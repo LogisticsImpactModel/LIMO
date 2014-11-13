@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
@@ -44,9 +45,9 @@ public final class HubWizardAction implements ActionListener {
             panels.add(new NewDuplicatedOrHubTypeHubWizard());
         }
         panels.add(new NameDescriptionIconHubWizard());
-        panels.add(new HubWizardPanel3());
-        panels.add(new HubWizardPanel5());
-        panels.add(new HubWizardPanel4());
+        panels.add(new LocationHubWizard());
+        panels.add(new EventsHubWizard());
+        panels.add(new ProceduresHubWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -62,7 +63,7 @@ public final class HubWizardAction implements ActionListener {
         }
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.setTitleFormat(new MessageFormat("{0}"));
-        wiz.setTitle("Add Hub");
+        wiz.setTitle(ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("ADD_HUB"));
         if (update) {
             wiz.putProperty(HUB_COPY, hubUpdate);
         }

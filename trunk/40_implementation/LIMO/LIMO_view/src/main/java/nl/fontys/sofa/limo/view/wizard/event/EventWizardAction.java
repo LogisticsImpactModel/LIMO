@@ -52,9 +52,11 @@ public final class EventWizardAction implements ActionListener {
         }
         final WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.setTitleFormat(new MessageFormat("{0}"));
-        wiz.setTitle(bundle.getString("ADD_EVENT"));
         if (isUpdate) {
+            wiz.setTitle(bundle.getString("EDIT_EVENT"));
             wiz.putProperty(EVENT, event);
+        } else {
+            wiz.setTitle(bundle.getString("ADD_EVENT"));
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             EventService service = Lookup.getDefault().lookup(EventService.class);
