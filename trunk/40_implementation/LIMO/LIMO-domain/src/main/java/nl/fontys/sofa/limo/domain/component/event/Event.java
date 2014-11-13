@@ -56,7 +56,8 @@ public class Event extends Component {
         this.executionState = executionState;
     }
 
-    public void addEvent(Event event) {
+	@Override
+    public boolean addEvent(Event event) {
         boolean canAdd = true;
         for (Event e : events) {//loop through events that are already in list
             if (e.getId() == event.getId()) { //..to make sure that the event that is to be added is not already in there
@@ -65,8 +66,9 @@ public class Event extends Component {
             }
         }
         if (canAdd) {
-            events.add(event); //if the event to be added was not found in the list w/ existing events, add it
+            return events.add(event); //if the event to be added was not found in the list w/ existing events, add it
         }
+		return false;
     }
 
 }
