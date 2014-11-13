@@ -1,0 +1,3 @@
+mvn clean install -U
+cd application/
+mvn nbm:run-platform
