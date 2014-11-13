@@ -1,30 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.legtype;
 
+import java.util.List;
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
-public class LegTypeWizardPanel1 implements WizardDescriptor.Panel<WizardDescriptor> {
+public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
-    /**
-     * The visual component that displays this panel. If you need to access the
-     * component from this class, just use getComponent().
-     */
-    private LegTypeVisualPanel1 component;
+    private ProceduresLegTypePanel component;
 
-    // Get the visual component for the panel. In this template, the component
-    // is kept separate. This can be more efficient: if the wizard is created
-    // but never displayed, or not all panels are displayed, it is better to
-    // create only those which really need to be visible.
     @Override
-    public LegTypeVisualPanel1 getComponent() {
+    public ProceduresLegTypePanel getComponent() {
         if (component == null) {
-            component = new LegTypeVisualPanel1();
+            component = new ProceduresLegTypePanel();
         }
         return component;
     }
@@ -57,12 +46,13 @@ public class LegTypeWizardPanel1 implements WizardDescriptor.Panel<WizardDescrip
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        // use wiz.getProperty to retrieve previous panel state
+        List<Procedure> procedures = (List<Procedure>) wiz.getProperty(LegTypeWizardAction.LEG_TYPE_PROCEDURES);
+        getComponent().update(procedures);
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("legTypeCopy", getComponent().getLegType());
+        wiz.putProperty(LegTypeWizardAction.LEG_TYPE_PROCEDURES, component.getProcedures());
     }
 
 }
