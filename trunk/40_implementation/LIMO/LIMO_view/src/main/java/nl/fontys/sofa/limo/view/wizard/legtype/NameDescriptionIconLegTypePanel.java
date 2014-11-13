@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.legtype;
 
 import java.awt.GridBagConstraints;
@@ -12,61 +7,42 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import javax.swing.filechooser.FileFilter;
 import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.util.IconFileFilter;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 
-public final class LegTypeVisualPanel2 extends JPanel {
+public final class NameDescriptionIconLegTypePanel extends JPanel {
 
-    /**
-     * Creates new form LegTypeVisualPanel2
-     */
-    public LegTypeVisualPanel2() {
+    private final ResourceBundle bundle;
+    private Icon newIcon;
+
+    public NameDescriptionIconLegTypePanel() {
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         initComponents();
     }
 
     @Override
     public String getName() {
-        return "Name and Icon";
+        return bundle.getString("NAME_DESCRIPTION_ICON");
     }
 
     private void initComponents() {
-        lblName = new javax.swing.JLabel("Name");
+        lblName = new javax.swing.JLabel(bundle.getString("NAME"));
         tfName = new javax.swing.JTextField();
-        lblDesc = new javax.swing.JLabel("Description");
+        lblDesc = new javax.swing.JLabel(bundle.getString("DESCRIPTION"));
         tfDesc = new javax.swing.JTextField();
-        lblIcon = new javax.swing.JLabel("Icon");
+        lblIcon = new javax.swing.JLabel(bundle.getString("ICON"));
         lblPreview = new javax.swing.JLabel();
-        btnSelect = new javax.swing.JButton("Choose");
-        btnRemove = new javax.swing.JButton("Remove");
-        btnRemove.setToolTipText("Removes the current icon and takes the standard one.");
+        btnSelect = new javax.swing.JButton(bundle.getString("CHOOSE"));
+        btnRemove = new javax.swing.JButton(bundle.getString("REMOVE"));
+        btnRemove.setToolTipText(bundle.getString("REMOVE_ICON_HINT"));
         fc = new JFileChooser();
-        fc.setFileFilter(new FileFilter() {
-
-            @Override
-            public boolean accept(File f) {
-                if(f.isDirectory()){
-                    return true;
-                }
-                if (f.getAbsolutePath().endsWith(".png")) {
-                    return true;
-                }
-                if (f.getAbsolutePath().endsWith(".bmp")) {
-                    return true;
-                }
-                return f.getAbsolutePath().endsWith(".jpg");
-            }
-
-            @Override
-            public String getDescription() {
-                return "Filter for Images.";
-            }
-        });
+        fc.setFileFilter(new IconFileFilter());
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fc.setMultiSelectionEnabled(false);
         setLayout(new GridBagLayout());
@@ -104,15 +80,14 @@ public final class LegTypeVisualPanel2 extends JPanel {
         c.gridx = 2;
         c.gridy = 2;
         add(btnSelect, c);
-        legType = new LegType();
         btnSelect.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                int returnVal = fc.showOpenDialog(LegTypeVisualPanel2.this);
+                int returnVal = fc.showOpenDialog(NameDescriptionIconLegTypePanel.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File icon = fc.getSelectedFile();
-                    Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage(), icon.getPath().split("\\.")[icon.getPath().split("\\.").length - 1]);
-                    legType.setIcon(newIcon);
+                    newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage(), icon.getPath().split(ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("\\."))[icon.getPath().split(ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("\\.")).length - 1]);
                     lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
                     btnRemove.setEnabled(true);
                 }
@@ -125,34 +100,38 @@ public final class LegTypeVisualPanel2 extends JPanel {
         btnRemove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Image image = IconUtil.getIcon(LegType.class, 2);
-                Icon newIcon = new Icon((BufferedImage) image, "png");
-                legType.setIcon(newIcon);
-                lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
-                btnRemove.setEnabled(false);
+                resetIcon();
             }
         });
+        resetIcon();
+    }
+
+    private void resetIcon() {
         Image image = IconUtil.getIcon(LegType.class, 2);
-        Icon newIcon = new Icon((BufferedImage) image, "png");
-        legType.setIcon(newIcon);
+        newIcon = new Icon((BufferedImage) image, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("PNG"));
         lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
         btnRemove.setEnabled(false);
     }
 
-    public void updateLabel(String identifire, Icon ic) {
-        if (!identifire.isEmpty()) {
-            tfName.setText(identifire);
-            if (ic != null && ic != null) {
-                Image img = ic.getImage();
-                lblPreview.setIcon(new ImageIcon(img));
-            }
+    public void update(String legTypeName, String legTypeDescr, Icon legTypeIcon) {
+        tfName.setText(legTypeName);
+        tfDesc.setText(legTypeDescr);
+        if (legTypeIcon != null) {
+            Image img = legTypeIcon.getImage();
+            lblPreview.setIcon(new ImageIcon(img));
         }
     }
 
-    public LegType getLegType() {
-        legType.setName(tfName.getText());
-        legType.setDescription(tfDesc.getText());
-        return legType;
+    public String getLegTypeName() {
+        return tfName.getText();
+    }
+
+    public String getLegTypeDescr() {
+        return tfDesc.getText();
+    }
+
+    public Icon getLegTypeIcon() {
+        return newIcon;
     }
 
     private javax.swing.JButton btnSelect, btnRemove;
@@ -163,5 +142,4 @@ public final class LegTypeVisualPanel2 extends JPanel {
     private javax.swing.JTextField tfName;
     private javax.swing.JTextField tfDesc;
     private JFileChooser fc;
-    private LegType legType;
 }
