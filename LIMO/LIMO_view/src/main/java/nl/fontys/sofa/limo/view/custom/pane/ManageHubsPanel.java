@@ -28,7 +28,7 @@ import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.custom.ProcedureComponent;
 import nl.fontys.sofa.limo.view.util.IconUtil;
-import nl.fontys.sofa.limo.view.wizard.hub.HubVisualPanel3;
+import nl.fontys.sofa.limo.view.wizard.hub.LocationHubPanel;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.openide.util.Lookup;
 
@@ -181,7 +181,7 @@ public final class ManageHubsPanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                HubVisualPanel3 panelLocation = new HubVisualPanel3();
+                LocationHubPanel panelLocation = new LocationHubPanel();
                 if (hub.getLocation() != null) {
                     panelLocation.updateLabel(hub.getLocation());
                 }
