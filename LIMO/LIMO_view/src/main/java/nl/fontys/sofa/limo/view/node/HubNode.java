@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.view.node;
 
+import com.sksamuel.gaia.Continent;
+import com.sksamuel.gaia.Country;
 import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -23,7 +25,7 @@ import org.openide.util.Lookup;
  */
 public class HubNode extends AbstractBeanNode<Hub> {
 
-    private Hub bean;
+    private final Hub bean;
 
     public HubNode(Hub bean) throws IntrospectionException {
         super(bean, Hub.class);
@@ -61,10 +63,12 @@ public class HubNode extends AbstractBeanNode<Hub> {
 
     @Override
     protected void createProperties(Hub bean, BeanInfo info) {
-        //super.createProperties(bean, info);
+        super.createProperties(bean, info);
 
         Sheet sets = getSheet();
-        Sheet.Set set = Sheet.createPropertiesSet();
+        Sheet.Set generalSet = Sheet.createPropertiesSet();
+        generalSet.setName("properties");
+        generalSet.setDisplayName("Properties");
 
         try {
             StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");
@@ -77,19 +81,72 @@ public class HubNode extends AbstractBeanNode<Hub> {
             description.setDisplayName("Description");
             description.setShortDescription("An optional short description of the procedure category.");
 
-            StupidProperty iconProp = new StupidProperty(getBean(), Icon.class, "icon");
-            iconProp.addPropertyChangeListener(getListener());
-            iconProp.setDisplayName("Icon");
-            iconProp.setShortDescription("The icon that gets displayed with this Leg-Type.");
-            iconProp.setValue("valueIcon", new ImageIcon(getBean().getIcon().getImage()));
-            iconProp.setValue("canEditAsText", false);
+            StupidProperty icon = new StupidProperty(getBean(), Icon.class, "icon");
+            icon.addPropertyChangeListener(getListener());
+            icon.setDisplayName("Icon");
+            icon.setShortDescription("The icon that gets displayed with this Leg-Type.");
+            icon.setValue("valueIcon", new ImageIcon(getBean().getIcon().getImage()));
+            icon.setValue("canEditAsText", false);
 
-            set.put(name);
-            set.put(description);
-            set.put(iconProp);
+            generalSet.put(name);
+            generalSet.put(description);
+            generalSet.put(icon);
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();
         }
-        sets.put(set);
+
+        Sheet.Set locationSet = Sheet.createPropertiesSet();
+        locationSet.setName("location");
+        locationSet.setDisplayName("Location");
+
+        try {
+            StupidProperty continent = new StupidProperty(getBean().getLocation(), Continent.class, "continent");
+            continent.addPropertyChangeListener(getListener());
+            continent.setName("continent");
+            continent.setDisplayName("Continent");
+
+            StupidProperty country = new StupidProperty(getBean().getLocation(), Country.class, "country");
+            country.addPropertyChangeListener(getListener());
+            country.setName("country");
+            country.setDisplayName("Country");
+
+            StupidProperty state = new StupidProperty(getBean().getLocation(), String.class, "state");
+            state.addPropertyChangeListener(getListener());
+            state.setName("state");
+            state.setDisplayName("State");
+
+            StupidProperty town = new StupidProperty(getBean().getLocation(), String.class, "town");
+            town.addPropertyChangeListener(getListener());
+            town.setName("town");
+            town.setDisplayName("Town");
+
+            StupidProperty postcode = new StupidProperty(getBean().getLocation(), String.class, "postcode");
+            postcode.addPropertyChangeListener(getListener());
+            postcode.setName("postcode");
+            postcode.setDisplayName("Postcode");
+
+            StupidProperty street = new StupidProperty(getBean().getLocation(), String.class, "street");
+            street.addPropertyChangeListener(getListener());
+            street.setName("street");
+            street.setDisplayName("Street");
+
+            StupidProperty housenumber = new StupidProperty(getBean().getLocation(), String.class, "housenumber");
+            housenumber.addPropertyChangeListener(getListener());
+            housenumber.setName("housenumber");
+            housenumber.setDisplayName("House number");
+
+            locationSet.put(continent);
+            locationSet.put(country);
+            locationSet.put(state);
+            locationSet.put(town);
+            locationSet.put(postcode);
+            locationSet.put(street);
+            locationSet.put(housenumber);
+        } catch (NoSuchMethodException ex) {
+            ErrorManager.getDefault();
+        }
+
+        sets.put(generalSet);
+        sets.put(locationSet);
     }
 }

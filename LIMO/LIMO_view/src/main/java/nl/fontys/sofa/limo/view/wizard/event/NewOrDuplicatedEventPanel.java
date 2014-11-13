@@ -78,7 +78,8 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
             }
         });
 
-        service = Lookup.getDefault().lookup(EventService.class);
+        Lookup l = Lookup.getDefault();
+        service = l.lookup(EventService.class);
         eventList = service.findAll();
         List<String> events = new ArrayList<>();
         for (Event event : eventList) {
