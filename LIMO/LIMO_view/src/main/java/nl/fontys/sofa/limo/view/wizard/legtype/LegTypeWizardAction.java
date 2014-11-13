@@ -11,9 +11,6 @@ import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
-import nl.fontys.sofa.limo.view.wizard.legtype.NameDescriptionIconLegTypeWizard;
-import nl.fontys.sofa.limo.view.wizard.legtype.NewOrDuplicatedLegTypeWizard;
-import nl.fontys.sofa.limo.view.wizard.legtype.ProceduresLegTypeWizard;
 import nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
@@ -22,7 +19,7 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
-@ActionID(category = "LegType", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
+@ActionID(category = "Leg Type", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
 @ActionRegistration(displayName = "Add Leg Type")
 @ActionReference(path = "Menu/Master Data/LegType", position = 20)
 public final class LegTypeWizardAction extends TypeWizardAction {
