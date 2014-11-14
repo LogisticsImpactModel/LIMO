@@ -18,6 +18,7 @@ public class Hub extends Node<Leg> {
     private Icon icon;
 
     public Hub() {
+        super();
     }
 
     public Location getLocation() {

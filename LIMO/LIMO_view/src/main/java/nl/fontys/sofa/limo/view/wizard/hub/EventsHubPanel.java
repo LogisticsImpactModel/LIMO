@@ -8,9 +8,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.TableColumn;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.custom.pane.EventsPanel;
 
 public final class EventsHubPanel extends EventsPanel {
+
+    private Hub hub;
 
     public EventsHubPanel() {
         setHubView();
@@ -36,6 +39,7 @@ public final class EventsHubPanel extends EventsPanel {
             public void actionPerformed(ActionEvent e) {
                 Event selected = service.findById(eventList.get(cbEvents.getSelectedIndex()).getId());
                 selected.setId(null);
+                selected.setParent(hub);
                 selected.setDependency(ExecutionState.INDEPENDENT);
                 tableModel.getEvents().add(selected);
                 tableModel.fireTableDataChanged();
@@ -48,10 +52,15 @@ public final class EventsHubPanel extends EventsPanel {
     protected void setTableModel() {
         List<String> events = new ArrayList<>();
         btnAdd.setEnabled(!eventList.isEmpty());
-        cbEvents.setModel(new DefaultComboBoxModel(events.toArray()));
         for (Event e : eventList) {
             events.add(e.getName());
         }
+        cbEvents.setModel(new DefaultComboBoxModel(events.toArray()));
+    }
+
+    public void update(Hub hub) {
+        this.hub = hub;
+        update(hub.getEvents());
     }
 
 }

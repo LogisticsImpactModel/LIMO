@@ -91,14 +91,14 @@ public class HubNode extends AbstractBeanNode<Hub> {
             iconProp.setShortDescription("The icon that gets displayed with this Leg-Type.");
             iconProp.setValue("valueIcon", new ImageIcon(getBean().getIcon().getImage()));
             iconProp.setValue("canEditAsText", false);
-            
+
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
             eventProp.addPropertyChangeListener(getListener());
             eventProp.setPropertyEditorClass(EventPropertyEditor.class);
             eventProp.setDisplayName("Event");
             eventProp.setShortDescription("All Events stored with this Hub.");
             eventProp.setValue("canEditAsText", false);
-            
+
             generalSet.put(name);
             generalSet.put(description);
             generalSet.put(iconProp);
