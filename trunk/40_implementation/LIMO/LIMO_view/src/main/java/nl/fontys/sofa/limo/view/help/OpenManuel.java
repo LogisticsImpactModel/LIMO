@@ -9,7 +9,11 @@ import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
@@ -29,10 +33,30 @@ public final class OpenManuel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-                try {
-            Desktop.getDesktop().open(new File(getClass().getResource("/help/limo_manuel.pdf").getPath()));
-        } catch (IOException ex) {
-            Exceptions.printStackTrace(ex);
+        String pdf = "help/limo_manuel.pdf";
+        if (Desktop.isDesktopSupported()) {
+            FileOutputStream fos = null;
+            try {
+                InputStream jarPdf = getClass().getClassLoader().getResourceAsStream(pdf);
+                File pdfTemp = new File("manual.pdf");
+                fos = new FileOutputStream(pdfTemp);
+                while (jarPdf.available() > 0) {
+                    fos.write(jarPdf.read());
+                }
+                Desktop.getDesktop().open(pdfTemp);
+            } catch (FileNotFoundException ex) {
+                Exceptions.printStackTrace(ex);
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            } finally {
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException ex) {
+                        Exceptions.printStackTrace(ex);
+                    }
+                }
+            }
         }
     }
 }
