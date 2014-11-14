@@ -73,7 +73,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
         private JComboBox<ExecutionState> box;
 
         public CustomEditor() {
-            bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
+            bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
             initComponents();
         }
 

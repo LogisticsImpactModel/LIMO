@@ -19,9 +19,9 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
-@ActionID(category = "Hub Type", id = "nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
+@ActionID(category = "HubType", id = "nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
 @ActionRegistration(displayName = "Add Hub Type")
-@ActionReference(path = "Menu/Master Data/HubType", position = 20)
+@ActionReference(path = "Menu/Master Data/Hub Type", position = 20)
 public final class HubTypeWizardAction extends TypeWizardAction {
 
     private HubType hubType = new HubType();

@@ -17,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
@@ -54,7 +55,6 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     private void initComponents() {
         GridBagConstraints c = initLayout();
         initName();
-        initDistribution();
 
         descriptionLabel = new javax.swing.JLabel(bundle.getString("DESCRIPTION"));
         descriptionTextArea = new javax.swing.JTextArea();
@@ -64,6 +64,8 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         parametersTable = new javax.swing.JTable();
         parametersTable.setModel(new DistributionParameterTableModel());
         parametersTable.setShowGrid(true);
+
+        initDistribution();
 
         c.weightx = 0.3;
         c.gridx = 0;
@@ -128,8 +130,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         distributionFactory = Lookup.getDefault().lookup(DistributionFactory.class);
         List<String> distTypes = Arrays.asList(distributionFactory.getDistributionTypes());
         Collections.sort(distTypes);
-        String[] cbModel = new String[distTypes.size()];
-        distTypes.toArray(cbModel);
+        String[] cbModel = distTypes.toArray(new String[distTypes.size()]);
         distributionTypeLabel = new javax.swing.JLabel(bundle.getString("DISTRIBUTION_TYPE"));
         distributionTypeComboBox = new javax.swing.JComboBox<>(cbModel);
         distributionTypeComboBox.addActionListener(new ActionListener() {
@@ -139,6 +140,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                 ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
             }
         });
+        distributionTypeComboBox.setSelectedIndex(0);
     }
 
     public void update(Event event) {
@@ -147,13 +149,15 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         Distribution probability = event.getProbability();
         if (probability != null) {
             String nameForDistributionType = distributionFactory.getNameForDistributionType(probability.getClass());
-            distributionTypeComboBox.setSelectedItem(nameForDistributionType);
-            //TableModel model = parametersTable.getModel();
-            parametersTable.setModel(new DistributionParameterTableModel());
+            distributionTypeComboBox.getModel().setSelectedItem(nameForDistributionType);
+            prop = probability;
+            ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
+//            DistributionParameterTableModel distributionParameterTableModel = new DistributionParameterTableModel();
+//            parametersTable.setModel(distributionParameterTableModel);
+//            distributionParameterTableModel.fireTableDataChanged();
         } else {
             distributionTypeComboBox.setSelectedIndex(0);
         }
-        //((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
     }
 
     String getNameInput() {
@@ -185,8 +189,10 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
             String inputValueName = prop.getNames().get(rowIndex);
 
             if (columnIndex == 0) {
+                System.out.println(inputValueName);
                 return inputValueName;
             } else {
+                System.out.println(prop.getValue(inputValueName));
                 return prop.getValue(inputValueName);
             }
         }

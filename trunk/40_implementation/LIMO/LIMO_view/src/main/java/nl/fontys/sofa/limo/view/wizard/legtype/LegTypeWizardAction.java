@@ -19,9 +19,9 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
-@ActionID(category = "Leg Type", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
+@ActionID(category = "LegType", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
 @ActionRegistration(displayName = "Add Leg Type")
-@ActionReference(path = "Menu/Master Data/LegType", position = 20)
+@ActionReference(path = "Menu/Master Data/Leg Type", position = 20)
 public final class LegTypeWizardAction extends TypeWizardAction {
 
     private LegType legType = new LegType();

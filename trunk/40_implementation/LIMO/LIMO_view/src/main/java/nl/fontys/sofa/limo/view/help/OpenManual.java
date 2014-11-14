@@ -13,7 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
@@ -22,14 +21,14 @@ import org.openide.util.NbBundle.Messages;
 
 @ActionID(
         category = "Help",
-        id = "nl.fontys.sofa.limo.view.help.OpenManuel"
+        id = "nl.fontys.sofa.limo.view.help.OpenManual"
 )
 @ActionRegistration(
-        displayName = "#CTL_OpenManuel"
+        displayName = "#CTL_OpenManual"
 )
 @ActionReference(path = "Menu/Help", position = 0)
-@Messages("CTL_OpenManuel=Open Manuel")
-public final class OpenManuel implements ActionListener {
+@Messages("CTL_OpenManual=Open Manual")
+public final class OpenManual implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
