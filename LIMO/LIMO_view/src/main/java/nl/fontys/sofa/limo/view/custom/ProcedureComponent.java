@@ -110,7 +110,6 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource().equals(table)) {
-            System.out.println(getActiveTableState());
             if (e.getClickCount() > 1) {
                 editProcedure();
             }
@@ -166,12 +165,13 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     }
 
     private void editProcedure() {
-        changedValue = (Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
-        new EditValueDialog((Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()));
-        table.setValueAt(changedValue, table.getSelectedRow(), table.getSelectedColumn());
-        this.revalidate();
-        this.repaint();
-
+        if (table.getSelectedColumn() == 3 || table.getSelectedColumn() == 4) {
+            changedValue = (Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
+            new EditValueDialog((Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()));
+            table.setValueAt(changedValue, table.getSelectedRow(), table.getSelectedColumn());
+            this.revalidate();
+            this.repaint();
+        }
     }
 
     // <editor-fold desc="UNUSED LISTENER METHODS" defaultstate="collapsed">
