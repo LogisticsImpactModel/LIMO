@@ -1,13 +1,16 @@
 package nl.fontys.sofa.limo.view.node;
 
 import java.io.IOException;
+import javax.swing.Action;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
+import org.openide.actions.NewAction;
 import org.openide.nodes.Children;
+import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 
 /**
@@ -28,6 +31,11 @@ public class EventRootNode extends AbstractRootNode {
     @Override
     Class getBeanClass() {
         return Event.class;
+    }
+    
+    @Override
+    public Action[] getActions(boolean context) {
+        return new Action[]{SystemAction.get(NewAction.class)};
     }
     
     @Override
@@ -57,5 +65,4 @@ public class EventRootNode extends AbstractRootNode {
             }
         }};
     }
-
 }
