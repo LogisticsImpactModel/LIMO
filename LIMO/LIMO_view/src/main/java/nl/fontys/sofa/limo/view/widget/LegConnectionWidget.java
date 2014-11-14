@@ -22,42 +22,55 @@ import org.netbeans.api.visual.widget.Scene;
  */
 public class LegConnectionWidget extends ConnectionWidget {
 
-	public LegConnectionWidget(Scene scene, LegType legType) throws IntrospectionException {
-		super(scene);
-		setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
-		setEndPointShape(PointShape.SQUARE_FILLED_BIG);
-
-		Leg leg = new Leg();
-		leg.setIcon(legType.getIcon());
-		leg.setName(legType.getName());
-		LegNode node = new LegNode(leg);
-		ContainerNode container = new ContainerNode(node);
-		LegWidget legWidget = new LegWidget(scene, container);
-		setConstraint(legWidget, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 20);
-		legWidget.setOpaque(true);
-		addChild(legWidget);
-	}
+	private Leg connectingLeg = null;
 
 	public LegConnectionWidget(Scene scene, List<LegType> legTypes) throws IntrospectionException {
 		super(scene);
 		setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
 		setEndPointShape(PointShape.SQUARE_FILLED_BIG);
 
-		MultiModeLeg multiModeLeg = new MultiModeLeg();
-		multiModeLeg.setName("MultiMode Leg");
-		for (LegType lt : legTypes) {
-			Leg subLeg = new Leg();
-			subLeg.setIcon(lt.getIcon());
-			subLeg.setName(lt.getName());
-			multiModeLeg.addLeg(subLeg);
-
-			LegNode node = new LegNode(subLeg);
+		if (legTypes.size() == 1) {
+			LegType lt = legTypes.get(0);
+			Leg leg = new Leg();
+			leg.setIcon(lt.getIcon());
+			leg.setName(lt.getName());
+			LegNode node = new LegNode(leg);
 			ContainerNode container = new ContainerNode(node);
 			LegWidget legWidget = new LegWidget(scene, container);
 			setConstraint(legWidget, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 20);
 			legWidget.setOpaque(true);
 			addChild(legWidget);
+
+			connectingLeg = leg;
+
+		} else if (legTypes.size() > 1) {
+			MultiModeLeg multiModeLeg = new MultiModeLeg();
+			multiModeLeg.setName("MultiMode Leg");
+			for (LegType lt : legTypes) {
+				Leg subLeg = new Leg();
+				subLeg.setIcon(lt.getIcon());
+				subLeg.setName(lt.getName());
+				multiModeLeg.addLeg(subLeg);
+
+				LegNode node = new LegNode(subLeg);
+				ContainerNode container = new ContainerNode(node);
+				LegWidget legWidget = new LegWidget(scene, container);
+				setConstraint(legWidget, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 20);
+				legWidget.setOpaque(true);
+				addChild(legWidget);
+
+				connectingLeg = multiModeLeg;
+			}
 		}
+	}
+
+	/**
+	 * Get the leg that connects the two hubs together.
+	 *
+	 * @return Leg - the connecting leg.
+	 */
+	public Leg getConnectingLeg() {
+		return connectingLeg;
 	}
 
 }
