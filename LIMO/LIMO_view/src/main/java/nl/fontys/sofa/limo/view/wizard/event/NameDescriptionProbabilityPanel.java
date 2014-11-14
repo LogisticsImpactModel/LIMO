@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,7 +17,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
@@ -38,13 +36,13 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     private JLabel parametersLabel;
     private JTable parametersTable;
 
-    private Event event;
+    private Distribution prop;
     private DistributionFactory distributionFactory;
 
     private final ResourceBundle bundle;
 
     public NameDescriptionProbabilityPanel() {
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         initComponents();
     }
 
@@ -137,14 +135,13 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         distributionTypeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                event.setProbability(distributionFactory.getDistributionTypeByName((String) distributionTypeComboBox.getSelectedItem()));
+                prop = distributionFactory.getDistributionTypeByName((String) distributionTypeComboBox.getSelectedItem());
                 ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
             }
         });
     }
 
     public void update(Event event) {
-        this.event = event;
         nameTextField.setText(event.getName());
         descriptionTextArea.setText(event.getDescription());
         Distribution probability = event.getProbability();
@@ -159,21 +156,23 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         //((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
     }
 
-    public Event getEvent() {
-        updateEventFromInput();
-        return event;
+    String getNameInput() {
+        return nameTextField.getText();
     }
 
-    private void updateEventFromInput() {
-        event.setName(nameTextField.getText());
-        event.setDescription(descriptionTextArea.getText());
+    String getDescriptionInput() {
+        return descriptionTextArea.getText();
+    }
+
+    Distribution getProbability() {
+        return prop;
     }
 
     private class DistributionParameterTableModel extends AbstractTableModel {
 
         @Override
         public int getRowCount() {
-            return event.getProbability() == null ? 0 : event.getProbability().getNames().size();
+            return prop == null ? 0 : prop.getNames().size();
         }
 
         @Override
@@ -183,12 +182,12 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            String inputValueName = event.getProbability().getNames().get(rowIndex);
+            String inputValueName = prop.getNames().get(rowIndex);
 
             if (columnIndex == 0) {
                 return inputValueName;
             } else {
-                return event.getProbability().getValue(inputValueName);
+                return prop.getValue(inputValueName);
             }
         }
 
@@ -210,10 +209,10 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if (columnIndex == 1) {
-                String inputValueName = event.getProbability().getNames().get(rowIndex);
+                String inputValueName = prop.getNames().get(rowIndex);
                 Number n;
 
-                Class<?> inputType = event.getProbability().getType(inputValueName);
+                Class<?> inputType = prop.getType(inputValueName);
 
                 if (inputType.equals(Double.class)) {
                     try {
@@ -234,7 +233,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                 }
 
                 if (n != null) {
-                    event.getProbability().setInputValue(inputValueName, n);
+                    prop.setInputValue(inputValueName, n);
                 }
                 fireTableCellUpdated(rowIndex, columnIndex);
             }

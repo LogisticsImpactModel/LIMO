@@ -38,7 +38,7 @@ public abstract class EventsPanel extends JPanel {
     protected static ResourceBundle bundle;
 
     public EventsPanel() {
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         initComponents();
     }
 

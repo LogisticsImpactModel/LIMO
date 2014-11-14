@@ -19,14 +19,18 @@ import org.openide.util.Lookup;
 
 @ActionID(category = "Event", id = "nl.fontys.sofa.limo.view.wizard.event.EventWizardAction")
 @ActionRegistration(displayName = "Add Event")
-@ActionReference(path = "Menu/Data/Event", position = 20)
+@ActionReference(path = "Menu/Master Data/Event", position = 20)
 public final class EventWizardAction implements ActionListener {
 
-    public static final String EVENT = "event";
+    static final String EVENT = "event";
+    static final String EVENT_NAME = "eventName";
+    static final String EVENT_DESCRIPTION = "eventDescription";
+    static final String EVENT_PROCEDURES = "eventProcedures";
+    static final String EVENT_EVENTS = "eventEvents";
 
-    private Event event = null;
+    private Event eventUpdate = null;
     private boolean isUpdate = false;
-    final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
+    final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -54,25 +58,29 @@ public final class EventWizardAction implements ActionListener {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         if (isUpdate) {
             wiz.setTitle(bundle.getString("EDIT_EVENT"));
-            wiz.putProperty(EVENT, event);
+            wiz.putProperty(EVENT, eventUpdate);
         } else {
             wiz.setTitle(bundle.getString("ADD_EVENT"));
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             EventService service = Lookup.getDefault().lookup(EventService.class);
-            Event newEvent = (Event) wiz.getProperty(EVENT);
+            Event event = new Event();
+            event.setName((String) wiz.getProperty(EVENT_NAME));
+            event.setDescription((String) wiz.getProperty(EVENT_DESCRIPTION));
+            event.setEvents((List<Event>) wiz.getProperty(EVENT_EVENTS));
             if (isUpdate) {
-                newEvent.setId(event.getId());
+                event.setId(eventUpdate.getId());
+                event.setUniqueIdentifier(eventUpdate.getUniqueIdentifier());
                 service.update(event);
             } else {
-                service.insert(newEvent);
+                service.insert(event);
             }
         }
     }
 
     public void setEvent(Event event) {
-        this.event = event;
         this.isUpdate = true;
+        this.eventUpdate = event;
     }
 
 }

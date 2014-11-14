@@ -18,7 +18,7 @@ public class EventTableModel extends AbstractTableModel {
 
     public EventTableModel(List<Event> events) {
         this.events = events;
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
     }
 
     public List<Event> getEvents() {

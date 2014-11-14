@@ -29,7 +29,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
 
     @Override
     public String getName() {
-        return bundle.getString("NAME_DESCRIPTION_ICON");
+        return bundle.getString("BASIC_DATA");
     }
 
     private void initComponents() {

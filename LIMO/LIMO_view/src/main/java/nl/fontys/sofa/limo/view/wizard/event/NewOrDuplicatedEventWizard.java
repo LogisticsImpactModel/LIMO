@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.view.wizard.event;
 
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
@@ -9,16 +10,8 @@ import org.openide.util.HelpCtx;
 
 public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
-    /**
-     * The visual component that displays this panel. If you need to access the
-     * component from this class, just use getComponent().
-     */
     private NewOrDuplicatedEventPanel component;
 
-    // Get the visual component for the panel. In this template, the component
-    // is kept separate. This can be more efficient: if the wizard is created
-    // but never displayed, or not all panels are displayed, it is better to
-    // create only those which really need to be visible.
     @Override
     public NewOrDuplicatedEventPanel getComponent() {
         if (component == null) {
@@ -55,13 +48,16 @@ public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<Wizard
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(EVENT, getComponent().getEvent());
+        Event event = getComponent().getEvent();
+        if (event != null) {
+            wiz.putProperty(EVENT, event);
+        }
     }
 
     @Override
     public void validate() throws WizardValidationException {
         if (getComponent().eventCopySelection.isSelected() && getComponent().getEvent() == null) {
-            throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle").getString("EVENT_NOT_SET"));
+            throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("EVENT_NOT_SET"));
         }
     }
 }
