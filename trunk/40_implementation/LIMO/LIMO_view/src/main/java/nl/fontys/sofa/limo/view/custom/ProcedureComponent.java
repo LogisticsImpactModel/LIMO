@@ -410,33 +410,25 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
                 if (activeType != cbox_valueType.getSelectedIndex()) {
                     double activeValue;
                     if (activeType == 0) {
+                        activeValue = 0;
                         try {
-                            if (tf_value.getText().equals("")) {
-                                activeValue = 0;
-                            } else {
-                                activeValue = Double.parseDouble(tf_value.getText());
-                            }
-                            this.remove(singlePanel);
-                            this.add(rangePanel, cc.xyw(2, 4, 5));
-                            tf_min.setText(activeValue + "");
-                            lbl_error.setText("");
+                            activeValue = Double.parseDouble(tf_value.getText());
                         } catch (NumberFormatException ex) {
-                            cbox_valueType.setSelectedIndex(0);
                         }
+                        this.remove(singlePanel);
+                        this.add(rangePanel, cc.xyw(2, 4, 5));
+                        tf_min.setText(activeValue + "");
+                        lbl_error.setText("");
                     } else {
+                        activeValue = 0;
                         try {
-                            if (tf_value.getText().equals("")) {
-                                activeValue = 0;
-                            } else {
-                                activeValue = Double.parseDouble(tf_min.getText());
-                            }
-                            this.remove(rangePanel);
-                            this.add(singlePanel, cc.xyw(2, 4, 5));
-                            tf_value.setText(activeValue + "");
-                            lbl_error.setText("");
+                            activeValue = Double.parseDouble(tf_min.getText());
                         } catch (NumberFormatException ex) {
-                            cbox_valueType.setSelectedIndex(1);
                         }
+                        this.remove(rangePanel);
+                        this.add(singlePanel, cc.xyw(2, 4, 5));
+                        tf_value.setText(activeValue + "");
+                        lbl_error.setText("");
                     }
                     activeType = cbox_valueType.getSelectedIndex();
                     this.revalidate();
