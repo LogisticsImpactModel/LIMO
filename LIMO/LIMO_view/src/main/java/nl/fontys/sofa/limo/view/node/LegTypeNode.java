@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
+import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
 
@@ -45,11 +46,12 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
             
             StupidProperty iconProp = new StupidProperty(getBean(), Icon.class, "icon");
             iconProp.addPropertyChangeListener(getListener());
+            iconProp.setPropertyEditorClass(IconPropertyEditor.LegIconPropertyEditor.class);
             iconProp.setDisplayName("Icon");
             iconProp.setShortDescription("The icon that gets displayed with this Leg-Type.");
             iconProp.setValue("valueIcon", new ImageIcon(getBean().getIcon().getImage()));
             iconProp.setValue("canEditAsText", false);
-            
+             
             set.put(name);
             set.put(description);
             set.put(iconProp);

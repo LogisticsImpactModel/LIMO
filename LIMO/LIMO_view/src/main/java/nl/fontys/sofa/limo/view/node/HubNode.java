@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -13,6 +14,8 @@ import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
+import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
+import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
@@ -81,16 +84,25 @@ public class HubNode extends AbstractBeanNode<Hub> {
             description.setDisplayName("Description");
             description.setShortDescription("An optional short description of the procedure category.");
 
-            StupidProperty icon = new StupidProperty(getBean(), Icon.class, "icon");
-            icon.addPropertyChangeListener(getListener());
-            icon.setDisplayName("Icon");
-            icon.setShortDescription("The icon that gets displayed with this Leg-Type.");
-            icon.setValue("valueIcon", new ImageIcon(getBean().getIcon().getImage()));
-            icon.setValue("canEditAsText", false);
-
+            StupidProperty iconProp = new StupidProperty(getBean(), Icon.class, "icon");
+            iconProp.addPropertyChangeListener(getListener());
+            iconProp.setPropertyEditorClass(IconPropertyEditor.HubIconPropertyEditor.class);
+            iconProp.setDisplayName("Icon");
+            iconProp.setShortDescription("The icon that gets displayed with this Leg-Type.");
+            iconProp.setValue("valueIcon", new ImageIcon(getBean().getIcon().getImage()));
+            iconProp.setValue("canEditAsText", false);
+            
+            StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
+            eventProp.addPropertyChangeListener(getListener());
+            eventProp.setPropertyEditorClass(EventPropertyEditor.class);
+            eventProp.setDisplayName("Event");
+            eventProp.setShortDescription("All Events stored with this Hub.");
+            eventProp.setValue("canEditAsText", false);
+            
             generalSet.put(name);
             generalSet.put(description);
-            generalSet.put(icon);
+            generalSet.put(iconProp);
+            generalSet.put(eventProp);
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();
         }
