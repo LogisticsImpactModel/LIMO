@@ -6,8 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
@@ -59,22 +53,31 @@ public class EventPropertyEditor extends PropertyEditorSupport {
         return true;
     }
 
-    private class CustomEditor extends JPanel implements ActionListener {
+    private class CustomEditor extends JPanel {
 
-        private JLabel lblEvent;
-        private JComboBox cbEvents;
-        private JTable eventsTable;
-        private JButton btnAdd;
-        private JButton btnDelete;
+        private JLabel lbl_event;
+        private JComboBox cbox_availableEvents;
+        private JComboBox<ExecutionState> cbox_executionState;
+        private JTable tbl_usedEvents;
+        private JButton btn_add, btn_delete;
         private EventService service;
         private List<Event> eventList;
-        private EventTableModel tableModel;
+        private EventTableModel tblmdl_eventsModel;
         private ResourceBundle bundle;
-        private JComboBox<ExecutionState> box;
+        private JPanel panel_table, panel_right;
 
         public CustomEditor() {
             bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
+            //INIT COMPONENTS
             initComponents();
+            //ADD LAYOUT AND COMPONENTS
+            addLayoutAndComponents();
+            //ADD DATA
+            addData();
+            //ENABLE BUTTONS
+            enableButtons();
+            //ADD ACTION LISTENERS
+            addActionListeners();
         }
 
         @Override
@@ -83,102 +86,100 @@ public class EventPropertyEditor extends PropertyEditorSupport {
         }
 
         private void initComponents() {
-            lblEvent = new JLabel(bundle.getString("EVENT"));
-            cbEvents = new JComboBox();
-            tableModel = new EventTableModel();
-            eventsTable = new JTable(tableModel);
-            TableColumn dependencyCol = eventsTable.getColumnModel().getColumn(1);
-            box = new JComboBox(ExecutionState.values());
-            dependencyCol.setCellEditor(new DefaultCellEditor(box));
-            btnAdd = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
-            btnAdd.setEnabled(false);
-            btnDelete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
-            btnDelete.setEnabled(false);
-            JPanel panelLeft = new JPanel();
-
+            lbl_event = new JLabel(bundle.getString("EVENT"));
+            cbox_availableEvents = new JComboBox();
+            tblmdl_eventsModel = new EventTableModel();
+            tbl_usedEvents = new JTable(tblmdl_eventsModel);
+            TableColumn dependencyCol = tbl_usedEvents.getColumnModel().getColumn(1);
+            cbox_executionState = new JComboBox(ExecutionState.values());
+            dependencyCol.setCellEditor(new DefaultCellEditor(cbox_executionState));
+            btn_add = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+            btn_add.setEnabled(false);
+            btn_delete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
+            btn_delete.setEnabled(false);
+            panel_table = new JPanel(new BorderLayout());
+            panel_right = new JPanel();
+            
+        }
+        
+        private void enableButtons(){
+            btn_add.setEnabled(!eventList.isEmpty());
+            btn_delete.setEnabled(tblmdl_eventsModel.getRowCount() > 0);
+        }
+        
+        private void addLayoutAndComponents(){
             setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
             c.fill = GridBagConstraints.HORIZONTAL;
-
+            //ADD COMPONENTS TO LAYOUT
             c.weightx = 0.2;
             c.gridx = 0;
             c.gridy = 0;
             c.gridwidth = 1;
-            add(lblEvent, c);
-
+            add(lbl_event, c);
             c.weightx = 0.7;
             c.gridx = 1;
             c.gridy = 0;
-            add(cbEvents, c);
-
+            add(cbox_availableEvents, c);
             c.weightx = 0.1;
             c.gridx = 2;
             c.gridy = 0;
-            add(btnAdd, c);
-
-            JPanel panel = new JPanel(new BorderLayout());
-            panel.add(new JScrollPane(eventsTable), BorderLayout.CENTER);
-
-            panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
-            panelLeft.add(btnDelete);
-            panel.add(panelLeft, BorderLayout.EAST);
-
+            add(btn_add, c);
             c.weightx = 1;
             c.gridx = 0;
             c.gridy = 1;
             c.gridwidth = 5;
-            add(panel, c);
+            panel_table.add(new JScrollPane(tbl_usedEvents), BorderLayout.CENTER);
+            panel_right.setLayout(new BoxLayout(panel_right, BoxLayout.Y_AXIS));
+            panel_right.add(btn_delete);
+            panel_table.add(panel_right, BorderLayout.EAST);
+            add(panel_table, c);
+        }
+        
+        private void addData(){
+            service = Lookup.getDefault().lookup(EventService.class);
+            eventList = service.findAll();
+            List<String> events = new ArrayList<>();
+            for (Event e : eventList) {
+                events.add(e.getName());
+            }
+            cbox_availableEvents.setModel(new DefaultComboBoxModel(events.toArray()));
+            tblmdl_eventsModel.setEvents((List<Event>) getValue());
+        }
 
-            btnAdd.addActionListener(new ActionListener() {
+        private void addActionListeners() {
+            btn_add.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Event selected = service.findById(eventList.get(cbEvents.getSelectedIndex()).getId());
+                    Event selected = service.findById(eventList.get(cbox_availableEvents.getSelectedIndex()).getId());
                     selected.setId(null);
                     selected.setDependency(ExecutionState.INDEPENDENT);
-                    tableModel.addEvent(selected);
-                    tableModel.fireTableDataChanged(true);
-                    btnDelete.setEnabled(true);
+                    tblmdl_eventsModel.addEvent(selected);
+                    btn_delete.setEnabled(true);
                 }
             });
 
-            btnDelete.addActionListener(new ActionListener() {
+            btn_delete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (eventsTable.getSelectedRow() >= 0) {
-                        tableModel.removeEventByID(eventsTable.getSelectedRow());
-                        tableModel.fireTableDataChanged(true);
-                        if (eventsTable.getRowCount() < 1) {
-                            btnDelete.setEnabled(false);
+                    if (tbl_usedEvents.getSelectedRow() >= 0) {
+                        tblmdl_eventsModel.removeEventByID(tbl_usedEvents.getSelectedRow());
+                        if (tbl_usedEvents.getRowCount() < 1) {
+                            btn_delete.setEnabled(false);
                         }
                     }
                 }
             });
 
-            service = Lookup.getDefault().lookup(EventService.class);
-            eventList = service.findAll();
-            List<String> events = new ArrayList<>();
-            btnAdd.setEnabled(!eventList.isEmpty());
-            for (Event e : eventList) {
-                events.add(e.getName());
-            }
-            cbEvents.setModel(new DefaultComboBoxModel(events.toArray()));
-            tableModel.setEvents((List<Event>) getValue());
-            tableModel.fireTableDataChanged(false);
-            btnDelete.setEnabled(tableModel.getRowCount() > 0);
-            box.addActionListener(this);
-        }
-
-        public void setHubView() {
-            TableColumn tcol = eventsTable.getColumnModel().getColumn(1);
-            eventsTable.getColumnModel().removeColumn(tcol);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(box)) {
-                tableModel.getEvents().get(eventsTable.getSelectedRow()).setDependency((ExecutionState)box.getSelectedItem());
-                tableModel.fireTableDataChanged(true);
-            }
+            cbox_executionState.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getSource().equals(cbox_executionState)) {
+                        tblmdl_eventsModel.getEvents().get(tbl_usedEvents.getSelectedRow()).setDependency((ExecutionState) cbox_executionState.getSelectedItem());
+                        tblmdl_eventsModel.setEvents(tblmdl_eventsModel.getEvents());
+                    }
+                }
+            });
         }
 
         private class EventTableModel extends AbstractTableModel {
@@ -189,41 +190,51 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                 this.events = new ArrayList<>();
             }
 
-            public EventTableModel(ArrayList<Event> events) {
-                this.events = events;
-            }
-
             public List<Event> getEvents() {
                 return this.events;
             }
 
             public void setEvents(List<Event> events) {
                 this.events = events;
-                this.fireTableDataChanged();
+                fireTableDataChanged(false);
             }
 
             public void addEvent(Event e) {
                 events.add(e);
-                events = new ArrayList<>(events);
-                setValue(events);
+                fireTableDataChanged(true);
             }
 
             public void removeEventByID(int i) {
                 if (i >= 0 && i < events.size()) {
                     events.remove(i);
-                    events = new ArrayList<>(events);
-                    setValue(events);
+                    fireTableDataChanged(true);
                 }
             }
-            
-            public void save(){
-                events = new ArrayList<>(events);
-                setValue(events);
+
+            private void setNewValues() {
+                ArrayList<Event> newList = new ArrayList<>();
+                for (Event e : events) {
+                    Event newEvent = new Event();
+                    newEvent.setDependency(e.getDependency());
+                    newEvent.setDescription(e.getDescription());
+                    newEvent.setEvents(e.getEvents());
+                    newEvent.setExecutionState(e.getExecutionState());
+                    newEvent.setId(e.getId());
+                    newEvent.setLastUpdate(e.getLastUpdate());
+                    newEvent.setName(e.getName());
+                    newEvent.setParent(e.getParent());
+                    newEvent.setProbability(e.getProbability());
+                    newEvent.setProcedures(e.getProcedures());
+                    newEvent.setUniqueIdentifier(e.getUniqueIdentifier());
+                    newList.add(newEvent);
+                }
+                setValue(newList);
+                events = newList;
             }
 
             @Override
             public int getRowCount() {
-                return this.events.size();
+                return events.size();
             }
 
             @Override
@@ -238,7 +249,10 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                return String.class;
+                if(columnIndex == 1){
+                    return String.class;
+                }
+                return ExecutionState.class;
             }
 
             @Override
@@ -261,13 +275,13 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                     case 1:
                         this.events.get(rowIndex).setDependency((ExecutionState) aValue);
                 }
-                save();
+                setNewValues();
             }
 
-            public void fireTableDataChanged(boolean save) {
+            public final void fireTableDataChanged(boolean souldSetValue) {
                 super.fireTableDataChanged();
-                if (save) {
-                    save();
+                if (souldSetValue) {
+                    setNewValues();
                 }
             }
         }
