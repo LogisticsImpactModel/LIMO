@@ -16,19 +16,17 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileFilter;
 import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.util.IconUtil;
-import org.openide.nodes.PropertyEditorRegistration;
 
 /**
  *
  * @author Matthias Brück
  */
-@PropertyEditorRegistration(targetType = Icon.class)
-public class IconPropertyEditor extends PropertyEditorSupport {
+public abstract class IconPropertyEditor extends PropertyEditorSupport {
 
-    public IconPropertyEditor() {
-    }
+    protected abstract Class getBeanType();
 
     @Override
     public String getAsText() {
@@ -128,7 +126,7 @@ public class IconPropertyEditor extends PropertyEditorSupport {
                         @Override
                         public void actionPerformed(ActionEvent e
                         ) {
-                            Image image = IconUtil.getIcon(LegType.class, 2);
+                            Image image = IconUtil.getIcon(getBeanType(), 2);
                             Icon newIcon = new Icon((BufferedImage) image, "png");
                             setValue(newIcon);
                             lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
@@ -140,5 +138,23 @@ public class IconPropertyEditor extends PropertyEditorSupport {
             lblPreview.setIcon(new ImageIcon(oldIcon.getImage()));
             this.setPreferredSize(new Dimension(350, 150));
         }
+    }
+    
+    public static class HubIconPropertyEditor extends IconPropertyEditor {
+
+        @Override
+        protected Class getBeanType() {
+            return HubType.class;
+        }
+        
+    }
+    
+    public static class LegIconPropertyEditor extends IconPropertyEditor {
+
+        @Override
+        protected Class getBeanType() {
+            return LegType.class;
+        }
+        
     }
 }
