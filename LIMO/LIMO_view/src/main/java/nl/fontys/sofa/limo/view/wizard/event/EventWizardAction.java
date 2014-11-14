@@ -10,6 +10,8 @@ import java.util.ResourceBundle;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
@@ -26,9 +28,10 @@ public final class EventWizardAction implements ActionListener {
     static final String EVENT_NAME = "eventName";
     static final String EVENT_DESCRIPTION = "eventDescription";
     static final String EVENT_PROCEDURES = "eventProcedures";
+    static final String EVENT_PROBABILITY = "eventProbability";
     static final String EVENT_EVENTS = "eventEvents";
 
-    private Event eventUpdate = null;
+    private Event eventUpdate = new Event();
     private boolean isUpdate = false;
     final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
@@ -64,16 +67,17 @@ public final class EventWizardAction implements ActionListener {
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             EventService service = Lookup.getDefault().lookup(EventService.class);
-            Event event = new Event();
-            event.setName((String) wiz.getProperty(EVENT_NAME));
-            event.setDescription((String) wiz.getProperty(EVENT_DESCRIPTION));
-            event.setEvents((List<Event>) wiz.getProperty(EVENT_EVENTS));
+            eventUpdate.setName((String) wiz.getProperty(EVENT_NAME));
+            eventUpdate.setDescription((String) wiz.getProperty(EVENT_DESCRIPTION));
+            eventUpdate.setEvents((List<Event>) wiz.getProperty(EVENT_EVENTS));
+            eventUpdate.setProbability((Distribution) wiz.getProperty(EVENT_PROBABILITY));
+            eventUpdate.setProcedures((List<Procedure>) wiz.getProperty(EVENT_PROCEDURES));
             if (isUpdate) {
-                event.setId(eventUpdate.getId());
-                event.setUniqueIdentifier(eventUpdate.getUniqueIdentifier());
-                service.update(event);
+                service.update(eventUpdate);
             } else {
-                service.insert(event);
+                eventUpdate.setId(null);
+                eventUpdate.setUniqueIdentifier(null);
+                service.insert(eventUpdate);
             }
         }
     }

@@ -51,7 +51,7 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(EVENT_NAME, getComponent().getNameInput());
         wiz.putProperty(EVENT_DESCRIPTION, getComponent().getDescriptionInput());
-        wiz.putProperty(EVENT_PROCEDURES, getComponent().getProbability());
+        wiz.putProperty(EVENT_PROBABILITY, getComponent().getProbability());
     }
 
     @Override
