@@ -27,6 +27,7 @@ import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.custom.ProcedureComponent;
+import nl.fontys.sofa.limo.view.util.IconFileFilter;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import nl.fontys.sofa.limo.view.wizard.hub.LocationHubPanel;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
@@ -88,27 +89,7 @@ public final class ManageHubsPanel extends JPanel {
         });
 
         fc = new JFileChooser();
-        fc.setFileFilter(new FileFilter() {
-
-            @Override
-            public boolean accept(File f) {
-                if (f.isDirectory()) {
-                    return true;
-                }
-                if (f.getAbsolutePath().endsWith(".png")) {
-                    return true;
-                }
-                if (f.getAbsolutePath().endsWith(".bmp")) {
-                    return true;
-                }
-                return f.getAbsolutePath().endsWith(".jpg");
-            }
-
-            @Override
-            public String getDescription() {
-                return "Filter for Images.";
-            }
-        });
+        fc.setFileFilter(new IconFileFilter());
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fc.setMultiSelectionEnabled(false);
     }
