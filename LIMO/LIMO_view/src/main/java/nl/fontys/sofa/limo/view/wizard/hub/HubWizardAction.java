@@ -36,7 +36,7 @@ public final class HubWizardAction implements ActionListener {
     static final String HUB_TYPE = "hubType";
 
     private boolean update = false;
-    private Hub hubUpdate;
+    private Hub hubUpdate = new Hub();
     final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     @Override
@@ -72,19 +72,18 @@ public final class HubWizardAction implements ActionListener {
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             HubService service = Lookup.getDefault().lookup(HubService.class);
-            Hub hub = new Hub();
-            hub.setName((String) wiz.getProperty(HUB_NAME));
-            hub.setDescription((String) wiz.getProperty(HUB_DESCRIPTION));
-            hub.setIcon((Icon) wiz.getProperty(HUB_ICON));
-            hub.setLocation((Location) wiz.getProperty(HUB_LOCATION));
-            hub.setProcedures((List<Procedure>) wiz.getProperty(HUB_PROCEDURES));
-            hub.setEvents((List<Event>) wiz.getProperty(HUB_EVENTS));
+            hubUpdate.setName((String) wiz.getProperty(HUB_NAME));
+            hubUpdate.setDescription((String) wiz.getProperty(HUB_DESCRIPTION));
+            hubUpdate.setIcon((Icon) wiz.getProperty(HUB_ICON));
+            hubUpdate.setLocation((Location) wiz.getProperty(HUB_LOCATION));
+            hubUpdate.setProcedures((List<Procedure>) wiz.getProperty(HUB_PROCEDURES));
+            hubUpdate.setEvents((List<Event>) wiz.getProperty(HUB_EVENTS));
             if (update) {
-                hub.setId(hubUpdate.getId());
-                hub.setUniqueIdentifier(hubUpdate.getUniqueIdentifier());
-                service.update(hub);
+                service.update(hubUpdate);
             } else {
-                service.insert(hub);
+                hubUpdate.setId(null);
+                hubUpdate.setUniqueIdentifier(null);
+                service.insert(hubUpdate);
             }
         }
 
