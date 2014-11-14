@@ -5,6 +5,7 @@
  */
 package nl.fontys.sofa.limo.domain;
 
+import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

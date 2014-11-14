@@ -3,11 +3,12 @@ package nl.fontys.sofa.limo.view.topcomponent;
 import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
-import nl.fontys.sofa.limo.domain.SupplyChain;
-import nl.fontys.sofa.limo.view.custom.pane.GraphSceneImpl;
+import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.view.chain.GraphSceneImpl;
 import nl.fontys.sofa.limo.view.factory.ChainPaletteFactory;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.netbeans.api.visual.graph.GraphScene;
+import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -49,7 +50,7 @@ public final class ChainBuilderTopComponent extends TopComponent {
 		setToolTipText(Bundle.HINT_ChainBuilderTopComponent());
 
 		try {
-			associateLookup(Lookups.singleton(ChainPaletteFactory.createPalette() ));
+			associateLookup(Lookups.singleton(ChainPaletteFactory.createPalette()));
 		} catch (ServiceNotFoundException ex) {
 			Exceptions.printStackTrace(ex);
 			NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
@@ -62,14 +63,21 @@ public final class ChainBuilderTopComponent extends TopComponent {
 	private void initCustomComponents() {
 		setLayout(new BorderLayout());
 		SupplyChain chain = new SupplyChain();
-		GraphScene scene = new GraphSceneImpl(chain);
-
-		JScrollPane shapePane = new JScrollPane();
-		shapePane.setViewportView(scene.createView());
-		
-		add(shapePane, BorderLayout.CENTER);
-		add(scene.createSatelliteView(), BorderLayout.WEST);
-
+		GraphScene scene;
+		try {
+			scene = new GraphSceneImpl();
+			JScrollPane shapePane = new JScrollPane();
+			shapePane.setViewportView(scene.createView());
+			add(shapePane, BorderLayout.CENTER);
+			add(scene.createSatelliteView(), BorderLayout.WEST);
+		} catch (ServiceNotFoundException ex) {
+			Exceptions.printStackTrace(ex);
+			NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
+					+ "a problem, changes made will not be saved. Please contact "
+					+ "your administrator...",
+					NotifyDescriptor.ERROR_MESSAGE);
+			DialogDisplayer.getDefault().notify(d);
+		}
 	}
 
 	/**
