@@ -25,6 +25,9 @@ public class CountryPopertyEditor extends PropertyEditorSupport{
 
     @Override
     public String getAsText() {
+        if (getValue() == null)
+            return "";
+        
         return ((Country) getValue()).getName();
     }
 
