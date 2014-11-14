@@ -54,7 +54,7 @@ public final class NewOrDuplicatedHubTypePanel extends JPanel {
         });
 
         buttonGroup1.add(rbCopyFrom);
-        rbCopyFrom.setText(bundle.getString("COPY_HUBTYPE"));
+        rbCopyFrom.setText(bundle.getString("COPY_EXISTING"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;

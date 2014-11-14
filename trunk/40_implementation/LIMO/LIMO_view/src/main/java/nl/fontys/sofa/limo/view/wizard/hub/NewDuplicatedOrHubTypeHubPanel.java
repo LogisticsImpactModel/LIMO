@@ -132,11 +132,13 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
     }
 
     public Hub getHub() {
+        Hub hub = null;
         if (rbCopyFrom.isSelected()) {
-            return hl.get(cmbHub.getSelectedIndex());
-        } else {
-            return null;
+            hub = hl.get(cmbHub.getSelectedIndex());
+            hub.setId(null);
+            hub.setUniqueIdentifier(null);
         }
+        return hub;
     }
 
     ButtonGroup buttonGroup1;

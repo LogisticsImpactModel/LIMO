@@ -28,7 +28,7 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
     private final ResourceBundle bundle;
 
     public NewOrDuplicatedEventPanel() {
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/wizard/event/Bundle");
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         initComponents();
     }
 
@@ -95,14 +95,11 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
     }
 
     public Event getEvent() {
-        Event event = new Event();
+        Event event = null;
         if (eventCopySelection.isSelected()) {
-            try {
-                event = service.findById(eventList.get(eventsCb.getSelectedIndex()).getId());
-                event.setId(null);
-                event.setUniqueIdentifier(null);
-            } catch (IndexOutOfBoundsException ex) {
-            }
+            event = eventList.get(eventsCb.getSelectedIndex());
+            event.setId(null);
+            event.setUniqueIdentifier(null);
         }
         return event;
     }

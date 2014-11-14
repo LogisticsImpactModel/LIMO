@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.legtype;
 
+import java.text.MessageFormat;
 import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -13,6 +14,11 @@ import org.openide.util.HelpCtx;
 public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private ProceduresPanel component;
+    private final ResourceBundle bundle;
+
+    public ProceduresLegTypeWizard() {
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
+    }
 
     @Override
     public ProceduresPanel getComponent() {
@@ -62,7 +68,7 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
     @Override
     public void validate() throws WizardValidationException {
         if (component.getProcedures().isEmpty()) {
-            throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("PROCEDURES_NOT_SET"));
+            throw new WizardValidationException(null, null, MessageFormat.format(bundle.getString("VALUE_NOT_SET"), bundle.getString("PROCEDURES")));
         }
     }
 

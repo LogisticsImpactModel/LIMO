@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.hubtype;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
@@ -13,6 +14,11 @@ import org.openide.util.HelpCtx;
 public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private ProceduresPanel component;
+    private final ResourceBundle bundle;
+
+    public ProceduresHubTypeWizard() {
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
+    }
 
     @Override
     public ProceduresPanel getComponent() {
@@ -57,7 +63,7 @@ public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDes
     @Override
     public void validate() throws WizardValidationException {
         if (component.getProcedures().isEmpty()) {
-            throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("PROCEDURES_NOT_SET"));
+            throw new WizardValidationException(null, null, MessageFormat.format(bundle.getString("VALUE_NOT_SET"), bundle.getString("PROCEDURES")));
         }
     }
 }

@@ -37,6 +37,7 @@ public final class HubWizardAction implements ActionListener {
 
     private boolean update = false;
     private Hub hubUpdate;
+    final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -63,32 +64,26 @@ public final class HubWizardAction implements ActionListener {
         }
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.setTitleFormat(new MessageFormat("{0}"));
-        wiz.setTitle(ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("ADD_HUB"));
         if (update) {
+            wiz.setTitle(bundle.getString("ADD_HUB"));
             wiz.putProperty(HUB_COPY, hubUpdate);
+        } else {
+            wiz.setTitle(bundle.getString("EDIT_HUB"));
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             HubService service = Lookup.getDefault().lookup(HubService.class);
-            //    Hub hub = (Hub) wiz.getProperty("hub");
+            Hub hub = new Hub();
+            hub.setName((String) wiz.getProperty(HUB_NAME));
+            hub.setDescription((String) wiz.getProperty(HUB_DESCRIPTION));
+            hub.setIcon((Icon) wiz.getProperty(HUB_ICON));
+            hub.setLocation((Location) wiz.getProperty(HUB_LOCATION));
+            hub.setProcedures((List<Procedure>) wiz.getProperty(HUB_PROCEDURES));
+            hub.setEvents((List<Event>) wiz.getProperty(HUB_EVENTS));
             if (update) {
-                hubUpdate.setName((String) wiz.getProperty(HUB_NAME));
-                hubUpdate.setDescription((String) wiz.getProperty(HUB_DESCRIPTION));
-                hubUpdate.setIcon((Icon) wiz.getProperty(HUB_ICON));
-                hubUpdate.setLocation((Location) wiz.getProperty(HUB_LOCATION));
-                hubUpdate.setProcedures((List<Procedure>) wiz.getProperty(HUB_PROCEDURES));
-                hubUpdate.setEvents((List<Event>) wiz.getProperty(HUB_EVENTS));
-                //  if (hub.getId() == null) {
-                //      hub.setId(hubUpdate.getId());
-                //   }
-                service.update(hubUpdate);
+                hub.setId(hubUpdate.getId());
+                hub.setUniqueIdentifier(hubUpdate.getUniqueIdentifier());
+                service.update(hub);
             } else {
-                Hub hub = new Hub();
-                hub.setName((String) wiz.getProperty(HUB_NAME));
-                hub.setDescription((String) wiz.getProperty(HUB_DESCRIPTION));
-                hub.setIcon((Icon) wiz.getProperty(HUB_ICON));
-                hub.setLocation((Location) wiz.getProperty(HUB_LOCATION));
-                hub.setProcedures((List<Procedure>) wiz.getProperty(HUB_PROCEDURES));
-                hub.setEvents((List<Event>) wiz.getProperty(HUB_EVENTS));
                 service.insert(hub);
             }
         }
