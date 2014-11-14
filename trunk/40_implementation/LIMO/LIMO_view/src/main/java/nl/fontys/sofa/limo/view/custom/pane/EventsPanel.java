@@ -107,7 +107,7 @@ public abstract class EventsPanel extends JPanel {
         setTableModel();
     }
 
-    public void update(List<Event> events) {
+    protected void update(List<Event> events) {
         tableModel.getEvents().clear();
         tableModel.getEvents().addAll(events);
         tableModel.fireTableDataChanged();

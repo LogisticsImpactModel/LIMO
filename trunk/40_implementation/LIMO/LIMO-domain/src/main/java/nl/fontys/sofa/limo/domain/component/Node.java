@@ -13,6 +13,7 @@ public abstract class Node<T extends Node> extends Component {
     protected T previous;
 
     public Node() {
+        super();
     }
 
     public T getNext() {

@@ -40,15 +40,15 @@ public class EventsHubWizard implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Hub hub = (Hub) wiz.getProperty("hubCopy");
+        Hub hub = (Hub) wiz.getProperty(HubWizardAction.HUB_COPY);
         if (hub != null) {
-            getComponent().update(hub.getEvents());
+            getComponent().update(hub);
         }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("events", component.getEvents());
+        wiz.putProperty(HubWizardAction.HUB_EVENTS, component.getEvents());
     }
 
 }

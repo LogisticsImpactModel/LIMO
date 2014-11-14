@@ -22,6 +22,7 @@ public class Event extends Component {
     private ExecutionState executionState;
 
     public Event() {
+        super();
     }
 
     public Component getParent() {
