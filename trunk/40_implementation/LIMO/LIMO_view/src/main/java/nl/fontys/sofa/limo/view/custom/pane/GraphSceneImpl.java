@@ -116,12 +116,8 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 			DialogDescriptor dd = new DialogDescriptor(inputPane, "Leg Types");
 			DialogDisplayer.getDefault().notify(dd);
 			List<LegType> legTypes = inputPane.getSelectedLegTypes();
-			ConnectionWidget connection = new ConnectionWidget(this);
-			if(legTypes.size() == 1){
-				connection = new LegConnectionWidget(this, legTypes.get(0));
-			}else if(legTypes.size() > 1){
-				connection = new LegConnectionWidget(this, legTypes);
-			}
+
+			LegConnectionWidget connection = new LegConnectionWidget(this, legTypes);
 			connection.getActions().addAction(createObjectHoverAction());
 			connection.getActions().addAction(createSelectAction());
 			connection.getActions().addAction(reconnectAction);
