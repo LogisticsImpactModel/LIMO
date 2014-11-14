@@ -59,10 +59,10 @@ public class HubRootNode extends AbstractRootNode {
                 String description = inputPane.getDescriptionFieldValue();
 
                 if (!name.isEmpty() && !description.isEmpty()) {
-                    HubType ht = new HubType();
-                    ht.setName(name);
-                    ht.setDescription(description);
-                    service.insert(ht);
+                    Hub h = new Hub();
+                    h.setName(name);
+                    h.setDescription(description);
+                    service.insert(h);
                 }
             }
         }};
