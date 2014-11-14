@@ -2,13 +2,15 @@ package nl.fontys.sofa.limo.view.wizard.legtype;
 
 import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
 import org.openide.WizardDescriptor;
+import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
+public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private ProceduresPanel component;
 
@@ -55,6 +57,13 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(TYPE_PROCEDURES, component.getProcedures());
+    }
+
+    @Override
+    public void validate() throws WizardValidationException {
+        if (component.getProcedures().isEmpty()) {
+            throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("PROCEDURES_NOT_SET"));
+        }
     }
 
 }

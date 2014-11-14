@@ -1,14 +1,16 @@
 package nl.fontys.sofa.limo.view.wizard.hubtype;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
 import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
 import org.openide.WizardDescriptor;
+import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
+public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private ProceduresPanel component;
 
@@ -52,4 +54,10 @@ public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDes
         wiz.putProperty(TYPE_PROCEDURES, component.getProcedures());
     }
 
+    @Override
+    public void validate() throws WizardValidationException {
+        if (component.getProcedures().isEmpty()) {
+            throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("PROCEDURES_NOT_SET"));
+        }
+    }
 }
