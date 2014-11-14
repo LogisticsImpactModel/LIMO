@@ -1,6 +1,7 @@
 package nl.fontys.sofa.limo.view.node;
 
 import java.awt.event.ActionEvent;
+import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.util.ArrayList;
 import javax.swing.AbstractAction;
@@ -8,15 +9,18 @@ import javax.swing.Action;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.view.node.property.StupidProperty;
+import org.openide.ErrorManager;
+import org.openide.nodes.Sheet;
 import org.openide.util.Lookup;
 
-public class EventNode extends AbstractBeanNode {
+public class EventNode extends AbstractBeanNode<Event> {
 
-    private final Event event;
+    private final Event bean;
 
     public EventNode(Event event) throws IntrospectionException {
         super(event, Event.class);
-        this.event = event;
+        this.bean = event;
     }
 
     @Override
@@ -31,7 +35,7 @@ public class EventNode extends AbstractBeanNode {
             @Override
             public void actionPerformed(ActionEvent e) {
                 EventWizardAction wiz = new EventWizardAction();
-                wiz.setEvent(event);
+                wiz.setEvent(bean);
                 wiz.actionPerformed(e);
             }
         });
@@ -40,10 +44,37 @@ public class EventNode extends AbstractBeanNode {
             @Override
             public void actionPerformed(ActionEvent e) {
                 EventService service = Lookup.getDefault().lookup(EventService.class);
-                service.delete(event);
+                service.delete(bean);
             }
         });
         return actionList.toArray(new Action[actionList.size()]);
     }
 
+    @Override
+    protected void createProperties(Event bean, BeanInfo info) {
+        super.createProperties(bean, info);
+
+        Sheet sets = getSheet();
+        Sheet.Set set = Sheet.createPropertiesSet();
+        set.setName("properties");
+        set.setDisplayName("Properties");
+
+        try {
+            StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");
+            name.addPropertyChangeListener(getListener());
+            name.setDisplayName("Name");
+            name.setShortDescription("The name of the procedure category.");
+
+            StupidProperty description = new StupidProperty<>(getBean(), String.class, "description");
+            description.addPropertyChangeListener(getListener());
+            description.setDisplayName("Description");
+            description.setShortDescription("An optional short description of the procedure category.");
+
+            set.put(name);
+            set.put(description);
+        } catch (NoSuchMethodException ex) {
+            ErrorManager.getDefault();
+        }
+        sets.put(set);
+    }
 }
