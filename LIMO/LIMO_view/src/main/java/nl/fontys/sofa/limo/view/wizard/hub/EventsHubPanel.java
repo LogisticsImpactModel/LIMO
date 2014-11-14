@@ -1,22 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.hub;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPanel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.TableColumn;
 import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.view.wizard.event.SubEventsPanel;
+import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
+import nl.fontys.sofa.limo.view.custom.pane.EventsPanel;
 
-public final class EventsHubPanel extends JPanel {
+public final class EventsHubPanel extends EventsPanel {
 
-    /**
-     * Creates new form HubVisualPanel5
-     */
     public EventsHubPanel() {
-        initComponents();
+        setHubView();
     }
 
     @Override
@@ -24,21 +21,37 @@ public final class EventsHubPanel extends JPanel {
         return "Events";
     }
 
-    private void initComponents() {
-        sep = new SubEventsPanel();
-        sep.setHubView();
-        add(sep);
+    /**
+     * Removes the dependency column which is just needed by events.
+     */
+    public void setHubView() {
+        TableColumn tcol = eventsTable.getColumnModel().getColumn(1);
+        eventsTable.getColumnModel().removeColumn(tcol);
     }
 
-    public void update(List<Event> events) {
-        Event evt = new Event();
-        evt.setEvents(events);
-        sep.update(evt);
+    @Override
+    protected void setAddButtonListener() {
+        btnAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Event selected = service.findById(eventList.get(cbEvents.getSelectedIndex()).getId());
+                selected.setId(null);
+                selected.setDependency(ExecutionState.INDEPENDENT);
+                tableModel.getEvents().add(selected);
+                tableModel.fireTableDataChanged();
+                btnDelete.setEnabled(true);
+            }
+        });
     }
 
-    public List<Event> getEvents() {
-        return sep.getEvent().getEvents();
+    @Override
+    protected void setTableModel() {
+        List<String> events = new ArrayList<>();
+        btnAdd.setEnabled(!eventList.isEmpty());
+        cbEvents.setModel(new DefaultComboBoxModel(events.toArray()));
+        for (Event e : eventList) {
+            events.add(e.getName());
+        }
     }
 
-    private SubEventsPanel sep;
 }
