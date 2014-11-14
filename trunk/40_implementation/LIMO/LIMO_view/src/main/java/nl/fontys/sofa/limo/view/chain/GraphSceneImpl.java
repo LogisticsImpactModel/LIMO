@@ -1,17 +1,18 @@
-package nl.fontys.sofa.limo.view.custom.pane;
+package nl.fontys.sofa.limo.view.chain;
 
 import java.awt.Point;
 import java.awt.datatransfer.Transferable;
 import java.beans.IntrospectionException;
-import java.util.ArrayList;
 import java.util.List;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
-import nl.fontys.sofa.limo.domain.SupplyChain;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.custom.pane.LegTypeSelectPane;
 import nl.fontys.sofa.limo.view.factory.WidgetFactory;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
+import nl.fontys.sofa.limo.view.node.EventNode;
 import nl.fontys.sofa.limo.view.node.HubNode;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.widget.LegConnectionWidget;
@@ -22,20 +23,18 @@ import org.netbeans.api.visual.action.ConnectorState;
 import org.netbeans.api.visual.action.ReconnectProvider;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.anchor.AnchorFactory;
-import org.netbeans.api.visual.anchor.AnchorShape;
-import org.netbeans.api.visual.anchor.PointShape;
 import org.netbeans.api.visual.graph.GraphScene;
-import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
-import org.netbeans.api.visual.widget.general.IconNodeWidget;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.nodes.Node;
 import org.openide.nodes.NodeTransfer;
 import org.openide.util.Exceptions;
+import org.openide.util.Lookup;
 
 /**
  * GraphScene to draw a chain on. Widgets can be added to this scene to build
@@ -45,8 +44,9 @@ import org.openide.util.Exceptions;
  */
 public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 
-	private final SupplyChain chain;
-	private List<HubWidget> hubWidgets;
+	private final ChainService chainService;
+	private final ConnectionManager connectionManager;
+
 	private long edgeCounter = 0;
 
 	// The different Layers to draw on.
@@ -64,15 +64,17 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 	private final WidgetAction connectAction;
 	private final WidgetAction reconnectAction;
 
-	private SceneConnectManager connectionManager = new SceneConnectManager();
 
 	/**
 	 * Constructor sets up the different layers and creates basic actions which
 	 * can be invoked on the scene.
 	 */
-	public GraphSceneImpl(SupplyChain chain) {
-		this.chain = chain;
-		this.hubWidgets = new ArrayList<>();
+	public GraphSceneImpl() throws ServiceNotFoundException {
+		chainService = Lookup.getDefault().lookup(ChainService.class);
+		connectionManager = new SceneConnectManager();
+		if(chainService == null){
+			throw new ServiceNotFoundException(ChainService.class.getSimpleName() + " not found...");
+		}
 
 		addChild(mainLayer);
 		addChild(connectionLayer);
@@ -100,12 +102,12 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 	@Override
 	protected Widget attachNodeWidget(ContainerNode node) {
 		Widget widget = WidgetFactory.createWidgetFromContainerNode(this, node);
-		widget.getActions().addAction(createSelectAction());
-		widget.getActions().addAction(createObjectHoverAction());
-		widget.getActions().addAction(connectAction);
-		widget.getActions().addAction(moveAlignAction);
-		mainLayer.addChild(widget);
-		mainLayer.repaint();
+		if (widget instanceof HubWidget) {
+			widget.getActions().addAction(createSelectAction());
+			widget.getActions().addAction(createObjectHoverAction());
+			widget.getActions().addAction(connectAction);
+			widget.getActions().addAction(moveAlignAction);
+		}
 		return widget;
 	}
 
@@ -117,32 +119,84 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 			DialogDisplayer.getDefault().notify(dd);
 			List<LegType> legTypes = inputPane.getSelectedLegTypes();
 
-			LegConnectionWidget connection = new LegConnectionWidget(this, legTypes);
-			connection.getActions().addAction(createObjectHoverAction());
-			connection.getActions().addAction(createSelectAction());
-			connection.getActions().addAction(reconnectAction);
-			connectionLayer.addChild(connection);
-			return connection;
+			if (!legTypes.isEmpty()) {
+				LegConnectionWidget connection = new LegConnectionWidget(this, legTypes);
+				connection.getActions().addAction(createObjectHoverAction());
+				connection.getActions().addAction(createSelectAction());
+				connection.getActions().addAction(reconnectAction);
+				connectionLayer.addChild(connection);
+				return connection;
+			}
 		} catch (ServiceNotFoundException | IntrospectionException ex) {
 			Exceptions.printStackTrace(ex);
+			NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
+					+ "a problem. Please contact "
+					+ "your administrator...",
+					NotifyDescriptor.ERROR_MESSAGE);
+			DialogDisplayer.getDefault().notify(d);
 		}
 		return null;
 	}
 
 	@Override
 	protected void attachEdgeSourceAnchor(String edge, ContainerNode oldSourceNode, ContainerNode sourceNode) {
-		Widget w = sourceNode != null ? findWidget(sourceNode) : null;
-		((ConnectionWidget) findWidget(edge)).setSourceAnchor(AnchorFactory.createRectangularAnchor(w));
+		HubWidget hubWidget = (HubWidget) findWidget(sourceNode);
+		if (hubWidget == null) {
+			hubWidget = (HubWidget) findWidget(oldSourceNode);
+		}
+		LegConnectionWidget legConnectionWidget = (LegConnectionWidget) findWidget(edge);
+		legConnectionWidget.setSourceAnchor(AnchorFactory.createRectangularAnchor(hubWidget));
 	}
 
 	@Override
 	protected void attachEdgeTargetAnchor(String edge, ContainerNode oldTargetNode, ContainerNode targetNode) {
-		Widget w = targetNode != null ? findWidget(targetNode) : null;
-		((ConnectionWidget) findWidget(edge)).setTargetAnchor(AnchorFactory.createRectangularAnchor(w));
+		HubWidget hubWidget = (HubWidget) findWidget(targetNode);
+		if (hubWidget == null) {
+			hubWidget = (HubWidget) findWidget(oldTargetNode);
+		}
+		LegConnectionWidget legConnectionWidget = (LegConnectionWidget) findWidget(edge);
+		legConnectionWidget.setTargetAnchor(AnchorFactory.createRectangularAnchor(hubWidget));
 	}
 
-	public SupplyChain getSupplyChain() {
-		return chain;
+	/**
+	 * SceneConnectManager is responsible for managing connections between two
+	 * hubs by using a leg.
+	 */
+	public class SceneConnectManager implements ConnectionManager{
+
+		private Hub sourceHub;
+		private Leg leg;
+		private Hub targetHub;
+
+		@Override
+		public Hub getSourceHub() {
+			return sourceHub;
+		}
+
+		@Override
+		public Leg getConnectingLeg() {
+			return leg;
+		}
+
+		@Override
+		public Hub getTargetHub() {
+			return targetHub;
+		}
+
+		@Override
+		public void addSourceHub(Hub source) {
+			this.sourceHub = source;
+		}
+
+		@Override
+		public void addConnectingLeg(Leg connection) {
+			this.leg = connection;
+		}
+
+		@Override
+		public void addTargetHub(Hub target) {
+			this.targetHub = target;
+		}
 	}
 
 	/**
@@ -154,7 +208,7 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 		@Override
 		public ConnectorState isAcceptable(Widget widget, Point point, Transferable t) {
 			Node node = NodeTransfer.node(t, NodeTransfer.DND_COPY_OR_MOVE);
-			if (node instanceof HubNode) {
+			if (node instanceof HubNode || node instanceof EventNode) {
 				return ConnectorState.ACCEPT;
 			}
 			return ConnectorState.REJECT;
@@ -164,32 +218,14 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 		public void accept(Widget widget, Point point, Transferable t) {
 			AbstractBeanNode node = (AbstractBeanNode) NodeTransfer.node(
 					t, NodeTransfer.DND_COPY_OR_MOVE);
-			Widget w = GraphSceneImpl.this.addNode(new ContainerNode(node));
-			w.setPreferredLocation(widget.convertLocalToScene(point));
+			if (node instanceof HubNode && widget instanceof GraphSceneImpl) {
+				HubWidget w = (HubWidget) GraphSceneImpl.this.addNode(new ContainerNode(node));
+				w.setPreferredLocation(widget.convertLocalToScene(point));
+				mainLayer.addChild(w);
+				mainLayer.repaint();
+
+			}
 		}
-	}
-
-	private class SceneConnectManager {
-
-		private HubWidget sourceWidget;
-		private HubWidget targetWidget;
-
-		public HubWidget getSourceWidget() {
-			return sourceWidget;
-		}
-
-		public void setSourceWidget(HubWidget sourceWidget) {
-			this.sourceWidget = sourceWidget;
-		}
-
-		public HubWidget getTargetWidget() {
-			return targetWidget;
-		}
-
-		public void setTargetWidget(HubWidget targetWidget) {
-			this.targetWidget = targetWidget;
-		}
-
 	}
 
 	/**
@@ -219,10 +255,18 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 
 		@Override
 		public void createConnection(Widget sourceWidget, Widget targetWidget) {
+			HubWidget sourceW = (HubWidget) sourceWidget;
 			String edge = "edge" + edgeCounter++;
-			addEdge(edge);
+			LegConnectionWidget legConnectionWidget = (LegConnectionWidget) addEdge(edge);
+			HubWidget targetW = (HubWidget) targetWidget;
+
 			setEdgeSource(edge, source);
 			setEdgeTarget(edge, target);
+
+			connectionManager.addSourceHub((sourceW.getHub()));
+			connectionManager.addConnectingLeg((legConnectionWidget.getLeg()));
+			connectionManager.addTargetHub(targetW.getHub());
+			chainService.connectHubs(connectionManager);
 		}
 
 		@Override
@@ -284,11 +328,23 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 		@Override
 		public void reconnect(ConnectionWidget connectionWidget, Widget replacementWidget, boolean reconnectingSource) {
 			if (replacementWidget == null) {
-				removeEdge(edge);
+				//Do nothing...
 			} else if (reconnectingSource) {
-				setEdgeSource(edge, replacementNode);
+//				setEdgeSource(edge, replacementNode);
+//				connectionManager.addSourceHubWidget((HubWidget) replacementWidget);
+//				connectionManager.addLegWidget((LegConnectionWidget) connectionWidget);
+//				chain.connectHub(
+//						connectionManager.getSourceHub(),
+//						connectionManager.getLeg(),
+//						connectionManager.getTargetHub());
 			} else {
-				setEdgeTarget(edge, replacementNode);
+//				setEdgeTarget(edge, replacementNode);
+//				connectionManager.addLegWidget((LegConnectionWidget) connectionWidget);
+//				connectionManager.addTargetHubWidget((HubWidget) replacementWidget);
+//				chain.connectHub(
+//						connectionManager.getSourceHub(),
+//						connectionManager.getLeg(),
+//						connectionManager.getTargetHub());
 			}
 		}
 

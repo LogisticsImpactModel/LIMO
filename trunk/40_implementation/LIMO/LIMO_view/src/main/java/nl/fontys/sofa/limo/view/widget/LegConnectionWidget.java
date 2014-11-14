@@ -22,7 +22,7 @@ import org.netbeans.api.visual.widget.Scene;
  */
 public class LegConnectionWidget extends ConnectionWidget {
 
-	private Leg connectingLeg = null;
+	private Leg leg = null;
 
 	public LegConnectionWidget(Scene scene, List<LegType> legTypes) throws IntrospectionException {
 		super(scene);
@@ -31,7 +31,7 @@ public class LegConnectionWidget extends ConnectionWidget {
 
 		if (legTypes.size() == 1) {
 			LegType lt = legTypes.get(0);
-			Leg leg = new Leg();
+			leg = new Leg();
 			leg.setIcon(lt.getIcon());
 			leg.setName(lt.getName());
 			LegNode node = new LegNode(leg);
@@ -41,16 +41,15 @@ public class LegConnectionWidget extends ConnectionWidget {
 			legWidget.setOpaque(true);
 			addChild(legWidget);
 
-			connectingLeg = leg;
-
 		} else if (legTypes.size() > 1) {
+			double probability = 100/legTypes.size();
 			MultiModeLeg multiModeLeg = new MultiModeLeg();
 			multiModeLeg.setName("MultiMode Leg");
 			for (LegType lt : legTypes) {
 				Leg subLeg = new Leg();
 				subLeg.setIcon(lt.getIcon());
-				subLeg.setName(lt.getName());
-				multiModeLeg.addLeg(subLeg);
+				subLeg.setName(lt.getName() + " " + probability + "%");
+				multiModeLeg.addLeg(subLeg, probability);
 
 				LegNode node = new LegNode(subLeg);
 				ContainerNode container = new ContainerNode(node);
@@ -59,7 +58,7 @@ public class LegConnectionWidget extends ConnectionWidget {
 				legWidget.setOpaque(true);
 				addChild(legWidget);
 
-				connectingLeg = multiModeLeg;
+				leg = multiModeLeg;
 			}
 		}
 	}
@@ -69,8 +68,8 @@ public class LegConnectionWidget extends ConnectionWidget {
 	 *
 	 * @return Leg - the connecting leg.
 	 */
-	public Leg getConnectingLeg() {
-		return connectingLeg;
+	public Leg getLeg() {
+		return leg;
 	}
 
 }

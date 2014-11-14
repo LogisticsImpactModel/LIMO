@@ -1,16 +1,8 @@
 package nl.fontys.sofa.limo.view.widget;
 
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import javax.swing.AbstractAction;
-import javax.swing.JPopupMenu;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
-import nl.fontys.sofa.limo.view.custom.pane.GraphSceneImpl;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
-import org.netbeans.api.visual.action.ActionFactory;
-import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.widget.Scene;
-import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.api.visual.widget.general.IconNodeWidget;
 
 /**

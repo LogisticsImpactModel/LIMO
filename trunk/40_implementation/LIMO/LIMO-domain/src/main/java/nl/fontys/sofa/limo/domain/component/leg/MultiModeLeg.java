@@ -27,7 +27,7 @@ public class MultiModeLeg extends Leg {
         this.legs = legs;
     }
 
-	public void addLeg(Leg leg) {
-		legs.put(leg, 0.0);
+	public void addLeg(Leg leg, double probability) {
+		legs.put(leg, probability);
 	}
 }

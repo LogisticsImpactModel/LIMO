@@ -1,10 +1,10 @@
-package nl.fontys.sofa.limo.domain;
+package nl.fontys.sofa.limo.domain.component;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import nl.fontys.sofa.limo.domain.component.Node;
+import nl.fontys.sofa.limo.domain.Actor;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 
@@ -20,11 +20,10 @@ public class SupplyChain implements Serializable {
 	private String filepath;
 	private Hub startHub;
 	private List<Actor> actors;
-	private int numberOfHubs;
+
 
 	public SupplyChain() {
 		this.actors = new ArrayList<>();
-		numberOfHubs = 0;
 	}
 
 	public String getName() {
@@ -74,22 +73,4 @@ public class SupplyChain implements Serializable {
 	public void saveToFile() {
 	}
 
-	/**
-	 * Connect two Hubs together via a Leg.
-	 *
-	 * @param source - the source hub.
-	 * @param target - the target hub.
-	 * @param leg - the connecting leg.
-	 * @return boolean - true if successfully connected.
-	 */
-	public boolean connectHub(Hub source, Hub target, Leg leg) {
-		if (source != null && target != null && leg != null) {
-			source.setNext(leg);
-			leg.setPrevious(source);
-			leg.setNext(target);
-			target.setPrevious(leg);
-			return true;
-		}
-		return false;
-	}
 }
