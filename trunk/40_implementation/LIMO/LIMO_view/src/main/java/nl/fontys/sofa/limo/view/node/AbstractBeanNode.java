@@ -101,11 +101,4 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
     public Class getEntityClass() {
         return entityClass;
     }
-    
-//    /**
-//     * Get the widget that belongs to this BeanNode.
-//     * @param scene -the scene where this widget belongs to.
-//     * @return Widget - the widget that belongs to this BeanNode.
-//     */
-//    public abstract Widget getWidget(GraphScene scene);
 }
