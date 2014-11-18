@@ -29,7 +29,7 @@ import org.openide.util.Lookup;
  *
  * @author Sebastiaan Heijmann
  */
-public class HubNode extends AbstractBeanNode<Hub> {
+public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode{
 
     private final Hub bean;
 
@@ -167,7 +167,7 @@ public class HubNode extends AbstractBeanNode<Hub> {
 
     @Override
     public Widget getWidget(GraphScene scene) {
-        return new HubWidget(scene, null)
+        return new HubWidget(scene, this);
     }
 
 }

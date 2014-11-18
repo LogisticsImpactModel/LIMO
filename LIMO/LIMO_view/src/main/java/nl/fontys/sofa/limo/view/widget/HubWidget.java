@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.GraphSceneImpl;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
@@ -22,7 +21,7 @@ import org.netbeans.api.visual.widget.general.IconNodeWidget;
  *
  * @author Sebastiaan Heijmann
  */
-public class HubWidget extends IconNodeWidget implements BasicWidget {
+public class HubWidget extends IconNodeWidget{
 
     private ContainerNode container;
 
@@ -40,27 +39,6 @@ public class HubWidget extends IconNodeWidget implements BasicWidget {
         getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
     }
 
-    @Override
-    public void addActions(ChainGraphScene scene) {
-        getActions().addAction(scene.createSelectAction());
-        getActions().addAction(scene.createObjectHoverAction());
-        getActions().addAction(scene.getConnectAction());
-        getActions().addAction(scene.getMoveAlignAction());
-    }
-
-    @Override
-    public boolean isAcceptable(Widget widget, Point point) {
-        if(widget instanceof ChainGraphScene){
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void drop(Widget widget, Point point) {
-        this.setPreferredLocation(point);
-        widget.addChild(this);
-    }
 
     /**
      * The popup menu when right clicked on this widget.

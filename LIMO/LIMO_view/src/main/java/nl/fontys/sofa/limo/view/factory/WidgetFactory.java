@@ -31,8 +31,8 @@ public class WidgetFactory {
 		Node node = container.getBeanNode();
 		
 		if (node instanceof HubNode) {
-			HubWidget widget = new HubWidget(scene, container);
-			return widget;
+//			HubWidget widget = new HubWidget(scene, container);
+			return new HubWidget(scene, container.getBeanNode());
 		} else if (node instanceof EventNode) {
 			return new EventWidget(scene, container);
 		} 
