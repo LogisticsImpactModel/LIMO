@@ -30,7 +30,7 @@ import org.openide.util.Lookup;
 
 /**
  *
- * @author Matthias BrÃ¼ck
+ * @author Matthias BrÃƒÂ¼ck
  */
 public class EventPropertyEditor extends PropertyEditorSupport {
 
@@ -99,15 +99,10 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             btn_delete.setEnabled(false);
             panel_table = new JPanel(new BorderLayout());
             panel_right = new JPanel();
-            
+
         }
-        
-        private void enableButtons(){
-            btn_add.setEnabled(!eventList.isEmpty());
-            btn_delete.setEnabled(tblmdl_eventsModel.getRowCount() > 0);
-        }
-        
-        private void addLayoutAndComponents(){
+
+        private void addLayoutAndComponents() {
             setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
             c.fill = GridBagConstraints.HORIZONTAL;
@@ -135,8 +130,8 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             panel_table.add(panel_right, BorderLayout.EAST);
             add(panel_table, c);
         }
-        
-        private void addData(){
+
+        private void addData() {
             service = Lookup.getDefault().lookup(EventService.class);
             eventList = service.findAll();
             List<String> events = new ArrayList<>();
@@ -145,6 +140,11 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             }
             cbox_availableEvents.setModel(new DefaultComboBoxModel(events.toArray()));
             tblmdl_eventsModel.setEvents((List<Event>) getValue());
+        }
+
+        private void enableButtons() {
+            btn_add.setEnabled(!eventList.isEmpty());
+            btn_delete.setEnabled(tblmdl_eventsModel.getRowCount() > 0);
         }
 
         private void addActionListeners() {
@@ -175,8 +175,12 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource().equals(cbox_executionState)) {
-                        tblmdl_eventsModel.getEvents().get(tbl_usedEvents.getSelectedRow()).setDependency((ExecutionState) cbox_executionState.getSelectedItem());
-                        tblmdl_eventsModel.setEvents(tblmdl_eventsModel.getEvents());
+                        List<Event> events = tblmdl_eventsModel.getEvents();
+                        JComboBox<ExecutionState> source = (JComboBox) e.getSource();
+                        if (tbl_usedEvents.getSelectedRow() >= 0 && tbl_usedEvents.getSelectedRow() < tblmdl_eventsModel.getRowCount()) {
+                            events.get(tbl_usedEvents.getSelectedRow()).setDependency((ExecutionState) source.getSelectedItem());
+                            tblmdl_eventsModel.setEvents(events);
+                        }
                     }
                 }
             });
@@ -196,7 +200,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
             public void setEvents(List<Event> events) {
                 this.events = events;
-                fireTableDataChanged(false);
+                fireTableDataChanged(true);
             }
 
             public void addEvent(Event e) {
@@ -249,10 +253,10 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if(columnIndex == 1){
+                if (columnIndex == 1) {
                     return String.class;
                 }
-                return ExecutionState.class;
+                return JComboBox.class;
             }
 
             @Override
@@ -262,11 +266,14 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
             @Override
             public Object getValueAt(int rowIndex, int columnIndex) {
-                Event e = this.events.get(rowIndex);
-                if (e == null || e.getDependency() == null) {
-                    return null;
+                if (rowIndex < events.size() && rowIndex >= 0) {
+                    Event e = this.events.get(rowIndex);
+                    if (e == null || e.getDependency() == null) {
+                        return null;
+                    }
+                    return columnIndex == 0 ? e.getName() : e.getDependency();
                 }
-                return columnIndex == 0 ? e.getName() : e.getDependency().name();
+                return null;
             }
 
             @Override
