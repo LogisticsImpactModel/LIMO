@@ -41,7 +41,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     CellConstraints cc;
 
     public ProcedureComponent() {
-        this(null);
+        this(new ArrayList<Procedure>());
     }
 
     public ProcedureComponent(List<Procedure> procedures) {
@@ -49,31 +49,9 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         cc = new CellConstraints();
         FormLayout layout = new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px");
         this.setLayout(layout);
-        //TABLEMODEL
-        List<List<Object>> valueList = new ArrayList<>();
-        if (procedures != null) {
-            for (Procedure p : procedures) {
-                ArrayList<Object> values = new ArrayList<>();
-                values.add(p.getName());
-                values.add(p.getCategory());
-                values.add(p.getTimeType());
-                values.add(p.getTime());
-                values.add(p.getCost());
-                values.add(p.getDirection());
-                valueList.add(values);
-            }
-        }
-        model = new DragNDropTableModel(new String[]{"Name", "Category", "Time Type", "Time Cost", "Money Cost", "Direction"},
-                valueList, new Class[]{String.class, String.class, TimeType.class, Value.class, Value.class, ProcedureResponsibilityDirection.class});
-        //TABLE
+        // TABLE
         table = new DragNDropTable(model);
-        try {
-            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(procedureCategoryDao.findAll().toArray())));
-        } catch (Exception e) {
-            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new ProcedureCategory[]{})));
-        }
-        table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JComboBox(TimeType.values())));
-        table.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JComboBox(ProcedureResponsibilityDirection.values())));
+        this.initProceduresTable(procedures);
         //OTHER COMPONENTS
         sc_pane = new JScrollPane(table);
         btn_add = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
@@ -127,22 +105,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     }
 
     public void setProcedureTable(List<Procedure> procedures) {
-        List<List<Object>> valueList = new ArrayList<>();
-        if (procedures != null) {
-            for (Procedure p : procedures) {
-                ArrayList<Object> values = new ArrayList<>();
-                values.add(p.getName());
-                values.add(p.getCategory());
-                values.add(p.getTimeType());
-                values.add(p.getTime());
-                values.add(p.getCost());
-                values.add(p.getDirection());
-                valueList.add(values);
-            }
-        }
-        model = new DragNDropTableModel(new String[]{"Name", "Category", "Time Type", "Time Cost", "Money Cost", "Direction"},
-                valueList, new Class[]{String.class, String.class, TimeType.class, Value.class, Value.class, ProcedureResponsibilityDirection.class});
-        table.setModel(model);
+        initProceduresTable(procedures);
         model.fireTableDataChanged();
         this.revalidate();
         this.repaint();
@@ -161,10 +124,12 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     private void editProcedure() {
         if (table.getSelectedColumn() == 3 || table.getSelectedColumn() == 4) {
             changedValue = (Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
-            new EditValueDialog((Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()), new AddProcedureDialog.EditValueDialogListener() {
+            Object valueAt = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
+            new EditValueDialog((Value) valueAt, new AddProcedureDialog.EditValueDialogListener() {
 
                 @Override
-                public void newValue(Value value) {
+                public void newValue(Value value
+                ) {
                     changedValue = value;
                     table.setValueAt(value, table.getSelectedRow(), table.getSelectedColumn());
                     ProcedureComponent.this.revalidate();
@@ -191,5 +156,32 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     public void mouseExited(MouseEvent e) {
     }
     //</editor-fold>
+
+    private void initProceduresTable(List<Procedure> procedures) {
+        List<List<Object>> valueList = new ArrayList<>();
+        if (procedures != null) {
+            for (Procedure p : procedures) {
+                ArrayList<Object> values = new ArrayList<>();
+                values.add(p.getName());
+                values.add(p.getCategory());
+                values.add(p.getTimeType());
+                values.add(p.getTime());
+                values.add(p.getCost());
+                values.add(p.getDirection());
+                valueList.add(values);
+            }
+        }
+        model = new DragNDropTableModel(new String[]{"Name", "Category", "Time Type", "Time Cost", "Money Cost", "Direction"},
+                valueList, new Class[]{String.class, String.class, TimeType.class, Value.class, Value.class, ProcedureResponsibilityDirection.class});
+        table.setModel(model);
+        try {
+            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(procedureCategoryDao.findAll().toArray())));
+        } catch (Exception e) {
+            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new ProcedureCategory[]{})));
+        }
+        table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JComboBox(TimeType.values())));
+        table.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JComboBox(ProcedureResponsibilityDirection.values())));
+
+    }
 
 }
