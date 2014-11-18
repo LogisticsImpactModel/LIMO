@@ -139,7 +139,11 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                 events.add(e.getName());
             }
             cbox_availableEvents.setModel(new DefaultComboBoxModel(events.toArray()));
-            tblmdl_eventsModel.setEvents((List<Event>) getValue());
+            if (getValue() != null) {
+                tblmdl_eventsModel.setEvents((List<Event>) getValue());
+            } else {
+                tblmdl_eventsModel.setEvents(new ArrayList<Event>());
+            }
         }
 
         private void enableButtons() {
@@ -151,39 +155,45 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             btn_add.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Event selected = service.findById(eventList.get(cbox_availableEvents.getSelectedIndex()).getId());
-                    selected.setId(null);
-                    selected.setDependency(ExecutionState.INDEPENDENT);
-                    tblmdl_eventsModel.addEvent(selected);
-                    btn_delete.setEnabled(true);
-                }
-            });
-
-            btn_delete.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (tbl_usedEvents.getSelectedRow() >= 0) {
-                        tblmdl_eventsModel.removeEventByID(tbl_usedEvents.getSelectedRow());
-                        if (tbl_usedEvents.getRowCount() < 1) {
-                            btn_delete.setEnabled(false);
-                        }
+                    if (cbox_availableEvents.getItemCount() > 0) {
+                        Event selected = service.findById(eventList.get(cbox_availableEvents.getSelectedIndex()).getId());
+                        selected.setId(null);
+                        selected.setDependency(ExecutionState.INDEPENDENT);
+                        tblmdl_eventsModel.addEvent(selected);
+                        btn_delete.setEnabled(true);
                     }
                 }
             });
 
-            cbox_executionState.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (e.getSource().equals(cbox_executionState)) {
-                        List<Event> events = tblmdl_eventsModel.getEvents();
-                        JComboBox<ExecutionState> source = (JComboBox) e.getSource();
-                        if (tbl_usedEvents.getSelectedRow() >= 0 && tbl_usedEvents.getSelectedRow() < tblmdl_eventsModel.getRowCount()) {
-                            events.get(tbl_usedEvents.getSelectedRow()).setDependency((ExecutionState) source.getSelectedItem());
-                            tblmdl_eventsModel.setEvents(events);
+            btn_delete.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e
+                        ) {
+                            if (tbl_usedEvents.getSelectedRow() >= 0 && tbl_usedEvents.getSelectedRow() < tblmdl_eventsModel.getRowCount()) {
+                                tblmdl_eventsModel.removeEventByID(tbl_usedEvents.getSelectedRow());
+                                if (tbl_usedEvents.getRowCount() < 1) {
+                                    btn_delete.setEnabled(false);
+                                }
+                            }
                         }
                     }
-                }
-            });
+            );
+
+            cbox_executionState.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e
+                        ) {
+                            if (tbl_usedEvents.getSelectedRow() >= 0 && tbl_usedEvents.getSelectedRow() < tblmdl_eventsModel.getRowCount()) {
+                                List<Event> events = tblmdl_eventsModel.getEvents();
+                                JComboBox<ExecutionState> source = (JComboBox) e.getSource();
+                                events.get(tbl_usedEvents.getSelectedRow()).setDependency((ExecutionState) source.getSelectedItem());
+                                tblmdl_eventsModel.setEvents(events);
+                            }
+                        }
+                    }
+            );
         }
 
         private class EventTableModel extends AbstractTableModel {
