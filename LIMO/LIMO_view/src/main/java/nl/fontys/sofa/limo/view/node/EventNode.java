@@ -12,6 +12,7 @@ import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
+import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
 import org.openide.util.Lookup;
@@ -78,9 +79,17 @@ public class EventNode extends AbstractBeanNode<Event> {
             eventProp.setDisplayName("Event");
             eventProp.setShortDescription("All Events stored with this Hub.");
             eventProp.setValue("canEditAsText", false);
+            
+            StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
+            procedureProp.addPropertyChangeListener(getListener());
+            procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
+            procedureProp.setDisplayName("Procedure");
+            procedureProp.setShortDescription("All Procedures stored with this Hub.");
+            procedureProp.setValue("canEditAsText", false);
 
             set.put(name);
             set.put(description);
+            set.put(procedureProp);
             set.put(eventProp);
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();

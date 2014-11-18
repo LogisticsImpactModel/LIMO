@@ -16,6 +16,7 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
+import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.netbeans.api.visual.graph.GraphScene;
@@ -102,9 +103,17 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode{
             eventProp.setShortDescription("All Events stored with this Hub.");
             eventProp.setValue("canEditAsText", false);
 
+            StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
+            procedureProp.addPropertyChangeListener(getListener());
+            procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
+            procedureProp.setDisplayName("Procedure");
+            procedureProp.setShortDescription("All Procedures stored with this Hub.");
+            procedureProp.setValue("canEditAsText", false);
+
             generalSet.put(name);
             generalSet.put(description);
             generalSet.put(iconProp);
+            generalSet.put(procedureProp);
             generalSet.put(eventProp);
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();

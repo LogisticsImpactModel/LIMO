@@ -21,7 +21,7 @@ import org.netbeans.api.visual.widget.general.IconNodeWidget;
  *
  * @author Sebastiaan Heijmann
  */
-public class HubWidget extends IconNodeWidget{
+public class HubWidget extends IconNodeWidget {
 
     private ContainerNode container;
 
@@ -39,7 +39,21 @@ public class HubWidget extends IconNodeWidget{
         getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
     }
 
+    /*
+     @Override
+     public boolean isAcceptable(Widget widget, Point point) {
+     if (widget instanceof ChainGraphScene) {
+     return true;
+     }
+     return false;
+     }
 
+     @Override
+     public void drop(Widget widget, Point point) {
+     this.setPreferredLocation(point);
+     widget.addChild(this);
+     }
+     */
     /**
      * The popup menu when right clicked on this widget.
      */

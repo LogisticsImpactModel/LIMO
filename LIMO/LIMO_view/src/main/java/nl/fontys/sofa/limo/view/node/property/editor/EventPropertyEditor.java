@@ -36,7 +36,11 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
     @Override
     public String getAsText() {
-        return "";
+        List<Event> events = (List<Event>) getValue();
+        if (events == null) {
+            return "Number of Events: 0";
+        }
+        return "Number of Events: " + events.size();
     }
 
     @Override

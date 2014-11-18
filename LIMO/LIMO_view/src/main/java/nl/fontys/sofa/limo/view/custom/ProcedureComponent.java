@@ -32,13 +32,15 @@ import org.openide.util.Lookup;
  */
 public class ProcedureComponent extends JPanel implements ActionListener, MouseListener {
 
-    private DragNDropTable table;
-    private DragNDropTableModel model;
-    private JButton btn_add, btn_delete;
+    protected DragNDropTable table;
+    protected DragNDropTableModel model;
+    protected JButton btn_add, btn_delete;
     private JScrollPane sc_pane;
-    private ProcedureCategoryDAO procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
-    private Value changedValue;
-    CellConstraints cc;
+    protected ProcedureCategoryDAO procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
+    protected Value changedValue;
+    private FormLayout layout;
+    private CellConstraints cc;
+    protected JComboBox cbox_procedureCategory, cbox_timeTypes, cbox_direction;
 
     public ProcedureComponent() {
         this(new ArrayList<Procedure>());
@@ -47,13 +49,13 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     public ProcedureComponent(List<Procedure> procedures) {
         //LAYOUT
         cc = new CellConstraints();
-        FormLayout layout = new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px");
+        layout = new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px");
         this.setLayout(layout);
         // TABLE
-        table = new DragNDropTable(model);
+        table = new DragNDropTable(new DragNDropTableModel(new String[]{}, new ArrayList<List<Object>>(), new Class[]{}));
         this.initProceduresTable(procedures);
-        //OTHER COMPONENTS
         sc_pane = new JScrollPane(table);
+        //OTHER COMPONENTS
         btn_add = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
         btn_delete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
         //ADD COMPONENTS TO PANEL
@@ -111,17 +113,17 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         this.repaint();
     }
 
-    private void addProcedure() {
+    protected void addProcedure() {
         new AddProcedureDialog(procedureCategoryDao, table);
     }
 
-    private void deleteProcedure(int row) {
+    protected void deleteProcedure(int row) {
         ((DragNDropTableModel) table.getModel()).removeRow(row);
         this.revalidate();
         this.repaint();
     }
 
-    private void editProcedure() {
+    protected void editProcedure() {
         if (table.getSelectedColumn() == 3 || table.getSelectedColumn() == 4) {
             changedValue = (Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
             Object valueAt = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
@@ -161,27 +163,29 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         List<List<Object>> valueList = new ArrayList<>();
         if (procedures != null) {
             for (Procedure p : procedures) {
-                ArrayList<Object> values = new ArrayList<>();
-                values.add(p.getName());
-                values.add(p.getCategory());
-                values.add(p.getTimeType());
-                values.add(p.getTime());
-                values.add(p.getCost());
-                values.add(p.getDirection());
-                valueList.add(values);
+                ArrayList<Object> procedure = new ArrayList<>();
+                procedure.add(p.getName());
+                procedure.add(p.getCategory());
+                procedure.add(p.getTimeType());
+                procedure.add(p.getTime());
+                procedure.add(p.getCost());
+                procedure.add(p.getDirection());
+                valueList.add(procedure);
             }
         }
         model = new DragNDropTableModel(new String[]{"Name", "Category", "Time Type", "Time Cost", "Money Cost", "Direction"},
                 valueList, new Class[]{String.class, String.class, TimeType.class, Value.class, Value.class, ProcedureResponsibilityDirection.class});
         table.setModel(model);
         try {
-            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(procedureCategoryDao.findAll().toArray())));
+            cbox_procedureCategory = new JComboBox(procedureCategoryDao.findAll().toArray());
+            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cbox_procedureCategory));
         } catch (Exception e) {
-            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(new ProcedureCategory[]{})));
+            cbox_procedureCategory = new JComboBox(new ProcedureCategory[]{});
+            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cbox_procedureCategory));
         }
-        table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JComboBox(TimeType.values())));
-        table.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JComboBox(ProcedureResponsibilityDirection.values())));
-
+        cbox_timeTypes = new JComboBox(TimeType.values());
+        table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(cbox_timeTypes));
+        cbox_direction = new JComboBox(ProcedureResponsibilityDirection.values());
+        table.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(cbox_direction));
     }
-
 }
