@@ -65,5 +65,6 @@
         <module>LIMO-domain</module>
         <module>LIMO_Service</module>
         <module>LIMO_UpdateCenter</module>
+        <module>LIMO_simulation</module>
     </modules>
 </project>

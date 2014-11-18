@@ -26,6 +26,13 @@ public class MultiModeLeg extends Leg {
     public void setLegs(Map<Leg, Double> legs) {
         this.legs = legs;
     }
+    
+    public double getTotalWeight() {
+        double sum = 0;
+        for (Double weight : legs.values())
+            sum += weight;
+        return sum;
+    }
 
 	public void addLeg(Leg leg, double probability) {
 		legs.put(leg, probability);
