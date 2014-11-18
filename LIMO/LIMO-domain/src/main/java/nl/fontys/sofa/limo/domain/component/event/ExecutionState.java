@@ -33,4 +33,8 @@ public enum ExecutionState implements Serializable {
         return this.name;
     }
     
+    public static ExecutionState stateFromBool(boolean isExecuted) {
+        return isExecuted ? EXECUTED : NOT_EXECUTED;
+    }
+    
 }

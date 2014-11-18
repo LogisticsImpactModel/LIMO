@@ -4,11 +4,14 @@ import java.util.List;
 import javax.persistence.Embedded;
 
 /**
- * Leg with a schedule and an alternative, if the schedule can't be uphold.
+ * Leg with a schedule and an alternative, if the schedule can't be uphold. Time
+ * is always set in minutes.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class ScheduledLeg extends Leg {
+    
+    public static final String WAIT_CATEGORY = "Waiting Time";
 
     /**
      * Expected time of consignment to arrive. Any delay from the hub before is added to this.
