@@ -1,9 +1,11 @@
 package nl.fontys.sofa.limo.domain.component.type;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 
 /**
@@ -14,11 +16,15 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 public abstract class Type extends BaseEntity {
 
     @Embedded
+    protected List<Event> events;
+    @Embedded
     protected List<Procedure> procedures;
     @Embedded
     protected Icon icon;
 
     public Type() {
+        events = new ArrayList<>();
+        procedures = new ArrayList<>();
     }
 
     public List<Procedure> getProcedures() {
@@ -35,5 +41,13 @@ public abstract class Type extends BaseEntity {
 
     public void setIcon(Icon icon) {
         this.icon = icon;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }
