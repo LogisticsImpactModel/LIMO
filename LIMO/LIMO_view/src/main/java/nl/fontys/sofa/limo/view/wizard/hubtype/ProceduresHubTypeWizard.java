@@ -63,7 +63,7 @@ public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDes
     @Override
     public void validate() throws WizardValidationException {
         if (component.getProcedures().isEmpty()) {
-            throw new WizardValidationException(null, null, MessageFormat.format(bundle.getString("VALUE_NOT_SET"), bundle.getString("PROCEDURES")));
+            throw new WizardValidationException(null, null, MessageFormat.format(bundle.getString("VALUE_NOT_SET2"), bundle.getString("PROCEDURES")));
         }
     }
 }

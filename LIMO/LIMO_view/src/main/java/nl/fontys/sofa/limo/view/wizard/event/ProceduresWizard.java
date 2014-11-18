@@ -1,16 +1,24 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
 import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT;
 import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT_PROCEDURES;
 import org.openide.WizardDescriptor;
+import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class ProceduresWizard implements WizardDescriptor.Panel<WizardDescriptor> {
+public class ProceduresWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private ProceduresPanel component;
+    private final ResourceBundle bundle;
+
+    public ProceduresWizard() {
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
+    }
 
     @Override
     public ProceduresPanel getComponent() {
@@ -49,6 +57,13 @@ public class ProceduresWizard implements WizardDescriptor.Panel<WizardDescriptor
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(EVENT_PROCEDURES, getComponent().getProcedures());
+    }
+
+    @Override
+    public void validate() throws WizardValidationException {
+        if (component.getProcedures().isEmpty()) {
+            throw new WizardValidationException(null, null, MessageFormat.format(bundle.getString("VALUE_NOT_SET2"), bundle.getString("PROCEDURES")));
+        }
     }
 
 }
