@@ -4,18 +4,16 @@ package nl.fontys.sofa.limo.view.chain;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
-import org.openide.util.lookup.ServiceProvider;
 
 /**
- * Implementation of the ChainService interface.
+ * Implementation of the ChainBuilder interface.
  *
  * @author Sebastiaan Heijmann
  */
-@ServiceProvider(service = ChainService.class)
-public class ChainServiceImpl implements ChainService {
+public class ChainBuilderImpl implements ChainBuilder {
 
 	@Override
-	public boolean connectHubs(ConnectionManager manager) {
+	public boolean connectHubs(ConnectionHolder manager) {
 		Hub source = manager.getSourceHub();
 		Leg connection = manager.getConnectingLeg();
 		Hub target = manager.getTargetHub();
