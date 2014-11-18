@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionIconPanel;
 import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.*;
 import org.openide.WizardDescriptor;
@@ -48,6 +49,10 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
         Hub hub = (Hub) wiz.getProperty(HUB_COPY);
         if (hub != null) {
             getComponent().update(hub.getName(), hub.getDescription(), hub.getIcon());
+        }
+        HubType hubType = (HubType) wiz.getProperty(HUB_TYPE);
+        if (hubType != null) {
+            getComponent().update("", hubType.getDescription(), hubType.getIcon());
         }
     }
 
