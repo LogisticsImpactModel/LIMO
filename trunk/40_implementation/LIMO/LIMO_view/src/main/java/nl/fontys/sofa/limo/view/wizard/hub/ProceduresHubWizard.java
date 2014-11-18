@@ -1,16 +1,24 @@
 package nl.fontys.sofa.limo.view.wizard.hub;
 
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
 import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.*;
 import org.openide.WizardDescriptor;
+import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class ProceduresHubWizard implements WizardDescriptor.Panel<WizardDescriptor> {
+public class ProceduresHubWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private ProceduresPanel component;
+    private final ResourceBundle bundle;
+
+    public ProceduresHubWizard() {
+        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
+    }
 
     @Override
     public ProceduresPanel getComponent() {
@@ -57,6 +65,13 @@ public class ProceduresHubWizard implements WizardDescriptor.Panel<WizardDescrip
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(HUB_PROCEDURES, getComponent().getProcedures());
+    }
+
+    @Override
+    public void validate() throws WizardValidationException {
+        if (component.getProcedures().isEmpty()) {
+            throw new WizardValidationException(null, null, MessageFormat.format(bundle.getString("VALUE_NOT_SET2"), bundle.getString("PROCEDURES")));
+        }
     }
 
 }
