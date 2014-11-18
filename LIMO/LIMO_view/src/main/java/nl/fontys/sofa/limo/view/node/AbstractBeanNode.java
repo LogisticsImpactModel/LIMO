@@ -11,6 +11,8 @@ import org.openide.nodes.BeanNode;
 import org.openide.nodes.Children;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
+import org.netbeans.api.visual.widget.Widget;
+import org.netbeans.api.visual.graph.GraphScene;
 
 /**
  * AbstractBeanNode class which defines basic Node actions and creates a lookup
@@ -92,8 +94,18 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
         return this.listener;
     }
 
+    /**
+     * Get the entity class name.
+     * @return Class - the class from this entity.
+     */
     public Class getEntityClass() {
         return entityClass;
     }
-
+    
+//    /**
+//     * Get the widget that belongs to this BeanNode.
+//     * @param scene -the scene where this widget belongs to.
+//     * @return Widget - the widget that belongs to this BeanNode.
+//     */
+//    public abstract Widget getWidget(GraphScene scene);
 }

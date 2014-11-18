@@ -4,12 +4,12 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 
 /**
- * ConnectionManager provides methods to create a connection between two hubs. A
+ * ConnectionHolder provides methods to create a connection between two hubs. A
  * connection consists of a source hub, a connecting leg and a target hub.
  * 
  * @author Sebastiaan Heijmann
  */
-public interface ConnectionManager {
+public interface ConnectionHolder {
 
 	/**
 	 * Get the source Hub.

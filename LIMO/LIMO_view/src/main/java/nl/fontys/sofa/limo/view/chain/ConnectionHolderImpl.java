@@ -4,12 +4,12 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 
 /**
- * ConnectionManagerImpl is responsible for managing connections between two hubs
+ * ConnectionHolderImpl is responsible for managing connections between two hubs
  * by using a leg.
  * 
  * @author Sebastiaan Heijmann
  */
-public class ConnectionManagerImpl implements ConnectionManager{
+public class ConnectionHolderImpl implements ConnectionHolder{
 
 	private Hub sourceHub;
 	private Leg leg;

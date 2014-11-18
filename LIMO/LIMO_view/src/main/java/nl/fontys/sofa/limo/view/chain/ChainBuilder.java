@@ -5,11 +5,11 @@ import java.util.List;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 
 /**
- * ChainService provides methods to build a chain and to validate a given chain.
+ * ChainBuilder provides methods to build a chain and to validate a given chain.
  *
  * @author Sebastiaan Heijmann
  */
-public interface ChainService {
+public interface ChainBuilder {
 
 	/**
 	 * Connect two Hubs together through a Leg.
@@ -17,7 +17,7 @@ public interface ChainService {
 	 * connecting Leg.
 	 * @return boolean - true if successfully connected.
 	 */
-	boolean connectHubs(ConnectionManager manager);
+	boolean connectHubs(ConnectionHolder manager);
 
 	/**
 	 * Get all the hubs currently in the chain.

@@ -16,7 +16,10 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
+import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
+import org.netbeans.api.visual.graph.GraphScene;
+import org.netbeans.api.visual.widget.Widget;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
 import org.openide.util.Lookup;
@@ -161,4 +164,10 @@ public class HubNode extends AbstractBeanNode<Hub> {
         sets.put(generalSet);
         sets.put(locationSet);
     }
+
+    @Override
+    public Widget getWidget(GraphScene scene) {
+        return new HubWidget(scene, null)
+    }
+
 }
