@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component.event;
 
+import java.util.Objects;
 import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
@@ -70,6 +71,36 @@ public class Event extends Component {
             return events.add(event); //if the event to be added was not found in the list w/ existing events, add it
         }
 		return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.dependency);
+        hash = 59 * hash + Objects.hashCode(this.probability);
+        hash = 59 * hash + Objects.hashCode(this.executionState);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Event other = (Event) obj;
+        if (this.dependency != other.dependency) {
+            return false;
+        }
+        if (!Objects.equals(this.probability, other.probability)) {
+            return false;
+        }
+        if (this.executionState != other.executionState) {
+            return false;
+        }
+        return true;
     }
 
 }
