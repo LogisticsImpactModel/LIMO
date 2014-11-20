@@ -25,7 +25,7 @@ public class EventTableModel extends AbstractTableModel {
         return this.events;
     }
 
-    public void setEvents(ArrayList<Event> events) {
+    public void setEvents(List<Event> events) {
         this.events = events;
         this.fireTableDataChanged();
     }
