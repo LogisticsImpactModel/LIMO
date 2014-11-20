@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.custom;
 
 import java.awt.event.ActionEvent;
@@ -10,7 +5,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.view.custom.panel.ManageHubsPanel;
 import org.openide.awt.ActionID;
-import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle.Messages;
 

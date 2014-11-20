@@ -28,62 +28,69 @@ import org.openide.util.Utilities;
  * @author Sebastiaan Heijmann
  */
 public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategory>
-		implements LookupListener, NodeListener {
+        implements LookupListener, NodeListener {
 
-	private final Result<ProcedureCategory> lookupResult;
-	private final ProcedureCategoryService service;
+    private final Result<ProcedureCategory> lookupResult;
+    private final ProcedureCategoryService service;
 
-	public ProcedureCategoryChildFactory() {
-		service = Lookup.getDefault().lookup(ProcedureCategoryService.class);
-		lookupResult = service.getLookup().lookupResult(ProcedureCategory.class);
-		lookupResult.addLookupListener(this);
-	}
+    public ProcedureCategoryChildFactory() {
+        service = Lookup.getDefault().lookup(ProcedureCategoryService.class);
+        lookupResult = service.getLookup().lookupResult(ProcedureCategory.class);
+        lookupResult.addLookupListener(this);
+    }
 
-	@Override
-	protected boolean createKeys(List<ProcedureCategory> list) {
-		list.addAll(lookupResult.allInstances());
-		return true;
-	}
+    @Override
+    protected boolean createKeys(List<ProcedureCategory> list) {
+        list.addAll(lookupResult.allInstances());
+        return true;
+    }
 
-	@Override
-	protected Node createNodeForKey(ProcedureCategory key) {
-		BeanNode node = null;
-		try {
-			node = new ProcedureCategoryNode(key);
-			node.addNodeListener(this);
-		} catch (IntrospectionException ex) {
-			Exceptions.printStackTrace(ex);
-		}
-		return node;
-	}
+    @Override
+    protected Node createNodeForKey(ProcedureCategory key) {
+        BeanNode node = null;
+        try {
+            node = new ProcedureCategoryNode(key);
+            node.addNodeListener(this);
+        } catch (IntrospectionException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return node;
+    }
 
-	@Override
-	public void resultChanged(LookupEvent le) {
-		refresh(true);
-	}
+    @Override
+    public void resultChanged(LookupEvent le) {
+        refresh(true);
+    }
 
-	@Override
-	public void nodeDestroyed(NodeEvent ne) {
-		Node node = ne.getNode();
-		ProcedureCategory pc =
-				(ProcedureCategory) node.getLookup().lookup(ProcedureCategory.class);
+    @Override
+    public void nodeDestroyed(NodeEvent ne) {
+        Node node = ne.getNode();
+        ProcedureCategory pc
+                = (ProcedureCategory) node.getLookup().lookup(ProcedureCategory.class);
 
-		Lookup.Result result = Utilities.actionsGlobalContext().lookupResult (ProcedureCategory.class);
-		Collection<ProcedureCategory> selectedBeans = result.allInstances();
-		for(ProcedureCategory bean : selectedBeans){
-			if(bean == pc){
-				service.delete(pc);
-			}	
-		}
-		refresh(true);
-	}
+        Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(ProcedureCategory.class);
+        Collection<ProcedureCategory> selectedBeans = result.allInstances();
+        for (ProcedureCategory bean : selectedBeans) {
+            if (bean == pc) {
+                service.delete(pc);
+            }
+        }
+        refresh(true);
+    }
 
-	@Override
-	public void childrenAdded(NodeMemberEvent nme) {}
-	@Override
-	public void childrenRemoved(NodeMemberEvent nme) {}
-	@Override
-	public void childrenReordered(NodeReorderEvent nre) {}
-	@Override
-	public void propertyChange(PropertyChangeEvent pce) {}
+    @Override
+    public void childrenAdded(NodeMemberEvent nme) {
+    }
+
+    @Override
+    public void childrenRemoved(NodeMemberEvent nme) {
+    }
+
+    @Override
+    public void childrenReordered(NodeReorderEvent nre) {
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+    }
 }

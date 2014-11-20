@@ -51,21 +51,21 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                 setProcedureTable(procedures);
             }
 
-            cbox_procedureCategory.addItemListener(this);
-            cbox_direction.addItemListener(this);
-            cbox_timeTypes.addItemListener(this);
+            procedureCategoryCheckbox.addItemListener(this);
+            directionCheckbox.addItemListener(this);
+            timeTypesCheckbox.addItemListener(this);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(btn_delete)) {
+            if (e.getSource().equals(deleteButton)) {
                 int rowToDelete = table.getSelectedRow();
                 if (rowToDelete > -1 && rowToDelete < getActiveTableState().size()) {
                     deleteProcedure(rowToDelete);
                     List<Procedure> procedures = getActiveTableState();
                     setValue(procedures);
                 }
-            } else if (e.getSource().equals(btn_add)) {
+            } else if (e.getSource().equals(addButton)) {
                 addProcedure();
                 List<Procedure> procedures = getActiveTableState();
                 setValue(procedures);
@@ -88,18 +88,18 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 if (table.getSelectedRow() >= 0 && table.getSelectedRow() < table.getModel().getRowCount()) {
                     List<Procedure> procedures = getActiveTableState();
-                    if (e.getSource().equals(cbox_procedureCategory)) {
-                        procedures.get(table.getSelectedRow()).setCategory((String) cbox_procedureCategory.getSelectedItem().toString());
-                    } else if (e.getSource().equals(cbox_direction)) {
-                        procedures.get(table.getSelectedRow()).setDirection((ProcedureResponsibilityDirection) cbox_direction.getSelectedItem());
-                    } else if (e.getSource().equals(cbox_timeTypes)) {
-                        procedures.get(table.getSelectedRow()).setTimeType((TimeType) cbox_timeTypes.getSelectedItem());
+                    if (e.getSource().equals(procedureCategoryCheckbox)) {
+                        procedures.get(table.getSelectedRow()).setCategory((String) procedureCategoryCheckbox.getSelectedItem().toString());
+                    } else if (e.getSource().equals(directionCheckbox)) {
+                        procedures.get(table.getSelectedRow()).setDirection((ProcedureResponsibilityDirection) directionCheckbox.getSelectedItem());
+                    } else if (e.getSource().equals(timeTypesCheckbox)) {
+                        procedures.get(table.getSelectedRow()).setTimeType((TimeType) timeTypesCheckbox.getSelectedItem());
                     }
                     setProcedureTable(procedures);
                     setValue(procedures);
-                    cbox_procedureCategory.addItemListener(this);
-                    cbox_direction.addItemListener(this);
-                    cbox_timeTypes.addItemListener(this);
+                    procedureCategoryCheckbox.addItemListener(this);
+                    directionCheckbox.addItemListener(this);
+                    timeTypesCheckbox.addItemListener(this);
                 }
             }
         }

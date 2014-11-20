@@ -18,58 +18,58 @@ import javax.swing.JButton;
  */
 public class StartPageButton extends JButton {
 
-	private final Color pressedUpperColor = new Color(0x00868a);
-	private final Color pressedLowerColor = new Color(0xFFFFFF);
-	private final Color rollOverUpperColor = new Color(0x004646);
-	private final Color rollOverLowerColor = new Color(0xFFFFFF);
-	private final Color normalColor = new Color(255,65,0);
-	
-	public StartPageButton() {
-		this(null);
-	}
+    private final Color pressedUpperColor = new Color(0x00868a);
+    private final Color pressedLowerColor = new Color(0xFFFFFF);
+    private final Color rollOverUpperColor = new Color(0x004646);
+    private final Color rollOverLowerColor = new Color(0xFFFFFF);
+    private final Color normalColor = new Color(255, 65, 0);
 
-	public StartPageButton(String text) {
-		super(text);
-		super.setContentAreaFilled(false);
-		setBackground(new Color(0, 70, 70));
-		
-		setFont(new Font("DejaVu Serif", Font.PLAIN, 12));
-		setForeground(normalColor);
-		setMinimumSize(new Dimension(80, 40));
-		setMaximumSize(new Dimension(80, 40));
-		setPreferredSize(new Dimension(80, 40));
-		setMargin(new Insets(0, 0, 0, 0));
+    public StartPageButton() {
+        this(null);
+    }
 
-		setBorder(BorderFactory.createEmptyBorder());
-	}
+    public StartPageButton(String text) {
+        super(text);
+        super.setContentAreaFilled(false);
+        setBackground(new Color(0, 70, 70));
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		if (getModel().isPressed()) {
-			Graphics2D g2d = (Graphics2D) g;
-			g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-			Color upperColor = pressedUpperColor;
-			Color lowerColor = pressedLowerColor;
-			GradientPaint gp = new GradientPaint(getWidth() / 2, 0, upperColor, getWidth() / 2, getHeight(), lowerColor);
-			g2d.setPaint(gp);
-			g2d.fillRect(0, 0, getWidth(), getHeight());
+        setFont(new Font("DejaVu Serif", Font.PLAIN, 12));
+        setForeground(normalColor);
+        setMinimumSize(new Dimension(80, 40));
+        setMaximumSize(new Dimension(80, 40));
+        setPreferredSize(new Dimension(80, 40));
+        setMargin(new Insets(0, 0, 0, 0));
 
-		} else if (getModel().isRollover()) {
-			Graphics2D g2d = (Graphics2D) g;
-			g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-			Color upperColor = rollOverUpperColor;
-			Color lowerColor = rollOverLowerColor;
-			GradientPaint gp = new GradientPaint(getWidth() / 2, 0, upperColor, getWidth() / 2, getHeight(), lowerColor);
-			g2d.setPaint(gp);
-			g2d.fillRect(0, 0, getWidth(), getHeight());
-		} else {
-			g.setColor(getBackground());
-		}
-		g.fillRect(0, 0, getWidth(), getHeight());
-		super.paintComponent(g);
-	}
+        setBorder(BorderFactory.createEmptyBorder());
+    }
 
-	@Override
-	public void setContentAreaFilled(boolean b) {
-	}
+    @Override
+    protected void paintComponent(Graphics g) {
+        if (getModel().isPressed()) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            Color upperColor = pressedUpperColor;
+            Color lowerColor = pressedLowerColor;
+            GradientPaint gp = new GradientPaint(getWidth() / 2, 0, upperColor, getWidth() / 2, getHeight(), lowerColor);
+            g2d.setPaint(gp);
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+
+        } else if (getModel().isRollover()) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            Color upperColor = rollOverUpperColor;
+            Color lowerColor = rollOverLowerColor;
+            GradientPaint gp = new GradientPaint(getWidth() / 2, 0, upperColor, getWidth() / 2, getHeight(), lowerColor);
+            g2d.setPaint(gp);
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+        } else {
+            g.setColor(getBackground());
+        }
+        g.fillRect(0, 0, getWidth(), getHeight());
+        super.paintComponent(g);
+    }
+
+    @Override
+    public void setContentAreaFilled(boolean b) {
+    }
 }

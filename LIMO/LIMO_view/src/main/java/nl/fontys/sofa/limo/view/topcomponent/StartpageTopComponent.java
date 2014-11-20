@@ -9,8 +9,8 @@ import nl.fontys.sofa.limo.view.custom.button.StartPageButton;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
+import org.openide.windows.TopComponent;
 
 /**
  * Top component which displays the startpage.
@@ -44,6 +44,7 @@ public final class StartpageTopComponent extends TopComponent {
         initComponents();
         setName(Bundle.CTL_StartpageTopComponent());
         setToolTipText(Bundle.HINT_StartpageTopComponent());
+
     }
 
     /**
@@ -116,12 +117,15 @@ public final class StartpageTopComponent extends TopComponent {
         buttonPane.setPreferredSize(new java.awt.Dimension(10000, 50));
         buttonPane.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        testButton2BT.setVisible(false);
         org.openide.awt.Mnemonics.setLocalizedText(testButton2BT, org.openide.util.NbBundle.getMessage(StartpageTopComponent.class, "StartpageTopComponent.testButton2BT.text")); // NOI18N
         buttonPane.add(testButton2BT);
 
+        jButton1.setVisible(false);
         org.openide.awt.Mnemonics.setLocalizedText(jButton1, org.openide.util.NbBundle.getMessage(StartpageTopComponent.class, "StartpageTopComponent.jButton1.text")); // NOI18N
         buttonPane.add(jButton1);
 
+        jButton2.setVisible(false);
         org.openide.awt.Mnemonics.setLocalizedText(jButton2, org.openide.util.NbBundle.getMessage(StartpageTopComponent.class, "StartpageTopComponent.jButton2.text")); // NOI18N
         buttonPane.add(jButton2);
 

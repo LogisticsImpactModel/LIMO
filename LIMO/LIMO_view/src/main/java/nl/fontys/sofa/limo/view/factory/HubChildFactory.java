@@ -28,59 +28,59 @@ import org.openide.util.Utilities;
  * @author Sebastiaan Heijmann
  */
 public class HubChildFactory extends ChildFactory<Hub>
-		implements LookupListener, NodeListener {
+        implements LookupListener, NodeListener {
 
-	private final Result<Hub> lookupResult;
-	private final HubService service;
+    private final Result<Hub> lookupResult;
+    private final HubService service;
 
-	public HubChildFactory() {
-		service = Lookup.getDefault().lookup(HubService.class);
-		lookupResult = service.getLookup().lookupResult(Hub.class);
-		lookupResult.addLookupListener(this);
-	}
+    public HubChildFactory() {
+        service = Lookup.getDefault().lookup(HubService.class);
+        lookupResult = service.getLookup().lookupResult(Hub.class);
+        lookupResult.addLookupListener(this);
+    }
 
-	@Override
-	protected boolean createKeys(List<Hub> list) {
-		list.addAll(lookupResult.allInstances());
-		return true;
-	}
+    @Override
+    protected boolean createKeys(List<Hub> list) {
+        list.addAll(lookupResult.allInstances());
+        return true;
+    }
 
-	@Override
-	protected Node createNodeForKey(Hub key) {
-		BeanNode node = null;
-		try {
-			node = new HubNode(key);
-			node.addNodeListener(this);
-		} catch (IntrospectionException ex) {
-			Exceptions.printStackTrace(ex);
-		}
-		return node;
-	}
+    @Override
+    protected Node createNodeForKey(Hub key) {
+        BeanNode node = null;
+        try {
+            node = new HubNode(key);
+            node.addNodeListener(this);
+        } catch (IntrospectionException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return node;
+    }
 
-	@Override
-	public void resultChanged(LookupEvent le) {
-		refresh(true);
-	}
+    @Override
+    public void resultChanged(LookupEvent le) {
+        refresh(true);
+    }
 
-	@Override
-	public void nodeDestroyed(NodeEvent ne) {
-		refresh(true);
-	}
+    @Override
+    public void nodeDestroyed(NodeEvent ne) {
+        refresh(true);
+    }
 
-	@Override
-	public void childrenAdded(NodeMemberEvent ev) {
-	}
+    @Override
+    public void childrenAdded(NodeMemberEvent ev) {
+    }
 
-	@Override
-	public void childrenRemoved(NodeMemberEvent ev) {
-	}
+    @Override
+    public void childrenRemoved(NodeMemberEvent ev) {
+    }
 
-	@Override
-	public void childrenReordered(NodeReorderEvent ev) {
-	}
+    @Override
+    public void childrenReordered(NodeReorderEvent ev) {
+    }
 
-	@Override
-	public void propertyChange(PropertyChangeEvent pce) {
-	}
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+    }
 
 }

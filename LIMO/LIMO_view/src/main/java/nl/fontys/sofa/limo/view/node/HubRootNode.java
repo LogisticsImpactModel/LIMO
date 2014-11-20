@@ -34,7 +34,7 @@ public class HubRootNode extends AbstractRootNode {
     Class getBeanClass() {
         return Hub.class;
     }
-    
+
     @Override
     public Action[] getActions(boolean context) {
         return new Action[]{SystemAction.get(NewAction.class)};

@@ -96,6 +96,7 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
 
     /**
      * Get the entity class name.
+     *
      * @return Class - the class from this entity.
      */
     public Class getEntityClass() {

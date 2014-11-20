@@ -11,23 +11,20 @@ import org.openide.nodes.PropertyEditorRegistration;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 @PropertyEditorRegistration(targetType = Country.class)
-public class CountryPopertyEditor extends PropertyEditorSupport{
-    
+public class CountryPopertyEditor extends PropertyEditorSupport {
+
     private HashMap<String, Country> countriesByName = new HashMap<>();
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        if (text.equals("-"))
-            setValue(null);
-        
         setValue(countriesByName.get(text));
     }
 
     @Override
     public String getAsText() {
-        if (getValue() == null)
+        if (getValue() == null) {
             return "-";
-        
+        }
         return ((Country) getValue()).getName();
     }
 
@@ -43,5 +40,5 @@ public class CountryPopertyEditor extends PropertyEditorSupport{
         }
         return names;
     }
-    
+
 }

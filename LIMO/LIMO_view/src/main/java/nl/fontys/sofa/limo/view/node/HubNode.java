@@ -33,7 +33,7 @@ import org.openide.util.Lookup;
  *
  * @author Sebastiaan Heijmann
  */
-public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode{
+public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
 
     private final Hub bean;
 
@@ -46,8 +46,7 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode{
     public boolean canDestroy() {
         return true;
     }
-    
-    
+
     @Override
     public BasicWidget getWidget(GraphScene scene) {
         return new HubWidget(scene);
@@ -55,7 +54,7 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode{
 
     @Override
     public boolean isAcceptable(Widget widget, Point point) {
-        if(widget instanceof ChainGraphScene){
+        if (widget instanceof ChainGraphScene) {
             return true;
         }
         return false;

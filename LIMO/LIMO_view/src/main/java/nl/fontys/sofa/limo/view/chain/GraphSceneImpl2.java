@@ -15,9 +15,6 @@ import org.netbeans.api.visual.action.ConnectorState;
 import org.openide.nodes.NodeTransfer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.domain.component.Component;
 
 /**
  * GraphScene to draw a supply chain on. Widgets can be dragged and dropped to
@@ -28,7 +25,7 @@ import nl.fontys.sofa.limo.domain.component.Component;
 public class GraphSceneImpl2 extends ChainGraphScene {
 
     private List<BasicWidget> widgets;
-    
+
     private final LayerWidget mainLayer;
     private final LayerWidget connectionLayer;
     private final LayerWidget interactionLayer;
@@ -43,7 +40,7 @@ public class GraphSceneImpl2 extends ChainGraphScene {
 
     public GraphSceneImpl2() {
         widgets = new ArrayList<>();
-        
+
         this.mainLayer = new LayerWidget(this);
         this.connectionLayer = new LayerWidget(this);
         this.interactionLayer = new LayerWidget(this);
@@ -66,7 +63,7 @@ public class GraphSceneImpl2 extends ChainGraphScene {
         getActions().addAction(zoomAction);
         getActions().addAction(panAction);
     }
-    
+
     @Override
     public List<BasicWidget> getWidgets() {
         return widgets;
@@ -147,7 +144,7 @@ public class GraphSceneImpl2 extends ChainGraphScene {
             AbstractBeanNode node = (AbstractBeanNode) NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
             BasicWidget w = (BasicWidget) scene.addNode(new ContainerNode(node));
             boolean succesfullDrop = w.drop(scene, widget, point);
-            if(succesfullDrop){
+            if (succesfullDrop) {
                 widgets.add(w);
             }
         }

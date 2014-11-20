@@ -26,7 +26,7 @@ import org.openide.awt.ActionRegistration;
 //@ActionRegistration(displayName = "Add Multimode leg")
 //@ActionReference(path = "Menu/Master Data/Leg", position = 20)
 public final class MultimodeLegWizardAction implements ActionListener {
-    
+
 //    public MultimodeLegWizardAction(){
 //        legListener = new MultimodeLegTablePanel.FinishedMapListener() {
 //
@@ -35,7 +35,6 @@ public final class MultimodeLegWizardAction implements ActionListener {
 //            }
 //        };
 //    }
-
     public MultimodeLegWizardAction(MultimodeLegTablePanel.FinishedMapListener legListener) {
         this.legListener = legListener;
     }

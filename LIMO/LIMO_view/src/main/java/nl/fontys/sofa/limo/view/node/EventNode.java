@@ -23,7 +23,7 @@ import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
 import org.openide.util.Lookup;
 
-public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode{
+public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode {
 
     private final Event bean;
 
@@ -36,7 +36,7 @@ public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode
     public boolean canDestroy() {
         return true;
     }
-    
+
     @Override
     public BasicWidget getWidget(GraphScene scene) {
         return new EventWidget(scene);
@@ -44,7 +44,7 @@ public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode
 
     @Override
     public boolean isAcceptable(Widget widget, Point point) {
-        if(widget instanceof ChainGraphScene){
+        if (widget instanceof ChainGraphScene) {
             return true;
         }
         return false;
@@ -91,14 +91,14 @@ public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode
             description.addPropertyChangeListener(getListener());
             description.setDisplayName("Description");
             description.setShortDescription("An optional short description of the procedure category.");
-            
+
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
             eventProp.addPropertyChangeListener(getListener());
             eventProp.setPropertyEditorClass(EventPropertyEditor.class);
             eventProp.setDisplayName("Event");
             eventProp.setShortDescription("All Events stored with this Hub.");
             eventProp.setValue("canEditAsText", false);
-            
+
             StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
             procedureProp.addPropertyChangeListener(getListener());
             procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);

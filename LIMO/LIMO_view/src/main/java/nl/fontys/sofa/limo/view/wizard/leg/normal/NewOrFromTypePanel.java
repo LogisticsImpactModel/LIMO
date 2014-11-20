@@ -95,8 +95,8 @@ public final class NewOrFromTypePanel extends JPanel {
         add(cmbLegType, c);
         cmbLegType.setEnabled(false);
     }
-    
-    public LegType getLegType(){
+
+    public LegType getLegType() {
         if (rbFromLegType.isSelected()) {
             return htl.get(cmbLegType.getSelectedIndex());
         } else {
