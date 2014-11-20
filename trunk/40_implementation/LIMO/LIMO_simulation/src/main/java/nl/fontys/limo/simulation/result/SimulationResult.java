@@ -141,8 +141,9 @@ public class SimulationResult {
      * @return Recalculated data entry.
      */
     protected DataEntry recalculateDataEntry(DataEntry old, int oldCount, double newValue) {
-        if (old == null)
-            old = new DataEntry(0, 0, 0);
+        if (old == null){
+            return new DataEntry(newValue, newValue, newValue);
+        }
         
         double min = old.getMin() < newValue ? old.getMin() : newValue;
         double max = old.getMax() > newValue ? old.getMax() : newValue;
