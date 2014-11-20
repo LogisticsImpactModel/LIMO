@@ -27,56 +27,46 @@ import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.util.Lookup;
 
-/**
- * @author Matthias Brück
- */
 public class ProcedureComponent extends JPanel implements ActionListener, MouseListener {
 
     protected DragNDropTable table;
     protected DragNDropTableModel model;
-    protected JButton btn_add, btn_delete;
-    private JScrollPane sc_pane;
-    protected ProcedureCategoryDAO procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
+    protected JButton addButton, deleteButton;
+    protected ProcedureCategoryDAO procedureCategoryDao;
     protected Value changedValue;
-    private FormLayout layout;
-    private CellConstraints cc;
-    protected JComboBox cbox_procedureCategory, cbox_timeTypes, cbox_direction;
+    protected JComboBox procedureCategoryCheckbox, timeTypesCheckbox, directionCheckbox;
 
     public ProcedureComponent() {
         this(new ArrayList<Procedure>());
     }
 
     public ProcedureComponent(List<Procedure> procedures) {
-        //LAYOUT
-        cc = new CellConstraints();
-        layout = new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px");
-        this.setLayout(layout);
-        // TABLE
-        table = new DragNDropTable(new DragNDropTableModel(new String[]{}, new ArrayList<List<Object>>(), new Class[]{}));
+        procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
+        CellConstraints cc = new CellConstraints();
+        this.setLayout(new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px"));
+        DragNDropTableModel tableModel = new DragNDropTableModel(new String[]{}, new ArrayList<List<Object>>(), new Class[]{});
+        this.table = new DragNDropTable(tableModel);
         this.initProceduresTable(procedures);
-        sc_pane = new JScrollPane(table);
-        //OTHER COMPONENTS
-        btn_add = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
-        btn_delete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
-        //ADD COMPONENTS TO PANEL
-        this.add(sc_pane, cc.xywh(2, 2, 1, 4));
-        this.add(btn_add, cc.xy(4, 2));
-        this.add(btn_delete, cc.xy(4, 4));
-        //ADD COMPONENTS TO LISTENER
-        btn_add.addActionListener(this);
-        btn_delete.addActionListener(this);
-        table.addMouseListener(this);
+        JScrollPane scrollPane = new JScrollPane(table);
+        this.addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+        this.deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
+        this.add(scrollPane, cc.xywh(2, 2, 1, 4));
+        this.add(addButton, cc.xy(4, 2));
+        this.add(deleteButton, cc.xy(4, 4));
+        this.addButton.addActionListener(this);
+        this.deleteButton.addActionListener(this);
+        this.table.addMouseListener(this);
         this.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(btn_delete)) {
+        if (e.getSource().equals(deleteButton)) {
             int rowToDelete = table.getSelectedRow();
             if (rowToDelete > -1) {
                 deleteProcedure(rowToDelete);
             }
-        } else if (e.getSource().equals(btn_add)) {
+        } else if (e.getSource().equals(addButton)) {
             addProcedure();
         }
     }
@@ -130,8 +120,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             new EditValueDialog((Value) valueAt, new AddProcedureDialog.EditValueDialogListener() {
 
                 @Override
-                public void newValue(Value value
-                ) {
+                public void newValue(Value value) {
                     changedValue = value;
                     table.setValueAt(value, table.getSelectedRow(), table.getSelectedColumn());
                     ProcedureComponent.this.revalidate();
@@ -177,15 +166,15 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
                 valueList, new Class[]{String.class, String.class, TimeType.class, Value.class, Value.class, ProcedureResponsibilityDirection.class});
         table.setModel(model);
         try {
-            cbox_procedureCategory = new JComboBox(procedureCategoryDao.findAll().toArray());
-            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cbox_procedureCategory));
+            procedureCategoryCheckbox = new JComboBox(procedureCategoryDao.findAll().toArray());
+            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(procedureCategoryCheckbox));
         } catch (Exception e) {
-            cbox_procedureCategory = new JComboBox(new ProcedureCategory[]{});
-            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(cbox_procedureCategory));
+            procedureCategoryCheckbox = new JComboBox(new ProcedureCategory[]{});
+            table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(procedureCategoryCheckbox));
         }
-        cbox_timeTypes = new JComboBox(TimeType.values());
-        table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(cbox_timeTypes));
-        cbox_direction = new JComboBox(ProcedureResponsibilityDirection.values());
-        table.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(cbox_direction));
+        timeTypesCheckbox = new JComboBox(TimeType.values());
+        table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(timeTypesCheckbox));
+        directionCheckbox = new JComboBox(ProcedureResponsibilityDirection.values());
+        table.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(directionCheckbox));
     }
 }

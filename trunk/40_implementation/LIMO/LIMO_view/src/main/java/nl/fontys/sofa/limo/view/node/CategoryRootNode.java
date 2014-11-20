@@ -7,10 +7,10 @@ import org.openide.nodes.Children;
  *
  * @author Sebastiaan Heijmann
  */
-public class CategoryRootNode extends AbstractNode{
+public class CategoryRootNode extends AbstractNode {
 
-	public CategoryRootNode(Children children) {
-		super(children);
-	}
+    public CategoryRootNode(Children children) {
+        super(children);
+    }
 
 }

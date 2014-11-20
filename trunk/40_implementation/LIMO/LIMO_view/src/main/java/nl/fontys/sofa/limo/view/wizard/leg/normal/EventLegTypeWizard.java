@@ -12,7 +12,7 @@ import org.openide.util.HelpCtx;
 
 public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
-     private EventsLegTypePanel component;
+    private EventsLegTypePanel component;
 
     @Override
     public EventsLegTypePanel getComponent() {

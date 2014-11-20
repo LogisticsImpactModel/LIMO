@@ -12,18 +12,18 @@ import java.util.List;
  *
  * @author Sebastiaan Heijmann
  */
-public abstract class ChainGraphScene extends GraphScene<ContainerNode, String>{
-    
+public abstract class ChainGraphScene extends GraphScene<ContainerNode, String> {
+
     public abstract List<BasicWidget> getWidgets();
-    
+
     public abstract LayerWidget getMainLayer();
-    
+
     public abstract LayerWidget getConnectionLayer();
-    
+
     public abstract WidgetAction getConnectAction();
-    
+
     public abstract WidgetAction getMoveAlignAction();
-    
+
     public abstract void repaintScene();
 
 }

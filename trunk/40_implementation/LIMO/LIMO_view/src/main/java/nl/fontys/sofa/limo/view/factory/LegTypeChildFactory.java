@@ -28,70 +28,70 @@ import org.openide.util.Utilities;
  * @author Sebastiaan Heijmann
  */
 public class LegTypeChildFactory extends ChildFactory<LegType>
-		implements LookupListener, NodeListener {
+        implements LookupListener, NodeListener {
 
-	private final Result<LegType> lookupResult;
-	private final LegTypeService service;
+    private final Result<LegType> lookupResult;
+    private final LegTypeService service;
 
-	public LegTypeChildFactory() {
-		service = Lookup.getDefault().lookup(LegTypeService.class);
-		lookupResult = service.getLookup().lookupResult(LegType.class);
-		lookupResult.addLookupListener(this);
-	}
+    public LegTypeChildFactory() {
+        service = Lookup.getDefault().lookup(LegTypeService.class);
+        lookupResult = service.getLookup().lookupResult(LegType.class);
+        lookupResult.addLookupListener(this);
+    }
 
-	@Override
-	protected boolean createKeys(List<LegType> list) {
-		list.addAll(lookupResult.allInstances());
-		return true;
-	}
+    @Override
+    protected boolean createKeys(List<LegType> list) {
+        list.addAll(lookupResult.allInstances());
+        return true;
+    }
 
-	@Override
-	protected Node createNodeForKey(LegType key) {
-		BeanNode node = null;
-		try {
-			node = new LegTypeNode(key);
-			node.addNodeListener(this);
-		} catch (IntrospectionException ex) {
-			Exceptions.printStackTrace(ex);
-		}
-		return node;
-	}
+    @Override
+    protected Node createNodeForKey(LegType key) {
+        BeanNode node = null;
+        try {
+            node = new LegTypeNode(key);
+            node.addNodeListener(this);
+        } catch (IntrospectionException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return node;
+    }
 
-	@Override
-	public void resultChanged(LookupEvent ev) {
-		refresh(true);
-	}
+    @Override
+    public void resultChanged(LookupEvent ev) {
+        refresh(true);
+    }
 
-	@Override
-	public void nodeDestroyed(NodeEvent ne) {
-		Node node = ne.getNode();
-		LegType lt
-				= (LegType) node.getLookup().lookup(LegType.class);
+    @Override
+    public void nodeDestroyed(NodeEvent ne) {
+        Node node = ne.getNode();
+        LegType lt
+                = (LegType) node.getLookup().lookup(LegType.class);
 
-		Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(LegType.class);
-		Collection<LegType> selectedBeans = result.allInstances();
-		for(LegType bean : selectedBeans){
-			if(bean == lt){
-				service.delete(lt);
-			}	
-		}
-		refresh(true);
-	}
+        Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(LegType.class);
+        Collection<LegType> selectedBeans = result.allInstances();
+        for (LegType bean : selectedBeans) {
+            if (bean == lt) {
+                service.delete(lt);
+            }
+        }
+        refresh(true);
+    }
 
-	@Override
-	public void childrenAdded(NodeMemberEvent ev) {
-	}
+    @Override
+    public void childrenAdded(NodeMemberEvent ev) {
+    }
 
-	@Override
-	public void childrenRemoved(NodeMemberEvent ev) {
-	}
+    @Override
+    public void childrenRemoved(NodeMemberEvent ev) {
+    }
 
-	@Override
-	public void childrenReordered(NodeReorderEvent ev) {
-	}
+    @Override
+    public void childrenReordered(NodeReorderEvent ev) {
+    }
 
-	@Override
-	public void propertyChange(PropertyChangeEvent pce) {
-	}
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+    }
 
 }

@@ -25,7 +25,7 @@ import org.openide.nodes.NodeTransfer;
  *
  * @author Sebastiaan Heijmann
  */
-public class HubWidget extends BasicWidget{
+public class HubWidget extends BasicWidget {
 
     private ContainerNode container;
 
@@ -36,7 +36,7 @@ public class HubWidget extends BasicWidget{
      * @param hubNode - the HubNode.
      */
     public HubWidget(Scene scene) {
-        super(scene);  
+        super(scene);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class HubWidget extends BasicWidget{
 //        scene.addObject(hub, this);
         return true;
     }
-    
+
     public Hub getHub() {
         return container.getBeanNode().getLookup().lookup(Hub.class);
     }
@@ -86,5 +86,5 @@ public class HubWidget extends BasicWidget{
             return popup;
         }
     }
-  
+
 }

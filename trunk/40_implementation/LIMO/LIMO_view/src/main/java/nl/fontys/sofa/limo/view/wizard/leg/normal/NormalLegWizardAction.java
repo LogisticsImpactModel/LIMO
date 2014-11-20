@@ -58,7 +58,7 @@ public final class NormalLegWizardAction implements ActionListener {
             }
         }
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
-        if(update){
+        if (update) {
             wiz.putProperty("leg", leg);
         }
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()

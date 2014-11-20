@@ -12,7 +12,7 @@ import org.openide.nodes.PropertySupport;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class StupidProperty<T> extends PropertySupport.Reflection<T> {
-    
+
     private final ArrayList<PropertyChangeListener> listeners;
 
     public StupidProperty(Object instance, Class<T> valueType, Method getter, Method setter) {
@@ -40,17 +40,18 @@ public class StupidProperty<T> extends PropertySupport.Reflection<T> {
             throw ex;
         }
     }
-    
+
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         listeners.add(listener);
     }
-    
+
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         listeners.remove(listener);
     }
-    
+
     protected void firePropertyChange(T oldValue, T newValue) {
-        while (listeners.remove(null)) {}
+        while (listeners.remove(null)) {
+        }
         for (PropertyChangeListener listener : listeners) {
             listener.propertyChange(new PropertyChangeEvent(this, getName(), oldValue, newValue));
         }

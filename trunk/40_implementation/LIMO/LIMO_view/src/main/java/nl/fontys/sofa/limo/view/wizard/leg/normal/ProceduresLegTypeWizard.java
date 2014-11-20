@@ -65,7 +65,6 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
             }
         }
     }
-    
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {

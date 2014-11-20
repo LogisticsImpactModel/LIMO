@@ -14,30 +14,30 @@ import org.openide.util.Exceptions;
  *
  * @author Sebastiaan Heijmann
  */
-public class CategoryChildFactory extends ChildFactory<Node>{
+public class CategoryChildFactory extends ChildFactory<Node> {
 
-	@Override
-	protected boolean createKeys(List<Node> list) {
-		try {
-			Children eventChildren =
-				Children.create(new EventChildFactory(), true);
-			Node eventRootNode = new EventRootNode(eventChildren);
-			eventRootNode.setDisplayName("Events");
-			list.add(eventRootNode);
+    @Override
+    protected boolean createKeys(List<Node> list) {
+        try {
+            Children eventChildren
+                    = Children.create(new EventChildFactory(), true);
+            Node eventRootNode = new EventRootNode(eventChildren);
+            eventRootNode.setDisplayName("Events");
+            list.add(eventRootNode);
 
-			Children hubChildren =
-				Children.create(new HubChildFactory(), true);
-			Node hubRootNode = new HubRootNode(hubChildren);
-			hubRootNode.setDisplayName("Hubs");
-			list.add(hubRootNode);
-		} catch (ServiceNotFoundException ex) {
-			Exceptions.printStackTrace(ex);
-		}
-		return true;
-	}
+            Children hubChildren
+                    = Children.create(new HubChildFactory(), true);
+            Node hubRootNode = new HubRootNode(hubChildren);
+            hubRootNode.setDisplayName("Hubs");
+            list.add(hubRootNode);
+        } catch (ServiceNotFoundException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return true;
+    }
 
-	@Override
-	protected Node createNodeForKey(Node key) {
-		return key;
-	}
+    @Override
+    protected Node createNodeForKey(Node key) {
+        return key;
+    }
 }

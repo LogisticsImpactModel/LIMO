@@ -12,15 +12,15 @@ import org.netbeans.api.visual.graph.GraphScene;
  * @author Sebastiaan Heijmann
  */
 public interface WidgetableNode {
-    
+
     /**
      * Get the widget from this node.
      *
      * @param scene
-     * @return 
+     * @return
      */
     public BasicWidget getWidget(GraphScene scene);
-    
+
     /**
      * Can this widget be dropped?
      *
@@ -29,6 +29,5 @@ public interface WidgetableNode {
      * @return boolean - true if this widget can be dropped.
      */
     public boolean isAcceptable(Widget widget, Point point);
-   
 
 }

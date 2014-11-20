@@ -190,6 +190,7 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new StartPageButton(&quot;Test1&quot;)"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="testButton2BT.setVisible(false);"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="jButton1">
@@ -200,6 +201,7 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new StartPageButton(&quot;Test2&quot;)"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButton1.setVisible(false);"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="jButton2">
@@ -210,6 +212,7 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new StartPageButton(&quot;Test3&quot;)"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButton2.setVisible(false);"/>
               </AuxValues>
             </Component>
           </SubComponents>

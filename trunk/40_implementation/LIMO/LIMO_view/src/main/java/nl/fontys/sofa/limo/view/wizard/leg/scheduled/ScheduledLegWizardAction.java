@@ -30,7 +30,7 @@ import org.openide.awt.ActionRegistration;
 //@ActionRegistration(displayName = "Add Scheduled leg")
 //@ActionReference(path = "Menu/Master Data/Leg", position = 20)
 public final class ScheduledLegWizardAction implements ActionListener {
-        
+
 //    public ScheduledLegWizardAction(){
 //        legListener = new MultimodeLegTablePanel.FinishedScheduledLegListener() {
 //
@@ -40,16 +40,16 @@ public final class ScheduledLegWizardAction implements ActionListener {
 //            }
 //        };
 //    }
-        public ScheduledLegWizardAction(MultimodeLegTablePanel.FinishedScheduledLegListener legListener) {
+    public ScheduledLegWizardAction(MultimodeLegTablePanel.FinishedScheduledLegListener legListener) {
         this.legListener = legListener;
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
         panels.add(new NameDescriptionIconLegPanel());
         panels.add(new ScheduledLegScheduleWizard());
-         panels.add(new EventLegTypeWizard());
+        panels.add(new EventLegTypeWizard());
         panels.add(new ProceduresLegTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
@@ -72,13 +72,12 @@ public final class ScheduledLegWizardAction implements ActionListener {
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             ScheduledLeg leg = (ScheduledLeg) wiz.getProperty("leg");
             leg.setEvents((List<Event>) wiz.getProperty("events"));
-                        leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
+            leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
 
             legListener.finishedLeg(leg);
         }
     }
-    
-        private final MultimodeLegTablePanel.FinishedScheduledLegListener legListener;
 
+    private final MultimodeLegTablePanel.FinishedScheduledLegListener legListener;
 
 }
