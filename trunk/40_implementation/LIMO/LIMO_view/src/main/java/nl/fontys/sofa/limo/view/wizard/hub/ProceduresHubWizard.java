@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
-import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
+import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
 import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.*;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;

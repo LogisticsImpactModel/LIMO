@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.custom.pane;
+package nl.fontys.sofa.limo.view.custom.panel;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.custom.pane;
+package nl.fontys.sofa.limo.view.custom.panel;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -22,12 +22,12 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
 /**
- * LegTypeSelectPane is responsible for displaying a pane to select LegTypes
- * from.
+ * LegTypeSelectPanel is responsible for displaying a pane to select LegTypes
+ from.
  *
  * @author Sebastian Heijmann
  */
-public class LegTypeSelectPane extends javax.swing.JPanel
+public class LegTypeSelectPanel extends javax.swing.JPanel
 		implements ExplorerManager.Provider, LookupListener {
 
 	private final ExplorerManager em = new ExplorerManager();
@@ -37,7 +37,7 @@ public class LegTypeSelectPane extends javax.swing.JPanel
 	/**
 	 * Creates a new LegTypeSelectPane.
 	 */
-	public LegTypeSelectPane() throws ServiceNotFoundException {
+	public LegTypeSelectPanel() throws ServiceNotFoundException {
 		initComponents();
 		initCustomComponents();
 

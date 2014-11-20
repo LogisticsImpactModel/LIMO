@@ -9,7 +9,7 @@ import javax.swing.table.TableColumn;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.view.custom.pane.EventsPanel;
+import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 
 public final class EventsHubPanel extends EventsPanel {
 
@@ -44,6 +44,9 @@ public final class EventsHubPanel extends EventsPanel {
                 tblmdl_usedEvents.getEvents().add(selected);
                 tblmdl_usedEvents.fireTableDataChanged();
                 btn_delete.setEnabled(true);
+                cbox_addEvent.removeItemAt(cbox_addEvent.getSelectedIndex());
+                checkAddButtonState();
+                checkDeleteButtonState();
             }
         });
     }

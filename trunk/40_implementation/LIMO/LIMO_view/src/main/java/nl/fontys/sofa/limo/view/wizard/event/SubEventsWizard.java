@@ -1,13 +1,9 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
-import java.util.List;
-import nl.fontys.sofa.limo.view.custom.pane.EventsPanel;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT;
 import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT_EVENTS;
-import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 

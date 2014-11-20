@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.custom.pane;
+package nl.fontys.sofa.limo.view.custom.panel;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -92,8 +92,6 @@ public abstract class EventsPanel extends JPanel {
         c.gridwidth = 5;
         add(panel, c);
 
-        setAddButtonListener();
-
         btn_delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,13 +105,22 @@ public abstract class EventsPanel extends JPanel {
         service = Lookup.getDefault().lookup(EventService.class);
         allEvents = service.findAll();
         setTableModel();
+        setAddButtonListener();
     }
 
     protected void update(List<Event> events) {
         tblmdl_usedEvents.getEvents().clear();
         tblmdl_usedEvents.getEvents().addAll(events);
         tblmdl_usedEvents.fireTableDataChanged();
+        checkDeleteButtonState();
+    }
+
+    protected void checkDeleteButtonState() {
         btn_delete.setEnabled(tblmdl_usedEvents.getRowCount() > 0);
+    }
+
+    protected void checkAddButtonState() {
+        btn_add.setEnabled(cbox_addEvent.getModel().getSize() > 0);
     }
 
     public List<Event> getEvents() {

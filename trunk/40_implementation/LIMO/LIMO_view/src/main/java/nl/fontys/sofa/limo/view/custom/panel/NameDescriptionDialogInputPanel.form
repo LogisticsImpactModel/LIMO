@@ -84,7 +84,7 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="nl/fontys/sofa/limo/view/custom/pane/Bundle.properties" key="NameDescriptionDialogInputPane.nameLB.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+              <ResourceString bundle="nl/fontys/sofa/limo/view/custom/panel/Bundle.properties" key="NameDescriptionDialogInputPanel.nameLB.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
@@ -92,14 +92,14 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="nl/fontys/sofa/limo/view/custom/pane/Bundle.properties" key="NameDescriptionDialogInputPane.descriptionLB.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+              <ResourceString bundle="nl/fontys/sofa/limo/view/custom/panel/Bundle.properties" key="NameDescriptionDialogInputPanel.descriptionLB.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="nameTF">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="nl/fontys/sofa/limo/view/custom/pane/Bundle.properties" key="NameDescriptionDialogInputPane.Name.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+              <ResourceString bundle="nl/fontys/sofa/limo/view/custom/panel/Bundle.properties" key="NameDescriptionDialogInputPane.Name.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </Property>
             <Property name="name" type="java.lang.String" value="Name" noResource="true"/>
           </Properties>

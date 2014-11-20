@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.sofa.limo.view.custom.pane;
+package nl.fontys.sofa.limo.view.custom.panel;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;

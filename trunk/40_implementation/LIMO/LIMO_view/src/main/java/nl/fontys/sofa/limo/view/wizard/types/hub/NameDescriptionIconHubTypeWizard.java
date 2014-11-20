@@ -6,7 +6,7 @@ import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
-import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionIconPanel;
+import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;

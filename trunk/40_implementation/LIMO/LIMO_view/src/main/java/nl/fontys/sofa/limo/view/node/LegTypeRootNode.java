@@ -5,7 +5,7 @@ import javax.swing.Action;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
-import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionDialogInputPane;
+import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionDialogInputPanel;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.actions.NewAction;
@@ -50,7 +50,7 @@ public class LegTypeRootNode extends AbstractRootNode {
 
             @Override
             public void create() throws IOException {
-                NameDescriptionDialogInputPane inputPane = new NameDescriptionDialogInputPane();
+                NameDescriptionDialogInputPanel inputPane = new NameDescriptionDialogInputPanel();
                 DialogDescriptor dd = new DialogDescriptor(inputPane, "Leg Type");
                 DialogDisplayer.getDefault().notify(dd);
 
