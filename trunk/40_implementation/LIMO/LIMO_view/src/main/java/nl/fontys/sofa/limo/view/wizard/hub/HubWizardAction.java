@@ -22,7 +22,7 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
 @ActionID(category = "Hub", id = "nl.fontys.limo.view.wizzard.hub.HubWizardAction")
-@ActionRegistration(displayName = "Add Hub")
+@ActionRegistration(displayName = "Add")
 @ActionReference(path = "Menu/Master Data/Hub", position = 20)
 public final class HubWizardAction implements ActionListener {
 

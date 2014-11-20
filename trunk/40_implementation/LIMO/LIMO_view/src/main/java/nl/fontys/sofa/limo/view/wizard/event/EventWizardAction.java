@@ -20,7 +20,7 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
 @ActionID(category = "Event", id = "nl.fontys.sofa.limo.view.wizard.event.EventWizardAction")
-@ActionRegistration(displayName = "Add Event")
+@ActionRegistration(displayName = "Add")
 @ActionReference(path = "Menu/Master Data/Event", position = 20)
 public final class EventWizardAction implements ActionListener {
 

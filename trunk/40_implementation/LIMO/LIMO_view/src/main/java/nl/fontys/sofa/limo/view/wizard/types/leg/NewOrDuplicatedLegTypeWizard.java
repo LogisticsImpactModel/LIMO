@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.wizard.legtype;
+package nl.fontys.sofa.limo.view.wizard.types.leg;
 
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.type.LegType;

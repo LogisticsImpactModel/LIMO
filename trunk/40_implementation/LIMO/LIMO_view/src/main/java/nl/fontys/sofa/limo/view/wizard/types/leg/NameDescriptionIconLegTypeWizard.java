@@ -1,24 +1,24 @@
-package nl.fontys.sofa.limo.view.wizard.hubtype;
+package nl.fontys.sofa.limo.view.wizard.types.leg;
 
+import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionIconPanel;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.type.HubType;
-import nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction;
-import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionIconPanel;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.*;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
+public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NameDescriptionIconPanel component;
 
     @Override
     public NameDescriptionIconPanel getComponent() {
         if (component == null) {
-            component = new NameDescriptionIconPanel(HubType.class);
+            component = new NameDescriptionIconPanel(LegType.class);
         }
         return component;
     }
@@ -51,17 +51,17 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        String typeName = (String) wiz.getProperty(LegTypeWizardAction.TYPE_NAME);
-        String typeDescr = (String) wiz.getProperty(LegTypeWizardAction.TYPE_DESCRIPTION);
-        Icon typeIcon = (Icon) wiz.getProperty(LegTypeWizardAction.TYPE_ICON);
+        String typeName = (String) wiz.getProperty(TYPE_NAME);
+        String typeDescr = (String) wiz.getProperty(TYPE_DESCRIPTION);
+        Icon typeIcon = (Icon) wiz.getProperty(TYPE_ICON);
         getComponent().update(typeName, typeDescr, typeIcon);
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(HubTypeWizardAction.TYPE_NAME, getComponent().getNameInput());
-        wiz.putProperty(HubTypeWizardAction.TYPE_DESCRIPTION, getComponent().getDescriptionInput());
-        wiz.putProperty(HubTypeWizardAction.TYPE_ICON, getComponent().getIcon());
+        wiz.putProperty(TYPE_NAME, getComponent().getNameInput());
+        wiz.putProperty(TYPE_DESCRIPTION, getComponent().getDescriptionInput());
+        wiz.putProperty(TYPE_ICON, getComponent().getIcon());
     }
 
     @Override

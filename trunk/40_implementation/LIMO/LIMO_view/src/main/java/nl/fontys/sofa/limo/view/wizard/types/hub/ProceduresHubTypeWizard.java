@@ -1,22 +1,22 @@
-package nl.fontys.sofa.limo.view.wizard.legtype;
+package nl.fontys.sofa.limo.view.wizard.types.hub;
 
 import java.text.MessageFormat;
-import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
 import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
+public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private ProceduresPanel component;
     private final ResourceBundle bundle;
 
-    public ProceduresLegTypeWizard() {
+    public ProceduresHubTypeWizard() {
         bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
     }
 
@@ -38,12 +38,7 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
 
     @Override
     public boolean isValid() {
-        // If it is always OK to press Next or Finish, then:
         return true;
-        // If it depends on some condition (form filled out...) and
-        // this condition changes (last form field filled in...) then
-        // use ChangeSupport to implement add/removeChangeListener below.
-        // WizardDescriptor.ERROR/WARNING/INFORMATION_MESSAGE will also be useful.
     }
 
     @Override
@@ -71,5 +66,4 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
             throw new WizardValidationException(null, null, MessageFormat.format(bundle.getString("VALUE_NOT_SET2"), bundle.getString("PROCEDURES")));
         }
     }
-
 }
