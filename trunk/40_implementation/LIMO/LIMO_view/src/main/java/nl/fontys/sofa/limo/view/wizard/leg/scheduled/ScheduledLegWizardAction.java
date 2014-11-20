@@ -26,20 +26,20 @@ import org.openide.awt.ActionRegistration;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
-@ActionID(category = "Leg", id = "nl.fontys.limo.view.wizzard.leg.scheduled.ScheduledLegWizardAction")
-@ActionRegistration(displayName = "Add Scheduled leg")
-@ActionReference(path = "Menu/Master Data/Leg", position = 20)
+//@ActionID(category = "Leg", id = "nl.fontys.limo.view.wizzard.leg.scheduled.ScheduledLegWizardAction")
+//@ActionRegistration(displayName = "Add Scheduled leg")
+//@ActionReference(path = "Menu/Master Data/Leg", position = 20)
 public final class ScheduledLegWizardAction implements ActionListener {
         
-    public ScheduledLegWizardAction(){
-        legListener = new MultimodeLegTablePanel.FinishedScheduledLegListener() {
-
-            @Override
-            public void finishedLeg(ScheduledLeg leg) {
-                
-            }
-        };
-    }
+//    public ScheduledLegWizardAction(){
+//        legListener = new MultimodeLegTablePanel.FinishedScheduledLegListener() {
+//
+//            @Override
+//            public void finishedLeg(ScheduledLeg leg) {
+//                
+//            }
+//        };
+//    }
         public ScheduledLegWizardAction(MultimodeLegTablePanel.FinishedScheduledLegListener legListener) {
         this.legListener = legListener;
     }
