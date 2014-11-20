@@ -9,6 +9,8 @@ import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
+import org.netbeans.api.visual.graph.GraphScene;
+import org.netbeans.api.visual.widget.Widget;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
