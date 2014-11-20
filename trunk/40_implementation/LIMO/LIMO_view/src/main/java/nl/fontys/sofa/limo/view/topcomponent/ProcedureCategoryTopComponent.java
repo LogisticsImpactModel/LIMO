@@ -54,7 +54,7 @@ public final class ProcedureCategoryTopComponent extends TopComponent
             Node rootNode;
             Children children = Children.create(new ProcedureCategoryChildFactory(), true);
             rootNode = new ProcedureCategoryRootNode(children);
-            rootNode.setDisplayName("Procedure Categories");
+            rootNode.setDisplayName("Name");
             em.setRootContext(rootNode);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
