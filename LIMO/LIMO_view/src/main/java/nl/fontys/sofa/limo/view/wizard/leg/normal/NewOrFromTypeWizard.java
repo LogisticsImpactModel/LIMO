@@ -3,34 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.sofa.limo.view.wizard.leg;
+package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
-import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import org.openide.WizardDescriptor;
-import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class NormalLegWizardPanel2 implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
+public class NewOrFromTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     /**
      * The visual component that displays this panel. If you need to access the
      * component from this class, just use getComponent().
      */
-    private NameDescriptionIconPanel component;
+    private NewOrFromTypePanel component;
 
     // Get the visual component for the panel. In this template, the component
     // is kept separate. This can be more efficient: if the wizard is created
     // but never displayed, or not all panels are displayed, it is better to
     // create only those which really need to be visible.
     @Override
-    public NameDescriptionIconPanel getComponent() {
+    public NewOrFromTypePanel getComponent() {
         if (component == null) {
-            component = new NameDescriptionIconPanel(LegType.class);
+            component = new NewOrFromTypePanel();
         }
         return component;
     }
@@ -63,25 +58,15 @@ public class NormalLegWizardPanel2 implements WizardDescriptor.Panel<WizardDescr
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        LegType leg = (LegType) wiz.getProperty("legTypeCopy");
-        if (leg != null) {
-            getComponent().update("", leg.getDescription(), leg.getIcon());
-        }
-    }
-
-    @Override
-    public void validate() throws WizardValidationException {
-        ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
-        if (component.getNameInput().isEmpty()) {
-            throw new WizardValidationException(null, MessageFormat.format(bundle.getString("VALUE_NOT_SET"), bundle.getString("NAME")), null);
-        }
+        // use wiz.getProperty to retrieve previous panel state
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("name", getComponent().getNameInput());
-        wiz.putProperty("description", getComponent().getDescriptionInput());
-        wiz.putProperty("icon", getComponent().getIcon());
+        LegType legType = getComponent().getLegType();
+        if (legType != null) {
+            wiz.putProperty("legTypeCopy", legType);
+        }
     }
 
 }

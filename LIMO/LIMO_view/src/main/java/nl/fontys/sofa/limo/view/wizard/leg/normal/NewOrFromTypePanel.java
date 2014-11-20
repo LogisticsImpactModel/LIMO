@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.sofa.limo.view.wizard.leg;
+package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,7 +20,7 @@ import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.util.Lookup;
 
-public final class NormalLegVisualPanel1 extends JPanel {
+public final class NewOrFromTypePanel extends JPanel {
 
     /**
      * Creates new form NormalLegVisualPanel1
@@ -31,7 +31,7 @@ public final class NormalLegVisualPanel1 extends JPanel {
     JRadioButton rbFromScratch;
     List<LegType> htl;
 
-    public NormalLegVisualPanel1() {
+    public NewOrFromTypePanel() {
         initComponents();
     }
 
