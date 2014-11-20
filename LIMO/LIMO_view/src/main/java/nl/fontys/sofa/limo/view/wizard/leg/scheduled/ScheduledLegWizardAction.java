@@ -12,8 +12,12 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
+import nl.fontys.sofa.limo.view.wizard.leg.normal.EventLegTypeWizard;
+import nl.fontys.sofa.limo.view.wizard.leg.normal.ProceduresLegTypeWizard;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
@@ -22,11 +26,20 @@ import org.openide.awt.ActionRegistration;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
-//@ActionID(category = "Leg", id = "nl.fontys.limo.view.wizzard.leg.scheduled.ScheduledLegWizardAction")
-//@ActionRegistration(displayName = "Add Scheduled leg")
-//@ActionReference(path = "Menu/Master Data/Leg", position = 20)
+@ActionID(category = "Leg", id = "nl.fontys.limo.view.wizzard.leg.scheduled.ScheduledLegWizardAction")
+@ActionRegistration(displayName = "Add Scheduled leg")
+@ActionReference(path = "Menu/Master Data/Leg", position = 20)
 public final class ScheduledLegWizardAction implements ActionListener {
         
+    public ScheduledLegWizardAction(){
+        legListener = new MultimodeLegTablePanel.FinishedScheduledLegListener() {
+
+            @Override
+            public void finishedLeg(ScheduledLeg leg) {
+                
+            }
+        };
+    }
         public ScheduledLegWizardAction(MultimodeLegTablePanel.FinishedScheduledLegListener legListener) {
         this.legListener = legListener;
     }
@@ -35,7 +48,9 @@ public final class ScheduledLegWizardAction implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
         panels.add(new NameDescriptionIconLegPanel());
-        panels.add(new ScheduledLegWizardPanel2());
+        panels.add(new ScheduledLegScheduleWizard());
+         panels.add(new EventLegTypeWizard());
+        panels.add(new ProceduresLegTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -56,6 +71,9 @@ public final class ScheduledLegWizardAction implements ActionListener {
         wiz.setTitle("Scheduled Leg");
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             ScheduledLeg leg = (ScheduledLeg) wiz.getProperty("leg");
+            leg.setEvents((List<Event>) wiz.getProperty("events"));
+                        leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
+
             legListener.finishedLeg(leg);
         }
     }

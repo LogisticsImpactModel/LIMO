@@ -22,7 +22,7 @@ import nl.fontys.sofa.limo.view.util.IconUtil;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
 
-public final class ScheduledLegVisualPanel2 extends JPanel {
+public final class ScheduledLegSchedulePanel extends JPanel {
 
     private JPanel panelCenter, panelRight;
     private JButton btnAdd, btnEdit, btnDelete, btnAddAlt;
@@ -35,7 +35,7 @@ public final class ScheduledLegVisualPanel2 extends JPanel {
     /**
      * Creates new form ScheduledLegVisualPanel2
      */
-    public ScheduledLegVisualPanel2() {
+    public ScheduledLegSchedulePanel() {
         initComponents();
     }
 
@@ -143,7 +143,7 @@ public final class ScheduledLegVisualPanel2 extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 long aTime = 0;
 
-                String time = JOptionPane.showInputDialog(ScheduledLegVisualPanel2.this,
+                String time = JOptionPane.showInputDialog(ScheduledLegSchedulePanel.this,
                         "Acceptance Time", null);
                 if (time != null) {
                     if (!time.isEmpty()) {
@@ -158,7 +158,7 @@ public final class ScheduledLegVisualPanel2 extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (table.getSelectedRow() >= 0) {
                     long aTime = 0;
-                    String time = JOptionPane.showInputDialog(ScheduledLegVisualPanel2.this,
+                    String time = JOptionPane.showInputDialog(ScheduledLegSchedulePanel.this,
                             "Acceptance Time", model.getValueAt(table.getSelectedRow(), 0));
                     if (time != null) {
                         if (!time.isEmpty()) {
