@@ -4,7 +4,8 @@ import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
-import nl.fontys.sofa.limo.view.chain.GraphSceneImpl;
+import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
+import nl.fontys.sofa.limo.view.chain.GraphSceneImpl2;
 import nl.fontys.sofa.limo.view.factory.ChainPaletteFactory;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.netbeans.api.visual.graph.GraphScene;
@@ -63,21 +64,12 @@ public final class ChainBuilderTopComponent extends TopComponent {
     private void initCustomComponents() {
         setLayout(new BorderLayout());
         SupplyChain chain = new SupplyChain();
-        GraphScene scene;
-        try {
-            scene = new GraphSceneImpl();
-            JScrollPane shapePane = new JScrollPane();
-            shapePane.setViewportView(scene.createView());
-            add(shapePane, BorderLayout.CENTER);
-            add(scene.createSatelliteView(), BorderLayout.WEST);
-        } catch (ServiceNotFoundException ex) {
-            Exceptions.printStackTrace(ex);
-            NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
-                    + "a problem, changes made will not be saved. Please contact "
-                    + "your administrator...",
-                    NotifyDescriptor.ERROR_MESSAGE);
-            DialogDisplayer.getDefault().notify(d);
-        }
+        ChainGraphScene scene;
+        scene = new GraphSceneImpl2();
+        JScrollPane shapePane = new JScrollPane();
+        shapePane.setViewportView(scene.createView());
+        add(shapePane, BorderLayout.CENTER);
+        add(scene.createSatelliteView(), BorderLayout.WEST);
     }
 
     /**
@@ -113,7 +105,7 @@ public final class ChainBuilderTopComponent extends TopComponent {
     }
 
     void writeProperties(java.util.Properties p) {
-        // better to version settings since initial version as advocated at
+		// better to version settings since initial version as advocated at
         // http://wiki.apidesign.org/wiki/PropertyFiles
         p.setProperty("version", "1.0");
         // TODO store your settings

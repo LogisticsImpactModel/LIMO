@@ -1,12 +1,16 @@
 package nl.fontys.sofa.limo.view.node;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.beans.BeanInfo;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.util.IconUtil;
+import nl.fontys.sofa.limo.view.widget.BasicWidget;
+import org.netbeans.api.visual.graph.GraphScene;
+import org.netbeans.api.visual.widget.Widget;
 import org.openide.nodes.AbstractNode;
-import org.openide.nodes.Node;
+import org.netbeans.api.visual.widget.general.IconNodeWidget;
 
 /**
  * Container for nodes used in a GraphScene. <p> Wrap a Node in this container
@@ -15,7 +19,7 @@ import org.openide.nodes.Node;
  *
  * @author Sebastiaan Heijmann
  */
-public class ContainerNode extends AbstractNode{
+public class ContainerNode extends AbstractNode implements WidgetableNode{
 
 	private final AbstractBeanNode node;
 
@@ -54,5 +58,21 @@ public class ContainerNode extends AbstractNode{
 	public AbstractBeanNode getBeanNode(){
 		return node;
 	}
+
+    @Override
+    public BasicWidget getWidget(GraphScene scene) {
+        WidgetableNode beanNode = (WidgetableNode) node;
+        BasicWidget bw = (BasicWidget) beanNode.getWidget(scene);
+        bw.setImage(getImage());
+        bw.setLabel(node.getName());
+        bw.setContainer(this);
+        return bw;
+    }
+
+    @Override
+    public boolean isAcceptable(Widget widget, Point point) {
+        WidgetableNode beanNode = (WidgetableNode) node;
+        return beanNode.isAcceptable(widget, point);
+    }
 
 }

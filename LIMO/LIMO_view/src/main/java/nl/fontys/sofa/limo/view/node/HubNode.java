@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.view.node;
 
 import com.sksamuel.gaia.Continent;
 import com.sksamuel.gaia.Country;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -13,10 +14,12 @@ import javax.swing.ImageIcon;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
+import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.netbeans.api.visual.graph.GraphScene;
@@ -42,6 +45,20 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode{
     @Override
     public boolean canDestroy() {
         return true;
+    }
+    
+    
+    @Override
+    public BasicWidget getWidget(GraphScene scene) {
+        return new HubWidget(scene);
+    }
+
+    @Override
+    public boolean isAcceptable(Widget widget, Point point) {
+        if(widget instanceof ChainGraphScene){
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -173,10 +190,4 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode{
         sets.put(generalSet);
         sets.put(locationSet);
     }
-
-    @Override
-    public Widget getWidget(GraphScene scene) {
-        return new HubWidget(scene, this);
-    }
-
 }
