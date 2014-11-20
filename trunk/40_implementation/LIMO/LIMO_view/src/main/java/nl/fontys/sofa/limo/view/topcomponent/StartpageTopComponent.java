@@ -14,7 +14,7 @@ import org.openide.util.NbBundle.Messages;
 
 /**
  * Top component which displays the startpage.
- * 
+ *
  * @author Sebastiaan Heijmann
  */
 @ConvertAsProperties(
@@ -28,7 +28,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = true)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.StartpageTopComponent")
-@ActionReference(path = "Menu/Window" , position = 10 )
+@ActionReference(path = "Menu/Window", position = 10)
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_StartpageAction",
         preferredID = "StartpageTopComponent"
@@ -156,7 +156,7 @@ public final class StartpageTopComponent extends TopComponent {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-		titleLB.setForeground(new Color(255,65,0));
+        titleLB.setForeground(new Color(255, 65, 0));
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         Color upperColor = new Color(0x00868a);
@@ -172,7 +172,7 @@ public final class StartpageTopComponent extends TopComponent {
     }
 
     void writeProperties(java.util.Properties p) {
-		// better to version settings since initial version as advocated at
+        // better to version settings since initial version as advocated at
         // http://wiki.apidesign.org/wiki/PropertyFiles
         p.setProperty("version", "1.0");
         // TODO store your settings
