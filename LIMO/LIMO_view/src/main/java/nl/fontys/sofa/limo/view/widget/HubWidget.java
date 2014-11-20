@@ -1,23 +1,16 @@
 package nl.fontys.sofa.limo.view.widget;
 
-import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
-import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
-import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
-import nl.fontys.sofa.limo.view.node.WidgetableNode;
-import org.netbeans.api.visual.action.AcceptProvider;
-import org.netbeans.api.visual.action.ConnectorState;
-import org.openide.nodes.NodeTransfer;
 
 /**
  * Widget which holds a ContainerNode containing a HubNode. This Widget can be

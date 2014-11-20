@@ -28,23 +28,23 @@ public final class EventsHubPanel extends EventsPanel {
      * Removes the dependency column which is just needed by events.
      */
     public void setHubView() {
-        TableColumn tcol = tbl_usedEvents.getColumnModel().getColumn(1);
-        tbl_usedEvents.getColumnModel().removeColumn(tcol);
+        TableColumn tcol = eventsTable.getColumnModel().getColumn(1);
+        eventsTable.getColumnModel().removeColumn(tcol);
     }
 
     @Override
     protected void setAddButtonListener() {
-        btn_add.addActionListener(new ActionListener() {
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Event selected = service.findById(allEvents.get(cbox_addEvent.getSelectedIndex()).getId());
+                Event selected = service.findById(allEvents.get(eventsCheckbox.getSelectedIndex()).getId());
                 selected.setId(null);
                 selected.setParent(hub);
                 selected.setDependency(ExecutionState.INDEPENDENT);
-                tblmdl_usedEvents.getEvents().add(selected);
-                tblmdl_usedEvents.fireTableDataChanged();
-                btn_delete.setEnabled(true);
-                cbox_addEvent.removeItemAt(cbox_addEvent.getSelectedIndex());
+                eventsTableModel.getEvents().add(selected);
+                eventsTableModel.fireTableDataChanged();
+                deleteButton.setEnabled(true);
+                eventsCheckbox.removeItemAt(eventsCheckbox.getSelectedIndex());
                 checkAddButtonState();
                 checkDeleteButtonState();
             }
@@ -54,11 +54,11 @@ public final class EventsHubPanel extends EventsPanel {
     @Override
     protected void setTableModel() {
         List<String> events = new ArrayList<>();
-        btn_add.setEnabled(!allEvents.isEmpty());
+        addButton.setEnabled(!allEvents.isEmpty());
         for (Event e : allEvents) {
             events.add(e.getName());
         }
-        cbox_addEvent.setModel(new DefaultComboBoxModel(events.toArray()));
+        eventsCheckbox.setModel(new DefaultComboBoxModel(events.toArray()));
     }
 
     public void update(Hub hub) {
