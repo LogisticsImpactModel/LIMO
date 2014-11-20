@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.wizard.legtype;
+package nl.fontys.sofa.limo.view.wizard.types.leg;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -20,7 +20,7 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
 @ActionID(category = "LegType", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
-@ActionRegistration(displayName = "Add Leg Type")
+@ActionRegistration(displayName = "Add")
 @ActionReference(path = "Menu/Master Data/Leg Type", position = 20)
 public final class LegTypeWizardAction extends TypeWizardAction {
 

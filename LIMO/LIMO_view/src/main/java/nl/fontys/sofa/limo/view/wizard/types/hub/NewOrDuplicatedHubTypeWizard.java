@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.wizard.hubtype;
+package nl.fontys.sofa.limo.view.wizard.types.hub;
 
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.type.HubType;

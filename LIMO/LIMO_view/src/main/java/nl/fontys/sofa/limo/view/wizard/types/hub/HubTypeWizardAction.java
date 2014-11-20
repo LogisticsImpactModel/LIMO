@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.wizard.hubtype;
+package nl.fontys.sofa.limo.view.wizard.types.hub;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -20,7 +20,7 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
 @ActionID(category = "HubType", id = "nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
-@ActionRegistration(displayName = "Add Hub Type")
+@ActionRegistration(displayName = "Add")
 @ActionReference(path = "Menu/Master Data/Hub Type", position = 20)
 public final class HubTypeWizardAction extends TypeWizardAction {
 
