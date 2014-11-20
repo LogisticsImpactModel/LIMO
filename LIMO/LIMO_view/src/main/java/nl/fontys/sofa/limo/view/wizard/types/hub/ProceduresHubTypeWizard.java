@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
+import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
 import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;

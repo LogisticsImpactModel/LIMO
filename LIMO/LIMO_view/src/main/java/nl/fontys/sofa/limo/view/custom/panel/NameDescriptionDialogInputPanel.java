@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.custom.pane;
+package nl.fontys.sofa.limo.view.custom.panel;
 
 import org.netbeans.validation.api.Problem;
 import org.netbeans.validation.api.builtin.stringvalidation.StringValidators;
@@ -10,7 +10,7 @@ import org.netbeans.validation.api.ui.swing.SwingValidationGroup;
  * 
  * @author Sebastiaan Heijmann
  */
-public class NameDescriptionDialogInputPane extends javax.swing.JPanel
+public class NameDescriptionDialogInputPanel extends javax.swing.JPanel
 	implements ValidationUI{
 
 	private SwingValidationGroup group;
@@ -18,7 +18,7 @@ public class NameDescriptionDialogInputPane extends javax.swing.JPanel
 	/**
 	 * Creates new form DialogInputPane
 	 */
-	public NameDescriptionDialogInputPane() {
+	public NameDescriptionDialogInputPanel() {
 		initComponents();
 		customInit();
 	}
@@ -50,12 +50,12 @@ public class NameDescriptionDialogInputPane extends javax.swing.JPanel
         contentPane.setPreferredSize(new java.awt.Dimension(450, 100));
 
         nameLB.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        org.openide.awt.Mnemonics.setLocalizedText(nameLB, org.openide.util.NbBundle.getMessage(NameDescriptionDialogInputPane.class, "NameDescriptionDialogInputPane.nameLB.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(nameLB, org.openide.util.NbBundle.getMessage(NameDescriptionDialogInputPanel.class, "NameDescriptionDialogInputPanel.nameLB.text")); // NOI18N
 
         descriptionLB.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        org.openide.awt.Mnemonics.setLocalizedText(descriptionLB, org.openide.util.NbBundle.getMessage(NameDescriptionDialogInputPane.class, "NameDescriptionDialogInputPane.descriptionLB.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(descriptionLB, org.openide.util.NbBundle.getMessage(NameDescriptionDialogInputPanel.class, "NameDescriptionDialogInputPanel.descriptionLB.text")); // NOI18N
 
-        nameTF.setText(org.openide.util.NbBundle.getMessage(NameDescriptionDialogInputPane.class, "NameDescriptionDialogInputPane.Name.text")); // NOI18N
+        nameTF.setText(org.openide.util.NbBundle.getMessage(NameDescriptionDialogInputPanel.class, "NameDescriptionDialogInputPane.Name.text")); // NOI18N
         nameTF.setName("Name"); // NOI18N
 
         descriptionTF.setColumns(20);

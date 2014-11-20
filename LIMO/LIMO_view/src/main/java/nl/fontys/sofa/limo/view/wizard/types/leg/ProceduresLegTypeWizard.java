@@ -1,7 +1,7 @@
 package nl.fontys.sofa.limo.view.wizard.types.leg;
 
 import java.text.MessageFormat;
-import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
+import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;

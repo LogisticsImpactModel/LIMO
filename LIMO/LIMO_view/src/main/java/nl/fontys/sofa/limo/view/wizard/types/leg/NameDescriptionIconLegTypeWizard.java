@@ -1,6 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.types.leg;
 
-import nl.fontys.sofa.limo.view.custom.pane.NameDescriptionIconPanel;
+import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;

@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
-import nl.fontys.sofa.limo.view.custom.pane.EventsPanel;
+import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 
 /**
  *
