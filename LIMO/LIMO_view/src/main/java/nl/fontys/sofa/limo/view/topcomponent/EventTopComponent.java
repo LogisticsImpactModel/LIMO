@@ -20,11 +20,6 @@ import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
-/**
- * Top component which displays the events.
- *
- * @author Sebastiaan Heijmann
- */
 @ConvertAsProperties(
         dtd = "-//nl.fontys.sofa.limo.view.topcomponent//Event//EN",
         autostore = false
@@ -36,18 +31,17 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.EventTopComponent")
-@ActionReference(path = "Menu/Data/Event", position = 10)
+@ActionReference(path = "Menu/Master Data/Event", position = 10)
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_EventAction",
         preferredID = "EventTopComponent"
 )
 @Messages({
-    "CTL_EventAction=Events",
-    "CTL_EventTopComponent=Events window",
+    "CTL_EventAction=List",
+    "CTL_EventTopComponent=Event List",
     "HINT_EventTopComponent=Manage Events"
 })
-public final class EventTopComponent extends TopComponent implements
-        ExplorerManager.Provider {
+public final class EventTopComponent extends TopComponent implements ExplorerManager.Provider {
 
     private ExplorerManager em = new ExplorerManager();
 
@@ -58,7 +52,7 @@ public final class EventTopComponent extends TopComponent implements
 
         setLayout(new BorderLayout());
         add(new BeanTreeView(), BorderLayout.CENTER);
-        OutlineView ov = new OutlineView("Events");
+        OutlineView ov = new OutlineView("Name");
         ov.getOutline().setRootVisible(false);
         ov.setPropertyColumns("description", "Description");
         add(ov, BorderLayout.CENTER);
@@ -67,7 +61,7 @@ public final class EventTopComponent extends TopComponent implements
             Node rootNode;
             Children children = Children.create(new EventChildFactory(), true);
             rootNode = new EventRootNode(children);
-            rootNode.setDisplayName("Events");
+            rootNode.setDisplayName("Event");
             em.setRootContext(rootNode);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);

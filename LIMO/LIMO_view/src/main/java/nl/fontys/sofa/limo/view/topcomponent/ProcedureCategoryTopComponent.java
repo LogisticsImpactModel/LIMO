@@ -1,8 +1,6 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import javax.swing.ActionMap;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.factory.ProcedureCategoryChildFactory;
@@ -18,80 +16,75 @@ import org.openide.explorer.view.OutlineView;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
-import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
+import org.openide.windows.TopComponent;
 
-/**
- * Top component which displays the procedure categories.
- * 
- * @author Sebastiaan Heijmann
- */
 @ConvertAsProperties(
-		dtd = "-//nl.fontys.sofa.limo.view.topcomponent//ProcedureCategory//EN",
-		autostore = false
+        dtd = "-//nl.fontys.sofa.limo.view.topcomponent//ProcedureCategory//EN",
+        autostore = false
 )
 @TopComponent.Description(
-		preferredID = "ProcedureCategoryTopComponent",
-		//iconBase="SET/PATH/TO/ICON/HERE", 
-		persistenceType = TopComponent.PERSISTENCE_ALWAYS
+        preferredID = "ProcedureCategoryTopComponent",
+        //iconBase="SET/PATH/TO/ICON/HERE", 
+        persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ProcedureCategoryTopComponent")
-@ActionReference(path = "Menu/Data/ProcedureCategory" , position = 10 )
+@ActionReference(path = "Menu/Master Data/Procedure Category", position = 10)
 @TopComponent.OpenActionRegistration(
-		displayName = "#CTL_ProcedureCategoryAction",
-		preferredID = "ProcedureCategoryTopComponent"
+        displayName = "#CTL_ProcedureCategoryAction",
+        preferredID = "ProcedureCategoryTopComponent"
 )
 @Messages({
-	"CTL_ProcedureCategoryAction=Procedure Categories",
-	"CTL_ProcedureCategoryTopComponent=Procedure Categories Window",
-	"HINT_ProcedureCategoryTopComponent=Manage Procedure Categories"
+    "CTL_ProcedureCategoryAction=List",
+    "CTL_ProcedureCategoryTopComponent=Procedure Category List",
+    "HINT_ProcedureCategoryTopComponent=Manage Procedure Categories"
 })
 public final class ProcedureCategoryTopComponent extends TopComponent
-		implements ExplorerManager.Provider{
-	private ExplorerManager em = new ExplorerManager();
+        implements ExplorerManager.Provider {
 
-	public ProcedureCategoryTopComponent() {
-		initComponents();
-		setName(Bundle.CTL_ProcedureCategoryTopComponent());
-		setToolTipText(Bundle.HINT_ProcedureCategoryTopComponent());
+    private ExplorerManager em = new ExplorerManager();
 
+    public ProcedureCategoryTopComponent() {
+        initComponents();
+        setName(Bundle.CTL_ProcedureCategoryTopComponent());
+        setToolTipText(Bundle.HINT_ProcedureCategoryTopComponent());
 
-		try {
-			Node rootNode;
-			Children children = Children.create(new ProcedureCategoryChildFactory(), true);
-			rootNode = new ProcedureCategoryRootNode(children);
-			rootNode.setDisplayName("Procedure Categories");
-			em.setRootContext(rootNode);
-		} catch (ServiceNotFoundException ex) {
-			Exceptions.printStackTrace(ex);
-			NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
-					+ "a problem, changes made will not be saved. Please contact "
-					+ "your administrator...",
-					NotifyDescriptor.ERROR_MESSAGE);
- 			DialogDisplayer.getDefault().notify(d);
-		}
-		setLayout(new BorderLayout());
-		OutlineView ov = new OutlineView("Procedure Categories");
-		ov.setPropertyColumns("description", "Description");
-		ov.getOutline().setRootVisible(false);
-		add(ov, BorderLayout.CENTER);
+        try {
+            Node rootNode;
+            Children children = Children.create(new ProcedureCategoryChildFactory(), true);
+            rootNode = new ProcedureCategoryRootNode(children);
+            rootNode.setDisplayName("Procedure Categories");
+            em.setRootContext(rootNode);
+        } catch (ServiceNotFoundException ex) {
+            Exceptions.printStackTrace(ex);
+            NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
+                    + "a problem, changes made will not be saved. Please contact "
+                    + "your administrator...",
+                    NotifyDescriptor.ERROR_MESSAGE);
+            DialogDisplayer.getDefault().notify(d);
+        }
+        setLayout(new BorderLayout());
+        OutlineView ov = new OutlineView("Procedure Categories");
+        ov.setPropertyColumns("description", "Description");
+        ov.getOutline().setRootVisible(false);
+        add(ov, BorderLayout.CENTER);
 
-		ActionMap map = getActionMap();
-		map.put("delete", ExplorerUtils.actionDelete(em, true));
-		associateLookup(ExplorerUtils.createLookup(em, map));
-	}
-	
-	@Override
-	public ExplorerManager getExplorerManager() {
-		return em;
-	}
+        ActionMap map = getActionMap();
+        map.put("delete", ExplorerUtils.actionDelete(em, true));
+        associateLookup(ExplorerUtils.createLookup(em, map));
+    }
 
-	/**
-	 * This method is called from within the constructor to initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is always
-	 * regenerated by the Form Editor.
-	 */
+    @Override
+    public ExplorerManager getExplorerManager() {
+        return em;
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -110,24 +103,24 @@ public final class ProcedureCategoryTopComponent extends TopComponent
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 	@Override
-	public void componentOpened() {
-		// TODO add custom code on component opening
-	}
+    public void componentOpened() {
+        // TODO add custom code on component opening
+    }
 
-	@Override
-	public void componentClosed() {
-		// TODO add custom code on component closing
-	}
+    @Override
+    public void componentClosed() {
+        // TODO add custom code on component closing
+    }
 
-	void writeProperties(java.util.Properties p) {
-		// better to version settings since initial version as advocated at
-		// http://wiki.apidesign.org/wiki/PropertyFiles
-		p.setProperty("version", "1.0");
-		// TODO store your settings
-	}
+    void writeProperties(java.util.Properties p) {
+        // better to version settings since initial version as advocated at
+        // http://wiki.apidesign.org/wiki/PropertyFiles
+        p.setProperty("version", "1.0");
+        // TODO store your settings
+    }
 
-	void readProperties(java.util.Properties p) {
-		String version = p.getProperty("version");
-		// TODO read your settings according to their version
-	}
+    void readProperties(java.util.Properties p) {
+        String version = p.getProperty("version");
+        // TODO read your settings according to their version
+    }
 }
