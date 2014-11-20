@@ -14,14 +14,14 @@ import javax.swing.table.TableColumn;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
-import nl.fontys.sofa.limo.view.custom.pane.EventsPanel;
+import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 
 public final class EventsLegTypePanel extends EventsPanel {
 
     private Leg leg;
 
     public EventsLegTypePanel() {
-        setHubView();
+        setLegView();
     }
 
     @Override
@@ -32,23 +32,23 @@ public final class EventsLegTypePanel extends EventsPanel {
     /**
      * Removes the dependency column which is just needed by events.
      */
-    public void setHubView() {
-        TableColumn tcol = eventsTable.getColumnModel().getColumn(1);
-        eventsTable.getColumnModel().removeColumn(tcol);
+    public void setLegView() {
+        TableColumn tcol = tbl_usedEvents.getColumnModel().getColumn(1);
+        tbl_usedEvents.getColumnModel().removeColumn(tcol);
     }
 
     @Override
     protected void setAddButtonListener() {
-        btnAdd.addActionListener(new ActionListener() {
+        btn_add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Event selected = service.findById(eventList.get(cbEvents.getSelectedIndex()).getId());
+                Event selected = service.findById(allEvents.get(cbox_addEvent.getSelectedIndex()).getId());
                 selected.setId(null);
                 selected.setParent(leg);
                 selected.setDependency(ExecutionState.INDEPENDENT);
-                tableModel.getEvents().add(selected);
-                tableModel.fireTableDataChanged();
-                btnDelete.setEnabled(true);
+                tblmdl_usedEvents.getEvents().add(selected);
+                tblmdl_usedEvents.fireTableDataChanged();
+                btn_delete.setEnabled(true);
             }
         });
     }
@@ -56,11 +56,11 @@ public final class EventsLegTypePanel extends EventsPanel {
     @Override
     protected void setTableModel() {
         List<String> events = new ArrayList<>();
-        btnAdd.setEnabled(!eventList.isEmpty());
-        for (Event e : eventList) {
+        btn_add.setEnabled(!allEvents.isEmpty());
+        for (Event e : allEvents) {
             events.add(e.getName());
         }
-        cbEvents.setModel(new DefaultComboBoxModel(events.toArray()));
+        cbox_addEvent.setModel(new DefaultComboBoxModel(events.toArray()));
     }
 
     public void update(Leg leg) {
