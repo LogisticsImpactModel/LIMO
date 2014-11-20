@@ -3,6 +3,8 @@ package nl.fontys.sofa.limo.view.custom;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 import nl.fontys.sofa.limo.view.custom.panel.ManageHubsPanel;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionRegistration;
@@ -20,11 +22,8 @@ import org.openide.util.NbBundle.Messages;
 public final class ManageHubs implements ActionListener {
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        int result = JOptionPane.showConfirmDialog(null, new ManageHubsPanel(), "Manage Hubs",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-
-        }
+    public void actionPerformed(final ActionEvent e) {
+        int result = JOptionPane.showConfirmDialog(null, new ManageHubsPanel(),
+                "Manage Hubs", OK_CANCEL_OPTION, PLAIN_MESSAGE);
     }
 }

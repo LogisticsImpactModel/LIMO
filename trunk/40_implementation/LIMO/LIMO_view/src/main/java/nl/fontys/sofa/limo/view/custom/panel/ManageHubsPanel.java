@@ -21,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.table.AbstractTableModel;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
@@ -29,8 +28,8 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.custom.ProcedureComponent;
 import nl.fontys.sofa.limo.view.util.IconFileFilter;
 import nl.fontys.sofa.limo.view.util.IconUtil;
-import nl.fontys.sofa.limo.view.wizard.hub.LocationHubPanel;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
+import nl.fontys.sofa.limo.view.wizard.hub.LocationHubPanel;
 import org.openide.util.Lookup;
 
 public final class ManageHubsPanel extends JPanel {

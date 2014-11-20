@@ -43,20 +43,21 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     public ProcedureComponent(List<Procedure> procedures) {
         procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
         CellConstraints cc = new CellConstraints();
-        this.setLayout(new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px"));
-        DragNDropTableModel tableModel = new DragNDropTableModel(new String[]{}, new ArrayList<List<Object>>(), new Class[]{});
-        this.table = new DragNDropTable(tableModel);
-        this.initProceduresTable(procedures);
+        setLayout(new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px"));
+        DragNDropTableModel tableModel = new DragNDropTableModel(
+                new String[]{}, new ArrayList<List<Object>>(), new Class[]{});
+        table = new DragNDropTable(tableModel);
+        initProceduresTable(procedures);
         JScrollPane scrollPane = new JScrollPane(table);
-        this.addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
-        this.deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
-        this.add(scrollPane, cc.xywh(2, 2, 1, 4));
-        this.add(addButton, cc.xy(4, 2));
-        this.add(deleteButton, cc.xy(4, 4));
-        this.addButton.addActionListener(this);
-        this.deleteButton.addActionListener(this);
-        this.table.addMouseListener(this);
-        this.setVisible(true);
+        addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+        deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
+        add(scrollPane, cc.xywh(2, 2, 1, 4));
+        add(addButton, cc.xy(4, 2));
+        add(deleteButton, cc.xy(4, 4));
+        addButton.addActionListener(this);
+        deleteButton.addActionListener(this);
+        table.addMouseListener(this);
+        setVisible(true);
     }
 
     @Override
@@ -99,8 +100,8 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     public void setProcedureTable(List<Procedure> procedures) {
         initProceduresTable(procedures);
         model.fireTableDataChanged();
-        this.revalidate();
-        this.repaint();
+        revalidate();
+        repaint();
     }
 
     protected void addProcedure() {
@@ -109,8 +110,8 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
 
     protected void deleteProcedure(int row) {
         ((DragNDropTableModel) table.getModel()).removeRow(row);
-        this.revalidate();
-        this.repaint();
+        revalidate();
+        repaint();
     }
 
     protected void editProcedure() {

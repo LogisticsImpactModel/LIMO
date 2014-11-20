@@ -15,16 +15,16 @@ public class SubEventsPanel extends EventsPanel {
 
     @Override
     protected void setAddButtonListener() {
-        btn_add.addActionListener(new ActionListener() {
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Event selected = service.findById(allEvents.get(cbox_addEvent.getSelectedIndex()).getId());
+                Event selected = service.findById(allEvents.get(eventsCheckbox.getSelectedIndex()).getId());
                 selected.setId(null);
                 selected.setParent(event);
                 selected.setDependency(ExecutionState.INDEPENDENT);
-                tblmdl_usedEvents.getEvents().add(selected);
-                tblmdl_usedEvents.fireTableDataChanged();
-                cbox_addEvent.removeItemAt(cbox_addEvent.getSelectedIndex());
+                eventsTableModel.getEvents().add(selected);
+                eventsTableModel.fireTableDataChanged();
+                eventsCheckbox.removeItemAt(eventsCheckbox.getSelectedIndex());
                 checkAddButtonState();
                 checkDeleteButtonState();
             }
@@ -34,13 +34,13 @@ public class SubEventsPanel extends EventsPanel {
     @Override
     protected void setTableModel() {
         List<String> events = new ArrayList<>();
-        btn_add.setEnabled(!allEvents.isEmpty());
+        addButton.setEnabled(!allEvents.isEmpty());
         for (Event e : allEvents) {
             if (event == null || (event != null && !e.getId().equals(event.getId()))) {
                 events.add(e.getName());
             }
         }
-        cbox_addEvent.setModel(new DefaultComboBoxModel(events.toArray()));
+        eventsCheckbox.setModel(new DefaultComboBoxModel(events.toArray()));
     }
 
     public void update(Event event) {

@@ -46,17 +46,17 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
         public CustomEditor() {
             super();
-            for (ActionListener listener : btn_delete.getActionListeners()) {
-                btn_delete.removeActionListener(listener);
+            for (ActionListener listener : deleteButton.getActionListeners()) {
+                deleteButton.removeActionListener(listener);
             }
-            btn_delete.addActionListener(this);
-            cbox_executionState.addItemListener(this);
-            btn_delete.setEnabled(!tblmdl_usedEvents.getEvents().isEmpty());
+            deleteButton.addActionListener(this);
+            executionStateCheckbox.addItemListener(this);
+            deleteButton.setEnabled(!eventsTableModel.getEvents().isEmpty());
         }
 
         @Override
         protected void setAddButtonListener() {
-            btn_add.addActionListener(this);
+            addButton.addActionListener(this);
         }
 
         @Override
@@ -66,40 +66,40 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                 for (Event event : allEvents) {
                     allEventsName.add(event.getName());
                 }
-                btn_add.setEnabled(!allEvents.isEmpty());
-                cbox_addEvent.setModel(new DefaultComboBoxModel(allEventsName.toArray()));
+                addButton.setEnabled(!allEvents.isEmpty());
+                eventsCheckbox.setModel(new DefaultComboBoxModel(allEventsName.toArray()));
             } else {
-                cbox_addEvent.setModel(new DefaultComboBoxModel(new String[]{}));
+                eventsCheckbox.setModel(new DefaultComboBoxModel(new String[]{}));
             }
             List<Event> usedEvents = (List<Event>) getValue();
-            tblmdl_usedEvents.setEvents(usedEvents);
-            tblmdl_usedEvents.fireTableDataChanged();
+            eventsTableModel.setEvents(usedEvents);
+            eventsTableModel.fireTableDataChanged();
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(btn_add)) {
-                if (cbox_addEvent.getSelectedIndex() >= 0 && cbox_addEvent.getSelectedIndex() < cbox_addEvent.getItemCount()) {
-                    Event selected = service.findById(allEvents.get(cbox_addEvent.getSelectedIndex()).getId());
+            if (e.getSource().equals(addButton)) {
+                if (eventsCheckbox.getSelectedIndex() >= 0 && eventsCheckbox.getSelectedIndex() < eventsCheckbox.getItemCount()) {
+                    Event selected = service.findById(allEvents.get(eventsCheckbox.getSelectedIndex()).getId());
                     if (selected != null) {
-                        List<Event> events = new ArrayList<>(tblmdl_usedEvents.getEvents());
+                        List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
                         selected.setId(null);
                         selected.setDependency(ExecutionState.INDEPENDENT);
                         events.add(selected);
-                        tblmdl_usedEvents.setEvents(events);
-                        tblmdl_usedEvents.fireTableDataChanged();
+                        eventsTableModel.setEvents(events);
+                        eventsTableModel.fireTableDataChanged();
                         setValue(events);
-                        btn_delete.setEnabled(true);
+                        deleteButton.setEnabled(true);
                     }
                 }
-            } else if (e.getSource().equals(btn_delete)) {
-                if (tbl_usedEvents.getSelectedRow() >= 0 && tbl_usedEvents.getSelectedRow() < tblmdl_usedEvents.getRowCount()) {
-                    List<Event> events = new ArrayList<>(tblmdl_usedEvents.getEvents());
-                    events.remove(tbl_usedEvents.getSelectedRow());
-                    tblmdl_usedEvents.setEvents(events);
-                    tblmdl_usedEvents.fireTableDataChanged();
+            } else if (e.getSource().equals(deleteButton)) {
+                if (eventsTable.getSelectedRow() >= 0 && eventsTable.getSelectedRow() < eventsTableModel.getRowCount()) {
+                    List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
+                    events.remove(eventsTable.getSelectedRow());
+                    eventsTableModel.setEvents(events);
+                    eventsTableModel.fireTableDataChanged();
                     setValue(events);
-                    btn_delete.setEnabled(!tblmdl_usedEvents.getEvents().isEmpty());
+                    deleteButton.setEnabled(!eventsTableModel.getEvents().isEmpty());
                 }
             }
         }
@@ -107,12 +107,12 @@ public class EventPropertyEditor extends PropertyEditorSupport {
         @Override
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                if (tbl_usedEvents.getSelectedRow() >= 0 && tbl_usedEvents.getSelectedRow() < tblmdl_usedEvents.getRowCount()) {
-                    List<Event> events = new ArrayList<>(tblmdl_usedEvents.getEvents());
-                    events.get(tbl_usedEvents.getSelectedRow()).setExecutionState((ExecutionState) cbox_executionState.getSelectedItem());
-                    tblmdl_usedEvents.setEvents(events);
-                    tblmdl_usedEvents.fireTableDataChanged();
-                    setValue(new ArrayList<>(tblmdl_usedEvents.getEvents()));
+                if (eventsTable.getSelectedRow() >= 0 && eventsTable.getSelectedRow() < eventsTableModel.getRowCount()) {
+                    List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
+                    events.get(eventsTable.getSelectedRow()).setExecutionState((ExecutionState) executionStateCheckbox.getSelectedItem());
+                    eventsTableModel.setEvents(events);
+                    eventsTableModel.fireTableDataChanged();
+                    setValue(new ArrayList<>(eventsTableModel.getEvents()));
                 }
             }
         }

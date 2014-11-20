@@ -1,8 +1,8 @@
 package nl.fontys.sofa.limo.view.widget;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
@@ -11,12 +11,6 @@ import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
-import java.util.List;
-import java.awt.Rectangle;
-import java.awt.FlowLayout;
-import nl.fontys.sofa.limo.domain.component.event.Event;
-import org.netbeans.api.visual.layout.Layout;
-import org.netbeans.api.visual.layout.LayoutFactory;
 
 /**
  * Widget which holds a ContainerNode containing an EventNode. This Widget can

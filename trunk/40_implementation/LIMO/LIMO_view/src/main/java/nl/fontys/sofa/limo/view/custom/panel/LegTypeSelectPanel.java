@@ -22,16 +22,12 @@ import org.openide.util.LookupListener;
  *
  * @author Sebastian Heijmann
  */
-public class LegTypeSelectPanel extends javax.swing.JPanel
-        implements ExplorerManager.Provider, LookupListener {
+public class LegTypeSelectPanel extends javax.swing.JPanel implements ExplorerManager.Provider, LookupListener {
 
     private final ExplorerManager em = new ExplorerManager();
     private Lookup.Result result = null;
     private List<LegType> selectedLegTypes;
 
-    /**
-     * Creates a new LegTypeSelectPane.
-     */
     public LegTypeSelectPanel() throws ServiceNotFoundException {
         initComponents();
         initCustomComponents();
