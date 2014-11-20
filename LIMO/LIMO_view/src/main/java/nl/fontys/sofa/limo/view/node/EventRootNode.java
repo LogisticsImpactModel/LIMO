@@ -32,19 +32,19 @@ public class EventRootNode extends AbstractRootNode {
     Class getBeanClass() {
         return Event.class;
     }
-    
+
     @Override
     public Action[] getActions(boolean context) {
         return new Action[]{SystemAction.get(NewAction.class)};
     }
-    
+
     @Override
     public NewType[] getNewTypes() {
         return new NewType[]{new NewType() {
 
             @Override
             public String getName() {
-                return "Hub";
+                return "Event";
             }
 
             @Override
