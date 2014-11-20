@@ -6,7 +6,7 @@ import java.beans.IntrospectionException;
 import java.util.List;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
-import nl.fontys.sofa.limo.view.custom.pane.LegTypeSelectPane;
+import nl.fontys.sofa.limo.view.custom.panel.LegTypeSelectPanel;
 import nl.fontys.sofa.limo.view.factory.WidgetFactory;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
@@ -104,7 +104,7 @@ public class GraphSceneImpl extends GraphScene<ContainerNode, String> {
 	@Override
 	protected Widget attachEdgeWidget(String edge) {
 		try {
-			LegTypeSelectPane inputPane = new LegTypeSelectPane();
+			LegTypeSelectPanel inputPane = new LegTypeSelectPanel();
 			DialogDescriptor dd = new DialogDescriptor(inputPane, "Leg Types");
 			DialogDisplayer.getDefault().notify(dd);
 			List<LegType> legTypes = inputPane.getSelectedLegTypes();
