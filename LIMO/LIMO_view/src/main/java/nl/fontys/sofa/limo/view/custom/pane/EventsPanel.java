@@ -26,16 +26,17 @@ import org.openide.util.Lookup;
 
 public abstract class EventsPanel extends JPanel {
 
-    private JLabel lblEvent;
-    protected JComboBox cbEvents;
-    protected JTable eventsTable;
-    protected JButton btnAdd;
-    protected JButton btnDelete;
+    private JLabel lbl_event;
+    protected JComboBox<Event> cbox_addEvent;
+    protected JTable tbl_usedEvents;
+    protected JButton btn_add;
+    protected JButton btn_delete;
 
     protected EventService service;
-    protected List<Event> eventList;
-    protected EventTableModel tableModel;
+    protected List<Event> allEvents;
+    protected EventTableModel tblmdl_usedEvents;
     protected static ResourceBundle bundle;
+    protected JComboBox<ExecutionState> cbox_executionState;
 
     public EventsPanel() {
         bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
@@ -43,18 +44,19 @@ public abstract class EventsPanel extends JPanel {
     }
 
     private void initComponents() {
-        lblEvent = new JLabel(bundle.getString("EVENT"));
-        cbEvents = new JComboBox();
+        lbl_event = new JLabel(bundle.getString("EVENT"));
+        cbox_addEvent = new JComboBox();
 
-        tableModel = new EventTableModel();
-        eventsTable = new JTable(tableModel);
-        TableColumn dependencyCol = eventsTable.getColumnModel().getColumn(1);
-        dependencyCol.setCellEditor(new DefaultCellEditor(new JComboBox(ExecutionState.values())));
+        tblmdl_usedEvents = new EventTableModel();
+        tbl_usedEvents = new JTable(tblmdl_usedEvents);
+        TableColumn dependencyCol = tbl_usedEvents.getColumnModel().getColumn(1);
+        cbox_executionState = new JComboBox<>(ExecutionState.values());
+        dependencyCol.setCellEditor(new DefaultCellEditor(cbox_executionState));
 
-        btnAdd = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
-        btnAdd.setEnabled(false);
-        btnDelete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
-        btnDelete.setEnabled(false);
+        btn_add = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+        btn_add.setEnabled(false);
+        btn_delete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
+        btn_delete.setEnabled(false);
         JPanel panelLeft = new JPanel();
 
         setLayout(new GridBagLayout());
@@ -65,23 +67,23 @@ public abstract class EventsPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
-        add(lblEvent, c);
+        add(lbl_event, c);
 
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 0;
-        add(cbEvents, c);
+        add(cbox_addEvent, c);
 
         c.weightx = 0.1;
         c.gridx = 2;
         c.gridy = 0;
-        add(btnAdd, c);
+        add(btn_add, c);
 
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JScrollPane(eventsTable), BorderLayout.CENTER);
+        panel.add(new JScrollPane(tbl_usedEvents), BorderLayout.CENTER);
 
         panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
-        panelLeft.add(btnDelete);
+        panelLeft.add(btn_delete);
         panel.add(panelLeft, BorderLayout.EAST);
 
         c.weightx = 1;
@@ -92,30 +94,30 @@ public abstract class EventsPanel extends JPanel {
 
         setAddButtonListener();
 
-        btnDelete.addActionListener(new ActionListener() {
+        btn_delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (eventsTable.getSelectedRow() >= 0) {
-                    tableModel.getEvents().remove(eventsTable.getSelectedRow());
-                    tableModel.fireTableDataChanged();
+                if (tbl_usedEvents.getSelectedRow() >= 0) {
+                    tblmdl_usedEvents.getEvents().remove(tbl_usedEvents.getSelectedRow());
+                    tblmdl_usedEvents.fireTableDataChanged();
                 }
             }
         });
 
         service = Lookup.getDefault().lookup(EventService.class);
-        eventList = service.findAll();
+        allEvents = service.findAll();
         setTableModel();
     }
 
     protected void update(List<Event> events) {
-        tableModel.getEvents().clear();
-        tableModel.getEvents().addAll(events);
-        tableModel.fireTableDataChanged();
-        btnDelete.setEnabled(tableModel.getRowCount() > 0);
+        tblmdl_usedEvents.getEvents().clear();
+        tblmdl_usedEvents.getEvents().addAll(events);
+        tblmdl_usedEvents.fireTableDataChanged();
+        btn_delete.setEnabled(tblmdl_usedEvents.getRowCount() > 0);
     }
 
     public List<Event> getEvents() {
-        return tableModel.getEvents();
+        return tblmdl_usedEvents.getEvents();
     }
 
     protected abstract void setAddButtonListener();
