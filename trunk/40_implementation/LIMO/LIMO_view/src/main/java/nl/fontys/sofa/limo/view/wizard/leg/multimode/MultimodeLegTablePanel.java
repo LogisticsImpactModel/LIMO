@@ -54,12 +54,17 @@ public final class MultimodeLegTablePanel extends JPanel {
                                 "Propability in %", null);
                         double propability = 0.0;
                         if (prop != null) {
-                            if (!prop.isEmpty()) {
+                            try {
                                 propability = Double.parseDouble(prop.replace(",", "."));
+                            } catch (NumberFormatException e) {
+                                JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
+                                        "Not a number!",
+                                        "Number error",
+                                        JOptionPane.ERROR_MESSAGE);
                             }
                         }
-
                         model.addLeg(leg, propability);
+
                     }
                 });
                 wiz.actionPerformed(e);
@@ -81,7 +86,14 @@ public final class MultimodeLegTablePanel extends JPanel {
                             double propability = 0.0;
 
                             if (prop != null) {
-                                propability = Double.parseDouble(prop.replace(",", "."));
+                                try {
+                                    propability = Double.parseDouble(prop.replace(",", "."));
+                                } catch (NumberFormatException e) {
+                                    JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
+                                            "Not a number!",
+                                            "Number error",
+                                            JOptionPane.ERROR_MESSAGE);
+                                }
                             } else {
                                 propability = model.getPropability(table.getSelectedRow());
                             }
@@ -98,8 +110,8 @@ public final class MultimodeLegTablePanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(table.getSelectedRow()>=0){
-                model.removeLeg(table.getSelectedRow());
+                if (table.getSelectedRow() >= 0) {
+                    model.removeLeg(table.getSelectedRow());
                 }
             }
         });
@@ -186,13 +198,20 @@ public final class MultimodeLegTablePanel extends JPanel {
         @Override
         public void setValueAt(Object value, int row, int col) {
             double propability = 0.0;
-            if (value.toString().contains(",")) {
-                propability = Double.parseDouble(value.toString().replace(",", "."));
-            } else {
-                propability = Double.parseDouble(value.toString());
+            try {
+                if (value.toString().contains(",")) {
+                    propability = Double.parseDouble(value.toString().replace(",", "."));
+                } else {
+                    propability = Double.parseDouble(value.toString());
+                }
+                legMap.put(legList.get(row), propability);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
+                        "Not a number!",
+                        "Number error",
+                        JOptionPane.ERROR_MESSAGE);
+                fireTableDataChanged();
             }
-            legMap.put(legList.get(row), propability);
-            fireTableDataChanged();
         }
 
     }
@@ -201,13 +220,14 @@ public final class MultimodeLegTablePanel extends JPanel {
 
         public void finishedLeg(Leg leg);
     }
-    
+
     public interface FinishedMapListener {
 
         public void finishedLeg(Map map);
     }
-    
-    public interface FinishedScheduledLegListener{
+
+    public interface FinishedScheduledLegListener {
+
         public void finishedLeg(ScheduledLeg leg);
     }
 }

@@ -147,7 +147,14 @@ public final class ScheduledLegSchedulePanel extends JPanel {
                         "Acceptance Time", null);
                 if (time != null) {
                     if (!time.isEmpty()) {
-                        aTime = Long.parseLong(time.replace(",", "."));
+                        try {
+                            aTime = Long.parseLong(time.replace(",", "."));
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(ScheduledLegSchedulePanel.this,
+                                    "Not a number!",
+                                    "Number error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                     model.addRow(new Long[]{aTime});
                 }
@@ -162,7 +169,14 @@ public final class ScheduledLegSchedulePanel extends JPanel {
                             "Acceptance Time", model.getValueAt(table.getSelectedRow(), 0));
                     if (time != null) {
                         if (!time.isEmpty()) {
-                            aTime = Long.parseLong(time.replace(",", "."));
+                            try {
+                                aTime = Long.parseLong(time.replace(",", "."));
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(ScheduledLegSchedulePanel.this,
+                                        "Not a number!",
+                                        "Number error",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
                         }
                         model.setValueAt(aTime, table.getSelectedRow(), 0);
                     }
@@ -188,11 +202,22 @@ public final class ScheduledLegSchedulePanel extends JPanel {
         add(panelRight, BorderLayout.EAST);
 
     }
-    
-    public ScheduledLeg getSchedueldLeg(){
+
+    public ScheduledLeg getSchedueldLeg() {
         ScheduledLeg leg = new ScheduledLeg();
-        leg.setExpectedTime(Long.parseLong(tfExpected.getText().replace(",", ".")));
-        leg.setWaitingTimeLimit(Long.parseLong(tfWaiting.getText().replace(",", ".")));
+        try {
+            leg.setExpectedTime(Long.parseLong(tfExpected.getText().replace(",", ".")));
+            leg.setWaitingTimeLimit(Long.parseLong(tfWaiting.getText().replace(",", ".")));
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(ScheduledLegSchedulePanel.this,
+                    "Not a number!",
+                    "Number error",
+                    JOptionPane.ERROR_MESSAGE);
+            leg.setExpectedTime(0);
+            leg.setWaitingTimeLimit(0);
+            tfExpected.setText("0");
+            tfWaiting.setText("0");
+        }
         return leg;
     }
 
