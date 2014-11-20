@@ -3,13 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.sofa.limo.view.wizard.leg;
+package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
-import java.awt.Component;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.view.wizard.hub.EventsHubPanel;
-import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
+import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -48,7 +45,10 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-
+        Leg leg = (Leg) wiz.getProperty("leg");
+        if (leg != null) {
+            getComponent().update(leg);
+        }
     }
 
     @Override

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.sofa.limo.view.wizard.leg;
+package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,12 +13,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.TableColumn;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
+import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.view.custom.pane.EventsPanel;
 
 public final class EventsLegTypePanel extends EventsPanel {
 
-    private Hub hub;
+    private Leg leg;
 
     public EventsLegTypePanel() {
         setHubView();
@@ -33,22 +33,22 @@ public final class EventsLegTypePanel extends EventsPanel {
      * Removes the dependency column which is just needed by events.
      */
     public void setHubView() {
-        TableColumn tcol = tbl_usedEvents.getColumnModel().getColumn(1);
-        tbl_usedEvents.getColumnModel().removeColumn(tcol);
+        TableColumn tcol = eventsTable.getColumnModel().getColumn(1);
+        eventsTable.getColumnModel().removeColumn(tcol);
     }
 
     @Override
     protected void setAddButtonListener() {
-        btn_add.addActionListener(new ActionListener() {
+        btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Event selected = service.findById(allEvents.get(cbox_addEvent.getSelectedIndex()).getId());
+                Event selected = service.findById(eventList.get(cbEvents.getSelectedIndex()).getId());
                 selected.setId(null);
-                selected.setParent(hub);
+                selected.setParent(leg);
                 selected.setDependency(ExecutionState.INDEPENDENT);
-                tblmdl_usedEvents.getEvents().add(selected);
-                tblmdl_usedEvents.fireTableDataChanged();
-                btn_delete.setEnabled(true);
+                tableModel.getEvents().add(selected);
+                tableModel.fireTableDataChanged();
+                btnDelete.setEnabled(true);
             }
         });
     }
@@ -56,10 +56,15 @@ public final class EventsLegTypePanel extends EventsPanel {
     @Override
     protected void setTableModel() {
         List<String> events = new ArrayList<>();
-        btn_add.setEnabled(!allEvents.isEmpty());
-        for (Event e : allEvents) {
+        btnAdd.setEnabled(!eventList.isEmpty());
+        for (Event e : eventList) {
             events.add(e.getName());
         }
-        cbox_addEvent.setModel(new DefaultComboBoxModel(events.toArray()));
+        cbEvents.setModel(new DefaultComboBoxModel(events.toArray()));
+    }
+
+    public void update(Leg leg) {
+        this.leg = leg;
+        update(leg.getEvents());
     }
 }

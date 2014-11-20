@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.sofa.limo.view.wizard.leg;
+package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.domain.component.type.HubType;
-import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
+import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.custom.pane.ProceduresPanel;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -55,12 +55,16 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-
-            HubType htyp = (HubType) wiz.getProperty("legTypeCopy");
+        Leg leg = (Leg) wiz.getProperty("leg");
+        if (leg != null) {
+            getComponent().update(leg.getProcedures());
+        } else {
+            LegType htyp = (LegType) wiz.getProperty("legTypeCopy");
             if (htyp != null) {
                 getComponent().update(htyp.getProcedures());
             }
         }
+    }
     
 
     @Override
