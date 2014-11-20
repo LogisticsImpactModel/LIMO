@@ -1,12 +1,9 @@
 package nl.fontys.sofa.limo.view.node.property.editor;
 
 import com.sksamuel.gaia.Country;
-import java.awt.Component;
 import java.beans.PropertyEditorSupport;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import nl.fontys.sofa.limo.domain.component.hub.Location;
 import org.openide.nodes.PropertyEditorRegistration;
 
 /**
@@ -20,24 +17,28 @@ public class CountryPopertyEditor extends PropertyEditorSupport{
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
+        if (text.equals("-"))
+            setValue(null);
+        
         setValue(countriesByName.get(text));
     }
 
     @Override
     public String getAsText() {
         if (getValue() == null)
-            return "";
+            return "-";
         
         return ((Country) getValue()).getName();
     }
 
     @Override
     public String[] getTags() {
-        String[] names = new String[Country.getAll().size()];
+        String[] names = new String[Country.getAll().size() + 1];
         List<Country> selectable = Country.getAll();
         countriesByName.clear();
+        names[0] = "-";
         for (Country country : selectable) {
-            names[selectable.indexOf(country)] = country.getName();
+            names[selectable.indexOf(country) + 1] = country.getName();
             countriesByName.put(country.getName(), country);
         }
         return names;
