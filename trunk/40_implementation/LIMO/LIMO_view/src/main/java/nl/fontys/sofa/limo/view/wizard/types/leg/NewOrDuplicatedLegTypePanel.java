@@ -87,6 +87,11 @@ public final class NewOrDuplicatedLegTypePanel extends JPanel {
         c.gridy = 2;
         add(cmbLegType, c);
         cmbLegType.setEnabled(false);
+        
+        if(lt.isEmpty()){
+            rbCopyFrom.setEnabled(false);
+            cmbLegType.setEditable(false);
+        }
 
     }
 
@@ -98,9 +103,9 @@ public final class NewOrDuplicatedLegTypePanel extends JPanel {
         }
     }
 
-    javax.swing.ButtonGroup buttonGroup1;
-    javax.swing.JRadioButton rbFromScratch;
-    javax.swing.JRadioButton rbCopyFrom;
-    javax.swing.JComboBox cmbLegType;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JRadioButton rbFromScratch;
+    private javax.swing.JRadioButton rbCopyFrom;
+    private javax.swing.JComboBox cmbLegType;
 
 }

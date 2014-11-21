@@ -25,11 +25,11 @@ public final class NewOrFromTypePanel extends JPanel {
     /**
      * Creates new form NormalLegVisualPanel1
      */
-    ButtonGroup buttonGroup1;
-    JComboBox cmbLegType;
-    JRadioButton rbFromLegType;
-    JRadioButton rbFromScratch;
-    List<LegType> htl;
+    private ButtonGroup buttonGroup1;
+    private JComboBox cmbLegType;
+    private JRadioButton rbFromLegType;
+    private JRadioButton rbFromScratch;
+    private List<LegType> htl;
 
     public NewOrFromTypePanel() {
         initComponents();
@@ -94,6 +94,10 @@ public final class NewOrFromTypePanel extends JPanel {
         c.gridy = 4;
         add(cmbLegType, c);
         cmbLegType.setEnabled(false);
+        if(htl.isEmpty()){
+            rbFromLegType.setEnabled(false);
+            cmbLegType.setEditable(false);
+        }
     }
 
     public LegType getLegType() {

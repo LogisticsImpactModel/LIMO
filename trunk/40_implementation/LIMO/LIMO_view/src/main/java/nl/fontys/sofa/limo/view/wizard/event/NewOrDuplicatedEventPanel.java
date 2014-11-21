@@ -92,6 +92,10 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
         c.gridy = 2;
         add(eventsCb, c);
         eventsCb.setEnabled(false);
+        if(events.isEmpty()){
+            eventCopySelection.setEnabled(false);
+            eventsCb.setEditable(false);
+        }
     }
 
     public Event getEvent() {
