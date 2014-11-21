@@ -5,9 +5,7 @@ import javax.swing.Action;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
-import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionDialogInputPanel;
-import org.openide.DialogDescriptor;
-import org.openide.DialogDisplayer;
+import nl.fontys.sofa.limo.view.wizard.types.hub.HubTypeWizardAction;
 import org.openide.actions.NewAction;
 import org.openide.nodes.Children;
 import org.openide.util.actions.SystemAction;
@@ -50,19 +48,21 @@ public class HubTypeRootNode extends AbstractRootNode {
 
             @Override
             public void create() throws IOException {
-                NameDescriptionDialogInputPanel inputPane = new NameDescriptionDialogInputPanel();
-                DialogDescriptor dd = new DialogDescriptor(inputPane, "Hub Type");
-                Object result = DialogDisplayer.getDefault().notify(dd);
-
-                String name = inputPane.getNameFieldValue();
-                String description = inputPane.getDescriptionFieldValue();
-
-                if (!name.isEmpty() && !description.isEmpty()) {
-                    HubType ht = new HubType();
-                    ht.setName(name);
-                    ht.setDescription(description);
-                    service.insert(ht);
-                }
+//                NameDescriptionDialogInputPanel inputPane = new NameDescriptionDialogInputPanel();
+//                DialogDescriptor dd = new DialogDescriptor(inputPane, "Hub Type");
+//                Object result = DialogDisplayer.getDefault().notify(dd);
+//
+//                String name = inputPane.getNameFieldValue();
+//                String description = inputPane.getDescriptionFieldValue();
+//
+//                if (!name.isEmpty() && !description.isEmpty()) {
+//                    HubType ht = new HubType();
+//                    ht.setName(name);
+//                    ht.setDescription(description);
+//                    service.insert(ht);
+//                }
+                HubTypeWizardAction wiz = new HubTypeWizardAction();
+                wiz.actionPerformed(null);
             }
         }};
     }
