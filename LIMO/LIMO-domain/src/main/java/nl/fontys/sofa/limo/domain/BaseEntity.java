@@ -5,12 +5,13 @@ import java.util.UUID;
 import javax.persistence.Id;
 
 /**
- * This class is the superclass of all entities that will be saved to their own database table.
+ * This class is the superclass of all entities that will be saved to their own
+ * database table.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class BaseEntity implements Serializable {
-    
+
     @Id
     protected String id;
     protected String name;
@@ -54,12 +55,12 @@ public class BaseEntity implements Serializable {
         this.uniqueIdentifier = uniqueIdentifier;
     }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }
