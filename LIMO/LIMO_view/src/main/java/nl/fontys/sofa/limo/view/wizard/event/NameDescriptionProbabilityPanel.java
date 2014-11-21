@@ -17,7 +17,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
@@ -189,10 +188,8 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
             String inputValueName = prop.getNames().get(rowIndex);
 
             if (columnIndex == 0) {
-                System.out.println(inputValueName);
                 return inputValueName;
             } else {
-                System.out.println(prop.getValue(inputValueName));
                 return prop.getValue(inputValueName);
             }
         }

@@ -95,11 +95,6 @@
             <artifactId>LIMO-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO_UpdateCenter</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
