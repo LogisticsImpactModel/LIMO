@@ -13,10 +13,10 @@ import org.openide.nodes.PropertyEditorRegistration;
 @PropertyEditorRegistration(targetType = Country.class)
 public class CountryPopertyEditor extends PropertyEditorSupport {
 
-    private HashMap<String, Country> countriesByName = new HashMap<>();
+    private final HashMap<String, Country> countriesByName = new HashMap<>();
 
     @Override
-    public void setAsText(String text) throws IllegalArgumentException {
+    public void setAsText(String text) {
         setValue(countriesByName.get(text));
     }
 

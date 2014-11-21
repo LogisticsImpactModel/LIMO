@@ -8,7 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
 
 public final class LocationHubPanel extends JPanel {
@@ -95,7 +99,7 @@ public final class LocationHubPanel extends JPanel {
         c.weightx = 0;
         add(cmbCountry, c);
 
-        // codes = CountryCode.values();     
+        // codes = CountryCode.values();
         ArrayList<String> countryList = new ArrayList();
         countryList.add(bundle.getString("NONE"));
         for (Country cou : Country.getAll()) {
@@ -164,7 +168,7 @@ public final class LocationHubPanel extends JPanel {
             }
 
             if (cmbCountry.getSelectedIndex() > 0) {
-                location.setCountry(Country.getAll().get(cmbCountry.getSelectedIndex() - 1));
+                location.setCountry(location.getContinent().getCountries().get(cmbCountry.getSelectedIndex() - 1));
             }
         }
         return location;
