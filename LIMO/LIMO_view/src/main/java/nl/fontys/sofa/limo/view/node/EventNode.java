@@ -9,14 +9,13 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
-import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
-import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.EventWidget;
+import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
 import org.netbeans.api.visual.graph.GraphScene;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.ErrorManager;
@@ -35,11 +34,14 @@ public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode
     @Override
     public boolean canDestroy() {
         return true;
+
     }
 
     @Override
-    public BasicWidget getWidget(GraphScene scene) {
-        return new EventWidget(scene);
+    public Widget getWidget(GraphScene scene) {
+        EventWidget ew = new EventWidget(scene);
+        ew.setLabel(bean.getName());
+        return ew;
     }
 
     @Override

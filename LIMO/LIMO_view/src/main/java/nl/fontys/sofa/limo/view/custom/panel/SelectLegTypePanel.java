@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
@@ -26,15 +25,19 @@ import nl.fontys.sofa.limo.view.wizard.leg.scheduled.ScheduledLegWizardAction;
  */
 public class SelectLegTypePanel extends JPanel {
 
+    private static JOptionPane optionPane;
+    private Leg leg;
+
     public SelectLegTypePanel() {
         init();
     }
 
     private void init() {
-        JFrame frame = new JFrame();
         JButton btnNormal = new JButton("Normal Leg");
         JButton btnMulti = new JButton("Multimode Leg");
         JButton btnSchedule = new JButton("Scheduled Leg");
+        optionPane = new JOptionPane();
+
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
         btnNormal.addActionListener(new ActionListener() {
@@ -45,10 +48,12 @@ public class SelectLegTypePanel extends JPanel {
 
                     @Override
                     public void finishedLeg(Leg leg) {
-                        //here your leg
+                        SelectLegTypePanel.this.setLeg(leg);
                     }
                 });
                 wiz.actionPerformed(e);
+                JOptionPane.getRootFrame().dispose();
+
             }
         });
         btnMulti.addActionListener(new ActionListener() {
@@ -59,10 +64,12 @@ public class SelectLegTypePanel extends JPanel {
 
                     @Override
                     public void finishedLeg(Map map) {
-                        //map of legs
+                        SelectLegTypePanel.this.setLeg(leg);
                     }
                 });
                 wiz.actionPerformed(e);
+                JOptionPane.getRootFrame().dispose();
+
             }
         });
         btnSchedule.addActionListener(new ActionListener() {
@@ -72,10 +79,12 @@ public class SelectLegTypePanel extends JPanel {
 
                     @Override
                     public void finishedLeg(ScheduledLeg leg) {
-                        //Schedueld leg
+                        SelectLegTypePanel.this.setLeg(leg);
                     }
                 });
                 wiz.actionPerformed(e);
+                JOptionPane.getRootFrame().dispose();
+
             }
         });
         panel.add(btnNormal);
@@ -83,7 +92,7 @@ public class SelectLegTypePanel extends JPanel {
         panel.add(btnSchedule);
 
         Object[] options = {"Cancel"};
-        int n = JOptionPane.showOptionDialog(frame,
+        int n = optionPane.showOptionDialog(this,
                 panel,
                 "Select a Leg",
                 JOptionPane.CANCEL_OPTION,
@@ -91,5 +100,17 @@ public class SelectLegTypePanel extends JPanel {
                 null,
                 options,
                 options[0]);
+        if (n == 0) {
+            JOptionPane.getRootFrame().dispose();
+        }
+
+    }
+
+    public void setLeg(Leg leg) {
+        this.leg = leg;
+    }
+
+    public Leg getLeg() {
+        return leg;
     }
 }

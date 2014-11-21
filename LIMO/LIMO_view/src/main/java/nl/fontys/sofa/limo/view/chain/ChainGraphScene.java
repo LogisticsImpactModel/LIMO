@@ -1,11 +1,11 @@
 package nl.fontys.sofa.limo.view.chain;
 
-import org.netbeans.api.visual.graph.GraphScene;
-import nl.fontys.sofa.limo.view.node.ContainerNode;
-import nl.fontys.sofa.limo.view.widget.BasicWidget;
-import org.netbeans.api.visual.widget.LayerWidget;
-import org.netbeans.api.visual.action.WidgetAction;
 import java.util.List;
+import nl.fontys.sofa.limo.view.node.ContainerNode;
+import org.netbeans.api.visual.action.WidgetAction;
+import org.netbeans.api.visual.graph.GraphScene;
+import org.netbeans.api.visual.widget.LayerWidget;
+import org.netbeans.api.visual.widget.Widget;
 
 /**
  * Abstract class which defines additional methods on the GraphScene.
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public abstract class ChainGraphScene extends GraphScene<ContainerNode, String> {
 
-    public abstract List<BasicWidget> getWidgets();
+    public abstract List<Widget> getWidgets();
 
     public abstract LayerWidget getMainLayer();
 

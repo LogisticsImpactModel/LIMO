@@ -19,7 +19,7 @@ public interface WidgetableNode {
      * @param scene
      * @return
      */
-    public BasicWidget getWidget(GraphScene scene);
+    public Widget getWidget(GraphScene scene);
 
     /**
      * Can this widget be dropped?
