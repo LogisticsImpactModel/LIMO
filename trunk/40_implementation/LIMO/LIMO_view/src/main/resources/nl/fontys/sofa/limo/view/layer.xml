@@ -13,7 +13,10 @@
         <file name="GoTo_hidden"/>
         <file name="Source_hidden"/>
         <file name="Tools_hidden"/>
-        <file name="File_hidden" />
-        <file name="View_hidden" />
+        <file name="File_hidden"/>
+        <file name="View_hidden"/>
+        <folder name="Window">
+            <file name="Web_hidden"/>
+        </folder>
     </folder>
 </filesystem>
