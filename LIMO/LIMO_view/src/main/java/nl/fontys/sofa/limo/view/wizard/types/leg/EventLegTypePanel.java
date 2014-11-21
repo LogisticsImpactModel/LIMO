@@ -13,12 +13,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.TableColumn;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
-import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 
 public final class EventLegTypePanel extends EventsPanel {
-
-    private LegType lt;
 
     public EventLegTypePanel() {
         setLegView();

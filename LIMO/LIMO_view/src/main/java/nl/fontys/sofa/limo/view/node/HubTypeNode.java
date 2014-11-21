@@ -1,19 +1,24 @@
 package nl.fontys.sofa.limo.view.node;
 
+import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
+import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
-import org.netbeans.api.visual.graph.GraphScene;
-import org.netbeans.api.visual.widget.Widget;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
+import nl.fontys.sofa.limo.view.wizard.types.hub.HubTypeWizardAction;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
+import org.openide.util.Lookup;
 
 /**
  * View representation of HubType.
@@ -22,13 +27,40 @@ import org.openide.nodes.Sheet;
  */
 public class HubTypeNode extends AbstractBeanNode<HubType> {
 
+    private final HubType bean;
+
     public HubTypeNode(HubType bean) throws IntrospectionException {
         super(bean, HubType.class);
+        this.bean = bean;
     }
 
     @Override
     public boolean canDestroy() {
         return true;
+    }
+
+    @Override
+    public Action[] getActions(boolean context) {
+        ArrayList<Action> actionList = new ArrayList<>();
+        actionList.add(new AbstractAction("Edit") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HubTypeWizardAction wiz = new HubTypeWizardAction();
+                wiz.isUpdate(bean);
+                wiz.actionPerformed(e);
+                createProperties(getBean(), null);
+                setSheet(getSheet());
+            }
+        });
+        actionList.add(new AbstractAction("Delete") {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HubTypeService service = Lookup.getDefault().lookup(HubTypeService.class);
+                service.delete(bean);
+            }
+        });
+        return actionList.toArray(new Action[actionList.size()]);
     }
 
     @Override
