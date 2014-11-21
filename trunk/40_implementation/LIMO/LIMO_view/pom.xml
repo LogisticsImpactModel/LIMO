@@ -29,7 +29,7 @@
                 <version>0.7.0.201403182114</version>
                 <configuration>
                     <excludes>
-                        <exclude>nl/**/*.class</exclude>
+                        <exclude>nl/fontys/sofa/limo/view/**/*.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>
