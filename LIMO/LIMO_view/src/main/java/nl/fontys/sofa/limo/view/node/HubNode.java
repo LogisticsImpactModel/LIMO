@@ -86,8 +86,6 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
 
     @Override
     protected void createProperties(Hub bean, BeanInfo info) {
-        super.createProperties(bean, info);
-
         Sheet sets = getSheet();
         Sheet.Set generalSet = Sheet.createPropertiesSet();
         generalSet.setName("properties");

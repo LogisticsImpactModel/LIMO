@@ -40,97 +40,149 @@ public final class LocationHubPanel extends JPanel {
         tfState = new JTextField();
         cmbCountry = new JComboBox();
         cmbContinent = new JComboBox();
-        lblNumber = new JLabel(bundle.getString("NUMBER"));
-        lblZip = new JLabel(bundle.getString("ZIP"));
+        lblNumber = new JLabel(" " + bundle.getString("NUMBER"));
+        lblZip = new JLabel(" " + bundle.getString("ZIP"));
         tfNumber = new JTextField();
         tfZip = new JTextField();
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.25;
 
         c.gridx = 0;
         c.gridy = 0;
-        add(lblStreet, c);
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        add(lblContinent, c);
         c.gridx = 1;
         c.gridy = 0;
+        c.gridwidth = 4;
+        c.weightx = 0.8;
+        add(cmbContinent, c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        add(lblCountry, c);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 4;
+        c.weightx = 0.8;
+        add(cmbCountry, c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        add(lblStreet, c);
+        c.gridx = 1;
+        c.gridy = 2;
+        c.gridwidth = 2;
+        c.weightx = 0.4;
         add(tfStreet, c);
-        c.gridx = 2;
-        c.gridy = 0;
-        add(lblNumber, c);
         c.gridx = 3;
-        c.gridy = 0;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        add(lblNumber, c);
+        c.gridx = 4;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.weightx = 0.2;
         add(tfNumber, c);
 
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 3;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
         add(lblCity, c);
         c.gridx = 1;
-        c.gridy = 1;
+        c.gridy = 3;
+        c.gridwidth = 2;
+        c.weightx = 0.4;
         add(tfCity, c);
-        c.gridx = 2;
-        c.gridy = 1;
-        add(lblZip, c);
         c.gridx = 3;
-        c.gridy = 1;
+        c.gridy = 3;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        add(lblZip, c);
+        c.gridx = 4;
+        c.gridy = 3;
+        c.gridwidth = 1;
+        c.weightx = 0.2;
         add(tfZip, c);
 
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 4;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
         add(lblState, c);
         c.gridx = 1;
-        c.gridy = 2;
+        c.gridy = 4;
+        c.gridwidth = 2;
+        c.weightx = 0.4;
         add(tfState, c);
-        c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 3;
-        add(lblContinent, c);
-        c.gridx = 1;
-        c.gridy = 3;
-        c.gridwidth = 3;
-        add(cmbContinent, c);
-        c.gridx = 0;
-        c.gridy = 4;
-        add(lblCountry, c);
-        c.gridx = 1;
-        c.gridy = 4;
-        c.gridwidth = 3;
-        c.weightx = 0;
-        add(cmbCountry, c);
 
-        // codes = CountryCode.values();
-        ArrayList<String> countryList = new ArrayList();
-        countryList.add(bundle.getString("NONE"));
-        for (Country cou : Country.getAll()) {
-            countryList.add(cou.getName());
+        ArrayList<String> continents = new ArrayList<>();
+        continents.add(bundle.getString("NONE"));
+        for (Continent continent : Continent.values()) {
+            continents.add(continent.getName());
         }
-        //   countryList.addAll(CountryCode.getSortedNames());
-        cmbCountry.setModel(new DefaultComboBoxModel(countryList.toArray()));
-
-        ArrayList<String> continentList = new ArrayList();
-        continentList.add(bundle.getString("NONE"));
-        for (Continent cont : Continent.values()) {
-            continentList.add(cont.getName());
-        }
-        //      for (int i = 0; i < Continents.values().length; ++i) {
-        //           continentList.add(Continents.values()[i].toString());
-//       }
-        cmbContinent.setModel(new DefaultComboBoxModel(continentList.toArray()));
+        cmbContinent.setModel(new DefaultComboBoxModel(continents.toArray()));
         cmbContinent.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<String> countryList = new ArrayList();
-                countryList.add(bundle.getString("NONE"));
-                if (Continent.values()[cmbContinent.getSelectedIndex() - 1].getCountries().size() >= 0) {
-                    for (Country cou : Continent.values()[cmbContinent.getSelectedIndex() - 1].getCountries()) {
-                        countryList.add(cou.getName());
+                String selected = (String) cmbContinent.getSelectedItem();
+
+                if (!selected.equals(bundle.getString("NONE"))) {
+                    ArrayList<String> continents = new ArrayList<>();
+                    for (Continent continent : Continent.values()) {
+                        continents.add(continent.getName());
                     }
-                    cmbCountry.setModel(new DefaultComboBoxModel(countryList.toArray()));
+                    cmbContinent.setModel(new DefaultComboBoxModel(continents.toArray()));
+                    cmbContinent.setSelectedItem(selected);
+
+                    String selectedCountry = (String) cmbCountry.getSelectedItem();
+                    ArrayList<String> countries = new ArrayList<>();
+                    countries.add(bundle.getString("NONE"));
+                    for (Country country : Continent.values()[continents.indexOf(selected)].getCountries()) {
+                        countries.add(country.getName());
+                    }
+                    cmbCountry.setModel(new DefaultComboBoxModel(countries.toArray()));
+                    if (countries.contains(selectedCountry)) {
+                        cmbCountry.setSelectedItem(selectedCountry);
+                    }
+                    cmbCountry.setEnabled(true);
                 }
             }
         });
+
+        ArrayList<String> countryList = new ArrayList();
+        countryList.add(bundle.getString("NONE"));
+        cmbCountry.setModel(new DefaultComboBoxModel(countryList.toArray()));
+        cmbCountry.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selected = (String) cmbCountry.getSelectedItem();
+                boolean enable = !selected.equals(bundle.getString("NONE"));
+
+                tfStreet.setEnabled(enable);
+                tfNumber.setEnabled(enable);
+                tfCity.setEnabled(enable);
+                tfZip.setEnabled(enable);
+                tfState.setEnabled(enable);
+            }
+        });
+        cmbCountry.setEnabled(false);
+
+        tfStreet.setEnabled(false);
+        tfNumber.setEditable(false);
+        tfCity.setEnabled(false);
+        tfZip.setEnabled(false);
+        tfState.setEnabled(false);
     }
 
     public void updateLabel(Location location) {
@@ -140,16 +192,19 @@ public final class LocationHubPanel extends JPanel {
             tfCity.setText(location.getTown());
             tfZip.setText(location.getPostcode());
             tfState.setText(location.getState());
+
             if (location.getCountry() != null) {
                 cmbCountry.setSelectedItem((location.getCountry().getName()));
             }
-            cmbContinent.setSelectedItem(location.getContinent().name());
+
+            cmbContinent.setSelectedItem(location.getContinent().getName());
         }
     }
 
     public Location getHubLocation() {
-        if (cmbContinent.getSelectedIndex() > 0) {
-            location = new Location(Continent.values()[cmbContinent.getSelectedIndex() - 1]);
+        boolean valid = !bundle.getString("NONE").equals(cmbContinent.getSelectedItem());
+        if (valid) {
+            location = new Location(Continent.values()[cmbContinent.getSelectedIndex()]);
 
             if (!tfStreet.getText().isEmpty()) {
                 location.setStreet(tfStreet.getText());
