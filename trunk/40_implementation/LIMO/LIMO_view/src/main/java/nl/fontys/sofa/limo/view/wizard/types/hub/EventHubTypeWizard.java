@@ -5,8 +5,9 @@
  */
 package nl.fontys.sofa.limo.view.wizard.types.hub;
 
+import java.util.List;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_EVENT;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
@@ -46,9 +47,8 @@ public class EventHubTypeWizard implements WizardDescriptor.Panel<WizardDescript
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        HubType ht = (HubType) wiz.getProperty(TYPE_EVENT);
-        if (ht != null) {
-            getComponent().update(ht);
+        if (wiz.getProperty(TYPE_EVENT) != null) {
+            getComponent().update((List<Event>) wiz.getProperty(TYPE_EVENT));
         }
     }
 

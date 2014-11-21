@@ -1,19 +1,24 @@
 package nl.fontys.sofa.limo.view.node;
 
+import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
+import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
-import org.netbeans.api.visual.graph.GraphScene;
-import org.netbeans.api.visual.widget.Widget;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
+import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
+import org.openide.util.Lookup;
 
 /**
  * View representation of the LegType class.
@@ -22,13 +27,40 @@ import org.openide.nodes.Sheet;
  */
 public class LegTypeNode extends AbstractBeanNode<LegType> {
 
+        private final LegType bean;
+
     public LegTypeNode(LegType bean) throws IntrospectionException {
         super(bean, LegType.class);
+        this.bean = bean;
     }
 
     @Override
     public boolean canDestroy() {
         return true;
+    }
+    
+        @Override
+    public Action[] getActions(boolean context) {
+        ArrayList<Action> actionList = new ArrayList<>();
+        actionList.add(new AbstractAction("Edit") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LegTypeWizardAction wiz = new LegTypeWizardAction();
+                wiz.isUpdate(bean);
+                wiz.actionPerformed(e);
+             //   createProperties(getBean(), null);
+            //    setSheet(getSheet());
+            }
+        });
+        actionList.add(new AbstractAction("Delete") {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LegTypeService service = Lookup.getDefault().lookup(LegTypeService.class);
+                service.delete(bean);
+            }
+        });
+        return actionList.toArray(new Action[actionList.size()]);
     }
 
     @Override

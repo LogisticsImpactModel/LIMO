@@ -78,9 +78,8 @@ public final class HubTypeWizardAction extends TypeWizardAction {
         }
     }
 
-    public void setHubType(HubType hubType) {
+    public void isUpdate(HubType hubType) {
         this.hubType = hubType;
         this.isUpdate = true;
     }
-
 }

@@ -56,7 +56,7 @@ public final class LegTypeWizardAction extends TypeWizardAction {
             wiz.putProperty(TYPE_NAME, legType.getName());
             wiz.putProperty(TYPE_DESCRIPTION, legType.getDescription());
             wiz.putProperty(TYPE_ICON, legType.getIcon());
-            wiz.putProperty(TYPE_EVENT, legType.getIcon());
+            wiz.putProperty(TYPE_EVENT, legType.getEvents());
             wiz.putProperty(TYPE_PROCEDURES, legType.getProcedures());
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
@@ -78,7 +78,7 @@ public final class LegTypeWizardAction extends TypeWizardAction {
         }
     }
 
-    public void setLegType(LegType legType) {
+    public void isUpdate(LegType legType) {
         this.legType = legType;
         this.isUpdate = true;
     }
