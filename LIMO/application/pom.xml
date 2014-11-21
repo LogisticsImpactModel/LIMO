@@ -110,6 +110,11 @@
                 <configuration>
                     <installerOsSolaris>false</installerOsSolaris>
                     <installerOsMacosx>false</installerOsMacosx>
+                    <installerOsLinux>false</installerOsLinux>
+                    <userSettings>
+                        <nbi.icon.file>${basedir}/src/main/resources/icon.gif</nbi.icon.file>
+                        <nbi.instleftcorner.file>${basedir}/src/main/resources/icon.gif</nbi.instleftcorner.file>
+                    </userSettings>
                 </configuration>
             </plugin>
             <plugin>
