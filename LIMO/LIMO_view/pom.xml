@@ -29,14 +29,14 @@
                 <version>0.7.0.201403182114</version>
                 <configuration>
                     <excludes>
-                        <exclude>nl/fontys/sofa/view/chain/*</exclude>
-                        <exclude>nl/fontys/sofa/view/custom/*</exclude>
-                        <exclude>nl/fontys/sofa/view/factory/*</exclude>
-                        <exclude>nl/fontys/sofa/view/help/*</exclude>
-                        <exclude>nl/fontys/sofa/view/node/*</exclude>
-                        <exclude>nl/fontys/sofa/view/topcomponent/*</exclude>
-                        <exclude>nl/fontys/sofa/view/widget/*</exclude>
-                        <exclude>nl/fontys/sofa/view/wizard/*</exclude>
+                        <exclude>nl/fontys/sofa/limo/view/chain/*</exclude>
+                        <exclude>nl/fontys/sofa/limo/view/custom/*</exclude>
+                        <exclude>nl/fontys/sofa/limo/view/factory/*</exclude>
+                        <exclude>nl/fontys/sofa/limo/view/help/*</exclude>
+                        <exclude>nl/fontys/sofa/limo/view/node/*</exclude>
+                        <exclude>nl/fontys/sofa/limo/view/topcomponent/*</exclude>
+                        <exclude>nl/fontys/sofa/limo/view/widget/*</exclude>
+                        <exclude>nl/fontys/sofa/limo/view/wizard/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
