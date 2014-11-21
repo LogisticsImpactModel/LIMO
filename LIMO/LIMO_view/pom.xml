@@ -22,13 +22,15 @@
                     <useDefaultManifestFile>true</useDefaultManifestFile>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.7.0.201403182114</version>
                 <configuration>
-   
+                    <excludes>
+                        <exclude>nl.fontys.sofa.view.*</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
