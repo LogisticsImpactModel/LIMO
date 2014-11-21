@@ -12,7 +12,7 @@ import org.netbeans.api.visual.widget.Widget;
  *
  * @author Sebastiaan Heijmann
  */
-public abstract class ChainGraphScene extends GraphScene<ContainerNode, String> {
+public abstract class ChainGraphScene extends GraphScene<ContainerNode, ContainerNode> {
 
     public abstract List<Widget> getWidgets();
 

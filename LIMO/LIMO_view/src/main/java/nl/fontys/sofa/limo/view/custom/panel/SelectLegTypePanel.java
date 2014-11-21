@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegWizardAction;
@@ -64,6 +65,8 @@ public class SelectLegTypePanel extends JPanel {
 
                     @Override
                     public void finishedLeg(Map map) {
+                        MultiModeLeg leg = new MultiModeLeg();
+                        leg.setLegs(map);
                         SelectLegTypePanel.this.setLeg(leg);
                     }
                 });

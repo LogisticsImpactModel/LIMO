@@ -2,12 +2,14 @@ package nl.fontys.sofa.limo.view.chain;
 
 import java.awt.Point;
 import java.awt.datatransfer.Transferable;
+import java.beans.IntrospectionException;
 import java.util.ArrayList;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
+import nl.fontys.sofa.limo.view.node.LegNode;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
@@ -23,6 +25,7 @@ import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.nodes.NodeTransfer;
+import org.openide.util.Exceptions;
 
 /**
  * GraphScene to draw a supply chain on. Widgets can be dragged and dropped to
@@ -31,8 +34,6 @@ import org.openide.nodes.NodeTransfer;
  * @author Sebastiaan Heijmann
  */
 public class GraphSceneImpl2 extends ChainGraphScene {
-
-    private long edgeCounter = 0;
 
     private final ChainBuilder chainBuilder;
     private List<Widget> widgets;
@@ -109,19 +110,15 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     }
 
     @Override
-    protected Widget attachEdgeWidget(String edge) {
-        SelectLegTypePanel inputPane = new SelectLegTypePanel();
-
-        Leg leg = inputPane.getLeg();
-
-        BasicWidget connectionWidget = new LegWidget(this);
+    protected Widget attachEdgeWidget(ContainerNode edge) {
+        BasicWidget connectionWidget = new LegWidget(this, edge);
         connectionWidget.addActions(this);
         connectionLayer.addChild((Widget) connectionWidget);
         return (Widget) connectionWidget;
     }
 
     @Override
-    protected void attachEdgeSourceAnchor(String edge, ContainerNode oldSourceNode, ContainerNode sourceNode) {
+    protected void attachEdgeSourceAnchor(ContainerNode edge, ContainerNode oldSourceNode, ContainerNode sourceNode) {
         Widget sourceWidget = findWidget(sourceNode);
         if (sourceWidget == null) {
             sourceWidget = findWidget(oldSourceNode);
@@ -131,7 +128,7 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     }
 
     @Override
-    protected void attachEdgeTargetAnchor(String edge, ContainerNode oldTargetNode, ContainerNode targetNode) {
+    protected void attachEdgeTargetAnchor(ContainerNode edge, ContainerNode oldTargetNode, ContainerNode targetNode) {
         Widget targetWidget = findWidget(targetNode);
         if (targetWidget == null) {
             targetWidget = (HubWidget) findWidget(oldTargetNode);
@@ -216,12 +213,21 @@ public class GraphSceneImpl2 extends ChainGraphScene {
 
         @Override
         public void createConnection(Widget sourceWidget, Widget targetWidget) {
-            String edge = "edge" + edgeCounter++;
-            Widget connectionWidget = addEdge(edge);
-            if (connectionWidget != null) {
-                setEdgeSource(edge, source);
-                setEdgeTarget(edge, target);
+            SelectLegTypePanel inputPane = new SelectLegTypePanel();
+            Leg leg = inputPane.getLeg();
+            try {
+                LegNode legNode = new LegNode(leg);
+                ContainerNode container = new ContainerNode(legNode);
+
+                Widget connectionWidget = addEdge(container);
+                if (connectionWidget != null) {
+                    setEdgeSource(container, source);
+                    setEdgeTarget(container, target);
+                }
+            } catch (IntrospectionException ex) {
+                Exceptions.printStackTrace(ex);
             }
+
         }
     }
 }

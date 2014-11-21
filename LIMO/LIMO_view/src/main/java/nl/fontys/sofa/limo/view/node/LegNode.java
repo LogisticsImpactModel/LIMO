@@ -10,8 +10,9 @@ import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 
 /**
+ * View representation of a Leg.
  *
- * @author d3vil
+ * @author Sebastiaan Heijmann
  */
 public class LegNode extends AbstractBeanNode {
 
