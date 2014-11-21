@@ -33,7 +33,7 @@ public final class EventWizardAction implements ActionListener {
 
     private Event eventUpdate = new Event();
     private boolean isUpdate = false;
-    final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
+    private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     @Override
     public void actionPerformed(ActionEvent e) {
