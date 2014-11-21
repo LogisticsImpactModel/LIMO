@@ -107,9 +107,24 @@ public class EventPropertyEditor extends PropertyEditorSupport {
         @Override
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                if (eventsTable.getSelectedRow() >= 0 && eventsTable.getSelectedRow() < eventsTableModel.getRowCount()) {
+                if (eventsTable.getSelectedRow() >= 0 && eventsTable.getSelectedRow() < eventsTable.getRowCount()) {
                     List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
-                    events.get(eventsTable.getSelectedRow()).setExecutionState((ExecutionState) executionStateCheckbox.getSelectedItem());
+                    Event oldEvent = events.get(eventsTable.getSelectedRow());
+                    Event newEvent = new Event();
+                    newEvent.setDependency(oldEvent.getDependency());
+                    newEvent.setDescription(oldEvent.getDescription());
+                    newEvent.setEvents(oldEvent.getEvents());
+                    newEvent.setExecutionState((ExecutionState) executionStateCheckbox.getSelectedItem());
+                    newEvent.setId(oldEvent.getId());
+                    newEvent.setLastUpdate(oldEvent.getLastUpdate());
+                    newEvent.setName(oldEvent.getName());
+                    newEvent.setParent(oldEvent.getParent());
+                    newEvent.setProbability(oldEvent.getProbability());
+                    newEvent.setProcedures(oldEvent.getProcedures());
+                    newEvent.setUniqueIdentifier(oldEvent.getUniqueIdentifier());
+                    events.remove(oldEvent);
+                    events.add(eventsTable.getSelectedRow(), newEvent);
+                    events = new ArrayList<>(events);
                     eventsTableModel.setEvents(events);
                     eventsTableModel.fireTableDataChanged();
                     setValue(new ArrayList<>(eventsTableModel.getEvents()));
