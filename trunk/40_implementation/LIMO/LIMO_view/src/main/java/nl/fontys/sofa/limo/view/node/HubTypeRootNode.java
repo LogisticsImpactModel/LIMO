@@ -48,19 +48,6 @@ public class HubTypeRootNode extends AbstractRootNode {
 
             @Override
             public void create() throws IOException {
-//                NameDescriptionDialogInputPanel inputPane = new NameDescriptionDialogInputPanel();
-//                DialogDescriptor dd = new DialogDescriptor(inputPane, "Hub Type");
-//                Object result = DialogDisplayer.getDefault().notify(dd);
-//
-//                String name = inputPane.getNameFieldValue();
-//                String description = inputPane.getDescriptionFieldValue();
-//
-//                if (!name.isEmpty() && !description.isEmpty()) {
-//                    HubType ht = new HubType();
-//                    ht.setName(name);
-//                    ht.setDescription(description);
-//                    service.insert(ht);
-//                }
                 HubTypeWizardAction wiz = new HubTypeWizardAction();
                 wiz.actionPerformed(null);
             }
