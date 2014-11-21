@@ -58,11 +58,11 @@ public class Event extends Component {
         this.executionState = executionState;
     }
 
-	@Override
+    @Override
     public boolean addEvent(Event event) {
         boolean canAdd = true;
         for (Event e : events) {//loop through events that are already in list
-            if (e.getId() == event.getId()) { //..to make sure that the event that is to be added is not already in there
+            if (e.getId().equals(event.getId())) { //..to make sure that the event that is to be added is not already in there
                 canAdd = false;
                 break;
             }
@@ -70,37 +70,6 @@ public class Event extends Component {
         if (canAdd) {
             return events.add(event); //if the event to be added was not found in the list w/ existing events, add it
         }
-		return false;
+        return false;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 59 * hash + Objects.hashCode(this.dependency);
-        hash = 59 * hash + Objects.hashCode(this.probability);
-        hash = 59 * hash + Objects.hashCode(this.executionState);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Event other = (Event) obj;
-        if (this.dependency != other.dependency) {
-            return false;
-        }
-        if (!Objects.equals(this.probability, other.probability)) {
-            return false;
-        }
-        if (this.executionState != other.executionState) {
-            return false;
-        }
-        return true;
-    }
-
 }
