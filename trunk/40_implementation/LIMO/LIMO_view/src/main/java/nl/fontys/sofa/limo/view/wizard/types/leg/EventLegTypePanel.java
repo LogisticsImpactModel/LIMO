@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.sofa.limo.view.wizard.leg.normal;
+package nl.fontys.sofa.limo.view.wizard.types.leg;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,12 +13,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.TableColumn;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 
-public final class EventsLegTypePanel extends EventsPanel {
+public final class EventLegTypePanel extends EventsPanel {
 
+    private LegType lt;
 
-    public EventsLegTypePanel() {
+    public EventLegTypePanel() {
         setLegView();
     }
 
@@ -42,6 +44,7 @@ public final class EventsLegTypePanel extends EventsPanel {
             public void actionPerformed(ActionEvent e) {
                 Event selected = service.findById(allEvents.get(eventsCheckbox.getSelectedIndex()).getId());
                 selected.setId(null);
+   //             selected.setParent(lt);
                 selected.setDependency(ExecutionState.INDEPENDENT);
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();

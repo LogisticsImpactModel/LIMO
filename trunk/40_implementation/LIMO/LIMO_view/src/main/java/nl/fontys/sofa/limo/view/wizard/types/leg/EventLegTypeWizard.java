@@ -3,22 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.sofa.limo.view.wizard.leg.normal;
+package nl.fontys.sofa.limo.view.wizard.types.leg;
 
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_EVENT;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
 public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
-    private EventsLegTypePanel component;
+    private EventLegTypePanel component;
 
     @Override
-    public EventsLegTypePanel getComponent() {
+    public EventLegTypePanel getComponent() {
         if (component == null) {
-            component = new EventsLegTypePanel();
+            component = new EventLegTypePanel();
         }
         return component;
     }
@@ -46,18 +46,15 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Leg leg = (Leg) wiz.getProperty("leg");
-        if (leg != null) {
-            getComponent().update(leg.getEvents());
-        } LegType htyp = (LegType) wiz.getProperty("legTypeCopy");
-            if (htyp != null) {
-                getComponent().update(htyp.getEvents());
-            }
+        LegType lt = (LegType) wiz.getProperty(TYPE_EVENT);
+        if (lt != null) {
+            getComponent().update(lt.getEvents());
+        }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("events", component.getEvents());
+        wiz.putProperty(TYPE_EVENT, component.getEvents());
     }
 
 }

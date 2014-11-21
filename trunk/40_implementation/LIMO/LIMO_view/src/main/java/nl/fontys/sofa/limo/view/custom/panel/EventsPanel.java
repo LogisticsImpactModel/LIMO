@@ -70,7 +70,7 @@ public abstract class EventsPanel extends JPanel {
         deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
     }
 
-    protected void update(List<Event> events) {
+    public void update(List<Event> events) {
         eventsTableModel.getEvents().clear();
         eventsTableModel.getEvents().addAll(events);
         eventsTableModel.fireTableDataChanged();
