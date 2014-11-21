@@ -7,7 +7,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import org.openide.util.Lookup;
@@ -82,7 +86,11 @@ public final class NewOrDuplicatedHubTypePanel extends JPanel {
         c.gridy = 2;
         add(cmbHubType, c);
         cmbHubType.setEnabled(false);
-
+        
+        if(ht.isEmpty()){
+            rbCopyFrom.setEnabled(false);
+            cmbHubType.setEditable(false);
+        }
     }
 
     public HubType getHubType() {
@@ -93,9 +101,9 @@ public final class NewOrDuplicatedHubTypePanel extends JPanel {
         }
     }
 
-    ButtonGroup buttonGroup1;
-    JRadioButton rbFromScratch;
-    JRadioButton rbCopyFrom;
-    JComboBox cmbHubType;
+    private ButtonGroup buttonGroup1;
+    private JRadioButton rbFromScratch;
+    private JRadioButton rbCopyFrom;
+    private JComboBox cmbHubType;
 
 }

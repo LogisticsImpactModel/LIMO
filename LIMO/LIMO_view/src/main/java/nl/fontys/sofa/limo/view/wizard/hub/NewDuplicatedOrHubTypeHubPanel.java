@@ -7,7 +7,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
@@ -120,6 +124,16 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
         c.gridy = 4;
         add(cmbHubType, c);
         cmbHubType.setEnabled(false);
+        
+        if(hubNameList.isEmpty()){
+            cmbHub.setEditable(false);
+            rbCopyFrom.setEnabled(false);
+        }
+        
+        if(hubTypeList.isEmpty()){
+            cmbHubType.setEditable(false);
+            rbFromHubType.setEnabled(false);
+        }
 
     }
 
