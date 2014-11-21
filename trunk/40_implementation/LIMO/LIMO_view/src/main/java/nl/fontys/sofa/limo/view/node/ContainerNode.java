@@ -10,7 +10,6 @@ import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import org.netbeans.api.visual.graph.GraphScene;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.nodes.AbstractNode;
-import org.netbeans.api.visual.widget.general.IconNodeWidget;
 
 /**
  * Container for nodes used in a GraphScene.
@@ -40,7 +39,7 @@ public class ContainerNode extends AbstractNode implements WidgetableNode {
         } else if (node.getEntityClass() == Leg.class) {
             return node.getLookup().lookup(Leg.class).getIcon().getImage();
         } else {
-            return IconUtil.getIcon(node.getEntityClass(), BeanInfo.ICON_COLOR_32x32);
+            return IconUtil.getIcon(node.getEntityClass(), BeanInfo.ICON_COLOR_16x16);
         }
     }
 
@@ -64,13 +63,11 @@ public class ContainerNode extends AbstractNode implements WidgetableNode {
     }
 
     @Override
-    public BasicWidget getWidget(GraphScene scene) {
+    public Widget getWidget(GraphScene scene) {
         WidgetableNode beanNode = (WidgetableNode) node;
-        BasicWidget bw = (BasicWidget) beanNode.getWidget(scene);
-        bw.setImage(getImage());
-        bw.setLabel(node.getName());
-        bw.setContainer(this);
-        return bw;
+        BasicWidget widget = (BasicWidget) beanNode.getWidget(scene);
+        widget.setContainer(this);
+        return (Widget) widget;
     }
 
     @Override

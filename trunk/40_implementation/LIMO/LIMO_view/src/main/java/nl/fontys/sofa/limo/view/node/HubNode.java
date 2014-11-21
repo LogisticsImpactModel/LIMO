@@ -48,8 +48,11 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
     }
 
     @Override
-    public BasicWidget getWidget(GraphScene scene) {
-        return new HubWidget(scene);
+    public Widget getWidget(GraphScene scene) {
+        HubWidget hw = new HubWidget(scene);
+        hw.setImage(bean.getIcon().getImage());
+        hw.setLabel(bean.getName());
+        return hw;
     }
 
     @Override

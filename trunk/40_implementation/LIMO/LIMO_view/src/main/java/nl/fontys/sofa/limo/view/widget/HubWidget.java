@@ -5,12 +5,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
+import org.netbeans.api.visual.widget.general.IconNodeWidget;
 
 /**
  * Widget which holds a ContainerNode containing a HubNode. This Widget can be
@@ -18,7 +20,7 @@ import org.netbeans.api.visual.widget.Widget;
  *
  * @author Sebastiaan Heijmann
  */
-public class HubWidget extends BasicWidget {
+public class HubWidget extends IconNodeWidget implements BasicWidget {
 
     private ContainerNode container;
 
@@ -34,20 +36,20 @@ public class HubWidget extends BasicWidget {
 
     @Override
     public void addActions(ChainGraphScene scene) {
-        getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
         getActions().addAction(scene.createSelectAction());
         getActions().addAction(scene.createObjectHoverAction());
-//        getActions().addAction(scene.getConnectAction());
+        getActions().addAction(scene.getConnectAction());
         getActions().addAction(scene.getMoveAlignAction());
+        getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
     }
 
     @Override
-    public boolean drop(ChainGraphScene scene, Widget widget, Point point) {
+    public boolean drop(ChainGraphScene scene, ChainBuilder chainBuilder, Widget widget, Point point) {
         this.setPreferredLocation(point);
         scene.getMainLayer().addChild(this);
+        scene.validate();
+        chainBuilder.addHub(getHub());
         scene.repaintScene();
-//        Hub hub = container.getBeanNode().getLookup().lookup(Hub.class);
-//        scene.addObject(hub, this);
         return true;
     }
 
