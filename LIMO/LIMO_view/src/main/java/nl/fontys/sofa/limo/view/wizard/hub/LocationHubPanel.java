@@ -179,7 +179,7 @@ public final class LocationHubPanel extends JPanel {
         cmbCountry.setEnabled(false);
 
         tfStreet.setEnabled(false);
-        tfNumber.setEditable(false);
+        tfNumber.setEnabled(false);
         tfCity.setEnabled(false);
         tfZip.setEnabled(false);
         tfState.setEnabled(false);
