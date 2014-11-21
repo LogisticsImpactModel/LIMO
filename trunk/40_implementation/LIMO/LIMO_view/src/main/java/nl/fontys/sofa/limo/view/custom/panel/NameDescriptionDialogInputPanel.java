@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.custom.panel;
 
+import java.util.ResourceBundle;
 import org.netbeans.validation.api.Problem;
 import org.netbeans.validation.api.builtin.stringvalidation.StringValidators;
 import org.netbeans.validation.api.ui.ValidationUI;
@@ -55,7 +56,6 @@ public class NameDescriptionDialogInputPanel extends javax.swing.JPanel
         descriptionLB.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         org.openide.awt.Mnemonics.setLocalizedText(descriptionLB, org.openide.util.NbBundle.getMessage(NameDescriptionDialogInputPanel.class, "NameDescriptionDialogInputPanel.descriptionLB.text")); // NOI18N
 
-        nameTF.setText(org.openide.util.NbBundle.getMessage(NameDescriptionDialogInputPanel.class, "NameDescriptionDialogInputPane.Name.text")); // NOI18N
         nameTF.setName("Name"); // NOI18N
 
         descriptionTF.setColumns(20);
@@ -114,8 +114,9 @@ public class NameDescriptionDialogInputPanel extends javax.swing.JPanel
     }
 
     private void customInit() {
-        nameTF.setName("Name");
-        descriptionTF.setName("Description");
+        ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/custom/panel/Bundle");
+        nameTF.setName(bundle.getString("NAME"));
+        descriptionTF.setName(bundle.getString("DESCRIPTION"));
         group = SwingValidationGroup.create(this);
         group.add(nameTF, StringValidators.REQUIRE_NON_EMPTY_STRING);
         group.add(descriptionTF, StringValidators.REQUIRE_NON_EMPTY_STRING);
