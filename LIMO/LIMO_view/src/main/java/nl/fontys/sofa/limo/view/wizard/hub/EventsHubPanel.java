@@ -60,10 +60,4 @@ public final class EventsHubPanel extends EventsPanel {
         }
         eventsCheckbox.setModel(new DefaultComboBoxModel(events.toArray()));
     }
-
-    public void update(Hub hub) {
-        this.hub = hub;
-        update(hub.getEvents());
-    }
-
 }

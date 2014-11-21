@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction;
@@ -33,6 +34,7 @@ public final class LegTypeWizardAction extends TypeWizardAction {
             panels.add(new NewOrDuplicatedLegTypeWizard());
         }
         panels.add(new NameDescriptionIconLegTypeWizard());
+        panels.add(new EventLegTypeWizard());
         panels.add(new ProceduresLegTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
@@ -54,6 +56,7 @@ public final class LegTypeWizardAction extends TypeWizardAction {
             wiz.putProperty(TYPE_NAME, legType.getName());
             wiz.putProperty(TYPE_DESCRIPTION, legType.getDescription());
             wiz.putProperty(TYPE_ICON, legType.getIcon());
+            wiz.putProperty(TYPE_EVENT, legType.getIcon());
             wiz.putProperty(TYPE_PROCEDURES, legType.getProcedures());
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
@@ -62,6 +65,7 @@ public final class LegTypeWizardAction extends TypeWizardAction {
                 legType.setDescription((String) wiz.getProperty(TYPE_DESCRIPTION));
                 legType.setIcon((Icon) wiz.getProperty(TYPE_ICON));
                 legType.setName((String) wiz.getProperty(TYPE_NAME));
+                legType.setEvents((List<Event>) wiz.getProperty(TYPE_EVENT));
                 legType.setProcedures((List<Procedure>) wiz.getProperty(TYPE_PROCEDURES));
                 if (isUpdate) {
                     service.update(legType);

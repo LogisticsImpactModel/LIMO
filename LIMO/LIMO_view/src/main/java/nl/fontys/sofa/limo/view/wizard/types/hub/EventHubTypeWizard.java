@@ -1,20 +1,24 @@
-package nl.fontys.sofa.limo.view.wizard.hub;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package nl.fontys.sofa.limo.view.wizard.types.hub;
 
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_TYPE;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_EVENT;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
-public class EventsHubWizard implements WizardDescriptor.Panel<WizardDescriptor> {
+public class EventHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
-    private EventsHubPanel component;
+    private EventHubTypePanel component;
 
     @Override
-    public EventsHubPanel getComponent() {
+    public EventHubTypePanel getComponent() {
         if (component == null) {
-            component = new EventsHubPanel();
+            component = new EventHubTypePanel();
         }
         return component;
     }
@@ -42,20 +46,15 @@ public class EventsHubWizard implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Hub hub = (Hub) wiz.getProperty(HubWizardAction.HUB_COPY);
-        if (hub != null) {
-            getComponent().update(hub.getEvents());
-        }else {
-            HubType htyp = (HubType) wiz.getProperty(HUB_TYPE);
-            if (htyp != null) {
-                getComponent().update(htyp.getEvents());
-            }
+        HubType ht = (HubType) wiz.getProperty(TYPE_EVENT);
+        if (ht != null) {
+            getComponent().update(ht);
         }
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(HubWizardAction.HUB_EVENTS, component.getEvents());
+        wiz.putProperty(TYPE_EVENT, component.getEvents());
     }
 
 }

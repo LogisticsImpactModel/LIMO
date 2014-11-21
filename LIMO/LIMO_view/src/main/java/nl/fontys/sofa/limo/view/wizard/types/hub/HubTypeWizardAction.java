@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction;
@@ -33,6 +34,7 @@ public final class HubTypeWizardAction extends TypeWizardAction {
             panels.add(new NewOrDuplicatedHubTypeWizard());
         }
         panels.add(new NameDescriptionIconHubTypeWizard());
+        panels.add(new EventHubTypeWizard());
         panels.add(new ProceduresHubTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
@@ -54,6 +56,7 @@ public final class HubTypeWizardAction extends TypeWizardAction {
             wiz.putProperty(TYPE_NAME, hubType.getName());
             wiz.putProperty(TYPE_DESCRIPTION, hubType.getDescription());
             wiz.putProperty(TYPE_ICON, hubType.getIcon());
+            wiz.putProperty(TYPE_EVENT, hubType.getEvents());
             wiz.putProperty(TYPE_PROCEDURES, hubType.getProcedures());
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
@@ -62,6 +65,7 @@ public final class HubTypeWizardAction extends TypeWizardAction {
                 hubType.setDescription((String) wiz.getProperty(TYPE_DESCRIPTION));
                 hubType.setIcon((Icon) wiz.getProperty(TYPE_ICON));
                 hubType.setName((String) wiz.getProperty(TYPE_NAME));
+                hubType.setEvents((List<Event>) wiz.getProperty(TYPE_EVENT));
                 hubType.setProcedures((List<Procedure>) wiz.getProperty(TYPE_PROCEDURES));
                 if (isUpdate) {
                     service.update(hubType);
