@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.domain.component.event;
 
-import java.util.Objects;
 import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
@@ -62,7 +61,7 @@ public class Event extends Component {
     public boolean addEvent(Event event) {
         boolean canAdd = true;
         for (Event e : events) {//loop through events that are already in list
-            if (e.getId().equals(event.getId())) { //..to make sure that the event that is to be added is not already in there
+            if (e.getId() != null && event.getId() != null && e.getId().equals(event.getId())) { //..to make sure that the event that is to be added is not already in there
                 canAdd = false;
                 break;
             }
