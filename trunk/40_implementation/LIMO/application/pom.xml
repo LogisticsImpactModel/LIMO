@@ -26,12 +26,15 @@
             <version>${netbeans.version}</version>
             <type>pom</type>
         </dependency>
-        <!-- NbModuleSuite functional in RELEASE70 or later: -->
         <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-nbjunit</artifactId>
-            <version>${netbeans.version}</version>
-            <scope>test</scope> <!-- beyond platform cluster, this often needs to be dropped down to compile/runtime, some other modules in IDE clusters depend on it -->
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LIMO-branding</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LIMO-domain</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
@@ -41,59 +44,18 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-modules-apisupport-harness</artifactId>
-            <version>RELEASE80</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-jellytools</artifactId>
-            <version>RELEASE67</version>
-            <scope>test</scope>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-jellytools-ide</artifactId>
-            <version>RELEASE80</version>
-            <scope>test</scope>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO_view</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO-branding</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO_DependecyWrapper</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>nl.fontys.limo</groupId>
             <artifactId>LIMO_Service</artifactId>
-            <version>${project.version}</version>
+            <version>0.1-ALPHA</version>
+            <scope>test</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO_API</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>nl.fontys.limo</groupId>
             <artifactId>LIMO_OrientDB</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO-domain</artifactId>
-            <version>${project.version}</version>
+            <version>0.1-ALPHA</version>
+            <scope>test</scope>
+            <type>jar</type>
         </dependency>
     </dependencies>
 
@@ -104,7 +66,6 @@
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
                     <installerOsSolaris>false</installerOsSolaris>
-                    <installerOsMacosx>false</installerOsMacosx>
                     <installerOsLinux>false</installerOsLinux>
                     <userSettings>
                         <nbi.icon.file>${basedir}/src/main/resources/icon.gif</nbi.icon.file>
