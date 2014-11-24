@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><module codename="nl.fontys.limo.LIMO_simulation">
-    <module_version install_time="1416577417190" last="true" origin="installer" specification_version="0.1">
-        <file crc="1466135431" name="config/Modules/nl-fontys-limo-LIMO_simulation.xml"/>
-        <file crc="591198073" name="modules/nl-fontys-limo-LIMO_simulation.jar"/>
-    </module_version>
-</module>
