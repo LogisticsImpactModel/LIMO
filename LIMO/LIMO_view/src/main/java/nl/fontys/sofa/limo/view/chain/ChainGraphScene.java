@@ -20,6 +20,8 @@ public abstract class ChainGraphScene extends GraphScene<ContainerNode, Containe
 
     public abstract LayerWidget getConnectionLayer();
 
+    public abstract WidgetAction getSelectAction();
+
     public abstract WidgetAction getConnectAction();
 
     public abstract WidgetAction getMoveAlignAction();

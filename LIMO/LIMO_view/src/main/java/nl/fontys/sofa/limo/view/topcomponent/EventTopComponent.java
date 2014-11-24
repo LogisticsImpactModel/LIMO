@@ -17,8 +17,8 @@ import org.openide.explorer.view.OutlineView;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
-import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
+import org.openide.windows.TopComponent;
 
 @ConvertAsProperties(
         dtd = "-//nl.fontys.sofa.limo.view.topcomponent//Event//EN",
@@ -26,7 +26,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Description(
         preferredID = "EventTopComponent",
-        //iconBase="SET/PATH/TO/ICON/HERE", 
+        //iconBase="SET/PATH/TO/ICON/HERE",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
@@ -104,7 +104,7 @@ public final class EventTopComponent extends TopComponent implements ExplorerMan
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-	@Override
+    @Override
     public void componentOpened() {
         // TODO add custom code on component opening
     }
