@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><module codename="nl.fontys.limo.LIMO_view">
-    <module_version install_time="1416855201118" last="true" origin="installer" specification_version="0.1">
-        <file crc="1723230243" name="config/Modules/nl-fontys-limo-LIMO_view.xml"/>
-        <file crc="719726765" name="modules/ext/nl.fontys.limo.LIMO_view/org-netbeans-external/ValidationAPI.jar"/>
-        <file crc="2182456304" name="modules/nl-fontys-limo-LIMO_view.jar"/>
-        <file crc="4048800175" name="update_tracking/nl-fontys-limo-LIMO_view.xml"/>
-    </module_version>
-</module>
