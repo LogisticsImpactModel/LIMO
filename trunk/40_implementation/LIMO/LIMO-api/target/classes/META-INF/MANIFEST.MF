@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Localizing-Bundle: nl/fontys/limo/limo_api/Bundle.prope
+ rties
+OpenIDE-Module-Specification-Version: 0.1
+OpenIDE-Module-Implementation-Version: 0.1-ALPHA
+OpenIDE-Module-Build-Version: 201411241853
+OpenIDE-Module: nl.fontys.limo.LIMO_API
+OpenIDE-Module-Public-Packages: nl.fontys.sofa.limo.api.**, nl.fontys.
+ sofa.limo.api.service.distribution.*, nl.fontys.sofa.limo.api.service
+ .provider.*
+OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
+OpenIDE-Module-Display-Category: nl.fontys.limo
+OpenIDE-Module-Name: LIMO_API
+OpenIDE-Module-Short-Description: <undefined>
+OpenIDE-Module-Long-Description: <undefined>
+OpenIDE-Module-Module-Dependencies: org.netbeans.api.annotations.commo
+ n/1 > 1.23.1, org.openide.util.lookup > 8.24.1, nl.fontys.limo.LIMO.d
+ omain > 0.1
+

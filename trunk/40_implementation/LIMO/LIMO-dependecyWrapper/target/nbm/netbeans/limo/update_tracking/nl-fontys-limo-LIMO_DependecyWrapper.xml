@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><module codename="nl.fontys.limo.LIMO_DependecyWrapper">
+    <module_version install_time="1416855194603" last="true" origin="installer" specification_version="0.1">
+        <file crc="3935513621" name="config/Modules/nl-fontys-limo-LIMO_DependecyWrapper.xml"/>
+        <file crc="40744955" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/com-googlecode-concurrentlinkedhashmap/concurrentlinkedhashmap-lru.jar"/>
+        <file crc="1728417919" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/com-jgoodies/jgoodies-common.jar"/>
+        <file crc="1541622634" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/com-jgoodies/jgoodies-forms.jar"/>
+        <file crc="882584617" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/com-mxgraph/jgraphx.jar"/>
+        <file crc="379124402" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/com-orientechnologies/orient-commons.jar"/>
+        <file crc="1356681835" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/com-orientechnologies/orientdb-core.jar"/>
+        <file crc="3027805588" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/com-orientechnologies/orientdb-nativeos.jar"/>
+        <file crc="1048282638" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/com-orientechnologies/orientdb-object.jar"/>
+        <file crc="2850193875" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/com-sksamuel/gaia.jar"/>
+        <file crc="937643154" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/commons-io/commons-io.jar"/>
+        <file crc="756418041" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/commons-lang/commons-lang.jar"/>
+        <file crc="648025248" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/log4j/log4j.jar"/>
+        <file crc="2905235147" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/net-java-dev-jna/jna-platform.jar"/>
+        <file crc="292195999" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/net-java-dev-jna/jna.jar"/>
+        <file crc="1233137336" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/org-apache-commons/commons-math3.jar"/>
+        <file crc="638760142" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/org-hibernate-javax-persistence/hibernate-jpa-2.0-api.jar"/>
+        <file crc="1495595153" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/org-javassist/javassist.jar"/>
+        <file crc="1888669852" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/org-slf4j/slf4j-api.jar"/>
+        <file crc="250649098" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/org-slf4j/slf4j-log4j12.jar"/>
+        <file crc="2620414030" name="modules/ext/nl.fontys.limo.LIMO_DependecyWrapper/org-xerial-snappy/snappy-java.jar"/>
+        <file crc="3612955810" name="modules/nl-fontys-limo-LIMO_DependecyWrapper.jar"/>
+        <file crc="2409035322" name="update_tracking/nl-fontys-limo-LIMO_DependecyWrapper.xml"/>
+    </module_version>
+</module>
