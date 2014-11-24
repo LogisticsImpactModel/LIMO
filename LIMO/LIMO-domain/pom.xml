@@ -6,7 +6,6 @@
         <artifactId>LIMO-parent</artifactId>
         <version>0.1-ALPHA</version>
     </parent>
-    <name>LIMO-domain</name>
     <artifactId>LIMO-domain</artifactId>
     <packaging>nbm</packaging>
     <build>
@@ -25,6 +24,11 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.7.0.201403182114</version>
+                <configuration>
+                    <excludes>		
+
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -52,18 +56,18 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
+    <name>LIMO-domain</name>
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LIMO_DependecyWrapper</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO_DependecyWrapper</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
