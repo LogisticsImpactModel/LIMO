@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><module codename="nl.fontys.limo.LIMO_API">
-    <module_version install_time="1416855196973" last="true" origin="installer" specification_version="0.1">
-        <file crc="737066298" name="config/Modules/nl-fontys-limo-LIMO_API.xml"/>
-        <file crc="1960774024" name="modules/nl-fontys-limo-LIMO_API.jar"/>
-        <file crc="2508721594" name="update_tracking/nl-fontys-limo-LIMO_API.xml"/>
-    </module_version>
-</module>
