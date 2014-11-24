@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Clean and Build with Dependencies and Stacktrace</actionName>
+            <displayName>Clean and Build with Dependencies and Stacktrace</displayName>
+            <preAction>build-with-dependencies</preAction>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>-e</goal>
+                <goal>-X</goal>
+            </goals>
+        </action>
+    </actions>
