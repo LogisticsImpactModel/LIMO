@@ -57,6 +57,16 @@
             <scope>test</scope>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LIMO-view</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LIMO_OrientDB</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
