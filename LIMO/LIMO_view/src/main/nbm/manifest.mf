@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-OpenIDE-Module-Layer: nl/fontys/sofa/limo/view/layer.xml
-OpenIDE-Module-Localizing-Bundle: nl/fontys/sofa/limo/view/Bundle.properties
-OpenIDE-Module-Requires: org.openide.windows.WindowManager
-
