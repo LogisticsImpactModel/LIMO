@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><module codename="nl.fontys.limo.LIMO_Service">
+    <module_version install_time="1416855201900" last="true" origin="installer" specification_version="0.1">
+        <file crc="1793348693" name="config/Modules/nl-fontys-limo-LIMO_Service.xml"/>
+        <file crc="28241745" name="modules/ext/nl.fontys.limo.LIMO_Service/commons-collections/commons-collections.jar"/>
+        <file crc="2229276983" name="modules/nl-fontys-limo-LIMO_Service.jar"/>
+        <file crc="3145136929" name="update_tracking/nl-fontys-limo-LIMO_Service.xml"/>
+    </module_version>
+</module>

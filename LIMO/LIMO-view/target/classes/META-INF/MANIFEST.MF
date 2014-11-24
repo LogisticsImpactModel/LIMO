@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Layer: nl/fontys/sofa/limo/view/layer.xml
+OpenIDE-Module-Localizing-Bundle: nl/fontys/sofa/limo/view/Bundle.prop
+ erties
+OpenIDE-Module-Requires: org.openide.windows.WindowManager
+OpenIDE-Module-Specification-Version: 0.1
+OpenIDE-Module-Implementation-Version: 0.1-ALPHA
+OpenIDE-Module-Build-Version: 201411241906
+OpenIDE-Module: nl.fontys.limo.LIMO.view
+OpenIDE-Module-Public-Packages: -
+OpenIDE-Module-Display-Category: nl.fontys.limo
+OpenIDE-Module-Name: LIMO-view
+OpenIDE-Module-Short-Description: <undefined>
+OpenIDE-Module-Long-Description: <undefined>
+X-Class-Path: ext/nl.fontys.limo.LIMO-view/org-netbeans-external/Valid
+ ationAPI.jar
+Maven-Class-Path: org.netbeans.external:ValidationAPI:RELEASE80
+OpenIDE-Module-Module-Dependencies: org.netbeans.api.annotations.commo
+ n/1 > 1.23.1, org.openide.windows > 6.70.1, org.openide.awt > 7.61.1,
+  org.netbeans.modules.settings/1 > 1.44.1, org.openide.dialogs > 7.36
+ .1, nl.fontys.limo.LIMO_API > 0.1, org.openide.nodes > 7.38.1, org.op
+ enide.explorer > 6.56.1, org.netbeans.swing.outline > 1.29.1, org.ope
+ nide.actions > 6.34.1, nl.fontys.limo.LIMO.domain > 0.1, nl.fontys.li
+ mo.LIMO_DependecyWrapper > 0.1, nl.fontys.limo.LIMO_OrientDB > 0.1, o
+ rg.netbeans.api.visual > 2.42.1, org.netbeans.spi.palette/1 > 1.41.1,
+  org.openide.io > 1.44.1, org.openide.util.lookup > 8.24.1, org.openi
+ de.util > 8.37.1
+

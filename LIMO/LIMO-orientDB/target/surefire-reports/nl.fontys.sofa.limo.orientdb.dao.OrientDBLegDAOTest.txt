@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: nl.fontys.sofa.limo.orientdb.dao.OrientDBLegDAOTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 sec - in nl.fontys.sofa.limo.orientdb.dao.OrientDBLegDAOTest

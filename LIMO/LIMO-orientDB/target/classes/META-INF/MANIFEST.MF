@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Install: nl/fontys/sofa/limo/orientdb/Installer.class
+OpenIDE-Module-Localizing-Bundle: nl/fontys/limo/limo_orientdb/Bundle.
+ properties
+OpenIDE-Module-Specification-Version: 0.1
+OpenIDE-Module-Implementation-Version: 0.1-ALPHA
+OpenIDE-Module-Build-Version: 201411241853
+OpenIDE-Module: nl.fontys.limo.LIMO_OrientDB
+OpenIDE-Module-Public-Packages: nl.fontys.sofa.limo.orientdb.**
+OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
+OpenIDE-Module-Display-Category: nl.fontys.limo
+OpenIDE-Module-Name: LIMO_OrientDB
+OpenIDE-Module-Short-Description: <undefined>
+OpenIDE-Module-Long-Description: <undefined>
+OpenIDE-Module-Module-Dependencies: org.openide.util.lookup > 8.24.1, 
+ nl.fontys.limo.LIMO_API > 0.1, nl.fontys.limo.LIMO_DependecyWrapper >
+  0.1, nl.fontys.limo.LIMO.domain > 0.1, org.openide.modules > 7.42.1,
+  org.openide.util > 8.37.1
+

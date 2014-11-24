@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><module codename="nl.fontys.limo.LIMO_OrientDB">
+    <module_version install_time="1416855198456" last="true" origin="installer" specification_version="0.1">
+        <file crc="4021438166" name="config/Modules/nl-fontys-limo-LIMO_OrientDB.xml"/>
+        <file crc="3791163335" name="modules/nl-fontys-limo-LIMO_OrientDB.jar"/>
+        <file crc="1395517412" name="update_tracking/nl-fontys-limo-LIMO_OrientDB.xml"/>
+    </module_version>
+</module>

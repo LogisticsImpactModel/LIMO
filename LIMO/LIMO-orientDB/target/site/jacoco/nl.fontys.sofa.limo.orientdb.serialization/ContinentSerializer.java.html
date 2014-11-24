@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ContinentSerializer.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">LIMO_OrientDB</a> &gt; <a href="index.source.html" class="el_package">nl.fontys.sofa.limo.orientdb.serialization</a> &gt; <span class="el_source">ContinentSerializer.java</span></div><h1>ContinentSerializer.java</h1><pre class="source lang-java linenums">package nl.fontys.sofa.limo.orientdb.serialization;
+
+import com.orientechnologies.orient.core.serialization.serializer.object.OObjectSerializer;
+import com.sksamuel.gaia.Continent;
+
+/**
+ * Serializer for continents.
+ *
+ * @author Dominik Kaisers &lt;d.kaisers@student.fontys.nl&gt;
+ */
+<span class="fc" id="L11">public class ContinentSerializer implements OObjectSerializer&lt;Continent, String&gt;{</span>
+
+    @Override
+    public Object serializeFieldValue(Class&lt;?&gt; iClass, Continent iFieldValue) {
+<span class="fc" id="L15">        return iFieldValue.name();</span>
+    }
+
+    @Override
+    public Object unserializeFieldValue(Class&lt;?&gt; iClass, String iFieldValue) {
+<span class="fc" id="L20">        return Continent.valueOf(iFieldValue);</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
