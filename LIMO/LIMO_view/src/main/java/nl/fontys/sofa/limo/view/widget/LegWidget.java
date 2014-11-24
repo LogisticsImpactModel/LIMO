@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.widget;
 
+import java.awt.BasicStroke;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.Map;
@@ -34,6 +35,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         this.container = container;
         setChildLegWidgets();
         setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
+        setStroke(new BasicStroke(3.0f));
         setEndPointShape(PointShape.SQUARE_FILLED_BIG);
     }
 
@@ -82,7 +84,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
-                    scene.removeNodeWithEdges(container);
+                    scene.removeEdge(container);
                 }
             });
             return popup;

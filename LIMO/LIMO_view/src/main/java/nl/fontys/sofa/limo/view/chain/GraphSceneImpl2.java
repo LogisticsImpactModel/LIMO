@@ -215,17 +215,19 @@ public class GraphSceneImpl2 extends ChainGraphScene {
         public void createConnection(Widget sourceWidget, Widget targetWidget) {
             SelectLegTypePanel inputPane = new SelectLegTypePanel();
             Leg leg = inputPane.getLeg();
-            try {
-                LegNode legNode = new LegNode(leg);
-                ContainerNode container = new ContainerNode(legNode);
+            if (leg != null) {
+                try {
+                    LegNode legNode = new LegNode(leg);
+                    ContainerNode container = new ContainerNode(legNode);
 
-                Widget connectionWidget = addEdge(container);
-                if (connectionWidget != null) {
-                    setEdgeSource(container, source);
-                    setEdgeTarget(container, target);
+                    Widget connectionWidget = addEdge(container);
+                    if (connectionWidget != null) {
+                        setEdgeSource(container, source);
+                        setEdgeTarget(container, target);
+                    }
+                } catch (IntrospectionException ex) {
+                    Exceptions.printStackTrace(ex);
                 }
-            } catch (IntrospectionException ex) {
-                Exceptions.printStackTrace(ex);
             }
 
         }
