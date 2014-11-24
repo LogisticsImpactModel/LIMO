@@ -1,20 +1,20 @@
 package nl.fontys.sofa.limo.test.mock.service;
 
 import java.lang.reflect.Field;
-import nl.fontys.sofa.limo.api.dao.EventDAO;
+import nl.fontys.sofa.limo.api.dao.HubDAO;
 import nl.fontys.sofa.limo.api.exception.DAONotFoundException;
-import nl.fontys.sofa.limo.api.service.provider.EventService;
-import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.api.service.provider.HubService;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
 import nl.fontys.sofa.limo.service.provider.AbstractService;
 import org.openide.util.Exceptions;
 import org.openide.util.lookup.ServiceProvider;
 
-@ServiceProvider(service = EventService.class)
-public class EventMockService extends AbstractService<Event> implements EventService {
+@ServiceProvider(service = HubService.class)
+public class HubMockService extends AbstractService<Hub> implements HubService {
 
-    public EventMockService() throws DAONotFoundException {
-        super(EventDAO.class);
+    public HubMockService() throws DAONotFoundException {
+        super(HubDAO.class);
         try {
             Field databaseURLField = OrientDBConnector.class.getDeclaredField("databaseURL");
             databaseURLField.setAccessible(true);
