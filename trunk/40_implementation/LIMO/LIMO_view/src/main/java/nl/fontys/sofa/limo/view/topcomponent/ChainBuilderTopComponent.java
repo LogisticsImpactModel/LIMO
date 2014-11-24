@@ -1,19 +1,26 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyVetoException;
 import javax.swing.JScrollPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.GraphSceneImpl2;
 import nl.fontys.sofa.limo.view.factory.ChainPaletteFactory;
+import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.explorer.ExplorerManager;
+import org.openide.explorer.ExplorerUtils;
+import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
+import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.lookup.Lookups;
+import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
 
 /**
@@ -25,7 +32,7 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Description(
         preferredID = "ChainBuilderTopComponent",
-        //iconBase="SET/PATH/TO/ICON/HERE", 
+        //iconBase="SET/PATH/TO/ICON/HERE",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
@@ -39,7 +46,10 @@ import org.openide.windows.TopComponent;
     "CTL_ChainBuilderTopComponent=ChainBuilder Window",
     "HINT_ChainBuilderTopComponent=Build a chain"
 })
-public final class ChainBuilderTopComponent extends TopComponent {
+public final class ChainBuilderTopComponent extends TopComponent implements
+        ExplorerManager.Provider {
+
+    private ExplorerManager em = new ExplorerManager();
 
     public ChainBuilderTopComponent() {
         initComponents();
@@ -49,7 +59,10 @@ public final class ChainBuilderTopComponent extends TopComponent {
         setToolTipText(Bundle.HINT_ChainBuilderTopComponent());
 
         try {
-            associateLookup(Lookups.singleton(ChainPaletteFactory.createPalette()));
+            Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
+            Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
+            ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup);
+            associateLookup(pl);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
             NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
@@ -63,11 +76,26 @@ public final class ChainBuilderTopComponent extends TopComponent {
         setLayout(new BorderLayout());
         SupplyChain chain = new SupplyChain();
         ChainGraphScene scene;
-        scene = new GraphSceneImpl2();
+        scene = new GraphSceneImpl2(this);
         JScrollPane shapePane = new JScrollPane();
         shapePane.setViewportView(scene.createView());
         add(shapePane, BorderLayout.CENTER);
         add(scene.createSatelliteView(), BorderLayout.WEST);
+
+    }
+
+    @Override
+    public ExplorerManager getExplorerManager() {
+        return em;
+    }
+
+    public void setRootConttext(AbstractBeanNode node) {
+        em.setRootContext(node);
+        try {
+            em.setSelectedNodes(new Node[]{node});
+        } catch (PropertyVetoException ex) {
+            Exceptions.printStackTrace(ex);
+        }
     }
 
     /**
@@ -92,7 +120,7 @@ public final class ChainBuilderTopComponent extends TopComponent {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-	@Override
+    @Override
     public void componentOpened() {
         // TODO add custom code on component opening
     }

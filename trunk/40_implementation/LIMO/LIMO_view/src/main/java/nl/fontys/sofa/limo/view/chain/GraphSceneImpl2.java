@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.datatransfer.Transferable;
 import java.beans.IntrospectionException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
@@ -11,6 +12,7 @@ import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
 import nl.fontys.sofa.limo.view.node.LegNode;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
+import nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent;
 import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
@@ -18,6 +20,7 @@ import org.netbeans.api.visual.action.AcceptProvider;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectProvider;
 import org.netbeans.api.visual.action.ConnectorState;
+import org.netbeans.api.visual.action.SelectProvider;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.anchor.AnchorFactory;
 import org.netbeans.api.visual.widget.ConnectionWidget;
@@ -35,6 +38,7 @@ import org.openide.util.Exceptions;
  */
 public class GraphSceneImpl2 extends ChainGraphScene {
 
+    private ChainBuilderTopComponent parent;
     private final ChainBuilder chainBuilder;
     private List<Widget> widgets;
 
@@ -47,10 +51,12 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     private final WidgetAction zoomAction;
     private final WidgetAction panAction;
     private final WidgetAction acceptAction;
+    private final WidgetAction selectAction;
     private final WidgetAction connectAction;
     private final WidgetAction reconnectAction;
 
-    public GraphSceneImpl2() {
+    public GraphSceneImpl2(ChainBuilderTopComponent parent) {
+        this.parent = parent;
         chainBuilder = new ChainbuilderImpl();
         widgets = new ArrayList<>();
 
@@ -69,6 +75,7 @@ public class GraphSceneImpl2 extends ChainGraphScene {
         zoomAction = ActionFactory.createZoomAction();
         panAction = ActionFactory.createPanAction();
         acceptAction = ActionFactory.createAcceptAction(new SceneAcceptProvider(this));
+        selectAction = ActionFactory.createSelectAction(new SceneSelectProvider());
         connectAction = ActionFactory.createExtendedConnectAction(interactionLayer, new SceneConnectProvider());
         reconnectAction = null;
 
@@ -90,6 +97,11 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     @Override
     public LayerWidget getConnectionLayer() {
         return connectionLayer;
+    }
+
+    @Override
+    public WidgetAction getSelectAction() {
+        return selectAction;
     }
 
     @Override
@@ -174,6 +186,37 @@ public class GraphSceneImpl2 extends ChainGraphScene {
                 widgets.add((Widget) w);
             }
         }
+    }
+
+    private class SceneSelectProvider implements SelectProvider {
+
+        @Override
+        public boolean isAimingAllowed(Widget widget, Point localLocation, boolean invertSelection) {
+            return false;
+        }
+
+        @Override
+        public boolean isSelectionAllowed(Widget widget, Point localLocation, boolean invertSelection) {
+            return findObject(widget) != null;
+        }
+
+        @Override
+        public void select(Widget widget, Point localLocation, boolean invertSelection) {
+            Object object = findObject(widget);
+            ContainerNode container = (ContainerNode) object;
+            parent.setRootConttext(container.getBeanNode());
+
+            setFocusedObject(object);
+            if (object != null) {
+                if (!invertSelection && getSelectedObjects().contains(object)) {
+                    return;
+                }
+                userSelectionSuggested(Collections.singleton(object), invertSelection);
+            } else {
+                userSelectionSuggested(Collections.emptySet(), invertSelection);
+            }
+        }
+
     }
 
     /**

@@ -36,7 +36,7 @@ public class HubWidget extends IconNodeWidget implements BasicWidget {
 
     @Override
     public void addActions(ChainGraphScene scene) {
-        getActions().addAction(scene.createSelectAction());
+        getActions().addAction(scene.getSelectAction());
         getActions().addAction(scene.createObjectHoverAction());
         getActions().addAction(scene.getConnectAction());
         getActions().addAction(scene.getMoveAlignAction());
