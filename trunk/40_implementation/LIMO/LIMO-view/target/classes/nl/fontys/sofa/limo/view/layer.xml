@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
+<filesystem>
+    <!--<folder name="Actions">
+        <folder name="Hub">
+            <file name="nl-fontys-sofa-limo-view-ManageHubs.instance_hidden"/>
+        </folder>
+        <folder name="Window"/>
+    </folder>-->
+    <folder name="Menu">
+        <attr name="OpenIDE-Folder-SortMode" stringvalue="O"/>
+        <file name="Edit_hidden"/>
+        <file name="GoTo_hidden"/>
+        <file name="Source_hidden"/>
+        <file name="Tools_hidden"/>
+        <file name="File_hidden"/>
+        <file name="View_hidden"/>
+        <folder name="Window">
+            <file name="Web_hidden"/>
+        </folder>
+    </folder>
+</filesystem>
