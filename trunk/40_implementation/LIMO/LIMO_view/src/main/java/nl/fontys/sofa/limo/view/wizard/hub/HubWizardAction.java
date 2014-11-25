@@ -47,8 +47,8 @@ public final class HubWizardAction implements ActionListener {
         }
         panels.add(new NameDescriptionIconHubWizard());
         panels.add(new LocationHubWizard());
-        panels.add(new EventsHubWizard());
         panels.add(new ProceduresHubWizard());
+        panels.add(new EventsHubWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();

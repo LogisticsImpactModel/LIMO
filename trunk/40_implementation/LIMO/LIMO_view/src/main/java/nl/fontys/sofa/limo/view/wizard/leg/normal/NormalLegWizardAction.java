@@ -19,9 +19,6 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
-import org.openide.awt.ActionID;
-import org.openide.awt.ActionReference;
-import org.openide.awt.ActionRegistration;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
@@ -41,8 +38,8 @@ public final class NormalLegWizardAction implements ActionListener {
             panels.add(new NewOrFromTypeWizard());
         }
         panels.add(new NameDescriptionIconLegPanel());
-        panels.add(new EventLegTypeWizard());
         panels.add(new ProceduresLegTypeWizard());
+        panels.add(new EventLegTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();

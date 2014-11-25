@@ -34,8 +34,8 @@ public final class LegTypeWizardAction extends TypeWizardAction {
             panels.add(new NewOrDuplicatedLegTypeWizard());
         }
         panels.add(new NameDescriptionIconLegTypeWizard());
-        panels.add(new EventLegTypeWizard());
         panels.add(new ProceduresLegTypeWizard());
+        panels.add(new EventLegTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
