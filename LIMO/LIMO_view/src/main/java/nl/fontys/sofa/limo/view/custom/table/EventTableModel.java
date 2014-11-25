@@ -22,6 +22,9 @@ public class EventTableModel extends AbstractTableModel {
     }
 
     public List<Event> getEvents() {
+        if (this.events == null) {
+            this.events = new ArrayList<>();
+        }
         return this.events;
     }
 

@@ -26,6 +26,9 @@ public abstract class Component extends BaseEntity {
     }
 
     public List<Procedure> getProcedures() {
+        if (procedures == null) {
+            procedures = new ArrayList<>();
+        }
         return procedures;
     }
 
@@ -34,6 +37,9 @@ public abstract class Component extends BaseEntity {
     }
 
     public List<Event> getEvents() {
+        if (events == null) {
+            events = new ArrayList<>();
+        }
         return events;
     }
 
