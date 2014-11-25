@@ -9,13 +9,22 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.view.util.IconFileFilter;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 
 public class NameDescriptionIconPanel<T extends Class> extends JPanel {
+
+    private JButton btnSelect, btnRemove;
+    private JLabel lblPreview;
+    private JTextField tfName;
+    private JTextField tfDesc;
+    private JFileChooser fc;
 
     private final ResourceBundle bundle;
     private Icon newIcon;
@@ -33,14 +42,11 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
     }
 
     private void initComponents() {
-        lblName = new javax.swing.JLabel(bundle.getString("NAME"));
-        tfName = new javax.swing.JTextField();
-        lblDesc = new javax.swing.JLabel(bundle.getString("DESCRIPTION"));
-        tfDesc = new javax.swing.JTextField();
-        lblIcon = new javax.swing.JLabel(bundle.getString("ICON"));
-        lblPreview = new javax.swing.JLabel();
-        btnSelect = new javax.swing.JButton(bundle.getString("CHOOSE"));
-        btnRemove = new javax.swing.JButton(bundle.getString("REMOVE"));
+        tfName = new JTextField();
+        tfDesc = new JTextField();
+        lblPreview = new JLabel();
+        btnSelect = new JButton(bundle.getString("CHOOSE"));
+        btnRemove = new JButton(bundle.getString("REMOVE"));
         btnRemove.setToolTipText(bundle.getString("REMOVE_ICON_HINT"));
         fc = new JFileChooser();
         fc.setFileFilter(new IconFileFilter());
@@ -52,7 +58,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 0;
-        add(lblName, c);
+        add(new JLabel(bundle.getString("NAME")), c);
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 0;
@@ -62,7 +68,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 1;
-        add(lblDesc, c);
+        add(new JLabel(bundle.getString("DESCRIPTION")), c);
         c.weightx = 0.3;
         c.gridx = 1;
         c.gridy = 1;
@@ -72,7 +78,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 2;
-        add(lblIcon, c);
+        add(new JLabel(bundle.getString("ICON")), c);
         c.weightx = 0.4;
         c.gridx = 1;
         c.gridy = 2;
@@ -114,11 +120,12 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         btnRemove.setEnabled(false);
     }
 
-    public void update(String legName, String legDescr, Icon legIcon) {
-        tfName.setText(legName);
-        tfDesc.setText(legDescr);
-        if (legIcon != null) {
-            Image img = legIcon.getImage();
+    public void update(String name, String description, Icon icon) {
+        tfName.setText(name);
+        tfDesc.setText(description);
+        if (icon != null) {
+            newIcon = icon;
+            Image img = icon.getImage();
             lblPreview.setIcon(new ImageIcon(img));
         }
     }
@@ -135,12 +142,4 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         return newIcon;
     }
 
-    private javax.swing.JButton btnSelect, btnRemove;
-    private javax.swing.JLabel lblIcon;
-    private javax.swing.JLabel lblName;
-    private javax.swing.JLabel lblDesc;
-    private javax.swing.JLabel lblPreview;
-    private javax.swing.JTextField tfName;
-    private javax.swing.JTextField tfDesc;
-    private JFileChooser fc;
 }
