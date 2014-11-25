@@ -95,6 +95,12 @@
             <artifactId>org-netbeans-api-progress</artifactId>
             <version>RELEASE80</version>
         </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-print</artifactId>
+            <version>RELEASE80</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
