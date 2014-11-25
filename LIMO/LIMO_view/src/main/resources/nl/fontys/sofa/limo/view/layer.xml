@@ -42,7 +42,27 @@
                 <attr name="originalFile" stringvalue="Actions/Window/org-netbeans-core-windows-actions-GlobalPropertiesAction.instance"/>
                 <attr name="position" intvalue="20001"/>
             </file>
-
+        </folder>
+        <folder name="Master Data">
+            <folder name="Event">
+                <attr name="position" intvalue="10"/>
+            </folder>
+            <folder name="Hub Type">
+                <attr name="position" intvalue="20"/>
+            </folder>
+            <folder name="Hub">
+                <attr name="position" intvalue="30"/>
+            </folder>
+            <folder name="Procedure Category">
+                <attr name="position" intvalue="40"/>
+            </folder>
+            <file name="separatorAfter.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                <attr name="position" intvalue="175"/>
+            </file>
+            <folder name="Export">
+                <attr name="position" intvalue="9999999"/>
+            </folder>
         </folder>
 
     </folder>
