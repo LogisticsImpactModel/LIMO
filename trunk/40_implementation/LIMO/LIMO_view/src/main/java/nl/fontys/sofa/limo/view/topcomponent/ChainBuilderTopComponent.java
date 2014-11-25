@@ -34,7 +34,7 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Description(
         preferredID = "ChainBuilderTopComponent",
-        //iconBase="SET/PATH/TO/ICON/HERE",
+        iconBase = "icons/gui/link.gif",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
