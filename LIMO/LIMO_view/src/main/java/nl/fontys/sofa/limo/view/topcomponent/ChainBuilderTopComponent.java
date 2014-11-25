@@ -42,7 +42,7 @@ import org.openide.windows.TopComponent;
         displayName = "#CTL_ChainBuilderAction"
 )
 @Messages({
-    "CTL_ChainBuilderAction=New Chain",
+    "CTL_ChainBuilderAction=Create",
     "CTL_ChainBuilderTopComponent=ChainBuilder Window",
     "HINT_ChainBuilderTopComponent=Build a chain"
 })
