@@ -114,4 +114,14 @@ public class HubTypeNode extends AbstractBeanNode<HubType> {
         sets.put(set);
     }
 
+    @Override
+    public AbstractBeanNode getDetachedNodeCopy() {
+        throw new UnsupportedOperationException("Copying not supported for hubtype.");
+    }
+
+    @Override
+    Class getServiceClass() {
+        return HubTypeService.class;
+    }
+
 }

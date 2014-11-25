@@ -3,9 +3,8 @@ package nl.fontys.sofa.limo.view.chain;
 import java.awt.Point;
 import java.awt.datatransfer.Transferable;
 import java.beans.IntrospectionException;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
@@ -16,6 +15,7 @@ import nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent;
 import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
+import nl.fontys.sofa.limo.view.widget.StartWidget;
 import org.netbeans.api.visual.action.AcceptProvider;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectProvider;
@@ -40,7 +40,6 @@ public class GraphSceneImpl2 extends ChainGraphScene {
 
     private ChainBuilderTopComponent parent;
     private final ChainBuilder chainBuilder;
-    private List<Widget> widgets;
 
     private final LayerWidget mainLayer;
     private final LayerWidget connectionLayer;
@@ -55,10 +54,12 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     private final WidgetAction connectAction;
     private final WidgetAction reconnectAction;
 
-    public GraphSceneImpl2(ChainBuilderTopComponent parent) {
+    private HubWidget startHubWidget;
+    private StartWidget startFlagWidget;
+
+    public GraphSceneImpl2(ChainBuilderTopComponent parent) throws IOException {
         this.parent = parent;
         chainBuilder = new ChainbuilderImpl();
-        widgets = new ArrayList<>();
 
         this.mainLayer = new LayerWidget(this);
         this.connectionLayer = new LayerWidget(this);
@@ -82,11 +83,8 @@ public class GraphSceneImpl2 extends ChainGraphScene {
         getActions().addAction(acceptAction);
         getActions().addAction(zoomAction);
         getActions().addAction(panAction);
-    }
 
-    @Override
-    public List<Widget> getWidgets() {
-        return widgets;
+        startFlagWidget = new StartWidget(this);
     }
 
     @Override
@@ -97,6 +95,11 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     @Override
     public LayerWidget getConnectionLayer() {
         return connectionLayer;
+    }
+
+    @Override
+    public ChainBuilder getChainBuilder() {
+        return chainBuilder;
     }
 
     @Override
@@ -112,6 +115,37 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     @Override
     public WidgetAction getMoveAlignAction() {
         return moveAlignAction;
+    }
+
+    @Override
+    public int getNumberOfHubs() {
+        return chainBuilder.getNumberOfHubs();
+    }
+
+    @Override
+    public Widget getStartHubWidget() {
+        return startHubWidget;
+    }
+
+    @Override
+    public void setStartHubWidget(HubWidget hubWidget) {
+        if (startHubWidget != null) {
+            startHubWidget.removeChild(startFlagWidget);
+        }
+        startHubWidget = hubWidget;
+        startHubWidget.addChild(startFlagWidget);
+        chainBuilder.setStartHub(hubWidget.getHub());
+        this.validate();
+    }
+
+    @Override
+    public void addHubWidget(HubWidget hubWidget) {
+        if (getNumberOfHubs() == 0) {
+            setStartHubWidget(hubWidget);
+        }
+        mainLayer.addChild(hubWidget);
+        chainBuilder.addHub(hubWidget.getHub());
+        getScene().repaint();
     }
 
     @Override
@@ -149,13 +183,6 @@ public class GraphSceneImpl2 extends ChainGraphScene {
         connectionWidget.setTargetAnchor(AnchorFactory.createRectangularAnchor(targetWidget));
     }
 
-    @Override
-    public void repaintScene() {
-        validate();
-        getMainLayer().repaint();
-        getConnectionLayer().repaint();
-    }
-
     /**
      * Accept provider for the scene. Validates if a connection can be dropped
      * and places the connection in the scene.
@@ -180,14 +207,16 @@ public class GraphSceneImpl2 extends ChainGraphScene {
         @Override
         public void accept(Widget widget, Point point, Transferable transferable) {
             AbstractBeanNode node = (AbstractBeanNode) NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
-            BasicWidget w = (BasicWidget) scene.addNode(new ContainerNode(node));
-            boolean succesfullDrop = w.drop(scene, chainBuilder, widget, point);
-            if (succesfullDrop) {
-                widgets.add((Widget) w);
-            }
+            AbstractBeanNode detachedNode = node.getDetachedNodeCopy();
+            BasicWidget w = (BasicWidget) scene.addNode(new ContainerNode(detachedNode));
+            boolean succesfullDrop = w.drop(scene, widget, point);
         }
     }
 
+    /**
+     * SelectProvider for the GraphScene. Enables the selection of widgets in a
+     * scene.
+     */
     private class SceneSelectProvider implements SelectProvider {
 
         @Override
@@ -220,7 +249,7 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     }
 
     /**
-     * SceneConnecProvider is responsible for connecting widgets together.
+     * SceneConnectProvider is responsible for connecting widgets together.
      */
     private class SceneConnectProvider implements ConnectProvider {
 
@@ -267,6 +296,10 @@ public class GraphSceneImpl2 extends ChainGraphScene {
                     if (connectionWidget != null) {
                         setEdgeSource(container, source);
                         setEdgeTarget(container, target);
+
+                        HubWidget sourceHub = (HubWidget) findWidget(source);
+                        HubWidget targetHub = (HubWidget) findWidget(target);
+                        chainBuilder.connectHubsByLeg(sourceHub.getHub(), leg, targetHub.getHub());
                     }
                 } catch (IntrospectionException ex) {
                     Exceptions.printStackTrace(ex);

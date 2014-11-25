@@ -5,14 +5,14 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.Children;
+import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
-import org.netbeans.api.visual.widget.Widget;
-import org.netbeans.api.visual.graph.GraphScene;
 
 /**
  * AbstractBeanNode class which defines basic Node actions and creates a lookup
@@ -20,7 +20,8 @@ import org.netbeans.api.visual.graph.GraphScene;
  *
  * @author Sebastiaan Heijmann
  */
-public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T> {
+public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
+        implements DetachableNode {
 
     private Class entityClass;
     private PropertyChangeListener listener;
@@ -73,7 +74,9 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
 
                 @Override
                 public void propertyChange(PropertyChangeEvent evt) {
-                    ((AbstractRootNode) getParentNode()).getService().update(getBean());
+                    DAO service = (DAO) Lookup.getDefault().lookup(getServiceClass());
+                    service.update(getBean());
+//                    ((AbstractRootNode) getParentNode()).getService().update(getBean());
                     firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
                     switch (evt.getPropertyName()) {
                         case "name":
@@ -102,4 +105,11 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
     public Class getEntityClass() {
         return entityClass;
     }
+
+    /**
+     * Get the service class of this bean.
+     *
+     * @return Class - the service class.
+     */
+    abstract Class getServiceClass();
 }

@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
 import org.netbeans.api.visual.action.ActionFactory;
@@ -15,8 +14,8 @@ import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.api.visual.widget.general.IconNodeWidget;
 
 /**
- * Widget which holds a ContainerNode containing a HubNode. This Widget can be
- * used to display a hub in a GraphScene.
+ * HubWidget which represents a Hub in the GraphScene. It holds a ContainerNode
+ * which contains a HubNode.
  *
  * @author Sebastiaan Heijmann
  */
@@ -28,7 +27,6 @@ public class HubWidget extends IconNodeWidget implements BasicWidget {
      * Constructor sets up the widget by setting the display name and image.
      *
      * @param scene - the scene to display the Widget on.
-     * @param hubNode - the HubNode.
      */
     public HubWidget(Scene scene) {
         super(scene);
@@ -44,12 +42,9 @@ public class HubWidget extends IconNodeWidget implements BasicWidget {
     }
 
     @Override
-    public boolean drop(ChainGraphScene scene, ChainBuilder chainBuilder, Widget widget, Point point) {
+    public boolean drop(ChainGraphScene scene, Widget widget, Point point) {
         this.setPreferredLocation(point);
-        scene.getMainLayer().addChild(this);
-        scene.validate();
-        chainBuilder.addHub(getHub());
-        scene.repaintScene();
+        scene.addHubWidget(this);
         return true;
     }
 
@@ -62,6 +57,11 @@ public class HubWidget extends IconNodeWidget implements BasicWidget {
         this.container = container;
     }
 
+//    @Override
+//    public void propertyChange(PropertyChangeEvent pce) {
+//        setImage(getHub().getIcon().getImage());
+//        setLabel(getHub().getName());
+//    }
     /**
      * The popup menu when right clicked on this widget.
      */
@@ -70,6 +70,14 @@ public class HubWidget extends IconNodeWidget implements BasicWidget {
         @Override
         public JPopupMenu getPopupMenu(Widget widget, Point localLocation) {
             JPopupMenu popup = new JPopupMenu();
+            popup.add(new AbstractAction("Set Start Hub") {
+
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    ChainGraphScene scene = (ChainGraphScene) getScene();
+                    scene.setStartHubWidget(HubWidget.this);
+                }
+            });
             popup.add(new AbstractAction("Delete") {
 
                 @Override

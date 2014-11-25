@@ -29,4 +29,14 @@ public class LegNode extends AbstractBeanNode {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public AbstractBeanNode getDetachedNodeCopy() {
+        throw new UnsupportedOperationException("Copying not supported for leg.");
+    }
+
+    @Override
+    Class getServiceClass() {
+        throw new UnsupportedOperationException("Service not available.");
+    }
+
 }
