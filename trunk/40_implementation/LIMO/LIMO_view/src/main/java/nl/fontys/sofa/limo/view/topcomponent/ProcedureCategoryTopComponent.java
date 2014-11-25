@@ -25,7 +25,7 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Description(
         preferredID = "ProcedureCategoryTopComponent",
-        //iconBase="SET/PATH/TO/ICON/HERE", 
+        iconBase = "icons/gui/list.gif",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
@@ -102,7 +102,7 @@ public final class ProcedureCategoryTopComponent extends TopComponent
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-	@Override
+    @Override
     public void componentOpened() {
         // TODO add custom code on component opening
     }
