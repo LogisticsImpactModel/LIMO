@@ -19,6 +19,12 @@ public abstract class Component extends BaseEntity {
     @Embedded
     protected List<Event> events;
 
+    public Component(String name, String description) {
+        super(name, description);
+        this.procedures = new ArrayList<>();
+        this.events = new ArrayList<>();
+    }
+
     public Component() {
         super();
         this.procedures = new ArrayList<>();
