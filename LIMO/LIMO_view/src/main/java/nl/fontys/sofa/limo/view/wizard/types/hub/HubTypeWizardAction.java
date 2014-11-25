@@ -34,8 +34,8 @@ public final class HubTypeWizardAction extends TypeWizardAction {
             panels.add(new NewOrDuplicatedHubTypeWizard());
         }
         panels.add(new NameDescriptionIconHubTypeWizard());
-        panels.add(new EventHubTypeWizard());
         panels.add(new ProceduresHubTypeWizard());
+        panels.add(new EventHubTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
