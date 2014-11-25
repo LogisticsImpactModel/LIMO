@@ -25,7 +25,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Description(
         preferredID = "HubTopComponent",
-        //iconBase="SET/PATH/TO/ICON/HERE", 
+        iconBase = "icons/gui/list.gif",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
@@ -103,7 +103,7 @@ public final class HubTopComponent extends TopComponent implements ExplorerManag
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-	@Override
+    @Override
     public void componentOpened() {
         // TODO add custom code on component opening
     }
