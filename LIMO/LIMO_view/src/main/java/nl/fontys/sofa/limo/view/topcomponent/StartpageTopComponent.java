@@ -23,7 +23,7 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Description(
         preferredID = "StartpageTopComponent",
-        iconBase = "org/netbeans/core/windows/resources/properties.gif",
+        iconBase = "icons/gui/start.gif",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = true)
