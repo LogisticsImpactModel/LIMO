@@ -26,7 +26,7 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Description(
         preferredID = "EventTopComponent",
-        //iconBase="SET/PATH/TO/ICON/HERE",
+        iconBase = "icons/gui/list.gif",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)

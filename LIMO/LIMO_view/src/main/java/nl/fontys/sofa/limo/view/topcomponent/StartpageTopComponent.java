@@ -23,7 +23,7 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Description(
         preferredID = "StartpageTopComponent",
-        //iconBase="SET/PATH/TO/ICON/HERE", 
+        iconBase = "org/netbeans/core/windows/resources/properties.gif",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = true)
@@ -153,7 +153,8 @@ public final class StartpageTopComponent extends TopComponent {
     private javax.swing.JButton testButton2BT;
     private javax.swing.JLabel titleLB;
     // End of variables declaration//GEN-END:variables
-	@Override
+
+    @Override
     public void componentOpened() {
         // TODO add custom code on component opening
     }
