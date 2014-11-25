@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.JComponent;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.event.Event;
@@ -37,7 +38,7 @@ public final class HubWizardAction implements ActionListener {
 
     private boolean update = false;
     private Hub hubUpdate = new Hub();
-    final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
+    private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -48,7 +49,10 @@ public final class HubWizardAction implements ActionListener {
         panels.add(new NameDescriptionIconHubWizard());
         panels.add(new LocationHubWizard());
         panels.add(new ProceduresHubWizard());
-        panels.add(new EventsHubWizard());
+        EventService eventService = Lookup.getDefault().lookup(EventService.class);
+        if (!eventService.findAll().isEmpty()) {
+            panels.add(new EventsHubWizard());
+        }
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -71,7 +75,7 @@ public final class HubWizardAction implements ActionListener {
             wiz.setTitle(bundle.getString("EDIT_HUB"));
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            HubService service = Lookup.getDefault().lookup(HubService.class);
+            HubService hubService = Lookup.getDefault().lookup(HubService.class);
             hubUpdate.setName((String) wiz.getProperty(HUB_NAME));
             hubUpdate.setDescription((String) wiz.getProperty(HUB_DESCRIPTION));
             hubUpdate.setIcon((Icon) wiz.getProperty(HUB_ICON));
@@ -79,11 +83,11 @@ public final class HubWizardAction implements ActionListener {
             hubUpdate.setProcedures((List<Procedure>) wiz.getProperty(HUB_PROCEDURES));
             hubUpdate.setEvents((List<Event>) wiz.getProperty(HUB_EVENTS));
             if (update) {
-                service.update(hubUpdate);
+                hubService.update(hubUpdate);
             } else {
                 hubUpdate.setId(null);
                 hubUpdate.setUniqueIdentifier(null);
-                service.insert(hubUpdate);
+                hubService.insert(hubUpdate);
             }
         }
 

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.JComponent;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.event.Event;
@@ -35,6 +36,10 @@ public final class LegTypeWizardAction extends TypeWizardAction {
         }
         panels.add(new NameDescriptionIconLegTypeWizard());
         panels.add(new ProceduresLegTypeWizard());
+        EventService eventService = Lookup.getDefault().lookup(EventService.class);
+        if (!eventService.findAll().isEmpty()) {
+            panels.add(new EventLegTypeWizard());
+        }
         panels.add(new EventLegTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {

@@ -33,6 +33,7 @@ public final class EventWizardAction implements ActionListener {
 
     private Event eventUpdate = new Event();
     private boolean isUpdate = false;
+    private EventService service;
     private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     @Override
@@ -42,7 +43,10 @@ public final class EventWizardAction implements ActionListener {
             panels.add(new NewOrDuplicatedEventWizard());
         }
         panels.add(new NameDescriptionProbabilityWizard());
-        panels.add(new SubEventsWizard());
+        service = Lookup.getDefault().lookup(EventService.class);
+        if (!service.findAll().isEmpty()) {
+            panels.add(new SubEventsWizard());
+        }
         panels.add(new ProceduresWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
@@ -66,7 +70,6 @@ public final class EventWizardAction implements ActionListener {
             wiz.setTitle(bundle.getString("ADD_EVENT"));
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            EventService service = Lookup.getDefault().lookup(EventService.class);
             eventUpdate.setName((String) wiz.getProperty(EVENT_NAME));
             eventUpdate.setDescription((String) wiz.getProperty(EVENT_DESCRIPTION));
             eventUpdate.setEvents((List<Event>) wiz.getProperty(EVENT_EVENTS));
