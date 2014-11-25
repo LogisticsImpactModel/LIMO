@@ -31,7 +31,7 @@
             <!--end undesire bloatware-->
             <file name="ShowPaletteAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Window/org-netbeans-modules-palette-ShowPaletteAction.instance"/>
-                <attr name="position" intvalue="20000"/>
+                <attr name="position" intvalue="20001"/>
             </file>
             <file name="DocumentsAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Window/org-netbeans-core-windows-actions-DocumentsAction.instance"/>
@@ -40,7 +40,7 @@
 
             <file name="org-netbeans-core-windows-actions-GlobalPropertiesAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Window/org-netbeans-core-windows-actions-GlobalPropertiesAction.instance"/>
-                <attr name="position" intvalue="20001"/>
+                <attr name="position" intvalue="20002"/>
             </file>
         </folder>
         <folder name="Master Data">
@@ -58,7 +58,7 @@
             </folder>
             <file name="separatorAfter.instance">
                 <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
-                <attr name="position" intvalue="175"/>
+                <attr name="position" intvalue="50"/>
             </file>
             <folder name="Export">
                 <attr name="position" intvalue="9999999"/>
