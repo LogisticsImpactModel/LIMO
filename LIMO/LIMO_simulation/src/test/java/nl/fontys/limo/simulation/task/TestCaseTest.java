@@ -13,7 +13,6 @@ import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDir
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -48,7 +47,7 @@ public class TestCaseTest {
         start.addEvent(event);
 
         Hub end = new Hub();
-        end.addProcedure(new Procedure("unloading", "mandatory", new RangeValue(2000, 3000), new SingleValue(0), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
+        end.addProcedure(new Procedure("unloading", "mandatory", new RangeValue(2000, 3000), new RangeValue(2, 3), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
         Event event2 = new Event("Damage container", "You damage a container.", end, ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
         event2.addProcedure(new Procedure("costs", "mandatory", new RangeValue(3000, 4000), new SingleValue(0), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
         end.addEvent(event2);
@@ -71,9 +70,11 @@ public class TestCaseTest {
         testCase.run();
         TestCaseResult result = testCase.getResult();
         assertNotNull(result);
-        assertEquals(1, result.getExecutedEvents().size());
-        assertTrue(8000 <= result.getTotalCosts());
-        assertTrue(11000 >= result.getTotalCosts());
+        assertTrue(result.getExecutedEvents().size() >= 1);
+        assertTrue(3000 <= result.getTotalExtraCosts());
+        assertTrue(4000 >= result.getTotalExtraCosts());
+        assertTrue(5000 <= result.getTotalCosts());
+        assertTrue(7000 >= result.getTotalCosts());
         assertTrue(5 * 60 <= result.getTotalLeadTimes());
         assertTrue(7 * 60 >= result.getTotalLeadTimes());
     }
