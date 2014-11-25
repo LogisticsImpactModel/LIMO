@@ -19,6 +19,12 @@ public class BaseEntity implements Serializable {
     protected String uniqueIdentifier;
     protected String description;
 
+    public BaseEntity(String name, String description) {
+        this.uniqueIdentifier = UUID.randomUUID().toString();
+        this.name = name;
+        this.description = description;
+    }
+
     public BaseEntity() {
         this.uniqueIdentifier = UUID.randomUUID().toString();
     }
