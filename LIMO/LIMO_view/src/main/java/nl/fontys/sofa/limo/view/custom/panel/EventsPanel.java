@@ -120,16 +120,12 @@ public abstract class EventsPanel extends JPanel {
         c.gridy = 0;
         add(eventsCheckbox, c);
 
-        c.weightx = 0.1;
-        c.gridx = 2;
-        c.gridy = 0;
-        add(addButton, c);
-
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JScrollPane(eventsTable), BorderLayout.CENTER);
 
         JPanel panelLeft = new JPanel();
         panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
+        panelLeft.add(addButton);
         panelLeft.add(deleteButton);
         panel.add(panelLeft, BorderLayout.EAST);
 
