@@ -198,7 +198,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         return prop;
     }
 
-    private class DistributionParameterTableModel extends AbstractTableModel {
+    public class DistributionParameterTableModel extends AbstractTableModel {
 
         @Override
         public int getRowCount() {

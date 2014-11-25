@@ -10,6 +10,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
@@ -92,22 +93,29 @@ public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode
             description.setDisplayName("Description");
             description.setShortDescription("An optional short description of the procedure category.");
 
+            StupidProperty distributionProp = new StupidProperty(getBean(), Distribution.class, "probability");
+            distributionProp.addPropertyChangeListener(getListener());
+            distributionProp.setDisplayName("Distribution");
+            distributionProp.setShortDescription("The distribution that describes this events chance of occurence.");
+            distributionProp.setValue("canEditAsText", false);
+
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
             eventProp.addPropertyChangeListener(getListener());
             eventProp.setPropertyEditorClass(EventPropertyEditor.class);
-            eventProp.setDisplayName("Event");
+            eventProp.setDisplayName("Events");
             eventProp.setShortDescription("All Events stored with this Hub.");
             eventProp.setValue("canEditAsText", false);
 
             StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
             procedureProp.addPropertyChangeListener(getListener());
             procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
-            procedureProp.setDisplayName("Procedure");
+            procedureProp.setDisplayName("Procedures");
             procedureProp.setShortDescription("All Procedures stored with this Hub.");
             procedureProp.setValue("canEditAsText", false);
 
             set.put(name);
             set.put(description);
+            set.put(distributionProp);
             set.put(procedureProp);
             set.put(eventProp);
         } catch (NoSuchMethodException ex) {

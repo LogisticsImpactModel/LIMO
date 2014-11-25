@@ -14,7 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.filechooser.FileFilter;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
