@@ -16,7 +16,6 @@
         </folder>
         <file name="Source_hidden"/>
         <file name="Tools_hidden"/>
-        <file name="File_hidden"/>
         <file name="View_hidden"/>
         <folder name="Window">
             <!-- undesired bloatware-->
@@ -45,5 +44,6 @@
             </file>
 
         </folder>
+
     </folder>
 </filesystem>

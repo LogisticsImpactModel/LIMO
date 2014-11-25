@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyVetoException;
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
@@ -78,7 +79,10 @@ public final class ChainBuilderTopComponent extends TopComponent implements
         ChainGraphScene scene;
         scene = new GraphSceneImpl2(this);
         JScrollPane shapePane = new JScrollPane();
-        shapePane.setViewportView(scene.createView());
+        JComponent createView = scene.createView();
+        createView.putClientProperty("print.printable", Boolean.TRUE);
+        createView.putClientProperty("print.name", "Supply Chain: " + chain.getName());
+        shapePane.setViewportView(createView);
         add(shapePane, BorderLayout.CENTER);
         add(scene.createSatelliteView(), BorderLayout.SOUTH);
 
