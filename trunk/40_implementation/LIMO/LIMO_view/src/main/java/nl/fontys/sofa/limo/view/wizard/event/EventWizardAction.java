@@ -33,18 +33,19 @@ public final class EventWizardAction implements ActionListener {
 
     private Event eventUpdate = new Event();
     private boolean isUpdate = false;
-    private EventService service;
+    private final EventService service = Lookup.getDefault().lookup(EventService.class);
+    private List<WizardDescriptor.Panel<WizardDescriptor>> panels;
     private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
+        panels = new ArrayList<>();
         if (!isUpdate) {
             panels.add(new NewOrDuplicatedEventWizard());
         }
         panels.add(new NameDescriptionProbabilityWizard());
-        service = Lookup.getDefault().lookup(EventService.class);
-        if (!service.findAll().isEmpty()) {
+        List<Event> events = service.findAll();
+        if (!events.isEmpty() && !(events.size() == 1 && events.contains(eventUpdate))) {
             panels.add(new SubEventsWizard());
         }
         panels.add(new ProceduresWizard());
