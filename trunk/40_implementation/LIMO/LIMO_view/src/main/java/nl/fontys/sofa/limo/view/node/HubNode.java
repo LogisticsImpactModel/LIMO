@@ -1,7 +1,5 @@
 package nl.fontys.sofa.limo.view.node;
 
-import com.sksamuel.gaia.Continent;
-import com.sksamuel.gaia.Country;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
@@ -14,6 +12,7 @@ import javax.swing.ImageIcon;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.hub.Location;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
@@ -113,6 +112,12 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             iconProp.setValue("valueIcon", new ImageIcon(getBean().getIcon().getImage()));
             iconProp.setValue("canEditAsText", false);
 
+            StupidProperty locProp = new StupidProperty(getBean(), Location.class, "location");
+            locProp.addPropertyChangeListener(getListener());
+            locProp.setDisplayName("Location");
+            locProp.setShortDescription("The hub's location");
+            locProp.setValue("canEditAsText", false);
+
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
             eventProp.addPropertyChangeListener(getListener());
             eventProp.setPropertyEditorClass(EventPropertyEditor.class);
@@ -130,65 +135,14 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             generalSet.put(name);
             generalSet.put(description);
             generalSet.put(iconProp);
+            generalSet.put(locProp);
             generalSet.put(procedureProp);
             generalSet.put(eventProp);
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();
         }
 
-        Sheet.Set locationSet = Sheet.createPropertiesSet();
-        locationSet.setName("location");
-        locationSet.setDisplayName("Location");
-
-        try {
-            StupidProperty continent = new StupidProperty(getBean().getLocation(), Continent.class, "continent");
-            continent.addPropertyChangeListener(getListener());
-            continent.setName("continent");
-            continent.setDisplayName("Continent");
-
-            StupidProperty country = new StupidProperty(getBean().getLocation(), Country.class, "country");
-            country.addPropertyChangeListener(getListener());
-            country.setName("country");
-            country.setDisplayName("Country");
-
-            StupidProperty state = new StupidProperty(getBean().getLocation(), String.class, "state");
-            state.addPropertyChangeListener(getListener());
-            state.setName("state");
-            state.setDisplayName("State");
-
-            StupidProperty town = new StupidProperty(getBean().getLocation(), String.class, "town");
-            town.addPropertyChangeListener(getListener());
-            town.setName("town");
-            town.setDisplayName("Town");
-
-            StupidProperty postcode = new StupidProperty(getBean().getLocation(), String.class, "postcode");
-            postcode.addPropertyChangeListener(getListener());
-            postcode.setName("postcode");
-            postcode.setDisplayName("Postcode");
-
-            StupidProperty street = new StupidProperty(getBean().getLocation(), String.class, "street");
-            street.addPropertyChangeListener(getListener());
-            street.setName("street");
-            street.setDisplayName("Street");
-
-            StupidProperty housenumber = new StupidProperty(getBean().getLocation(), String.class, "housenumber");
-            housenumber.addPropertyChangeListener(getListener());
-            housenumber.setName("housenumber");
-            housenumber.setDisplayName("House number");
-
-            locationSet.put(continent);
-            locationSet.put(country);
-            locationSet.put(state);
-            locationSet.put(town);
-            locationSet.put(postcode);
-            locationSet.put(street);
-            locationSet.put(housenumber);
-        } catch (NoSuchMethodException ex) {
-            ErrorManager.getDefault();
-        }
-
         sets.put(generalSet);
-        sets.put(locationSet);
     }
 
     @Override
