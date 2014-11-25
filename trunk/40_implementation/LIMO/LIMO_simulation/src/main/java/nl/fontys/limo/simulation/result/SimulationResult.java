@@ -17,7 +17,7 @@ import nl.fontys.sofa.limo.domain.component.event.Event;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class SimulationResult {
-    
+
     private final SupplyChain supplyChain;
     private DataEntry totalCosts;
     private DataEntry totalLeadTimes;
@@ -87,20 +87,21 @@ public class SimulationResult {
     public Map<Event, Double> getEventExecutionRate() {
         return eventExecutionRate;
     }
-    
+
     /**
      * Adds a test case result to this simulation result.
+     *
      * @param tcr Test case result to add.
      */
     public void addTestCaseResult(TestCaseResult tcr) {
         int size = testCaseResults.size();
-        
+
         // Recalculate totals by adding the new value to the existing data entry.
         this.totalCosts = recalculateDataEntry(totalCosts, size, tcr.getTotalCosts());
         this.totalLeadTimes = recalculateDataEntry(totalLeadTimes, size, tcr.getTotalLeadTimes());
         this.totalDelays = recalculateDataEntry(totalDelays, size, tcr.getTotalDelays());
         this.totalExtraCosts = recalculateDataEntry(totalExtraCosts, size, tcr.getTotalExtraCosts());
-        
+
         // BY CATEGORY
         for (Map.Entry<String, Double> entry : tcr.getCostsByCategory().entrySet()) {
             DataEntry old = costsByCategory.get(entry.getKey());
@@ -118,7 +119,7 @@ public class SimulationResult {
             DataEntry old = delaysByCategory.get(entry.getKey());
             delaysByCategory.put(entry.getKey(), recalculateDataEntry(old, size, entry.getValue()));
         }
-        
+
         // ADD Events
         for (Event event : tcr.getExecutedEvents()) {
             if (!this.eventExecutionRate.containsKey(event)) {
@@ -128,27 +129,28 @@ public class SimulationResult {
                 this.eventExecutionRate.put(event, newAvg);
             }
         }
-        
+
         // ADD TCR
         this.testCaseResults.add(tcr);
     }
-    
+
     /**
      * Recalculate an data entry with new data.
+     *
      * @param old Old data entry.
      * @param oldCount Old count used to create average.
      * @param newValue New value to add to data entry.
      * @return Recalculated data entry.
      */
     protected DataEntry recalculateDataEntry(DataEntry old, int oldCount, double newValue) {
-        if (old == null){
+        if (old == null) {
             return new DataEntry(newValue, newValue, newValue);
         }
-        
-        double min = old.getMin() < newValue ? old.getMin() : newValue;
-        double max = old.getMax() > newValue ? old.getMax() : newValue;
+
+        double min = old.getMin() != null && old.getMin() < newValue ? old.getMin() : newValue;
+        double max = old.getMax() != null && old.getMax() > newValue ? old.getMax() : newValue;
         double avg = MathUtil.getCumulativeMovingAverage(old.getAvg(), oldCount, newValue);
         return new DataEntry(min, max, avg);
     }
-    
+
 }
