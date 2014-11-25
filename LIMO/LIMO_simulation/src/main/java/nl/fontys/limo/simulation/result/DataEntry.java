@@ -8,9 +8,15 @@ package nl.fontys.limo.simulation.result;
  */
 public class DataEntry {
 
-    private final double min;
-    private final double max;
-    private final double avg;
+    private final Double min;
+    private final Double max;
+    private final Double avg;
+
+    public DataEntry() {
+        this.min = null;
+        this.max = null;
+        this.avg = 0d;
+    }
 
     public DataEntry(double min, double max, double avg) {
         this.min = min;
@@ -18,16 +24,16 @@ public class DataEntry {
         this.avg = avg;
     }
 
-    public double getMin() {
+    public Double getMin() {
         return min;
     }
 
-    public double getMax() {
+    public Double getMax() {
         return max;
     }
 
-    public double getAvg() {
+    public Double getAvg() {
         return avg;
     }
-    
+
 }
