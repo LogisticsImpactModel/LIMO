@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -9,6 +11,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,7 +20,11 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
@@ -33,7 +41,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     private JLabel distributionTypeLabel;
     private JComboBox<String> distributionTypeComboBox;
 
-    private JLabel parametersLabel;
+    private JPanel parametersLabel;
     private JTable parametersTable;
 
     private Distribution prop;
@@ -59,10 +67,37 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         descriptionTextArea = new javax.swing.JTextArea();
         descriptionTextArea.setRows(4);
 
-        parametersLabel = new javax.swing.JLabel(bundle.getString("PARAMETERS"));
-        parametersTable = new javax.swing.JTable();
+        parametersLabel = new javax.swing.JPanel();
+        parametersLabel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+                bundle.getString("PARAMETERS"),
+                TitledBorder.LEFT,
+                TitledBorder.TOP
+        ));
+        parametersLabel.setLayout(new BorderLayout());
+        parametersTable = new javax.swing.JTable() {
+
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component c = super.prepareRenderer(renderer, row, column);
+                if (isCellSelected(row, column)) {
+                    c.setBackground(getSelectionBackground());
+                } else if (column == 0) {
+                    c.setBackground(UIManager.getColor("Panel.background"));
+                } else {
+                    c.setBackground(null);
+                }
+                return c;
+            }
+
+        };
         parametersTable.setModel(new DistributionParameterTableModel());
         parametersTable.setShowGrid(true);
+        parametersTable.putClientProperty("terminateEditOnFocusLost", true);
+        DefaultCellEditor singleClick = (DefaultCellEditor) parametersTable.getDefaultEditor(parametersTable.getColumnClass(1));
+        singleClick.setClickCountToStart(1);
+        parametersTable.setDefaultEditor(parametersTable.getColumnClass(1), singleClick);
+        parametersLabel.add(parametersTable, BorderLayout.CENTER);
 
         initDistribution();
 
@@ -99,23 +134,18 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         c.gridwidth = 3;
         add(distributionTypeComboBox, c);
 
-        c.weightx = 0.3;
+        c.weightx = 1;
         c.gridx = 0;
         c.gridy = 3;
-        c.gridwidth = 1;
+        c.gridwidth = 4;
         add(parametersLabel, c);
-
-        c.weightx = 0.7;
-        c.gridx = 1;
-        c.gridy = 3;
-        c.gridwidth = 3;
-        add(parametersTable, c);
     }
 
     private GridBagConstraints initLayout() {
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTH;
         c.insets = new Insets(3, 3, 3, 3);
         return c;
     }
@@ -151,9 +181,6 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
             distributionTypeComboBox.getModel().setSelectedItem(nameForDistributionType);
             prop = probability;
             ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
-//            DistributionParameterTableModel distributionParameterTableModel = new DistributionParameterTableModel();
-//            parametersTable.setModel(distributionParameterTableModel);
-//            distributionParameterTableModel.fireTableDataChanged();
         } else {
             distributionTypeComboBox.setSelectedIndex(0);
         }
