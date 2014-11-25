@@ -12,6 +12,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
@@ -20,6 +21,7 @@ import nl.fontys.sofa.limo.view.wizard.leg.normal.EventLegTypeWizard;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.ProceduresLegTypeWizard;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
+import org.openide.util.Lookup;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
@@ -33,7 +35,7 @@ public final class ScheduledLegWizardAction implements ActionListener {
 //
 //            @Override
 //            public void finishedLeg(ScheduledLeg leg) {
-//                
+//
 //            }
 //        };
 //    }
@@ -47,6 +49,10 @@ public final class ScheduledLegWizardAction implements ActionListener {
         panels.add(new NameDescriptionIconLegPanel());
         panels.add(new ScheduledLegScheduleWizard());
         panels.add(new ProceduresLegTypeWizard());
+        EventService eventService = Lookup.getDefault().lookup(EventService.class);
+        if (!eventService.findAll().isEmpty()) {
+            panels.add(new EventLegTypeWizard());
+        }
         panels.add(new EventLegTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {

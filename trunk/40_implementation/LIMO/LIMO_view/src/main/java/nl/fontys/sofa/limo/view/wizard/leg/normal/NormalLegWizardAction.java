@@ -12,6 +12,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
@@ -19,6 +20,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
+import org.openide.util.Lookup;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
@@ -33,12 +35,16 @@ public final class NormalLegWizardAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
+        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!update) {
             panels.add(new NewOrFromTypeWizard());
         }
         panels.add(new NameDescriptionIconLegPanel());
         panels.add(new ProceduresLegTypeWizard());
+        EventService eventService = Lookup.getDefault().lookup(EventService.class);
+        if (!eventService.findAll().isEmpty()) {
+            panels.add(new EventLegTypeWizard());
+        }
         panels.add(new EventLegTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
