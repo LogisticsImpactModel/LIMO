@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.custom.panel;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -45,6 +46,9 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         tfName = new JTextField();
         tfDesc = new JTextField();
         lblPreview = new JLabel();
+        lblPreview.setMaximumSize(new Dimension(20, 20));
+        lblPreview.setMinimumSize(new Dimension(20, 20));
+        lblPreview.setSize(new Dimension(20, 20));
         btnSelect = new JButton(bundle.getString("CHOOSE"));
         btnRemove = new JButton(bundle.getString("REMOVE"));
         btnRemove.setToolTipText(bundle.getString("REMOVE_ICON_HINT"));
@@ -95,7 +99,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File icon = fc.getSelectedFile();
                     newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage(), icon.getPath().split("\\.")[icon.getPath().split("\\.").length - 1]);
-                    lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
+                    lblPreview.setIcon(new SmallIcon(newIcon.getImage()));
                     btnRemove.setEnabled(true);
                 }
             }
@@ -116,7 +120,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
     private void resetIcon() {
         Image image = IconUtil.getIcon(clazz, 2);
         newIcon = new Icon((BufferedImage) image, "png");
-        lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
+        lblPreview.setIcon(new SmallIcon(newIcon.getImage()));
         btnRemove.setEnabled(false);
     }
 
@@ -126,7 +130,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         if (icon != null) {
             newIcon = icon;
             Image img = icon.getImage();
-            lblPreview.setIcon(new ImageIcon(img));
+            lblPreview.setIcon(new SmallIcon(img));
         }
     }
 
@@ -140,6 +144,26 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
 
     public Icon getIcon() {
         return newIcon;
+    }
+
+    private static final class SmallIcon extends ImageIcon {
+
+        private static final int SIZE = 32;
+
+        private SmallIcon(Image image) {
+            super(image.getScaledInstance(SIZE, SIZE, java.awt.Image.SCALE_SMOOTH));
+        }
+
+        @Override
+        public int getIconHeight() {
+            return SIZE;
+        }
+
+        @Override
+        public int getIconWidth() {
+            return SIZE;
+        }
+
     }
 
 }
