@@ -61,47 +61,82 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
         @Override
         protected void setTableModel() {
+            List<Event> usedEvents = (List<Event>) getValue();
+            eventsTableModel.setEvents(usedEvents);
+            eventsTableModel.fireTableDataChanged();
+            setTableAndCheckbox();
+        }
+
+        private void setTableAndCheckbox() {
+            ArrayList<String> allEventsName = new ArrayList<>();
+            List<Event> usedEvents = new ArrayList<>(eventsTableModel.getEvents());
             if (allEvents != null) {
-                ArrayList<String> allEventsName = new ArrayList<>();
                 for (Event event : allEvents) {
-                    allEventsName.add(event.getName());
+                    boolean valid = true;
+                    for (Event used : usedEvents) {
+                        if (event.getName() != null && used.getName() != null) {
+                            valid = !event.getName().equals(used.getName());
+                        }
+                        if (!valid) {
+                            break;
+                        }
+                    }
+                    if (valid) {
+                        allEventsName.add(event.getName());
+                    }
                 }
                 addButton.setEnabled(!allEvents.isEmpty());
                 eventsCheckbox.setModel(new DefaultComboBoxModel(allEventsName.toArray()));
             } else {
+                allEvents = new ArrayList<>();
                 eventsCheckbox.setModel(new DefaultComboBoxModel(new String[]{}));
             }
-            List<Event> usedEvents = (List<Event>) getValue();
-            eventsTableModel.setEvents(usedEvents);
-            eventsTableModel.fireTableDataChanged();
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(addButton)) {
                 if (eventsCheckbox.getSelectedIndex() >= 0 && eventsCheckbox.getSelectedIndex() < eventsCheckbox.getItemCount()) {
-                    Event selected = service.findById(allEvents.get(eventsCheckbox.getSelectedIndex()).getId());
+                    Event selected = null;
+                    for (int i = 0; i < allEvents.size(); i++) {
+                        if (((String) eventsCheckbox.getSelectedItem()).equals(allEvents.get(i).getName())) {
+                            selected = service.findById(allEvents.get(i).getId());
+                            break;
+                        }
+                    }
                     if (selected != null) {
                         List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
                         selected.setId(null);
                         selected.setDependency(ExecutionState.INDEPENDENT);
                         events.add(selected);
+
                         eventsTableModel.setEvents(events);
                         eventsTableModel.fireTableDataChanged();
+
+                        setTableAndCheckbox();
                         setValue(events);
-                        deleteButton.setEnabled(true);
+                        checkButtonStates();
                     }
                 }
             } else if (e.getSource().equals(deleteButton)) {
                 if (eventsTable.getSelectedRow() >= 0 && eventsTable.getSelectedRow() < eventsTableModel.getRowCount()) {
                     List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
-                    events.remove(eventsTable.getSelectedRow());
+                    Event eventToRemove = events.get(eventsTable.getSelectedRow());
+                    events.remove(eventToRemove);
+
                     eventsTableModel.setEvents(events);
                     eventsTableModel.fireTableDataChanged();
+
+                    setTableAndCheckbox();
                     setValue(events);
-                    deleteButton.setEnabled(!eventsTableModel.getEvents().isEmpty());
+                    checkButtonStates();
                 }
             }
+        }
+
+        private void checkButtonStates() {
+            deleteButton.setEnabled(eventsTableModel.getRowCount() > 0);
+            addButton.setEnabled(eventsCheckbox.getItemCount() > 0);
         }
 
         @Override
@@ -109,25 +144,13 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 if (eventsTable.getSelectedRow() >= 0 && eventsTable.getSelectedRow() < eventsTable.getRowCount()) {
                     List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
-                    Event oldEvent = events.get(eventsTable.getSelectedRow());
-                    Event newEvent = new Event();
-                    newEvent.setDependency(oldEvent.getDependency());
-                    newEvent.setDescription(oldEvent.getDescription());
-                    newEvent.setEvents(oldEvent.getEvents());
-                    newEvent.setExecutionState((ExecutionState) executionStateCheckbox.getSelectedItem());
-                    newEvent.setId(oldEvent.getId());
-                    newEvent.setLastUpdate(oldEvent.getLastUpdate());
-                    newEvent.setName(oldEvent.getName());
-                    newEvent.setParent(oldEvent.getParent());
-                    newEvent.setProbability(oldEvent.getProbability());
-                    newEvent.setProcedures(oldEvent.getProcedures());
-                    newEvent.setUniqueIdentifier(oldEvent.getUniqueIdentifier());
-                    events.remove(oldEvent);
-                    events.add(eventsTable.getSelectedRow(), newEvent);
-                    events = new ArrayList<>(events);
+                    events.get(eventsTable.getSelectedRow()).setExecutionState((ExecutionState) executionStateCheckbox.getSelectedItem());
+
                     eventsTableModel.setEvents(events);
                     eventsTableModel.fireTableDataChanged();
-                    setValue(new ArrayList<>(eventsTableModel.getEvents()));
+
+                    setTableAndCheckbox();
+                    setValue(events);
                 }
             }
         }
