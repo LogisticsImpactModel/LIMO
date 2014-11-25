@@ -80,7 +80,7 @@ public final class ChainBuilderTopComponent extends TopComponent implements
         JScrollPane shapePane = new JScrollPane();
         shapePane.setViewportView(scene.createView());
         add(shapePane, BorderLayout.CENTER);
-        add(scene.createSatelliteView(), BorderLayout.WEST);
+        add(scene.createSatelliteView(), BorderLayout.SOUTH);
 
     }
 
