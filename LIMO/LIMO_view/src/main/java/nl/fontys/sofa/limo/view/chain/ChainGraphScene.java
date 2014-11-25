@@ -1,7 +1,7 @@
 package nl.fontys.sofa.limo.view.chain;
 
-import java.util.List;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
+import nl.fontys.sofa.limo.view.widget.HubWidget;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.graph.GraphScene;
 import org.netbeans.api.visual.widget.LayerWidget;
@@ -14,11 +14,11 @@ import org.netbeans.api.visual.widget.Widget;
  */
 public abstract class ChainGraphScene extends GraphScene<ContainerNode, ContainerNode> {
 
-    public abstract List<Widget> getWidgets();
-
     public abstract LayerWidget getMainLayer();
 
     public abstract LayerWidget getConnectionLayer();
+
+    public abstract ChainBuilder getChainBuilder();
 
     public abstract WidgetAction getSelectAction();
 
@@ -26,6 +26,12 @@ public abstract class ChainGraphScene extends GraphScene<ContainerNode, Containe
 
     public abstract WidgetAction getMoveAlignAction();
 
-    public abstract void repaintScene();
+    public abstract int getNumberOfHubs();
+
+    public abstract Widget getStartHubWidget();
+
+    public abstract void setStartHubWidget(HubWidget hubwidget);
+
+    public abstract void addHubWidget(HubWidget hubWidget);
 
 }

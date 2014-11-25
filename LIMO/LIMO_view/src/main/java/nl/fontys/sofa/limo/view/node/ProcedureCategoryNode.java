@@ -4,8 +4,6 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
-import org.netbeans.api.visual.graph.GraphScene;
-import org.netbeans.api.visual.widget.Widget;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
 
@@ -49,6 +47,16 @@ public class ProcedureCategoryNode extends AbstractBeanNode<ProcedureCategory> {
         }
 
         sets.put(set);
+    }
+
+    @Override
+    public AbstractBeanNode getDetachedNodeCopy() {
+        throw new UnsupportedOperationException("Copying not supported for procedurecategory.");
+    }
+
+    @Override
+    Class getServiceClass() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -48,7 +48,7 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
                 LegTypeWizardAction wiz = new LegTypeWizardAction();
                 wiz.isUpdate(bean);
                 wiz.actionPerformed(e);
-             //   createProperties(getBean(), null);
+                //   createProperties(getBean(), null);
                 //    setSheet(getSheet());
             }
         });
@@ -112,5 +112,15 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
             ErrorManager.getDefault();
         }
         sets.put(set);
+    }
+
+    @Override
+    public AbstractBeanNode getDetachedNodeCopy() {
+        throw new UnsupportedOperationException("Copying not supported for legtype.");
+    }
+
+    @Override
+    Class getServiceClass() {
+        return LegType.class;
     }
 }

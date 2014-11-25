@@ -2,10 +2,8 @@ package nl.fontys.sofa.limo.view.widget;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
-import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
 import org.netbeans.api.visual.action.ActionFactory;
@@ -42,16 +40,16 @@ public class EventWidget extends LabelWidget implements BasicWidget {
     }
 
     @Override
-    public boolean drop(ChainGraphScene scene, ChainBuilder chainBuilder, Widget widget, Point point) {
-        List<Widget> widgets = scene.getWidgets();
-        for (Widget w : widgets) {
-            Point localPoint = w.convertSceneToLocal(point);
-            if (w.isHitAt(localPoint)) {
-                w.addChild(this);
-                scene.repaintScene();
-                return true;
-            }
-        }
+    public boolean drop(ChainGraphScene scene, Widget widget, Point point) {
+//        List<Widget> widgets = scene.getWidgets();
+//        for (Widget w : widgets) {
+//            Point localPoint = w.convertSceneToLocal(point);
+//            if (w.isHitAt(localPoint)) {
+//                w.addChild(this);
+////                scene.repaintScene();
+//                return true;
+//            }
+//        }
         return false;
     }
 

@@ -1,7 +1,6 @@
 package nl.fontys.sofa.limo.view.widget;
 
 import java.awt.Point;
-import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
 import org.netbeans.api.visual.widget.Widget;
@@ -21,15 +20,19 @@ public interface BasicWidget {
     void addActions(ChainGraphScene scene);
 
     /**
-     * Drop this widget.
+     * Drop action for this widget. Every widget should implement this method to
+     * define what happens with the widget when it is dropped on the scene.
      *
-     * @param scene - the GraphScene
-     * @param widget - the widget where this widget is dropped on
+     * @param scene - the GraphScene where the widget is dropped on.
+     * @param builder - the chain builder.
+     * @param widget - the widget where this widget is dropped on.
+     * @param point - the location as a point where the widget is dropped.
      */
-    boolean drop(ChainGraphScene scene, ChainBuilder builder, Widget widget, Point point);
+    boolean drop(ChainGraphScene scene, Widget widget, Point point);
 
     /**
-     * Set the container of the widget.
+     * Set the container of the widget. Every widget has a container which
+     * contains the underlying BeanNode.
      *
      * @param container - the container node of this widget.
      */

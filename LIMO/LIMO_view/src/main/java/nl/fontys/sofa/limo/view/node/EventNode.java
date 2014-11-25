@@ -123,4 +123,14 @@ public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode
         }
         sets.put(set);
     }
+
+    @Override
+    public AbstractBeanNode getDetachedNodeCopy() {
+        throw new UnsupportedOperationException("Copying not supported for event.");
+    }
+
+    @Override
+    Class getServiceClass() {
+        return EventService.class;
+    }
 }

@@ -19,13 +19,13 @@ import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
-import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.netbeans.api.visual.graph.GraphScene;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
+import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 
 /**
@@ -189,5 +189,23 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
 
         sets.put(generalSet);
         sets.put(locationSet);
+    }
+
+    @Override
+    public AbstractBeanNode getDetachedNodeCopy() {
+        try {
+            HubService service = Lookup.getDefault().lookup(HubService.class);
+            Hub detachedHub = service.findById(getBean().getId());
+            detachedHub.setId(null);
+            return new HubNode(detachedHub);
+        } catch (IntrospectionException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+        return null;
+    }
+
+    @Override
+    Class getServiceClass() {
+        return HubService.class;
     }
 }
