@@ -27,7 +27,7 @@ import org.openide.util.Lookup;
  */
 public class LegTypeNode extends AbstractBeanNode<LegType> {
 
-        private final LegType bean;
+    private final LegType bean;
 
     public LegTypeNode(LegType bean) throws IntrospectionException {
         super(bean, LegType.class);
@@ -38,8 +38,8 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
     public boolean canDestroy() {
         return true;
     }
-    
-        @Override
+
+    @Override
     public Action[] getActions(boolean context) {
         ArrayList<Action> actionList = new ArrayList<>();
         actionList.add(new AbstractAction("Edit") {
@@ -49,7 +49,7 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
                 wiz.isUpdate(bean);
                 wiz.actionPerformed(e);
              //   createProperties(getBean(), null);
-            //    setSheet(getSheet());
+                //    setSheet(getSheet());
             }
         });
         actionList.add(new AbstractAction("Delete") {
@@ -65,8 +65,6 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
 
     @Override
     protected void createProperties(LegType bean, BeanInfo info) {
-        super.createProperties(bean, info);
-
         Sheet sets = getSheet();
         Sheet.Set set = Sheet.createPropertiesSet();
         set.setName("properties");

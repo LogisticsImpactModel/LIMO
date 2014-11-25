@@ -76,8 +76,6 @@ public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode
 
     @Override
     protected void createProperties(Event bean, BeanInfo info) {
-        super.createProperties(bean, info);
-
         Sheet sets = getSheet();
         Sheet.Set set = Sheet.createPropertiesSet();
         set.setName("properties");

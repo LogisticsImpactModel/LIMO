@@ -65,8 +65,6 @@ public class HubTypeNode extends AbstractBeanNode<HubType> {
 
     @Override
     protected void createProperties(HubType bean, BeanInfo info) {
-        super.createProperties(bean, info);
-
         Sheet sets = getSheet();
         Sheet.Set set = Sheet.createPropertiesSet();
         set.setName("properties");
