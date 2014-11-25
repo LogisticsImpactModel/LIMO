@@ -40,8 +40,8 @@ public class TestCaseTest {
         discreteDistribution.setInputValue("Y", 4);
         Event event = new Event("Too late", "You come too late to the hub.", start, ExecutionState.INDEPENDENT, discreteDistribution, ExecutionState.INDEPENDENT);
         Distribution always = new DiscreteDistribution();
-        discreteDistribution.setInputValue("X", 1);
-        discreteDistribution.setInputValue("Y", 1);
+        always.setInputValue("X", 1);
+        always.setInputValue("Y", 1);
         Event subEvent = new Event("Waiting", "Waiting because you were too late.", event, ExecutionState.EXECUTED, always, ExecutionState.INDEPENDENT);
         subEvent.addProcedure(new Procedure("waiting", "mandatory", new SingleValue(0), new RangeValue(2, 3), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
         event.addEvent(subEvent);

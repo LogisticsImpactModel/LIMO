@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import nl.fontys.limo.simulation.result.TestCaseResult;
-import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.Node;
+import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
@@ -38,7 +38,7 @@ public class TestCase implements Runnable {
     private List<Event> executedEvents;
 
     private long lastDelay;
-    
+
     private TestCaseResult result;
 
     public TestCase(SupplyChain supplyChain) {
@@ -177,6 +177,8 @@ public class TestCase implements Runnable {
                         }
                         double newLeadTime = delaysByCategory.get(procedure.getCategory()) + pDelay;
                         delaysByCategory.put(procedure.getCategory(), newLeadTime);
+
+                        executedEvents.add(event);
                     }
                 }
 
@@ -188,6 +190,7 @@ public class TestCase implements Runnable {
 
     /**
      * Get a random double between 0 and 1 to check if event should be exeuted.
+     *
      * @return Random double between 0 and 1.
      */
     private static double randomDouble() {
