@@ -7,12 +7,12 @@ import nl.fontys.sofa.limo.domain.component.event.Event;
 
 /**
  * A TestCaseResult is the result of simulating a single supply chain exactly
- * one time. 
+ * one time.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class TestCaseResult {
-    
+
     private final SupplyChain supplyChain;
     private final double totalCosts;
     private final double totalLeadTimes;
@@ -76,5 +76,5 @@ public class TestCaseResult {
     public List<Event> getExecutedEvents() {
         return executedEvents;
     }
-    
+
 }

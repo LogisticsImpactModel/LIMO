@@ -25,6 +25,14 @@ public class Event extends Component {
         super();
     }
 
+    public Event(Component parent, ExecutionState dependency, Distribution probability, ExecutionState executionState) {
+        super();
+        this.parent = parent;
+        this.dependency = dependency;
+        this.probability = probability;
+        this.executionState = executionState;
+    }
+
     public Component getParent() {
         return parent;
     }

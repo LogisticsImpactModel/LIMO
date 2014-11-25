@@ -1,15 +1,7 @@
 package nl.fontys.limo.simulation.result;
 
-import java.util.List;
-import java.util.Map;
-import nl.fontys.sofa.limo.domain.component.SupplyChain;
-import nl.fontys.sofa.limo.domain.component.event.Event;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -17,46 +9,8 @@ import static org.junit.Assert.*;
  */
 public class SimulationResultTest {
 
-    public SimulationResultTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
-    /**
-     * Test of addTestCaseResult method, of class SimulationResult.
-     */
-    @Test
-    public void testAddTestCaseResult() {
-        /*
-         System.out.println("addTestCaseResult");
-         TestCaseResult tcr = null;
-         SimulationResult instance = null;
-         instance.addTestCaseResult(tcr);
-         // TODO review the generated test code and remove the default call to fail.
-         fail("The test case is a prototype.");
-         */
-    }
-
-    /**
-     * Test of recalculateDataEntry method, of class SimulationResult.
-     */
     @Test
     public void testRecalculateDataEntry() {
-        System.out.println("recalculateDataEntry");
         SimulationResult instance = new SimulationResult(null);
         int oldCount = 0;
         double newValue = 6.0;

@@ -1,20 +1,14 @@
 package nl.fontys.limo.simulation.util;
 
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author Matthias Brück
  */
 public class MathUtilTest {
-    
-    public MathUtilTest() {
-    }
 
-    /**
-     * Test of getCumulativeMovingAverage method, of class MathUtil.
-     */
     @Test
     public void testGetCumulativeMovingAverage() {
         double oldAvg = 0.0;
