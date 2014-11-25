@@ -27,7 +27,7 @@ import org.openide.util.NbBundle.Messages;
         displayName = "#CTL_OpenManual"
 )
 @ActionReference(path = "Menu/Help", position = 0)
-@Messages("CTL_OpenManual=Open Manual")
+@Messages("CTL_OpenManual=User Manual")
 public final class OpenManual implements ActionListener {
 
     @Override
