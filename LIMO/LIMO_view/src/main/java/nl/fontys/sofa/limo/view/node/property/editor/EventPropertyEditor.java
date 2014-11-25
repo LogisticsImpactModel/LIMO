@@ -69,7 +69,12 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
         private void setTableAndCheckbox() {
             ArrayList<String> allEventsName = new ArrayList<>();
-            List<Event> usedEvents = new ArrayList<>(eventsTableModel.getEvents());
+            List<Event> usedEvents = null;
+            if (eventsTableModel.getEvents() != null) {
+                usedEvents = new ArrayList<>(eventsTableModel.getEvents());
+            } else {
+                usedEvents = new ArrayList<>();
+            }
             if (allEvents != null) {
                 for (Event event : allEvents) {
                     boolean valid = true;
