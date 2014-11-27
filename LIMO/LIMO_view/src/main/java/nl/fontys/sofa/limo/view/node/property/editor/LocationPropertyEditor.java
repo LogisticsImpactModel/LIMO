@@ -8,11 +8,17 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyEditorSupport;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -23,6 +29,7 @@ import nl.fontys.sofa.limo.domain.component.hub.Location;
 import org.openide.nodes.PropertyEditorRegistration;
 
 /**
+ * Property editor for the location object of hubs.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
@@ -100,9 +107,38 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
 
             cmbContinent = new JComboBox(Continent.values());
             cmbContinent.setSelectedItem(hubLocation.getContinent());
+            cmbContinent.addItemListener(new ItemListener() {
 
-            cmbCountry = new JComboBox(hubLocation.getContinent().getCountries().toArray());
+                private Continent oldContinent = null;
+
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if (e.getStateChange() == ItemEvent.DESELECTED) {
+                        oldContinent = (Continent) e.getItem();
+                    } else {
+                        if (!oldContinent.equals(e.getItem())) {
+                            cmbCountry.setModel(new DefaultComboBoxModel(getCountries((Continent) e.getItem())));
+                            cmbCountry.setSelectedIndex(0);
+                        }
+                        oldContinent = null;
+                    }
+                }
+            });
+
+            cmbCountry = new JComboBox(getCountries(hubLocation.getContinent()));
             cmbCountry.setSelectedItem(hubLocation.getCountry());
+            cmbCountry.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    boolean enable = cmbCountry.getSelectedIndex() > 0;
+                    tfStreet.setEnabled(enable);
+                    tfNumber.setEnabled(enable);
+                    tfCity.setEnabled(enable);
+                    tfZip.setEnabled(enable);
+                    tfState.setEnabled(enable);
+                }
+            });
 
             tfStreet = new JTextField(hubLocation.getStreet());
             tfNumber = new JTextField(hubLocation.getHousenumber());
@@ -110,6 +146,14 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             tfZip = new JTextField(hubLocation.getPostcode());
             tfState = new JTextField(hubLocation.getState());
 
+            boolean enable = cmbCountry.getSelectedIndex() > 0;
+            tfStreet.setEnabled(enable);
+            tfNumber.setEnabled(enable);
+            tfCity.setEnabled(enable);
+            tfZip.setEnabled(enable);
+            tfState.setEnabled(enable);
+
+            //<editor-fold defaultstate="collapsed" desc="Layout">
             setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
             c.fill = GridBagConstraints.HORIZONTAL;
@@ -194,6 +238,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             c.gridwidth = 6;
             c.weightx = 1;
             add(buttonBar, c);
+//</editor-fold>
         }
 
         @Override
@@ -203,12 +248,14 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
 
                 Location loc = new Location();
                 loc.setContinent((Continent) cmbContinent.getSelectedItem());
-                loc.setCountry((Country) cmbCountry.getSelectedItem());
-                loc.setStreet(tfStreet.getText());
-                loc.setHousenumber(tfNumber.getText());
-                loc.setTown(tfCity.getText());
-                loc.setPostcode(tfZip.getText());
-                loc.setState(tfState.getText());
+                loc.setCountry(countriesByName.get((String) cmbCountry.getSelectedItem()));
+                if (cmbCountry.getSelectedIndex() > 0) {
+                    loc.setStreet(tfStreet.getText());
+                    loc.setHousenumber(tfNumber.getText());
+                    loc.setTown(tfCity.getText());
+                    loc.setPostcode(tfZip.getText());
+                    loc.setState(tfState.getText());
+                }
                 hubLocation = loc;
             }
 
@@ -217,6 +264,24 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             }
             setVisible(false);
             dispose();
+        }
+
+        private Map<String, Country> countriesByName;
+
+        private String[] getCountries(Continent continent) {
+            List<Country> countryList = continent == null ? Country.getAll() : continent.getCountries();
+            String[] countries = new String[countryList.size() + 1];
+            countries[0] = "";
+            countriesByName = new HashMap<>(countryList.size());
+
+            for (int i = 0; i < countryList.size(); i++) {
+                Country country = countryList.get(i);
+
+                countries[i + 1] = country.getName();
+                countriesByName.put(country.getName(), country);
+            }
+
+            return countries;
         }
 
     }
