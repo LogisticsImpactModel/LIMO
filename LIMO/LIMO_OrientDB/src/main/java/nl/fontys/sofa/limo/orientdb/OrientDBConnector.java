@@ -1,9 +1,5 @@
 package nl.fontys.sofa.limo.orientdb;
 
-import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
-import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
 import com.orientechnologies.orient.core.db.record.ODatabaseRecord;
 import com.orientechnologies.orient.core.entity.OEntityManager;
@@ -12,24 +8,52 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import com.orientechnologies.orient.object.serialization.OObjectSerializerContext;
 import com.orientechnologies.orient.object.serialization.OObjectSerializerHelper;
-import java.io.File;
-import nl.fontys.sofa.limo.domain.*;
-import nl.fontys.sofa.limo.domain.component.*;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.domain.component.Component;
+import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.domain.component.event.distribution.*;
-import nl.fontys.sofa.limo.domain.component.event.distribution.input.*;
-import nl.fontys.sofa.limo.domain.component.hub.*;
-import nl.fontys.sofa.limo.domain.component.leg.*;
+import nl.fontys.sofa.limo.domain.component.event.distribution.CauchyDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.ChiSquaredDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.DiscreteDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.ExponentionalDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.FDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.GammaDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.LogNormalDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.NormalDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.PoissonDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.TriangularDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.WeibullDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.input.DoubleInputValue;
+import nl.fontys.sofa.limo.domain.component.event.distribution.input.InputValue;
+import nl.fontys.sofa.limo.domain.component.event.distribution.input.IntegerInputValue;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.hub.Location;
+import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
+import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
+import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
+import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
-import nl.fontys.sofa.limo.domain.component.type.*;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.domain.component.type.Type;
 import nl.fontys.sofa.limo.orientdb.serialization.ContinentSerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.CountrySerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.ExecutionStateSerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.TimeTypeSerializer;
+import org.openide.util.Exceptions;
 
 /**
- * Singleton connection to OrientDB file database. Maintaines schema and allows for communciation to
- * database for the OrientDB DAOs.
+ * Singleton connection to OrientDB file database. Maintaines schema and allows
+ * for communciation to database for the OrientDB DAOs.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
@@ -59,7 +83,7 @@ public class OrientDBConnector {
      * Inject different database URL for test purposes.
      */
     static String databaseURL = null;
-    
+
     /**
      * Helper method for ease of use.
      *
@@ -101,7 +125,7 @@ public class OrientDBConnector {
             this.connection.open("admin", "admin");
             this.createSchema();
         }
-        
+
         this.connection.setLazyLoading(false);
     }
 
@@ -163,10 +187,10 @@ public class OrientDBConnector {
             if (!clazz.existsProperty("uniqueIdentifier")) {
                 clazz.createProperty("uniqueIdentifier", OType.STRING);
             }
-            
+
             clazz.createIndex("uuid", OClass.INDEX_TYPE.UNIQUE_HASH_INDEX, "uniqueIdentifier");
         }
-        
+
         // Create class and property for value
         OClass iivClass = this.connection.getMetadata().getSchema().getClass(IntegerInputValue.class);
         if (iivClass == null) {
@@ -185,7 +209,8 @@ public class OrientDBConnector {
     }
 
     /**
-     * Generate the URL to the database. In this case to a folder on the hard drive.
+     * Generate the URL to the database. In this case to a folder on the hard
+     * drive.
      *
      * @return Database URL.
      */
@@ -193,8 +218,18 @@ public class OrientDBConnector {
         if (databaseURL != null) {
             return databaseURL;
         }
-        
-        return "plocal:" + System.getProperty("user.home") + File.separator + "LIMO";
+
+        Path path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "/LIMO");
+        if (!Files.exists(path)) {
+            try {
+                Files.createDirectory(path);
+                Files.setAttribute(path, "dos:hidden", true);
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        }
+
+        return "plocal:" + path.toString();
     }
 
     /**
