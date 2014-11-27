@@ -8,13 +8,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.DefaultTableModel;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import org.openide.WizardDescriptor;
@@ -22,15 +22,13 @@ import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
 /**
- *
  * @author Matthias Brück
  */
-public abstract class BaseEntitySelectionPanel<T extends BaseEntity> implements ActionListener, MouseListener, WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
+public abstract class BaseEntitySelectionPanel<T extends BaseEntity> implements ActionListener, MouseListener, TableModelListener, WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     protected List<T> selectedEntities;
     protected List<T> allEntities;
     protected final JPanel component;
-    private final JCheckBox chboxSelection;
     protected JTable tblEntities;
     protected DefaultTableModel tblmdlEntities;
     private final JButton btnSelectAll, btnDeselectAll;
@@ -47,7 +45,7 @@ public abstract class BaseEntitySelectionPanel<T extends BaseEntity> implements 
             entityModel[i][1] = false;
         }
         //COMPONENT BASIC
-        tblmdlEntities = new DefaultTableModel(entityModel, new String[]{"Name", "Selected"}, new boolean[]{false, true});
+        tblmdlEntities = new DefaultTableModel(entityModel, new String[]{"Name", "Selected"}, new boolean[]{false, true}, new Class[]{String.class, Boolean.class});
         cc = new CellConstraints();
         layout = new FormLayout("5px, pref, 5px, pref, pref:grow, 5px", "5px, pref, 5px, pref:grow, 5px");
         component.setLayout(layout);
@@ -60,9 +58,7 @@ public abstract class BaseEntitySelectionPanel<T extends BaseEntity> implements 
         component.add(btnDeselectAll, cc.xy(4, 2));
         //TABLE
         tblEntities = new JTable(tblmdlEntities);
-        chboxSelection = new JCheckBox("", false);
-        chboxSelection.addActionListener(this);
-        tblEntities.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(chboxSelection));
+        tblmdlEntities.addTableModelListener(this);
         tblEntities.addMouseListener(this);
         JScrollPane tblEntitiesPane = new JScrollPane(tblEntities);
         component.add(tblEntitiesPane, cc.xyw(2, 4, 4));
@@ -81,16 +77,6 @@ public abstract class BaseEntitySelectionPanel<T extends BaseEntity> implements 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(chboxSelection)) {
-            if (tblEntities.getSelectedRow() >= 0 && tblEntities.getSelectedRow() < allEntities.size()) {
-                JCheckBox box = (JCheckBox) e.getSource();
-                if (box.isSelected()) {
-                    selectedEntities.add(allEntities.get(tblEntities.getSelectedRow()));
-                } else {
-                    selectedEntities.remove(allEntities.get(tblEntities.getSelectedRow()));
-                }
-            }
-        }
         if (e.getSource().equals(btnSelectAll)) {
             selectedEntities.clear();
             selectedEntities.addAll(allEntities);
@@ -151,5 +137,18 @@ public abstract class BaseEntitySelectionPanel<T extends BaseEntity> implements 
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        if (e.getSource().equals(tblmdlEntities)) {
+            if (tblEntities.getSelectedRow() >= 0 && tblEntities.getSelectedRow() < allEntities.size()) {
+                if ((boolean)(((DefaultTableModel)e.getSource()).getValueAt(tblEntities.getSelectedRow(), 1))) {
+                    selectedEntities.add(allEntities.get(tblEntities.getSelectedRow()));
+                } else {
+                    selectedEntities.remove(allEntities.get(tblEntities.getSelectedRow()));
+                }
+            }
+        }
     }
 }

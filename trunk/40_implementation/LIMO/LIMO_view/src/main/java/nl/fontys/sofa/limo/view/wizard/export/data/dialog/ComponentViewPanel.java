@@ -10,7 +10,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 
 /**
  * @author Matthias Brück
@@ -39,7 +41,7 @@ public class ComponentViewPanel extends JPanel {
             eventsModel[i][0] = events[i].getName();
             eventsModel[i][1] = events[i].getDependency();
         }
-        tblmdlEvents = new DefaultTableModel(eventsModel, new String[]{"Name", "Dependency"}, null);
+        tblmdlEvents = new DefaultTableModel(eventsModel, new String[]{"Name", "Dependency"}, null, new Class[]{String.class, ExecutionState.class});
         tblEvents = new JTable(tblmdlEvents);
         JScrollPane tblEventsPane = new JScrollPane(tblEvents);
         this.add(tblEventsPane, cc.xyw(2, 6, 3));
@@ -52,7 +54,7 @@ public class ComponentViewPanel extends JPanel {
             procedureModel[i][1] = procedures[i].getCategory();
             procedureModel[i][2] = procedures[i].getDirection();
         }
-        tblmdlProcedures = new DefaultTableModel(procedureModel, new String[]{"Name", "Category", "Dependency"}, null);
+        tblmdlProcedures = new DefaultTableModel(procedureModel, new String[]{"Name", "Category", "Dependency"}, null, new Class[]{String.class, String.class, ProcedureResponsibilityDirection.class});
         tblProcedures = new JTable(tblmdlProcedures);
         JScrollPane tblProcedurePane = new JScrollPane(tblProcedures);
         this.add(tblProcedurePane, cc.xyw(2, 10, 3));
