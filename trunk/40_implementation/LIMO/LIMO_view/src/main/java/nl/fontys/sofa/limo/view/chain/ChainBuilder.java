@@ -18,6 +18,13 @@ public interface ChainBuilder {
     void addHub(Hub hub);
 
     /**
+     * Remove the hub from the chain.
+     *
+     * @param hub - the hub to be removed.
+     */
+    void removeHub(Hub hub);
+
+    /**
      * Get the number of hubs in the chain.
      *
      * @return int - the number of hubs in the chain.

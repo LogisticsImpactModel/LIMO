@@ -55,7 +55,7 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     private final WidgetAction reconnectAction;
 
     private HubWidget startHubWidget;
-    private StartWidget startFlagWidget;
+    private final StartWidget startFlagWidget;
 
     public GraphSceneImpl2(ChainBuilderTopComponent parent) throws IOException {
         this.parent = parent;
@@ -149,6 +149,11 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     }
 
     @Override
+    public void removeHubWidget(HubWidget hubWidget) {
+        chainBuilder.removeHub(hubWidget.getHub());
+    }
+
+    @Override
     protected Widget attachNodeWidget(ContainerNode node) {
         BasicWidget widget = (BasicWidget) node.getWidget(this);
         widget.addActions(this);
@@ -209,6 +214,7 @@ public class GraphSceneImpl2 extends ChainGraphScene {
             AbstractBeanNode node = (AbstractBeanNode) NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
             AbstractBeanNode detachedNode = node.getDetachedNodeCopy();
             BasicWidget w = (BasicWidget) scene.addNode(new ContainerNode(detachedNode));
+            detachedNode.addPropertyChangeListener(w);
             boolean succesfullDrop = w.drop(scene, widget, point);
         }
     }

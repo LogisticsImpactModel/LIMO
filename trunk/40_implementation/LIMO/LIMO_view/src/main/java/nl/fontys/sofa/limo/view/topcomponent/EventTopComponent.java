@@ -2,12 +2,9 @@ package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
 import javax.swing.ActionMap;
-import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.factory.EventChildFactory;
 import nl.fontys.sofa.limo.view.node.EventRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
-import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
@@ -16,7 +13,6 @@ import org.openide.explorer.view.BeanTreeView;
 import org.openide.explorer.view.OutlineView;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
-import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
 import org.openide.windows.TopComponent;
 
@@ -57,20 +53,20 @@ public final class EventTopComponent extends TopComponent implements ExplorerMan
         ov.setPropertyColumns("description", "Description");
         add(ov, BorderLayout.CENTER);
 
-        try {
-            Node rootNode;
-            Children children = Children.create(new EventChildFactory(), true);
-            rootNode = new EventRootNode(children);
-            rootNode.setDisplayName("Event");
-            em.setRootContext(rootNode);
-        } catch (ServiceNotFoundException ex) {
-            Exceptions.printStackTrace(ex);
-            NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
-                    + "a problem, changes made will not be saved. Please contact "
-                    + "your administrator...",
-                    NotifyDescriptor.ERROR_MESSAGE);
-            DialogDisplayer.getDefault().notify(d);
-        }
+//        try {
+        Node rootNode;
+        Children children = Children.create(new EventChildFactory(), true);
+        rootNode = new EventRootNode(children);
+        rootNode.setDisplayName("Event");
+        em.setRootContext(rootNode);
+//        } catch (ServiceNotFoundException ex) {
+//            Exceptions.printStackTrace(ex);
+//            NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
+//                    + "a problem, changes made will not be saved. Please contact "
+//                    + "your administrator...",
+//                    NotifyDescriptor.ERROR_MESSAGE);
+//            DialogDisplayer.getDefault().notify(d);
+//        }
 
         ActionMap map = getActionMap();
         map.put("delete", ExplorerUtils.actionDelete(em, true));

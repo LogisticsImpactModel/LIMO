@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.view.node;
 
 import java.io.IOException;
 import javax.swing.Action;
+import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
@@ -10,6 +11,7 @@ import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.actions.NewAction;
 import org.openide.nodes.Children;
+import org.openide.util.Lookup;
 import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 
@@ -20,8 +22,11 @@ import org.openide.util.datatransfer.NewType;
  */
 public class ProcedureCategoryRootNode extends AbstractRootNode {
 
+    private DAO service;
+
     public ProcedureCategoryRootNode(Children children) throws ServiceNotFoundException {
         super(children);
+        service = Lookup.getDefault().lookup(ProcedureCategoryService.class);
     }
 
     @Override
