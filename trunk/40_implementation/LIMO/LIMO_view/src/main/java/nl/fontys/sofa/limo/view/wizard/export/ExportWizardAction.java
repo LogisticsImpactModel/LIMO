@@ -25,9 +25,9 @@ import org.openide.util.Lookup;
  *
  * @author Matthias Brück
  */
-@ActionID(category = "Export", id = "nl.fontys.limo.view.wizard.export.ExportWizardAction")
-@ActionRegistration(displayName = "Export data")
-@ActionReference(path = "Menu/Master Data/Export")
+@ActionID(category = "Master Data", id = "nl.fontys.limo.view.wizard.export.ExportWizardAction")
+@ActionRegistration(displayName = "Export Master Data..", iconBase = "icons/gui/database.gif")
+@ActionReference(path = "Menu/Master Data", position = 1600, separatorBefore = 1550)
 public final class ExportWizardAction implements ActionListener {
 
     private List<List<BaseEntity>> objectsToExport;

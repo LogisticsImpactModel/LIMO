@@ -22,7 +22,7 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
 @ActionID(category = "HubType", id = "nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
-@ActionRegistration(displayName = "Add")
+@ActionRegistration(displayName = "New Hub Type..", iconBase = "icons/gui/add.gif")
 @ActionReference(path = "Menu/Master Data/Hub Type", position = 20)
 public final class HubTypeWizardAction extends TypeWizardAction {
 

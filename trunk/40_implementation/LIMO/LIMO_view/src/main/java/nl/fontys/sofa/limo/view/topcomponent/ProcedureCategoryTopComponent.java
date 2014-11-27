@@ -36,8 +36,8 @@ import org.openide.windows.TopComponent;
         preferredID = "ProcedureCategoryTopComponent"
 )
 @Messages({
-    "CTL_ProcedureCategoryAction=List",
-    "CTL_ProcedureCategoryTopComponent=Procedure Category List",
+    "CTL_ProcedureCategoryAction=Procedure Category Catalog",
+    "CTL_ProcedureCategoryTopComponent=Procedure Category Catalog",
     "HINT_ProcedureCategoryTopComponent=Manage Procedure Categories"
 })
 public final class ProcedureCategoryTopComponent extends TopComponent
