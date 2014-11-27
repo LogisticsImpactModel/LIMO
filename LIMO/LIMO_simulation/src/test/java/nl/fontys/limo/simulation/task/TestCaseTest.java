@@ -1,5 +1,6 @@
 package nl.fontys.limo.simulation.task;
 
+import java.util.Arrays;
 import nl.fontys.limo.simulation.result.TestCaseResult;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.event.Event;
@@ -9,6 +10,7 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
+import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
@@ -116,27 +118,74 @@ public class TestCaseTest {
         assertTrue("Max 4000 based on events.", 4000 >= result.getTotalExtraCosts());
 
         assertTrue("No delay can happen.", 0 <= result.getTotalDelays());
-        assertTrue("Up to 3 hours can happen.", 3 * 60 >= result.getTotalDelays());
+        assertTrue("Up to 4 hours can happen.", 4 * 60 >= result.getTotalDelays());
 
         assertTrue("Min 5 hours lead time.", 5 * 60 <= result.getTotalLeadTimes());
         assertTrue("Max 7 hours lead time.", 7 * 60 >= result.getTotalLeadTimes());
     }
 
+    //@Test
+    public void testScheduledLegTakeAlternative() {
+        buildComplexSupplyChain();
+
+        Leg leg2 = new Leg();
+        leg2.addProcedure(new Procedure("loading", "mandatory", new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        leg2.setNext(end);
+        start.setNext(leg2);
+
+        supplyChain.setStart(start);
+        ScheduledLeg scheduledLeg = new ScheduledLeg();
+        start.setNext(scheduledLeg);
+        scheduledLeg.setNext(end);
+        scheduledLeg.setAlternative(leg2);
+        scheduledLeg.setWaitingTimeLimit(20);
+        scheduledLeg.setAcceptanceTimes(Arrays.asList(new Long[]{(long) 30}));
+
+        testCase.run();
+        TestCaseResult result = testCase.getResult();
+        assertNotNull(result);
+
+        assertTrue("Min 5000 based on procedures.", 5000 <= result.getTotalCosts());
+
+        assertTrue("Min 3000 based on events.", 3000 <= result.getTotalExtraCosts());
+        assertTrue("Max 4000 based on events.", 4000 >= result.getTotalExtraCosts());
+
+        assertTrue("No delay can happen.", 0 <= result.getTotalDelays());
+        assertTrue("Up to 4 hours can happen.", 4 * 60 >= result.getTotalDelays());
+
+        assertTrue("Min 5 hours lead time.", 5 * 60 <= result.getTotalLeadTimes());
+
+        //Alternative
+        boolean tooLate = false;
+        for (Event executedEvent : result.getExecutedEvents()) {
+            if (executedEvent.getName().equals("Waiting")) {
+                tooLate = true;
+            }
+        }
+        if (tooLate) {
+            assertTrue("Max 11000 based on procedures.", 11000 >= result.getTotalCosts());
+            assertTrue("Max 11 hours lead time.", 11 * 60 >= result.getTotalLeadTimes());
+        } else {
+            assertTrue("Max 7000 based on procedures.", 7000 >= result.getTotalCosts());
+            assertTrue("Max 7 hours lead time.", 7 * 60 >= result.getTotalLeadTimes());
+        }
+    }
+
     private void buildComplexSupplyChain() {
         start.addProcedure(new Procedure("loading", "mandatory", new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+
         Distribution discreteDistribution = new DiscreteDistribution();
         discreteDistribution.setInputValue("X", 1);
         discreteDistribution.setInputValue("Y", 4);
-        Event event = new Event("Too late", "You come too late to the hub.", start, ExecutionState.INDEPENDENT, discreteDistribution, ExecutionState.INDEPENDENT);
-
+        Event event = new Event("Too late", "You come too late to the hub.", start, ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
         Event subEvent = new Event("Waiting", "Waiting because you were too late.", event, ExecutionState.EXECUTED, always, ExecutionState.INDEPENDENT);
-        subEvent.addProcedure(new Procedure("waiting", "mandatory", new SingleValue(0), new RangeValue(2, 3), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        subEvent.addProcedure(new Procedure("waiting", "if too late", new SingleValue(0), new RangeValue(2, 3), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
         event.addEvent(subEvent);
         start.addEvent(event);
 
         end.addProcedure(new Procedure("unloading", "mandatory", new RangeValue(2000, 3000), new RangeValue(2, 3), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
-        Event event2 = new Event("Damage container", "You damage a container.", end, ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
-        event2.addProcedure(new Procedure("costs", "mandatory", new RangeValue(3000, 4000), new SingleValue(0), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
+        Event event2 = new Event("Damaged container", "You damage a container.", end, ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
+        event2.addProcedure(new Procedure("costs", "always", new RangeValue(3000, 4000), new SingleValue(0), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
         end.addEvent(event2);
 
         leg = new Leg();
