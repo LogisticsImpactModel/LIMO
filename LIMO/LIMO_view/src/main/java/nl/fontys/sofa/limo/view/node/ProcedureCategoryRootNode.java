@@ -2,13 +2,12 @@ package nl.fontys.sofa.limo.view.node;
 
 import java.io.IOException;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionDialogInputPanel;
-import org.openide.DialogDescriptor;
-import org.openide.DialogDisplayer;
 import org.openide.actions.NewAction;
 import org.openide.nodes.Children;
 import org.openide.util.Lookup;
@@ -56,13 +55,12 @@ public class ProcedureCategoryRootNode extends AbstractRootNode {
             @Override
             public void create() throws IOException {
                 NameDescriptionDialogInputPanel inputPane = new NameDescriptionDialogInputPanel();
-                DialogDescriptor dd = new DialogDescriptor(inputPane, "Procedure Category");
-                DialogDisplayer.getDefault().notify(dd);
+                int result = JOptionPane.showConfirmDialog(null, inputPane, "New Procedure Category", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 
                 String name = inputPane.getNameFieldValue();
                 String description = inputPane.getDescriptionFieldValue();
 
-                if (!name.isEmpty() && !description.isEmpty()) {
+                if (result == JOptionPane.OK_OPTION && !name.isEmpty() && !description.isEmpty()) {
                     ProcedureCategory pc = new ProcedureCategory();
                     pc.setName(name);
                     pc.setDescription(description);
