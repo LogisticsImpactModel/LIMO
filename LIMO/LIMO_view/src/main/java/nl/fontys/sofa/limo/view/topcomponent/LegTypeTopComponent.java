@@ -36,8 +36,8 @@ import org.openide.util.NbBundle.Messages;
         preferredID = "LegTypeTopComponent"
 )
 @Messages({
-    "CTL_LegTypeAction=List",
-    "CTL_LegTypeTopComponent=Leg Type List",
+    "CTL_LegTypeAction=Leg Type Catalog",
+    "CTL_LegTypeTopComponent=Leg Type Catalog",
     "HINT_LegTypeTopComponent=Manage Leg Types"
 })
 public final class LegTypeTopComponent extends TopComponent

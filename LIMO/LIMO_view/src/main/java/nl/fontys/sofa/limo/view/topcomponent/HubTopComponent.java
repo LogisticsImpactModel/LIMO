@@ -36,8 +36,8 @@ import org.openide.util.NbBundle.Messages;
         preferredID = "HubTopComponent"
 )
 @Messages({
-    "CTL_HubAction=List",
-    "CTL_HubTopComponent=Hub List",
+    "CTL_HubAction=Hub Catalog",
+    "CTL_HubTopComponent=Hub Catalog",
     "HINT_HubTopComponent=Manage Hubs"
 })
 public final class HubTopComponent extends TopComponent implements ExplorerManager.Provider {

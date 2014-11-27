@@ -44,25 +44,26 @@
             </file>
         </folder>
         <folder name="Master Data">
-            <folder name="Event">
+            <folder name="Procedure Category">
                 <attr name="position" intvalue="10"/>
             </folder>
-            <folder name="Hub Type">
+            <folder name="Event">
                 <attr name="position" intvalue="20"/>
             </folder>
-            <folder name="Hub">
+            <folder name="Leg Type">
                 <attr name="position" intvalue="30"/>
             </folder>
-            <folder name="Procedure Category">
+            <folder name="Hub Type">
                 <attr name="position" intvalue="40"/>
             </folder>
-            <file name="separatorAfter.instance">
-                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+            <folder name="Hub">
                 <attr name="position" intvalue="50"/>
-            </file>
-            <folder name="Export">
-                <attr name="position" intvalue="9999999"/>
             </folder>
+
+
+            <file name="nl.fontys.limo.view.wizard.export.ExportWizardAction.instance">
+                <attr name="position" intvalue="1600"/>
+            </file>
         </folder>
 
     </folder>

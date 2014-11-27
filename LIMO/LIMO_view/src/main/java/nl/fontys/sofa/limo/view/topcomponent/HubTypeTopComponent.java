@@ -36,8 +36,8 @@ import org.openide.util.NbBundle.Messages;
         preferredID = "HubTypeTopComponent"
 )
 @Messages({
-    "CTL_HubTypeAction=List",
-    "CTL_HubTypeTopComponent=Hub Type List",
+    "CTL_HubTypeAction=Hub Type Catalog",
+    "CTL_HubTypeTopComponent=Hub Type Catalog",
     "HINT_HubTypeTopComponent=Manage Hub Types"
 })
 public final class HubTypeTopComponent extends TopComponent

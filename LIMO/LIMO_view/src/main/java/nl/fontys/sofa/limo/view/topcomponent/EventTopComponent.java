@@ -33,8 +33,8 @@ import org.openide.windows.TopComponent;
         preferredID = "EventTopComponent"
 )
 @Messages({
-    "CTL_EventAction=List",
-    "CTL_EventTopComponent=Event List",
+    "CTL_EventAction=Event Catalog",
+    "CTL_EventTopComponent=Event Catalog",
     "HINT_EventTopComponent=Manage Events"
 })
 public final class EventTopComponent extends TopComponent implements ExplorerManager.Provider {

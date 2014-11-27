@@ -22,7 +22,7 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
 @ActionID(category = "LegType", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
-@ActionRegistration(displayName = "Add")
+@ActionRegistration(displayName = "New Leg Type..", iconBase = "icons/gui/add.gif")
 @ActionReference(path = "Menu/Master Data/Leg Type", position = 20)
 public final class LegTypeWizardAction extends TypeWizardAction {
 
