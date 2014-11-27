@@ -56,7 +56,7 @@ public class ProcedureCategoryRootNode extends AbstractRootNode {
             @Override
             public void create() throws IOException {
                 NameDescriptionDialogInputPanel inputPane = new NameDescriptionDialogInputPanel();
-                DialogDescriptor dd = new DialogDescriptor(inputPane, "Hub Type");
+                DialogDescriptor dd = new DialogDescriptor(inputPane, "Procedure Category");
                 DialogDisplayer.getDefault().notify(dd);
 
                 String name = inputPane.getNameFieldValue();
