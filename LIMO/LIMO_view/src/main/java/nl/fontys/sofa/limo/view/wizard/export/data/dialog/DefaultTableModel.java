@@ -9,6 +9,7 @@ package nl.fontys.sofa.limo.view.wizard.export.data.dialog;
 public class DefaultTableModel extends javax.swing.table.DefaultTableModel {
 
     private final boolean[] editable;
+    private final Class[] classes;
 
     /**
      *
@@ -18,7 +19,7 @@ public class DefaultTableModel extends javax.swing.table.DefaultTableModel {
      * will be false for missing columns. If it's to big the columns that are to
      * much will be ignored. Does not support adding and removing of columns.
      */
-    public DefaultTableModel(Object[][] data, Object[] columnHeader, boolean[] editable) {
+    public DefaultTableModel(Object[][] data, Object[] columnHeader, boolean[] editable, Class[] classes) {
         super(data, columnHeader);
         if (editable == null) {
             this.editable = new boolean[columnHeader.length];
@@ -28,6 +29,7 @@ public class DefaultTableModel extends javax.swing.table.DefaultTableModel {
         } else {
             this.editable = editable;
         }
+        this.classes = classes;
     }
 
     /**
@@ -41,6 +43,14 @@ public class DefaultTableModel extends javax.swing.table.DefaultTableModel {
         if (editable.length >= column && column > 0) {
             editable[column - 1] = isEditable;
         }
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        if (columnIndex < classes.length && columnIndex >= 0) {
+            return classes[columnIndex];
+        }
+        return Object.class;
     }
 
     /**
