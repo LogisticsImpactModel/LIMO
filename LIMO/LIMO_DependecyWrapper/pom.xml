@@ -6,6 +6,7 @@
         <artifactId>LIMO-parent</artifactId>
         <version>0.1-ALPHA</version>
     </parent>
+    <name>LIMO_DependencyWrapper</name>
     <artifactId>LIMO_DependecyWrapper</artifactId>
     <packaging>nbm</packaging>
     <build>
@@ -105,5 +106,4 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <name>LIMO_DependencyWrapper</name>
 </project>
