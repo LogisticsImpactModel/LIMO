@@ -50,7 +50,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                 deleteButton.removeActionListener(listener);
             }
             deleteButton.addActionListener(this);
-            executionStateCheckbox.addItemListener(this);
+            executionStateComboBox.addItemListener(this);
             deleteButton.setEnabled(!eventsTableModel.getEvents().isEmpty());
         }
 
@@ -91,20 +91,20 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                     }
                 }
                 addButton.setEnabled(!allEvents.isEmpty());
-                eventsCheckbox.setModel(new DefaultComboBoxModel(allEventsName.toArray()));
+                eventsComboBox.setModel(new DefaultComboBoxModel(allEventsName.toArray()));
             } else {
                 allEvents = new ArrayList<>();
-                eventsCheckbox.setModel(new DefaultComboBoxModel(new String[]{}));
+                eventsComboBox.setModel(new DefaultComboBoxModel(new String[]{}));
             }
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(addButton)) {
-                if (eventsCheckbox.getSelectedIndex() >= 0 && eventsCheckbox.getSelectedIndex() < eventsCheckbox.getItemCount()) {
+                if (eventsComboBox.getSelectedIndex() >= 0 && eventsComboBox.getSelectedIndex() < eventsComboBox.getItemCount()) {
                     Event selected = null;
                     for (int i = 0; i < allEvents.size(); i++) {
-                        if (((String) eventsCheckbox.getSelectedItem()).equals(allEvents.get(i).getName())) {
+                        if (((String) eventsComboBox.getSelectedItem()).equals(allEvents.get(i).getName())) {
                             selected = service.findById(allEvents.get(i).getId());
                             break;
                         }
@@ -141,7 +141,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
         private void checkButtonStates() {
             deleteButton.setEnabled(eventsTableModel.getRowCount() > 0);
-            addButton.setEnabled(eventsCheckbox.getItemCount() > 0);
+            addButton.setEnabled(eventsComboBox.getItemCount() > 0);
         }
 
         @Override
@@ -149,7 +149,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 if (eventsTable.getSelectedRow() >= 0 && eventsTable.getSelectedRow() < eventsTable.getRowCount()) {
                     List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
-                    events.get(eventsTable.getSelectedRow()).setExecutionState((ExecutionState) executionStateCheckbox.getSelectedItem());
+                    events.get(eventsTable.getSelectedRow()).setExecutionState((ExecutionState) executionStateComboBox.getSelectedItem());
 
                     eventsTableModel.setEvents(events);
                     eventsTableModel.fireTableDataChanged();

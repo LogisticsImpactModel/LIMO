@@ -39,7 +39,7 @@ public final class EventHubTypePanel extends EventsPanel {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Event selected = service.findById(allEvents.get(eventsCheckbox.getSelectedIndex()).getId());
+                Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
                 selected.setId(null);
   //              selected.setParent(ht);
                 selected.setDependency(ExecutionState.INDEPENDENT);
@@ -57,6 +57,6 @@ public final class EventHubTypePanel extends EventsPanel {
         for (Event e : allEvents) {
             events.add(e.getName());
         }
-        eventsCheckbox.setModel(new DefaultComboBoxModel(events.toArray()));
+        eventsComboBox.setModel(new DefaultComboBoxModel(events.toArray()));
     }
 }

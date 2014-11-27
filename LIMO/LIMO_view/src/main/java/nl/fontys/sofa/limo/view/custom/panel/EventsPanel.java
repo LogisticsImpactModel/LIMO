@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -29,12 +30,13 @@ public abstract class EventsPanel extends JPanel {
     protected JTable eventsTable;
     protected JButton addButton;
     protected JButton deleteButton;
-    protected JComboBox<Event> eventsCheckbox;
-    protected JComboBox<ExecutionState> executionStateCheckbox;
+    protected JComboBox<Event> eventsComboBox;
+    protected JComboBox<ExecutionState> executionStateComboBox;
 
     protected EventService service;
     protected List<Event> allEvents;
     protected EventTableModel eventsTableModel;
+    protected DefaultComboBoxModel eventsComboBoxModel;
     protected ResourceBundle bundle;
 
     public EventsPanel() {
@@ -47,7 +49,7 @@ public abstract class EventsPanel extends JPanel {
         setLayout(new GridBagLayout());
 
         TableColumn dependencyCol = eventsTable.getColumnModel().getColumn(1);
-        dependencyCol.setCellEditor(new DefaultCellEditor(executionStateCheckbox));
+        dependencyCol.setCellEditor(new DefaultCellEditor(executionStateComboBox));
 
         buildView();
 
@@ -62,10 +64,10 @@ public abstract class EventsPanel extends JPanel {
     }
 
     protected void assignComponents() {
-        eventsCheckbox = new JComboBox();
+        eventsComboBox = new JComboBox();
         eventsTableModel = new EventTableModel();
         eventsTable = new JTable(eventsTableModel);
-        executionStateCheckbox = new JComboBox<>(ExecutionState.values());
+        executionStateComboBox = new JComboBox<>(ExecutionState.values());
         addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
         deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
     }
@@ -82,7 +84,7 @@ public abstract class EventsPanel extends JPanel {
     }
 
     protected void checkAddButtonState() {
-        addButton.setEnabled(eventsCheckbox.getModel().getSize() > 0);
+        addButton.setEnabled(eventsComboBox.getModel().getSize() > 0);
     }
 
     public List<Event> getEvents() {
@@ -120,7 +122,7 @@ public abstract class EventsPanel extends JPanel {
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 0;
-        add(eventsCheckbox, c);
+        add(eventsComboBox, c);
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JScrollPane(eventsTable), BorderLayout.CENTER);

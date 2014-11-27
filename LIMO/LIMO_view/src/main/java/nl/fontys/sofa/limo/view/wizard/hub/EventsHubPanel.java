@@ -37,14 +37,14 @@ public final class EventsHubPanel extends EventsPanel {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Event selected = service.findById(allEvents.get(eventsCheckbox.getSelectedIndex()).getId());
+                Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
                 selected.setId(null);
                 selected.setParent(hub);
                 selected.setDependency(ExecutionState.INDEPENDENT);
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();
                 deleteButton.setEnabled(true);
-                eventsCheckbox.removeItemAt(eventsCheckbox.getSelectedIndex());
+                eventsComboBox.removeItemAt(eventsComboBox.getSelectedIndex());
                 checkAddButtonState();
                 checkDeleteButtonState();
             }
@@ -58,6 +58,6 @@ public final class EventsHubPanel extends EventsPanel {
         for (Event e : allEvents) {
             events.add(e.getName());
         }
-        eventsCheckbox.setModel(new DefaultComboBoxModel(events.toArray()));
+        eventsComboBox.setModel(new DefaultComboBoxModel(events.toArray()));
     }
 }
