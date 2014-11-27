@@ -19,18 +19,17 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
+ * Test a single test case for the simulation.
  *
  * @author Sven Mäurer
  */
 public class TestCaseTest {
 
     private final SupplyChain supplyChain;
-    private final Simulation simulation;
     private final TestCase testCase;
 
     public TestCaseTest() {
         supplyChain = new SupplyChain();
-        simulation = new Simulation(supplyChain, 5);
 
         Hub start = new Hub();
         start.addProcedure(new Procedure("loading", "mandatory", new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
@@ -53,8 +52,12 @@ public class TestCaseTest {
         end.addEvent(event2);
 
         Leg leg = new Leg();
+        Event event3 = new Event("Storm", "Storm slows down the ship.", leg, ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
+        event3.addProcedure(new Procedure("waiting", "mandatory", new SingleValue(0), new RangeValue(30, 60), TimeType.MINUTES, ProcedureResponsibilityDirection.OUTPUT));
+        leg.addEvent(event3);
         leg.setNext(end);
         start.setNext(leg);
+
         supplyChain.setStart(start);
         testCase = new TestCase(supplyChain);
     }
@@ -70,13 +73,15 @@ public class TestCaseTest {
         testCase.run();
         TestCaseResult result = testCase.getResult();
         assertNotNull(result);
-        assertTrue(result.getExecutedEvents().size() >= 1);
+        assertTrue(result.getExecutedEvents().size() >= 2);
         assertTrue(3000 <= result.getTotalExtraCosts());
         assertTrue(4000 >= result.getTotalExtraCosts());
         assertTrue(5000 <= result.getTotalCosts());
         assertTrue(7000 >= result.getTotalCosts());
         assertTrue(5 * 60 <= result.getTotalLeadTimes());
         assertTrue(7 * 60 >= result.getTotalLeadTimes());
+        assertTrue(30 <= result.getTotalDelays());
+        assertTrue(60 >= result.getTotalDelays());
     }
 
 }
