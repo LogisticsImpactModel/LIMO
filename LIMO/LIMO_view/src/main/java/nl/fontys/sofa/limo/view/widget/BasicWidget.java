@@ -1,6 +1,7 @@
 package nl.fontys.sofa.limo.view.widget;
 
 import java.awt.Point;
+import java.beans.PropertyChangeListener;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.ContainerNode;
 import org.netbeans.api.visual.widget.Widget;
@@ -10,7 +11,7 @@ import org.netbeans.api.visual.widget.Widget;
  *
  * @author Sebastiaan Heijmann
  */
-public interface BasicWidget {
+public interface BasicWidget extends PropertyChangeListener {
 
     /**
      * Add actions to this widget.

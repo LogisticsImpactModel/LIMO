@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.view.widget;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
@@ -56,6 +57,11 @@ public class EventWidget extends LabelWidget implements BasicWidget {
     @Override
     public void setContainer(ContainerNode container) {
         this.container = container;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**

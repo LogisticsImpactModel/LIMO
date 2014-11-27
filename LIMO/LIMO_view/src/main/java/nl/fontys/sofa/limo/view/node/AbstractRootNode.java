@@ -1,12 +1,9 @@
 package nl.fontys.sofa.limo.view.node;
 
 import java.awt.Image;
-import nl.fontys.sofa.limo.api.dao.DAO;
-import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
-import org.openide.util.Lookup;
 
 /**
  * Abstract class which defines basic implementations for root nodes. Override
@@ -17,15 +14,14 @@ import org.openide.util.Lookup;
  */
 public abstract class AbstractRootNode extends AbstractNode {
 
-    protected DAO service;
-
-    public AbstractRootNode(Children children) throws ServiceNotFoundException {
+//    protected DAO service;
+    public AbstractRootNode(Children children) /*throws ServiceNotFoundException */ {
         super(children);
-        service = (DAO) Lookup.getDefault().lookup(getServiceClass());
-        if (service == null) {
-            throw new ServiceNotFoundException(getServiceClass().getSimpleName()
-                    + " not found...");
-        }
+//        service = (DAO) Lookup.getDefault().lookup(getServiceClass());
+//        if (service == null) {
+//            throw new ServiceNotFoundException(getServiceClass().getSimpleName()
+//                    + " not found...");
+//        }
     }
 
     abstract Class getServiceClass();
@@ -41,7 +37,7 @@ public abstract class AbstractRootNode extends AbstractNode {
         return icon;
     }
 
-    public DAO getService() {
-        return service;
-    }
+//    public DAO getService() {
+//        return service;
+//    }
 }

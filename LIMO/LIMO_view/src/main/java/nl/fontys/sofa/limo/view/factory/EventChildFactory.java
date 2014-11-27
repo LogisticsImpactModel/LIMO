@@ -30,6 +30,7 @@ public class EventChildFactory extends ChildFactory<Event>
 
     private final Result<Event> lookupResult;
     private final EventService service;
+    private List<Event> eventList;
 
     public EventChildFactory() {
         service = Lookup.getDefault().lookup(EventService.class);
@@ -37,9 +38,20 @@ public class EventChildFactory extends ChildFactory<Event>
         lookupResult.addLookupListener(this);
     }
 
+    public EventChildFactory(List<Event> events) {
+        lookupResult = null;
+        service = null;
+        this.eventList = events;
+    }
+
     @Override
     protected boolean createKeys(List<Event> list) {
-        list.addAll(lookupResult.allInstances());
+        if (eventList == null) {
+            list.addAll(lookupResult.allInstances());
+        } else {
+            list.addAll(eventList);
+        }
+
         return true;
     }
 

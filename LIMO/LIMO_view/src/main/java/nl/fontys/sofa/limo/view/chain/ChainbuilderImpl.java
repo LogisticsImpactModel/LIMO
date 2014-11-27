@@ -29,6 +29,11 @@ public class ChainbuilderImpl implements ChainBuilder {
     }
 
     @Override
+    public void removeHub(Hub hub) {
+        hubList.remove(hub);
+    }
+
+    @Override
     public int getNumberOfHubs() {
         return hubList.size();
     }
@@ -54,6 +59,9 @@ public class ChainbuilderImpl implements ChainBuilder {
     public boolean validate() {
         int hubCount = 1;
         Node currentNode = getStartHub();
+        if (currentNode == null) {
+            return false;
+        }
         while (currentNode != null) {
             currentNode = currentNode.getNext();
             if (currentNode instanceof Hub) {

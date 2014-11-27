@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.widget;
 import java.awt.BasicStroke;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
 import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
@@ -72,6 +73,11 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
     @Override
     public void setContainer(ContainerNode container) {
         this.container = container;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**

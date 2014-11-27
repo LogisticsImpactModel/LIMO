@@ -34,4 +34,6 @@ public abstract class ChainGraphScene extends GraphScene<ContainerNode, Containe
 
     public abstract void addHubWidget(HubWidget hubWidget);
 
+    public abstract void removeHubWidget(HubWidget hubWidget);
+
 }
