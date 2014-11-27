@@ -25,8 +25,8 @@ import org.openide.util.Lookup;
 @ActionID(category = "LegType", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
 @ActionRegistration(displayName = "New Leg Type..", iconBase = "icons/gui/add.gif")
 @ActionReferences({
-@ActionReference(path = "Menu/Master Data/Leg Type", position = 20),
-@ActionReference(path = "Shortcuts", name = "DOS-L")
+    @ActionReference(path = "Menu/Master Data/Leg Type", position = 20),
+    @ActionReference(path = "Shortcuts", name = "DOS-L")
 })
 public final class LegTypeWizardAction extends TypeWizardAction {
 
@@ -80,7 +80,6 @@ public final class LegTypeWizardAction extends TypeWizardAction {
                     service.update(legType);
                 } else {
                     legType.setId(null);
-                    legType.setUniqueIdentifier(null);
                     service.insert(legType);
                 }
             }
