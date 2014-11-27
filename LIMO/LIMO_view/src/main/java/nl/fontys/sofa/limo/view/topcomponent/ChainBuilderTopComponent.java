@@ -39,13 +39,13 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent")
-@ActionReference(path = "Menu/Chain", position = 333)
+@ActionReference(path = "Menu/File", position = 333)
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_ChainBuilderAction"
 )
 @Messages({
-    "CTL_ChainBuilderAction=Create",
-    "CTL_ChainBuilderTopComponent=ChainBuilder Window",
+    "CTL_ChainBuilderAction=New Supply Chain",
+    "CTL_ChainBuilderTopComponent=New Supply Chain",
     "HINT_ChainBuilderTopComponent=Build a chain"
 })
 public final class ChainBuilderTopComponent extends TopComponent implements
