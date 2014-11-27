@@ -72,15 +72,15 @@ public class TestCase implements Runnable {
                 long acceptTime = lastDelay + sl.getExpectedTime();
 
                 // Get first possible acceptance time
-                int first = 0;
-                while (first < sl.getAcceptanceTimes().size() && acceptTime < sl.getAcceptanceTimes().get(first)) {
-                    first++;
+                int index = sl.getAcceptanceTimes().size();
+                while (index > 0 && sl.getAcceptanceTimes().get(index - 1) > acceptTime) {
+                    index--;
                 }
 
                 // No acceptance times, too long wait, times not met -> alternative used
                 if (sl.getAcceptanceTimes().isEmpty()
-                        || (sl.getAcceptanceTimes().get(--first) - acceptTime > sl.getWaitingTimeLimit())
-                        || (sl.getAcceptanceTimes().get(sl.getAcceptanceTimes().size() - 1) - acceptTime > 0)) {
+                        || (sl.getAcceptanceTimes().get(index) - acceptTime > sl.getWaitingTimeLimit())
+                        || (index == sl.getAcceptanceTimes().size())) {
                     calcNode = sl.getAlternative();
                 } else {
                     // Calculate the time that has to be waited until acceptance and add to lead times
