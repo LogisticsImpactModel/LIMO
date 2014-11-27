@@ -18,12 +18,16 @@ import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
 @ActionID(category = "LegType", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
 @ActionRegistration(displayName = "New Leg Type..", iconBase = "icons/gui/add.gif")
-@ActionReference(path = "Menu/Master Data/Leg Type", position = 20)
+@ActionReferences({
+@ActionReference(path = "Menu/Master Data/Leg Type", position = 20),
+@ActionReference(path = "Shortcuts", name = "DOS-L")
+})
 public final class LegTypeWizardAction extends TypeWizardAction {
 
     private LegType legType = new LegType();

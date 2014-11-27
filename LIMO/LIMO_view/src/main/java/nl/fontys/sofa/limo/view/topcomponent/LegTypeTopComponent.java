@@ -10,14 +10,15 @@ import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.OutlineView;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
-import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
+import org.openide.windows.TopComponent;
 
 @ConvertAsProperties(
         dtd = "-//nl.fontys.sofa.limo.view.topcomponent//LegType//EN",
@@ -30,7 +31,10 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.LegTypeTopComponent")
-@ActionReference(path = "Menu/Master Data/Leg Type", position = 10)
+@ActionReferences({
+@ActionReference(path = "Menu/Master Data/Leg Type", position = 10),
+@ActionReference(path = "Shortcuts", name = "DO-L")
+})
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_LegTypeAction",
         preferredID = "LegTypeTopComponent"

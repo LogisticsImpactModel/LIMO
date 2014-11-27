@@ -18,6 +18,7 @@ import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
@@ -27,7 +28,10 @@ import org.openide.util.Lookup;
  */
 @ActionID(category = "Master Data", id = "nl.fontys.limo.view.wizard.export.ExportWizardAction")
 @ActionRegistration(displayName = "Export Master Data..", iconBase = "icons/gui/database.gif")
-@ActionReference(path = "Menu/Master Data", position = 1600, separatorBefore = 1550)
+@ActionReferences({
+@ActionReference(path = "Menu/Master Data", position = 1600, separatorBefore = 1550),
+@ActionReference(path = "Shortcuts", name = "DOS-E")
+})
 public final class ExportWizardAction implements ActionListener {
 
     private List<List<BaseEntity>> objectsToExport;

@@ -15,6 +15,7 @@ import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Node;
@@ -39,7 +40,10 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent")
-@ActionReference(path = "Menu/File", position = 333)
+@ActionReferences({
+@ActionReference(path = "Menu/File", position = 333),
+@ActionReference(path = "Shortcuts", name = "DO-C")
+})
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_ChainBuilderAction"
 )

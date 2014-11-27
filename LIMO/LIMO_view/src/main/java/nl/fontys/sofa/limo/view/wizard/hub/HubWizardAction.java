@@ -19,12 +19,16 @@ import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
 @ActionID(category = "Hub", id = "nl.fontys.limo.view.wizzard.hub.HubWizardAction")
 @ActionRegistration(displayName = "New Hub..", iconBase = "icons/gui/add.gif")
-@ActionReference(path = "Menu/Master Data/Hub", position = 20)
+@ActionReferences({
+@ActionReference(path = "Menu/Master Data/Hub", position = 20),
+@ActionReference(path = "Shortcuts", name = "DS-H")
+})
 public final class HubWizardAction implements ActionListener {
 
     static final String HUB_NAME = "hubName";

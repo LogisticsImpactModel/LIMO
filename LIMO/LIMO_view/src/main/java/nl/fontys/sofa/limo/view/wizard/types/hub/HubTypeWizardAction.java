@@ -18,12 +18,16 @@ import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
 @ActionID(category = "HubType", id = "nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
 @ActionRegistration(displayName = "New Hub Type..", iconBase = "icons/gui/add.gif")
-@ActionReference(path = "Menu/Master Data/Hub Type", position = 20)
+@ActionReferences({
+@ActionReference(path = "Menu/Master Data/Hub Type", position = 20),
+@ActionReference(path = "Shortcuts", name = "DOS-H")
+})
 public final class HubTypeWizardAction extends TypeWizardAction {
 
     private HubType hubType = new HubType();
