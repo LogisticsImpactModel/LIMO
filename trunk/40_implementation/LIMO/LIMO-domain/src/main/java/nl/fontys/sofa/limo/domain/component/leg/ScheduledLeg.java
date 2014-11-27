@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.domain.component.leg;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Embedded;
 
@@ -10,12 +12,12 @@ import javax.persistence.Embedded;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class ScheduledLeg extends Leg {
-    
+
     public static final String WAIT_CATEGORY = "Waiting Time";
 
     /**
-     * Expected time of consignment to arrive. Any delay from the hub before is added to this.
-     * Normally (and for ease of use) 0. [?]
+     * Expected time of consignment to arrive. Any delay from the hub before is
+     * added to this. Normally (and for ease of use) 0. [?]
      */
     private long expectedTime;
 
@@ -25,24 +27,26 @@ public class ScheduledLeg extends Leg {
     private transient long delay;
 
     /**
-     * Times after expected time, when the consigment can be send over this route.
+     * Times after expected time, when the consigment can be send over this
+     * route.
      */
     private List<Long> acceptanceTimes;
 
     /**
-     * Maximum time between arrival (expectedTime + delay) and acceptance, before alternative is
-     * used.
+     * Maximum time between arrival (expectedTime + delay) and acceptance,
+     * before alternative is used.
      */
     private long waitingTimeLimit;
-    
+
     /**
-     * Alternative leg, used when no acceptance times are possible (because of delay) or the waiting
-     * time for acceptance is too long.
+     * Alternative leg, used when no acceptance times are possible (because of
+     * delay) or the waiting time for acceptance is too long.
      */
     @Embedded
     private Leg alternative;
 
     public ScheduledLeg() {
+        this.acceptanceTimes = new ArrayList<>();
     }
 
     public long getExpectedTime() {
@@ -62,6 +66,7 @@ public class ScheduledLeg extends Leg {
     }
 
     public List<Long> getAcceptanceTimes() {
+        Collections.sort(acceptanceTimes);
         return acceptanceTimes;
     }
 
