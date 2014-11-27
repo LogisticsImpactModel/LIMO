@@ -10,6 +10,7 @@ import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.OutlineView;
@@ -30,7 +31,10 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ProcedureCategoryTopComponent")
-@ActionReference(path = "Menu/Master Data/Procedure Category", position = 10)
+@ActionReferences({
+@ActionReference(path = "Menu/Master Data/Procedure Category", position = 10),
+@ActionReference(path = "Shortcuts", name = "D-P")
+})
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_ProcedureCategoryAction",
         preferredID = "ProcedureCategoryTopComponent"

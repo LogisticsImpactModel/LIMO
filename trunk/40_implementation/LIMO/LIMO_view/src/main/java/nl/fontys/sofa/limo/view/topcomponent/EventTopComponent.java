@@ -7,6 +7,7 @@ import nl.fontys.sofa.limo.view.node.EventRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
@@ -27,7 +28,10 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.EventTopComponent")
-@ActionReference(path = "Menu/Master Data/Event", position = 10)
+@ActionReferences({
+@ActionReference(path = "Menu/Master Data/Event", position = 10),
+@ActionReference(path = "Shortcuts", name = "D-E")
+})
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_EventAction",
         preferredID = "EventTopComponent"

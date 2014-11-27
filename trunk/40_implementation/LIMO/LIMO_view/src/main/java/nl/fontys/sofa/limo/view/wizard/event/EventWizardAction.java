@@ -16,12 +16,16 @@ import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 
 @ActionID(category = "Event", id = "nl.fontys.sofa.limo.view.wizard.event.EventWizardAction")
 @ActionRegistration(displayName = "New event..", iconBase = "icons/gui/add.gif")
-@ActionReference(path = "Menu/Master Data/Event", position = 20)
+@ActionReferences({
+@ActionReference(path = "Menu/Master Data/Event", position = 20),
+@ActionReference(path = "Shortcuts", name = "DS-E")
+})
 public final class EventWizardAction implements ActionListener {
 
     static final String EVENT = "event";

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
@@ -26,7 +27,10 @@ import org.openide.util.NbBundle.Messages;
 @ActionRegistration(
         displayName = "#CTL_OpenManual"
 )
-@ActionReference(path = "Menu/Help", position = 0)
+@ActionReferences({
+@ActionReference(path = "Menu/Help", position = 0),
+@ActionReference(path = "Shortcuts", name = "F1")
+})
 @Messages("CTL_OpenManual=User Manual")
 public final class OpenManual implements ActionListener {
 
