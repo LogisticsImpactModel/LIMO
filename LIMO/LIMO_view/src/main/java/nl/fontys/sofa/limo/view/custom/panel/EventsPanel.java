@@ -100,6 +100,8 @@ public abstract class EventsPanel extends JPanel {
                 if (eventsTable.getSelectedRow() >= 0) {
                     eventsTableModel.getEvents().remove(eventsTable.getSelectedRow());
                     eventsTableModel.fireTableDataChanged();
+                    checkAddButtonState();
+                    checkDeleteButtonState();
                 }
             }
         });
