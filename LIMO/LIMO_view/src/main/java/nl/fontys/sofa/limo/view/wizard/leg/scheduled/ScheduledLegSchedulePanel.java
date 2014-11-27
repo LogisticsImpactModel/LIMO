@@ -15,7 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowSorter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.util.IconUtil;
@@ -134,6 +137,9 @@ public final class ScheduledLegSchedulePanel extends JPanel {
 
         Box bv = Box.createVerticalBox();
         table = new JTable(model);
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    table.setRowSorter(sorter);
+
         JScrollPane sc = new JScrollPane(table);
         sc.setPreferredSize(new Dimension(160, 0));
         panelRight.add(sc, BorderLayout.CENTER);
