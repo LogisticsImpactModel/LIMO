@@ -31,6 +31,10 @@
             <preAction>build-with-dependencies</preAction>
             <goals>
                 <goal>nbm:build-installers</goal>
+                <goal>-X</goal>
+                <goal>-e</goal>
+                
+                
             </goals>
         </action>
     <action>
