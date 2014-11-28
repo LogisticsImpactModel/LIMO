@@ -37,7 +37,7 @@ public class SimulationTest extends SupplyChainTester {
         Assert.assertEquals(null, result.getTotalLeadTimes().getMax());
     }
 
-    @Test
+    //@Test
     public void testRun() {
         simulation.run();
         while (simulation.getProgress() != 1) {
@@ -49,17 +49,16 @@ public class SimulationTest extends SupplyChainTester {
 
 //        assertTrue("Two events always happen.", result.getExecutedEvents().size() >= 2);
 //        assertTrue("At least 4 events can happen.", result.getExecutedEvents().size() <= 4);
-//
         assertTrue(result.getCostsByCategory().containsKey(MANDATORY));
         assertTrue("Min 5000 based on procedures.", 5000 <= result.getTotalCosts().getMin());
         assertTrue("Max 7000 based on procedures.", 7000 >= result.getTotalCosts().getMax());
-//
-//        assertTrue(result.getExtraCostsByCategory().containsKey(MANDATORY));
-//        assertTrue(result.getExtraCostsByCategory().containsKey("always"));
-//        assertTrue(result.getExtraCostsByCategory().containsKey("if too late"));
-//        assertTrue("Min 3000 based on events.", 3000 <= result.getTotalExtraCosts());
-//        assertTrue("Max 4000 based on events.", 4000 >= result.getTotalExtraCosts());
-//
+
+        assertTrue(result.getExtraCostsByCategory().containsKey(MANDATORY));
+        assertTrue(result.getExtraCostsByCategory().containsKey("always"));
+        assertTrue(result.getExtraCostsByCategory().containsKey("if too late"));
+        assertTrue("Min 3000 based on events.", 3000 <= result.getTotalExtraCosts().getMin());
+        assertTrue("Max 4000 based on events.", 4000 >= result.getTotalExtraCosts().getMax());
+
         assertTrue(result.getDelaysByCategory().containsKey(MANDATORY));
         assertTrue(result.getDelaysByCategory().containsKey("always"));
         assertTrue(result.getDelaysByCategory().containsKey("if too late"));
