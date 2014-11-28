@@ -19,7 +19,7 @@ public class SimulationTest extends SupplyChainTester {
         leg.setNext(end);
         start.setNext(leg);
         supplyChain.setStart(start);
-        simulation = new Simulation(supplyChain, 10);
+        simulation = new Simulation(supplyChain, 1337);
     }
 
     @Test
@@ -37,10 +37,10 @@ public class SimulationTest extends SupplyChainTester {
         Assert.assertEquals(null, result.getTotalLeadTimes().getMax());
     }
 
-    //@Test
+    @Test
     public void testRun() {
         simulation.run();
-        while (simulation.getProgress() != 1) {
+        while (simulation.getProgress() != 1.0d) {
 
         }
         SimulationResult result = simulation.getResult();
