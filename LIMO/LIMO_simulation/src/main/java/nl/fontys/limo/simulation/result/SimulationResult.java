@@ -2,9 +2,9 @@ package nl.fontys.limo.simulation.result;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import nl.fontys.limo.simulation.util.MathUtil;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.event.Event;
@@ -37,13 +37,13 @@ public class SimulationResult {
         this.totalLeadTimes = new DataEntry();
         this.totalDelays = new DataEntry();
         this.totalExtraCosts = new DataEntry();
-        this.costsByCategory = new HashMap<>();
-        this.leadTimesByCategory = new HashMap<>();
-        this.delaysByCategory = new HashMap<>();
-        this.extraCostsByCategory = new HashMap<>();
+        this.costsByCategory = new ConcurrentHashMap<>();
+        this.leadTimesByCategory = new ConcurrentHashMap<>();
+        this.delaysByCategory = new ConcurrentHashMap<>();
+        this.extraCostsByCategory = new ConcurrentHashMap<>();
         this.testCaseResults = new ArrayList<>();
-        this.eventExecutionRate = new HashMap<>();
-        this.executedEvents = new HashMap<>();
+        this.eventExecutionRate = new ConcurrentHashMap<>();
+        this.executedEvents = new ConcurrentHashMap<>();
     }
 
     public SupplyChain getSupplyChain() {
