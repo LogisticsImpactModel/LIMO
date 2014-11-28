@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
@@ -68,8 +69,11 @@ public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                EventService service = Lookup.getDefault().lookup(EventService.class);
-                service.delete(bean);
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure to delete " + bean.getName(), "Are you sure...?", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    EventService service = Lookup.getDefault().lookup(EventService.class);
+                    service.delete(bean);
+                }
             }
         });
         return actionList.toArray(new Action[actionList.size()]);

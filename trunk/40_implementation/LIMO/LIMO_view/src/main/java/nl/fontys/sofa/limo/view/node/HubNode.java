@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
@@ -77,8 +78,11 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                HubService service = Lookup.getDefault().lookup(HubService.class);
-                service.delete(bean);
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure to delete " + bean.getName(), "Are you sure...?", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    HubService service = Lookup.getDefault().lookup(HubService.class);
+                    service.delete(bean);
+                }
             }
         });
         return actionList.toArray(new Action[actionList.size()]);

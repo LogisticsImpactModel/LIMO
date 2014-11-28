@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
@@ -56,8 +57,11 @@ public class HubTypeNode extends AbstractBeanNode<HubType> {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                HubTypeService service = Lookup.getDefault().lookup(HubTypeService.class);
-                service.delete(bean);
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure to delete " + bean.getName(), "Are you sure...?", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    HubTypeService service = Lookup.getDefault().lookup(HubTypeService.class);
+                    service.delete(bean);
+                }
             }
         });
         return actionList.toArray(new Action[actionList.size()]);
