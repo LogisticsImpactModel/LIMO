@@ -43,10 +43,10 @@ public class SimulationTest {
     @Test
     public void testGetResult() {
         SimulationResult result = simulation.getResult();
-        Assert.assertEquals(0, result.getTotalCosts().getMax(), 0.000001);
-        Assert.assertEquals(0, result.getTotalDelays().getMax(), 0.000001);
-        Assert.assertEquals(0, result.getTotalExtraCosts().getMax(), 0.000001);
-        Assert.assertEquals(0, result.getTotalLeadTimes().getMax(), 0.000001);
+        Assert.assertEquals(null, result.getTotalCosts().getMax());
+        Assert.assertEquals(null, result.getTotalDelays().getMax());
+        Assert.assertEquals(null, result.getTotalExtraCosts().getMax());
+        Assert.assertEquals(null, result.getTotalLeadTimes().getMax());
     }
 
     @Test
