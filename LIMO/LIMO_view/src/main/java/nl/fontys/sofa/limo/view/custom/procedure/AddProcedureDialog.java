@@ -85,6 +85,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         int x = (screenSize.width - this.getWidth()) / 2;
         int y = (screenSize.height - this.getHeight()) / 2;
         this.setLocation(x, y);
+        this.setTitle("Procedures");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
