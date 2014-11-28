@@ -6,7 +6,7 @@
         <artifactId>LIMO-parent</artifactId>
         <version>0.1-ALPHA</version>
     </parent>
-    <artifactId>LIMO_ExternalTraider</artifactId>
+    <artifactId>LIMO_ExternalTrader</artifactId>
     <packaging>nbm</packaging>
     <build>
         <plugins>
