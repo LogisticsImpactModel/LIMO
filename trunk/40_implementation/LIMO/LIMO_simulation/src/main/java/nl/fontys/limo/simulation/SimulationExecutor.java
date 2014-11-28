@@ -3,7 +3,7 @@ package nl.fontys.limo.simulation;
 import nl.fontys.limo.simulation.task.Simulation;
 import nl.fontys.limo.simulation.task.TestCase;
 import org.openide.util.RequestProcessor;
-import org.openide.util.Task;
+import org.openide.util.RequestProcessor.Task;
 
 /**
  *
@@ -25,7 +25,7 @@ public final class SimulationExecutor {
             simulationProcessor = new RequestProcessor("SExecutor", 1);
         }
 
-        return simulationProcessor.post(simulation, 0, Thread.MAX_PRIORITY);
+        return simulationProcessor.post(simulation);
     }
 
     public static Task post(TestCase testCase) {
@@ -33,7 +33,7 @@ public final class SimulationExecutor {
             testCaseProcessor = new RequestProcessor("TCExecutor", Runtime.getRuntime().availableProcessors());
         }
 
-        return testCaseProcessor.post(testCase, 1000, Thread.NORM_PRIORITY);
+        return testCaseProcessor.create(testCase);
     }
 
     public static void shutdown() {

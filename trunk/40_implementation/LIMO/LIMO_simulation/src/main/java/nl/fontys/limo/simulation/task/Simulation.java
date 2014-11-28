@@ -9,11 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 import nl.fontys.limo.simulation.SimulationExecutor;
 import nl.fontys.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import org.openide.util.Exceptions;
-import org.openide.util.Task;
+import org.openide.util.RequestProcessor.Task;
 import org.openide.util.TaskListener;
 
 /**
@@ -23,11 +24,11 @@ import org.openide.util.TaskListener;
 public class Simulation implements Runnable, TaskListener {
 
     private final SupplyChain supplyChain;
-    private final Map<Task, TestCase> testCaseTasks;
+    private final Map<org.openide.util.Task, TestCase> testCaseTasks;
     private final int testCaseCount;
     private final SimulationResult result;
 
-    private int finishedCount;
+    private AtomicInteger finishedCount;
 
     private final BlockingQueue<SupplyChain> scPool;
 
@@ -36,7 +37,7 @@ public class Simulation implements Runnable, TaskListener {
         this.testCaseCount = testCaseCount;
         this.testCaseTasks = new HashMap<>();
         this.result = new SimulationResult(supplyChain);
-        this.finishedCount = 0;
+        this.finishedCount = new AtomicInteger(0);
         this.scPool = new LinkedBlockingQueue<>();
     }
 
@@ -46,7 +47,7 @@ public class Simulation implements Runnable, TaskListener {
      * @return Percentage of test cases finished.
      */
     public double getProgress() {
-        return (double) finishedCount / (double) testCaseCount;
+        return finishedCount.doubleValue() / (double) testCaseCount;
     }
 
     public SimulationResult getResult() {
@@ -75,7 +76,7 @@ public class Simulation implements Runnable, TaskListener {
     @Override
     public void run() {
         testCaseTasks.clear();
-        finishedCount = 0;
+        finishedCount = new AtomicInteger(0);
 
         // Create supply chain pool
         for (int i = 0; i < 5; i++) {
@@ -105,12 +106,13 @@ public class Simulation implements Runnable, TaskListener {
             // Put into map
             testCaseTasks.put(task, testCase);
             i++;
+            task.schedule(0);
         }
     }
 
     @Override
-    public void taskFinished(Task task) {
-        finishedCount++;
+    public void taskFinished(org.openide.util.Task task) {
+        finishedCount.incrementAndGet();
         result.addTestCaseResult(testCaseTasks.get(task).getResult());
         scPool.offer(testCaseTasks.get(task).getResult().getSupplyChain());
     }
