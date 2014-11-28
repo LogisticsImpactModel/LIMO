@@ -67,71 +67,13 @@ public class TestCase implements Runnable {
         while (currentNode != null) {
             Node calcNode = currentNode;
             if (currentNode instanceof ScheduledLeg) {
-                // calcNode -> best leg of scheduled leg
-                ScheduledLeg sl = (ScheduledLeg) currentNode;
-                long acceptTime = lastDelay + sl.getExpectedTime();
-
-                // Get first possible acceptance time
-                int index = sl.getAcceptanceTimes().size();
-                while (index > 0 && sl.getAcceptanceTimes().get(index - 1) > acceptTime) {
-                    index--;
-                }
-
-                // No acceptance times, too long wait, times not met -> alternative used
-                if (sl.getAcceptanceTimes().isEmpty()
-                        || (sl.getAcceptanceTimes().get(index) - acceptTime > sl.getWaitingTimeLimit())
-                        || (index == sl.getAcceptanceTimes().size())) {
-                    calcNode = sl.getAlternative();
-                } else {
-                    // Calculate the time that has to be waited until acceptance and add to lead times
-                    int i = 0;
-                    while (acceptTime < sl.getAcceptanceTimes().get(i++)) {
-                    }
-                    double leadTime = sl.getAcceptanceTimes().get(i - 1) - acceptTime;
-                    totalLeadTimes += leadTime;
-                    if (!leadTimesByCategory.containsKey(ScheduledLeg.WAIT_CATEGORY)) {
-                        leadTimesByCategory.put(ScheduledLeg.WAIT_CATEGORY, leadTime);
-                    } else {
-                        double lt = leadTimesByCategory.get(ScheduledLeg.WAIT_CATEGORY) + leadTime;
-                        leadTimesByCategory.put(ScheduledLeg.WAIT_CATEGORY, lt);
-                    }
-                }
+                calcNode = calculateScheduledLeg(currentNode, calcNode);
 
             } else if (currentNode instanceof MultiModeLeg) {
-                // calcNode -> one node based on probability
-                MultiModeLeg mml = (MultiModeLeg) currentNode;
-                double totalSum = mml.getTotalWeight();
-                Random rand = new Random();
-
-                double index = rand.nextDouble() * totalSum;
-                double sum = 0;
-                int i = 0;
-                List<Map.Entry<Leg, Double>> legs = new ArrayList<>(mml.getLegs().entrySet());
-                while (sum < index) {
-                    sum += legs.get(i++).getValue();
-                }
-                calcNode = legs.get(i - 1).getKey();
+                calcNode = calculateMultiModeLeg(currentNode);
             }
 
-            for (Procedure procedure : calcNode.getProcedures()) {
-                double pCost = procedure.getCost().getValue();
-                double pLeadTime = procedure.getTimeType().getMinutes(procedure.getTime().getValue());
-
-                totalCosts += pCost;
-                totalLeadTimes += pLeadTime;
-
-                if (!costsByCategory.containsKey(procedure.getCategory())) {
-                    costsByCategory.put(procedure.getCategory(), 0d);
-                }
-                double newCost = costsByCategory.get(procedure.getCategory()) + pCost;
-                costsByCategory.put(procedure.getCategory(), newCost);
-
-                if (!leadTimesByCategory.containsKey(procedure.getCategory())) {
-                    leadTimesByCategory.put(procedure.getCategory(), 0d);
-                }
-                double newLeadTime = leadTimesByCategory.get(procedure.getCategory()) + pLeadTime;
-                leadTimesByCategory.put(procedure.getCategory(), newLeadTime);
-            }
+            calculateProcedures(calcNode);
 
             // Calc events
             lastDelay = 0;
@@ -141,6 +83,73 @@ public class TestCase implements Runnable {
         }
 
         result = new TestCaseResult(supplyChain, totalCosts, totalLeadTimes, totalDelays, totalExtraCosts, costsByCategory, leadTimesByCategory, delaysByCategory, extraCostsByCategory, executedEvents);
+    }
+
+    private Node calculateScheduledLeg(Node currentNode, Node calcNode) {
+        // calcNode -> best leg of scheduled leg
+        ScheduledLeg sl = (ScheduledLeg) currentNode;
+        long acceptTime = lastDelay + sl.getExpectedTime();
+        // Get first possible acceptance time
+        int index = sl.getAcceptanceTimes().size();
+        while (index > 0 && sl.getAcceptanceTimes().get(index - 1) > acceptTime) {
+            index--;
+        }
+        // No acceptance times, too long wait, times not met -> alternative used
+        if (sl.getAcceptanceTimes().isEmpty()
+                || (index == sl.getAcceptanceTimes().size())
+                || (sl.getAcceptanceTimes().get(index) - acceptTime > sl.getWaitingTimeLimit())) {
+            calcNode = sl.getAlternative();
+        } else {
+            // Calculate the time that has to be waited until acceptance and add to lead times
+            double leadTime = sl.getAcceptanceTimes().get(index) - acceptTime;
+            totalLeadTimes += leadTime;
+            if (!leadTimesByCategory.containsKey(ScheduledLeg.WAIT_CATEGORY)) {
+                leadTimesByCategory.put(ScheduledLeg.WAIT_CATEGORY, leadTime);
+            } else {
+                double lt = leadTimesByCategory.get(ScheduledLeg.WAIT_CATEGORY) + leadTime;
+                leadTimesByCategory.put(ScheduledLeg.WAIT_CATEGORY, lt);
+            }
+        }
+        return calcNode;
+    }
+
+    private Node calculateMultiModeLeg(Node currentNode) {
+        Node calcNode;
+        // calcNode -> one node based on probability
+        MultiModeLeg mml = (MultiModeLeg) currentNode;
+        double totalSum = mml.getTotalWeight();
+        Random rand = new Random();
+        double index = rand.nextDouble() * totalSum;
+        double sum = 0;
+        int i = 0;
+        List<Map.Entry<Leg, Double>> legs = new ArrayList<>(mml.getLegs().entrySet());
+        while (sum < index) {
+            sum += legs.get(i++).getValue();
+        }
+        calcNode = legs.get(i - 1).getKey();
+        return calcNode;
+    }
+
+    private void calculateProcedures(Node calcNode) {
+        for (Procedure procedure : calcNode.getProcedures()) {
+            double pCost = procedure.getCost().getValue();
+            double pLeadTime = procedure.getTimeType().getMinutes(procedure.getTime().getValue());
+
+            totalCosts += pCost;
+            totalLeadTimes += pLeadTime;
+
+            if (!costsByCategory.containsKey(procedure.getCategory())) {
+                costsByCategory.put(procedure.getCategory(), 0d);
+            }
+            double newCost = costsByCategory.get(procedure.getCategory()) + pCost;
+            costsByCategory.put(procedure.getCategory(), newCost);
+
+            if (!leadTimesByCategory.containsKey(procedure.getCategory())) {
+                leadTimesByCategory.put(procedure.getCategory(), 0d);
+            }
+            double newLeadTime = leadTimesByCategory.get(procedure.getCategory()) + pLeadTime;
+            leadTimesByCategory.put(procedure.getCategory(), newLeadTime);
+        }
     }
 
     private void calculateEvents(Component parent, List<Event> events) {

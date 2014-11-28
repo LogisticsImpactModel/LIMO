@@ -124,7 +124,7 @@ public class TestCaseTest {
         assertTrue("Max 7 hours lead time.", 7 * 60 >= result.getTotalLeadTimes());
     }
 
-    //@Test
+    @Test
     public void testScheduledLegTakeAlternative() {
         buildComplexSupplyChain();
 
@@ -139,7 +139,7 @@ public class TestCaseTest {
         scheduledLeg.setNext(end);
         scheduledLeg.setAlternative(leg2);
         scheduledLeg.setWaitingTimeLimit(20);
-        scheduledLeg.setAcceptanceTimes(Arrays.asList(new Long[]{(long) 30}));
+        scheduledLeg.setAcceptanceTimes(Arrays.asList(new Long[]{30L}));
 
         testCase.run();
         TestCaseResult result = testCase.getResult();
@@ -169,6 +169,57 @@ public class TestCaseTest {
             assertTrue("Max 7000 based on procedures.", 7000 >= result.getTotalCosts());
             assertTrue("Max 7 hours lead time.", 7 * 60 >= result.getTotalLeadTimes());
         }
+    }
+
+    @Test
+    public void testScheduledLegNotAlternative() {
+        buildComplexSupplyChain();
+
+        Hub middleHub = new Hub();
+        middleHub.addProcedure(new Procedure("customs control", "mandatory", new SingleValue(100), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+
+        Leg leg2 = new Leg();
+        leg2.addProcedure(new Procedure("loading", "mandatory", new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        leg2.setNext(middleHub);
+//        start.setNext(leg2);
+
+        supplyChain.setStart(start);
+        ScheduledLeg scheduledLeg = new ScheduledLeg();
+        start.setNext(scheduledLeg);
+        scheduledLeg.setNext(middleHub);
+        scheduledLeg.setAlternative(leg2);
+        scheduledLeg.setWaitingTimeLimit(4 * 60);
+        scheduledLeg.setAcceptanceTimes(Arrays.asList(new Long[]{30L, 120L, 180L}));
+
+        Leg leg3 = new Leg();
+        leg3.addProcedure(new Procedure("loading", "mandatory", new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        leg3.setNext(middleHub);
+//        middleHub.setNext(leg3);
+
+        ScheduledLeg scheduledLeg2 = new ScheduledLeg();
+        middleHub.setNext(scheduledLeg2);
+        scheduledLeg2.setNext(end);
+        scheduledLeg2.setAlternative(leg3);
+        scheduledLeg2.setWaitingTimeLimit(4 * 60);
+        scheduledLeg2.setAcceptanceTimes(Arrays.asList(new Long[]{30L, 120L, 180L}));
+
+        testCase.run();
+        TestCaseResult result = testCase.getResult();
+        assertNotNull(result);
+
+        assertTrue("Min 5000 based on procedures.", 5000 <= result.getTotalCosts());
+        assertTrue("Max 7000 based on procedures.", 7000 >= result.getTotalCosts());
+
+        assertTrue("Min 3000 based on events.", 3000 <= result.getTotalExtraCosts());
+        assertTrue("Max 4000 based on events.", 4000 >= result.getTotalExtraCosts());
+
+        assertTrue("No delay can happen.", 0 <= result.getTotalDelays());
+        assertTrue("Up to 4 hours can happen.", 4 * 60 >= result.getTotalDelays());
+
+        // Add the waiting time here
+        assertTrue(result.getLeadTimesByCategory().containsKey(ScheduledLeg.WAIT_CATEGORY));
+        assertTrue("Min 5.5 hours lead time.", 5 * 60 + 30 <= result.getTotalLeadTimes());
+        assertTrue("Max 11.5 hours lead time.", 7 * 60 + 180 * 2 >= result.getTotalLeadTimes());
     }
 
     private void buildComplexSupplyChain() {
