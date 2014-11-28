@@ -21,6 +21,7 @@ import nl.fontys.sofa.limo.view.wizard.leg.normal.EventLegTypeWizard;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.ProceduresLegTypeWizard;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
+import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
 // An example action demonstrating how the wizard could be called from within
@@ -71,6 +72,7 @@ public final class ScheduledLegWizardAction implements ActionListener {
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
+        wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle("Scheduled Leg");
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             ScheduledLeg leg = (ScheduledLeg) wiz.getProperty("leg");

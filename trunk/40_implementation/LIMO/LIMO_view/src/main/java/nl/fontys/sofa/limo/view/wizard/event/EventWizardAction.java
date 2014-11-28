@@ -18,6 +18,7 @@ import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
+import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
 @ActionID(category = "Event", id = "nl.fontys.sofa.limo.view.wizard.event.EventWizardAction")
@@ -68,6 +69,7 @@ public final class EventWizardAction implements ActionListener {
         }
         final WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.setTitleFormat(new MessageFormat("{0}"));
+        wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         if (isUpdate) {
             wiz.setTitle(bundle.getString("EDIT_EVENT"));
             wiz.putProperty(EVENT, eventUpdate);
