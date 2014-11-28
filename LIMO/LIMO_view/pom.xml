@@ -132,8 +132,13 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util</artifactId>
-            <version>${netbeans.version}</version>
+            <version>RELEASE80</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>nl.fontys.limo</groupId>
+            <artifactId>LIMO_ExternalTraider</artifactId>
+            <version>0.1-ALPHA</version>
         </dependency>
     </dependencies>
     <properties>
