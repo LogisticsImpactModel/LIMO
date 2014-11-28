@@ -12,12 +12,6 @@ public class DataEntry {
     private final Double max;
     private final Double avg;
 
-    public DataEntry() {
-        this.min = null;
-        this.max = null;
-        this.avg = 0d;
-    }
-
     public DataEntry(double min, double max, double avg) {
         this.min = min;
         this.max = max;

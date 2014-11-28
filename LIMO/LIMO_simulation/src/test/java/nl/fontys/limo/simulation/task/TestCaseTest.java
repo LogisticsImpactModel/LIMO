@@ -129,7 +129,7 @@ public class TestCaseTest {
         buildComplexSupplyChain();
 
         Leg leg2 = new Leg();
-        leg2.addProcedure(new Procedure("loading", "mandatory", new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        leg2.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
         leg2.setNext(end);
         start.setNext(leg2);
 
@@ -176,10 +176,10 @@ public class TestCaseTest {
         buildComplexSupplyChain();
 
         Hub middleHub = new Hub();
-        middleHub.addProcedure(new Procedure("customs control", "mandatory", new SingleValue(100), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        middleHub.addProcedure(new Procedure("customs control", MANDATORY, new SingleValue(100), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
 
         Leg leg2 = new Leg();
-        leg2.addProcedure(new Procedure("loading", "mandatory", new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        leg2.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
         leg2.setNext(middleHub);
 //        start.setNext(leg2);
 
@@ -192,7 +192,7 @@ public class TestCaseTest {
         scheduledLeg.setAcceptanceTimes(Arrays.asList(new Long[]{30L, 120L, 180L}));
 
         Leg leg3 = new Leg();
-        leg3.addProcedure(new Procedure("loading", "mandatory", new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        leg3.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
         leg3.setNext(middleHub);
 //        middleHub.setNext(leg3);
 
@@ -223,7 +223,7 @@ public class TestCaseTest {
     }
 
     private void buildComplexSupplyChain() {
-        start.addProcedure(new Procedure("loading", "mandatory", new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        start.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
 
         Distribution discreteDistribution = new DiscreteDistribution();
         discreteDistribution.setInputValue("X", 1);
@@ -234,32 +234,43 @@ public class TestCaseTest {
         event.addEvent(subEvent);
         start.addEvent(event);
 
-        end.addProcedure(new Procedure("unloading", "mandatory", new RangeValue(2000, 3000), new RangeValue(2, 3), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
+        end.addProcedure(new Procedure("unloading", MANDATORY, new RangeValue(2000, 3000), new RangeValue(2, 3), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
         Event event2 = new Event("Damaged container", "You damage a container.", end, ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
         event2.addProcedure(new Procedure("costs", "always", new RangeValue(3000, 4000), new SingleValue(0), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
         end.addEvent(event2);
 
         leg = new Leg();
         Event event3 = new Event("Storm", "Storm slows down the ship.", leg, ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
-        event3.addProcedure(new Procedure("waiting", "mandatory", new SingleValue(0), new RangeValue(30, 60), TimeType.MINUTES, ProcedureResponsibilityDirection.OUTPUT));
+        event3.addProcedure(new Procedure("waiting", MANDATORY, new SingleValue(0), new RangeValue(30, 60), TimeType.MINUTES, ProcedureResponsibilityDirection.OUTPUT));
         leg.addEvent(event3);
     }
 
     private void assertComplexSupplyChain(TestCaseResult result) {
+        assertTrue(result.getSupplyChain().equals(supplyChain));
+
         assertTrue("Two events always happen.", result.getExecutedEvents().size() >= 2);
         assertTrue("At least 4 events can happen.", result.getExecutedEvents().size() <= 4);
 
+        assertTrue(result.getCostsByCategory().containsKey(MANDATORY));
         assertTrue("Min 5000 based on procedures.", 5000 <= result.getTotalCosts());
         assertTrue("Max 7000 based on procedures.", 7000 >= result.getTotalCosts());
 
+        assertTrue(result.getExtraCostsByCategory().containsKey(MANDATORY));
+        assertTrue(result.getExtraCostsByCategory().containsKey("always"));
+        assertTrue(result.getExtraCostsByCategory().containsKey("if too late"));
         assertTrue("Min 3000 based on events.", 3000 <= result.getTotalExtraCosts());
         assertTrue("Max 4000 based on events.", 4000 >= result.getTotalExtraCosts());
 
+        assertTrue(result.getDelaysByCategory().containsKey(MANDATORY));
+        assertTrue(result.getDelaysByCategory().containsKey("always"));
+        assertTrue(result.getDelaysByCategory().containsKey("if too late"));
         assertTrue("No delay can happen.", 0 <= result.getTotalDelays());
         assertTrue("Up to 4 hours can happen.", 4 * 60 >= result.getTotalDelays());
 
+        assertTrue(result.getLeadTimesByCategory().containsKey(MANDATORY));
         assertTrue("Min 5 hours lead time.", 5 * 60 <= result.getTotalLeadTimes());
         assertTrue("Max 7 hours lead time.", 7 * 60 >= result.getTotalLeadTimes());
     }
+    private static final String MANDATORY = "mandatory";
 
 }
