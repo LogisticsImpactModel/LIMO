@@ -5,11 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JComponent;
-import nl.fontys.sofa.limo.api.service.provider.EventService;
+import nl.fontys.limo.externaltraider.JSONExporter;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.EventSelectionPanel;
+import nl.fontys.sofa.limo.view.wizard.export.data.panel.FileChooserPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.HubSelectionPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.HubTypeSelectionPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.LegTypeSelectionPanel;
@@ -20,7 +23,6 @@ import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
-import org.openide.util.Lookup;
 
 /**
  *
@@ -34,13 +36,14 @@ import org.openide.util.Lookup;
 })
 public final class ExportWizardAction implements ActionListener {
 
-    private List<List<BaseEntity>> objectsToExport;
+    private Map<String, List<BaseEntity>> objectsToExport;
 
     public static final String CATEGORIES = "categories";
     public static final String LEG_TYPES = "legtypes";
     public static final String HUB_TYPES = "hubtypes";
     public static final String HUBS = "hubs";
     public static final String EVENTS = "events";
+    public static final String PATH = "path";
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -51,6 +54,7 @@ public final class ExportWizardAction implements ActionListener {
         wizardDescritorPanels.add(new HubTypeSelectionPanel());
         wizardDescritorPanels.add(new HubSelectionPanel());
         wizardDescritorPanels.add(new EventSelectionPanel());
+        wizardDescritorPanels.add(new FileChooserPanel());
 
         String[] steps = new String[wizardDescritorPanels.size()];
         for (int i = 0; i < wizardDescritorPanels.size(); i++) {
@@ -70,11 +74,15 @@ public final class ExportWizardAction implements ActionListener {
         wizardDescriptor.setTitleFormat(new MessageFormat("{0}"));
         wizardDescriptor.setTitle("Export data");
         if (DialogDisplayer.getDefault().notify(wizardDescriptor) == WizardDescriptor.FINISH_OPTION) {
-            objectsToExport = new ArrayList<>();
-            //
-            //JUST FOR FAST COPY PASTE LATER ON CREATED HERE
-            //
-            EventService eventService = Lookup.getDefault().lookup(EventService.class);
+            objectsToExport = new HashMap<>();
+            objectsToExport.put(CATEGORIES, (List<BaseEntity>) wizardDescriptor.getProperty(CATEGORIES));
+            objectsToExport.put(LEG_TYPES, (List<BaseEntity>) wizardDescriptor.getProperty(LEG_TYPES));
+            objectsToExport.put(HUB_TYPES, (List<BaseEntity>) wizardDescriptor.getProperty(HUB_TYPES));
+            objectsToExport.put(HUBS, (List<BaseEntity>) wizardDescriptor.getProperty(HUBS));
+            objectsToExport.put(EVENTS, (List<BaseEntity>) wizardDescriptor.getProperty(EVENTS));
+            String filepath = (String)wizardDescriptor.getProperty(PATH);
+            JSONExporter exporter = new JSONExporter();
+            exporter.exportToJson(objectsToExport, filepath);
             //
             //EXAMPLE
             //
