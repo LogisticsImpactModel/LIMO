@@ -32,10 +32,10 @@ public class SimulationResult {
 
     public SimulationResult(SupplyChain supplyChain) {
         this.supplyChain = supplyChain;
-        this.totalCosts = new DataEntry(0, 0, 0);
-        this.totalLeadTimes = new DataEntry(0, 0, 0);
-        this.totalDelays = new DataEntry(0, 0, 0);
-        this.totalExtraCosts = new DataEntry(0, 0, 0);
+        this.totalCosts = new DataEntry();
+        this.totalLeadTimes = new DataEntry();
+        this.totalDelays = new DataEntry();
+        this.totalExtraCosts = new DataEntry();
         this.costsByCategory = new HashMap<>();
         this.leadTimesByCategory = new HashMap<>();
         this.delaysByCategory = new HashMap<>();
