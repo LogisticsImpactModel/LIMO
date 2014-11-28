@@ -89,5 +89,6 @@
         <module>LIMO-domain</module>
         <module>LIMO_Service</module>
         <module>LIMO_simulation</module>
+        <module>LIMO_ExternalTraider</module>
     </modules>
 </project>
