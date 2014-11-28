@@ -1,8 +1,8 @@
 package nl.fontys.limo.simulation.result;
 
 /**
- * A data entry encapsuates the data for one cost or time point in a simulation.
- * It contains the minimum, maximum and average value of that point.
+ * A data entry encapsulates the data for one cost or time point in a
+ * simulation. It contains the minimum, maximum and average value of that point.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
