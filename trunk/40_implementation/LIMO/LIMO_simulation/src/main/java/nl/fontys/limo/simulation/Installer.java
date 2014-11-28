@@ -9,7 +9,7 @@ public class Installer extends ModuleInstall {
         if (!SimulationExecutor.isShutdown() && !SimulationExecutor.isShuttingDown()) {
             SimulationExecutor.shutdown();
         }
-        
+
         return SimulationExecutor.isShutdown();
     }
 

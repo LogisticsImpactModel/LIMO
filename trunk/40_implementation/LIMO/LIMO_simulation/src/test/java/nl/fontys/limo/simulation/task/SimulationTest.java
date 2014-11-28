@@ -1,37 +1,25 @@
 package nl.fontys.limo.simulation.task;
 
 import nl.fontys.limo.simulation.result.SimulationResult;
-import nl.fontys.sofa.limo.domain.component.SupplyChain;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.domain.component.leg.Leg;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
-import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
-import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
 import org.junit.Assert;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
  *
  * @author Sven Mäurer
  */
-public class SimulationTest {
+public class SimulationTest extends SupplyChainTester {
 
-    private Simulation simulation;
-    private final SupplyChain supplyChain;
+    private final Simulation simulation;
 
     public SimulationTest() {
-        supplyChain = new SupplyChain();
-        simulation = new Simulation(supplyChain, 5);
-        Hub start = new Hub();
-        start.addProcedure(new Procedure("loading", "mandatory", new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
-        //start.addEvent(new Event());
-        Hub end = new Hub();
-        end.addProcedure(new Procedure("unloading", "mandatory", new RangeValue(2000, 3000), new RangeValue(2, 3), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
-        Leg leg = new Leg();
+        super();
+        buildComplexSupplyChain();
         leg.setNext(end);
         start.setNext(leg);
         supplyChain.setStart(start);
+        simulation = new Simulation(supplyChain, 10);
     }
 
     @Test
@@ -51,22 +39,36 @@ public class SimulationTest {
 
     @Test
     public void testRun() {
-//        simulation.run();
+        simulation.run();
 //        while (simulation.getProgress() != 1) {
 //
 //        }
-//        SimulationResult result = simulation.getResult();
-//        Assert.assertNotNull(result);
-//
-//        DataEntry totalCosts = result.getTotalCosts();
-//        Assert.assertEquals(5000, totalCosts.getMin(), 0.000001);
-//        Assert.assertEquals(7000, totalCosts.getMax(), 0.000001);
-//        Assert.assertTrue(totalCosts.getAvg() > 5000);
-//        Assert.assertTrue(totalCosts.getAvg() < 7000);
+        SimulationResult result = simulation.getResult();
 
-//        DataEntry totalDelays = result.getTotalDelays();
-//        DataEntry totalExtraCosts = result.getTotalExtraCosts();
-//        DataEntry totalLeadTimes = result.getTotalLeadTimes();
+        assertTrue(result.getSupplyChain().equals(supplyChain));
+
+//        assertTrue("Two events always happen.", result.getExecutedEvents().size() >= 2);
+//        assertTrue("At least 4 events can happen.", result.getExecutedEvents().size() <= 4);
+//
+        assertTrue(result.getCostsByCategory().containsKey(MANDATORY));
+        //assertTrue("Min 5000 based on procedures.", 5000 <= result.getTotalCosts());
+        //assertTrue("Max 7000 based on procedures.", 7000 >= result.getTotalCosts());
+//
+//        assertTrue(result.getExtraCostsByCategory().containsKey(MANDATORY));
+//        assertTrue(result.getExtraCostsByCategory().containsKey("always"));
+//        assertTrue(result.getExtraCostsByCategory().containsKey("if too late"));
+//        assertTrue("Min 3000 based on events.", 3000 <= result.getTotalExtraCosts());
+//        assertTrue("Max 4000 based on events.", 4000 >= result.getTotalExtraCosts());
+//
+//        assertTrue(result.getDelaysByCategory().containsKey(MANDATORY));
+//        assertTrue(result.getDelaysByCategory().containsKey("always"));
+//        assertTrue(result.getDelaysByCategory().containsKey("if too late"));
+//        assertTrue("No delay can happen.", 0 <= result.getTotalDelays());
+//        assertTrue("Up to 4 hours can happen.", 4 * 60 >= result.getTotalDelays());
+//
+        assertTrue(result.getLeadTimesByCategory().containsKey(MANDATORY));
+//        assertTrue("Min 5 hours lead time.", 5 * 60 <= result.getTotalLeadTimes());
+//        assertTrue("Max 7 hours lead time.", 7 * 60 >= result.getTotalLeadTimes());
     }
 
     @Test

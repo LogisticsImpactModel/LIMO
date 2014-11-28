@@ -8,7 +8,7 @@ package nl.fontys.limo.simulation.util;
 public final class MathUtil {
 
     private MathUtil() {
-
+        throw new UnsupportedOperationException();
     }
 
     /**

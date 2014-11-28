@@ -13,28 +13,28 @@ import org.openide.util.TaskListener;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class SimulatorTask implements TaskListener{
-    
+public class SimulatorTask implements TaskListener {
+
     private final Map<Task, Simulation> simulations;
     private final List<SimulationResult> results;
-    
+
     public SimulatorTask() {
         simulations = new HashMap<>();
         results = new ArrayList<>();
     }
-    
+
     public boolean isDone() {
         return results.size() == simulations.size();
     }
-    
+
     public double getProgress() {
-        return (double)results.size() / (double)simulations.size();
+        return (double) results.size() / (double) simulations.size();
     }
-    
+
     public List<SimulationResult> getResults() {
         return results;
     }
-    
+
     protected void addSimulation(Simulation simulation, Task task) {
         simulations.put(task, simulation);
     }
@@ -43,5 +43,5 @@ public class SimulatorTask implements TaskListener{
     public void taskFinished(Task task) {
         results.add(simulations.get(task).getResult());
     }
-    
+
 }

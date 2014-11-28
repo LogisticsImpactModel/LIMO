@@ -9,29 +9,33 @@ import org.openide.util.Task;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class SimulationExecutor {
-    
+public final class SimulationExecutor {
+
     private static RequestProcessor simulationProcessor;
     private static RequestProcessor testCaseProcessor;
-    
+
     private static boolean shuttingDown = false;
-    
+
+    private SimulationExecutor() {
+        throw new UnsupportedOperationException();
+    }
+
     public static Task post(Simulation simulation) {
         if (simulationProcessor == null) {
             simulationProcessor = new RequestProcessor("SExecutor", 1);
         }
-        
+
         return simulationProcessor.post(simulation);
     }
-    
+
     public static Task post(TestCase testCase) {
         if (testCaseProcessor == null) {
             testCaseProcessor = new RequestProcessor("TCExecutor", Runtime.getRuntime().availableProcessors());
         }
-        
+
         return testCaseProcessor.post(testCase);
     }
-    
+
     public static void shutdown() {
         if (simulationProcessor != null) {
             simulationProcessor.shutdown();
@@ -43,14 +47,14 @@ public class SimulationExecutor {
         }
         shuttingDown = true;
     }
-    
+
     public static boolean isShutdown() {
         return simulationProcessor.isShutdown() && testCaseProcessor.isShutdown();
     }
-    
+
     public static boolean isShuttingDown() {
         shuttingDown = !shuttingDown ? false : !isShutdown();
         return shuttingDown;
     }
-    
+
 }
