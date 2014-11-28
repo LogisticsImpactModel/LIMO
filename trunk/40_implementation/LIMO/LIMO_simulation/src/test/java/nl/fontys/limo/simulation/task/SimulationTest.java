@@ -11,6 +11,8 @@ import org.junit.Test;
  */
 public class SimulationTest extends SupplyChainTester {
 
+    private static final int NUMBER_OF_SIMULATIONS = 1337;
+
     private final Simulation simulation;
 
     public SimulationTest() {
@@ -19,7 +21,7 @@ public class SimulationTest extends SupplyChainTester {
         leg.setNext(end);
         start.setNext(leg);
         supplyChain.setStart(start);
-        simulation = new Simulation(supplyChain, 1337);
+        simulation = new Simulation(supplyChain, NUMBER_OF_SIMULATIONS);
     }
 
     @Test
@@ -47,8 +49,9 @@ public class SimulationTest extends SupplyChainTester {
 
         assertTrue(result.getSupplyChain().equals(supplyChain));
 
-//        assertTrue("Two events always happen.", result.getExecutedEvents().size() >= 2);
-//        assertTrue("At least 4 events can happen.", result.getExecutedEvents().size() <= 4);
+        assertTrue("Two events always happen.", result.getEventExecutionRate().size() >= 2);
+        assertTrue("At least 4 events can happen.", result.getEventExecutionRate().size() <= 4);
+
         assertTrue(result.getCostsByCategory().containsKey(MANDATORY));
         assertTrue("Min 5000 based on procedures.", 5000 <= result.getTotalCosts().getMin());
         assertTrue("Max 7000 based on procedures.", 7000 >= result.getTotalCosts().getMax());
@@ -68,6 +71,10 @@ public class SimulationTest extends SupplyChainTester {
         assertTrue(result.getLeadTimesByCategory().containsKey(MANDATORY));
         assertTrue("Min 5 hours lead time.", 5 * 60 <= result.getTotalLeadTimes().getMin());
         assertTrue("Max 7 hours lead time.", 7 * 60 >= result.getTotalLeadTimes().getMax());
+
+//        for (TestCaseResult testCaseResult : result.getTestCaseResults()) {
+//            assertComplexSupplyChain(testCaseResult);
+//        }
     }
 
     @Test

@@ -28,7 +28,8 @@ public class SimulationResult {
     private final Map<String, DataEntry> delaysByCategory;
     private final Map<String, DataEntry> extraCostsByCategory;
     private final List<TestCaseResult> testCaseResults;
-    private final Map<Event, Double> eventExecutionRate;
+    private final Map<String, Double> eventExecutionRate;
+    private final Map<String, Event> executedEvents;
 
     public SimulationResult(SupplyChain supplyChain) {
         this.supplyChain = supplyChain;
@@ -42,6 +43,7 @@ public class SimulationResult {
         this.extraCostsByCategory = new HashMap<>();
         this.testCaseResults = new ArrayList<>();
         this.eventExecutionRate = new HashMap<>();
+        this.executedEvents = new HashMap<>();
     }
 
     public SupplyChain getSupplyChain() {
@@ -64,6 +66,10 @@ public class SimulationResult {
         return totalExtraCosts;
     }
 
+    public Map<String, Event> getExecutedEvents() {
+        return executedEvents;
+    }
+
     public Map<String, DataEntry> getCostsByCategory() {
         return Collections.unmodifiableMap(costsByCategory);
     }
@@ -84,7 +90,7 @@ public class SimulationResult {
         return Collections.unmodifiableList(testCaseResults);
     }
 
-    public Map<Event, Double> getEventExecutionRate() {
+    public Map<String, Double> getEventExecutionRate() {
         return eventExecutionRate;
     }
 
@@ -116,17 +122,18 @@ public class SimulationResult {
             delaysByCategory.put(entry.getKey(), recalculateDataEntry(old, size, entry.getValue()));
         }
         for (Map.Entry<String, Double> entry : tcr.getExtraCostsByCategory().entrySet()) {
-            DataEntry old = delaysByCategory.get(entry.getKey());
-            delaysByCategory.put(entry.getKey(), recalculateDataEntry(old, size, entry.getValue()));
+            DataEntry old = extraCostsByCategory.get(entry.getKey());
+            extraCostsByCategory.put(entry.getKey(), recalculateDataEntry(old, size, entry.getValue()));
         }
 
         // ADD Events
         for (Event event : tcr.getExecutedEvents()) {
-            if (!this.eventExecutionRate.containsKey(event)) {
-                this.eventExecutionRate.put(event, 1.0 / (size + 1));
+            if (!eventExecutionRate.containsKey(event.getUniqueIdentifier())) {
+                this.eventExecutionRate.put(event.getUniqueIdentifier(), 1.0 / (size + 1));
+                this.executedEvents.put(event.getUniqueIdentifier(), event);
             } else {
-                double newAvg = MathUtil.getCumulativeMovingAverage(this.eventExecutionRate.get(event), size, 1);
-                this.eventExecutionRate.put(event, newAvg);
+                double newAvg = MathUtil.getCumulativeMovingAverage(this.eventExecutionRate.get(event.getUniqueIdentifier()), size, 1);
+                this.eventExecutionRate.put(event.getUniqueIdentifier(), newAvg);
             }
         }
 
