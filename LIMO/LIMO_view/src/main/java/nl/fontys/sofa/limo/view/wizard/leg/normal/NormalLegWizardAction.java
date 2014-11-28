@@ -20,6 +20,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
+import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
 // An example action demonstrating how the wizard could be called from within
@@ -61,6 +62,7 @@ public final class NormalLegWizardAction implements ActionListener {
             }
         }
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+        wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         if (update) {
             wiz.putProperty("leg", leg);
         }

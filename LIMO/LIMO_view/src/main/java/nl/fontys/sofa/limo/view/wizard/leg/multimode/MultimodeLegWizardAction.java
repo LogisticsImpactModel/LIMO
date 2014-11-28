@@ -16,9 +16,7 @@ import javax.swing.JComponent;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
-import org.openide.awt.ActionID;
-import org.openide.awt.ActionReference;
-import org.openide.awt.ActionRegistration;
+import org.openide.util.ImageUtilities;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
@@ -60,6 +58,7 @@ public final class MultimodeLegWizardAction implements ActionListener {
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
+        wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle("Multimode Leg");
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             Map<Leg, Double> map = (Map<Leg, Double>) wiz.getProperty("map");

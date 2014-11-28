@@ -20,6 +20,7 @@ import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
+import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
 @ActionID(category = "HubType", id = "nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
@@ -60,6 +61,7 @@ public final class HubTypeWizardAction extends TypeWizardAction {
         }
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.setTitleFormat(new MessageFormat("{0}"));
+        wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("ADD_HUB_TYPE"));
         if (isUpdate) {
             wiz.putProperty(TYPE_NAME, hubType.getName());
