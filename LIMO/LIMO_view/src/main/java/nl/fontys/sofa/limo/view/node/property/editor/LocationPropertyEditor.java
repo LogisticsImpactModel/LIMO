@@ -2,7 +2,9 @@ package nl.fontys.sofa.limo.view.node.property.editor;
 
 import com.sksamuel.gaia.Continent;
 import com.sksamuel.gaia.Country;
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -81,6 +83,10 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
         public LocationEditor(Location hubLocation) {
             this.hubLocation = hubLocation;
             this.shouldSafe = false;
+            setModal(true);
+            setLocationRelativeTo(null);
+            setPreferredSize(new Dimension(480, 240));
+            setTitle("Edit Location");
 
             initComponents();
         }
@@ -94,6 +100,11 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
         }
 
         public final void initComponents() {
+            JPanel container = new JPanel();
+            container.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+            setLayout(new BorderLayout());
+            add(container, BorderLayout.CENTER);
+
             btnOk = new JButton("OK");
             btnOk.addActionListener(this);
 
@@ -126,7 +137,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             });
 
             cmbCountry = new JComboBox(getCountries(hubLocation.getContinent()));
-            cmbCountry.setSelectedItem(hubLocation.getCountry());
+            cmbCountry.setSelectedItem(hubLocation.getCountry().getName());
             cmbCountry.addActionListener(new ActionListener() {
 
                 @Override
@@ -154,7 +165,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             tfState.setEnabled(enable);
 
             //<editor-fold defaultstate="collapsed" desc="Layout">
-            setLayout(new GridBagLayout());
+            container.setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
             c.fill = GridBagConstraints.HORIZONTAL;
 
@@ -162,82 +173,78 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             c.gridy = 0;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            add(new JLabel("Continent"), c);
+            container.add(new JLabel("Continent"), c);
             c.gridx = 1;
             c.gridy = 0;
             c.gridwidth = 4;
             c.weightx = 0.8;
-            add(cmbContinent, c);
+            container.add(cmbContinent, c);
 
             c.gridx = 0;
             c.gridy = 1;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            add(new JLabel("Country"), c);
+            container.add(new JLabel("Country"), c);
             c.gridx = 1;
             c.gridy = 1;
             c.gridwidth = 4;
             c.weightx = 0.8;
-            add(cmbCountry, c);
+            container.add(cmbCountry, c);
 
             c.gridx = 0;
             c.gridy = 2;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            add(new JLabel("Street"), c);
+            container.add(new JLabel("Street"), c);
             c.gridx = 1;
             c.gridy = 2;
             c.gridwidth = 2;
             c.weightx = 0.4;
-            add(tfStreet, c);
+            container.add(tfStreet, c);
             c.gridx = 3;
             c.gridy = 2;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            add(new JLabel("Number"), c);
+            container.add(new JLabel("Number"), c);
             c.gridx = 4;
             c.gridy = 2;
             c.gridwidth = 1;
             c.weightx = 0.2;
-            add(tfNumber, c);
+            container.add(tfNumber, c);
 
             c.gridx = 0;
             c.gridy = 3;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            add(new JLabel("City"), c);
+            container.add(new JLabel("City"), c);
             c.gridx = 1;
             c.gridy = 3;
             c.gridwidth = 2;
             c.weightx = 0.4;
-            add(tfCity, c);
+            container.add(tfCity, c);
             c.gridx = 3;
             c.gridy = 3;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            add(new JLabel("Postcode"), c);
+            container.add(new JLabel("Postcode"), c);
             c.gridx = 4;
             c.gridy = 3;
             c.gridwidth = 1;
             c.weightx = 0.2;
-            add(tfZip, c);
+            container.add(tfZip, c);
 
             c.gridx = 0;
             c.gridy = 4;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            add(new JLabel("State"), c);
+            container.add(new JLabel("State"), c);
             c.gridx = 1;
             c.gridy = 4;
             c.gridwidth = 2;
             c.weightx = 0.4;
-            add(tfState, c);
+            container.add(tfState, c);
 
-            c.gridx = 0;
-            c.gridy = 5;
-            c.gridwidth = 6;
-            c.weightx = 1;
-            add(buttonBar, c);
+            add(buttonBar, BorderLayout.SOUTH);
 //</editor-fold>
         }
 
