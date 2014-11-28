@@ -69,7 +69,7 @@ public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                int reply = JOptionPane.showConfirmDialog(null, "Are you sure to delete " + bean.getName(), "Are you sure...?", JOptionPane.YES_NO_OPTION);
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure to delete " + bean.getName(), "Are you sure...?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 if (reply == JOptionPane.YES_OPTION) {
                     EventService service = Lookup.getDefault().lookup(EventService.class);
                     service.delete(bean);
