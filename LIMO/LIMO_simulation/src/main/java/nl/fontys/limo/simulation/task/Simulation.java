@@ -90,18 +90,21 @@ public class Simulation implements Runnable, TaskListener {
             return;
         }
 
-        for (int i = 0; i < testCaseCount; i++) {
-            try {
-                // Submit test cases and attach this as listener
-                TestCase testCase = new TestCase(scPool.take());
-                Task task = SimulationExecutor.post(testCase);
-                task.addTaskListener(this);
-
-                // Put into map
-                testCaseTasks.put(task, testCase);
-            } catch (InterruptedException ex) {
-                Exceptions.printStackTrace(ex);
+        int i = 0;
+        while (i < testCaseCount) {
+            // Submit test cases and attach this as listener
+            SupplyChain sc = scPool.poll();
+            if (sc == null) {
+                continue;
             }
+
+            TestCase testCase = new TestCase(sc);
+            Task task = SimulationExecutor.post(testCase);
+            task.addTaskListener(this);
+
+            // Put into map
+            testCaseTasks.put(task, testCase);
+            i++;
         }
     }
 

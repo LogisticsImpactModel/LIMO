@@ -25,7 +25,7 @@ public final class SimulationExecutor {
             simulationProcessor = new RequestProcessor("SExecutor", 1);
         }
 
-        return simulationProcessor.post(simulation);
+        return simulationProcessor.post(simulation, 0, Thread.MAX_PRIORITY);
     }
 
     public static Task post(TestCase testCase) {
@@ -33,7 +33,7 @@ public final class SimulationExecutor {
             testCaseProcessor = new RequestProcessor("TCExecutor", Runtime.getRuntime().availableProcessors());
         }
 
-        return testCaseProcessor.post(testCase);
+        return testCaseProcessor.post(testCase, 1000, Thread.NORM_PRIORITY);
     }
 
     public static void shutdown() {
