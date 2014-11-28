@@ -56,6 +56,7 @@ public class TestCaseTest extends SupplyChainTester {
         TestCaseResult result = testCase.getResult();
         assertNotNull(result);
 
+        assertTrue(result.getSupplyChain().equals(supplyChain));
         assertComplexSupplyChain(result);
     }
 
@@ -73,6 +74,7 @@ public class TestCaseTest extends SupplyChainTester {
         TestCaseResult result = testCase.getResult();
         assertNotNull(result);
 
+        assertTrue(result.getSupplyChain().equals(supplyChain));
         assertComplexSupplyChain(result);
     }
 
@@ -206,33 +208,6 @@ public class TestCaseTest extends SupplyChainTester {
         assertTrue(result.getLeadTimesByCategory().containsKey(ScheduledLeg.WAIT_CATEGORY));
         assertTrue("Min 5.5 hours lead time.", 5 * 60 + 30 <= result.getTotalLeadTimes());
         assertTrue("Max 11.5 hours lead time.", 7 * 60 + 180 * 2 >= result.getTotalLeadTimes());
-    }
-
-    private void assertComplexSupplyChain(TestCaseResult result) {
-        assertTrue(result.getSupplyChain().equals(supplyChain));
-
-        assertTrue("Two events always happen.", result.getExecutedEvents().size() >= 2);
-        assertTrue("At least 4 events can happen.", result.getExecutedEvents().size() <= 4);
-
-        assertTrue(result.getCostsByCategory().containsKey(MANDATORY));
-        assertTrue("Min 5000 based on procedures.", 5000 <= result.getTotalCosts());
-        assertTrue("Max 7000 based on procedures.", 7000 >= result.getTotalCosts());
-
-        assertTrue(result.getExtraCostsByCategory().containsKey(MANDATORY));
-        assertTrue(result.getExtraCostsByCategory().containsKey("always"));
-        assertTrue(result.getExtraCostsByCategory().containsKey("if too late"));
-        assertTrue("Min 3000 based on events.", 3000 <= result.getTotalExtraCosts());
-        assertTrue("Max 4000 based on events.", 4000 >= result.getTotalExtraCosts());
-
-        assertTrue(result.getDelaysByCategory().containsKey(MANDATORY));
-        assertTrue(result.getDelaysByCategory().containsKey("always"));
-        assertTrue(result.getDelaysByCategory().containsKey("if too late"));
-        assertTrue("No delay can happen.", 0 <= result.getTotalDelays());
-        assertTrue("Up to 4 hours can happen.", 4 * 60 >= result.getTotalDelays());
-
-        assertTrue(result.getLeadTimesByCategory().containsKey(MANDATORY));
-        assertTrue("Min 5 hours lead time.", 5 * 60 <= result.getTotalLeadTimes());
-        assertTrue("Max 7 hours lead time.", 7 * 60 >= result.getTotalLeadTimes());
     }
 
 }
