@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.domain.component.type;
 
-import java.util.ArrayList;
 import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.Icon;
@@ -16,8 +15,7 @@ public abstract class Type extends Component {
     protected Icon icon;
 
     public Type() {
-        events = new ArrayList<>();
-        procedures = new ArrayList<>();
+        super();
     }
 
     public Icon getIcon() {

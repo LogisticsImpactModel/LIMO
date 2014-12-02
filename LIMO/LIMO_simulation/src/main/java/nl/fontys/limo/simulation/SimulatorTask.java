@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import nl.fontys.limo.simulation.result.SimulationResult;
 import nl.fontys.limo.simulation.task.Simulation;
 import org.netbeans.api.progress.aggregate.AggregateProgressFactory;
@@ -20,7 +21,7 @@ public class SimulatorTask implements TaskListener {
 
     private final Map<Task, Simulation> simulations;
     private final List<SimulationResult> results;
-    private HashSet<SimulatorTaskListener> list;
+    private Set<SimulatorTaskListener> list;
     private final AggregateProgressHandle processHandle;
 
     public SimulatorTask() {
@@ -70,7 +71,6 @@ public class SimulatorTask implements TaskListener {
      * @param l the listener to add
      */
     public void addTaskListener(SimulatorTaskListener l) {
-        boolean callNow;
         synchronized (this) {
             if (list == null) {
                 list = new HashSet<>();
