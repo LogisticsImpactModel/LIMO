@@ -51,9 +51,9 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
         setPreferredBounds(new Rectangle(widgetWidth, widgetHeight));
         setPreferredSize(new Dimension(widgetWidth, widgetHeight));
-        setBackground(backgroundColor);
+//        setBackground(backgroundColor);
         setToolTipText(hubNode.getName());
-        setOpaque(true);
+        setOpaque(false);
 
         startFlagWidget = new StartWidget(scene);
         startFlagWidget.setVisible(false);
@@ -99,7 +99,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                         hubNode.getName(),
                         TitledBorder.CENTER,
                         TitledBorder.ABOVE_TOP),
-                BorderFactory.createLineBorder(backgroundColor, 10)));
+                BorderFactory.createLineBorder(new Color(0, 0, 0, 0), 10)));
     }
 
     @Override

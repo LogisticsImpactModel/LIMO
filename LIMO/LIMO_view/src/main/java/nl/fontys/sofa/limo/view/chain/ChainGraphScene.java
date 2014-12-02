@@ -7,6 +7,7 @@ import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.graph.GraphScene;
 import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Widget;
+import org.openide.windows.TopComponent;
 
 /**
  * Abstract class which defines additional methods on the GraphScene.
@@ -38,5 +39,7 @@ public abstract class ChainGraphScene extends GraphScene<AbstractBeanNode, Abstr
     public abstract void addHubWidget(HubWidget hubWidget);
 
     public abstract void removeHubWidget(HubWidget hubWidget);
+
+    public abstract TopComponent getParent();
 
 }

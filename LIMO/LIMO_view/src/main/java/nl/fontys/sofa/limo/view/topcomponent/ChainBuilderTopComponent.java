@@ -9,6 +9,7 @@ import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.GraphSceneImpl2;
+import nl.fontys.sofa.limo.view.custom.panel.ChainToolbar;
 import nl.fontys.sofa.limo.view.factory.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -69,8 +70,8 @@ public final class ChainBuilderTopComponent extends TopComponent implements
         try {
             Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
             Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
-            Lookup chainLookup = Lookups.singleton(graphScene.getChainBuilder());
-            ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, chainLookup);
+            Lookup graphLookup = Lookups.singleton(graphScene);
+            ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup);
             associateLookup(pl);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
@@ -85,6 +86,9 @@ public final class ChainBuilderTopComponent extends TopComponent implements
         setLayout(new BorderLayout());
         SupplyChain chain = new SupplyChain();
         try {
+            ChainToolbar toolbar = new ChainToolbar();
+            add(toolbar, BorderLayout.NORTH);
+
             graphScene = new GraphSceneImpl2(this);
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
@@ -105,7 +109,7 @@ public final class ChainBuilderTopComponent extends TopComponent implements
         return em;
     }
 
-    public void setRootConttext(AbstractBeanNode node) {
+    public void setRootContext(AbstractBeanNode node) {
         em.setRootContext(node);
         try {
             em.setSelectedNodes(new Node[]{node});

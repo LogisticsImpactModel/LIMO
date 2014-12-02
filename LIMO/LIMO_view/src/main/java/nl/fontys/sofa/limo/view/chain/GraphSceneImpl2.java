@@ -29,6 +29,7 @@ import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.nodes.NodeTransfer;
 import org.openide.util.Exceptions;
+import org.openide.windows.TopComponent;
 
 /**
  * GraphScene to draw a supply chain on. Widgets can be dragged and dropped to
@@ -194,6 +195,11 @@ public class GraphSceneImpl2 extends ChainGraphScene {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public TopComponent getParent() {
+        return parent;
+    }
+
     /**
      * Accept provider for the scene. Validates if a connection can be dropped
      * and places the connection in the scene.
@@ -245,7 +251,7 @@ public class GraphSceneImpl2 extends ChainGraphScene {
         public void select(Widget widget, Point localLocation, boolean invertSelection) {
             Object object = findObject(widget);
             AbstractBeanNode container = (AbstractBeanNode) object;
-            parent.setRootConttext(container);
+            parent.setRootContext(container);
 
             setFocusedObject(object);
             if (object != null) {
@@ -256,6 +262,7 @@ public class GraphSceneImpl2 extends ChainGraphScene {
             } else {
                 userSelectionSuggested(Collections.emptySet(), invertSelection);
             }
+
         }
 
     }
@@ -297,26 +304,36 @@ public class GraphSceneImpl2 extends ChainGraphScene {
 
         @Override
         public void createConnection(Widget sourceWidget, Widget targetWidget) {
-            SelectLegTypePanel inputPane = new SelectLegTypePanel();
-            Leg leg = inputPane.getLeg();
-            if (leg != null) {
-                try {
-                    LegNode legNode = new LegNode(leg);
+            if (validateConnection()) {
 
-                    Widget connectionWidget = addEdge(legNode);
-                    if (connectionWidget != null) {
-                        setEdgeSource(legNode, source);
-                        setEdgeTarget(legNode, target);
+                SelectLegTypePanel inputPane = new SelectLegTypePanel();
+                Leg leg = inputPane.getLeg();
+                if (leg != null) {
+                    try {
+                        LegNode legNode = new LegNode(leg);
 
-                        HubWidget sourceHub = (HubWidget) findWidget(source);
-                        HubWidget targetHub = (HubWidget) findWidget(target);
-                        chainBuilder.connectHubsByLeg(sourceHub.getHub(), leg, targetHub.getHub());
+                        Widget connectionWidget = addEdge(legNode);
+                        if (connectionWidget != null) {
+                            setEdgeSource(legNode, source);
+                            setEdgeTarget(legNode, target);
+
+                            HubWidget sourceHub = (HubWidget) findWidget(source);
+                            HubWidget targetHub = (HubWidget) findWidget(target);
+                            chainBuilder.connectHubsByLeg(sourceHub.getHub(), leg, targetHub.getHub());
+                        }
+                    } catch (IntrospectionException ex) {
+                        Exceptions.printStackTrace(ex);
                     }
-                } catch (IntrospectionException ex) {
-                    Exceptions.printStackTrace(ex);
                 }
             }
+        }
 
+        private boolean validateConnection() {
+            if (findNodeEdges(source, true, false).isEmpty()
+                    && findNodeEdges(target, false, true).isEmpty()) {
+                return true;
+            }
+            return false;
         }
     }
 }
