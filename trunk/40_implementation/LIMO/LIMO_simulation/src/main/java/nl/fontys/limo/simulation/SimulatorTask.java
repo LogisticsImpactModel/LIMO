@@ -2,6 +2,7 @@ package nl.fontys.limo.simulation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import nl.fontys.limo.simulation.result.SimulationResult;
@@ -17,6 +18,7 @@ public class SimulatorTask implements TaskListener {
 
     private final Map<Task, Simulation> simulations;
     private final List<SimulationResult> results;
+    private HashSet<SimulatorTaskListener> list;
 
     public SimulatorTask() {
         simulations = new HashMap<>();
@@ -42,6 +44,46 @@ public class SimulatorTask implements TaskListener {
     @Override
     public void taskFinished(Task task) {
         results.add(simulations.get(task).getResult());
+
+        if (isDone()) {
+            for (SimulatorTaskListener stl : list) {
+                stl.taskFinished(this);
+            }
+        }
+    }
+
+    /**
+     * Add a listener to the task. The listener will be called once the task
+     * {@link #isFinished()}. In case the task is already finished, the listener
+     * is called immediately.
+     *
+     * @param l the listener to add
+     */
+    public void addTaskListener(SimulatorTaskListener l) {
+        boolean callNow;
+        synchronized (this) {
+            if (list == null) {
+                list = new HashSet<>();
+            }
+            list.add(l);
+        }
+
+        if (isDone()) {
+            l.taskFinished(this);
+        }
+    }
+
+    /**
+     * Remove a listener from the task.
+     *
+     * @param l the listener to remove
+     */
+    public synchronized void removeTaskListener(SimulatorTaskListener l) {
+        if (list == null) {
+            return;
+        }
+
+        list.remove(l);
     }
 
 }
