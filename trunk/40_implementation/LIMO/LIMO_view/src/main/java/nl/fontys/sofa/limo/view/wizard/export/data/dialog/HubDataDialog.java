@@ -12,7 +12,6 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
  */
 public class HubDataDialog extends DataDialog<Hub> {
 
-    
     private JLabel lblIcon, lblIconPreview, lblContinent, lblCountry, lblState, lblTown, lblPostcode, lblStreet, lblHouseNumber, lblLatitude, lblLongitude;
     private JTextField tfContinent, tfCountry, tfState, tfTown, tfPostcode, tfStreet, tfHouseNumber, tfLatitude, tfLongitude;
     private ImageIcon icon;

@@ -6,7 +6,10 @@ import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.domain.component.event.distribution.DiscreteDistribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
+import nl.fontys.sofa.limo.domain.component.hub.Continent;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.hub.Location;
+import nl.fontys.sofa.limo.domain.component.hub.SerializableCountry;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
@@ -34,7 +37,12 @@ public abstract class SupplyChainTester {
         always.setInputValue("Y", 1);
         supplyChain = new SupplyChain();
         start = new Hub();
+        start.setName("Port Rotterdam");
+        Location location = new Location(Continent.Europe, SerializableCountry.Netherlands, "Zeeland", "Rotterdam", "1233", "", "");
+        start.setLocation(location);
         end = new Hub();
+        end.setName("Port Venlo");
+        end.setLocation(location);
     }
 
     protected void buildComplexSupplyChain() {

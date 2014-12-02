@@ -11,7 +11,7 @@ import nl.fontys.sofa.limo.domain.component.leg.Leg;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class Hub extends Node<Leg> {
-    
+
     @Embedded
     private Location location;
     @Embedded
@@ -36,5 +36,5 @@ public class Hub extends Node<Leg> {
     public void setIcon(Icon icon) {
         this.icon = icon;
     }
-    
+
 }

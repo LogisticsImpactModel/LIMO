@@ -1,7 +1,5 @@
 package nl.fontys.sofa.limo.view.wizard.hub;
 
-import com.sksamuel.gaia.Continent;
-import com.sksamuel.gaia.Country;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -13,7 +11,9 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import nl.fontys.sofa.limo.domain.component.hub.Continent;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
+import nl.fontys.sofa.limo.domain.component.hub.SerializableCountry;
 
 public final class LocationHubPanel extends JPanel {
 
@@ -147,7 +147,7 @@ public final class LocationHubPanel extends JPanel {
                     String selectedCountry = (String) cmbCountry.getSelectedItem();
                     ArrayList<String> countries = new ArrayList<>();
                     countries.add(bundle.getString("NONE"));
-                    for (Country country : Continent.values()[continents.indexOf(selected)].getCountries()) {
+                    for (SerializableCountry country : Continent.values()[continents.indexOf(selected)].getCountries()) {
                         countries.add(country.getName());
                     }
                     cmbCountry.setModel(new DefaultComboBoxModel(countries.toArray()));
@@ -223,7 +223,7 @@ public final class LocationHubPanel extends JPanel {
             }
 
             if (cmbCountry.getSelectedIndex() > 0) {
-                location.setCountry(location.getContinent().getCountries().get(cmbCountry.getSelectedIndex() - 1));
+                location.setCountry((SerializableCountry) location.getContinent().getCountries().get(cmbCountry.getSelectedIndex() - 1));
             }
         }
         return location;

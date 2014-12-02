@@ -1,7 +1,5 @@
 package nl.fontys.sofa.limo.domain.component.hub;
 
-import com.sksamuel.gaia.Continent;
-import com.sksamuel.gaia.Country;
 import java.io.Serializable;
 import javax.persistence.Embedded;
 
@@ -11,9 +9,9 @@ import javax.persistence.Embedded;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class Location implements Serializable {
-    
+
     private Continent continent;
-    private Country country;
+    private SerializableCountry country;
     private String state;
     private String town;
     private String postcode;
@@ -24,9 +22,19 @@ public class Location implements Serializable {
 
     public Location() {
     }
-    
-    public Location(Continent continent){
+
+    public Location(Continent continent) {
         this.continent = continent;
+    }
+
+    public Location(Continent continent, SerializableCountry country, String state, String town, String postcode, String street, String housenumber) {
+        this.continent = continent;
+        this.country = country;
+        this.state = state;
+        this.town = town;
+        this.postcode = postcode;
+        this.street = street;
+        this.housenumber = housenumber;
     }
 
     public Continent getContinent() {
@@ -37,11 +45,11 @@ public class Location implements Serializable {
         this.continent = continent;
     }
 
-    public Country getCountry() {
+    public SerializableCountry getCountry() {
         return country;
     }
 
-    public void setCountry(Country country) {
+    public void setCountry(SerializableCountry country) {
         this.country = country;
     }
 
@@ -92,12 +100,13 @@ public class Location implements Serializable {
     public void setPosition(Coordinate position) {
         this.position = position;
     }
-    
+
     /**
-     * Private class for storage of a geo location in form of latitude, longitude and elevation.
+     * Private class for storage of a geo location in form of latitude,
+     * longitude and elevation.
      */
     public static class Coordinate implements Serializable {
-        
+
         private double latitude;
         private double longitude;
         private double elevation;
@@ -139,7 +148,7 @@ public class Location implements Serializable {
         public void setElevation(double elevation) {
             this.elevation = elevation;
         }
-        
+
     }
-    
+
 }
