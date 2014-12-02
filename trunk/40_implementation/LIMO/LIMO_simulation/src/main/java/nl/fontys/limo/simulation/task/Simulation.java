@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import nl.fontys.limo.simulation.SimulationExecutor;
 import nl.fontys.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import org.netbeans.api.progress.aggregate.AggregateProgressFactory;
+import org.netbeans.api.progress.aggregate.ProgressContributor;
 import org.openide.util.Exceptions;
 import org.openide.util.RequestProcessor.Task;
 import org.openide.util.TaskListener;
@@ -32,13 +34,21 @@ public class Simulation implements Runnable, TaskListener {
 
     private final BlockingQueue<SupplyChain> scPool;
 
-    public Simulation(SupplyChain supplyChain, int testCaseCount) {
+    private final ProgressContributor progressContributor;
+    private final Object pcLock = new Object();
+
+    public Simulation(SupplyChain supplyChain, int testCaseCount, String id) {
         this.supplyChain = supplyChain;
         this.testCaseCount = testCaseCount;
         this.testCaseTasks = new HashMap<>();
         this.result = new SimulationResult(supplyChain);
         this.finishedCount = new AtomicInteger(0);
         this.scPool = new LinkedBlockingQueue<>();
+        this.progressContributor = AggregateProgressFactory.createProgressContributor(id);
+    }
+
+    public boolean isDone() {
+        return finishedCount.get() == testCaseCount;
     }
 
     /**
@@ -56,6 +66,10 @@ public class Simulation implements Runnable, TaskListener {
 
     public SimulationResult getResult() {
         return result;
+    }
+
+    public ProgressContributor getProgressContributor() {
+        return progressContributor;
     }
 
     /**
@@ -80,6 +94,7 @@ public class Simulation implements Runnable, TaskListener {
     @Override
     public void run() {
         testCaseTasks.clear();
+        progressContributor.start(testCaseCount);
         finishedCount = new AtomicInteger(0);
 
         // Create supply chain pool
@@ -117,6 +132,14 @@ public class Simulation implements Runnable, TaskListener {
     @Override
     public void taskFinished(org.openide.util.Task task) {
         finishedCount.incrementAndGet();
+
+        synchronized (pcLock) {
+            progressContributor.progress(finishedCount.get() + " of " + testCaseCount + " test cases run.", finishedCount.get());
+            if (isDone()) {
+                progressContributor.finish();
+            }
+        }
+
         result.addTestCaseResult(testCaseTasks.get(task).getResult());
         scPool.offer(testCaseTasks.get(task).getResult().getSupplyChain());
     }

@@ -17,8 +17,9 @@ public final class Simulator {
     public static SimulatorTask simulate(int testCaseCount, SupplyChain... supplyChains) {
         SimulatorTask simTask = new SimulatorTask();
 
+        int i = 1;
         for (SupplyChain sc : supplyChains) {
-            Simulation simulation = new Simulation(sc, testCaseCount);
+            Simulation simulation = new Simulation(sc, testCaseCount, "" + i++);
             Task task = SimulationExecutor.post(simulation);
             simTask.addSimulation(simulation, task);
         }
