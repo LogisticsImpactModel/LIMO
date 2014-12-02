@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.Action;
+import nl.fontys.limo.simulation.Simulator;
 import nl.fontys.limo.simulation.task.Simulation;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
@@ -21,7 +22,7 @@ import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
 
 @ActionID(
-        category = "File",
+        category = "Window",
         id = "nl.fontys.sofa.limo.view.action.SimulateAction"
 )
 @ActionRegistration(
@@ -43,7 +44,7 @@ public final class SimulateAction implements ActionListener {
 
     public SimulateAction() {
         try {
-            this.image = ImageIO.read(getClass().getResource("icons/gui/simulate.png"));
+            this.image = ImageIO.read(getClass().getResource("/icons/gui/simulate.png"));
             //putValue(Action.SMALL_ICON, image);
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
@@ -57,8 +58,7 @@ public final class SimulateAction implements ActionListener {
 
         if (chainBuilder != null && chainBuilder.validate()) {
             supplyChain = chainBuilder.getSupplyChain();
-            Simulation simulation = new Simulation(supplyChain, 100);
-            simulation.run();
+            Simulator.simulate(256, supplyChain);
         } else {
             DialogDisplayer.getDefault().notify(
                     new NotifyDescriptor.Message(
