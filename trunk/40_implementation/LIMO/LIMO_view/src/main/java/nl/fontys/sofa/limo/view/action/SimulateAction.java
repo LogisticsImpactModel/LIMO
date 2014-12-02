@@ -22,7 +22,7 @@ import org.openide.util.Utilities;
         displayName = "#CTL_SimulateAction"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Chain", position = 233),
+    @ActionReference(path = "Menu/File", position = 20),
     @ActionReference(path = "Shortcuts", name = "D-R")
 })
 @Messages("CTL_SimulateAction=Simulate")
@@ -36,8 +36,11 @@ public final class SimulateAction implements ActionListener {
         ChainBuilder chainBuilder = global.lookup(ChainBuilder.class);
 
         if (chainBuilder != null && chainBuilder.validate()) {
+            supplyChain = chainBuilder.getSupplyChain();
             Simulation simulation = new Simulation(supplyChain, 100);
             simulation.run();
+        } else {
+//            DialogDisplayer.getDefault().notify(new NotifyDescriptor)
         }
     }
 

@@ -32,7 +32,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
     private final int widgetWidth = 140;
     private final int widgetHeight = 170;
-    private Color backgroundColor = Color.decode("#FCFCFC");
+    private Color backgroundColor = Color.WHITE;
 
     private final HubNode hubNode;
 

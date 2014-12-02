@@ -71,4 +71,9 @@ public class ChainbuilderImpl implements ChainBuilder {
         return hubCount == getNumberOfHubs();
     }
 
+    @Override
+    public SupplyChain getSupplyChain() {
+        return chain;
+    }
+
 }
