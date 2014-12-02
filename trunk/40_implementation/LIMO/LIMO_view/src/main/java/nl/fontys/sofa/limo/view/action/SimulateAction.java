@@ -1,43 +1,42 @@
 package nl.fontys.sofa.limo.view.action;
 
-import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JMenuItem;
 import nl.fontys.limo.simulation.task.Simulation;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
+import org.openide.awt.ActionRegistration;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
-import org.openide.util.actions.Presenter;
 
 @ActionID(
         category = "File",
         id = "nl.fontys.sofa.limo.view.action.SimulateAction"
 )
-//@ActionRegistration(
-//        iconBase = "icons/gui/simulate.png",
-//        displayName = "#CTL_SimulateAction"
-//)
-//@ActionReferences({
-//    @ActionReference(path = "Menu/File", position = 20),
-//    @ActionReference(path = "Shortcuts", name = "D-R")
-//})
+@ActionRegistration(
+        iconBase = "icons/gui/simulate.png",
+        displayName = "#CTL_SimulateAction"
+)
+@ActionReferences({
+    @ActionReference(path = "Menu/File", position = 20),
+    @ActionReference(path = "Toolbars/File", position = 25),
+    @ActionReference(path = "Shortcuts", name = "D-R")
+})
 
 @Messages("CTL_SimulateAction=Simulate")
 
-public final class SimulateAction extends AbstractAction
-        implements Presenter.Toolbar, Presenter.Menu {
+public final class SimulateAction implements ActionListener {
 
     private Image image;
     private SupplyChain supplyChain;
@@ -45,7 +44,7 @@ public final class SimulateAction extends AbstractAction
     public SimulateAction() {
         try {
             this.image = ImageIO.read(getClass().getResource("icons/gui/simulate.png"));
-            putValue(Action.SMALL_ICON, image);
+            //putValue(Action.SMALL_ICON, image);
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
@@ -72,23 +71,4 @@ public final class SimulateAction extends AbstractAction
     public void setSupplyChain(SupplyChain supplyChain) {
         this.supplyChain = supplyChain;
     }
-
-    @Override
-    public Component getToolbarPresenter() {
-        return new SimulateButton();
-    }
-
-    @Override
-    public JMenuItem getMenuPresenter() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private class SimulateButton extends JButton {
-
-        SimulateButton() {
-            this.setText("Simulate");
-            this.addActionListener(SimulateAction.this);
-        }
-    }
-
 }
