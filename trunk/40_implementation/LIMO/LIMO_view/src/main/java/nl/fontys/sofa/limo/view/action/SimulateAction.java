@@ -44,7 +44,7 @@ public final class SimulateAction implements ActionListener {
         } else {
             DialogDisplayer.getDefault().notify(
                     new NotifyDescriptor.Message(
-                            "Validation of chain failed.\n Please make sure you"
+                            "Validation of chain failed.\n\nPlease make sure you"
                             + "have built your chain correctly.",
                             NotifyDescriptor.WARNING_MESSAGE));
         }
