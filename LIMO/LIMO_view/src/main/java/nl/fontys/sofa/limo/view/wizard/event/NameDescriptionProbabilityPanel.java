@@ -44,6 +44,8 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     private JPanel parametersLabel;
     private JTable parametersTable;
 
+    private JTextArea distributionDescription;
+
     private Distribution prop;
     private DistributionFactory distributionFactory;
 
@@ -99,6 +101,9 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         parametersTable.setDefaultEditor(parametersTable.getColumnClass(1), singleClick);
         parametersLabel.add(parametersTable, BorderLayout.CENTER);
 
+        distributionDescription = new JTextArea();
+        distributionDescription.setEditable(false);
+
         initDistribution();
 
         c.weightx = 0.3;
@@ -133,12 +138,20 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         c.gridy = 2;
         c.gridwidth = 3;
         add(distributionTypeComboBox, c);
-
+        
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 3;
         c.gridwidth = 4;
+        add(distributionDescription, c);
+
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 4;
+        c.gridwidth = 4;
         add(parametersLabel, c);
+
+        
     }
 
     private GridBagConstraints initLayout() {
@@ -167,9 +180,11 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 prop = distributionFactory.getDistributionTypeByName((String) distributionTypeComboBox.getSelectedItem());
                 ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
+                distributionDescription.setText(prop.getDescription());
             }
         });
         distributionTypeComboBox.setSelectedIndex(0);
+        distributionDescription.setText(distributionFactory.getDistributionTypeByName(distributionTypeComboBox.getModel().getElementAt(0)).getDescription());
     }
 
     public void update(Event event) {
@@ -181,8 +196,10 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
             distributionTypeComboBox.getModel().setSelectedItem(nameForDistributionType);
             prop = probability;
             ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
+            distributionDescription.setText(probability.getDescription());
         } else {
             distributionTypeComboBox.setSelectedIndex(0);
+            distributionDescription.setText(distributionFactory.getDistributionTypeByName(distributionTypeComboBox.getModel().getElementAt(0)).getDescription());
         }
     }
 
