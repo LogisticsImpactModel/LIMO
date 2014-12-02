@@ -7,21 +7,23 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
  * @author Matthias Brück
  */
-public class ChooserPanel extends JPanel implements ActionListener {
+public class DirectoryChooserPanel extends JPanel implements ActionListener {
 
-    private JButton btnChooser;
+    private final JButton btnChooser;
     private final JTextField tfDirectory, tfFileName;
+    private final JLabel lbFileName;
     private final CellConstraints cc;
     private final FormLayout layout;
     private final JFileChooser fc;
 
-    public ChooserPanel() {
+    public DirectoryChooserPanel() {
         cc = new CellConstraints();
         layout = new FormLayout("5px, 200, 5px, pref, 5px", "5px, pref, 5px, pref, 5px");
         this.setLayout(layout);
@@ -34,6 +36,8 @@ public class ChooserPanel extends JPanel implements ActionListener {
         tfFileName = new JTextField();
         tfFileName.setText("");
         this.add(tfFileName, cc.xy(2, 4));
+        lbFileName = new JLabel("Filename");
+        this.add(lbFileName, cc.xy(4, 4));
         fc = new JFileChooser();
         String currentPath = fc.getFileSystemView().getDefaultDirectory().toString();
         fc.setCurrentDirectory(new File(currentPath));
