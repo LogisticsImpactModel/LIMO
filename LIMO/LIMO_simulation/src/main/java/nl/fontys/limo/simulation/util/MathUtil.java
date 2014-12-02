@@ -7,8 +7,8 @@ package nl.fontys.limo.simulation.util;
  */
 public final class MathUtil {
 
-    private MathUtil() {
-        throw new UnsupportedOperationException();
+    MathUtil() throws InstantiationException {
+        throw new InstantiationException("Instances of this type are forbidden.");
     }
 
     /**

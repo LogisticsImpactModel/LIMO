@@ -47,7 +47,11 @@ public class Simulation implements Runnable, TaskListener {
      * @return Percentage of test cases finished.
      */
     public double getProgress() {
-        return finishedCount.doubleValue() / (double) testCaseCount;
+        if (finishedCount.intValue() == testCaseCount) {
+            return 1.0d;
+        } else {
+            return finishedCount.doubleValue() / (double) testCaseCount;
+        }
     }
 
     public SimulationResult getResult() {
