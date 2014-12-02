@@ -9,6 +9,11 @@ import org.junit.Test;
  */
 public class MathUtilTest {
 
+    @Test(expected = InstantiationException.class)
+    public void testConstructor() throws InstantiationException {
+        new MathUtil();
+    }
+
     @Test
     public void testGetCumulativeMovingAverage() {
         double oldAvg = 0.0;

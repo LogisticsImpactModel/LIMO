@@ -2,6 +2,7 @@ package nl.fontys.limo.simulation.task;
 
 import nl.fontys.limo.simulation.result.SimulationResult;
 import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -40,6 +41,16 @@ public class SimulationTest extends SupplyChainTester {
     }
 
     @Test
+    public void testRunEmpty() {
+        Simulation s = new Simulation(supplyChain, 0);
+        s.run();
+        while (s.getProgress() != 1.0d) {
+
+        }
+        SimulationResult result = s.getResult();
+    }
+
+    @Test
     public void testRun() {
         simulation.run();
         while (simulation.getProgress() != 1.0d) {
@@ -48,6 +59,11 @@ public class SimulationTest extends SupplyChainTester {
         SimulationResult result = simulation.getResult();
 
         assertTrue(result.getSupplyChain().equals(supplyChain));
+
+        assertEquals(NUMBER_OF_SIMULATIONS, result.getTestCaseResults().size(), 0.005 * NUMBER_OF_SIMULATIONS);
+
+        assertTrue("Two events always happen.", result.getExecutedEvents().size() >= 2);
+        assertTrue("At least 4 events can happen.", result.getExecutedEvents().size() <= 4);
 
         assertTrue("Two events always happen.", result.getEventExecutionRate().size() >= 2);
         assertTrue("At least 4 events can happen.", result.getEventExecutionRate().size() <= 4);
@@ -71,10 +87,6 @@ public class SimulationTest extends SupplyChainTester {
         assertTrue(result.getLeadTimesByCategory().containsKey(MANDATORY));
         assertTrue("Min 5 hours lead time.", 5 * 60 <= result.getTotalLeadTimes().getMin());
         assertTrue("Max 7 hours lead time.", 7 * 60 >= result.getTotalLeadTimes().getMax());
-
-//        for (TestCaseResult testCaseResult : result.getTestCaseResults()) {
-//            assertComplexSupplyChain(testCaseResult);
-//        }
     }
 
     @Test
