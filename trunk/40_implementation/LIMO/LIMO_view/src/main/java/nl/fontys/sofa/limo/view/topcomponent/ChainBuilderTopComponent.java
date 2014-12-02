@@ -41,8 +41,8 @@ import org.openide.windows.TopComponent;
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent")
 @ActionReferences({
-@ActionReference(path = "Menu/File", position = 333),
-@ActionReference(path = "Shortcuts", name = "D-N")
+    @ActionReference(path = "Menu/File", position = 333),
+    @ActionReference(path = "Shortcuts", name = "D-N")
 })
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_ChainBuilderAction"
@@ -56,6 +56,7 @@ public final class ChainBuilderTopComponent extends TopComponent implements
         ExplorerManager.Provider {
 
     private ExplorerManager em = new ExplorerManager();
+    private ChainGraphScene graphScene;
 
     public ChainBuilderTopComponent() {
         initComponents();
@@ -67,7 +68,8 @@ public final class ChainBuilderTopComponent extends TopComponent implements
         try {
             Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
             Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
-            ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup);
+            Lookup chainLookup = Lookups.singleton(graphScene.getChainBuilder());
+            ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, chainLookup);
             associateLookup(pl);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
@@ -81,16 +83,16 @@ public final class ChainBuilderTopComponent extends TopComponent implements
     private void initCustomComponents() {
         setLayout(new BorderLayout());
         SupplyChain chain = new SupplyChain();
-        ChainGraphScene scene;
         try {
-            scene = new GraphSceneImpl2(this);
+            graphScene = new GraphSceneImpl2(this);
             JScrollPane shapePane = new JScrollPane();
-            JComponent createView = scene.createView();
+            JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);
             createView.putClientProperty("print.name", "Supply Chain: " + chain.getName());
             shapePane.setViewportView(createView);
+
             add(shapePane, BorderLayout.CENTER);
-            add(scene.createSatelliteView(), BorderLayout.SOUTH);
+            add(graphScene.createSatelliteView(), BorderLayout.SOUTH);
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }

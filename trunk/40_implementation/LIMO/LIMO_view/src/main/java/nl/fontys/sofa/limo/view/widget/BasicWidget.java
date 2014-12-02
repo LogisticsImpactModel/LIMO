@@ -3,7 +3,6 @@ package nl.fontys.sofa.limo.view.widget;
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
-import nl.fontys.sofa.limo.view.node.ContainerNode;
 import org.netbeans.api.visual.widget.Widget;
 
 /**
@@ -30,13 +29,5 @@ public interface BasicWidget extends PropertyChangeListener {
      * @param point - the location as a point where the widget is dropped.
      */
     boolean drop(ChainGraphScene scene, Widget widget, Point point);
-
-    /**
-     * Set the container of the widget. Every widget has a container which
-     * contains the underlying BeanNode.
-     *
-     * @param container - the container node of this widget.
-     */
-    void setContainer(ContainerNode container);
 
 }

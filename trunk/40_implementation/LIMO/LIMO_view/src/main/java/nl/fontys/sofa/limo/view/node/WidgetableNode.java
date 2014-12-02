@@ -1,9 +1,8 @@
 package nl.fontys.sofa.limo.view.node;
 
 import java.awt.Point;
-import nl.fontys.sofa.limo.view.widget.BasicWidget;
+import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
-import org.netbeans.api.visual.graph.GraphScene;
 
 /**
  * Interface for a node which can be used as a Widget. Implement this interface
@@ -19,7 +18,7 @@ public interface WidgetableNode {
      * @param scene
      * @return
      */
-    public Widget getWidget(GraphScene scene);
+    public Widget getWidget(Scene scene);
 
     /**
      * Can this widget be dropped?

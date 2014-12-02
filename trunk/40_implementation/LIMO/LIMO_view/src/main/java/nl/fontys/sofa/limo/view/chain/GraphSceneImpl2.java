@@ -5,10 +5,10 @@ import java.awt.datatransfer.Transferable;
 import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.util.Collections;
+import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
-import nl.fontys.sofa.limo.view.node.ContainerNode;
 import nl.fontys.sofa.limo.view.node.LegNode;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent;
@@ -38,7 +38,7 @@ import org.openide.util.Exceptions;
  */
 public class GraphSceneImpl2 extends ChainGraphScene {
 
-    private ChainBuilderTopComponent parent;
+    private final ChainBuilderTopComponent parent;
     private final ChainBuilder chainBuilder;
 
     private final LayerWidget mainLayer;
@@ -130,19 +130,18 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     @Override
     public void setStartHubWidget(HubWidget hubWidget) {
         if (startHubWidget != null) {
-            startHubWidget.removeChild(startFlagWidget);
+            startHubWidget.setStartFlag(false);
         }
+
         startHubWidget = hubWidget;
-        startHubWidget.addChild(startFlagWidget);
+        startHubWidget.setStartFlag(true);
+
         chainBuilder.setStartHub(hubWidget.getHub());
         this.validate();
     }
 
     @Override
     public void addHubWidget(HubWidget hubWidget) {
-        if (getNumberOfHubs() == 0) {
-            setStartHubWidget(hubWidget);
-        }
         mainLayer.addChild(hubWidget);
         chainBuilder.addHub(hubWidget.getHub());
         getScene().repaint();
@@ -150,18 +149,20 @@ public class GraphSceneImpl2 extends ChainGraphScene {
 
     @Override
     public void removeHubWidget(HubWidget hubWidget) {
+
         chainBuilder.removeHub(hubWidget.getHub());
     }
 
     @Override
-    protected Widget attachNodeWidget(ContainerNode node) {
-        BasicWidget widget = (BasicWidget) node.getWidget(this);
+    protected Widget attachNodeWidget(AbstractBeanNode node) {
+        WidgetableNode wn = (WidgetableNode) node;
+        BasicWidget widget = (BasicWidget) wn.getWidget(this);
         widget.addActions(this);
         return (Widget) widget;
     }
 
     @Override
-    protected Widget attachEdgeWidget(ContainerNode edge) {
+    protected Widget attachEdgeWidget(AbstractBeanNode edge) {
         BasicWidget connectionWidget = new LegWidget(this, edge);
         connectionWidget.addActions(this);
         connectionLayer.addChild((Widget) connectionWidget);
@@ -169,23 +170,28 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     }
 
     @Override
-    protected void attachEdgeSourceAnchor(ContainerNode edge, ContainerNode oldSourceNode, ContainerNode sourceNode) {
+    protected void attachEdgeSourceAnchor(AbstractBeanNode edge, AbstractBeanNode oldSourceNode, AbstractBeanNode sourceNode) {
         Widget sourceWidget = findWidget(sourceNode);
         if (sourceWidget == null) {
             sourceWidget = findWidget(oldSourceNode);
         }
         ConnectionWidget connectionWidget = (ConnectionWidget) findWidget(edge);
-        connectionWidget.setSourceAnchor(AnchorFactory.createRectangularAnchor(sourceWidget));
+        connectionWidget.setSourceAnchor(AnchorFactory.createRectangularAnchor(sourceWidget, false));
     }
 
     @Override
-    protected void attachEdgeTargetAnchor(ContainerNode edge, ContainerNode oldTargetNode, ContainerNode targetNode) {
+    protected void attachEdgeTargetAnchor(AbstractBeanNode edge, AbstractBeanNode oldTargetNode, AbstractBeanNode targetNode) {
         Widget targetWidget = findWidget(targetNode);
         if (targetWidget == null) {
             targetWidget = (HubWidget) findWidget(oldTargetNode);
         }
         ConnectionWidget connectionWidget = (ConnectionWidget) findWidget(edge);
-        connectionWidget.setTargetAnchor(AnchorFactory.createRectangularAnchor(targetWidget));
+        connectionWidget.setTargetAnchor(AnchorFactory.createRectangularAnchor(targetWidget, false));
+    }
+
+    @Override
+    public SupplyChain getSupplyChain() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -213,7 +219,7 @@ public class GraphSceneImpl2 extends ChainGraphScene {
         public void accept(Widget widget, Point point, Transferable transferable) {
             AbstractBeanNode node = (AbstractBeanNode) NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
             AbstractBeanNode detachedNode = node.getDetachedNodeCopy();
-            BasicWidget w = (BasicWidget) scene.addNode(new ContainerNode(detachedNode));
+            BasicWidget w = (BasicWidget) scene.addNode(detachedNode);
             detachedNode.addPropertyChangeListener(w);
             boolean succesfullDrop = w.drop(scene, widget, point);
         }
@@ -238,8 +244,8 @@ public class GraphSceneImpl2 extends ChainGraphScene {
         @Override
         public void select(Widget widget, Point localLocation, boolean invertSelection) {
             Object object = findObject(widget);
-            ContainerNode container = (ContainerNode) object;
-            parent.setRootConttext(container.getBeanNode());
+            AbstractBeanNode container = (AbstractBeanNode) object;
+            parent.setRootConttext(container);
 
             setFocusedObject(object);
             if (object != null) {
@@ -259,19 +265,19 @@ public class GraphSceneImpl2 extends ChainGraphScene {
      */
     private class SceneConnectProvider implements ConnectProvider {
 
-        private ContainerNode source = null;
-        private ContainerNode target = null;
+        private AbstractBeanNode source = null;
+        private AbstractBeanNode target = null;
 
         @Override
         public boolean isSourceWidget(Widget sourceWidget) {
-            ContainerNode container = (ContainerNode) findObject(sourceWidget);
+            AbstractBeanNode container = (AbstractBeanNode) findObject(sourceWidget);
             source = isNode(container) ? container : null;
             return source != null;
         }
 
         @Override
         public ConnectorState isTargetWidget(Widget sourceWidget, Widget targetWidget) {
-            ContainerNode container = (ContainerNode) findObject(targetWidget);
+            AbstractBeanNode container = (AbstractBeanNode) findObject(targetWidget);
             target = isNode(container) ? container : null;
             if (target != null) {
                 return !source.equals(target) ? ConnectorState.ACCEPT : ConnectorState.REJECT_AND_STOP;
@@ -296,12 +302,11 @@ public class GraphSceneImpl2 extends ChainGraphScene {
             if (leg != null) {
                 try {
                     LegNode legNode = new LegNode(leg);
-                    ContainerNode container = new ContainerNode(legNode);
 
-                    Widget connectionWidget = addEdge(container);
+                    Widget connectionWidget = addEdge(legNode);
                     if (connectionWidget != null) {
-                        setEdgeSource(container, source);
-                        setEdgeTarget(container, target);
+                        setEdgeSource(legNode, source);
+                        setEdgeTarget(legNode, target);
 
                         HubWidget sourceHub = (HubWidget) findWidget(source);
                         HubWidget targetHub = (HubWidget) findWidget(target);

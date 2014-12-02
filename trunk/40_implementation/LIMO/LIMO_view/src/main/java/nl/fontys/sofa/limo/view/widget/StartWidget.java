@@ -15,6 +15,7 @@ public class StartWidget extends ImageWidget {
     public StartWidget(Scene scene) throws IOException {
         super(scene);
         setImage(ImageIO.read(getClass().getResourceAsStream("/icons/start-flag.png")));
+        setToolTipText("Starting Point");
     }
 
 }
