@@ -46,7 +46,6 @@ public final class NormalLegWizardAction implements ActionListener {
         if (!eventService.findAll().isEmpty()) {
             panels.add(new EventLegTypeWizard());
         }
-        panels.add(new EventLegTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
