@@ -36,7 +36,7 @@ public final class OpenManual implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String pdf = "help/limo_manuel.pdf";
+        String pdf = "help/limo_manual.pdf";
         if (Desktop.isDesktopSupported()) {
             FileOutputStream fos = null;
             try {
