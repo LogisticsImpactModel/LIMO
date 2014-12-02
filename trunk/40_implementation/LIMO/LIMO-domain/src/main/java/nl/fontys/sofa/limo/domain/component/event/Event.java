@@ -67,16 +67,11 @@ public class Event extends Component {
 
     @Override
     public boolean addEvent(Event event) {
-        boolean canAdd = true;
         for (Event e : events) {//loop through events that are already in list
             if (e.getId() != null && event.getId() != null && e.getId().equals(event.getId())) { //..to make sure that the event that is to be added is not already in there
-                canAdd = false;
-                break;
+                return false;
             }
         }
-        if (canAdd) {
-            return events.add(event); //if the event to be added was not found in the list w/ existing events, add it
-        }
-        return false;
+        return events.add(event); //if the event to be added was not found in the list w/ existing events, add it
     }
 }
