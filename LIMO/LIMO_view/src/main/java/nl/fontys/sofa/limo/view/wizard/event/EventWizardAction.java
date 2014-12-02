@@ -87,7 +87,7 @@ public final class EventWizardAction implements ActionListener {
                 service.update(eventUpdate);
             } else {
                 eventUpdate.setId(null);
-                service.insert(eventUpdate);
+                eventUpdate = service.insert(eventUpdate);
             }
         }
     }
