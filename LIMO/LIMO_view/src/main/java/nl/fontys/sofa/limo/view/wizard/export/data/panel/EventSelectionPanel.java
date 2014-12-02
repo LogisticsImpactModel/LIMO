@@ -32,6 +32,9 @@ public class EventSelectionPanel extends BaseEntitySelectionPanel<Event> {
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
+        for (Event selectedEntity : selectedEntities) {
+            selectedEntity.setId(null);
+        }
         wiz.putProperty(ExportWizardAction.EVENTS, selectedEntities);
     }
 }

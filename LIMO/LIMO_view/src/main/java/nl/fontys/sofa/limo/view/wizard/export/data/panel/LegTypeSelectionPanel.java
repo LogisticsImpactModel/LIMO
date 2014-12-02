@@ -37,6 +37,9 @@ public class LegTypeSelectionPanel extends BaseEntitySelectionPanel<LegType> {
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
+        for (LegType selectedEntity : selectedEntities) {
+            selectedEntity.setId(null);
+        }
         wiz.putProperty(ExportWizardAction.LEG_TYPES, selectedEntities);
     }
 }
