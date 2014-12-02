@@ -1,40 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.orientdb.serialization;
 
-import com.sksamuel.gaia.Continent;
-import java.io.Serializable;
+import nl.fontys.sofa.limo.domain.component.hub.Continent;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author Ben
  */
 public class ContinentSerializerTest {
-    
+
     public ContinentSerializerTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -49,7 +43,7 @@ public class ContinentSerializerTest {
         ContinentSerializer instance = new ContinentSerializer();
         Object expResult = Continent.Africa.name();
         Object result = instance.serializeFieldValue(iClass, Continent.Africa);
-        System.out.println("Result: "+expResult.toString());
+        System.out.println("Result: " + expResult.toString());
         assertEquals(expResult, result.toString());
     }
 
@@ -66,5 +60,5 @@ public class ContinentSerializerTest {
         Object result = instance.unserializeFieldValue(iClass, "Africa");
         assertEquals(expResult, result);
     }
-    
+
 }
