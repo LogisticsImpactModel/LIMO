@@ -42,11 +42,12 @@ public final class HubWizardAction implements ActionListener {
     static final String HUB_TYPE = "hubType";
 
     private boolean update = false;
-    private Hub hubUpdate = new Hub();
+    private Hub hubUpdate;
     private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        hubUpdate = new Hub();
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!update) {
             panels.add(new NewDuplicatedOrHubTypeHubWizard());
