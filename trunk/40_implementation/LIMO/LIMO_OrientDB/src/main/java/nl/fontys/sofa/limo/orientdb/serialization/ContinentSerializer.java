@@ -1,14 +1,14 @@
 package nl.fontys.sofa.limo.orientdb.serialization;
 
 import com.orientechnologies.orient.core.serialization.serializer.object.OObjectSerializer;
-import com.sksamuel.gaia.Continent;
+import nl.fontys.sofa.limo.domain.component.hub.Continent;
 
 /**
  * Serializer for continents.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class ContinentSerializer implements OObjectSerializer<Continent, String>{
+public class ContinentSerializer implements OObjectSerializer<Continent, String> {
 
     @Override
     public Object serializeFieldValue(Class<?> iClass, Continent iFieldValue) {
@@ -19,5 +19,5 @@ public class ContinentSerializer implements OObjectSerializer<Continent, String>
     public Object unserializeFieldValue(Class<?> iClass, String iFieldValue) {
         return Continent.valueOf(iFieldValue);
     }
-    
+
 }
