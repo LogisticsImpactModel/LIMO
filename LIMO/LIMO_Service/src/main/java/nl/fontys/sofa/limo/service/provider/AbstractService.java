@@ -12,8 +12,8 @@ import org.openide.util.lookup.InstanceContent;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Provider{
-    
+public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Provider {
+
     protected final DAO dao;
     protected final InstanceContent instanceContent;
     protected final Lookup lookup;
@@ -22,11 +22,11 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
         this.dao = Lookup.getDefault().lookup(daoClass);
         this.instanceContent = new InstanceContent();
         this.lookup = new AbstractLookup(instanceContent);
-        
+
         if (dao == null) {
             throw new DAONotFoundException("DAO of type " + daoClass.getSimpleName() + " not found...");
         } else {
-			List<T> instances = dao.findAll();
+            List<T> instances = dao.findAll();
             instanceContent.set(instances, null);
         }
     }
@@ -49,7 +49,7 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
     @Override
     public T insert(T entity) {
         T result = (T) dao.insert(entity);
-        instanceContent.add(entity);
+        instanceContent.add(result);
         return result;
     }
 
@@ -70,5 +70,5 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
     public Lookup getLookup() {
         return this.lookup;
     }
-    
+
 }
