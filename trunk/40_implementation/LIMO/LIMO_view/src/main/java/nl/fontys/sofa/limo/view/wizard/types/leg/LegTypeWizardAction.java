@@ -31,10 +31,11 @@ import org.openide.util.Lookup;
 })
 public final class LegTypeWizardAction extends TypeWizardAction {
 
-    private LegType legType = new LegType();
+    private LegType legType;
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        legType = new LegType();
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!isUpdate) {
             panels.add(new NewOrDuplicatedLegTypeWizard());
