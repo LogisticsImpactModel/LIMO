@@ -5,9 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import nl.fontys.limo.simulation.SimulationExecutor;
@@ -40,7 +40,7 @@ public class Simulation implements Runnable, TaskListener {
     public Simulation(SupplyChain supplyChain, int testCaseCount, String id) {
         this.supplyChain = supplyChain;
         this.testCaseCount = testCaseCount;
-        this.testCaseTasks = new HashMap<>();
+        this.testCaseTasks = new ConcurrentHashMap<>();
         this.result = new SimulationResult(supplyChain);
         this.finishedCount = new AtomicInteger(0);
         this.scPool = new LinkedBlockingQueue<>();
@@ -57,11 +57,7 @@ public class Simulation implements Runnable, TaskListener {
      * @return Percentage of test cases finished.
      */
     public double getProgress() {
-        if (finishedCount.intValue() == testCaseCount) {
-            return 1.0d;
-        } else {
-            return finishedCount.doubleValue() / (double) testCaseCount;
-        }
+        return isDone() ? 1.0d : (finishedCount.doubleValue() / (double) testCaseCount);
     }
 
     public SimulationResult getResult() {
