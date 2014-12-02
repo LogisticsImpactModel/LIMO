@@ -1,23 +1,23 @@
 package nl.fontys.sofa.limo.orientdb.serialization;
 
 import com.orientechnologies.orient.core.serialization.serializer.object.OObjectSerializer;
-import com.sksamuel.gaia.Country;
+import nl.fontys.sofa.limo.domain.component.hub.SerializableCountry;
 
 /**
  * Serializer for countries.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class CountrySerializer implements OObjectSerializer<Country, String> {
+public class CountrySerializer implements OObjectSerializer<SerializableCountry, String> {
 
     @Override
-    public Object serializeFieldValue(Class<?> iClass, Country iFieldValue) {
+    public Object serializeFieldValue(Class<?> iClass, SerializableCountry iFieldValue) {
         return iFieldValue.getIsoAlpha3();
     }
 
     @Override
     public Object unserializeFieldValue(Class<?> iClass, String iFieldValue) {
-        return Country.getInstance(iFieldValue);
+        return SerializableCountry.getInstance(iFieldValue);
     }
-    
+
 }
