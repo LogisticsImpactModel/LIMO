@@ -1,4 +1,4 @@
-package nl.fontys.limo.externaltraider;
+package nl.fontys.limo.externaltrader;
 
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
