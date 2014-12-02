@@ -83,7 +83,7 @@ public final class LegTypeWizardAction extends TypeWizardAction {
                     service.update(legType);
                 } else {
                     legType.setId(null);
-                    service.insert(legType);
+                    legType = service.insert(legType);
                 }
             }
         }

@@ -83,7 +83,7 @@ public final class HubTypeWizardAction extends TypeWizardAction {
                     service.update(hubType);
                 } else {
                     hubType.setId(null);
-                    service.insert(hubType);
+                    hubType = service.insert(hubType);
                 }
             }
         }

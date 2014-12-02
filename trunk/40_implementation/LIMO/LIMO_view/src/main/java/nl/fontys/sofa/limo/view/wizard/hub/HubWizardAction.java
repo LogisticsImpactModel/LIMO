@@ -94,7 +94,8 @@ public final class HubWizardAction implements ActionListener {
                 hubService.update(hubUpdate);
             } else {
                 hubUpdate.setId(null);
-                hubService.insert(hubUpdate);
+                hubUpdate = hubService.insert(hubUpdate);
+
             }
         }
 
