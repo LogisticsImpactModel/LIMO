@@ -22,7 +22,7 @@ public class SimulationTest extends SupplyChainTester {
         leg.setNext(end);
         start.setNext(leg);
         supplyChain.setStart(start);
-        simulation = new Simulation(supplyChain, NUMBER_OF_SIMULATIONS);
+        simulation = new Simulation(supplyChain, NUMBER_OF_SIMULATIONS, "1");
     }
 
     @Test
@@ -42,7 +42,7 @@ public class SimulationTest extends SupplyChainTester {
 
     @Test
     public void testRunEmpty() {
-        Simulation s = new Simulation(supplyChain, 0);
+        Simulation s = new Simulation(supplyChain, 0, "1");
         s.run();
         while (s.getProgress() != 1.0d) {
 

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import nl.fontys.limo.simulation.result.SimulationResult;
 import nl.fontys.limo.simulation.task.Simulation;
+import org.netbeans.api.progress.aggregate.AggregateProgressFactory;
+import org.netbeans.api.progress.aggregate.AggregateProgressHandle;
 import org.openide.util.Task;
 import org.openide.util.TaskListener;
 
@@ -19,10 +21,13 @@ public class SimulatorTask implements TaskListener {
     private final Map<Task, Simulation> simulations;
     private final List<SimulationResult> results;
     private HashSet<SimulatorTaskListener> list;
+    private final AggregateProgressHandle processHandle;
 
     public SimulatorTask() {
         simulations = new HashMap<>();
         results = new ArrayList<>();
+        processHandle = AggregateProgressFactory.createHandle("Simulating...", null, null, null);
+        processHandle.start();
     }
 
     public boolean isDone() {
@@ -38,6 +43,8 @@ public class SimulatorTask implements TaskListener {
     }
 
     protected void addSimulation(Simulation simulation, Task task) {
+        processHandle.addContributor(simulation.getProgressContributor());
+        task.addTaskListener(this);
         simulations.put(task, simulation);
     }
 
@@ -46,6 +53,7 @@ public class SimulatorTask implements TaskListener {
         results.add(simulations.get(task).getResult());
 
         if (isDone()) {
+            processHandle.finish();
             for (SimulatorTaskListener stl : list) {
                 stl.taskFinished(this);
             }
