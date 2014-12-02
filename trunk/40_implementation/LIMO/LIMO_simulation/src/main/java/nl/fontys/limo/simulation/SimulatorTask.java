@@ -54,8 +54,10 @@ public class SimulatorTask implements TaskListener {
 
         if (isDone()) {
             processHandle.finish();
-            for (SimulatorTaskListener stl : list) {
-                stl.taskFinished(this);
+            if (list != null) {
+                for (SimulatorTaskListener stl : list) {
+                    stl.taskFinished(this);
+                }
             }
         }
     }
