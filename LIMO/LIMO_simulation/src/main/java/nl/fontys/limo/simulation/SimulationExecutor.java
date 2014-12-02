@@ -49,7 +49,8 @@ public final class SimulationExecutor {
     }
 
     public static boolean isShutdown() {
-        return simulationProcessor.isShutdown() && testCaseProcessor.isShutdown();
+        return (simulationProcessor == null && testCaseProcessor == null)
+                || (simulationProcessor.isShutdown() && testCaseProcessor.isShutdown());
     }
 
     public static boolean isShuttingDown() {
