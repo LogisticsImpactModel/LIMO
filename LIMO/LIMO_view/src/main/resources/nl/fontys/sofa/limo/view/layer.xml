@@ -77,11 +77,5 @@
             <attr name="originalFile" stringvalue="Actions/Window/org-netbeans-modules-palette-ShowPaletteAction.instance"/>
         </file>
     </folder>
-    <folder name="Toolbars">
-        <folder name="SupplyChain">
-            <file name="nl.fontys.sofa.limo.view.action.SimulateAction">
-            <attr name="originalFile" stringvalue="nl.fontys.sofa.limo.view.action.SimulateAction.instance"/>
-        </file>
-        </folder>
-    </folder>
+
 </filesystem>

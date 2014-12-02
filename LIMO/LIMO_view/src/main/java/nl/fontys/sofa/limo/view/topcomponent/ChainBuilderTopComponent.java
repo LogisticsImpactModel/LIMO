@@ -42,6 +42,7 @@ import org.openide.windows.TopComponent;
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent")
 @ActionReferences({
     @ActionReference(path = "Menu/File", position = 2),
+    @ActionReference(path = "Toolbars/File", position = 0),
     @ActionReference(path = "Shortcuts", name = "D-N")
 })
 @TopComponent.OpenActionRegistration(
