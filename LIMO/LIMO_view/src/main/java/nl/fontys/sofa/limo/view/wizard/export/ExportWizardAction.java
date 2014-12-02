@@ -27,12 +27,12 @@ import org.openide.awt.ActionRegistration;
 /**
  * @author Matthias Brück
  */
-//@ActionID(category = "Master Data", id = "nl.fontys.limo.view.wizard.export.ExportWizardAction")
-//@ActionRegistration(displayName = "Export Master Data..", iconBase = "icons/gui/database.gif")
-//ActionReferences({
-//    @ActionReference(path = "Menu/Master Data", position = 1600, separatorBefore = 1550),
-//    @ActionReference(path = "Shortcuts", name = "DOS-E")
-//})
+@ActionID(category = "Master Data", id = "nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction")
+@ActionRegistration(displayName = "Export Master Data..", iconBase = "icons/gui/database.gif")
+@ActionReferences({
+    @ActionReference(path = "Menu/Master Data", position = 1600, separatorBefore = 1550),
+    @ActionReference(path = "Shortcuts", name = "DOS-E")
+})
 public final class ExportWizardAction implements ActionListener {
 
     private Map<String, List<BaseEntity>> objectsToExport;
