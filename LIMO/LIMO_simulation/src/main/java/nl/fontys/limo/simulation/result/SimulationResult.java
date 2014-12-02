@@ -1,10 +1,10 @@
 package nl.fontys.limo.simulation.result;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import nl.fontys.limo.simulation.util.MathUtil;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.event.Event;
@@ -41,7 +41,7 @@ public class SimulationResult {
         this.leadTimesByCategory = new ConcurrentHashMap<>();
         this.delaysByCategory = new ConcurrentHashMap<>();
         this.extraCostsByCategory = new ConcurrentHashMap<>();
-        this.testCaseResults = new ArrayList<>();
+        this.testCaseResults = new CopyOnWriteArrayList<>();
         this.eventExecutionRate = new ConcurrentHashMap<>();
         this.executedEvents = new ConcurrentHashMap<>();
     }
