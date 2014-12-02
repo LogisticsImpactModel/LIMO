@@ -23,5 +23,5 @@ public class DiscreteDistribution extends Distribution {
         double y = ((IntegerInputValue) inputValues.get("Y")).getValue();
         return x / y;
     }
-    
+
 }

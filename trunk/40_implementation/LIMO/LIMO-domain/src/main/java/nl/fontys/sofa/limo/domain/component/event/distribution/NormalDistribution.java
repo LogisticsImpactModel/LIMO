@@ -5,10 +5,10 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.input.DoubleInput
 public class NormalDistribution extends Distribution {
 
     public NormalDistribution() {
-        super (new DoubleInputValue("Mean", 0.0),
-               new DoubleInputValue("Standard Deviation", 0.0),
-               new DoubleInputValue("Lower Bound", 0.0),
-               new DoubleInputValue("Upper Bound", 0.0)
+        super(new DoubleInputValue("Mean", 0.0),
+                new DoubleInputValue("Standard Deviation", 0.0),
+                new DoubleInputValue("Lower Bound", 0.0),
+                new DoubleInputValue("Upper Bound", 0.0)
         );
         this.description = "The normal (or Gaussian) distribution is\n"
                 + "a function that tells the probability that any\n"

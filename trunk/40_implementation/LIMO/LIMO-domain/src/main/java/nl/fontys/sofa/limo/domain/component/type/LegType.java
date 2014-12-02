@@ -6,5 +6,5 @@ package nl.fontys.sofa.limo.domain.component.type;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class LegType extends Type {
-    
+
 }

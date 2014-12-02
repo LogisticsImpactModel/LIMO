@@ -6,7 +6,7 @@ package nl.fontys.sofa.limo.domain.component.procedure.value;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class SingleValue implements Value {
-    
+
     private double value;
 
     public SingleValue() {
@@ -40,5 +40,5 @@ public class SingleValue implements Value {
     public String toString() {
         return value + "";
     }
-    
+
 }
