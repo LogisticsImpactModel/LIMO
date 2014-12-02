@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JComponent;
-import nl.fontys.limo.externaltraider.JSONExporter;
+import nl.fontys.limo.externaltrader.JSONExporter;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.EventSelectionPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.FileChooserPanel;
