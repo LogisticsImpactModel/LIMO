@@ -26,7 +26,7 @@ public class EventTest {
 
     @Before
     public void setUp() {
-        event = new Event();
+        event = new Event("New Event", null, null, ExecutionState.INDEPENDENT, null, ExecutionState.INDEPENDENT);
     }
 
     @After
@@ -58,12 +58,23 @@ public class EventTest {
         assertEquals(leg, event.getParent());
     }
 
+    @Test
+    public void testGetDescription() {
+        assertNull(event.getDescription());
+    }
+
+    @Test
+    public void testSetDescription() {
+        event.setDescription("Test");
+        assertEquals("Test", event.getDescription());
+    }
+
     /**
      * Test of getDependency method, of class Event.
      */
     @Test
     public void testGetDependency() {
-        assertNull(event.getDependency());
+        assertEquals(ExecutionState.INDEPENDENT, event.getDependency());
     }
 
     /**
@@ -71,8 +82,8 @@ public class EventTest {
      */
     @Test
     public void testSetDependency() {
-        event.setDependency(ExecutionState.INDEPENDENT);
-        assertEquals(ExecutionState.INDEPENDENT, event.getDependency());
+        event.setDependency(ExecutionState.EXECUTED);
+        assertEquals(ExecutionState.EXECUTED, event.getDependency());
     }
 
     /**
@@ -98,7 +109,7 @@ public class EventTest {
      */
     @Test
     public void testGetExecutionState() {
-        assertNull(event.getExecutionState());
+        event.setExecutionState(ExecutionState.INDEPENDENT);
     }
 
     /**
