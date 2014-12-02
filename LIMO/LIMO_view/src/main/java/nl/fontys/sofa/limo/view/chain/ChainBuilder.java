@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.chain;
 
+import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 
@@ -60,5 +61,12 @@ public interface ChainBuilder {
      * @return - true if validation succeeds.
      */
     boolean validate();
+
+    /**
+     * Get the SupplyChain.
+     *
+     * @return SupplyChain - the supply chain.
+     */
+    SupplyChain getSupplyChain();
 
 }
