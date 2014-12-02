@@ -1,7 +1,5 @@
 package nl.fontys.sofa.limo.view.node.property.editor;
 
-import com.sksamuel.gaia.Continent;
-import com.sksamuel.gaia.Country;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -27,7 +25,9 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import nl.fontys.sofa.limo.domain.component.hub.Continent;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
+import nl.fontys.sofa.limo.domain.component.hub.SerializableCountry;
 import org.openide.nodes.PropertyEditorRegistration;
 
 /**
@@ -79,6 +79,8 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
         private JTextField tfCity;
         private JTextField tfZip;
         private JTextField tfState;
+
+        private Map<String, SerializableCountry> countriesByName;
 
         public LocationEditor(Location hubLocation) {
             this.hubLocation = hubLocation;
@@ -277,16 +279,14 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             dispose();
         }
 
-        private Map<String, Country> countriesByName;
-
         private String[] getCountries(Continent continent) {
-            List<Country> countryList = continent == null ? Country.getAll() : continent.getCountries();
+            List<SerializableCountry> countryList = continent == null ? SerializableCountry.getAll() : continent.getCountries();
             String[] countries = new String[countryList.size() + 1];
             countries[0] = "";
             countriesByName = new HashMap<>(countryList.size());
 
             for (int i = 0; i < countryList.size(); i++) {
-                Country country = countryList.get(i);
+                SerializableCountry country = countryList.get(i);
 
                 countries[i + 1] = country.getName();
                 countriesByName.put(country.getName(), country);
