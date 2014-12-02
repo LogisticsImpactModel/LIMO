@@ -14,13 +14,12 @@ import org.json.JSONObject;
 /**
  * @author Matthias Brück
  */
-public class JSONExporter {
+public final class JSONExporter {
 
-    public JSONExporter() {
-
+    private JSONExporter() {
     }
 
-    public void exportToJson(Map<String, List<BaseEntity>> allEntities, String filepath) {
+    public static void exportToJson(Map<String, List<BaseEntity>> allEntities, String filepath) {
         JSONObject json = new JSONObject();
         Set<Map.Entry<String, List<BaseEntity>>> entrySet = allEntities.entrySet();
         for (Map.Entry<String, List<BaseEntity>> set : entrySet) {
@@ -36,12 +35,9 @@ public class JSONExporter {
         writeJSON(json, filepath);
     }
 
-    private void writeJSON(JSONObject json, String filepath) {
-        try {
-            
-            PrintWriter out = new PrintWriter(filepath);
+    private static void writeJSON(JSONObject json, String filepath) {
+        try (PrintWriter out = new PrintWriter(filepath)) {
             out.print(json.toString());
-            out.close();
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }

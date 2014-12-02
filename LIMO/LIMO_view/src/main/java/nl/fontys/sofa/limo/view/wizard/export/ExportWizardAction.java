@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JComponent;
 import nl.fontys.limo.externaltraider.JSONExporter;
+import nl.fontys.limo.externaltraider.JSONImporter;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.EventSelectionPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.FileChooserPanel;
@@ -25,14 +26,13 @@ import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 
 /**
- *
  * @author Matthias Brück
  */
 @ActionID(category = "Master Data", id = "nl.fontys.limo.view.wizard.export.ExportWizardAction")
 @ActionRegistration(displayName = "Export Master Data..", iconBase = "icons/gui/database.gif")
 @ActionReferences({
-@ActionReference(path = "Menu/Master Data", position = 1600, separatorBefore = 1550),
-@ActionReference(path = "Shortcuts", name = "DOS-E")
+    @ActionReference(path = "Menu/Master Data", position = 1600, separatorBefore = 1550),
+    @ActionReference(path = "Shortcuts", name = "DOS-E")
 })
 public final class ExportWizardAction implements ActionListener {
 
@@ -80,22 +80,9 @@ public final class ExportWizardAction implements ActionListener {
             objectsToExport.put(HUB_TYPES, (List<BaseEntity>) wizardDescriptor.getProperty(HUB_TYPES));
             objectsToExport.put(HUBS, (List<BaseEntity>) wizardDescriptor.getProperty(HUBS));
             objectsToExport.put(EVENTS, (List<BaseEntity>) wizardDescriptor.getProperty(EVENTS));
-            String filepath = (String)wizardDescriptor.getProperty(PATH);
-            JSONExporter exporter = new JSONExporter();
-            exporter.exportToJson(objectsToExport, filepath);
-            //
-            //EXAMPLE
-            //
-            /*
-             leg.setName((String) wiz.getProperty("name"));
-             leg.setDescription((String) wiz.getProperty("description"));
-             leg.setIcon((Icon) wiz.getProperty("icon"));
-             leg.setEvents((List<Event>) wiz.getProperty("events"));
-             leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
-             */
-            //
-            //EXPORTER EXPORT THE LIST
-            //
+            String filepath = (String) wizardDescriptor.getProperty(PATH);
+            JSONExporter.exportToJson(objectsToExport, filepath);
+            JSONImporter.importFromJSON(filepath);
         }
     }
 }

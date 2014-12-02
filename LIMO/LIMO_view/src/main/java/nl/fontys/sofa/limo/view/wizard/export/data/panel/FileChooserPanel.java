@@ -11,17 +11,16 @@ import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
 /**
- *
  * @author Matthias Brück
  */
 public class FileChooserPanel implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
-    private ChooserPanel component;
+    private DirectoryChooserPanel component;
 
     @Override
     public Component getComponent() {
         if (component == null) {
-            component = new ChooserPanel();
+            component = new DirectoryChooserPanel();
         }
         return component;
     }
