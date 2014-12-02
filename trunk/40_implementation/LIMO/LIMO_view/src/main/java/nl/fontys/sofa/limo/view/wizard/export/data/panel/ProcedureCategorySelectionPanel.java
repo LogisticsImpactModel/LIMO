@@ -33,6 +33,9 @@ public class ProcedureCategorySelectionPanel extends BaseEntitySelectionPanel<Pr
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
+        for (ProcedureCategory selectedEntity : selectedEntities) {
+            selectedEntity.setId(null);
+        }
         wiz.putProperty(ExportWizardAction.CATEGORIES, selectedEntities);
     }
 
