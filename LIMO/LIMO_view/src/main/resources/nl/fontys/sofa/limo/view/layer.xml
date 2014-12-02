@@ -62,9 +62,11 @@
             <folder name="Hub">
                 <attr name="position" intvalue="50"/>
             </folder>
-            <!--<file name="nl.fontys.limo.view.wizard.export.ExportWizardAction.instance">
+
+
+            <file name="nl.fontys.limo.view.wizard.export.ExportWizardAction.instance">
                 <attr name="position" intvalue="1600"/>
-            </file>-->
+            </file>
         </folder>
     </folder>
     <folder name="Shortcuts">
@@ -74,5 +76,12 @@
         <file name="D-2.shadow">
             <attr name="originalFile" stringvalue="Actions/Window/org-netbeans-modules-palette-ShowPaletteAction.instance"/>
         </file>
+    </folder>
+    <folder name="Toolbars">
+        <folder name="SupplyChain">
+            <file name="nl.fontys.sofa.limo.view.action.SimulateAction">
+            <attr name="originalFile" stringvalue="nl.fontys.sofa.limo.view.action.SimulateAction.instance"/>
+        </file>
+        </folder>
     </folder>
 </filesystem>
