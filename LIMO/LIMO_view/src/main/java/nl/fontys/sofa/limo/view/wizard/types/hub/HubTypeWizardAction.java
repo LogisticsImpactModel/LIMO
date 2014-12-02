@@ -31,10 +31,11 @@ import org.openide.util.Lookup;
 })
 public final class HubTypeWizardAction extends TypeWizardAction {
 
-    private HubType hubType = new HubType();
+    private HubType hubType;
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        hubType = new HubType();
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!isUpdate) {
             panels.add(new NewOrDuplicatedHubTypeWizard());

@@ -36,7 +36,7 @@ public final class EventWizardAction implements ActionListener {
     static final String EVENT_PROBABILITY = "eventProbability";
     static final String EVENT_EVENTS = "eventEvents";
 
-    private Event eventUpdate = new Event();
+    private Event eventUpdate;
     private boolean isUpdate = false;
     private final EventService service = Lookup.getDefault().lookup(EventService.class);
     private List<WizardDescriptor.Panel<WizardDescriptor>> panels;
@@ -44,6 +44,7 @@ public final class EventWizardAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        eventUpdate = new Event();
         panels = new ArrayList<>();
         if (!isUpdate) {
             panels.add(new NewOrDuplicatedEventWizard());
