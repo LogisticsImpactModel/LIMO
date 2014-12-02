@@ -1,6 +1,7 @@
 package nl.fontys.sofa.limo.view.chain;
 
-import nl.fontys.sofa.limo.view.node.ContainerNode;
+import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.graph.GraphScene;
@@ -12,11 +13,13 @@ import org.netbeans.api.visual.widget.Widget;
  *
  * @author Sebastiaan Heijmann
  */
-public abstract class ChainGraphScene extends GraphScene<ContainerNode, ContainerNode> {
+public abstract class ChainGraphScene extends GraphScene<AbstractBeanNode, AbstractBeanNode> {
 
     public abstract LayerWidget getMainLayer();
 
     public abstract LayerWidget getConnectionLayer();
+
+    public abstract SupplyChain getSupplyChain();
 
     public abstract ChainBuilder getChainBuilder();
 

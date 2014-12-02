@@ -1,45 +1,67 @@
 package nl.fontys.sofa.limo.view.widget;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
+import java.io.IOException;
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JPopupMenu;
+import javax.swing.border.TitledBorder;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
-import nl.fontys.sofa.limo.view.factory.EventChildFactory;
-import nl.fontys.sofa.limo.view.node.ContainerNode;
-import nl.fontys.sofa.limo.view.node.EventRootNode;
+import nl.fontys.sofa.limo.view.node.HubNode;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
+import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.widget.Scene;
+import org.netbeans.api.visual.widget.SeparatorWidget;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.api.visual.widget.general.IconNodeWidget;
-import org.openide.explorer.view.ListView;
-import org.openide.nodes.Children;
-import org.openide.nodes.Node;
 
 /**
- * HubWidget which represents a Hub in the GraphScene. It holds a ContainerNode
- * which contains a HubNode.
+ * HubWidget which represents a Hub in the GraphScene. It holds HubNode which
+ * contains a Hub.
  *
  * @author Sebastiaan Heijmann
  */
-public class HubWidget extends IconNodeWidget implements BasicWidget {
+public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
-    private ContainerNode container;
+    private final int widgetWidth = 140;
+    private final int widgetHeight = 170;
+    private Color backgroundColor = Color.decode("#FCFCFC");
+
+    private final HubNode hubNode;
+
+    private Widget eventWidget;
+    private Widget procedureWidget;
+    private final Widget startFlagWidget;
 
     /**
      * Constructor sets up the widget by setting the display name and image.
      *
      * @param scene - the scene to display the Widget on.
      */
-    public HubWidget(Scene scene, Hub hub) {
+    public HubWidget(Scene scene, HubNode beanNode) throws IOException {
         super(scene);
-        setImage(hub.getIcon().getImage());
-        setLabel(hub.getName());
-//        EventsWidget ew = createEventsWidget();
-//        addChild(ew);
+        this.hubNode = beanNode;
+
+        setPreferredBounds(new Rectangle(widgetWidth, widgetHeight));
+        setPreferredSize(new Dimension(widgetWidth, widgetHeight));
+        setBackground(backgroundColor);
+        setToolTipText(hubNode.getName());
+        setOpaque(true);
+
+        startFlagWidget = new StartWidget(scene);
+        startFlagWidget.setVisible(false);
+
+        setImage(getHub().getIcon().getImage());
+        createBorder();
+        addSeparator();
+        addChildren();
     }
 
     @Override
@@ -51,38 +73,81 @@ public class HubWidget extends IconNodeWidget implements BasicWidget {
         getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
     }
 
+    private void addChildren() {
+        Scene scene = getScene();
+
+        Widget widget = new Widget(scene);
+        widget.setLayout(LayoutFactory.createHorizontalFlowLayout());
+        widget.addChild(new EventsWidget(scene));
+        widget.addChild(new ProcedureWidget(scene));
+
+        addChild(widget);
+
+        addChild(startFlagWidget);
+    }
+
+    private void addSeparator() {
+        SeparatorWidget separatorWidget = new SeparatorWidget(getScene(), SeparatorWidget.Orientation.HORIZONTAL);
+        separatorWidget.setThickness(10);
+        addChild(separatorWidget);
+    }
+
+    private void createBorder() {
+        setBorder(BorderFactory.createCompoundBorder(
+                new TitledBorder(
+                        BorderFactory.createEmptyBorder(),
+                        hubNode.getName(),
+                        TitledBorder.CENTER,
+                        TitledBorder.ABOVE_TOP),
+                BorderFactory.createLineBorder(backgroundColor, 10)));
+    }
+
     @Override
     public boolean drop(ChainGraphScene scene, Widget widget, Point point) {
         this.setPreferredLocation(point);
+        if (scene.getStartHubWidget() == null) {
+            scene.setStartHubWidget(this);
+        }
         scene.addHubWidget(this);
+        repaint();
         return true;
     }
 
     public Hub getHub() {
-        return container.getBeanNode().getLookup().lookup(Hub.class);
-    }
-
-    @Override
-    public void setContainer(ContainerNode container) {
-        this.container = container;
+        return hubNode.getLookup().lookup(Hub.class);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         setImage(getHub().getIcon().getImage());
-        setLabel(getHub().getName());
         repaint();
     }
 
-    private EventsWidget createEventsWidget() {
-        ListView lv = new ListView();
-        Node rootNode;
-        Children children = Children.create(new EventChildFactory(getHub().getEvents()), true);
-        rootNode = new EventRootNode(children);
-        rootNode.setDisplayName("Event");
-        EventsWidget ew = new EventsWidget(getScene(), lv);
-        ew.getExplorerManager().setRootContext(rootNode);
-        return ew;
+    /**
+     * Revalidate and repaint this Widget.
+     */
+    public void validateHubWidget() {
+        Hub hub = getHub();
+        if (hub.getEvents().isEmpty()) {
+            eventWidget.setVisible(false);
+        } else {
+            eventWidget.setVisible(true);
+        }
+        if (hub.getProcedures().isEmpty()) {
+            procedureWidget.setVisible(false);
+        } else {
+            procedureWidget.setVisible(true);
+        }
+        repaint();
+    }
+
+    /**
+     * Set the start flag visible for this HubWidget.
+     *
+     * @param startFlag - true if start flag should be visible.
+     */
+    public void setStartFlag(boolean startFlag) {
+        startFlagWidget.setVisible(startFlag);
     }
 
     /**
@@ -107,7 +172,7 @@ public class HubWidget extends IconNodeWidget implements BasicWidget {
                 public void actionPerformed(ActionEvent ae) {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
                     scene.removeHubWidget(HubWidget.this);
-                    scene.removeNodeWithEdges(container);
+                    scene.removeNodeWithEdges(hubNode);
                 }
             });
             return popup;

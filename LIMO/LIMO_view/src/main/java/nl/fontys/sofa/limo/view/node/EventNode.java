@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.view.node;
 
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -12,19 +11,15 @@ import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
-import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
-import nl.fontys.sofa.limo.view.widget.EventWidget;
 import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
-import org.netbeans.api.visual.graph.GraphScene;
-import org.netbeans.api.visual.widget.Widget;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
 import org.openide.util.Lookup;
 
-public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode {
+public class EventNode extends AbstractBeanNode<Event> {
 
     private final Event bean;
 
@@ -37,21 +32,6 @@ public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode
     public boolean canDestroy() {
         return true;
 
-    }
-
-    @Override
-    public Widget getWidget(GraphScene scene) {
-        EventWidget ew = new EventWidget(scene);
-        ew.setLabel(bean.getName());
-        return ew;
-    }
-
-    @Override
-    public boolean isAcceptable(Widget widget, Point point) {
-        if (widget instanceof ChainGraphScene) {
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -137,4 +117,5 @@ public class EventNode extends AbstractBeanNode<Event> implements WidgetableNode
     Class getServiceClass() {
         return EventService.class;
     }
+
 }

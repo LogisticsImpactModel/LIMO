@@ -19,7 +19,6 @@ public class MultiModeLeg extends Leg {
         legs = new HashMap<>();
     }
 
-    @Override
     public Map<Leg, Double> getLegs() {
         return legs;
     }

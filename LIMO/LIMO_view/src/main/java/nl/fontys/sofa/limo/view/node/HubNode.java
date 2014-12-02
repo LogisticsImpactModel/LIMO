@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -21,7 +22,8 @@ import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
-import org.netbeans.api.visual.graph.GraphScene;
+import org.netbeans.api.visual.widget.LabelWidget;
+import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
@@ -48,9 +50,14 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
     }
 
     @Override
-    public Widget getWidget(GraphScene scene) {
-        HubWidget hw = new HubWidget(scene, bean);
-        return hw;
+    public Widget getWidget(Scene scene) {
+        try {
+            HubWidget hw = new HubWidget(scene, this);
+            return hw;
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+            return new LabelWidget(scene, "Unknown Widget");
+        }
     }
 
     @Override
