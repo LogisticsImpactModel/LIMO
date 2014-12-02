@@ -62,11 +62,9 @@
             <folder name="Hub">
                 <attr name="position" intvalue="50"/>
             </folder>
-
-
-            <file name="nl.fontys.limo.view.wizard.export.ExportWizardAction.instance">
+            <!--<file name="nl.fontys.limo.view.wizard.export.ExportWizardAction.instance">
                 <attr name="position" intvalue="1600"/>
-            </file>
+            </file>-->
         </folder>
     </folder>
     <folder name="Shortcuts">
