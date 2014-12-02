@@ -1,39 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.domain.component.procedure.value;
 
 import org.junit.After;
-import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author Ben
  */
 public class RangeValueTest {
-    RangeValue rangeVal;
-    public RangeValueTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
+
+    private RangeValue rangeVal;
+
     @Before
     public void setUp() {
         rangeVal = new RangeValue();
     }
-    
+
     @After
     public void tearDown() {
         rangeVal = null;
@@ -51,19 +36,26 @@ public class RangeValueTest {
         rangeVal.setMax(maxVal);
         for (int i = 0; i < 10; i++) {//get 10 times rand no to check whether the test does not pass on coincidence
             double retrievedVal = rangeVal.getValue();
-            System.out.println("Retieved val: "+retrievedVal);
-            assertTrue("Value must be above or equal to "+minVal,retrievedVal>=minVal);
-            assertTrue("Value must be below or equal to "+maxVal,retrievedVal<=maxVal);
+            double min = rangeVal.getMin();
+            double max = rangeVal.getMax();
+            System.out.println("Retieved val: " + retrievedVal);
+            assertEquals(minVal, min, 0.000d);
+            assertEquals(maxVal, max, 0.000d);
+            assertTrue("Value must be above or equal to " + minVal, retrievedVal >= minVal);
+            assertTrue("Value must be below or equal to " + maxVal, retrievedVal <= maxVal);
         }
-    }
-    /**
-     * Test of toString method, of class RangeValue   
-     */
-    @Test
-    public void testToString(){
-        String expectedString = "0.0 <-> 1.0";
-        assertEquals("Output string is not as should be",expectedString,rangeVal.toString());
+
+        rangeVal = new RangeValue(maxVal);
+        assertTrue(rangeVal.getMin() == 0);
     }
 
-    
+    /**
+     * Test of toString method, of class RangeValue
+     */
+    @Test
+    public void testToString() {
+        String expectedString = "0.0 <-> 1.0";
+        assertEquals("Output string is not as should be", expectedString, rangeVal.toString());
+    }
+
 }
