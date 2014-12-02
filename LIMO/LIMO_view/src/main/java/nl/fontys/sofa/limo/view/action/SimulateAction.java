@@ -22,7 +22,7 @@ import org.openide.util.Utilities;
 import org.openide.util.actions.Presenter;
 
 @ActionID(
-        category = "Edit",
+        category = "File",
         id = "nl.fontys.sofa.limo.view.action.SimulateAction"
 )
 //@ActionRegistration(
@@ -33,7 +33,9 @@ import org.openide.util.actions.Presenter;
 //    @ActionReference(path = "Menu/File", position = 20),
 //    @ActionReference(path = "Shortcuts", name = "D-R")
 //})
+
 @Messages("CTL_SimulateAction=Simulate")
+
 public final class SimulateAction extends AbstractAction
         implements Presenter.Toolbar, Presenter.Menu {
 
@@ -88,4 +90,5 @@ public final class SimulateAction extends AbstractAction
             this.addActionListener(SimulateAction.this);
         }
     }
+
 }
