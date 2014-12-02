@@ -137,7 +137,11 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             });
 
             cmbCountry = new JComboBox(getCountries(hubLocation.getContinent()));
-            cmbCountry.setSelectedItem(hubLocation.getCountry().getName());
+            if (hubLocation.getCountry() != null) {
+                cmbCountry.setSelectedItem(hubLocation.getCountry().getName());
+            } else {
+                cmbCountry.setSelectedIndex(0);
+            }
             cmbCountry.addActionListener(new ActionListener() {
 
                 @Override
