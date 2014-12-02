@@ -18,5 +18,5 @@ public class IntegerInputValue extends InputValue<Integer> {
     public Class<Integer> getType() {
         return Integer.class;
     }
-    
+
 }

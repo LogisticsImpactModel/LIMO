@@ -4,11 +4,11 @@ import java.util.Random;
 
 /**
  * Single value for a process object.
- * 
+ *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class RangeValue implements Value {
-    
+
     /**
      * Random Number Generator.
      */
@@ -72,5 +72,5 @@ public class RangeValue implements Value {
     public String toString() {
         return min + " <-> " + max;
     }
-    
+
 }

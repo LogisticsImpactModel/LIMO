@@ -18,5 +18,5 @@ public class DoubleInputValue extends InputValue<Double> {
     public Class<Double> getType() {
         return Double.class;
     }
-    
+
 }

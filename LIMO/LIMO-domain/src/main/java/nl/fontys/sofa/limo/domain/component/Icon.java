@@ -71,8 +71,11 @@ public class Icon implements Serializable {
     public void setImageType(String imageType) {
         this.imageType = imageType;
     }
+
     /**
-     * Set data (byte[]) for image, given the imagetype (how data should be interpreted)
+     * Set data (byte[]) for image, given the imagetype (how data should be
+     * interpreted)
+     *
      * @param data Byte[] w/ data of the image where data has to be set for
      * @param imageType Type of the image
      */
@@ -123,6 +126,7 @@ public class Icon implements Serializable {
             buildImageFromData();
         }
     }
+
     /**
      * Set data var (ByteArray) from previously set image
      */
@@ -137,6 +141,7 @@ public class Icon implements Serializable {
             }
         }
     }
+
     /**
      * Create/set image from previously set data (byteArray)
      */
@@ -153,6 +158,7 @@ public class Icon implements Serializable {
             Logger.getLogger(Icon.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     /**
      * Resize method to resize to 64x64
      */

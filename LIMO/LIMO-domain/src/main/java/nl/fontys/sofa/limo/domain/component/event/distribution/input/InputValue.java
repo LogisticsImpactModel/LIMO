@@ -3,14 +3,14 @@ package nl.fontys.sofa.limo.domain.component.event.distribution.input;
 import java.io.Serializable;
 
 /**
- * Abstract super class for all possible inputs for a distribution. Handles storage of name, value
- * and type for distribution input parameters.
+ * Abstract super class for all possible inputs for a distribution. Handles
+ * storage of name, value and type for distribution input parameters.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  * @param <T> Number type of the implementing class.
  */
-public abstract class InputValue <T extends Number> implements Serializable {
-    
+public abstract class InputValue<T extends Number> implements Serializable {
+
     protected String name;
     protected T value;
 
@@ -37,7 +37,7 @@ public abstract class InputValue <T extends Number> implements Serializable {
     public void setValue(T value) {
         this.value = value;
     }
-    
+
     public abstract Class<T> getType();
-    
+
 }
