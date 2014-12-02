@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import nl.fontys.limo.simulation.task.Simulation;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
@@ -40,7 +42,11 @@ public final class SimulateAction implements ActionListener {
             Simulation simulation = new Simulation(supplyChain, 100);
             simulation.run();
         } else {
-//            DialogDisplayer.getDefault().notify(new NotifyDescriptor)
+            DialogDisplayer.getDefault().notify(
+                    new NotifyDescriptor.Message(
+                            "Validation of chain failed.\n Please make sure you"
+                            + "have built your chain correctly.",
+                            NotifyDescriptor.WARNING_MESSAGE));
         }
     }
 
