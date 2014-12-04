@@ -44,7 +44,7 @@ public final class EventsHubPanel extends EventsPanel {
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();
                 deleteButton.setEnabled(true);
-                eventsComboBox.removeItemAt(eventsComboBox.getSelectedIndex());
+                //eventsComboBox.removeItemAt(eventsComboBox.getSelectedIndex());
                 checkAddButtonState();
                 checkDeleteButtonState();
             }
