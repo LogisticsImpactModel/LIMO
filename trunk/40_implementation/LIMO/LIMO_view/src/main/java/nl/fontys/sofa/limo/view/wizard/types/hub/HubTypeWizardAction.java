@@ -46,7 +46,6 @@ public final class HubTypeWizardAction extends TypeWizardAction {
         if (!eventService.findAll().isEmpty()) {
             panels.add(new EventHubTypeWizard());
         }
-        panels.add(new EventHubTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();

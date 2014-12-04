@@ -24,8 +24,7 @@ public class SubEventsPanel extends EventsPanel {
                 selected.setDependency(ExecutionState.INDEPENDENT);
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();
-                eventsComboBox.removeItemAt(eventsComboBox.getSelectedIndex());
-                checkAddButtonState();
+                //eventsComboBox.removeItemAt(eventsComboBox.getSelectedIndex());
                 checkDeleteButtonState();
             }
         });
