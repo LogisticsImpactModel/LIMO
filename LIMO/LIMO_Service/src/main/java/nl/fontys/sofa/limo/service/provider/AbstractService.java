@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.service.provider;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.api.exception.DAONotFoundException;
+import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
@@ -17,11 +18,13 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
     protected final DAO dao;
     protected final InstanceContent instanceContent;
     protected final Lookup lookup;
+    private StatusBarService status;
 
     public AbstractService(Class<? extends DAO> daoClass) throws DAONotFoundException {
         this.dao = Lookup.getDefault().lookup(daoClass);
         this.instanceContent = new InstanceContent();
         this.lookup = new AbstractLookup(instanceContent);
+        status = Lookup.getDefault().lookup(StatusBarService.class);
 
         if (dao == null) {
             throw new DAONotFoundException("DAO of type " + daoClass.getSimpleName() + " not found...");
@@ -38,7 +41,12 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
 
     @Override
     public T findById(String id) {
-        return (T) dao.findById(id);
+        try {
+            return (T) dao.findById(id);
+        } catch (Exception e) {
+            status.setMessage(id, StatusBarService.ACTION_FOUND, StatusBarService.STATE_FAIL, e);
+            return null;
+        }
     }
 
     @Override
@@ -48,22 +56,40 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
 
     @Override
     public T insert(T entity) {
-        T result = (T) dao.insert(entity);
-        instanceContent.add(result);
-        return result;
+        try {
+            T result = (T) dao.insert(entity);
+            instanceContent.add(result);
+            status.setMessage(entity.getName(), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+            return result;
+        } catch (Exception e) {
+            status.setMessage(entity.getName(), StatusBarService.ACTION_CREATE, StatusBarService.STATE_FAIL, e);
+            return null;
+        }
     }
 
     @Override
     public boolean update(T entity) {
-        boolean result = dao.update(entity);
-        return result;
+        try {
+            boolean result = dao.update(entity);
+            status.setMessage(entity.getName(), StatusBarService.ACTION_UPDATE, StatusBarService.STATE_SUCCESS, null);
+            return result;
+        } catch (Exception e) {
+            status.setMessage("",StatusBarService.ACTION_UPDATE, StatusBarService.STATE_FAIL, e);
+            return false;
+        }
     }
 
     @Override
     public boolean delete(T entity) {
-        boolean result = dao.delete(entity);
-        instanceContent.set(dao.findAll(), null);
-        return result;
+        try {
+            boolean result = dao.delete(entity);
+            instanceContent.set(dao.findAll(), null);
+            status.setMessage(entity.getName(), StatusBarService.ACTION_DELETE, StatusBarService.STATE_SUCCESS, null);
+            return result;
+        } catch (Exception e) {
+            status.setMessage(entity.getName(), StatusBarService.ACTION_DELETE, StatusBarService.STATE_FAIL, null);
+            return false;
+        }
     }
 
     @Override
