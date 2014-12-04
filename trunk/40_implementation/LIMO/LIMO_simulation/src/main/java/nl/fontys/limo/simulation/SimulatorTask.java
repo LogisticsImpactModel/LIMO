@@ -1,6 +1,7 @@
 package nl.fontys.limo.simulation;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +30,7 @@ public class SimulatorTask implements TaskListener {
         results = new ArrayList<>();
         processHandle = AggregateProgressFactory.createHandle("Simulating...", null, null, null);
         processHandle.start();
+        System.out.println("-> Starting simulation @ " + new Date());
     }
 
     public boolean isDone() {

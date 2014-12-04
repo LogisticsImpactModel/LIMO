@@ -1,7 +1,8 @@
 package nl.fontys.limo.simulation.task;
 
+import gnu.trove.map.TObjectDoubleMap;
+import gnu.trove.map.hash.TObjectDoubleHashMap;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -31,10 +32,14 @@ public class TestCase implements Runnable {
     private double totalLeadTimes;
     private double totalDelays;
     private double totalExtraCosts;
-    private Map<String, Double> costsByCategory;
-    private Map<String, Double> leadTimesByCategory;
-    private Map<String, Double> delaysByCategory;
-    private Map<String, Double> extraCostsByCategory;
+    private TObjectDoubleMap<String> costsByCategory;
+    private TObjectDoubleMap<String> leadTimesByCategory;
+    private TObjectDoubleMap<String> delaysByCategory;
+    private TObjectDoubleMap<String> extraCostsByCategory;
+    private TObjectDoubleMap<String> costsByNode;
+    private TObjectDoubleMap<String> leadTimesByNode;
+    private TObjectDoubleMap<String> delaysByNode;
+    private TObjectDoubleMap<String> extraCostsByNode;
     private List<Event> executedEvents;
 
     private long lastDelay;
@@ -55,10 +60,14 @@ public class TestCase implements Runnable {
         totalLeadTimes = 0;
         totalDelays = 0;
         totalExtraCosts = 0;
-        costsByCategory = new HashMap<>();
-        leadTimesByCategory = new HashMap<>();
-        delaysByCategory = new HashMap<>();
-        extraCostsByCategory = new HashMap<>();
+        costsByCategory = new TObjectDoubleHashMap<>(12);
+        leadTimesByCategory = new TObjectDoubleHashMap<>(12);
+        delaysByCategory = new TObjectDoubleHashMap<>(12);
+        extraCostsByCategory = new TObjectDoubleHashMap<>(12);
+        costsByNode = new TObjectDoubleHashMap<>(12);
+        leadTimesByNode = new TObjectDoubleHashMap<>(12);
+        delaysByNode = new TObjectDoubleHashMap<>(12);
+        extraCostsByNode = new TObjectDoubleHashMap<>(12);
         executedEvents = new ArrayList<>();
 
         lastDelay = 0;
@@ -82,7 +91,7 @@ public class TestCase implements Runnable {
             currentNode = currentNode.getNext();
         }
 
-        result = new TestCaseResult(supplyChain, totalCosts, totalLeadTimes, totalDelays, totalExtraCosts, costsByCategory, leadTimesByCategory, delaysByCategory, extraCostsByCategory, executedEvents);
+        result = new TestCaseResult(supplyChain, totalCosts, totalLeadTimes, totalDelays, totalExtraCosts, costsByCategory, leadTimesByCategory, delaysByCategory, extraCostsByCategory, costsByNode, leadTimesByNode, delaysByNode, extraCostsByNode, executedEvents);
     }
 
     private Node calculateScheduledLeg(Node currentNode, Node calcNode) {
@@ -108,6 +117,12 @@ public class TestCase implements Runnable {
             } else {
                 double lt = leadTimesByCategory.get(ScheduledLeg.WAIT_CATEGORY) + leadTime;
                 leadTimesByCategory.put(ScheduledLeg.WAIT_CATEGORY, lt);
+            }
+            if (!leadTimesByNode.containsKey(ScheduledLeg.WAIT_CATEGORY)) {
+                leadTimesByNode.put(ScheduledLeg.WAIT_CATEGORY, leadTime);
+            } else {
+                double lt = leadTimesByNode.get(ScheduledLeg.WAIT_CATEGORY) + leadTime;
+                leadTimesByNode.put(ScheduledLeg.WAIT_CATEGORY, lt);
             }
         }
         return calcNode;
@@ -141,14 +156,22 @@ public class TestCase implements Runnable {
             if (!costsByCategory.containsKey(procedure.getCategory())) {
                 costsByCategory.put(procedure.getCategory(), 0d);
             }
+            if (!costsByNode.containsKey(procedure.getCategory())) {
+                costsByNode.put(procedure.getCategory(), 0d);
+            }
             double newCost = costsByCategory.get(procedure.getCategory()) + pCost;
             costsByCategory.put(procedure.getCategory(), newCost);
+            costsByNode.put(procedure.getCategory(), newCost);
 
             if (!leadTimesByCategory.containsKey(procedure.getCategory())) {
                 leadTimesByCategory.put(procedure.getCategory(), 0d);
             }
+            if (!leadTimesByNode.containsKey(procedure.getCategory())) {
+                leadTimesByNode.put(procedure.getCategory(), 0d);
+            }
             double newLeadTime = leadTimesByCategory.get(procedure.getCategory()) + pLeadTime;
             leadTimesByCategory.put(procedure.getCategory(), newLeadTime);
+            leadTimesByNode.put(procedure.getCategory(), newLeadTime);
         }
     }
 
@@ -178,14 +201,22 @@ public class TestCase implements Runnable {
                         if (!extraCostsByCategory.containsKey(procedure.getCategory())) {
                             extraCostsByCategory.put(procedure.getCategory(), 0d);
                         }
+                        if (!extraCostsByNode.containsKey(procedure.getCategory())) {
+                            extraCostsByNode.put(procedure.getCategory(), 0d);
+                        }
                         double newCost = extraCostsByCategory.get(procedure.getCategory()) + pExtraCost;
                         extraCostsByCategory.put(procedure.getCategory(), newCost);
+                        extraCostsByNode.put(procedure.getCategory(), newCost);
 
                         if (!delaysByCategory.containsKey(procedure.getCategory())) {
                             delaysByCategory.put(procedure.getCategory(), 0d);
                         }
+                        if (!delaysByNode.containsKey(procedure.getCategory())) {
+                            delaysByNode.put(procedure.getCategory(), 0d);
+                        }
                         double newLeadTime = delaysByCategory.get(procedure.getCategory()) + pDelay;
                         delaysByCategory.put(procedure.getCategory(), newLeadTime);
+                        delaysByNode.put(procedure.getCategory(), newLeadTime);
 
                         executedEvents.add(event);
                     }

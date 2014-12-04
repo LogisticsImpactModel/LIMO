@@ -108,18 +108,32 @@ public class Simulation implements Runnable, TaskListener {
 
         int i = 0;
         while (i < testCaseCount) {
-            // Submit test cases and attach this as listener
-            SupplyChain sc = scPool.poll();
-            if (sc == null) {
-                continue;
+            SupplyChain sc = null;
+
+            synchronized (scPool) {
+                while (scPool.isEmpty()) {
+                    try {
+                        scPool.wait();
+                    } catch (InterruptedException ex) {
+                        // OK Keep waiting
+                        System.out.println("Simulation thread interrupted while waiting for supply chain. Keep waiting.");
+                    }
+                }
+
+                sc = scPool.poll();
+                if (sc == null) {
+                    continue;
+                }
             }
 
+            // Submit test cases and attach this as listener
             TestCase testCase = new TestCase(sc);
             Task task = SimulationExecutor.post(testCase);
             task.addTaskListener(this);
 
             // Put into map
             testCaseTasks.put(task, testCase);
+
             i++;
             task.schedule(0);
         }
@@ -129,15 +143,25 @@ public class Simulation implements Runnable, TaskListener {
     public void taskFinished(org.openide.util.Task task) {
         finishedCount.incrementAndGet();
 
-        synchronized (pcLock) {
-            progressContributor.progress(finishedCount.get() + " of " + testCaseCount + " test cases run.", finishedCount.get());
-            if (isDone()) {
-                progressContributor.finish();
-            }
+        TestCase tc = testCaseTasks.remove(task); // Check for null tc
+        result.addTestCaseResult(tc.getResult());
+
+        synchronized (scPool) {
+            scPool.offer(tc.getResult().getSupplyChain());
+            scPool.notify();
         }
 
-        result.addTestCaseResult(testCaseTasks.get(task).getResult());
-        scPool.offer(testCaseTasks.get(task).getResult().getSupplyChain());
+        synchronized (pcLock) {
+            if (finishedCount.get() % 1000 == 0) {
+                progressContributor.progress(finishedCount.get() + " of " + testCaseCount + " test cases run.", finishedCount.get());
+                System.out.println(finishedCount.get() + " of " + testCaseCount + " test cases run.");
+            }
+            if (isDone()) {
+                progressContributor.finish();
+                System.out.println("-> Simulation finished!");
+                System.out.println("     -> Gathered " + result.getTestCaseCount() + " test cases.");
+            }
+        }
     }
 
 }
