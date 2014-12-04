@@ -1,10 +1,10 @@
 package nl.fontys.limo.simulation.result;
 
+import gnu.trove.procedure.TObjectDoubleProcedure;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import nl.fontys.limo.simulation.util.MathUtil;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.event.Event;
@@ -27,9 +27,13 @@ public class SimulationResult {
     private final Map<String, DataEntry> leadTimesByCategory;
     private final Map<String, DataEntry> delaysByCategory;
     private final Map<String, DataEntry> extraCostsByCategory;
-    private final List<TestCaseResult> testCaseResults;
+    private final Map<String, DataEntry> costsByNode;
+    private final Map<String, DataEntry> leadTimesByNode;
+    private final Map<String, DataEntry> delaysByNode;
+    private final Map<String, DataEntry> extraCostsByNode;
     private final Map<String, Double> eventExecutionRate;
     private final Map<String, Event> executedEvents;
+    private final AtomicInteger testCaseCount;
 
     public SimulationResult(SupplyChain supplyChain) {
         this.supplyChain = supplyChain;
@@ -41,9 +45,13 @@ public class SimulationResult {
         this.leadTimesByCategory = new ConcurrentHashMap<>();
         this.delaysByCategory = new ConcurrentHashMap<>();
         this.extraCostsByCategory = new ConcurrentHashMap<>();
-        this.testCaseResults = new CopyOnWriteArrayList<>();
+        this.costsByNode = new ConcurrentHashMap<>();
+        this.leadTimesByNode = new ConcurrentHashMap<>();
+        this.delaysByNode = new ConcurrentHashMap<>();
+        this.extraCostsByNode = new ConcurrentHashMap<>();
         this.eventExecutionRate = new ConcurrentHashMap<>();
         this.executedEvents = new ConcurrentHashMap<>();
+        this.testCaseCount = new AtomicInteger();
     }
 
     public SupplyChain getSupplyChain() {
@@ -86,12 +94,12 @@ public class SimulationResult {
         return extraCostsByCategory;
     }
 
-    public List<TestCaseResult> getTestCaseResults() {
-        return Collections.unmodifiableList(testCaseResults);
-    }
-
     public Map<String, Double> getEventExecutionRate() {
         return eventExecutionRate;
+    }
+
+    public int getTestCaseCount() {
+        return testCaseCount.get();
     }
 
     /**
@@ -100,7 +108,7 @@ public class SimulationResult {
      * @param tcr Test case result to add.
      */
     public void addTestCaseResult(TestCaseResult tcr) {
-        int size = testCaseResults.size();
+        final int size = testCaseCount.get();
 
         // Recalculate totals by adding the new value to the existing data entry.
         this.totalCosts = recalculateDataEntry(totalCosts, size, tcr.getTotalCosts());
@@ -109,22 +117,86 @@ public class SimulationResult {
         this.totalExtraCosts = recalculateDataEntry(totalExtraCosts, size, tcr.getTotalExtraCosts());
 
         // BY CATEGORY
-        for (Map.Entry<String, Double> entry : tcr.getCostsByCategory().entrySet()) {
-            DataEntry old = costsByCategory.get(entry.getKey());
-            costsByCategory.put(entry.getKey(), recalculateDataEntry(old, size, entry.getValue()));
-        }
-        for (Map.Entry<String, Double> entry : tcr.getLeadTimesByCategory().entrySet()) {
-            DataEntry old = leadTimesByCategory.get(entry.getKey());
-            leadTimesByCategory.put(entry.getKey(), recalculateDataEntry(old, size, entry.getValue()));
-        }
-        for (Map.Entry<String, Double> entry : tcr.getDelaysByCategory().entrySet()) {
-            DataEntry old = delaysByCategory.get(entry.getKey());
-            delaysByCategory.put(entry.getKey(), recalculateDataEntry(old, size, entry.getValue()));
-        }
-        for (Map.Entry<String, Double> entry : tcr.getExtraCostsByCategory().entrySet()) {
-            DataEntry old = extraCostsByCategory.get(entry.getKey());
-            extraCostsByCategory.put(entry.getKey(), recalculateDataEntry(old, size, entry.getValue()));
-        }
+        tcr.getCostsByCategory().forEachEntry(new TObjectDoubleProcedure<String>() {
+
+            @Override
+            public boolean execute(String key, double value) {
+                DataEntry old = costsByCategory.get(key);
+                costsByCategory.put(key, recalculateDataEntry(old, size, value));
+                return true;
+            }
+        });
+
+        tcr.getLeadTimesByCategory().forEachEntry(new TObjectDoubleProcedure<String>() {
+
+            @Override
+            public boolean execute(String key, double value) {
+                DataEntry old = leadTimesByCategory.get(key);
+                leadTimesByCategory.put(key, recalculateDataEntry(old, size, value));
+                return true;
+            }
+        });
+
+        tcr.getDelaysByCategory().forEachEntry(new TObjectDoubleProcedure<String>() {
+
+            @Override
+            public boolean execute(String key, double value) {
+                DataEntry old = delaysByCategory.get(key);
+                delaysByCategory.put(key, recalculateDataEntry(old, size, value));
+                return true;
+            }
+        });
+
+        tcr.getExtraCostsByCategory().forEachEntry(new TObjectDoubleProcedure<String>() {
+
+            @Override
+            public boolean execute(String key, double value) {
+                DataEntry old = extraCostsByCategory.get(key);
+                extraCostsByCategory.put(key, recalculateDataEntry(old, size, value));
+                return true;
+            }
+        });
+
+        // BY NODE
+        tcr.getCostsByNode().forEachEntry(new TObjectDoubleProcedure<String>() {
+
+            @Override
+            public boolean execute(String key, double value) {
+                DataEntry old = costsByNode.get(key);
+                costsByNode.put(key, recalculateDataEntry(old, size, value));
+                return true;
+            }
+        });
+
+        tcr.getLeadTimesByNode().forEachEntry(new TObjectDoubleProcedure<String>() {
+
+            @Override
+            public boolean execute(String key, double value) {
+                DataEntry old = leadTimesByNode.get(key);
+                leadTimesByNode.put(key, recalculateDataEntry(old, size, value));
+                return true;
+            }
+        });
+
+        tcr.getDelaysByNode().forEachEntry(new TObjectDoubleProcedure<String>() {
+
+            @Override
+            public boolean execute(String key, double value) {
+                DataEntry old = delaysByNode.get(key);
+                delaysByNode.put(key, recalculateDataEntry(old, size, value));
+                return true;
+            }
+        });
+
+        tcr.getExtraCostsByNode().forEachEntry(new TObjectDoubleProcedure<String>() {
+
+            @Override
+            public boolean execute(String key, double value) {
+                DataEntry old = extraCostsByNode.get(key);
+                extraCostsByNode.put(key, recalculateDataEntry(old, size, value));
+                return true;
+            }
+        });
 
         // ADD Events
         for (Event event : tcr.getExecutedEvents()) {
@@ -137,8 +209,7 @@ public class SimulationResult {
             }
         }
 
-        // ADD TCR
-        this.testCaseResults.add(tcr);
+        this.testCaseCount.incrementAndGet();
     }
 
     /**

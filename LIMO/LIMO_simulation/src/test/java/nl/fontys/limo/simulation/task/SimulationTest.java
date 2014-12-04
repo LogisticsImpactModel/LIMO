@@ -12,7 +12,7 @@ import org.junit.Test;
  */
 public class SimulationTest extends SupplyChainTester {
 
-    private static final int NUMBER_OF_SIMULATIONS = 1337;
+    private static final int NUMBER_OF_SIMULATIONS = 1000000;
 
     private final Simulation simulation;
 
@@ -60,7 +60,7 @@ public class SimulationTest extends SupplyChainTester {
 
         assertTrue(result.getSupplyChain().equals(supplyChain));
 
-        assertEquals(NUMBER_OF_SIMULATIONS, result.getTestCaseResults().size(), 0.005 * NUMBER_OF_SIMULATIONS);
+        assertEquals(NUMBER_OF_SIMULATIONS, result.getTestCaseCount(), 0.005 * NUMBER_OF_SIMULATIONS);
 
         assertTrue("Two events always happen.", result.getExecutedEvents().size() >= 2);
         assertTrue("At least 4 events can happen.", result.getExecutedEvents().size() <= 4);
