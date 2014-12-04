@@ -45,7 +45,8 @@ public class Status implements StatusBarService {
     }
 
     static String[] NAME = new String[]{"", "Success", "Error occures"};
-    static String[] TEXT = new String[]{"", "Successfully created ", "could not successfully created "};
+    static String[] TEXT = new String[]{"", "Successfully ", "Could not successfully "};
+    static String[] ACTION = new String[]{"create ", "update ", "delete ", "found "};
 
     private static final Status instance
             = new Status();
@@ -67,7 +68,7 @@ public class Status implements StatusBarService {
     }
 
     @Override
-    public void setMessage(String msg, int statusState) {
+    public void setMessage(String msg, int action, int statusState) {
         // check parameter ...
         this.statusState = statusState;
         // propertyChangeSupport ...
@@ -88,6 +89,6 @@ public class Status implements StatusBarService {
         } // switch this.connectionState
         label.setIcon(icon);
         label.setToolTipText(NAME[statusState]);
-        label2.setText(TEXT[statusState] + msg + "\t \t");
+        label2.setText(TEXT[statusState]+ACTION[action] + msg + "\t \t");
     }
 }

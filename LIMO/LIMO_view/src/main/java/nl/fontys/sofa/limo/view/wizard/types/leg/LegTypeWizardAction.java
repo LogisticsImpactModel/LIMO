@@ -35,10 +35,10 @@ public final class LegTypeWizardAction extends TypeWizardAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        legType = new LegType();
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!isUpdate) {
             panels.add(new NewOrDuplicatedLegTypeWizard());
+            legType = new LegType();
         }
         panels.add(new NameDescriptionIconLegTypeWizard());
         panels.add(new ProceduresLegTypeWizard());

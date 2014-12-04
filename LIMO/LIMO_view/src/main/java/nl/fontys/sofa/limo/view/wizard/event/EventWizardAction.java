@@ -44,9 +44,10 @@ public final class EventWizardAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        eventUpdate = new Event();
         panels = new ArrayList<>();
         if (!isUpdate) {
+            
+        eventUpdate = new Event();
             panels.add(new NewOrDuplicatedEventWizard());
         }
         panels.add(new NameDescriptionProbabilityWizard());

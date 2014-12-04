@@ -47,9 +47,9 @@ public final class HubWizardAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        hubUpdate = new Hub();
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!update) {
+            hubUpdate = new Hub();
             panels.add(new NewDuplicatedOrHubTypeHubWizard());
         }
         panels.add(new NameDescriptionIconHubWizard());
@@ -95,7 +95,6 @@ public final class HubWizardAction implements ActionListener {
             } else {
                 hubUpdate.setId(null);
                 hubUpdate = hubService.insert(hubUpdate);
-
             }
         }
 
