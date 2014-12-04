@@ -12,7 +12,7 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 /**
- * A TableRowTransferHandler that handles Drag&Drop in tables.
+ * A TableRowTransferHandler that handles Drag{@literal &}Drop in tables.
  *
  * @author Matthias Brück
  */

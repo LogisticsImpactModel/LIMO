@@ -8,7 +8,7 @@ import javax.swing.JScrollPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
-import nl.fontys.sofa.limo.view.chain.GraphSceneImpl2;
+import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.custom.panel.ChainToolbar;
 import nl.fontys.sofa.limo.view.factory.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
@@ -89,7 +89,7 @@ public final class ChainBuilderTopComponent extends TopComponent implements
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
 
-            graphScene = new GraphSceneImpl2(this);
+            graphScene = new ChainGraphSceneImpl(this);
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);

@@ -32,35 +32,54 @@ import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 
 /**
- * GraphScene to draw a supply chain on. Widgets can be dragged and dropped to
- * this scene to build the chain from.
+ * Implementation of the {@link nl.fontys.sofa.limo.view.chain.ChainGraphScene}
+ * interface.
+ * <p>
+ * This scene has 3 different {@link org.netbeans.api.visual.widget.LayerWidget}
+ * to draw things on and provides several
+ * {@link org.netbeans.api.visual.action.WidgetAction}. It also uses a
+ * {@link nl.fontys.sofa.limo.view.chain.ChainBuilder} which manages the correct
+ * building of the {@link nl.fontys.sofa.limo.domain.component.SupplyChain}.
+ * <p>
+ * Some actions need a provider implementation which is implemented in several
+ * private classes within this class.
  *
  * @author Sebastiaan Heijmann
  */
-public class GraphSceneImpl2 extends ChainGraphScene {
+public class ChainGraphSceneImpl extends ChainGraphScene {
 
     private final ChainBuilderTopComponent parent;
     private final ChainBuilder chainBuilder;
 
+    // The layers to draw things on.
     private final LayerWidget mainLayer;
     private final LayerWidget connectionLayer;
     private final LayerWidget interactionLayer;
 
-    // The scene actions to be invoked.
+    // The scene actions available.
     private final WidgetAction moveAlignAction;
     private final WidgetAction zoomAction;
     private final WidgetAction panAction;
     private final WidgetAction acceptAction;
     private final WidgetAction selectAction;
     private final WidgetAction connectAction;
+    //TODO implement reconnect action.
     private final WidgetAction reconnectAction;
 
     private HubWidget startHubWidget;
     private final StartWidget startFlagWidget;
 
-    public GraphSceneImpl2(ChainBuilderTopComponent parent) throws IOException {
+    /**
+     * Constructor which sets the parent and creates the chain builder, the
+     * layers and the available actions.
+     *
+     * @param parent the parent of this scene.
+     * @throws IOException can occur when certain resources like images cannot
+     * be found.
+     */
+    public ChainGraphSceneImpl(ChainBuilderTopComponent parent) throws IOException {
         this.parent = parent;
-        chainBuilder = new ChainbuilderImpl();
+        chainBuilder = new ChainBuilderImpl();
 
         this.mainLayer = new LayerWidget(this);
         this.connectionLayer = new LayerWidget(this);
@@ -89,16 +108,6 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     }
 
     @Override
-    public LayerWidget getMainLayer() {
-        return mainLayer;
-    }
-
-    @Override
-    public LayerWidget getConnectionLayer() {
-        return connectionLayer;
-    }
-
-    @Override
     public ChainBuilder getChainBuilder() {
         return chainBuilder;
     }
@@ -119,21 +128,27 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     }
 
     @Override
-    public int getNumberOfHubs() {
-        return chainBuilder.getNumberOfHubs();
+    public SupplyChain getSupplyChain() {
+        return chainBuilder.getSupplyChain();
     }
 
     @Override
-    public Widget getStartHubWidget() {
+    public TopComponent getParent() {
+        return parent;
+    }
+
+    @Override
+    public Widget getStartWidget() {
         return startHubWidget;
     }
 
     @Override
-    public void setStartHubWidget(HubWidget hubWidget) {
+    public void setStartWidget(Widget widget) {
         if (startHubWidget != null) {
             startHubWidget.setStartFlag(false);
         }
 
+        HubWidget hubWidget = (HubWidget) widget;
         startHubWidget = hubWidget;
         startHubWidget.setStartFlag(true);
 
@@ -152,6 +167,11 @@ public class GraphSceneImpl2 extends ChainGraphScene {
     public void removeHubWidget(HubWidget hubWidget) {
 
         chainBuilder.removeHub(hubWidget.getHub());
+    }
+
+    @Override
+    public int getNumberOfHubs() {
+        return chainBuilder.getNumberOfHubs();
     }
 
     @Override
@@ -188,16 +208,6 @@ public class GraphSceneImpl2 extends ChainGraphScene {
         }
         ConnectionWidget connectionWidget = (ConnectionWidget) findWidget(edge);
         connectionWidget.setTargetAnchor(AnchorFactory.createRectangularAnchor(targetWidget, false));
-    }
-
-    @Override
-    public SupplyChain getSupplyChain() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public TopComponent getParent() {
-        return parent;
     }
 
     /**

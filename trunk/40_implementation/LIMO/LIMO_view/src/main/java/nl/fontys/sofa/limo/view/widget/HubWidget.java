@@ -44,6 +44,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
      * Constructor sets up the widget by setting the display name and image.
      *
      * @param scene - the scene to display the Widget on.
+     * @param beanNode - the beanNode belonging to this widget.
      */
     public HubWidget(Scene scene, HubNode beanNode) throws IOException {
         super(scene);
@@ -105,8 +106,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     @Override
     public boolean drop(ChainGraphScene scene, Widget widget, Point point) {
         this.setPreferredLocation(point);
-        if (scene.getStartHubWidget() == null) {
-            scene.setStartHubWidget(this);
+        if (scene.getStartWidget() == null) {
+            scene.setStartWidget(this);
         }
         scene.addHubWidget(this);
         repaint();
@@ -163,7 +164,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
-                    scene.setStartHubWidget(HubWidget.this);
+                    scene.setStartWidget(HubWidget.this);
                 }
             });
             popup.add(new AbstractAction("Delete") {

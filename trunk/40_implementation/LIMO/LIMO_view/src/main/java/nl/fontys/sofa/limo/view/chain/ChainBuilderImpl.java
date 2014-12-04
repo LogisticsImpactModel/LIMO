@@ -8,17 +8,22 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 
 /**
- * Implementation of the ChainBuilder interface. Enables building and validating
- * a supply chain.
+ * Implementation of the {@link nl.fontys.sofa.limo.view.chain.ChainBuilder}
+ * interface.
  *
  * @author Sebastiaan Heijmann
  */
-public class ChainbuilderImpl implements ChainBuilder {
+public class ChainBuilderImpl implements ChainBuilder {
 
     private final SupplyChain chain;
     private final List<Hub> hubList;
 
-    public ChainbuilderImpl() {
+    /**
+     * Constructor for the ChainBuilderImpl. It creates a new
+     * {@link nl.fontys.sofa.limo.domain.component.SupplyChain} and a list of
+     * hubs.
+     */
+    public ChainBuilderImpl() {
         chain = new SupplyChain();
         hubList = new ArrayList<>();
     }
@@ -56,11 +61,17 @@ public class ChainbuilderImpl implements ChainBuilder {
         target.setPrevious(connection);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Checks whether there are at least 2 hubs and if every hub is connected by
+     * a leg.
+     */
     @Override
     public boolean validate() {
         int hubCount = 1;
         Node currentNode = getStartHub();
-        if (currentNode == null) {
+        if (currentNode == null || getNumberOfHubs() == 1) {
             return false;
         }
         while (currentNode != null) {

@@ -24,7 +24,6 @@ public interface BasicWidget extends PropertyChangeListener {
      * define what happens with the widget when it is dropped on the scene.
      *
      * @param scene - the GraphScene where the widget is dropped on.
-     * @param builder - the chain builder.
      * @param widget - the widget where this widget is dropped on.
      * @param point - the location as a point where the widget is dropped.
      */
