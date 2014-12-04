@@ -71,14 +71,14 @@ public final class JSONImporter {
 
     private static Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> getMapFromText(Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> importedFiles, String textInFile) {
         JSONObject rootObject = new JSONObject(textInFile);
-        for (String key : rootObject.keySet()) {
-            JSONArray items = rootObject.getJSONArray(key);
+        for (Object key : rootObject.keySet()) {
+            JSONArray items = rootObject.getJSONArray((String) key);
             List<Map.Entry<BaseEntity, BaseEntity>> list = new ArrayList<>();
             for (int i = 0; i < items.length(); i++) {
                 lastEntitiesInFileCount++;
                 JSONObject item = items.getJSONObject(i);
                 Map.Entry entry = null;
-                switch (key) {
+                switch ((String) key) {
                     case "categories":
                         entry = JSONImporter.<ProcedureCategory>checkItem(item, ProcedureCategoryDAO.class, new ProcedureCategory());
                         break;
@@ -102,7 +102,7 @@ public final class JSONImporter {
                 }
             }
             if (list.size() > 0) {
-                importedFiles.put(key, list);
+                importedFiles.put((String) key, list);
             }
         }
         return importedFiles;

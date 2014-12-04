@@ -51,9 +51,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>nl.fontys.limo</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>LIMO_API</artifactId>
-            <version>0.1-ALPHA</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
