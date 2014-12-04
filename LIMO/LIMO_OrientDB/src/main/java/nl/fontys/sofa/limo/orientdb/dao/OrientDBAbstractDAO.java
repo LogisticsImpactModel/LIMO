@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.DAO;
-import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
-import org.openide.util.Lookup;
 
 public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T> {
 
@@ -54,7 +52,6 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
         OSQLSynchQuery<ODocument> query = new OSQLSynchQuery<>("select from index:uuid where key = '" + uniqueIdentifier + "'");
         List<ODocument> results = OrientDBConnector.connection().query(query);
         if (results.isEmpty()) {
-            Lookup.getDefault().lookup(StatusBarService.class).setMessage(null,3, 2);
             return null;
         }
 
@@ -65,7 +62,6 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
     @Override
     public T insert(T entity) {
         if (entity == null || entity.getId() != null) {
-            Lookup.getDefault().lookup(StatusBarService.class).setMessage(entity.getName(),0, 2);
             return null;
         }
 
@@ -76,25 +72,21 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
     @Override
     public boolean update(T entity) {
         if (entity == null || !stringIsValidId(entity.getId())) {
-            Lookup.getDefault().lookup(StatusBarService.class).setMessage(entity.getName(),1, 2);
             return false;
         }
 
         entity.setLastUpdate(new Date().getTime());
         OrientDBConnector.connection().save(entity);
-        Lookup.getDefault().lookup(StatusBarService.class).setMessage(entity.getName(),1, 1);
         return true;
     }
 
     @Override
     public boolean delete(T entity) {
         if (entity == null || !stringIsValidId(entity.getId())) {
-            Lookup.getDefault().lookup(StatusBarService.class).setMessage(entity.getName(),2, 2);
             return false;
         }
 
         OrientDBConnector.connection().delete(new ORecordId(entity.getId()));
-        Lookup.getDefault().lookup(StatusBarService.class).setMessage(entity.getName(),2, 1);
         return true;
     }
 
