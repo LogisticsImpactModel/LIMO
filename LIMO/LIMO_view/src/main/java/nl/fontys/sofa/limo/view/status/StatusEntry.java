@@ -6,11 +6,18 @@
 package nl.fontys.sofa.limo.view.status;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import org.openide.util.ImageUtilities;
 import org.openide.util.lookup.ServiceProvider;
@@ -20,17 +27,13 @@ import org.openide.util.lookup.ServiceProvider;
  * @author lnx
  */
 @ServiceProvider(service = StatusBarService.class)
-public class Status implements StatusBarService {
+public class StatusEntry implements StatusBarService {
 
     private int statusState = STATE_NONE;
 
     private static JPanel panel;
-    private static JLabel label;
+    private static JButton btn;
     private static JLabel label2;
-
-    public static final int STATE_NONE = 0;
-    public static final int STATE_SUCCESS = 1;
-    public static final int STATE_FAIL = 2;
 
     private static final ImageIcon imgSuccess;
     private static final ImageIcon imgNone;
@@ -48,17 +51,20 @@ public class Status implements StatusBarService {
     static String[] TEXT = new String[]{"", "Successfully ", "Could not successfully "};
     static String[] ACTION = new String[]{"create ", "update ", "delete ", "found "};
 
-    private static final Status instance
-            = new Status();
+    private static final StatusEntry instance
+            = new StatusEntry();
 
-    public Status() {
+    public StatusEntry() {
         panel = new JPanel();
-        label = new JLabel(imgNone);
+        btn = new JButton(imgNone);
         label2 = new JLabel();
         statusState = STATE_NONE;
-        label.setToolTipText(NAME[statusState]);
+        btn.setToolTipText(NAME[statusState]);
+        btn.setOpaque(false);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
         panel.setLayout(new BorderLayout());
-        panel.add(label, BorderLayout.EAST);
+        panel.add(btn, BorderLayout.EAST);
         panel.add(label2, BorderLayout.CENTER);
     }
 
@@ -68,7 +74,8 @@ public class Status implements StatusBarService {
     }
 
     @Override
-    public void setMessage(String msg, int action, int statusState) {
+    public void setMessage(String msg, int action, int statusState, Exception ee) {
+       final  Exception e = ee;
         // check parameter ...
         this.statusState = statusState;
         // propertyChangeSupport ...
@@ -87,8 +94,35 @@ public class Status implements StatusBarService {
                 icon = imgNone;
                 break;
         } // switch this.connectionState
-        label.setIcon(icon);
-        label.setToolTipText(NAME[statusState]);
-        label2.setText(TEXT[statusState]+ACTION[action] + msg + "\t \t");
+        btn.setIcon(icon);
+        if(statusState == 2){
+        btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ex) {  
+                    StringBuilder sb = new StringBuilder("Error: ");
+                    sb.append(e.getMessage());
+                    sb.append("\n");
+                    for (StackTraceElement ste : e.getStackTrace()) {
+                        sb.append(ste.toString());
+                        sb.append("\n");
+                    }
+                    JTextArea jta = new JTextArea(sb.toString());
+                    JScrollPane jsp = new JScrollPane(jta) {
+                        @Override
+                        public Dimension getPreferredSize() {
+                            return new Dimension(480, 320);
+                        }
+                    };
+                    JOptionPane.showMessageDialog(
+                            null, jsp, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        }
+    btn.setToolTipText (NAME 
+
+    [statusState]);
+    label2.setText (TEXT 
+
+[statusState] + ACTION[action] + msg + "\t \t");
     }
 }
