@@ -35,9 +35,9 @@ public final class HubTypeWizardAction extends TypeWizardAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        hubType = new HubType();
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!isUpdate) {
+            hubType = new HubType();
             panels.add(new NewOrDuplicatedHubTypeWizard());
         }
         panels.add(new NameDescriptionIconHubTypeWizard());
