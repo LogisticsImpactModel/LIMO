@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.action;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -13,44 +12,36 @@ import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
-import org.openide.awt.ActionID;
-import org.openide.awt.ActionReference;
-import org.openide.awt.ActionReferences;
-import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
-import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
 import org.openide.util.actions.Presenter;
 import org.openide.windows.TopComponent;
 
-@ActionID(
-        category = "Window",
-        id = "nl.fontys.sofa.limo.view.action.SimulateAction"
-)
-@ActionRegistration(
-        lazy = false,
-        //        iconBase = "icons/gui/simulate.png",
-        displayName = "#CTL_SimulateAction"
-)
-@ActionReferences({
-    @ActionReference(path = "Menu/File", position = 20),
-//    @ActionReference(path = "Toolbars/File", position = 25),
-    @ActionReference(path = "Shortcuts", name = "D-R")
-})
-
-@Messages("CTL_SimulateAction=Simulate")
-
+/**
+ * Action which is responsible for running the simulation.
+ * <p>
+ * It looks in the global lookup which {@link org.openide.windows.TopComponent}
+ * currently is active and retrieves the
+ * {@link nl.fontys.sofa.limo.view.chain.ChainGraphScene} from it.
+ * <p>
+ * The validation of the chain is done by the
+ * {@link nl.fontys.sofa.limo.view.chain.ChainBuilder} and if this succeeds the
+ * simulation is run and the corresponding
+ * {@link org.openide.windows.TopComponent} is disabled.
+ *
+ * @author Sebastiaan Heijmann
+ */
 public final class SimulateAction extends AbstractAction implements Presenter.Toolbar {
 
-    private Image image;
-    private SupplyChain supplyChain;
-
+    /**
+     * Invokes the simulate action.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
+        SupplyChain supplyChain;
         Lookup global = Utilities.actionsGlobalContext();
         ChainGraphScene scene = global.lookup(ChainGraphScene.class);
 
-//        ChainBuilder chainBuilder = global.lookup(ChainBuilder.class);
         if (scene != null) {
             TopComponent tc = scene.getParent();
             ChainBuilder chainBuilder = scene.getChainBuilder();
@@ -70,10 +61,9 @@ public final class SimulateAction extends AbstractAction implements Presenter.To
         }
     }
 
-    public void setSupplyChain(SupplyChain supplyChain) {
-        this.supplyChain = supplyChain;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Component getToolbarPresenter() {
         JButton button = new JButton(this);

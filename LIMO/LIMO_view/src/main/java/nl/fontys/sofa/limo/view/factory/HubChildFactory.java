@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.factory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
-import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
@@ -19,19 +18,18 @@ import org.openide.util.Lookup;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.util.Utilities;
 
 /**
  * Factory responsible for creating the Hub children. It listens to changes in
- * the service layer and in the nodes.
+ * the service layer and on the child nodes.
  *
  * @author Sebastiaan Heijmann
  */
 public class HubChildFactory extends ChildFactory<Hub>
-        implements LookupListener, NodeListener {
+        implements LookupListener, NodeListener, Lookup.Provider {
 
-    private final Result<Hub> lookupResult;
     private final HubService service;
+    private final Result<Hub> lookupResult;
 
     public HubChildFactory() {
         service = Lookup.getDefault().lookup(HubService.class);
@@ -83,4 +81,8 @@ public class HubChildFactory extends ChildFactory<Hub>
     public void propertyChange(PropertyChangeEvent pce) {
     }
 
+    @Override
+    public Lookup getLookup() {
+        return service.getLookup();
+    }
 }
