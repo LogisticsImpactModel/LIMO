@@ -141,8 +141,8 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
                 List<Object> newRow = new ArrayList<>();
                 newRow.add(newProcedure.getName());
                 newRow.add(newProcedure.getCategory());
-                newRow.add(newProcedure.getTimeType());
                 newRow.add(newProcedure.getTime());
+                newRow.add(newProcedure.getTimeType());
                 newRow.add(newProcedure.getCost());
                 newRow.add(newProcedure.getDirection());
                 ((DragNDropTableModel) table.getModel()).addRow(newRow);

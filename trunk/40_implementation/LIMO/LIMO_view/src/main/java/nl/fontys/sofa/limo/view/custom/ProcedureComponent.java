@@ -92,8 +92,8 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             Procedure p = new Procedure();
             p.setName((String) value.get(0));
             p.setCategory((String) value.get(1));
-            p.setTimeType((TimeType) value.get(2));
-            p.setTime((Value) value.get(3));
+            p.setTime((Value) value.get(2));
+            p.setTimeType((TimeType) value.get(3));
             p.setCost((Value) value.get(4));
             p.setDirection((ProcedureResponsibilityDirection) value.get(5));
             procedures.add(p);
@@ -119,7 +119,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     }
 
     protected void editProcedure() {
-        if (table.getSelectedColumn() == 3 || table.getSelectedColumn() == 4) {
+        if (table.getSelectedColumn() == 2 || table.getSelectedColumn() == 4) {
             changedValue = (Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
             Object valueAt = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
             new EditValueDialog((Value) valueAt, new AddProcedureDialog.EditValueDialogListener() {
@@ -187,7 +187,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(procedureCategoryCheckbox));
         }
         timeTypesCheckbox = new JComboBox(TimeType.values());
-        table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(timeTypesCheckbox));
+        table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(timeTypesCheckbox));
         directionCheckbox = new JComboBox(ProcedureResponsibilityDirection.values());
         table.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(directionCheckbox));
     }
