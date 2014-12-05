@@ -40,7 +40,7 @@ public class CSVExporter {
             writer.append("Total Delays:;Max;Min;Avg\n");
             writer.append(";" + result.getTotalDelays().getMax() + ";" + result.getTotalDelays().getMin() + ";" + result.getTotalDelays().getAvg() + "\n\n\n");
             addMapToList(writer, result.getDelaysByCategory(), "Delays");
-            writer.append("Total Lead Times:;Max;Min;Avg");
+            writer.append("Total Lead Times:;Max;Min;Avg\n");
             writer.append(";" + result.getTotalLeadTimes().getMax() + ";" + result.getTotalLeadTimes().getMin() + ";" + result.getTotalLeadTimes().getAvg() + "\n\n\n");
             addMapToList(writer, result.getLeadTimesByCategory(), "Lead Times");
             writer.append("\n\n");
