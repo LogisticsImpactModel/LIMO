@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Install: nl/fontys/limo/simulation/Installer.class
+OpenIDE-Module-Localizing-Bundle: nl/fontys/limo/simulation/Bundle.properties
+
