@@ -13,7 +13,7 @@ import org.openide.util.NbPreferences;
 public class IconFileChooser extends JFileChooser {
 
     public IconFileChooser() {
-        super(NbPreferences.root().get("ICON_PATH", ""));
+        super(NbPreferences.forModule(IconFileChooser.class).get("ICON_PATH", ""));
         setFileFilter(new IconFileFilter());
         setFileSelectionMode(JFileChooser.FILES_ONLY);
         setMultiSelectionEnabled(false);
@@ -22,7 +22,9 @@ public class IconFileChooser extends JFileChooser {
     @Override
     public File getSelectedFile() {
         File file = super.getSelectedFile();
-        NbPreferences.forModule(IconFileChooser.class).put("ICON_PATH", "");
+        if (file != null) {
+            NbPreferences.forModule(IconFileChooser.class).put("ICON_PATH", file.getPath());
+        }
         return file;
     }
 
