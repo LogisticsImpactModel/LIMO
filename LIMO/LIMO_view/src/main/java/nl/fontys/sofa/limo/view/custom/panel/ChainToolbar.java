@@ -1,14 +1,23 @@
 package nl.fontys.sofa.limo.view.custom.panel;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.text.NumberFormat;
 import javax.swing.JFormattedTextField;
+import javax.swing.JToolBar;
 import javax.swing.text.NumberFormatter;
 import nl.fontys.sofa.limo.view.action.SimulateAction;
 
 /**
+ * ChainToolbar represents a {@link javax.swing.JToolBar} in the
+ * {@link nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent}.
+ * <p>
+ * It contains a {@link javax.swing.JFormattedTextField} and a
+ * {@link java.awt.Component} retrieved from the
+ * {@link nl.fontys.sofa.limo.view.action.SimulateAction} getToolbarPresenter()
+ * method.
  *
- * @author d3vil
+ * @author Sebastiaan Heijmann
  */
 public class ChainToolbar extends javax.swing.JToolBar {
 
@@ -16,7 +25,8 @@ public class ChainToolbar extends javax.swing.JToolBar {
     int numberOfSimulationRuns;
 
     /**
-     * Creates new form ChainToolbar
+     * Creates new ChainToolbar with the appropriate components and initializes
+     * a new {@link nl.fontys.sofa.limo.view.action.SimulateAction}
      */
     public ChainToolbar() {
         initComponents();
@@ -24,18 +34,19 @@ public class ChainToolbar extends javax.swing.JToolBar {
     }
 
     private void initCustomComponents() {
-
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new NumberFormatter(format);
         formatter.setValueClass(Integer.class);
         formatter.setMinimum(0);
         formatter.setMaximum(Integer.MAX_VALUE);
         JFormattedTextField inputRunsTF = new JFormattedTextField(formatter);
+        inputRunsTF.setMaximumSize(new Dimension(100, 50));
         simulateAction = new SimulateAction(inputRunsTF);
 
         Component toolbarPresenter = simulateAction.getToolbarPresenter();
 
         add(toolbarPresenter);
+        add(new JToolBar.Separator());
         add(inputRunsTF);
     }
 

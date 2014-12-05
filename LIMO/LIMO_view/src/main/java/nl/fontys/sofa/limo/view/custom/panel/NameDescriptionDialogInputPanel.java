@@ -7,7 +7,7 @@ import org.netbeans.validation.api.ui.ValidationUI;
 import org.netbeans.validation.api.ui.swing.SwingValidationGroup;
 
 /**
- * Reusable JPanel for inputting name and description.
+ * Reusable {@link javax.swing.JPanel} for inputting name and description.
  *
  * @author Sebastiaan Heijmann
  */
@@ -17,7 +17,7 @@ public class NameDescriptionDialogInputPanel extends javax.swing.JPanel
     private SwingValidationGroup group;
 
     /**
-     * Creates new form DialogInputPane
+     * Creates a new DialogInputPane with validation in place.
      */
     public NameDescriptionDialogInputPanel() {
         initComponents();

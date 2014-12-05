@@ -8,6 +8,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import nl.fontys.limo.simulation.Simulator;
+import nl.fontys.limo.simulation.SimulatorTask;
+import nl.fontys.limo.simulation.SimulatorTaskListener;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
@@ -32,22 +34,32 @@ import org.openide.windows.TopComponent;
  *
  * @author Sebastiaan Heijmann
  */
-public final class SimulateAction extends AbstractAction implements Presenter.Toolbar {
+public final class SimulateAction extends AbstractAction
+        implements Presenter.Toolbar, SimulatorTaskListener {
 
     private final JFormattedTextField inputRunsTF;
+    private ChainGraphScene scene;
 
+    /**
+     * Constructor sets the input textfield from where to get the number of
+     * simulation runs from.
+     *
+     * @param inputRunsTF the formatted text field.
+     */
     public SimulateAction(JFormattedTextField inputRunsTF) {
         this.inputRunsTF = inputRunsTF;
     }
 
     /**
+     * {@inheritDoc}
+     * <p>
      * Invokes the simulate action.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
         SupplyChain supplyChain;
         Lookup global = Utilities.actionsGlobalContext();
-        ChainGraphScene scene = global.lookup(ChainGraphScene.class);
+        scene = global.lookup(ChainGraphScene.class);
 
         if (scene != null) {
             TopComponent tc = scene.getParent();
@@ -59,7 +71,8 @@ public final class SimulateAction extends AbstractAction implements Presenter.To
                 tc.makeBusy(true);
                 scene.setEnabled(false);
                 scene.setBackground(Color.LIGHT_GRAY);
-                Simulator.simulate(numberOfRuns, supplyChain);
+                SimulatorTask task = Simulator.simulate(numberOfRuns, supplyChain);
+                task.addTaskListener(this);
             } else {
                 DialogDisplayer.getDefault().notify(
                         new NotifyDescriptor.Message(
@@ -70,8 +83,20 @@ public final class SimulateAction extends AbstractAction implements Presenter.To
         }
     }
 
+    @Override
+    public void taskFinished(SimulatorTask task) {
+        TopComponent tc = scene.getParent();
+        tc.makeBusy(false);
+        scene.setEnabled(true);
+        scene.setBackground(Color.WHITE);
+    }
+
     /**
      * {@inheritDoc}
+     * <p>
+     * Creates a new simulation button to invoke this action from.
+     *
+     * @return the component as a {@link javax.swing.JButton}.
      */
     @Override
     public Component getToolbarPresenter() {
@@ -82,4 +107,5 @@ public final class SimulateAction extends AbstractAction implements Presenter.To
         button.setBorder(null);
         return button;
     }
+
 }

@@ -13,22 +13,30 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
 /**
- * ChildFactory which creates the different components for building a chain to
- * display them in the palette.
+ * ChildFactory which creates the different components which are visible in the
+ * palette.
  * <p>
- * At the moment only Hubs are added to this factory which are then displayed in
- * the palette. To add more elements to the palette simply instantiate a new
- * ChildFactory in the createKeys method and add it to the list of
- * AbstractRootNodes.
+ * This factory uses the other {@link org.openide.nodes.ChildFactory} classes to
+ * create the separate children. At the moment only a factory for hubs is used
+ * and added as a category.
+ * <p>
+ * To add more categories to the palette simply instantiate a new ChildFactory
+ * in the createKeys method and add it to the list of AbstractRootNodes. Than
+ * the new category will be displayed in the palette.
  *
  * @author Sebastiaan Heijmann
  */
 public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
         implements LookupListener {
 
-    private HubChildFactory hubFactory;
-    private Result<Hub> lookupResult;
+    private final HubChildFactory hubFactory;
+    private final Result<Hub> lookupResult;
 
+    /**
+     * Constructor creates a new CategoryChildFactory and attaches
+     * {@link org.openide.util.LookupListener} on the child factories to listen
+     * for changes in the and to react appropriately.
+     */
     public CategoryChildFactory() {
         hubFactory = new HubChildFactory();
         lookupResult = hubFactory.getLookup().lookupResult(Hub.class);
