@@ -36,16 +36,24 @@ public final class JSONImporter {
      * Number of entities found in the last JSON file.
      */
     private static int lastEntitiesInFileCount;
+
     /**
      * Number of directly imported files from the last JSON file.
      */
     private static int lastDirectImportedEntitiesCount;
+
     /**
      * Number of dublicated elements in the from the last JSON file. Duplicated
      * means that there is already an entity inside the database that has the
      * same unique identifier.
      */
-    private static int lastDuplicatedEntitiedCount;
+    private static int lastDuplicatedEntitieCount;
+
+    /**
+     * Number of entities in JSON file that are from an older date then the ones
+     * in the database.
+     */
+    private static int lastOlderEntitieCount;
 
     private JSONImporter() {
     }
@@ -53,7 +61,7 @@ public final class JSONImporter {
     public static Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> importFromJSON(String filepath) {
         lastEntitiesInFileCount = 0;
         lastDirectImportedEntitiesCount = 0;
-        lastDuplicatedEntitiedCount = 0;
+        lastDuplicatedEntitieCount = 0;
         Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> importedFiles = new HashMap<>();
         File fileToImport = new File(filepath);
         try (BufferedReader reader = new BufferedReader(new FileReader(fileToImport))) {
@@ -61,6 +69,7 @@ public final class JSONImporter {
             String textInFile = "";
             while (textInLine != null) {
                 textInFile = textInFile.concat(textInLine);
+                textInLine = reader.readLine();
             }
             importedFiles = getMapFromText(importedFiles, textInFile);
         } catch (IOException ex) {
@@ -131,9 +140,12 @@ public final class JSONImporter {
         T old = (T) pcDAO.findByUniqueIdentifier(uuid);
         if (old != null) {
             T newC = (T) OrientDBConnector.connection().stream2pojo(doc, newT, "*:-1");
+            newC = OrientDBConnector.connection().detachAll(newC, true);
             if (old.getLastUpdate() != newC.getLastUpdate()) {
                 entry = new AbstractMap.SimpleEntry<>(old, newC);
-                lastDuplicatedEntitiedCount++;
+                lastDuplicatedEntitieCount++;
+            } else {
+                lastOlderEntitieCount++;
             }
         } else {
             doc.save();
@@ -150,7 +162,12 @@ public final class JSONImporter {
         return lastDirectImportedEntitiesCount;
     }
 
-    public static int getLastDuplicatedEntitiedCount() {
-        return lastDuplicatedEntitiedCount;
+    public static int getLastDuplicatedEntitieCount() {
+        return lastDuplicatedEntitieCount;
     }
+
+    public static int getLastOlderEntitieCount() {
+        return lastOlderEntitieCount;
+    }
+
 }
