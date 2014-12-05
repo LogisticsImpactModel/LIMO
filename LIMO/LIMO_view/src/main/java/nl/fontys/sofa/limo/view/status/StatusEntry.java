@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,10 +35,15 @@ public class StatusEntry implements StatusBarService {
     private static JPanel panel;
     private static JButton btn;
     private static JLabel label2;
+    private static StringBuilder sb;
+
+    private static List<Exception> excp;
 
     private static final ImageIcon imgSuccess;
     private static final ImageIcon imgNone;
     private static final ImageIcon imgFail;
+
+    private int number = 0;
 
     // property change support    
     static {
@@ -47,9 +53,9 @@ public class StatusEntry implements StatusBarService {
 
     }
 
-    static String[] NAME = new String[]{"", "Success", "Error occures"};
-    static String[] TEXT = new String[]{"", "Successfully ", "Could not successfully "};
-    static String[] ACTION = new String[]{"create ", "update ", "delete ", "found "};
+    static String[] NAME = new String[]{"", "Error occures", "Success", "Error occures"};
+    static String[] TEXT = new String[]{"", "Something was going wrong: ", "Successfully ", "Could not successfully "};
+    static String[] ACTION = new String[]{"", "create ", "update ", "delete ", "found "};
 
     private static final StatusEntry instance
             = new StatusEntry();
@@ -63,6 +69,36 @@ public class StatusEntry implements StatusBarService {
         btn.setOpaque(false);
         btn.setContentAreaFilled(false);
         btn.setBorderPainted(false);
+        sb = new StringBuilder("Following problem(s) occure(s): ");
+        btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ex) {
+                JTextArea jta = new JTextArea(sb.toString());
+                JScrollPane jsp = new JScrollPane(jta) {
+                    @Override
+                    public Dimension getPreferredSize() {
+                        return new Dimension(480, 320);
+                    }
+                };
+                if (number > 0) {
+                    Object[] options = {"Ok"};
+                    int n = JOptionPane.showOptionDialog(null,
+                            jsp, "Error",
+                            JOptionPane.ERROR_MESSAGE,
+                            JOptionPane.ERROR_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+                    if (n == 0) {
+                        number = 0;
+                        sb.setLength(0);
+                        sb.append("Following problem(s) occure(s): ");
+                        setMessage("", ACTION_NULL, STATE_NONE, null);
+                    }
+                }
+            }
+        });
+        btn.setEnabled(false);
         panel.setLayout(new BorderLayout());
         panel.add(btn, BorderLayout.EAST);
         panel.add(label2, BorderLayout.CENTER);
@@ -74,55 +110,49 @@ public class StatusEntry implements StatusBarService {
     }
 
     @Override
-    public void setMessage(String msg, int action, int statusState, Exception ee) {
-       final  Exception e = ee;
-        // check parameter ...
+    public void setMessage(String msg, int action, int statusState, final Exception e) {
+        if (e != null) {
+            number++;
+            sb.append("\n \nError: ");
+
+            sb.append(e.getMessage());
+            sb.append("\n");
+            for (StackTraceElement ste : e.getStackTrace()) {
+                sb.append(ste.toString());
+                sb.append("\n");
+            }
+            btn.setEnabled(true);
+        }
         this.statusState = statusState;
-        // propertyChangeSupport ...
         Icon icon = imgNone;
         switch (this.statusState) {
             case STATE_SUCCESS:
+                btn.setEnabled(true);
                 icon = imgSuccess;
                 break;
             case STATE_FAIL:
+                btn.setEnabled(true);
                 icon = imgFail;
                 break;
             case STATE_NONE:
+                btn.setEnabled(false);
                 icon = imgNone;
+                break;
+            case STATE_ERROR:
+                btn.setEnabled(true);
+                icon = imgFail;
                 break;
             default:
+                btn.setEnabled(false);
                 icon = imgNone;
                 break;
-        } // switch this.connectionState
-        btn.setIcon(icon);
-        if(statusState == 2){
-        btn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ex) {  
-                    StringBuilder sb = new StringBuilder("Error: ");
-                    sb.append(e.getMessage());
-                    sb.append("\n");
-                    for (StackTraceElement ste : e.getStackTrace()) {
-                        sb.append(ste.toString());
-                        sb.append("\n");
-                    }
-                    JTextArea jta = new JTextArea(sb.toString());
-                    JScrollPane jsp = new JScrollPane(jta) {
-                        @Override
-                        public Dimension getPreferredSize() {
-                            return new Dimension(480, 320);
-                        }
-                    };
-                    JOptionPane.showMessageDialog(
-                            null, jsp, "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        });
         }
-    btn.setToolTipText (NAME 
-
-    [statusState]);
-    label2.setText (TEXT 
-
-[statusState] + ACTION[action] + msg + "\t \t");
+        btn.setIcon(icon);
+        btn.setToolTipText(NAME[statusState]);
+        if (number > 1) {
+            label2.setText("[" + number + "] " + TEXT[statusState] + ACTION[action] + msg + "\t \t");
+        } else {
+            label2.setText(TEXT[statusState] + ACTION[action] + msg + "\t \t");
+        }
     }
 }
