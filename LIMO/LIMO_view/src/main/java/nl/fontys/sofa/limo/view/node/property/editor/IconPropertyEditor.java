@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
-import nl.fontys.sofa.limo.view.util.IconFileFilter;
+import nl.fontys.sofa.limo.view.util.IconFileChooser;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 
 /**
@@ -60,11 +60,8 @@ public abstract class IconPropertyEditor extends PropertyEditorSupport {
             btnSelect = new JButton("Choose");
             btnRemove = new JButton("Remove");
             btnRemove.setToolTipText("Removes the current icon and takes the standard one.");
-            fc = new JFileChooser();
+            fc = new IconFileChooser();
 
-            fc.setFileFilter(new IconFileFilter());
-            fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            fc.setMultiSelectionEnabled(false);
             setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
             c.fill = GridBagConstraints.HORIZONTAL;
@@ -81,8 +78,7 @@ public abstract class IconPropertyEditor extends PropertyEditorSupport {
             btnSelect.addActionListener(
                     new ActionListener() {
                         @Override
-                        public void actionPerformed(ActionEvent e
-                        ) {
+                        public void actionPerformed(ActionEvent e) {
                             int returnVal = fc.showOpenDialog(CustomEditor.this);
                             if (returnVal == JFileChooser.APPROVE_OPTION) {
                                 File icon = fc.getSelectedFile();
@@ -102,8 +98,7 @@ public abstract class IconPropertyEditor extends PropertyEditorSupport {
             btnRemove.addActionListener(
                     new ActionListener() {
                         @Override
-                        public void actionPerformed(ActionEvent e
-                        ) {
+                        public void actionPerformed(ActionEvent e) {
                             Image image = IconUtil.getIcon(getBeanType(), 2);
                             Icon newIcon = new Icon((BufferedImage) image, "png");
                             setValue(newIcon);

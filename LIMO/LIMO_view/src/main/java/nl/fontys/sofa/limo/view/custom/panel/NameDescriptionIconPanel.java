@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.view.util.IconFileFilter;
+import nl.fontys.sofa.limo.view.util.IconFileChooser;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 
 public class NameDescriptionIconPanel<T extends Class> extends JPanel {
@@ -52,10 +52,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         btnSelect = new JButton(bundle.getString("CHOOSE"));
         btnRemove = new JButton(bundle.getString("REMOVE"));
         btnRemove.setToolTipText(bundle.getString("REMOVE_ICON_HINT"));
-        fc = new JFileChooser();
-        fc.setFileFilter(new IconFileFilter());
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setMultiSelectionEnabled(false);
+        fc = new IconFileChooser();
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
