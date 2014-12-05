@@ -2,8 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>nl.fontys.limo</groupId>
+    <groupId>nl.fontys.sofa.limo</groupId>
     <artifactId>LIMO-parent</artifactId>
     <version>0.1-ALPHA</version>
     <packaging>pom</packaging>
@@ -82,13 +81,13 @@
     <modules>
         <module>branding</module>
         <module>application</module>
-        <module>LIMO_API</module>
-        <module>LIMO_OrientDB</module>
-        <module>LIMO_view</module>
-        <module>LIMO_DependecyWrapper</module>
-        <module>LIMO-domain</module>
-        <module>LIMO_Service</module>
-        <module>LIMO_simulation</module>
-        <module>LIMO_ExternalTraider</module>
+        <module>api</module>
+        <module>orientDB</module>
+        <module>view</module>
+        <module>dependecyWrapper</module>
+        <module>domain</module>
+        <module>service</module>
+        <module>simulation</module>
+        <module>externalTraider</module>
     </modules>
 </project>

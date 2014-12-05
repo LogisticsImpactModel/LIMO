@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-OpenIDE-Module-Install: nl/fontys/sofa/limo/orientdb/Installer.class
-OpenIDE-Module-Localizing-Bundle: nl/fontys/limo/limo_orientdb/Bundle.properties
-
