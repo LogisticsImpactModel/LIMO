@@ -83,11 +83,13 @@ public class TestCaseTest extends SupplyChainTester {
         buildComplexSupplyChain();
 
         Leg leg2 = new Leg();
+        leg2.setName("Leg 2");
         leg2.setNext(end);
         start.setNext(leg2);
 
         supplyChain.setStart(start);
         multiModeLeg = new MultiModeLeg();
+        multiModeLeg.setName("Multimode Leg");
         start.setNext(multiModeLeg);
         multiModeLeg.setNext(end);
         multiModeLeg.addLeg(leg, 0.4);
@@ -119,12 +121,14 @@ public class TestCaseTest extends SupplyChainTester {
         buildComplexSupplyChain();
 
         Leg leg2 = new Leg();
+        leg2.setName("Leg 2");
         leg2.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
         leg2.setNext(end);
         start.setNext(leg2);
 
         supplyChain.setStart(start);
         ScheduledLeg scheduledLeg = new ScheduledLeg();
+        scheduledLeg.setName("Scheduleg Leg");
         start.setNext(scheduledLeg);
         scheduledLeg.setNext(end);
         scheduledLeg.setAlternative(leg2);
@@ -166,14 +170,17 @@ public class TestCaseTest extends SupplyChainTester {
         buildComplexSupplyChain();
 
         Hub middleHub = new Hub();
+        middleHub.setName("Amsterdam");
         middleHub.addProcedure(new Procedure("customs control", MANDATORY, new SingleValue(100), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
 
         Leg leg2 = new Leg();
+        leg2.setName("Rotterdam--Amsterdam");
         leg2.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
         leg2.setNext(middleHub);
 
         supplyChain.setStart(start);
         ScheduledLeg scheduledLeg = new ScheduledLeg();
+        scheduledLeg.setName("Scheduleg Leg");
         start.setNext(scheduledLeg);
         scheduledLeg.setNext(middleHub);
         scheduledLeg.setAlternative(leg2);
@@ -181,10 +188,12 @@ public class TestCaseTest extends SupplyChainTester {
         scheduledLeg.setAcceptanceTimes(Arrays.asList(new Long[]{30L, 120L, 180L}));
 
         Leg leg3 = new Leg();
+        leg3.setName("Leg 3");
         leg3.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
         leg3.setNext(middleHub);
 
         ScheduledLeg scheduledLeg2 = new ScheduledLeg();
+        scheduledLeg2.setName("Scheduled Leg 2");
         middleHub.setNext(scheduledLeg2);
         scheduledLeg2.setNext(end);
         scheduledLeg2.setAlternative(leg3);
