@@ -237,6 +237,11 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
         private final ChainGraphScene scene;
 
+        /**
+         * Constructor sets the scene.
+         *
+         * @param scene the main scene.
+         */
         public SceneAcceptProvider(ChainGraphScene scene) {
             this.scene = scene;
         }
@@ -341,10 +346,10 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                     try {
                         LegNode legNode = new LegNode(leg);
 
-                        HubWidget hubSourceWidget = (HubWidget) sourceWidget;
+                        HubWidget hubSourceWidget = (HubWidget) findWidget(source);
                         ConnectionWidget connectionWidget
                                 = (ConnectionWidget) addEdge(legNode);
-                        HubWidget hubTargetWidget = (HubWidget) targetWidget;
+                        HubWidget hubTargetWidget = (HubWidget) findWidget(target);
 
                         connectHubWidgets(
                                 hubSourceWidget,

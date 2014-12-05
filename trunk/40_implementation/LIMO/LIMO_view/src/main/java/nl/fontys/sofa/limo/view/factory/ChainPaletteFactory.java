@@ -11,17 +11,22 @@ import org.openide.nodes.Children;
 import org.openide.util.Lookup;
 
 /**
- * Creates a palette to display items where a chain can be build from.
+ * This class is responsible for creating the
+ * {@link org.netbeans.spi.palette.PaletteController}.
+ * <p>
+ * This controller is injected into the lookup of the
+ * {@link nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent} which
+ * then displays the complete palette.
  *
  * @author Sebastiaan Heijmann
  */
 public class ChainPaletteFactory {
 
     /**
-     * Create a PaletteController containing Category Nodes and default actions
-     * for the Palette.
-     * <p>
-     * Children of these Categories can be used to build a chain.
+     * Create a PaletteController containing a
+     * {@link nl.fontys.sofa.limo.view.node.CategoryRootNode} and it's children
+     * (the displayable categories created by
+     * {@link  nl.fontys.sofa.limo.view.factory.CategoryChildFactory}).
      *
      * @return PaletteController - the palette controller
      * @throws ServiceNotFoundException - thrown when a service cannot be found

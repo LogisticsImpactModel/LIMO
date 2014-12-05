@@ -22,8 +22,11 @@ import org.openide.util.LookupListener;
 import org.openide.util.Utilities;
 
 /**
- * Factory responsible for creating the ProcedureCategory children. It listens
- * to changes in the service layer and in the nodes.
+ * Factory responsible for creating the ProcedureCategory children.
+ * <p>
+ * It listens to changes in the service layer by implementing
+ * {@link  org.openide.util.LookupListener} and to changes in the nodes itself
+ * by implementing {@link org.openide.nodes.NodeListener}.
  *
  * @author Sebastiaan Heijmann
  */

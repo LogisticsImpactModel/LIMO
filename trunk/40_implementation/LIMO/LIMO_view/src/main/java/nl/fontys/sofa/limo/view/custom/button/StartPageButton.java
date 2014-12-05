@@ -24,10 +24,11 @@ public class StartPageButton extends JButton {
     private final Color rollOverLowerColor = new Color(0xFFFFFF);
     private final Color normalColor = new Color(255, 65, 0);
 
-    public StartPageButton() {
-        this(null);
-    }
-
+    /**
+     * Constructor creates a new startpage button.
+     *
+     * @param text the text to be displayed.
+     */
     public StartPageButton(String text) {
         super(text);
         super.setContentAreaFilled(false);
@@ -67,9 +68,5 @@ public class StartPageButton extends JButton {
         }
         g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);
-    }
-
-    @Override
-    public void setContentAreaFilled(boolean b) {
     }
 }

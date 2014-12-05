@@ -99,7 +99,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
             procedureWidget.setVisible(false);
         }
         eventWidget = new EventsWidget(scene);
-        eventWidget.setToolTipText("Number of events: " + numberOfEvents);
+        eventWidget.setToolTipText("Number of main events: " + numberOfEvents);
         if (numberOfEvents == 0) {
             eventWidget.setVisible(false);
         }
@@ -155,7 +155,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
             eventWidget.setVisible(false);
         } else {
             eventWidget.setVisible(true);
-            eventWidget.setToolTipText("Number of events: " + numberOfEvents);
+            eventWidget.setToolTipText("Number of main events: " + numberOfEvents);
         }
 
         if (numberOfProcedures == 0) {
