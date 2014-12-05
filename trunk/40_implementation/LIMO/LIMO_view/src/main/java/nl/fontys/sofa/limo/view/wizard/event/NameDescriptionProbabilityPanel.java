@@ -28,15 +28,16 @@ import javax.swing.table.TableCellRenderer;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.PoissonDistribution;
 import org.openide.util.Lookup;
 
 public final class NameDescriptionProbabilityPanel extends JPanel {
 
     private JLabel nameLabel;
-    JTextField nameTextField;
+    private JTextField nameTextField;
 
-    private javax.swing.JLabel descriptionLabel;
-    JTextArea descriptionTextArea;
+    private JLabel descriptionLabel;
+    private JTextArea descriptionTextArea;
 
     private JLabel distributionTypeLabel;
     private JComboBox<String> distributionTypeComboBox;
@@ -65,11 +66,11 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         GridBagConstraints c = initLayout();
         initName();
 
-        descriptionLabel = new javax.swing.JLabel(bundle.getString("DESCRIPTION"));
-        descriptionTextArea = new javax.swing.JTextArea();
+        descriptionLabel = new JLabel(bundle.getString("DESCRIPTION"));
+        descriptionTextArea = new JTextArea();
         descriptionTextArea.setRows(4);
 
-        parametersLabel = new javax.swing.JPanel();
+        parametersLabel = new JPanel();
         parametersLabel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
                 bundle.getString("PARAMETERS"),
@@ -77,7 +78,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                 TitledBorder.TOP
         ));
         parametersLabel.setLayout(new BorderLayout());
-        parametersTable = new javax.swing.JTable() {
+        parametersTable = new JTable() {
 
             @Override
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -138,7 +139,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         c.gridy = 2;
         c.gridwidth = 3;
         add(distributionTypeComboBox, c);
-        
+
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 3;
@@ -151,7 +152,6 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         c.gridwidth = 4;
         add(parametersLabel, c);
 
-        
     }
 
     private GridBagConstraints initLayout() {
@@ -164,8 +164,8 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     }
 
     private void initName() {
-        nameLabel = new javax.swing.JLabel(bundle.getString("NAME"));
-        nameTextField = new javax.swing.JTextField();
+        nameLabel = new JLabel(bundle.getString("NAME"));
+        nameTextField = new JTextField();
     }
 
     private void initDistribution() {
@@ -173,8 +173,8 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         List<String> distTypes = Arrays.asList(distributionFactory.getDistributionTypes());
         Collections.sort(distTypes);
         String[] cbModel = distTypes.toArray(new String[distTypes.size()]);
-        distributionTypeLabel = new javax.swing.JLabel(bundle.getString("DISTRIBUTION_TYPE"));
-        distributionTypeComboBox = new javax.swing.JComboBox<>(cbModel);
+        distributionTypeLabel = new JLabel(bundle.getString("DISTRIBUTION_TYPE"));
+        distributionTypeComboBox = new JComboBox<>(cbModel);
         distributionTypeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -183,7 +183,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                 distributionDescription.setText(prop.getDescription());
             }
         });
-        distributionTypeComboBox.setSelectedIndex(0);
+        distributionTypeComboBox.setSelectedItem(distributionFactory.getNameForDistributionType(PoissonDistribution.class));
         distributionDescription.setText(distributionFactory.getDistributionTypeByName(distributionTypeComboBox.getModel().getElementAt(0)).getDescription());
     }
 
@@ -198,7 +198,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
             ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
             distributionDescription.setText(probability.getDescription());
         } else {
-            distributionTypeComboBox.setSelectedIndex(0);
+            distributionTypeComboBox.setSelectedItem(distributionFactory.getNameForDistributionType(PoissonDistribution.class));
             distributionDescription.setText(distributionFactory.getDistributionTypeByName(distributionTypeComboBox.getModel().getElementAt(0)).getDescription());
         }
     }
@@ -266,14 +266,14 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                         n = Double.parseDouble((String) aValue);
                     } catch (NumberFormatException nfe) {
                         n = null;
-                        javax.swing.JOptionPane.showMessageDialog(parametersTable, bundle.getString("REQUIRES_FLOATING-POINT_VALUE"), bundle.getString("NOT_FLOATING-POINT"), JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(parametersTable, bundle.getString("REQUIRES_FLOATING-POINT_VALUE"), bundle.getString("NOT_FLOATING-POINT"), JOptionPane.WARNING_MESSAGE);
                     }
                 } else if (inputType.equals(Integer.class)) {
                     try {
                         n = Integer.parseInt((String) aValue);
                     } catch (NumberFormatException nfe) {
                         n = null;
-                        javax.swing.JOptionPane.showMessageDialog(parametersTable, bundle.getString("REQUIRES_INTERGER_VALUE"), bundle.getString("NOT_INTERGER"), JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(parametersTable, bundle.getString("REQUIRES_INTERGER_VALUE"), bundle.getString("NOT_INTERGER"), JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
                     n = 0;
