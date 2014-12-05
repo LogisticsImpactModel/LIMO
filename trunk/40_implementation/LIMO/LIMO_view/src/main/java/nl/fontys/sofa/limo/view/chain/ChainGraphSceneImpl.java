@@ -6,6 +6,7 @@ import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.util.Collections;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
@@ -164,6 +165,25 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     }
 
     @Override
+    public void connectHubWidgets(HubWidget source, ConnectionWidget legWidget, HubWidget target) {
+        AbstractBeanNode sourceNode = (AbstractBeanNode) findObject(source);
+        AbstractBeanNode legNode = (AbstractBeanNode) findObject(legWidget);
+        AbstractBeanNode targetNode = (AbstractBeanNode) findObject(target);
+
+        setEdgeSource(legNode, sourceNode);
+        setEdgeTarget(legNode, targetNode);
+
+        Hub hubSource = sourceNode.getLookup().lookup(Hub.class);
+        Leg leg = legNode.getLookup().lookup(Leg.class);
+        Hub hubTarget = targetNode.getLookup().lookup(Hub.class);
+
+        chainBuilder.connectHubsByLeg(
+                hubSource,
+                leg,
+                hubTarget);
+    }
+
+    @Override
     public void removeHubWidget(HubWidget hubWidget) {
 
         chainBuilder.removeHub(hubWidget.getHub());
@@ -211,8 +231,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     }
 
     /**
-     * Accept provider for the scene. Validates if a connection can be dropped
-     * and places the connection in the scene.
+     * This provider is responsible for accepting objects into the scene.
      */
     private class SceneAcceptProvider implements AcceptProvider {
 
@@ -237,13 +256,12 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             AbstractBeanNode detachedNode = node.getDetachedNodeCopy();
             BasicWidget w = (BasicWidget) scene.addNode(detachedNode);
             detachedNode.addPropertyChangeListener(w);
-            boolean succesfullDrop = w.drop(scene, widget, point);
+            w.drop(scene, widget, point);
         }
     }
 
     /**
-     * SelectProvider for the GraphScene. Enables the selection of widgets in a
-     * scene.
+     * This provider is responsible for selecting objects in a scene.
      */
     private class SceneSelectProvider implements SelectProvider {
 
@@ -278,7 +296,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     }
 
     /**
-     * SceneConnectProvider is responsible for connecting widgets together.
+     * This provider is responsible for connecting objects in a scene.
      */
     private class SceneConnectProvider implements ConnectProvider {
 
@@ -314,22 +332,27 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
         @Override
         public void createConnection(Widget sourceWidget, Widget targetWidget) {
-            if (validateConnection()) {
+            if (validateConnection(sourceWidget, targetWidget)) {
 
                 SelectLegTypePanel inputPane = new SelectLegTypePanel();
                 Leg leg = inputPane.getLeg();
+
                 if (leg != null) {
                     try {
                         LegNode legNode = new LegNode(leg);
 
-                        Widget connectionWidget = addEdge(legNode);
-                        if (connectionWidget != null) {
-                            setEdgeSource(legNode, source);
-                            setEdgeTarget(legNode, target);
+                        HubWidget hubSourceWidget = (HubWidget) sourceWidget;
+                        ConnectionWidget connectionWidget
+                                = (ConnectionWidget) addEdge(legNode);
+                        HubWidget hubTargetWidget = (HubWidget) targetWidget;
 
-                            HubWidget sourceHub = (HubWidget) findWidget(source);
-                            HubWidget targetHub = (HubWidget) findWidget(target);
-                            chainBuilder.connectHubsByLeg(sourceHub.getHub(), leg, targetHub.getHub());
+                        connectHubWidgets(
+                                hubSourceWidget,
+                                connectionWidget,
+                                hubTargetWidget);
+
+                        if (connectionWidget != null) {
+
                         }
                     } catch (IntrospectionException ex) {
                         Exceptions.printStackTrace(ex);
@@ -338,9 +361,17 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             }
         }
 
-        private boolean validateConnection() {
-            if (findNodeEdges(source, true, false).isEmpty()
-                    && findNodeEdges(target, false, true).isEmpty()) {
+        private boolean validateConnection(
+                Widget sourceWidget,
+                Widget targetWidget) {
+
+            AbstractBeanNode sourceNode
+                    = (AbstractBeanNode) findObject(sourceWidget);
+            AbstractBeanNode targetNode
+                    = (AbstractBeanNode) findObject(targetWidget);
+
+            if (findNodeEdges(sourceNode, true, false).isEmpty()
+                    && findNodeEdges(targetNode, false, true).isEmpty()) {
                 return true;
             }
             return false;

@@ -5,6 +5,7 @@ import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.graph.GraphScene;
+import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.windows.TopComponent;
 
@@ -75,6 +76,15 @@ public abstract class ChainGraphScene
      * @param hubWidget the hub widget to add.
      */
     public abstract void addHubWidget(HubWidget hubWidget);
+
+    /**
+     * Connect 2 hubs together by using a leg.
+     *
+     * @param source the source widget
+     * @param leg the connection widget
+     * @param target the target widget
+     */
+    public abstract void connectHubWidgets(HubWidget source, ConnectionWidget leg, HubWidget target);
 
     /**
      * Remove a hub widget from the scene.

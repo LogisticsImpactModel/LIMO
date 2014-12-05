@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import nl.fontys.limo.simulation.Simulator;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
@@ -33,6 +34,12 @@ import org.openide.windows.TopComponent;
  */
 public final class SimulateAction extends AbstractAction implements Presenter.Toolbar {
 
+    private final JFormattedTextField inputRunsTF;
+
+    public SimulateAction(JFormattedTextField inputRunsTF) {
+        this.inputRunsTF = inputRunsTF;
+    }
+
     /**
      * Invokes the simulate action.
      */
@@ -47,10 +54,12 @@ public final class SimulateAction extends AbstractAction implements Presenter.To
             ChainBuilder chainBuilder = scene.getChainBuilder();
             if (chainBuilder != null && chainBuilder.validate()) {
                 supplyChain = chainBuilder.getSupplyChain();
+                int numberOfRuns = (int) inputRunsTF.getValue();
+
                 tc.makeBusy(true);
                 scene.setEnabled(false);
                 scene.setBackground(Color.LIGHT_GRAY);
-                Simulator.simulate(256, supplyChain);
+                Simulator.simulate(numberOfRuns, supplyChain);
             } else {
                 DialogDisplayer.getDefault().notify(
                         new NotifyDescriptor.Message(

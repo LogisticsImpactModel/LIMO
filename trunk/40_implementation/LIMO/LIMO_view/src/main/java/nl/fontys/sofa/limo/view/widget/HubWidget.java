@@ -11,7 +11,9 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JPopupMenu;
 import javax.swing.border.TitledBorder;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.HubNode;
 import org.netbeans.api.visual.action.ActionFactory;
@@ -21,6 +23,7 @@ import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.SeparatorWidget;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.api.visual.widget.general.IconNodeWidget;
+import org.openide.util.Lookup.Result;
 
 /**
  * HubWidget which represents a Hub in the GraphScene. It holds HubNode which
@@ -32,13 +35,17 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
     private final int widgetWidth = 140;
     private final int widgetHeight = 170;
-    private Color backgroundColor = Color.WHITE;
+    private final Color backgroundColor = new Color(0, 0, 0, 0);
 
     private final HubNode hubNode;
 
-    private Widget eventWidget;
-    private Widget procedureWidget;
+    private Widget containerWidget;
+    private EventsWidget eventWidget;
+    private ProcedureWidget procedureWidget;
     private final Widget startFlagWidget;
+
+    private Result<Procedure> procedureResult;
+    private Result<Event> eventResult;
 
     /**
      * Constructor sets up the widget by setting the display name and image.
@@ -49,12 +56,15 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     public HubWidget(Scene scene, HubNode beanNode) throws IOException {
         super(scene);
         this.hubNode = beanNode;
+        hubNode.addPropertyChangeListener(this);
 
         setPreferredBounds(new Rectangle(widgetWidth, widgetHeight));
         setPreferredSize(new Dimension(widgetWidth, widgetHeight));
-//        setBackground(backgroundColor);
         setToolTipText(hubNode.getName());
         setOpaque(false);
+
+        eventResult = hubNode.getLookup().lookupResult(Event.class);
+        procedureResult = hubNode.getLookup().lookupResult(Procedure.class);
 
         startFlagWidget = new StartWidget(scene);
         startFlagWidget.setVisible(false);
@@ -76,14 +86,28 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
     private void addChildren() {
         Scene scene = getScene();
+        Hub hub = getHub();
+        int numberOfEvents = hub.getEvents().size();
+        int numberOfProcedures = hub.getProcedures().size();
 
-        Widget widget = new Widget(scene);
-        widget.setLayout(LayoutFactory.createHorizontalFlowLayout());
-        widget.addChild(new EventsWidget(scene));
-        widget.addChild(new ProcedureWidget(scene));
+        containerWidget = new Widget(scene);
+        containerWidget.setLayout(LayoutFactory.createHorizontalFlowLayout());
 
-        addChild(widget);
+        procedureWidget = new ProcedureWidget(scene);
+        procedureWidget.setToolTipText("Number of procedures: " + numberOfProcedures);
+        if (numberOfProcedures == 0) {
+            procedureWidget.setVisible(false);
+        }
+        eventWidget = new EventsWidget(scene);
+        eventWidget.setToolTipText("Number of events: " + numberOfEvents);
+        if (numberOfEvents == 0) {
+            eventWidget.setVisible(false);
+        }
 
+        containerWidget.addChild(procedureWidget);
+        containerWidget.addChild(eventWidget);
+
+        addChild(containerWidget);
         addChild(startFlagWidget);
     }
 
@@ -100,7 +124,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                         hubNode.getName(),
                         TitledBorder.CENTER,
                         TitledBorder.ABOVE_TOP),
-                BorderFactory.createLineBorder(new Color(0, 0, 0, 0), 10)));
+                BorderFactory.createLineBorder(backgroundColor)));
     }
 
     @Override
@@ -120,8 +144,26 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
-        setImage(getHub().getIcon().getImage());
-        repaint();
+        Hub hub = getHub();
+        int numberOfEvents = hub.getEvents().size();
+        int numberOfProcedures = hub.getProcedures().size();
+
+        setImage(hub.getIcon().getImage());
+        createBorder();
+
+        if (numberOfEvents == 0) {
+            eventWidget.setVisible(false);
+        } else {
+            eventWidget.setVisible(true);
+            eventWidget.setToolTipText("Number of events: " + numberOfEvents);
+        }
+
+        if (numberOfProcedures == 0) {
+            procedureWidget.setVisible(false);
+        } else {
+            procedureWidget.setVisible(true);
+            procedureWidget.setToolTipText("Number of procedures: " + numberOfProcedures);
+        }
     }
 
     /**
