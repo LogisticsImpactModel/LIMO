@@ -13,8 +13,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
@@ -42,6 +44,12 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
     public HubNode(Hub bean) throws IntrospectionException {
         super(bean, Hub.class);
         this.bean = bean;
+        for (Event e : bean.getEvents()) {
+            ic.add(e);
+        }
+        for (Procedure p : bean.getProcedures()) {
+            ic.add(p);
+        }
     }
 
     @Override

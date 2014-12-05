@@ -25,6 +25,7 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
 
     private Class entityClass;
     private PropertyChangeListener listener;
+    InstanceContent ic;
 
     /**
      * Abstract class which defines basic implementations for nodes and binds
@@ -44,6 +45,7 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
 
     private AbstractBeanNode(T bean, InstanceContent ic) throws IntrospectionException {
         super(bean, Children.LEAF, new AbstractLookup(ic));
+        this.ic = ic;
         ic.add(bean);
         String description = bean.getDescription();
         String name = bean.getName();

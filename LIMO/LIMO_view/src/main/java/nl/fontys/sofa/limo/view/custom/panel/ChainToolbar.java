@@ -1,11 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.custom.panel;
 
 import java.awt.Component;
+import java.text.NumberFormat;
+import javax.swing.JFormattedTextField;
+import javax.swing.text.NumberFormatter;
 import nl.fontys.sofa.limo.view.action.SimulateAction;
 
 /**
@@ -14,13 +12,31 @@ import nl.fontys.sofa.limo.view.action.SimulateAction;
  */
 public class ChainToolbar extends javax.swing.JToolBar {
 
+    private SimulateAction simulateAction;
+    int numberOfSimulationRuns;
+
     /**
      * Creates new form ChainToolbar
      */
     public ChainToolbar() {
         initComponents();
-        Component toolbarPresenter = new SimulateAction().getToolbarPresenter();
+        initCustomComponents();
+    }
+
+    private void initCustomComponents() {
+
+        NumberFormat format = NumberFormat.getIntegerInstance();
+        NumberFormatter formatter = new NumberFormatter(format);
+        formatter.setValueClass(Integer.class);
+        formatter.setMinimum(0);
+        formatter.setMaximum(Integer.MAX_VALUE);
+        JFormattedTextField inputRunsTF = new JFormattedTextField(formatter);
+        simulateAction = new SimulateAction(inputRunsTF);
+
+        Component toolbarPresenter = simulateAction.getToolbarPresenter();
+
         add(toolbarPresenter);
+        add(inputRunsTF);
     }
 
     /**
@@ -31,8 +47,6 @@ public class ChainToolbar extends javax.swing.JToolBar {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

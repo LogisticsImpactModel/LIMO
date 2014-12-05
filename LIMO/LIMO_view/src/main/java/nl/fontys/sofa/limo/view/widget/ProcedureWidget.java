@@ -14,7 +14,7 @@ import org.netbeans.api.visual.widget.Scene;
 
 /**
  *
- * @author d3vil
+ * @author Sebastiaan Heijmann
  */
 public class ProcedureWidget extends ImageWidget {
 
@@ -22,7 +22,5 @@ public class ProcedureWidget extends ImageWidget {
         super(scene);
         Image icon = IconUtil.getIcon(ProcedureCategory.class, BeanInfo.ICON_COLOR_32x32);
         setImage(icon);
-        setToolTipText("Number of procedures: ");
     }
-
 }
