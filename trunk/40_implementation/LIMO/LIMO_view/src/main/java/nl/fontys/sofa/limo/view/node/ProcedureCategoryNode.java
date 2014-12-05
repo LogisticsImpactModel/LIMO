@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.view.node;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import org.openide.ErrorManager;
@@ -56,7 +57,7 @@ public class ProcedureCategoryNode extends AbstractBeanNode<ProcedureCategory> {
 
     @Override
     Class getServiceClass() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ProcedureCategoryService.class;
     }
 
 }
