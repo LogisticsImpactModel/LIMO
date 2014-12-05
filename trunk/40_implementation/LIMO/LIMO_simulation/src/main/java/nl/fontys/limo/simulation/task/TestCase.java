@@ -86,7 +86,7 @@ public class TestCase implements Runnable {
 
             // Calc events
             lastDelay = 0;
-            calculateEvents(calcNode, calcNode.getEvents());
+            calculateEvents(currentNode.getName(), calcNode, calcNode.getEvents());
 
             currentNode = currentNode.getNext();
         }
@@ -175,7 +175,7 @@ public class TestCase implements Runnable {
         }
     }
 
-    private void calculateEvents(Component parent, List<Event> events) {
+    private void calculateEvents(String nodeKey, Component parent, List<Event> events) {
         for (Event event : events) {
             Event parentEvent = parent instanceof Event ? (Event) parent : null;
             // See if should be executed
@@ -201,29 +201,29 @@ public class TestCase implements Runnable {
                         if (!extraCostsByCategory.containsKey(procedure.getCategory())) {
                             extraCostsByCategory.put(procedure.getCategory(), 0d);
                         }
-                        if (!extraCostsByNode.containsKey(procedure.getCategory())) {
-                            extraCostsByNode.put(procedure.getCategory(), 0d);
+                        if (!extraCostsByNode.containsKey(nodeKey)) {
+                            extraCostsByNode.put(nodeKey, 0d);
                         }
                         double newCost = extraCostsByCategory.get(procedure.getCategory()) + pExtraCost;
                         extraCostsByCategory.put(procedure.getCategory(), newCost);
-                        extraCostsByNode.put(procedure.getCategory(), newCost);
+                        extraCostsByNode.put(nodeKey, newCost);
 
                         if (!delaysByCategory.containsKey(procedure.getCategory())) {
                             delaysByCategory.put(procedure.getCategory(), 0d);
                         }
-                        if (!delaysByNode.containsKey(procedure.getCategory())) {
-                            delaysByNode.put(procedure.getCategory(), 0d);
+                        if (!delaysByNode.containsKey(nodeKey)) {
+                            delaysByNode.put(nodeKey, 0d);
                         }
                         double newLeadTime = delaysByCategory.get(procedure.getCategory()) + pDelay;
                         delaysByCategory.put(procedure.getCategory(), newLeadTime);
-                        delaysByNode.put(procedure.getCategory(), newLeadTime);
+                        delaysByNode.put(nodeKey, newLeadTime);
 
                         executedEvents.add(event);
                     }
                 }
 
                 // Recursive call to all subevents
-                calculateEvents(event, event.getEvents());
+                calculateEvents(nodeKey, event, event.getEvents());
             }
         }
     }

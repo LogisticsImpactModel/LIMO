@@ -63,6 +63,7 @@ public abstract class SupplyChainTester {
         end.addEvent(event2);
 
         leg = new Leg();
+        leg.setName("Rotterdam-Venlo-Express");
         Event event3 = new Event("Storm", "Storm slows down the ship.", leg, ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
         event3.addProcedure(new Procedure("waiting", MANDATORY, new SingleValue(0), new RangeValue(30, 60), TimeType.MINUTES, ProcedureResponsibilityDirection.OUTPUT));
         leg.addEvent(event3);
