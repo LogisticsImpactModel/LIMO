@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.custom.panel;
 
 import java.awt.BorderLayout;
@@ -26,7 +21,7 @@ import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.custom.ProcedureComponent;
-import nl.fontys.sofa.limo.view.util.IconFileFilter;
+import nl.fontys.sofa.limo.view.util.IconFileChooser;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import nl.fontys.sofa.limo.view.wizard.hub.LocationHubPanel;
@@ -35,7 +30,6 @@ import org.openide.util.Lookup;
 public final class ManageHubsPanel extends JPanel {
 
     public ManageHubsPanel() {
-
         initComponents();
     }
 
@@ -87,10 +81,7 @@ public final class ManageHubsPanel extends JPanel {
             }
         });
 
-        fc = new JFileChooser();
-        fc.setFileFilter(new IconFileFilter());
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setMultiSelectionEnabled(false);
+        fc = new IconFileChooser();
     }
 
     public void updateHub(int rowIndex) {
