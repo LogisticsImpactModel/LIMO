@@ -8,12 +8,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
@@ -35,6 +38,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     protected ProcedureCategoryDAO procedureCategoryDao;
     protected Value changedValue;
     protected JComboBox procedureCategoryCheckbox, timeTypesCheckbox, directionCheckbox;
+    private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     public ProcedureComponent() {
         this(new ArrayList<Procedure>());
@@ -156,16 +160,25 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
                 ArrayList<Object> procedure = new ArrayList<>();
                 procedure.add(p.getName());
                 procedure.add(p.getCategory());
-                procedure.add(p.getTimeType());
                 procedure.add(p.getTime());
+                procedure.add(p.getTimeType());
                 procedure.add(p.getCost());
                 procedure.add(p.getDirection());
                 valueList.add(procedure);
             }
         }
-        model = new DragNDropTableModel(new String[]{"Name", "Category", "Time Type", "Time Cost", "Money Cost", "Direction"},
-                valueList, new Class[]{String.class, String.class, TimeType.class, Value.class, Value.class, ProcedureResponsibilityDirection.class});
+        model = new DragNDropTableModel(new String[]{bundle.getString("PROCEDURE"), bundle.getString("CATEGORY"), bundle.getString("TIME_COST"), bundle.getString("TIME_TYPE"), bundle.getString("MONEY_COST"), bundle.getString("DIRECTION")},
+                valueList, new Class[]{String.class, String.class, Value.class, TimeType.class, Value.class, ProcedureResponsibilityDirection.class});
         table.setModel(model);
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+        table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+        table.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+        DefaultTableCellRenderer middleRenderer = new DefaultTableCellRenderer();
+        middleRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        table.getColumnModel().getColumn(3).setCellRenderer(middleRenderer);
+        table.getColumnModel().getColumn(5).setCellRenderer(middleRenderer);
+        
         try {
             procedureCategoryCheckbox = new JComboBox(procedureCategoryDao.findAll().toArray());
             table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(procedureCategoryCheckbox));
