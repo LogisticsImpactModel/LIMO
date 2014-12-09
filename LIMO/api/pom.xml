@@ -7,6 +7,7 @@
         <version>0.1-ALPHA</version>
     </parent>
     <artifactId>LIMO-API</artifactId>
+    <name>LIMO-API</name>
     <packaging>nbm</packaging>
     <build>
         <plugins>

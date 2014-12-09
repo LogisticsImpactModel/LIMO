@@ -62,38 +62,38 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO_view</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>LIMO-branding</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO_DependecyWrapper</artifactId>
+            <artifactId>LIMO-dependecyWrapper</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO_Service</artifactId>
+            <artifactId>LIMO-service</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO_API</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>LIMO_OrientDB</artifactId>
+            <artifactId>LIMO-orientDB</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>LIMO-domain</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.fontys.sofa.limo</groupId>
+            <artifactId>LIMO-API</artifactId>
+            <version>0.1-ALPHA</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.fontys.sofa.limo</groupId>
+            <artifactId>LIMO-view</artifactId>
+            <version>0.1-ALPHA</version>
         </dependency>
     </dependencies>
 
