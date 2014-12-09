@@ -24,8 +24,8 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
-@ActionID(category = "Hub", id = "nl.fontys.limo.view.wizzard.hub.HubWizardAction")
-@ActionRegistration(displayName = "New Hub..", iconBase = "icons/gui/add.gif")
+@ActionID(category = "Hub", id = "nl.fontys.sofa.limo.view.wizzard.hub.HubWizardAction")
+@ActionRegistration(displayName = "New Hub...", iconBase = "icons/gui/add.gif")
 @ActionReferences({
     @ActionReference(path = "Menu/Master Data/Hub", position = 20),
     @ActionReference(path = "Shortcuts", name = "DS-H")
