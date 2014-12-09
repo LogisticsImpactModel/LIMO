@@ -62,11 +62,11 @@ public final class SimulateAction extends AbstractAction
         scene = global.lookup(ChainGraphScene.class);
 
         if (scene != null) {
-            TopComponent tc = scene.getParent();
+            TopComponent tc = (TopComponent) scene.getParent();
             ChainBuilder chainBuilder = scene.getChainBuilder();
+            int numberOfRuns = (int) inputRunsTF.getValue();
             if (chainBuilder != null && chainBuilder.validate()) {
                 supplyChain = chainBuilder.getSupplyChain();
-                int numberOfRuns = (int) inputRunsTF.getValue();
 
                 tc.makeBusy(true);
                 scene.setEnabled(false);
@@ -85,7 +85,7 @@ public final class SimulateAction extends AbstractAction
 
     @Override
     public void taskFinished(SimulatorTask task) {
-        TopComponent tc = scene.getParent();
+        TopComponent tc = (TopComponent) scene.getParent();
         tc.makeBusy(false);
         scene.setEnabled(true);
         scene.setBackground(Color.WHITE);

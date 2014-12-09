@@ -62,12 +62,12 @@
         </dependency>
         <dependency>
             <groupId>nl.fontys.limo</groupId>
-            <artifactId>LIMO-dependecyWrapper</artifactId>
+            <artifactId>LIMO-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>nl.fontys.limo</groupId>
-            <artifactId>LIMO-domain</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LIMO-dependecyWrapper</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

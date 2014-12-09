@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.text.NumberFormat;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JToolBar;
 import javax.swing.text.NumberFormatter;
 import nl.fontys.sofa.limo.view.action.SimulateAction;
@@ -43,11 +44,13 @@ public class ChainToolbar extends javax.swing.JToolBar {
         inputRunsTF.setMaximumSize(new Dimension(100, 50));
         simulateAction = new SimulateAction(inputRunsTF);
 
+        JLabel timesLB = new JLabel("times...");
         Component toolbarPresenter = simulateAction.getToolbarPresenter();
 
         add(toolbarPresenter);
         add(new JToolBar.Separator());
         add(inputRunsTF);
+        add(timesLB);
     }
 
     /**
