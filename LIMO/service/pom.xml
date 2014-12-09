@@ -17,10 +17,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publicPackages>
-                        <publicPackage>nl.fontys.limo.service.distribution</publicPackage>
-                        <publicPackage>nl.fontys.limo.service.provider</publicPackage>
-                        <publicPackage>nl.fontys.sofa.limo.service.distribution</publicPackage>
-                        <publicPackage>nl.fontys.sofa.limo.service.provider</publicPackage>
+                        <publicPackage>nl.fontys.sofa.limo.service.*</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
@@ -62,7 +59,7 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>nl.fontys.limo</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>LIMO-domain</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -16,7 +16,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publicPackages>
-                        <publicPackage>nl.fontys.limo.externaltrader</publicPackage>
+                        <publicPackage>nl.fontys.sofa.limo.externaltrader</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
