@@ -3,98 +3,93 @@ package nl.fontys.sofa.limo.view.topcomponent;
 import java.awt.BorderLayout;
 import java.beans.IntrospectionException;
 import java.beans.PropertyVetoException;
+import java.io.File;
 import java.io.IOException;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
-import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.custom.panel.ChainToolbar;
-import nl.fontys.sofa.limo.view.factory.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.util.ChainFileFilter;
 import org.netbeans.api.settings.ConvertAsProperties;
-import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.explorer.ExplorerManager;
-import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
-import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
-import org.openide.util.lookup.Lookups;
-import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
 
 /**
- * Top component which displays a GraphScene and Palette to build a chain with.
+ * Top component which displays something.
  */
 @ConvertAsProperties(
-        dtd = "-//nl.fontys.sofa.limo.view.topcomponent//ChainBuilder//EN",
+        dtd = "-//nl.fontys.sofa.limo.view.topcomponent//ChainLoader//EN",
         autostore = false
 )
 @TopComponent.Description(
-        preferredID = "ChainBuilderTopComponent",
+        preferredID = "ChainLoaderTopComponent",
         iconBase = "icons/gui/link.gif",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
-@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent")
+@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ChainLoaderTopComponent")
 @ActionReferences({
-    @ActionReference(path = "Menu/File", position = 2),
+    @ActionReference(path = "Menu/File", position = 3),
     @ActionReference(path = "Toolbars/File", position = 0),
     @ActionReference(path = "Shortcuts", name = "D-N")
 })
 @TopComponent.OpenActionRegistration(
-        displayName = "#CTL_ChainBuilderAction"
+        displayName = "#CTL_ChainLoaderAction"
 )
 @Messages({
-    "CTL_ChainBuilderAction=New Supply Chain..",
-    "CTL_ChainBuilderTopComponent=New Supply Chain",
-    "HINT_ChainBuilderTopComponent=Build a chain"
+    "CTL_ChainLoaderAction=Load Supply Chain..",
+    "CTL_ChainLoaderTopComponent=Load Supply Chain",
+    "HINT_ChainLoaderTopComponent=Load a chain"
 })
-public final class ChainBuilderTopComponent extends TopComponent implements
+public final class ChainLoaderTopComponent extends TopComponent implements
         DynamicExplorerManagerProvider {
 
     private ExplorerManager em = new ExplorerManager();
     private ChainGraphScene graphScene;
 
-    public ChainBuilderTopComponent() {
+    public ChainLoaderTopComponent() {
         initComponents();
-        initCustomComponents();
+        setName(Bundle.CTL_ChainLoaderTopComponent());
+        setToolTipText(Bundle.HINT_ChainLoaderTopComponent());
 
-        setName(Bundle.CTL_ChainBuilderTopComponent());
-        setToolTipText(Bundle.HINT_ChainBuilderTopComponent());
-
-        try {
-            Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
-            Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
-            Lookup graphLookup = Lookups.singleton(graphScene);
-            ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup);
-            associateLookup(pl);
-        } catch (ServiceNotFoundException ex) {
-            Exceptions.printStackTrace(ex);
-            NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
-                    + "a problem. Please contact "
-                    + "your administrator...",
-                    NotifyDescriptor.ERROR_MESSAGE);
+        File chainFile = openSupplyChain();
+        if (chainFile != null) {
+            SupplyChain supplyChain = SupplyChain.createFromFile(chainFile);
+            initCustomComponents(supplyChain);
         }
     }
 
-    private void initCustomComponents() {
+    private File openSupplyChain() {
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new ChainFileFilter());
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setMultiSelectionEnabled(false);
+        fc.showOpenDialog(null);
+
+        return fc.getSelectedFile();
+    }
+
+    void initCustomComponents(SupplyChain supplyChain) {
         setLayout(new BorderLayout());
-        SupplyChain chain = new SupplyChain();
         try {
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
 
-            graphScene = new ChainGraphSceneImpl(this, chain);
+            graphScene = new ChainGraphSceneImpl(this, supplyChain);
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);
-            createView.putClientProperty("print.name", "Supply Chain: " + chain.getName());
+            createView.putClientProperty("print.name", "Supply Chain: " + supplyChain.getName());
             shapePane.setViewportView(createView);
 
             add(shapePane, BorderLayout.CENTER);
@@ -102,7 +97,6 @@ public final class ChainBuilderTopComponent extends TopComponent implements
         } catch (IOException | IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
         }
-
     }
 
     @Override
@@ -163,5 +157,4 @@ public final class ChainBuilderTopComponent extends TopComponent implements
         String version = p.getProperty("version");
         // TODO read your settings according to their version
     }
-
 }

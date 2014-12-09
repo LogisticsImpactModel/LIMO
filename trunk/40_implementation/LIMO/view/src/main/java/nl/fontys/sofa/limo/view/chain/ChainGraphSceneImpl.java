@@ -5,14 +5,16 @@ import java.awt.datatransfer.Transferable;
 import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.util.Collections;
+import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.node.HubNode;
 import nl.fontys.sofa.limo.view.node.LegNode;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
-import nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent;
+import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
@@ -30,7 +32,6 @@ import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.nodes.NodeTransfer;
 import org.openide.util.Exceptions;
-import org.openide.windows.TopComponent;
 
 /**
  * Implementation of the {@link nl.fontys.sofa.limo.view.chain.ChainGraphScene}
@@ -49,7 +50,7 @@ import org.openide.windows.TopComponent;
  */
 public class ChainGraphSceneImpl extends ChainGraphScene {
 
-    private final ChainBuilderTopComponent parent;
+    private final DynamicExplorerManagerProvider parent;
     private final ChainBuilder chainBuilder;
 
     // The layers to draw things on.
@@ -78,9 +79,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
      * @throws IOException can occur when certain resources like images cannot
      * be found.
      */
-    public ChainGraphSceneImpl(ChainBuilderTopComponent parent) throws IOException {
+    public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain) throws IOException, IntrospectionException {
         this.parent = parent;
-        chainBuilder = new ChainBuilderImpl();
+        chainBuilder = new ChainBuilderImpl(chain);
 
         this.mainLayer = new LayerWidget(this);
         this.connectionLayer = new LayerWidget(this);
@@ -106,6 +107,21 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         getActions().addAction(panAction);
 
         startFlagWidget = new StartWidget(this);
+
+        if (chainBuilder.getStartHub() != null) {
+            drawExistingSupplyChain(chainBuilder);
+        }
+
+    }
+
+    void drawExistingSupplyChain(ChainBuilder chainBuilder) throws IntrospectionException {
+        Node currentNode = chainBuilder.getStartHub();
+        while (currentNode != null) {
+            if (currentNode instanceof Hub) {
+                addNode(new HubNode((Hub) currentNode));
+            }
+            currentNode = currentNode.getNext();
+        }
     }
 
     @Override
@@ -134,7 +150,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     }
 
     @Override
-    public TopComponent getParent() {
+    public DynamicExplorerManagerProvider getParent() {
         return parent;
     }
 

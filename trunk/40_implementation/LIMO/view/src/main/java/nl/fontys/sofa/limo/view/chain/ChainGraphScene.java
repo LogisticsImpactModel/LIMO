@@ -2,12 +2,12 @@ package nl.fontys.sofa.limo.view.chain;
 
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.graph.GraphScene;
 import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.Widget;
-import org.openide.windows.TopComponent;
 
 /**
  * Abstract class which defines additional methods to perform on a
@@ -103,8 +103,8 @@ public abstract class ChainGraphScene
     /**
      * Get the parent of the scene which is a top component.
      *
-     * @return the parent of the scene.
+     * @return the parent of the scene..
      */
-    public abstract TopComponent getParent();
+    public abstract DynamicExplorerManagerProvider getParent();
 
 }
