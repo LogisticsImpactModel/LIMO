@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>nl.fontys.limo</groupId>
+        <groupId>nl.fontys.sofa.limo</groupId>
         <artifactId>LIMO-parent</artifactId>
         <version>0.1-ALPHA</version>
     </parent>
@@ -86,14 +86,14 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>nl.fontys.sofa.limo</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>LIMO-API</artifactId>
-            <version>0.1-ALPHA</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>nl.fontys.sofa.limo</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>LIMO-view</artifactId>
-            <version>0.1-ALPHA</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
