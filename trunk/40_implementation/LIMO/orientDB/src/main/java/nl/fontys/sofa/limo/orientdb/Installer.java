@@ -13,7 +13,7 @@ public class Installer extends ModuleInstall {
     @Override
     public void close() {
         super.close();
-        
+
         // Close database
         OrientDBConnector.close();
     }

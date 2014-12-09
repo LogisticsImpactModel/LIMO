@@ -34,11 +34,11 @@ public class IconFileChooser extends JFileChooser {
         public boolean accept(File f) {
             if (f.isDirectory()) {
                 return true;
-            }
-            if (f.getAbsolutePath().endsWith(".png")) {
+            } else if (f.getAbsolutePath().endsWith(".png")) {
                 return true;
-            }
-            if (f.getAbsolutePath().endsWith(".bmp")) {
+            } else if (f.getAbsolutePath().endsWith(".bmp")) {
+                return true;
+            } else if (f.getAbsolutePath().endsWith(".jpeg")) {
                 return true;
             }
             return f.getAbsolutePath().endsWith(".jpg");

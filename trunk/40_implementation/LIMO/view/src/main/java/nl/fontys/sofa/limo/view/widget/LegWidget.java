@@ -1,12 +1,14 @@
 package nl.fontys.sofa.limo.view.widget;
 
 import java.awt.BasicStroke;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
+import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
@@ -57,7 +59,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
             for (Map.Entry<Leg, Double> entry : legs.entrySet()) {
 
                 ImageWidget iw = new ImageWidget(getScene());
-                iw.setImage(entry.getKey().getIcon().getImage());
+                iw.setImage(getScaledImageFromIcon(entry.getKey().getIcon()));
                 iw.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
 
                 this.setConstraint(iw, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 10);
@@ -68,21 +70,21 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
             ScheduledLeg sl = (ScheduledLeg) leg;
 
             ImageWidget defaultRoute = new ImageWidget(getScene());
-            defaultRoute.setImage(sl.getAlternative().getIcon().getImage());
+            defaultRoute.setImage(getScaledImageFromIcon(sl.getAlternative().getIcon()));
             defaultRoute.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
 
             this.setConstraint(defaultRoute, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 10);
             this.addChild(defaultRoute);
 
             ImageWidget iw = new ImageWidget(getScene());
-            iw.setImage(sl.getAlternative().getIcon().getImage());
+            iw.setImage(getScaledImageFromIcon(sl.getAlternative().getIcon()));
             iw.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
 
             this.setConstraint(iw, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 10);
             this.addChild(iw);
         } else {
             ImageWidget iw = new ImageWidget(getScene());
-            iw.setImage(leg.getIcon().getImage());
+            iw.setImage(getScaledImageFromIcon(leg.getIcon()));
             iw.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
 
             this.setConstraint(iw, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 10);
@@ -127,5 +129,9 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
             });
             return popup;
         }
+    }
+
+    private Image getScaledImageFromIcon(Icon icon) {
+        return icon.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
     }
 }

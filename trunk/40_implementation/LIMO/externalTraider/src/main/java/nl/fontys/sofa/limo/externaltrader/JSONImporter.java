@@ -1,4 +1,4 @@
-package nl.fontys.limo.externaltrader;
+package nl.fontys.sofa.limo.externaltrader;
 
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import java.io.BufferedReader;

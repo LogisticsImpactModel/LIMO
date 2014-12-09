@@ -1,4 +1,4 @@
-package nl.fontys.limo.externaltrader;
+package nl.fontys.sofa.limo.externaltrader;
 
 import java.io.File;
 import java.io.FileWriter;
