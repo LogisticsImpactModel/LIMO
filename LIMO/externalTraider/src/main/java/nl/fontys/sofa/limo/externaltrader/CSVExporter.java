@@ -5,10 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
-import nl.fontys.limo.simulation.result.DataEntry;
-import nl.fontys.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.simulation.result.DataEntry;
+import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 
 /**
  * @author Matthias Brück
