@@ -6,6 +6,7 @@
         <artifactId>LIMO-parent</artifactId>
         <version>0.1-ALPHA</version>
     </parent>
+    <name>LIMO-service</name>
     <artifactId>LIMO-service</artifactId>
     <packaging>nbm</packaging>
     <build>
