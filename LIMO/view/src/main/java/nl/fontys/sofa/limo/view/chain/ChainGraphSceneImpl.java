@@ -5,6 +5,9 @@ import java.awt.datatransfer.Transferable;
 import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.util.Collections;
+import javax.swing.JComponent;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
@@ -26,6 +29,10 @@ import org.netbeans.api.visual.action.ConnectorState;
 import org.netbeans.api.visual.action.SelectProvider;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.anchor.AnchorFactory;
+import org.netbeans.api.visual.graph.layout.GraphLayoutFactory;
+import org.netbeans.api.visual.graph.layout.GridGraphLayout;
+import org.netbeans.api.visual.layout.LayoutFactory;
+import org.netbeans.api.visual.layout.SceneLayout;
 import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Scene;
@@ -108,17 +115,46 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
         startFlagWidget = new StartWidget(this);
 
-        if (chainBuilder.getStartHub() != null) {
-            drawExistingSupplyChain(chainBuilder);
-        }
+    }
 
+    @Override
+    public JComponent createView() {
+        JComponent component = super.createView(); //To change body of generated methods, choose Tools | Templates.
+        if (chainBuilder.getStartHub() != null) {
+            try {
+                drawExistingSupplyChain(chainBuilder);
+            } catch (IntrospectionException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        }
+        return component;
     }
 
     void drawExistingSupplyChain(ChainBuilder chainBuilder) throws IntrospectionException {
+        Point point = new Point(100, 100);
+        mainLayer.setLayout(LayoutFactory.createAbsoluteLayout());
         Node currentNode = chainBuilder.getStartHub();
+
+        HubWidget previousWidget = null;
+        ConnectionWidget connectionWidget = null;
+        HubWidget nextWidget = null;
+
         while (currentNode != null) {
             if (currentNode instanceof Hub) {
-                addNode(new HubNode((Hub) currentNode));
+                HubWidget w = (HubWidget) addNode(new HubNode((Hub) currentNode));
+                addHubWidget(w);
+                if (currentNode == chainBuilder.getStartHub()) {
+                    setStartWidget(w);
+                }
+                w.setPreferredLocation(point);
+                nextWidget = w;
+                point = new Point(((int) point.getX() + 200), (int) point.getY());
+                if (connectionWidget != null) {
+                    connectHubWidgets(previousWidget, connectionWidget, nextWidget);
+                }
+            } else if (currentNode instanceof Leg) {
+                connectionWidget = (ConnectionWidget) addEdge(new LegNode(currentNode));
+                previousWidget = nextWidget;
             }
             currentNode = currentNode.getNext();
         }

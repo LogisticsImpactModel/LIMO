@@ -37,6 +37,7 @@ import org.openide.windows.TopComponent;
 public final class SimulateAction extends AbstractAction
         implements Presenter.Toolbar, SimulatorTaskListener {
 
+    private int numberOfRuns = 1000;
     private final JFormattedTextField inputRunsTF;
     private ChainGraphScene scene;
 
@@ -64,7 +65,10 @@ public final class SimulateAction extends AbstractAction
         if (scene != null) {
             TopComponent tc = (TopComponent) scene.getParent();
             ChainBuilder chainBuilder = scene.getChainBuilder();
-            int numberOfRuns = (int) inputRunsTF.getValue();
+            if (inputRunsTF.isEditValid()) {
+                numberOfRuns = (int) inputRunsTF.getValue();
+            }
+
             if (chainBuilder != null && chainBuilder.validate()) {
                 supplyChain = chainBuilder.getSupplyChain();
 

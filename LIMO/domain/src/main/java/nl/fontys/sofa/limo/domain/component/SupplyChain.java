@@ -102,7 +102,7 @@ public class SupplyChain implements Serializable {
             if (filepath == null) {
                 return;
             }
-            fos = new FileOutputStream(filepath);
+            fos = new FileOutputStream(filepath, false);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(this);
         } catch (FileNotFoundException ex) {
