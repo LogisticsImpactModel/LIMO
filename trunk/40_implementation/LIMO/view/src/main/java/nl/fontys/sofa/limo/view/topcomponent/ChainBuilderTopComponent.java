@@ -5,15 +5,19 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.custom.panel.ChainToolbar;
+import nl.fontys.sofa.limo.view.custom.panel.NameInputPanel;
 import nl.fontys.sofa.limo.view.factory.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.DialogDescriptor;
+import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -38,7 +42,7 @@ import org.openide.windows.TopComponent;
 @TopComponent.Description(
         preferredID = "ChainBuilderTopComponent",
         iconBase = "icons/gui/link.gif",
-        persistenceType = TopComponent.PERSISTENCE_ALWAYS
+        persistenceType = TopComponent.PERSISTENCE_NEVER
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent")
@@ -55,8 +59,9 @@ import org.openide.windows.TopComponent;
     "CTL_ChainBuilderTopComponent=New Supply Chain",
     "HINT_ChainBuilderTopComponent=Build a chain"
 })
-public final class ChainBuilderTopComponent extends TopComponent implements
-        DynamicExplorerManagerProvider {
+public final class ChainBuilderTopComponent
+        extends TopComponent
+        implements DynamicExplorerManagerProvider {
 
     private ExplorerManager em = new ExplorerManager();
     private ChainGraphScene graphScene;
@@ -64,23 +69,36 @@ public final class ChainBuilderTopComponent extends TopComponent implements
     public ChainBuilderTopComponent() {
         initComponents();
         initCustomComponents();
-
-        setName(Bundle.CTL_ChainBuilderTopComponent());
         setToolTipText(Bundle.HINT_ChainBuilderTopComponent());
 
-        try {
-            Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
-            Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
-            Lookup graphLookup = Lookups.singleton(graphScene);
-            ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup);
-            associateLookup(pl);
-        } catch (ServiceNotFoundException ex) {
-            Exceptions.printStackTrace(ex);
-            NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
-                    + "a problem. Please contact "
-                    + "your administrator...",
-                    NotifyDescriptor.ERROR_MESSAGE);
+        SupplyChain chain = graphScene.getSupplyChain();
+        NotifyDescriptor.InputLine dd = new DialogDescriptor.InputLine("Name:", "Set supply chain name");
+
+        if (DialogDisplayer.getDefault().notify(dd) == NotifyDescriptor.OK_OPTION) {
+            String name = dd.getInputText();
+            chain.setName(name);
+            setName(name);
+
+            try {
+                SavableComponent savable = new SavableComponent(graphScene.getSupplyChain());
+
+                Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
+                Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
+                Lookup graphLookup = Lookups.singleton(graphScene);
+                Lookup savableLookup = Lookups.singleton(savable);
+                ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup);
+                associateLookup(pl);
+            } catch (ServiceNotFoundException ex) {
+                Exceptions.printStackTrace(ex);
+                NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
+                        + "a problem. Please contact "
+                        + "your administrator...",
+                        NotifyDescriptor.ERROR_MESSAGE);
+            }
+        } else {
+            this.close();
         }
+
     }
 
     private void initCustomComponents() {

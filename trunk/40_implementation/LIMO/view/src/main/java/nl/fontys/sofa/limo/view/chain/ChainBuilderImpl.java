@@ -38,7 +38,6 @@ public class ChainBuilderImpl implements ChainBuilder {
     public ChainBuilderImpl(SupplyChain chain) {
         this.chain = chain;
         hubList = new ArrayList<>();
-        int hubCount = 1;
         Node currentNode = chain.getStart();
         while (currentNode != null) {
             if (currentNode instanceof Hub) {

@@ -9,7 +9,7 @@ public class NewFunctionExceptionHandler extends Handler {
 
     @Override
     public void publish(LogRecord record) {
-        if (record.getThrown() != null) {
+        if (record != null && record.getMessage() != null) {
             // This is an uncaught exception being thrown.
              Exception e = new Exception("Error", record.getThrown());
             if (record.getMessage() != null) {

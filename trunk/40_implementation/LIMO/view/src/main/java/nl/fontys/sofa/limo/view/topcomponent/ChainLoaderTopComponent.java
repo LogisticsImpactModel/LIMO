@@ -8,20 +8,27 @@ import java.io.IOException;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
+import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.custom.panel.ChainToolbar;
+import nl.fontys.sofa.limo.view.factory.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.util.ChainFileFilter;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.explorer.ExplorerManager;
+import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
+import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
+import org.openide.util.lookup.Lookups;
+import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
 
 /**
@@ -59,13 +66,30 @@ public final class ChainLoaderTopComponent extends TopComponent implements
 
     public ChainLoaderTopComponent() {
         initComponents();
-        setName(Bundle.CTL_ChainLoaderTopComponent());
         setToolTipText(Bundle.HINT_ChainLoaderTopComponent());
 
         File chainFile = openSupplyChain();
         if (chainFile != null) {
             SupplyChain supplyChain = SupplyChain.createFromFile(chainFile);
+            setName(supplyChain.getName());
             initCustomComponents(supplyChain);
+
+            try {
+                SavableComponent savable = new SavableComponent(graphScene.getSupplyChain());
+
+                Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
+                Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
+                Lookup graphLookup = Lookups.singleton(graphScene);
+                Lookup savableLookup = Lookups.singleton(savable);
+                ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup);
+                associateLookup(pl);
+            } catch (ServiceNotFoundException ex) {
+                Exceptions.printStackTrace(ex);
+                NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
+                        + "a problem. Please contact "
+                        + "your administrator...",
+                        NotifyDescriptor.ERROR_MESSAGE);
+            }
         }
     }
 
