@@ -1,17 +1,13 @@
 package nl.fontys.sofa.limo.view.node.root;
 
 import java.io.IOException;
-import javax.swing.Action;
 import javax.swing.JOptionPane;
-import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionDialogInputPanel;
-import org.openide.actions.NewAction;
 import org.openide.nodes.Children;
 import org.openide.util.Lookup;
-import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 
 /**
@@ -21,7 +17,7 @@ import org.openide.util.datatransfer.NewType;
  */
 public class ProcedureCategoryRootNode extends AbstractRootNode {
 
-    private DAO service;
+    private final ProcedureCategoryService service;
 
     public ProcedureCategoryRootNode(Children children) throws ServiceNotFoundException {
         super(children);
@@ -36,11 +32,6 @@ public class ProcedureCategoryRootNode extends AbstractRootNode {
     @Override
     Class getServiceClass() {
         return ProcedureCategoryService.class;
-    }
-
-    @Override
-    public Action[] getActions(boolean context) {
-        return new Action[]{SystemAction.get(NewAction.class)};
     }
 
     @Override
