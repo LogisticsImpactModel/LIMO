@@ -40,8 +40,6 @@ import org.openide.util.Lookup;
  */
 public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
 
-    private final Hub bean;
-
     public HubNode(Hub bean) throws IntrospectionException {
         super(bean, Hub.class);
         this.bean = bean;

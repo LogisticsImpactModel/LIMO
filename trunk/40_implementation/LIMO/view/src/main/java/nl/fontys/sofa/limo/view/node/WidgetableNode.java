@@ -15,7 +15,7 @@ public interface WidgetableNode {
     /**
      * Get the widget from this node.
      *
-     * @param scene
+     * @param scene - the widget belongs to.
      * @return Widget - the widget of the node.
      */
     Widget getWidget(Scene scene);

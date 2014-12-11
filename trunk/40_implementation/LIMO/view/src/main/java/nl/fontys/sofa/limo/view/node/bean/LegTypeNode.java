@@ -28,8 +28,6 @@ import org.openide.util.Lookup;
  */
 public class LegTypeNode extends AbstractBeanNode<LegType> {
 
-    private final LegType bean;
-
     public LegTypeNode(LegType bean) throws IntrospectionException {
         super(bean, LegType.class);
         this.bean = bean;

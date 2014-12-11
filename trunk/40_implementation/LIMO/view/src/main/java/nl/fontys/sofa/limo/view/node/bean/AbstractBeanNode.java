@@ -27,6 +27,7 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
     private Class entityClass;
     private PropertyChangeListener listener;
     protected InstanceContent ic;
+    protected T bean;
 
     /**
      * Abstract class which defines basic implementations for nodes and binds

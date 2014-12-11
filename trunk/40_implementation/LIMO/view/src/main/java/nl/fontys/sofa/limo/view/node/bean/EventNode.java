@@ -21,8 +21,6 @@ import org.openide.util.Lookup;
 
 public class EventNode extends AbstractBeanNode<Event> {
 
-    private final Event bean;
-
     public EventNode(Event event) throws IntrospectionException {
         super(event, Event.class);
         this.bean = event;
