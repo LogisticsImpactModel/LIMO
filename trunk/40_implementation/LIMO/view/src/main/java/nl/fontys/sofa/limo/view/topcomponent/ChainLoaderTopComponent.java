@@ -12,7 +12,7 @@ import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
-import nl.fontys.sofa.limo.view.custom.panel.ChainToolbar;
+import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.factory.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.util.ChainFileFilter;
