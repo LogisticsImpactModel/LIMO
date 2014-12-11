@@ -39,7 +39,7 @@ public interface ChainBuilder {
     int getNumberOfHubs();
 
     /**
-     * Get the starthub of the supply chain.
+     * Get the start hub of the supply chain.
      *
      * @return the start hub.
      */

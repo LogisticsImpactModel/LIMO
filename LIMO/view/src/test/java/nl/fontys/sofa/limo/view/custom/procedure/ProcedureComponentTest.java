@@ -7,7 +7,6 @@ import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDir
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
-import nl.fontys.sofa.limo.view.custom.ProcedureComponent;
 
 /**
  * @author Matthias Brück

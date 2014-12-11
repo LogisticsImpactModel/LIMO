@@ -11,7 +11,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
-import nl.fontys.sofa.limo.view.custom.ProcedureComponent;
+import nl.fontys.sofa.limo.view.custom.procedure.ProcedureComponent;
 
 /**
  *
