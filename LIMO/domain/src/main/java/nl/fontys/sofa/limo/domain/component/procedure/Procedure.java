@@ -5,14 +5,19 @@ import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 
 /**
- * A process is something happening inside a component with a cost and time
- * specified. For reporting purposes each process belongs to a process category.
+ * A procedure always happens at a component and implies certain additional
+ * costs in terms of monetary costs and time. For reporting purposes each
+ * procedure belongs to a procedure category.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 public class Procedure implements Serializable {
 
     private String name;
+    /**
+     * category was chosen to be a String rather than a ProcedureCategory, so no
+     * actual relations exist. This is easier w/ exporting and importing data.
+     */
     private String category;
     @Embedded
     private Value cost;
