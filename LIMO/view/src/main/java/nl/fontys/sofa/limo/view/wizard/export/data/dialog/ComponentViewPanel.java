@@ -12,7 +12,6 @@ import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 
 /**
  * @author Matthias Brück
@@ -52,9 +51,8 @@ public class ComponentViewPanel extends JPanel {
         for (int i = 0; i < procedures.length; i++) {
             procedureModel[i][0] = procedures[i].getName();
             procedureModel[i][1] = procedures[i].getCategory();
-            procedureModel[i][2] = procedures[i].getDirection();
         }
-        tblmdlProcedures = new DefaultTableModel(procedureModel, new String[]{"Name", "Category", "Dependency"}, null, new Class[]{String.class, String.class, ProcedureResponsibilityDirection.class});
+        tblmdlProcedures = new DefaultTableModel(procedureModel, new String[]{"Name", "Category"}, null, new Class[]{String.class, String.class});
         tblProcedures = new JTable(tblmdlProcedures);
         JScrollPane tblProcedurePane = new JScrollPane(tblProcedures);
         this.add(tblProcedurePane, cc.xyw(2, 10, 3));

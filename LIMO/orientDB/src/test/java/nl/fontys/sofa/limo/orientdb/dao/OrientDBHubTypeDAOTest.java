@@ -1,20 +1,12 @@
 package nl.fontys.sofa.limo.orientdb.dao;
 
-import com.orientechnologies.orient.core.query.OQuery;
-import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
@@ -49,9 +41,10 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
     @After
     @Override
     public void tearDown() {
-        for (HubType ht : dao.findAll())
+        for (HubType ht : dao.findAll()) {
             dao.delete(ht);
-        
+        }
+
         dao = null;
         OrientDBConnector.close();
     }
@@ -76,8 +69,8 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
         hubType2.setName("12345678");
         hubType2.setIcon(new Icon());
         List<Procedure> procedures = new ArrayList<>();
-        procedures.add(new Procedure("Costs1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES, ProcedureResponsibilityDirection.BOTH));
-        procedures.add(new Procedure("Costs2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT));
+        procedures.add(new Procedure("Costs1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES));
+        procedures.add(new Procedure("Costs2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES));
         hubType2.setProcedures(procedures);
         hubType2 = dao.insert(hubType2);
         hubType = dao.findById(hubType2.getId());

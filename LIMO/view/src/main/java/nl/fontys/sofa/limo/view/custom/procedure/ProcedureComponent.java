@@ -20,11 +20,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
-import nl.fontys.sofa.limo.view.custom.procedure.AddProcedureDialog;
-import nl.fontys.sofa.limo.view.custom.procedure.EditValueDialog;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
 import nl.fontys.sofa.limo.view.util.IconUtil;
@@ -37,7 +34,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     protected JButton addButton, deleteButton;
     protected ProcedureCategoryDAO procedureCategoryDao;
     protected Value changedValue;
-    protected JComboBox procedureCategoryCheckbox, timeTypesCheckbox, directionCheckbox;
+    protected JComboBox procedureCategoryCheckbox, timeTypesCheckbox;
     private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     public ProcedureComponent() {
@@ -95,7 +92,6 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             p.setTime((Value) value.get(2));
             p.setTimeType((TimeType) value.get(3));
             p.setCost((Value) value.get(4));
-            p.setDirection((ProcedureResponsibilityDirection) value.get(5));
             procedures.add(p);
         }
         return procedures;
@@ -163,12 +159,11 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
                 procedure.add(p.getTime());
                 procedure.add(p.getTimeType());
                 procedure.add(p.getCost());
-                procedure.add(p.getDirection());
                 valueList.add(procedure);
             }
         }
-        model = new DragNDropTableModel(new String[]{bundle.getString("PROCEDURE"), bundle.getString("CATEGORY"), bundle.getString("TIME_COST"), bundle.getString("TIME_TYPE"), bundle.getString("MONEY_COST"), bundle.getString("DIRECTION")},
-                valueList, new Class[]{String.class, String.class, Value.class, TimeType.class, Value.class, ProcedureResponsibilityDirection.class});
+        model = new DragNDropTableModel(new String[]{bundle.getString("PROCEDURE"), bundle.getString("CATEGORY"), bundle.getString("TIME_COST"), bundle.getString("TIME_TYPE"), bundle.getString("MONEY_COST")},
+                valueList, new Class[]{String.class, String.class, Value.class, TimeType.class, Value.class});
         table.setModel(model);
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -177,8 +172,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         DefaultTableCellRenderer middleRenderer = new DefaultTableCellRenderer();
         middleRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         table.getColumnModel().getColumn(3).setCellRenderer(middleRenderer);
-        table.getColumnModel().getColumn(5).setCellRenderer(middleRenderer);
-        
+
         try {
             procedureCategoryCheckbox = new JComboBox(procedureCategoryDao.findAll().toArray());
             table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(procedureCategoryCheckbox));
@@ -188,7 +182,5 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         }
         timeTypesCheckbox = new JComboBox(TimeType.values());
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(timeTypesCheckbox));
-        directionCheckbox = new JComboBox(ProcedureResponsibilityDirection.values());
-        table.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(directionCheckbox));
     }
 }

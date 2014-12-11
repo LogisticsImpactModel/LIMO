@@ -1,18 +1,16 @@
 package nl.fontys.sofa.limo.simulation.task;
 
-import nl.fontys.sofa.limo.simulation.task.TestCase;
 import java.util.Arrays;
-import nl.fontys.sofa.limo.simulation.result.TestCaseResult;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
+import nl.fontys.sofa.limo.simulation.result.TestCaseResult;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -123,7 +121,7 @@ public class TestCaseTest extends SupplyChainTester {
 
         Leg leg2 = new Leg();
         leg2.setName("Leg 2");
-        leg2.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        leg2.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS));
         leg2.setNext(end);
         start.setNext(leg2);
 
@@ -172,11 +170,11 @@ public class TestCaseTest extends SupplyChainTester {
 
         Hub middleHub = new Hub();
         middleHub.setName("Amsterdam");
-        middleHub.addProcedure(new Procedure("customs control", MANDATORY, new SingleValue(100), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        middleHub.addProcedure(new Procedure("customs control", MANDATORY, new SingleValue(100), new RangeValue(3, 4), TimeType.HOURS));
 
         Leg leg2 = new Leg();
         leg2.setName("Rotterdam--Amsterdam");
-        leg2.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        leg2.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS));
         leg2.setNext(middleHub);
 
         supplyChain.setStart(start);
@@ -190,7 +188,7 @@ public class TestCaseTest extends SupplyChainTester {
 
         Leg leg3 = new Leg();
         leg3.setName("Leg 3");
-        leg3.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        leg3.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS));
         leg3.setNext(middleHub);
 
         ScheduledLeg scheduledLeg2 = new ScheduledLeg();
