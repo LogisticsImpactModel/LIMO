@@ -3,7 +3,7 @@ package nl.fontys.sofa.limo.domain.component.procedure.value;
 import java.io.Serializable;
 
 /**
- * Interface for a process' value.
+ * Interface for a procedure's value.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
