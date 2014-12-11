@@ -1,7 +1,7 @@
 package nl.fontys.sofa.limo.view.chain;
 
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
-import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import org.netbeans.api.visual.action.WidgetAction;

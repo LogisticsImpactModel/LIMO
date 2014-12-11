@@ -1,6 +1,6 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
-import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import org.openide.explorer.ExplorerManager;
 
 /**

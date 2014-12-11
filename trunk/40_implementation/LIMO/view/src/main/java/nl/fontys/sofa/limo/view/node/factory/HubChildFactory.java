@@ -5,7 +5,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.view.node.HubNode;
+import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Node;

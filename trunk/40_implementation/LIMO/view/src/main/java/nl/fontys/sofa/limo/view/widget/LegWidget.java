@@ -13,7 +13,7 @@ import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
-import nl.fontys.sofa.limo.view.node.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.anchor.AnchorShape;

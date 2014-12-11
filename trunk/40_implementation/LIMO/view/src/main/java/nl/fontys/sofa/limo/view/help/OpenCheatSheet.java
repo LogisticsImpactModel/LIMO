@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.help;
 
 import java.awt.Desktop;
@@ -28,15 +23,15 @@ import org.openide.util.NbBundle.Messages;
         displayName = "#CTL_OpenCheatSheet"
 )
 @ActionReferences({
-@ActionReference(path = "Menu/Help", position = 1),
-@ActionReference(path = "Shortcuts", name = "F2")
+    @ActionReference(path = "Menu/Help", position = 1),
+    @ActionReference(path = "Shortcuts", name = "F2")
 })
 @Messages("CTL_OpenCheatSheet=Cheat Sheet")
 public final class OpenCheatSheet implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-         String pdf = "help/cheatSheet.pdf";
+        String pdf = "help/cheatSheet.pdf";
         if (Desktop.isDesktopSupported()) {
             FileOutputStream fos = null;
             try {

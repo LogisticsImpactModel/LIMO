@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
-import nl.fontys.sofa.limo.view.node.LegTypeNode;
+import nl.fontys.sofa.limo.view.node.bean.LegTypeNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Node;
