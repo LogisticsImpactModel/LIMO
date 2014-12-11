@@ -18,11 +18,12 @@ import javax.swing.TransferHandler;
  */
 public class TableRowTransferHandler extends TransferHandler {
 
-    private final DataFlavor localObjectFlavor = new DataFlavor(Integer.class, "Integer Row Index");
     private final JTable table;
+    private final DataFlavor localObjectFlavor;
 
     public TableRowTransferHandler(JTable table) {
         this.table = table;
+        this.localObjectFlavor = new DataFlavor(Integer.class, "Integer Row Index");
     }
 
     @Override
