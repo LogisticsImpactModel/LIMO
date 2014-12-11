@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
@@ -27,7 +26,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
 
     private final JButton saveButton, cancelButton, addTimeButton, addCostButton;
     private final JTextField nameTextField, costTextField, timeTextField;
-    private final JComboBox timeTypeCombobox, directionCombobox, categoryCombobox;
+    private final JComboBox timeTypeCombobox, categoryCombobox;
     private Value timeValue, costValue;
     private Procedure newProcedure;
     private final DragNDropTable table;
@@ -51,7 +50,6 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         costTextField = new JTextField(costValue.toString());
         costTextField.setEditable(false);
         addCostButton = new JButton("...");
-        directionCombobox = new JComboBox(ProcedureResponsibilityDirection.values());
         saveButton = new JButton("Save");
         cancelButton = new JButton("Cancel");
         //ADD COMPONENTS
@@ -67,8 +65,6 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         this.add(new JLabel("Money Cost:"), cc.xy(2, 10));
         this.add(costTextField, cc.xyw(4, 10, 2));
         this.add(addCostButton, cc.xy(7, 10));
-        this.add(new JLabel("Direction:"), cc.xy(2, 12));
-        this.add(directionCombobox, cc.xyw(4, 12, 2));
         this.add(saveButton, cc.xy(2, 14));
         this.add(cancelButton, cc.xy(4, 14));
         //ADD COMPONENTS TO LISTENER
@@ -136,15 +132,13 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
                 } catch (Exception ex) {
                 }
                 TimeType timeType = (TimeType) timeTypeCombobox.getSelectedItem();
-                ProcedureResponsibilityDirection direction = (ProcedureResponsibilityDirection) directionCombobox.getSelectedItem();
-                newProcedure = new Procedure(name, category, costValue, timeValue, timeType, direction);
+                newProcedure = new Procedure(name, category, costValue, timeValue, timeType);
                 List<Object> newRow = new ArrayList<>();
                 newRow.add(newProcedure.getName());
                 newRow.add(newProcedure.getCategory());
                 newRow.add(newProcedure.getTime());
                 newRow.add(newProcedure.getTimeType());
                 newRow.add(newProcedure.getCost());
-                newRow.add(newProcedure.getDirection());
                 ((DragNDropTableModel) table.getModel()).addRow(newRow);
                 ((DragNDropTableModel) table.getModel()).fireTableDataChanged();
                 table.revalidate();

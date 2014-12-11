@@ -5,18 +5,16 @@
  */
 package nl.fontys.sofa.limo.domain;
 
-import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import nl.fontys.sofa.limo.domain.component.Node;
+import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -110,26 +108,6 @@ public class SupplyChainTest {
     }
 
     /**
-     * Test of getActors method, of class SupplyChain.
-     */
-    @Test
-    public void testGetActors() {
-        assertEquals(0, supplyChain.getActors().size());
-    }
-
-    /**
-     * Test of setActors method, of class SupplyChain.
-     */
-    @Test
-    public void testSetActors() {
-        ArrayList<Actor> actors = new ArrayList();
-        actors.add(new Actor());
-        actors.add(new Actor());
-        supplyChain.setActors(actors);
-        assertEquals(2, supplyChain.getActors().size());
-    }
-
-    /**
      * Test of createFromFile method, of class SupplyChain.
      *
      */
@@ -146,5 +124,4 @@ public class SupplyChainTest {
 //    @Test
 //    public void testSaveToFile() {
 //    }
-
 }

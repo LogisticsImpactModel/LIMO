@@ -8,8 +8,6 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyEditorSupport;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.view.custom.procedure.ProcedureComponent;
 
@@ -52,7 +50,6 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
             }
 
             procedureCategoryCheckbox.addItemListener(this);
-            directionCheckbox.addItemListener(this);
             timeTypesCheckbox.addItemListener(this);
         }
 
@@ -90,15 +87,12 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                     List<Procedure> procedures = getActiveTableState();
                     if (e.getSource().equals(procedureCategoryCheckbox)) {
                         procedures.get(table.getSelectedRow()).setCategory((String) procedureCategoryCheckbox.getSelectedItem().toString());
-                    } else if (e.getSource().equals(directionCheckbox)) {
-                        procedures.get(table.getSelectedRow()).setDirection((ProcedureResponsibilityDirection) directionCheckbox.getSelectedItem());
                     } else if (e.getSource().equals(timeTypesCheckbox)) {
                         procedures.get(table.getSelectedRow()).setTimeType((TimeType) timeTypesCheckbox.getSelectedItem());
                     }
                     setProcedureTable(procedures);
                     setValue(procedures);
                     procedureCategoryCheckbox.addItemListener(this);
-                    directionCheckbox.addItemListener(this);
                     timeTypesCheckbox.addItemListener(this);
                 }
             }

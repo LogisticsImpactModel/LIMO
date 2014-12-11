@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
@@ -47,8 +46,9 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
     @After
     @Override
     public void tearDown() {
-        for (LegType ht : dao.findAll())
+        for (LegType ht : dao.findAll()) {
             dao.delete(ht);
+        }
         dao = null;
         OrientDBConnector.close();
     }
@@ -73,27 +73,27 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
         legType2.setName("12345678");
         legType2.setIcon(new Icon());
         List<Procedure> procedures = new ArrayList<>();
-        procedures.add(new Procedure("Costs1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT));
-        procedures.add(new Procedure("Costs2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES, ProcedureResponsibilityDirection.OUTPUT));
+        procedures.add(new Procedure("Costs1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES));
+        procedures.add(new Procedure("Costs2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES));
         legType2.setProcedures(procedures);
         legType2 = dao.insert(legType2);
         legType = dao.findById(legType2.getId());
         assertNotNull(legType);
     }
-    
+
     @Test
-    public void testForMultipleObjects(){
+    public void testForMultipleObjects() {
         LegType t1 = new LegType();
         LegType t2 = new LegType();
         ArrayList<Procedure> procedures = new ArrayList<>();
-        Procedure p = new Procedure("T", "C", new SingleValue(1), new SingleValue(2), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT);
+        Procedure p = new Procedure("T", "C", new SingleValue(1), new SingleValue(2), TimeType.MINUTES);
         procedures.add(p);
         t1.setProcedures(procedures);
         t1 = dao.insert(t1);
         p.setName("asdigzah");
         t2.setProcedures(procedures);
         t2 = dao.insert(t2);
-        
+
         t1 = dao.findById(t1.getId());
         t2 = dao.findById(t2.getId());
         assertNotSame(t1.getProcedures().get(0).getName(), t2.getProcedures().get(0).getName());

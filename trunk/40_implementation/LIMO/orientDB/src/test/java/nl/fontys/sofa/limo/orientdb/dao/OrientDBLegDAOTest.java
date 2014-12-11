@@ -10,11 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static junit.framework.Assert.assertNull;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
@@ -48,8 +46,9 @@ public class OrientDBLegDAOTest extends NbTestCase {
     @After
     @Override
     public void tearDown() {
-        for (Leg ht : dao.findAll())
+        for (Leg ht : dao.findAll()) {
             dao.delete(ht);
+        }
         dao = null;
         OrientDBConnector.close();
     }
@@ -82,8 +81,8 @@ public class OrientDBLegDAOTest extends NbTestCase {
         Leg leg = new Leg();
         leg.setName("11112");
         ArrayList<Procedure> procedures = new ArrayList<>();
-        procedures.add(new Procedure("Cost1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT));
-        procedures.add(new Procedure("Cost2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES, ProcedureResponsibilityDirection.OUTPUT));
+        procedures.add(new Procedure("Cost1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES));
+        procedures.add(new Procedure("Cost2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES));
         leg.setProcedures(procedures);
         leg.setIcon(new Icon());
         leg = dao.insert(leg);

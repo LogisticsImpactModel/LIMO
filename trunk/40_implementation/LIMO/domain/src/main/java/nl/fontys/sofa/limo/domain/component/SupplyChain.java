@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import nl.fontys.sofa.limo.domain.Actor;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 
 /**
@@ -24,11 +21,6 @@ public class SupplyChain implements Serializable {
     private String name;
     private String filepath;
     private Hub startHub;
-    private List<Actor> actors;
-
-    public SupplyChain() {
-        this.actors = new ArrayList<>();
-    }
 
     public String getName() {
         return name;
@@ -52,14 +44,6 @@ public class SupplyChain implements Serializable {
 
     public void setStart(Hub startHub) {
         this.startHub = startHub;
-    }
-
-    public List<Actor> getActors() {
-        return actors;
-    }
-
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
     }
 
     /**

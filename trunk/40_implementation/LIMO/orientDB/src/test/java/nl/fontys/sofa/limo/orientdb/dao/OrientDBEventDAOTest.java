@@ -5,16 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-import nl.fontys.sofa.limo.api.dao.EventDAO;
-import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.PoissonDistribution;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
@@ -172,9 +165,9 @@ public class OrientDBEventDAOTest extends NbTestCase {
         event.setName(EVENT_NAME);
         event.setProbability(new PoissonDistribution());
         ArrayList<Procedure> procedures = new ArrayList<>();
-        Procedure shipping = new Procedure("Shipping", "Transport", new SingleValue(1000), new SingleValue(9000), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT);
+        Procedure shipping = new Procedure("Shipping", "Transport", new SingleValue(1000), new SingleValue(9000), TimeType.MINUTES);
         procedures.add(shipping);
-        Procedure attack = new Procedure("Pirate Attack", "Unforeseeable", new SingleValue(10000), new SingleValue(5000), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT);
+        Procedure attack = new Procedure("Pirate Attack", "Unforeseeable", new SingleValue(10000), new SingleValue(5000), TimeType.MINUTES);
         procedures.add(attack);
         event.setProcedures(procedures);
 
@@ -182,7 +175,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
         Event subEvent = new Event();
         subEvent.setName("Repair cannonball damage");
         ArrayList<Procedure> subEventProcedures = new ArrayList<>();
-        Procedure rapairingProcess = new Procedure("Repairing cannonball damage", "Repairing", new RangeValue(5000, 10000), new SingleValue(7500), TimeType.MINUTES, ProcedureResponsibilityDirection.INPUT);
+        Procedure rapairingProcess = new Procedure("Repairing cannonball damage", "Repairing", new RangeValue(5000, 10000), new SingleValue(7500), TimeType.MINUTES);
         subEventProcedures.add(rapairingProcess);
         subEvent.setProcedures(subEventProcedures);
         event.addEvent(subEvent);

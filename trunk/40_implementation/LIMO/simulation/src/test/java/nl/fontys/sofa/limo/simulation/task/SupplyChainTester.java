@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.simulation.task;
 
-import nl.fontys.sofa.limo.simulation.result.TestCaseResult;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
@@ -12,10 +11,10 @@ import nl.fontys.sofa.limo.domain.component.hub.Location;
 import nl.fontys.sofa.limo.domain.component.hub.SerializableCountry;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
+import nl.fontys.sofa.limo.simulation.result.TestCaseResult;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -46,26 +45,26 @@ public abstract class SupplyChainTester {
     }
 
     protected void buildComplexSupplyChain() {
-        start.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        start.addProcedure(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS));
 
         Distribution discreteDistribution = new DiscreteDistribution();
         discreteDistribution.setInputValue("X", 1);
         discreteDistribution.setInputValue("Y", 4);
         Event event = new Event("Too late", "You come too late to the hub.", start, ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
         Event subEvent = new Event("Waiting", "Waiting because you were too late.", event, ExecutionState.EXECUTED, always, ExecutionState.INDEPENDENT);
-        subEvent.addProcedure(new Procedure("waiting", "if too late", new SingleValue(0), new RangeValue(2, 3), TimeType.HOURS, ProcedureResponsibilityDirection.INPUT));
+        subEvent.addProcedure(new Procedure("waiting", "if too late", new SingleValue(0), new RangeValue(2, 3), TimeType.HOURS));
         event.addEvent(subEvent);
         start.addEvent(event);
 
-        end.addProcedure(new Procedure("unloading", MANDATORY, new RangeValue(2000, 3000), new RangeValue(2, 3), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
+        end.addProcedure(new Procedure("unloading", MANDATORY, new RangeValue(2000, 3000), new RangeValue(2, 3), TimeType.HOURS));
         Event event2 = new Event("Damaged container", "You damage a container.", end, ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
-        event2.addProcedure(new Procedure("costs", "always", new RangeValue(3000, 4000), new SingleValue(0), TimeType.HOURS, ProcedureResponsibilityDirection.OUTPUT));
+        event2.addProcedure(new Procedure("costs", "always", new RangeValue(3000, 4000), new SingleValue(0), TimeType.HOURS));
         end.addEvent(event2);
 
         leg = new Leg();
         leg.setName("Rotterdam-Venlo-Express");
         Event event3 = new Event("Storm", "Storm slows down the ship.", leg, ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
-        event3.addProcedure(new Procedure("waiting", MANDATORY, new SingleValue(0), new RangeValue(30, 60), TimeType.MINUTES, ProcedureResponsibilityDirection.OUTPUT));
+        event3.addProcedure(new Procedure("waiting", MANDATORY, new SingleValue(0), new RangeValue(30, 60), TimeType.MINUTES));
         leg.addEvent(event3);
     }
 

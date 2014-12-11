@@ -224,6 +224,7 @@ public class OrientDBConnector {
                 Files.createDirectory(path);
                 Files.setAttribute(path, "dos:hidden", true);
             } catch (IOException | UnsupportedOperationException ex) {
+                // Not on windows, whateverever
             }
         }
 
