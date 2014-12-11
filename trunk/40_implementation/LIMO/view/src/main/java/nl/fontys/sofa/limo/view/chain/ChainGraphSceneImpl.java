@@ -69,7 +69,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     private final WidgetAction acceptAction;
     private final WidgetAction selectAction;
     private final WidgetAction connectAction;
-    //TODO implement reconnect action.
+    //@TODO implement reconnect action
     private final WidgetAction reconnectAction;
 
     private HubWidget startHubWidget;
