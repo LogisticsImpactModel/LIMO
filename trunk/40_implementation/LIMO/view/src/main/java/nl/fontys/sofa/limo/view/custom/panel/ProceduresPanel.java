@@ -7,7 +7,14 @@ import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.custom.procedure.ProcedureComponent;
 
+/**
+ * This panel can be used by the wizards which uses procedures.
+ *
+ * @author Sven Mäurer
+ */
 public final class ProceduresPanel extends JPanel {
+
+    private ProcedureComponent procedureComponent;
 
     public ProceduresPanel() {
         initComponents();
@@ -20,17 +27,16 @@ public final class ProceduresPanel extends JPanel {
 
     private void initComponents() {
         setLayout(new BorderLayout());
-        cmp = new ProcedureComponent();
-        add(cmp, BorderLayout.CENTER);
+        procedureComponent = new ProcedureComponent();
+        add(procedureComponent, BorderLayout.CENTER);
     }
 
     public void update(List<Procedure> list) {
-        cmp.setProcedureTable(list);
+        procedureComponent.setProcedureTable(list);
     }
 
     public List<Procedure> getProcedures() {
-        return cmp.getActiveTableState();
+        return procedureComponent.getActiveTableState();
     }
 
-    private ProcedureComponent cmp;
 }
