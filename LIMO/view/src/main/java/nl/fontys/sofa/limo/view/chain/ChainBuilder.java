@@ -18,7 +18,7 @@ import nl.fontys.sofa.limo.domain.component.leg.Leg;
 public interface ChainBuilder {
 
     /**
-     * Add a hub to the supplychain.
+     * Add a hub to the supply chain.
      *
      * @param hub the hub to be added.
      */

@@ -20,10 +20,9 @@ import nl.fontys.sofa.limo.view.action.SimulateAction;
  *
  * @author Sebastiaan Heijmann
  */
-public class ChainToolbar extends javax.swing.JToolBar {
+public class ChainToolbar extends JToolBar {
 
     private SimulateAction simulateAction;
-    int numberOfSimulationRuns;
 
     /**
      * Creates new ChainToolbar with the appropriate components and initializes
