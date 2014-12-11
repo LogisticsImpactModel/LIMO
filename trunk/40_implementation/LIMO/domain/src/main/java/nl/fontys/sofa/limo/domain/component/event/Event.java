@@ -64,14 +64,4 @@ public class Event extends Component {
     public void setExecutionState(ExecutionState executionState) {
         this.executionState = executionState;
     }
-
-    @Override
-    public boolean addEvent(Event event) {
-        for (Event e : events) {//loop through events that are already in list
-            if (e.getId() != null && event.getId() != null && e.getId().equals(event.getId())) { //..to make sure that the event that is to be added is not already in there
-                return false;
-            }
-        }
-        return events.add(event); //if the event to be added was not found in the list w/ existing events, add it
-    }
 }
