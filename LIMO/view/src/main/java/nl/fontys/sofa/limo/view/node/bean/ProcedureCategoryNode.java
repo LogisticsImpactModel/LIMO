@@ -15,8 +15,7 @@ import org.openide.nodes.Sheet;
  */
 public class ProcedureCategoryNode extends AbstractBeanNode<ProcedureCategory> {
 
-    public ProcedureCategoryNode(ProcedureCategory bean)
-            throws IntrospectionException {
+    public ProcedureCategoryNode(ProcedureCategory bean) throws IntrospectionException {
         super(bean, ProcedureCategory.class);
     }
 

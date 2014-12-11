@@ -84,9 +84,9 @@ public final class LegTypeSelectPanel extends JPanel implements ExplorerManager.
     @Override
     public void resultChanged(LookupEvent event) {
         Object[] results = ((Lookup.Result) event.getSource()).allInstances().toArray();
-        for (Object result : results) {
-            if (!selectedLegTypes.contains((LegType) result)) {
-                selectedLegTypes.add((LegType) result);
+        for (Object r : results) {
+            if (!selectedLegTypes.contains((LegType) r)) {
+                selectedLegTypes.add((LegType) r);
             }
         }
     }

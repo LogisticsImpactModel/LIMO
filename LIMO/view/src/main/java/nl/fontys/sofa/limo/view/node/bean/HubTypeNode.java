@@ -28,8 +28,6 @@ import org.openide.util.Lookup;
  */
 public class HubTypeNode extends AbstractBeanNode<HubType> {
 
-    private final HubType bean;
-
     public HubTypeNode(HubType bean) throws IntrospectionException {
         super(bean, HubType.class);
         this.bean = bean;
