@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.view.custom.ProcedureComponent;
+import nl.fontys.sofa.limo.view.custom.procedure.ProcedureComponent;
 
 public final class ProceduresPanel extends JPanel {
 

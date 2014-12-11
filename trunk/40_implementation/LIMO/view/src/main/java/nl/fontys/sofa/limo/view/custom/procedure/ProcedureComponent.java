@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.custom;
+package nl.fontys.sofa.limo.view.custom.procedure;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;

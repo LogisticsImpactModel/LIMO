@@ -20,7 +20,7 @@ import javax.swing.table.AbstractTableModel;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.view.custom.ProcedureComponent;
+import nl.fontys.sofa.limo.view.custom.procedure.ProcedureComponent;
 import nl.fontys.sofa.limo.view.util.IconFileChooser;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
