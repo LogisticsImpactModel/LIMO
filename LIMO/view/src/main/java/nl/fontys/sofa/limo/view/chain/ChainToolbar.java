@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.custom.panel;
+package nl.fontys.sofa.limo.view.chain;
 
 import java.awt.Component;
 import java.awt.Dimension;
