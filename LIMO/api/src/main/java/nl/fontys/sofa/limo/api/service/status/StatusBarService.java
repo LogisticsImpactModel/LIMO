@@ -19,6 +19,8 @@ public interface StatusBarService {
     public static final int ACTION_UPDATE = 2;
     public static final int ACTION_DELETE = 3;
     public static final int ACTION_FOUND = 4;
+    public static final int ACTION_ADD = 5;
+    public static final int ACTION_CONNECT = 6;
 
     public void setMessage(String msg, int action, int statusState, Exception e);
 
