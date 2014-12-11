@@ -2,7 +2,7 @@ package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
 import javax.swing.ActionMap;
-import nl.fontys.sofa.limo.view.factory.EventChildFactory;
+import nl.fontys.sofa.limo.view.node.factory.EventChildFactory;
 import nl.fontys.sofa.limo.view.node.EventRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;

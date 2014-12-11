@@ -1,11 +1,12 @@
-package nl.fontys.sofa.limo.view.factory;
+package nl.fontys.sofa.limo.view.node.factory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
+import java.util.Collection;
 import java.util.List;
-import nl.fontys.sofa.limo.api.service.provider.HubService;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.view.node.HubNode;
+import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.view.node.HubTypeNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Node;
@@ -18,36 +19,37 @@ import org.openide.util.Lookup;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
+import org.openide.util.Utilities;
 
 /**
- * Factory responsible for creating the Hub children. It listens to changes in
- * the service layer and on the child nodes.
+ * Factory responsible for creating the HubType children. It listens to changes
+ * in the service layer and in the nodes.
  *
  * @author Sebastiaan Heijmann
  */
-public class HubChildFactory extends ChildFactory<Hub>
-        implements LookupListener, NodeListener, Lookup.Provider {
+public class HubTypeChildFactory extends ChildFactory<HubType>
+        implements LookupListener, NodeListener {
 
-    private final HubService service;
-    private final Result<Hub> lookupResult;
+    private final Result<HubType> lookupResult;
+    private final HubTypeService service;
 
-    public HubChildFactory() {
-        service = Lookup.getDefault().lookup(HubService.class);
-        lookupResult = service.getLookup().lookupResult(Hub.class);
+    public HubTypeChildFactory() {
+        service = Lookup.getDefault().lookup(HubTypeService.class);
+        lookupResult = service.getLookup().lookupResult(HubType.class);
         lookupResult.addLookupListener(this);
     }
 
     @Override
-    protected boolean createKeys(List<Hub> list) {
+    protected boolean createKeys(List<HubType> list) {
         list.addAll(lookupResult.allInstances());
         return true;
     }
 
     @Override
-    protected Node createNodeForKey(Hub key) {
+    protected Node createNodeForKey(HubType key) {
         BeanNode node = null;
         try {
-            node = new HubNode(key);
+            node = new HubTypeNode(key);
             node.addNodeListener(this);
         } catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
@@ -81,8 +83,4 @@ public class HubChildFactory extends ChildFactory<Hub>
     public void propertyChange(PropertyChangeEvent pce) {
     }
 
-    @Override
-    public Lookup getLookup() {
-        return service.getLookup();
-    }
 }

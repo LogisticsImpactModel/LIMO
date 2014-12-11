@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.factory;
+package nl.fontys.sofa.limo.view.node.factory;
 
 import java.util.List;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
