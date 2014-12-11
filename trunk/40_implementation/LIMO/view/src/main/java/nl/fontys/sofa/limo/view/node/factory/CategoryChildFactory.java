@@ -46,8 +46,7 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
     @Override
     protected boolean createKeys(List<AbstractRootNode> list) {
         try {
-            Children hubChildren
-                    = Children.create(new HubChildFactory(), true);
+            Children hubChildren = Children.create(hubFactory, true);
             AbstractRootNode hubRootNode = new HubRootNode(hubChildren);
             hubRootNode.setDisplayName("Hubs");
             list.add(hubRootNode);

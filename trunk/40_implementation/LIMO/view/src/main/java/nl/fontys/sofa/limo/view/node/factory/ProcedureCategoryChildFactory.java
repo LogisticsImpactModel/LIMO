@@ -68,8 +68,7 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
     @Override
     public void nodeDestroyed(NodeEvent ne) {
         Node node = ne.getNode();
-        ProcedureCategory pc
-                = (ProcedureCategory) node.getLookup().lookup(ProcedureCategory.class);
+        ProcedureCategory pc = (ProcedureCategory) node.getLookup().lookup(ProcedureCategory.class);
 
         Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(ProcedureCategory.class);
         Collection<ProcedureCategory> selectedBeans = result.allInstances();

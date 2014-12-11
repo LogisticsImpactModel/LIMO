@@ -11,7 +11,7 @@ import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.chain.ChainToolbar;
-import nl.fontys.sofa.limo.view.node.factory.ChainPaletteFactory;
+import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.DialogDescriptor;

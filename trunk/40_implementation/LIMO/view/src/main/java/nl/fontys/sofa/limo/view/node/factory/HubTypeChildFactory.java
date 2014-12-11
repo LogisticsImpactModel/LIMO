@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.node.factory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
-import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
@@ -19,7 +18,6 @@ import org.openide.util.Lookup;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.util.Utilities;
 
 /**
  * Factory responsible for creating the HubType children. It listens to changes
