@@ -7,6 +7,10 @@ import javax.swing.table.AbstractTableModel;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 
+/**
+ *
+ * @author Sven Mäurer
+ */
 public class EventTableModel extends AbstractTableModel {
 
     private List<Event> events;

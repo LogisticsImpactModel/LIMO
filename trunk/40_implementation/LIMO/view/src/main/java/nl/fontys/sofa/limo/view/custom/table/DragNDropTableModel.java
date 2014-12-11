@@ -11,7 +11,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class DragNDropTableModel extends AbstractTableModel {
 
-    private final String columnNames[];
+    private final String[] columnNames;
     private final List<List<Object>> values;
     private final Class[] classes;
     private final List<TableModelListener> tableModelListeners;
@@ -82,20 +82,20 @@ public class DragNDropTableModel extends AbstractTableModel {
     }
 
     public void addRow(List<Object> newRow) {
-        if (listIsOK(newRow)) {
+        if (listIsValid(newRow)) {
             values.add(newRow);
             fireTableDataChanged();
         }
     }
 
-    private boolean listIsOK(List<Object> newRow) {
+    private boolean listIsValid(List<Object> newRow) {
         if (newRow.size() < getColumnCount()) {
-            System.out.println("ROW GOT WRONG SIZE");
+            System.out.println("Row got wrong size.");
             return false;
         }
         for (int i = 0; i < newRow.size(); i++) {
             if (!(classes[i]).isInstance(newRow.get(i))) {
-                System.out.println("COLUMN " + i + " SHOULD BE CLASS " + classes[i] + " BUT IS CLASS " + newRow.get(i).getClass());
+                System.out.println("Column " + i + " should be class " + classes[i] + " but is class " + newRow.get(i).getClass());
                 return false;
             }
         }

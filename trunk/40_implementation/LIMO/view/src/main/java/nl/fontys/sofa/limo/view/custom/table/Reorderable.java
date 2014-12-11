@@ -6,5 +6,5 @@ package nl.fontys.sofa.limo.view.custom.table;
  */
 public interface Reorderable {
 
-    public void reorder(int fromIndex, int toIndex);
+    void reorder(int fromIndex, int toIndex);
 }
