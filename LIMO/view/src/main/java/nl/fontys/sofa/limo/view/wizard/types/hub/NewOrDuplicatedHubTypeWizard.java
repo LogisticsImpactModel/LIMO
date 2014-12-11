@@ -2,10 +2,7 @@ package nl.fontys.sofa.limo.view.wizard.types.hub;
 
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_DESCRIPTION;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_ICON;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_NAME;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_OLDTYPE;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -49,12 +46,10 @@ public class NewOrDuplicatedHubTypeWizard implements WizardDescriptor.Panel<Wiza
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
+        wiz.putProperty(TYPE_OLDTYPE, null);
         HubType hubType = getComponent().getHubType();
         if (hubType != null) {
-            wiz.putProperty(TYPE_NAME, hubType.getName());
-            wiz.putProperty(TYPE_DESCRIPTION, hubType.getDescription());
-            wiz.putProperty(TYPE_ICON, hubType.getIcon());
-            wiz.putProperty(TYPE_PROCEDURES, hubType.getProcedures());
+            wiz.putProperty(TYPE_OLDTYPE, hubType);
         }
     }
 

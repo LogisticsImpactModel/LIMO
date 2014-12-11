@@ -49,7 +49,7 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
             }
         } else {
             if(lastEvent != null){
-                getComponent().update(null);
+                getComponent().updateEvent(null);
             }
         }
         lastEvent = event;

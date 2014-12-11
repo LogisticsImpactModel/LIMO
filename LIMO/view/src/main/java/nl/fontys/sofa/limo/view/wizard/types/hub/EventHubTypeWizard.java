@@ -5,16 +5,20 @@
  */
 package nl.fontys.sofa.limo.view.wizard.types.hub;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
 import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_EVENT;
+import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
 public class EventHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     private EventHubTypePanel component;
+    private HubType lastType;
 
     @Override
     public EventHubTypePanel getComponent() {
@@ -47,14 +51,21 @@ public class EventHubTypeWizard implements WizardDescriptor.Panel<WizardDescript
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        if (wiz.getProperty(TYPE_EVENT) != null) {
-            getComponent().update((List<Event>) wiz.getProperty(TYPE_EVENT));
+        HubType hubType = (HubType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
+        if (hubType != null) {
+            if (hubType != lastType) {
+                getComponent().update(hubType.getEvents());
+            }
+        } else {
+            if (lastType != null) {
+                getComponent().update(new ArrayList<Event>());
+            }
         }
+        lastType = hubType;
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(TYPE_EVENT, component.getEvents());
     }
-
 }

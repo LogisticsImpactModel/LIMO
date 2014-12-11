@@ -5,9 +5,11 @@
  */
 package nl.fontys.sofa.limo.view.wizard.types.leg;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_EVENT;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
@@ -15,6 +17,7 @@ import org.openide.util.HelpCtx;
 public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     private EventLegTypePanel component;
+    private LegType lastType;
 
     @Override
     public EventLegTypePanel getComponent() {
@@ -47,9 +50,17 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        if (wiz.getProperty(TYPE_EVENT) != null) {
-            getComponent().update((List<Event>) wiz.getProperty(TYPE_EVENT));
+        LegType legType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
+        if (legType != null) {
+            if (legType != lastType) {
+                getComponent().update(legType.getEvents());
+            }
+        } else {
+            if (lastType != null) {
+                getComponent().update(new ArrayList<Event>());
+            }
         }
+        lastType = legType;
     }
 
     @Override

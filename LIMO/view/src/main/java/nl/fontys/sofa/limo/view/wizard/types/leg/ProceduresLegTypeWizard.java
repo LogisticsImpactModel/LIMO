@@ -1,11 +1,13 @@
 package nl.fontys.sofa.limo.view.wizard.types.leg;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
@@ -15,6 +17,7 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
 
     private ProceduresPanel component;
     private final ResourceBundle bundle;
+    private LegType lastType;
 
     public ProceduresLegTypeWizard() {
         bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
@@ -56,8 +59,17 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        List<Procedure> procedures = (List<Procedure>) wiz.getProperty(TYPE_PROCEDURES);
-        getComponent().update(procedures);
+        LegType hubType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
+        if (hubType != null) {
+            if (hubType != lastType) {
+                getComponent().update(hubType.getProcedures());
+            }
+        } else {
+            if (lastType != null) {
+                getComponent().update(new ArrayList<Procedure>());
+            }
+        }
+        lastType = hubType;
     }
 
     @Override
