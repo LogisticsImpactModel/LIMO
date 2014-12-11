@@ -146,6 +146,8 @@ public abstract class Distribution implements Serializable {
 
     /**
      * Calculate the specific distribution probability and save it to the cache.
+     *
+     * @return the probability.
      */
     protected abstract double calculateProbability();
 
