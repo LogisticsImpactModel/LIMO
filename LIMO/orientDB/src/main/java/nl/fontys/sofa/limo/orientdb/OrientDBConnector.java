@@ -49,7 +49,6 @@ import nl.fontys.sofa.limo.orientdb.serialization.ContinentSerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.CountrySerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.ExecutionStateSerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.TimeTypeSerializer;
-import org.openide.util.Exceptions;
 
 /**
  * Singleton connection to OrientDB file database. Maintaines schema and allows
@@ -225,7 +224,6 @@ public class OrientDBConnector {
                 Files.createDirectory(path);
                 Files.setAttribute(path, "dos:hidden", true);
             } catch (IOException | UnsupportedOperationException ex) {
-                Exceptions.printStackTrace(ex);
             }
         }
 
