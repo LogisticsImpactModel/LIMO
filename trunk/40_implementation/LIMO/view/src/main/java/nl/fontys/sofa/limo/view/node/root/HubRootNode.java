@@ -1,14 +1,11 @@
 package nl.fontys.sofa.limo.view.node.root;
 
 import java.io.IOException;
-import javax.swing.Action;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
-import org.openide.actions.NewAction;
 import org.openide.nodes.Children;
-import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 
 /**
@@ -30,11 +27,6 @@ public class HubRootNode extends AbstractRootNode {
     @Override
     Class getBeanClass() {
         return Hub.class;
-    }
-
-    @Override
-    public Action[] getActions(boolean context) {
-        return new Action[]{SystemAction.get(NewAction.class)};
     }
 
     @Override

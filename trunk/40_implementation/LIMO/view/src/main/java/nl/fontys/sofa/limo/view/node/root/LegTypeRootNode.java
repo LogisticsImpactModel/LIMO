@@ -1,14 +1,11 @@
 package nl.fontys.sofa.limo.view.node.root;
 
 import java.io.IOException;
-import javax.swing.Action;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
-import org.openide.actions.NewAction;
 import org.openide.nodes.Children;
-import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 
 /**
@@ -33,11 +30,6 @@ public class LegTypeRootNode extends AbstractRootNode {
     }
 
     @Override
-    public Action[] getActions(boolean context) {
-        return new Action[]{SystemAction.get(NewAction.class)};
-    }
-
-    @Override
     public NewType[] getNewTypes() {
         return new NewType[]{new NewType() {
 
@@ -48,8 +40,8 @@ public class LegTypeRootNode extends AbstractRootNode {
 
             @Override
             public void create() throws IOException {
-                  LegTypeWizardAction wiz = new LegTypeWizardAction();
-                  wiz.actionPerformed(null);
+                LegTypeWizardAction wiz = new LegTypeWizardAction();
+                wiz.actionPerformed(null);
             }
         }};
     }
