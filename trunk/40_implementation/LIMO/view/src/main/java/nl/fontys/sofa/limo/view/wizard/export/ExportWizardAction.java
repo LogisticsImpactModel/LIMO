@@ -30,7 +30,7 @@ import org.openide.awt.ActionRegistration;
 @ActionID(category = "Master Data", id = "nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction")
 @ActionRegistration(displayName = "Export Master Data...", iconBase = "icons/gui/database.gif")
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data", position = 1600, separatorBefore = 1550),
+    @ActionReference(path = "Menu/Master Data", position = 60, separatorBefore = 55),
     @ActionReference(path = "Shortcuts", name = "DOS-E")
 })
 public final class ExportWizardAction implements ActionListener {

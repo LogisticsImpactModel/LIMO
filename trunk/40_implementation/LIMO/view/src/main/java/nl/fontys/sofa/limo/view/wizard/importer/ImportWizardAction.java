@@ -33,7 +33,7 @@ import org.openide.util.Lookup;
 @ActionID(category = "Master Data", id = "nl.fontys.sofa.limo.view.wizard.importer.ImportWizardAction")
 @ActionRegistration(displayName = "Import Master Data...", iconBase = "icons/gui/database.gif")
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data", position = 1650),
+    @ActionReference(path = "Menu/Master Data", position = 70),
     @ActionReference(path = "Shortcuts", name = "DOS-I")
 })
 public final class ImportWizardAction implements ActionListener {
