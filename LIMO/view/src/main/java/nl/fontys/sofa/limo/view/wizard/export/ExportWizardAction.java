@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JComponent;
-import nl.fontys.sofa.limo.externaltrader.JSONExporter;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.externaltrader.JSONExporter;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.EventSelectionPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.FileChooserPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.HubSelectionPanel;
@@ -28,7 +28,7 @@ import org.openide.awt.ActionRegistration;
  * @author Matthias Brück
  */
 @ActionID(category = "Master Data", id = "nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction")
-@ActionRegistration(displayName = "Export Master Data..", iconBase = "icons/gui/database.gif")
+@ActionRegistration(displayName = "Export Master Data...", iconBase = "icons/gui/database.gif")
 @ActionReferences({
     @ActionReference(path = "Menu/Master Data", position = 1600, separatorBefore = 1550),
     @ActionReference(path = "Shortcuts", name = "DOS-E")
