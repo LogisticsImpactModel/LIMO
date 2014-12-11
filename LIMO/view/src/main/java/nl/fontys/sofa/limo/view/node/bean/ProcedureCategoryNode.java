@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.node;
+package nl.fontys.sofa.limo.view.node.bean;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;

@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
-import nl.fontys.sofa.limo.view.node.ProcedureCategoryNode;
+import nl.fontys.sofa.limo.view.node.bean.ProcedureCategoryNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Node;

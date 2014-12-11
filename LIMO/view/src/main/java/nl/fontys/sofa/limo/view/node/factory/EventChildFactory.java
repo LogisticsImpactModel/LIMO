@@ -5,7 +5,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.view.node.EventNode;
+import nl.fontys.sofa.limo.view.node.bean.EventNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Node;

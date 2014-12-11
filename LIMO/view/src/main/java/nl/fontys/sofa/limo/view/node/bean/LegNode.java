@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nl.fontys.sofa.limo.view.node;
+package nl.fontys.sofa.limo.view.node.bean;
 
 import java.beans.IntrospectionException;
 import nl.fontys.sofa.limo.domain.BaseEntity;

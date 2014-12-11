@@ -16,9 +16,9 @@ public interface WidgetableNode {
      * Get the widget from this node.
      *
      * @param scene
-     * @return
+     * @return Widget - the widget of the node.
      */
-    public Widget getWidget(Scene scene);
+    Widget getWidget(Scene scene);
 
     /**
      * Can this widget be dropped?
@@ -27,6 +27,6 @@ public interface WidgetableNode {
      * @param point - the point where the widget is dropped on.
      * @return boolean - true if this widget can be dropped.
      */
-    public boolean isAcceptable(Widget widget, Point point);
+    boolean isAcceptable(Widget widget, Point point);
 
 }

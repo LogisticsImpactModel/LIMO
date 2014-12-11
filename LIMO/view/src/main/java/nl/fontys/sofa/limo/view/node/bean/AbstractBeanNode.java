@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.node;
+package nl.fontys.sofa.limo.view.node.bean;
 
 import java.awt.Image;
 import java.beans.IntrospectionException;
@@ -7,6 +7,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.view.node.DetachableNode;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.Children;
@@ -25,17 +26,17 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
 
     private Class entityClass;
     private PropertyChangeListener listener;
-    InstanceContent ic;
+    protected InstanceContent ic;
 
     /**
      * Abstract class which defines basic implementations for nodes and binds
-     * the datamodel. The datamodel is available through the AbstractBeanNode's
-     * lookup.
+     * the data model. The data model is available through the
+     * AbstractBeanNode's lookup.
      * <p>
      * Override getActions and getNewTypes methods to define actions associated
      * with this Node.
      *
-     * @param bean the underlying datamodel
+     * @param bean the underlying data model
      * @throws IntrospectionException
      */
     public AbstractBeanNode(T bean, Class entityClass) throws IntrospectionException {
