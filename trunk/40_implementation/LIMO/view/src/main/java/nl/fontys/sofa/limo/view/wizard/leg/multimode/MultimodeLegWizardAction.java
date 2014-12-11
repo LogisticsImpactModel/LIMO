@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JComponent;
+import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.util.ImageUtilities;
+import org.openide.util.Lookup;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
@@ -63,6 +65,8 @@ public final class MultimodeLegWizardAction implements ActionListener {
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             Map<Leg, Double> map = (Map<Leg, Double>) wiz.getProperty("map");
             legListener.finishedLeg(map);
+            Lookup.getDefault().lookup(StatusBarService.class).setMessage("Multimode Leg ",StatusBarService.ACTION_CREATE , StatusBarService.STATE_SUCCESS, null);
+
         }
     }
 
