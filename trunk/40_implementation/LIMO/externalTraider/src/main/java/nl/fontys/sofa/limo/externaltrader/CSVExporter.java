@@ -11,18 +11,37 @@ import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 
 /**
+ * This class offers the possibility to write a SimulationResult to a csv file.
+ *
  * @author Matthias Brück
  */
-public class CSVExporter {
+public final class CSVExporter {
 
-    public static boolean exportTestCaseResult(SimulationResult result, String file) {
+    /**
+     * Private constructor to remove the possibility of creating an instance.
+     */
+    private CSVExporter() {
+    }
+
+    /**
+     * Exports a simulation result to a csv file. The given String is the file
+     * that should get used. Returns false when the file could not get saved or
+     * is already existing. NO FILE OVERRIDE!
+     *
+     * @param result The SimulationResult that has to be exported.
+     * @param filePath The path to the file in that the result has to be
+     * written.
+     * @return true if everything went as expected and the file got saved. False
+     * if the file could not get written or is already existing.
+     */
+    public static boolean exportTestCaseResult(SimulationResult result, String filePath) {
         FileWriter writer = null;
         try {
-            File f = new File(file);
+            File f = new File(filePath);
             if (f.exists()) {
                 return false;
             }
-            writer = new FileWriter(file + ".csv");
+            writer = new FileWriter(filePath + ".csv");
             SupplyChain supplyChain = result.getSupplyChain();
             Node node = supplyChain.getStart();
             writer.append("Supply Chain: From" + node.getName() + " To ");
@@ -33,18 +52,18 @@ public class CSVExporter {
             writer.append("Number of test cases;" + result.getTestCaseCount() + "\n\n\n");
             writer.append("Total Costs:;Max;Min;Avg\n");
             writer.append(";" + result.getTotalCosts().getMax() + ";" + result.getTotalCosts().getMin() + ";" + result.getTotalCosts().getAvg() + "\n\n\n");
-            addMapToList(writer, result.getCostsByCategory(), "Costs");
+            addMapToFileWriter(writer, result.getCostsByCategory(), "Costs");
             writer.append("Total Extra Costs:;Max;Min;Avg\n");
             writer.append(";" + result.getTotalExtraCosts().getMax() + ";" + result.getTotalExtraCosts().getMin() + ";" + result.getTotalExtraCosts().getAvg() + "\n\n\n");
-            addMapToList(writer, result.getExtraCostsByCategory(), "Extra Costs");
+            addMapToFileWriter(writer, result.getExtraCostsByCategory(), "Extra Costs");
             writer.append("Total Delays:;Max;Min;Avg\n");
             writer.append(";" + result.getTotalDelays().getMax() + ";" + result.getTotalDelays().getMin() + ";" + result.getTotalDelays().getAvg() + "\n\n\n");
-            addMapToList(writer, result.getDelaysByCategory(), "Delays");
+            addMapToFileWriter(writer, result.getDelaysByCategory(), "Delays");
             writer.append("Total Lead Times:;Max;Min;Avg\n");
             writer.append(";" + result.getTotalLeadTimes().getMax() + ";" + result.getTotalLeadTimes().getMin() + ";" + result.getTotalLeadTimes().getAvg() + "\n\n\n");
-            addMapToList(writer, result.getLeadTimesByCategory(), "Lead Times");
+            addMapToFileWriter(writer, result.getLeadTimesByCategory(), "Lead Times");
             writer.append("\n\n");
-            addEvents(writer, result);
+            addEventsToFileWriter(writer, result);
             writer.flush();
             writer.close();
             return true;
@@ -59,7 +78,17 @@ public class CSVExporter {
         }
     }
 
-    private static void addMapToList(FileWriter writer, Map<String, DataEntry> map, String name) throws IOException {
+    /**
+     * Adds a Map to the FileWriter.
+     *
+     * @param writer The FileWriter thats currently writing the file.
+     * @param map The map that has to be added.
+     * @param name The name of the map, or better, name of the thing stored in
+     * the map.
+     * @throws IOException When the data could not be written to the FileWriter
+     * an IOException gets thrown.
+     */
+    private static void addMapToFileWriter(FileWriter writer, Map<String, DataEntry> map, String name) throws IOException {
         writer.append("Number of different " + name + ";" + map.values().size() + "\n\n");
         writer.append("Name;Max;Min;Avg\n");
         Set<Map.Entry<String, DataEntry>> set = map.entrySet();
@@ -69,8 +98,16 @@ public class CSVExporter {
         writer.append("\n");
     }
 
-    private static void addEvents(FileWriter writer, SimulationResult result) throws IOException {
-        Map<String, Double> map = result.getEventExecutionRate();
+    /**
+     * Adds the events to the FileWriter.
+     *
+     * @param writer The FileWriter thats currently writing the file.
+     * @param simulationResult The SimulationResult that stores the events.
+     * @throws IOException When the data could not be written to the FileWriter
+     * an IOException gets thrown.
+     */
+    private static void addEventsToFileWriter(FileWriter writer, SimulationResult simulationResult) throws IOException {
+        Map<String, Double> map = simulationResult.getEventExecutionRate();
         writer.append("Number of Events;" + map.keySet().size() + "\n\n");
         writer.append("Name;Execution Rate\n");
         Set<Map.Entry<String, Double>> set = map.entrySet();
