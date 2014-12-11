@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.custom.panel;
 
 import java.awt.FlowLayout;
@@ -95,7 +90,7 @@ public class SelectLegTypePanel extends JPanel {
         panel.add(btnSchedule);
 
         Object[] options = {"Cancel"};
-        int n = optionPane.showOptionDialog(this,
+        int result = JOptionPane.showOptionDialog(this,
                 panel,
                 "Select a Leg",
                 JOptionPane.CANCEL_OPTION,
@@ -103,7 +98,7 @@ public class SelectLegTypePanel extends JPanel {
                 null,
                 options,
                 options[0]);
-        if (n == 0) {
+        if (result == 0) {
             JOptionPane.getRootFrame().dispose();
         }
 
