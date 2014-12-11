@@ -187,17 +187,24 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         distributionDescription.setText(distributionFactory.getDistributionTypeByName(distributionTypeComboBox.getModel().getElementAt(0)).getDescription());
     }
 
-    public void update(Event event) {
-        nameTextField.setText(event.getName());
-        descriptionTextArea.setText(event.getDescription());
-        Distribution probability = event.getProbability();
-        if (probability != null) {
-            String nameForDistributionType = distributionFactory.getNameForDistributionType(probability.getClass());
-            distributionTypeComboBox.getModel().setSelectedItem(nameForDistributionType);
-            prop = probability;
-            ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
-            distributionDescription.setText(probability.getDescription());
+    public void updateEvent(Event event) {
+        if (event != null) {
+            nameTextField.setText(event.getName());
+            descriptionTextArea.setText(event.getDescription());
+            Distribution probability = event.getProbability();
+            if (probability != null) {
+                String nameForDistributionType = distributionFactory.getNameForDistributionType(probability.getClass());
+                distributionTypeComboBox.getModel().setSelectedItem(nameForDistributionType);
+                prop = probability;
+                ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
+                distributionDescription.setText(probability.getDescription());
+            } else {
+                distributionTypeComboBox.setSelectedItem(distributionFactory.getNameForDistributionType(PoissonDistribution.class));
+                distributionDescription.setText(distributionFactory.getDistributionTypeByName(distributionTypeComboBox.getModel().getElementAt(0)).getDescription());
+            }
         } else {
+            nameTextField.setText("");
+            descriptionTextArea.setText("");
             distributionTypeComboBox.setSelectedItem(distributionFactory.getNameForDistributionType(PoissonDistribution.class));
             distributionDescription.setText(distributionFactory.getDistributionTypeByName(distributionTypeComboBox.getModel().getElementAt(0)).getDescription());
         }

@@ -50,6 +50,8 @@ public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<W
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
+        wiz.putProperty(HUB_TYPE, null);
+        wiz.putProperty(HUB_COPY, null);
         Hub hub = getComponent().getHub();
         if (hub != null) {
             wiz.putProperty(HUB_COPY, hub);
