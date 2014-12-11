@@ -45,6 +45,7 @@ public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<Wizard
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
+        wiz.putProperty(EVENT, null);
         Event event = getComponent().getEvent();
         if (event != null) {
             wiz.putProperty(EVENT, event);

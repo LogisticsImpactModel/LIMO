@@ -128,6 +128,8 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
             newIcon = icon;
             Image img = icon.getImage();
             lblPreview.setIcon(new SmallIcon(img));
+        } else {
+            resetIcon();
         }
     }
 

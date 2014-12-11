@@ -192,12 +192,24 @@ public final class LocationHubPanel extends JPanel {
             tfCity.setText(location.getTown());
             tfZip.setText(location.getPostcode());
             tfState.setText(location.getState());
-
-            if (location.getCountry() != null) {
-                cmbCountry.setSelectedItem((location.getCountry().getName()));
-            }
-
             cmbContinent.setSelectedItem(location.getContinent().getName());
+            if (location.getCountry() != null) {
+                cmbCountry.setSelectedItem(location.getCountry().getName());
+            }
+        } else {
+            tfStreet.setText("");
+            tfNumber.setText("");
+            tfCity.setText("");
+            tfZip.setText("");
+            tfState.setText("");
+            ArrayList<String> continents = new ArrayList<>();
+            continents.clear();
+            continents.add(bundle.getString("NONE"));
+            for (Continent continent : Continent.values()) {
+                continents.add(continent.getName());
+            }
+            cmbContinent.setModel(new DefaultComboBoxModel(continents.toArray()));
+            cmbCountry.setSelectedIndex(0);
         }
     }
 

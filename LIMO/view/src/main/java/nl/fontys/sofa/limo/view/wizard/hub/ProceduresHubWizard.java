@@ -1,9 +1,11 @@
 package nl.fontys.sofa.limo.view.wizard.hub;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
 import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.*;
@@ -15,6 +17,8 @@ public class ProceduresHubWizard implements WizardDescriptor.Panel<WizardDescrip
 
     private ProceduresPanel component;
     private final ResourceBundle bundle;
+    private Hub lastHub;
+    private HubType lastHubType;
 
     public ProceduresHubWizard() {
         bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
@@ -52,14 +56,22 @@ public class ProceduresHubWizard implements WizardDescriptor.Panel<WizardDescrip
     @Override
     public void readSettings(WizardDescriptor wiz) {
         Hub hub = (Hub) wiz.getProperty(HUB_COPY);
+        HubType hubType = (HubType) wiz.getProperty(HUB_TYPE);
         if (hub != null) {
-            getComponent().update(hub.getProcedures());
+            if (hub != lastHub) {
+                getComponent().update(hub.getProcedures());
+            }
+        } else if (hubType != null) {
+            if (hubType != lastHubType) {
+                getComponent().update(hubType.getProcedures());
+            }
         } else {
-            HubType htyp = (HubType) wiz.getProperty(HUB_TYPE);
-            if (htyp != null) {
-                getComponent().update(htyp.getProcedures());
+            if (lastHub != null || lastHubType != null) {
+                getComponent().update(new ArrayList<Procedure>());
             }
         }
+        lastHub = hub;
+        lastHubType = hubType;
     }
 
     @Override

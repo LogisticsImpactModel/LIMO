@@ -12,6 +12,7 @@ import org.openide.util.HelpCtx;
 public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NameDescriptionProbabilityPanel component;
+    private Event lastEvent;
 
     @Override
     public NameDescriptionProbabilityPanel getComponent() {
@@ -43,8 +44,15 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
     public void readSettings(WizardDescriptor wiz) {
         Event event = (Event) wiz.getProperty(EVENT);
         if (event != null) {
-            getComponent().update((Event) event);
+            if (event != lastEvent) {
+                getComponent().updateEvent((Event) event);
+            }
+        } else {
+            if(lastEvent != null){
+                getComponent().update(null);
+            }
         }
+        lastEvent = event;
     }
 
     @Override

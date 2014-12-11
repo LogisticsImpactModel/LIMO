@@ -1,9 +1,11 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
 import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT;
 import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT_PROCEDURES;
@@ -15,6 +17,7 @@ public class ProceduresWizard implements WizardDescriptor.Panel<WizardDescriptor
 
     private ProceduresPanel component;
     private final ResourceBundle bundle;
+    private Event lastEvent;
 
     public ProceduresWizard() {
         bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
@@ -50,8 +53,15 @@ public class ProceduresWizard implements WizardDescriptor.Panel<WizardDescriptor
     public void readSettings(WizardDescriptor wiz) {
         Event event = (Event) wiz.getProperty(EVENT);
         if (event != null) {
-            getComponent().update(event.getProcedures());
+            if (event != lastEvent) {
+                getComponent().update(event.getProcedures());
+            }
+        } else {
+            if(lastEvent != null){
+                getComponent().update(new ArrayList<Procedure>());
+            }
         }
+        lastEvent = event;
     }
 
     @Override
