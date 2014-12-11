@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
+import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
@@ -80,6 +81,8 @@ public final class ScheduledLegWizardAction implements ActionListener {
             leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
 
             legListener.finishedLeg(leg);
+            Lookup.getDefault().lookup(StatusBarService.class).setMessage("Scheduled Leg", StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+
         }
     }
 
