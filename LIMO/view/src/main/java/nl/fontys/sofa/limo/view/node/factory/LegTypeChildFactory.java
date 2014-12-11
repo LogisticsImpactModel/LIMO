@@ -65,8 +65,7 @@ public class LegTypeChildFactory extends ChildFactory<LegType>
     @Override
     public void nodeDestroyed(NodeEvent ne) {
         Node node = ne.getNode();
-        LegType lt
-                = (LegType) node.getLookup().lookup(LegType.class);
+        LegType lt = (LegType) node.getLookup().lookup(LegType.class);
 
         Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(LegType.class);
         Collection<LegType> selectedBeans = result.allInstances();

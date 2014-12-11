@@ -1,7 +1,8 @@
-package nl.fontys.sofa.limo.view.node.factory;
+package nl.fontys.sofa.limo.view.chain;
 
 import javax.swing.Action;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
+import nl.fontys.sofa.limo.view.node.factory.CategoryChildFactory;
 import nl.fontys.sofa.limo.view.node.root.CategoryRootNode;
 import org.netbeans.spi.palette.PaletteActions;
 import org.netbeans.spi.palette.PaletteController;
@@ -20,21 +21,23 @@ import org.openide.util.Lookup;
  *
  * @author Sebastiaan Heijmann
  */
-public class ChainPaletteFactory {
+public final class ChainPaletteFactory {
+
+    private ChainPaletteFactory() {
+    }
 
     /**
      * Create a PaletteController containing a
-     * {@link nl.fontys.sofa.limo.view.node.root.CategoryRootNode} and it's children
-     * (the displayable categories created by
+     * {@link nl.fontys.sofa.limo.view.node.root.CategoryRootNode} and it's
+     * children (the displayable categories created by
      * {@link  nl.fontys.sofa.limo.view.node.factory.CategoryChildFactory}).
      *
      * @return PaletteController - the palette controller
      * @throws ServiceNotFoundException - thrown when a service cannot be found
-     * to retrieve the datamodels from.
+     * to retrieve the data models from.
      */
     public static PaletteController createPalette() throws ServiceNotFoundException {
-        Children children
-                = Children.create(new CategoryChildFactory(), true);
+        Children children = Children.create(new CategoryChildFactory(), true);
         AbstractNode paletteRoot = new CategoryRootNode(children);
         paletteRoot.setName("Palette");
         PaletteController controller = PaletteFactory.createPalette(
