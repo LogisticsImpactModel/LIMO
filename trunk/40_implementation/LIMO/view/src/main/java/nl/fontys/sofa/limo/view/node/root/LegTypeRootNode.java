@@ -1,35 +1,35 @@
-package nl.fontys.sofa.limo.view.node;
+package nl.fontys.sofa.limo.view.node.root;
 
 import java.io.IOException;
 import javax.swing.Action;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
-import nl.fontys.sofa.limo.api.service.provider.HubService;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
+import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.actions.NewAction;
 import org.openide.nodes.Children;
 import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 
 /**
- * Root node for Hub.
+ * Root node for LegType.
  *
  * @author Sebastiaan Heijmann
  */
-public class HubRootNode extends AbstractRootNode {
+public class LegTypeRootNode extends AbstractRootNode {
 
-    public HubRootNode(Children children) throws ServiceNotFoundException {
+    public LegTypeRootNode(Children children) throws ServiceNotFoundException {
         super(children);
     }
 
     @Override
-    Class getServiceClass() {
-        return HubService.class;
+    Class getBeanClass() {
+        return LegType.class;
     }
 
     @Override
-    Class getBeanClass() {
-        return Hub.class;
+    Class getServiceClass() {
+        return LegTypeService.class;
     }
 
     @Override
@@ -43,15 +43,14 @@ public class HubRootNode extends AbstractRootNode {
 
             @Override
             public String getName() {
-                return "Hub";
+                return "Leg Type";
             }
 
             @Override
             public void create() throws IOException {
-                HubWizardAction wiz = new HubWizardAction();
-                wiz.actionPerformed(null);
+                  LegTypeWizardAction wiz = new LegTypeWizardAction();
+                  wiz.actionPerformed(null);
             }
         }};
     }
-
 }
