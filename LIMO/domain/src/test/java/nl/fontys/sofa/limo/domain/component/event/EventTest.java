@@ -130,7 +130,7 @@ public class EventTest {
         newEvent.setId("1");
         String newEventName = "New event which is to be added";
         newEvent.setName(newEventName);
-        event.addEvent(newEvent);//add to list for 1st time
+        event.getEvents().add(newEvent);//add to list for 1st time
         boolean eventFoundInList = false;
         for (Event e : event.getEvents()) {
             if (e.getName().equals(newEventName)) {
@@ -141,7 +141,7 @@ public class EventTest {
             fail("newEvent could not be found in eventlist for event");
         }
 
-        event.addEvent(newEvent);//try to add to list a 2nd time, which will not work. However, no response message will be given.
+        event.getEvents().add(newEvent);//try to add to list a 2nd time, which will not work. However, no response message will be given.
     }
 
 }
