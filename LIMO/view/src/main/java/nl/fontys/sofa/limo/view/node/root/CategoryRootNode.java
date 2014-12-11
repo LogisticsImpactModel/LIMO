@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.node;
+package nl.fontys.sofa.limo.view.node.root;
 
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;

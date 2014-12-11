@@ -1,29 +1,35 @@
-package nl.fontys.sofa.limo.view.node;
+package nl.fontys.sofa.limo.view.node.root;
 
 import java.io.IOException;
 import javax.swing.Action;
-import nl.fontys.sofa.limo.api.service.provider.EventService;
-import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
+import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
+import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
+import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.view.wizard.types.hub.HubTypeWizardAction;
 import org.openide.actions.NewAction;
 import org.openide.nodes.Children;
 import org.openide.util.actions.SystemAction;
 import org.openide.util.datatransfer.NewType;
 
-public class EventRootNode extends AbstractRootNode {
+/**
+ * Root node for HubType.
+ *
+ * @author Sebastiaan Heijmann
+ */
+public class HubTypeRootNode extends AbstractRootNode {
 
-    public EventRootNode(Children children) /*throws ServiceNotFoundException*/ {
+    public HubTypeRootNode(Children children) throws ServiceNotFoundException {
         super(children);
     }
 
     @Override
-    Class getServiceClass() {
-        return EventService.class;
+    Class getBeanClass() {
+        return HubType.class;
     }
 
     @Override
-    Class getBeanClass() {
-        return Event.class;
+    Class getServiceClass() {
+        return HubTypeService.class;
     }
 
     @Override
@@ -37,12 +43,12 @@ public class EventRootNode extends AbstractRootNode {
 
             @Override
             public String getName() {
-                return "Event";
+                return "Hub Type";
             }
 
             @Override
             public void create() throws IOException {
-                EventWizardAction wiz = new EventWizardAction();
+                HubTypeWizardAction wiz = new HubTypeWizardAction();
                 wiz.actionPerformed(null);
             }
         }};

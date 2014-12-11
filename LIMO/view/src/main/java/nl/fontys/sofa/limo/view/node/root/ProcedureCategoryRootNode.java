@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.node;
+package nl.fontys.sofa.limo.view.node.root;
 
 import java.io.IOException;
 import javax.swing.Action;

@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import javax.swing.ActionMap;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.node.factory.ProcedureCategoryChildFactory;
-import nl.fontys.sofa.limo.view.node.ProcedureCategoryRootNode;
+import nl.fontys.sofa.limo.view.node.root.ProcedureCategoryRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;

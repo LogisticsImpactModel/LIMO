@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import javax.swing.ActionMap;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.node.factory.LegTypeChildFactory;
-import nl.fontys.sofa.limo.view.node.LegTypeRootNode;
+import nl.fontys.sofa.limo.view.node.root.LegTypeRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;

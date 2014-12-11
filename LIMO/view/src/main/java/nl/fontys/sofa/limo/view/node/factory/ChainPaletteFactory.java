@@ -2,7 +2,7 @@ package nl.fontys.sofa.limo.view.node.factory;
 
 import javax.swing.Action;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
-import nl.fontys.sofa.limo.view.node.CategoryRootNode;
+import nl.fontys.sofa.limo.view.node.root.CategoryRootNode;
 import org.netbeans.spi.palette.PaletteActions;
 import org.netbeans.spi.palette.PaletteController;
 import org.netbeans.spi.palette.PaletteFactory;
@@ -24,7 +24,7 @@ public class ChainPaletteFactory {
 
     /**
      * Create a PaletteController containing a
-     * {@link nl.fontys.sofa.limo.view.node.CategoryRootNode} and it's children
+     * {@link nl.fontys.sofa.limo.view.node.root.CategoryRootNode} and it's children
      * (the displayable categories created by
      * {@link  nl.fontys.sofa.limo.view.node.factory.CategoryChildFactory}).
      *
