@@ -55,7 +55,7 @@ public class StatusEntry implements StatusBarService {
 
     static String[] NAME = new String[]{"", "Error occures", "Success", "Error occures"};
     static String[] TEXT = new String[]{"", "Something was going wrong: ", "Successfully ", "Could not successfully "};
-    static String[] ACTION = new String[]{"", "created ", "updated ", "deleted ", "founded "};
+    static String[] ACTION = new String[]{"", "created ", "updated ", "deleted ", "founded ", "added ", "connected "};
 
     private static final StatusEntry instance
             = new StatusEntry();

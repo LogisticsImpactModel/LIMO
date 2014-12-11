@@ -6,6 +6,7 @@ import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.util.Collections;
 import javax.swing.JComponent;
+import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
@@ -34,6 +35,7 @@ import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.nodes.NodeTransfer;
 import org.openide.util.Exceptions;
+import org.openide.util.Lookup;
 
 /**
  * Implementation of the {@link nl.fontys.sofa.limo.view.chain.ChainGraphScene}
@@ -206,6 +208,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     @Override
     public void addHubWidget(HubWidget hubWidget) {
+        Lookup.getDefault().lookup(StatusBarService.class).setMessage(hubWidget.getHub().getName(), StatusBarService.ACTION_ADD, StatusBarService.STATE_SUCCESS, null);
         mainLayer.addChild(hubWidget);
         chainBuilder.addHub(hubWidget.getHub());
         getScene().repaint();
@@ -213,6 +216,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     @Override
     public void connectHubWidgets(HubWidget source, ConnectionWidget legWidget, HubWidget target) {
+        Lookup.getDefault().lookup(StatusBarService.class).setMessage(source.getHub().getName() + " and " + target.getHub().getName(), StatusBarService.ACTION_CONNECT, StatusBarService.STATE_SUCCESS, null);
         AbstractBeanNode sourceNode = (AbstractBeanNode) findObject(source);
         AbstractBeanNode legNode = (AbstractBeanNode) findObject(legWidget);
         AbstractBeanNode targetNode = (AbstractBeanNode) findObject(target);
@@ -232,7 +236,6 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     @Override
     public void removeHubWidget(HubWidget hubWidget) {
-
         chainBuilder.removeHub(hubWidget.getHub());
     }
 
