@@ -43,13 +43,12 @@ public class ChainToolbar extends JToolBar {
         inputRunsTF.setMaximumSize(new Dimension(100, 50));
         simulateAction = new SimulateAction(inputRunsTF);
 
-        JLabel timesLB = new JLabel("times...");
         Component toolbarPresenter = simulateAction.getToolbarPresenter();
 
         add(toolbarPresenter);
         add(new JToolBar.Separator());
         add(inputRunsTF);
-        add(timesLB);
+        add(new JLabel("times..."));
     }
 
     /**

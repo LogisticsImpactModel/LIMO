@@ -25,6 +25,10 @@ import nl.fontys.sofa.limo.view.custom.table.EventTableModel;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.util.Lookup;
 
+/**
+ *
+ * @author Sven Mäurer
+ */
 public abstract class EventsPanel extends JPanel {
 
     protected JTable eventsTable;
@@ -46,17 +50,9 @@ public abstract class EventsPanel extends JPanel {
 
     private void initComponents() {
         assignComponents();
-        setLayout(new GridBagLayout());
-
-        TableColumn dependencyCol = eventsTable.getColumnModel().getColumn(1);
-        dependencyCol.setCellEditor(new DefaultCellEditor(executionStateComboBox));
-
+        initEventService();
         buildView();
-
-        service = Lookup.getDefault().lookup(EventService.class);
-        allEvents = service.findAll();
-
-        setTableModel();
+        setTable();
         setAddButtonListener();
         setDeleteButtonListener();
         checkAddButtonState();
@@ -72,11 +68,9 @@ public abstract class EventsPanel extends JPanel {
         deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
     }
 
-    public void update(List<Event> events) {
-        eventsTableModel.getEvents().clear();
-        eventsTableModel.getEvents().addAll(events);
-        eventsTableModel.fireTableDataChanged();
-        checkDeleteButtonState();
+    private void initEventService() {
+        service = Lookup.getDefault().lookup(EventService.class);
+        allEvents = service.findAll();
     }
 
     protected void checkDeleteButtonState() {
@@ -92,6 +86,12 @@ public abstract class EventsPanel extends JPanel {
     }
 
     protected abstract void setAddButtonListener();
+
+    private void setTable() {
+        TableColumn dependencyCol = eventsTable.getColumnModel().getColumn(1);
+        dependencyCol.setCellEditor(new DefaultCellEditor(executionStateComboBox));
+        setTableModel();
+    }
 
     protected abstract void setTableModel();
 
@@ -110,6 +110,8 @@ public abstract class EventsPanel extends JPanel {
     }
 
     private void buildView() {
+        setLayout(new GridBagLayout());
+
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
 
@@ -138,6 +140,13 @@ public abstract class EventsPanel extends JPanel {
         c.gridy = 1;
         c.gridwidth = 5;
         add(panel, c);
+    }
+
+    public void update(List<Event> events) {
+        eventsTableModel.getEvents().clear();
+        eventsTableModel.getEvents().addAll(events);
+        eventsTableModel.fireTableDataChanged();
+        checkDeleteButtonState();
     }
 
 }
