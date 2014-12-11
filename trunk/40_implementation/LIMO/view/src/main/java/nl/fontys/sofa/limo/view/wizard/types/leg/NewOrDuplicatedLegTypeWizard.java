@@ -2,10 +2,7 @@ package nl.fontys.sofa.limo.view.wizard.types.leg;
 
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_DESCRIPTION;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_ICON;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_NAME;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_OLDTYPE;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -49,12 +46,10 @@ public class NewOrDuplicatedLegTypeWizard implements WizardDescriptor.Panel<Wiza
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
+        wiz.putProperty(TYPE_OLDTYPE, null);
         LegType legType = getComponent().getLegType();
         if (legType != null) {
-            wiz.putProperty(TYPE_NAME, legType.getName());
-            wiz.putProperty(TYPE_DESCRIPTION, legType.getDescription());
-            wiz.putProperty(TYPE_ICON, legType.getIcon());
-            wiz.putProperty(TYPE_PROCEDURES, legType.getProcedures());
+            wiz.putProperty(TYPE_OLDTYPE, legType);
         }
     }
 

@@ -14,6 +14,7 @@ import org.openide.util.HelpCtx;
 public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NameDescriptionIconPanel component;
+    private HubType lastType;
 
     @Override
     public NameDescriptionIconPanel getComponent() {
@@ -51,10 +52,17 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        String typeName = (String) wiz.getProperty(LegTypeWizardAction.TYPE_NAME);
-        String typeDescr = (String) wiz.getProperty(LegTypeWizardAction.TYPE_DESCRIPTION);
-        Icon typeIcon = (Icon) wiz.getProperty(LegTypeWizardAction.TYPE_ICON);
-        getComponent().update(typeName, typeDescr, typeIcon);
+        HubType hubType = (HubType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
+        if (hubType != null) {
+            if (hubType != lastType) {
+                getComponent().update(hubType.getName(), hubType.getDescription(), hubType.getIcon());
+            }
+        } else {
+            if(lastType != null){
+                getComponent().update("", "", null);
+            }
+        }
+        lastType = hubType;
     }
 
     @Override
