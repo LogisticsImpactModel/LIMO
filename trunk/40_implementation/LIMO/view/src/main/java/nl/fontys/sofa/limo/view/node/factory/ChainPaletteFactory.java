@@ -1,4 +1,4 @@
-package nl.fontys.sofa.limo.view.factory;
+package nl.fontys.sofa.limo.view.node.factory;
 
 import javax.swing.Action;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
@@ -26,7 +26,7 @@ public class ChainPaletteFactory {
      * Create a PaletteController containing a
      * {@link nl.fontys.sofa.limo.view.node.CategoryRootNode} and it's children
      * (the displayable categories created by
-     * {@link  nl.fontys.sofa.limo.view.factory.CategoryChildFactory}).
+     * {@link  nl.fontys.sofa.limo.view.node.factory.CategoryChildFactory}).
      *
      * @return PaletteController - the palette controller
      * @throws ServiceNotFoundException - thrown when a service cannot be found

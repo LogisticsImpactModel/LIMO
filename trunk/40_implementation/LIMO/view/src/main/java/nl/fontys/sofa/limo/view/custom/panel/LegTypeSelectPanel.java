@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
-import nl.fontys.sofa.limo.view.factory.LegTypeChildFactory;
+import nl.fontys.sofa.limo.view.node.factory.LegTypeChildFactory;
 import nl.fontys.sofa.limo.view.node.LegTypeRootNode;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;

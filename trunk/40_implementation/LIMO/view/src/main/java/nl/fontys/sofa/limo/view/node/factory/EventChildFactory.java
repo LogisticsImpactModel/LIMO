@@ -1,12 +1,11 @@
-package nl.fontys.sofa.limo.view.factory;
+package nl.fontys.sofa.limo.view.node.factory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
-import java.util.Collection;
 import java.util.List;
-import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
-import nl.fontys.sofa.limo.domain.component.type.HubType;
-import nl.fontys.sofa.limo.view.node.HubTypeNode;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
+import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.view.node.EventNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Node;
@@ -19,37 +18,48 @@ import org.openide.util.Lookup;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.util.Utilities;
 
 /**
- * Factory responsible for creating the HubType children. It listens to changes
- * in the service layer and in the nodes.
+ * Factory responsible for creating the Event children. It listens to changes in
+ * the service layer and in the nodes.
  *
  * @author Sebastiaan Heijmann
  */
-public class HubTypeChildFactory extends ChildFactory<HubType>
+public class EventChildFactory extends ChildFactory<Event>
         implements LookupListener, NodeListener {
 
-    private final Result<HubType> lookupResult;
-    private final HubTypeService service;
+    private final Result<Event> lookupResult;
+    private final EventService service;
+    private List<Event> eventList;
 
-    public HubTypeChildFactory() {
-        service = Lookup.getDefault().lookup(HubTypeService.class);
-        lookupResult = service.getLookup().lookupResult(HubType.class);
+    public EventChildFactory() {
+        service = Lookup.getDefault().lookup(EventService.class);
+        lookupResult = service.getLookup().lookupResult(Event.class);
         lookupResult.addLookupListener(this);
     }
 
+    public EventChildFactory(List<Event> events) {
+        lookupResult = null;
+        service = null;
+        this.eventList = events;
+    }
+
     @Override
-    protected boolean createKeys(List<HubType> list) {
-        list.addAll(lookupResult.allInstances());
+    protected boolean createKeys(List<Event> list) {
+        if (eventList == null) {
+            list.addAll(lookupResult.allInstances());
+        } else {
+            list.addAll(eventList);
+        }
+
         return true;
     }
 
     @Override
-    protected Node createNodeForKey(HubType key) {
+    protected Node createNodeForKey(Event key) {
         BeanNode node = null;
         try {
-            node = new HubTypeNode(key);
+            node = new EventNode(key);
             node.addNodeListener(this);
         } catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);

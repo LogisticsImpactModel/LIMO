@@ -1,11 +1,12 @@
-package nl.fontys.sofa.limo.view.factory;
+package nl.fontys.sofa.limo.view.node.factory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
+import java.util.Collection;
 import java.util.List;
-import nl.fontys.sofa.limo.api.service.provider.EventService;
-import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.view.node.EventNode;
+import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.node.LegTypeNode;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Node;
@@ -18,48 +19,37 @@ import org.openide.util.Lookup;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
+import org.openide.util.Utilities;
 
 /**
- * Factory responsible for creating the Event children. It listens to changes in
- * the service layer and in the nodes.
+ * Factory responsible for creating the LegType children. It listens to changes
+ * in the service layer and in the nodes.
  *
  * @author Sebastiaan Heijmann
  */
-public class EventChildFactory extends ChildFactory<Event>
+public class LegTypeChildFactory extends ChildFactory<LegType>
         implements LookupListener, NodeListener {
 
-    private final Result<Event> lookupResult;
-    private final EventService service;
-    private List<Event> eventList;
+    private final Result<LegType> lookupResult;
+    private final LegTypeService service;
 
-    public EventChildFactory() {
-        service = Lookup.getDefault().lookup(EventService.class);
-        lookupResult = service.getLookup().lookupResult(Event.class);
+    public LegTypeChildFactory() {
+        service = Lookup.getDefault().lookup(LegTypeService.class);
+        lookupResult = service.getLookup().lookupResult(LegType.class);
         lookupResult.addLookupListener(this);
     }
 
-    public EventChildFactory(List<Event> events) {
-        lookupResult = null;
-        service = null;
-        this.eventList = events;
-    }
-
     @Override
-    protected boolean createKeys(List<Event> list) {
-        if (eventList == null) {
-            list.addAll(lookupResult.allInstances());
-        } else {
-            list.addAll(eventList);
-        }
-
+    protected boolean createKeys(List<LegType> list) {
+        list.addAll(lookupResult.allInstances());
         return true;
     }
 
     @Override
-    protected Node createNodeForKey(Event key) {
+    protected Node createNodeForKey(LegType key) {
         BeanNode node = null;
         try {
-            node = new EventNode(key);
+            node = new LegTypeNode(key);
             node.addNodeListener(this);
         } catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
@@ -68,12 +58,23 @@ public class EventChildFactory extends ChildFactory<Event>
     }
 
     @Override
-    public void resultChanged(LookupEvent le) {
+    public void resultChanged(LookupEvent ev) {
         refresh(true);
     }
 
     @Override
     public void nodeDestroyed(NodeEvent ne) {
+        Node node = ne.getNode();
+        LegType lt
+                = (LegType) node.getLookup().lookup(LegType.class);
+
+        Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(LegType.class);
+        Collection<LegType> selectedBeans = result.allInstances();
+        for (LegType bean : selectedBeans) {
+            if (bean == lt) {
+                service.delete(lt);
+            }
+        }
         refresh(true);
     }
 

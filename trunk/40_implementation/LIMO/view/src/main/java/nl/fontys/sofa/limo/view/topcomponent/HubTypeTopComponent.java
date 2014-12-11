@@ -3,7 +3,7 @@ package nl.fontys.sofa.limo.view.topcomponent;
 import java.awt.BorderLayout;
 import javax.swing.ActionMap;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
-import nl.fontys.sofa.limo.view.factory.HubTypeChildFactory;
+import nl.fontys.sofa.limo.view.node.factory.HubTypeChildFactory;
 import nl.fontys.sofa.limo.view.node.HubTypeRootNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.DialogDisplayer;
