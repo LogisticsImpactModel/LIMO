@@ -29,6 +29,14 @@ import org.openide.util.Lookup;
 
 public final class ManageHubsPanel extends JPanel {
 
+    private JTable table;
+    private HubTableModel model;
+    private JButton btnAdd;
+    private JButton btnEdit;
+    private JButton btnDelete;
+    private JPanel panelRight;
+    private JFileChooser fc;
+
     public ManageHubsPanel() {
         initComponents();
     }
@@ -208,14 +216,6 @@ public final class ManageHubsPanel extends JPanel {
             model.updateHub(rowIndex, hub);
         }
     }
-
-    private JTable table;
-    private HubTableModel model;
-    private JButton btnAdd;
-    private JButton btnEdit;
-    private JButton btnDelete;
-    private JPanel panelRight;
-    private JFileChooser fc;
 
     private class HubTableModel extends AbstractTableModel {
 

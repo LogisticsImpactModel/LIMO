@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.custom.panel;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JPanel;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.node.factory.LegTypeChildFactory;
@@ -22,11 +23,11 @@ import org.openide.util.LookupListener;
  *
  * @author Sebastian Heijmann
  */
-public class LegTypeSelectPanel extends javax.swing.JPanel implements ExplorerManager.Provider, LookupListener {
+public final class LegTypeSelectPanel extends JPanel implements ExplorerManager.Provider, LookupListener {
 
     private final ExplorerManager em = new ExplorerManager();
     private Lookup.Result result = null;
-    private List<LegType> selectedLegTypes;
+    private final List<LegType> selectedLegTypes;
 
     public LegTypeSelectPanel() throws ServiceNotFoundException {
         initComponents();
@@ -62,7 +63,7 @@ public class LegTypeSelectPanel extends javax.swing.JPanel implements ExplorerMa
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-	private void initCustomComponents() throws ServiceNotFoundException {
+    private void initCustomComponents() throws ServiceNotFoundException {
         setLayout(new BorderLayout());
 
         OutlineView ov = new OutlineView("Legtypes");
@@ -81,11 +82,11 @@ public class LegTypeSelectPanel extends javax.swing.JPanel implements ExplorerMa
     }
 
     @Override
-    public void resultChanged(LookupEvent Event) {
-        Object[] results = ((Lookup.Result) Event.getSource()).allInstances().toArray();
-        for (int i = 0; i < results.length; i++) {
-            if (!selectedLegTypes.contains((LegType) results[i])) {
-                selectedLegTypes.add((LegType) results[i]);
+    public void resultChanged(LookupEvent event) {
+        Object[] results = ((Lookup.Result) event.getSource()).allInstances().toArray();
+        for (Object result : results) {
+            if (!selectedLegTypes.contains((LegType) result)) {
+                selectedLegTypes.add((LegType) result);
             }
         }
     }
