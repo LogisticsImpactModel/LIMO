@@ -38,6 +38,7 @@ public class ImportFileChooserComponent extends JPanel implements ActionListener
         fc.setCurrentDirectory(new File(currentPath));
         fc.setMultiSelectionEnabled(false);
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setDialogType(JFileChooser.OPEN_DIALOG);
         fc.setFileFilter(new FileFilter() {
 
             @Override
