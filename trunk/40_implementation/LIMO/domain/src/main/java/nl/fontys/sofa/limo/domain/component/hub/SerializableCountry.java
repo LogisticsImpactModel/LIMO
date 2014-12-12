@@ -23,6 +23,8 @@ import java.util.List;
  * License for the specific language governing permissions and limitations under
  * the License.
  *
+ * Changes made to project default: adding Implements Serializable
+ *
  * @author SM
  */
 public class SerializableCountry implements Comparable<SerializableCountry>, Serializable {
