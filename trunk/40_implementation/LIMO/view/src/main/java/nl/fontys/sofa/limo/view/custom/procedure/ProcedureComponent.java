@@ -27,6 +27,13 @@ import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.util.Lookup;
 
+/**
+ * This Panel handles everything about a procedure component. It shows you a
+ * given list of procedures, you can edit them, add new ones and delete some
+ * from the list.
+ *
+ * @author Matthias Brück
+ */
 public class ProcedureComponent extends JPanel implements ActionListener, MouseListener {
 
     protected DragNDropTable table;
@@ -37,10 +44,18 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     protected JComboBox procedureCategoryCheckbox, timeTypesCheckbox;
     private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
+    /**
+     * Creates a new ProcedureComponent with an empty table.
+     */
     public ProcedureComponent() {
         this(new ArrayList<Procedure>());
     }
 
+    /**
+     * Creates a new ProcedureComponent with a given list of procedures.
+     *
+     * @param procedures The procedures that have to be displayed in the table.
+     */
     public ProcedureComponent(List<Procedure> procedures) {
         procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
         CellConstraints cc = new CellConstraints();
@@ -82,6 +97,11 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         }
     }
 
+    /**
+     * Returns a list with all procedures present in the table.
+     *
+     * @return A list with all procedures that are in the table at the moment.
+     */
     public List<Procedure> getActiveTableState() {
         List<List<Object>> values = ((DragNDropTableModel) table.getModel()).getValues();
         ArrayList<Procedure> procedures = new ArrayList<>();
@@ -97,6 +117,11 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         return procedures;
     }
 
+    /**
+     * Sets the table to a new procedure list.
+     *
+     * @param procedures The new list of procedures that has to be used.
+     */
     public void setProcedureTable(List<Procedure> procedures) {
         initProceduresTable(procedures);
         model.fireTableDataChanged();
@@ -104,16 +129,27 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         repaint();
     }
 
+    /**
+     * Handles the adding of a procedure via a dialog.
+     */
     protected void addProcedure() {
         new AddProcedureDialog(procedureCategoryDao, table);
     }
 
+    /**
+     * Deletes the specified row. Does nothing if the row is out of scope.
+     *
+     * @param row The row that has to be deleted.
+     */
     protected void deleteProcedure(int row) {
         ((DragNDropTableModel) table.getModel()).removeRow(row);
         revalidate();
         repaint();
     }
 
+    /**
+     * Handles the editing of the specified row.
+     */
     protected void editProcedure() {
         if (table.getSelectedColumn() == 2 || table.getSelectedColumn() == 4) {
             changedValue = (Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
@@ -149,6 +185,12 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     }
     //</editor-fold>
 
+    /**
+     * Initializes the procedure table with the given list of procedures.
+     *
+     * @param procedures The list of procedures that has to be used in the
+     * table.
+     */
     private void initProceduresTable(List<Procedure> procedures) {
         List<List<Object>> valueList = new ArrayList<>();
         if (procedures != null) {

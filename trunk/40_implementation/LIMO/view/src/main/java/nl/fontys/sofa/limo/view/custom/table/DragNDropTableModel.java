@@ -6,6 +6,9 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 /**
+ * This class represents a Drag 'n Drop TableModel. It's basically a normal
+ * table model but it is used in the Drag 'n Drop Table, which has implemented
+ * darg 'n drop functionality.
  *
  * @author Matthias Brück
  */
@@ -16,6 +19,13 @@ public class DragNDropTableModel extends AbstractTableModel {
     private final Class[] classes;
     private final List<TableModelListener> tableModelListeners;
 
+    /**
+     * Creates a new DragNDropTableModel.
+     *
+     * @param columnNames The names of the columns.
+     * @param values The values that have to be displayed in the table.
+     * @param classes The Classestypes of the values in the different columns.
+     */
     public DragNDropTableModel(String[] columnNames, List<List<Object>> values, Class[] classes) {
         this.columnNames = columnNames;
         this.values = values;
@@ -81,6 +91,12 @@ public class DragNDropTableModel extends AbstractTableModel {
         tableModelListeners.remove(l);
     }
 
+    /**
+     * Adds a new row to the model. The row gets only added when the list is ok,
+     * meaning that the classtypes are matching.
+     *
+     * @param newRow The row that has to be added.
+     */
     public void addRow(List<Object> newRow) {
         if (listIsValid(newRow)) {
             values.add(newRow);
@@ -88,6 +104,12 @@ public class DragNDropTableModel extends AbstractTableModel {
         }
     }
 
+    /**
+     * Checks a list if it fits to the tablemodel.
+     *
+     * @param newRow The row that has to be checked.
+     * @return True, if the list fits to the table, false when not.
+     */
     private boolean listIsValid(List<Object> newRow) {
         if (newRow.size() < getColumnCount()) {
             System.out.println("Row got wrong size.");
@@ -102,13 +124,25 @@ public class DragNDropTableModel extends AbstractTableModel {
         return true;
     }
 
+    /**
+     * Removes a row from the table. Does nothing if the number is an illegal
+     * number (smaller 0 oder bigger than number of rows).
+     *
+     * @param rowNumber The number of the row that has to be removed.
+     */
     public void removeRow(int rowNumber) {
-        if (rowNumber < getRowCount()) {
+        if (rowNumber < getRowCount() && rowNumber >= 0) {
             values.remove(rowNumber);
             fireTableDataChanged();
         }
     }
 
+    /**
+     * Returns the table as a List, each row is represented as an additional
+     * list inside.
+     *
+     * @return The table.
+     */
     public List<List<Object>> getValues() {
         return values;
     }
