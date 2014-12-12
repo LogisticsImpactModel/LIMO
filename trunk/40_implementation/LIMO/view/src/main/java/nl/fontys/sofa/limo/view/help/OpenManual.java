@@ -20,6 +20,9 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
 
+/**
+ * Opens the PDF manual (manual.pdf) in the systems default PDF viewer
+ */
 @ActionID(
         category = "Help",
         id = "nl.fontys.sofa.limo.view.help.OpenManual"
@@ -28,8 +31,8 @@ import org.openide.util.NbBundle.Messages;
         displayName = "#CTL_OpenManual"
 )
 @ActionReferences({
-@ActionReference(path = "Menu/Help", position = 0),
-@ActionReference(path = "Shortcuts", name = "F1")
+    @ActionReference(path = "Menu/Help", position = 0),
+    @ActionReference(path = "Shortcuts", name = "F1")
 })
 @Messages("CTL_OpenManual=User Manual")
 public final class OpenManual implements ActionListener {

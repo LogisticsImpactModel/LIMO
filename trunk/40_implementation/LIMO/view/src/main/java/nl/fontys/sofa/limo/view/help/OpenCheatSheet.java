@@ -15,6 +15,9 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
 
+/**
+ * opens cheat sheet (sheet.pdf) in the systems default PDF viewer
+ */
 @ActionID(
         category = "Help",
         id = "nl.fontys.sofa.limo.view.help.OpenCheatSheet"
