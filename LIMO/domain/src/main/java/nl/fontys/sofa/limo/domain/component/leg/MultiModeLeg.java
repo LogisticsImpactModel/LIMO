@@ -27,6 +27,11 @@ public class MultiModeLeg extends Leg {
         this.legs = legs;
     }
 
+    /**
+     * Sums the weight values of all legs in the leg list (legs)
+     *
+     * @return - sum of weights
+     */
     public double getTotalWeight() {
         double sum = 0;
         for (Double weight : legs.values()) {
@@ -35,7 +40,14 @@ public class MultiModeLeg extends Leg {
         return sum;
     }
 
-    public void addLeg(Leg leg, double probability) {
-        legs.put(leg, probability);
+    /**
+     * Adds a leg with its weight to the list of legs
+     *
+     * @param leg - leg object
+     * @param weight - how likely it is for one option of the multimode leg to
+     * be chosen. More weight is higher likeliness. Like a probability.
+     */
+    public void addLeg(Leg leg, double weight) {
+        legs.put(leg, weight);
     }
 }
