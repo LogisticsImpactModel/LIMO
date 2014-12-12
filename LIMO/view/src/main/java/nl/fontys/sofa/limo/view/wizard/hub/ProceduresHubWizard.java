@@ -1,14 +1,15 @@
 package nl.fontys.sofa.limo.view.wizard.hub;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_COPY;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_PROCEDURES;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_TYPE;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.*;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -32,10 +33,7 @@ public class ProceduresHubWizard implements WizardDescriptor.Panel<WizardDescrip
 
     @Override
     public HelpCtx getHelp() {
-        // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
-        // If you have context help:
-        // return new HelpCtx("help.key.here");
     }
 
     @Override

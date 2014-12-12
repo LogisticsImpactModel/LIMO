@@ -67,23 +67,32 @@ public final class ImportWizardAction implements ActionListener {
         wizardDescriptor.setTitleFormat(new MessageFormat("{0}"));
         wizardDescriptor.setTitle("Import Masterdata");
         if (DialogDisplayer.getDefault().notify(wizardDescriptor) == WizardDescriptor.FINISH_OPTION) {
-            objectsToOvewrite = (List<BaseEntity>) wizardDescriptor.getProperty(LIST);
-            for (BaseEntity entity : objectsToOvewrite) {
-                if (entity instanceof ProcedureCategory) {
-                    ImportWizardAction.<ProcedureCategory>updateItem((ProcedureCategory) entity, ProcedureCategoryDAO.class);
-                }
-                if (entity instanceof LegType) {
-                    ImportWizardAction.<LegType>updateItem((LegType) entity, LegTypeDAO.class);
-                }
-                if (entity instanceof HubType) {
-                    ImportWizardAction.<HubType>updateItem((HubType) entity, HubTypeDAO.class);
-                }
-                if (entity instanceof Hub) {
-                    ImportWizardAction.<Hub>updateItem((Hub) entity, HubDAO.class);
-                }
-                if (entity instanceof Event) {
-                    ImportWizardAction.<Event>updateItem((Event) entity, EventDAO.class);
-                }
+            handleWizardFinishClick(wizardDescriptor);
+        }
+    }
+
+    /**
+     * Save or update the event based on the inputs.
+     *
+     * @param wiz - the WizardDescriptor which contains the inputs.
+     */
+    private void handleWizardFinishClick(final WizardDescriptor wizardDescriptor) {
+        objectsToOvewrite = (List<BaseEntity>) wizardDescriptor.getProperty(LIST);
+        for (BaseEntity entity : objectsToOvewrite) {
+            if (entity instanceof ProcedureCategory) {
+                ImportWizardAction.<ProcedureCategory>updateItem((ProcedureCategory) entity, ProcedureCategoryDAO.class);
+            }
+            if (entity instanceof LegType) {
+                ImportWizardAction.<LegType>updateItem((LegType) entity, LegTypeDAO.class);
+            }
+            if (entity instanceof HubType) {
+                ImportWizardAction.<HubType>updateItem((HubType) entity, HubTypeDAO.class);
+            }
+            if (entity instanceof Hub) {
+                ImportWizardAction.<Hub>updateItem((Hub) entity, HubDAO.class);
+            }
+            if (entity instanceof Event) {
+                ImportWizardAction.<Event>updateItem((Event) entity, EventDAO.class);
             }
         }
     }

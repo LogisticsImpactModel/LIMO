@@ -24,10 +24,7 @@ public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<W
 
     @Override
     public HelpCtx getHelp() {
-        // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
-        // If you have context help:
-        // return new HelpCtx("help.key.here");
     }
 
     @Override
@@ -45,7 +42,7 @@ public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<W
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        // use wiz.getProperty to retrieve previous panel state
+
     }
 
     @Override

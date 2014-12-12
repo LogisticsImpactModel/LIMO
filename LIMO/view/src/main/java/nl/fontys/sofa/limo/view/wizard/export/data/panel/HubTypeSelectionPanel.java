@@ -10,6 +10,8 @@ import org.openide.WizardDescriptor;
 import org.openide.util.Lookup;
 
 /**
+ * Specific data selection panel for hub types.
+ *
  * @author Matthias Brück
  */
 public class HubTypeSelectionPanel extends BaseEntitySelectionPanel<HubType> {
@@ -30,7 +32,8 @@ public class HubTypeSelectionPanel extends BaseEntitySelectionPanel<HubType> {
         if (tblEntities.getSelectedRow() >= 0 && tblEntities.getSelectedRow() < allEntities.size()) {
             if (tblEntities.getSelectedColumn() == 0) {
                 HubType entity = allEntities.get(tblEntities.getSelectedRow());
-                new TypeDataDialog(entity);
+                TypeDataDialog dialog = new TypeDataDialog(entity);
+                dialog.setVisible(true);
             }
         }
     }

@@ -8,13 +8,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.TableColumn;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 public final class EventsHubPanel extends EventsPanel {
-
-    private Hub hub;
 
     public EventsHubPanel() {
         setHubView();

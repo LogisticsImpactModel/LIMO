@@ -20,7 +20,6 @@ public class TypeDataDialog extends DataDialog<Type> {
         this.setSize(new Dimension(350, 750));
         this.setModal(true);
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
     }
 
     @Override

@@ -10,6 +10,7 @@ import org.openide.WizardDescriptor;
 import org.openide.util.Lookup;
 
 /**
+ * Specific data selection panel for leg types.
  *
  * @author Matthias Brück
  */
@@ -31,7 +32,8 @@ public class LegTypeSelectionPanel extends BaseEntitySelectionPanel<LegType> {
         if (tblEntities.getSelectedRow() >= 0 && tblEntities.getSelectedRow() < allEntities.size()) {
             if (tblEntities.getSelectedColumn() == 0) {
                 LegType entity = allEntities.get(tblEntities.getSelectedRow());
-                new TypeDataDialog(entity);
+                TypeDataDialog dialog = new TypeDataDialog(entity);
+                dialog.setVisible(true);
             }
         }
     }

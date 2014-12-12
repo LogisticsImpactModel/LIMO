@@ -14,7 +14,6 @@ public class EventDataDialog extends DataDialog<Event> {
         this.setSize(new Dimension(350, 500));
         this.setModal(true);
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
     }
 
     @Override
