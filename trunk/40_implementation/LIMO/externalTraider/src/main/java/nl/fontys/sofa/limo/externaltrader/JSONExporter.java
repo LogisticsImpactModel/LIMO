@@ -1,21 +1,19 @@
 package nl.fontys.sofa.limo.externaltrader;
 
-import com.orientechnologies.orient.core.record.impl.ODocument;
-import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
-import org.json.JSONObject;
 
 /**
  * JSON Exporter takes care of converting a list w/ BaseEntities to a JSON
  * object, which is then written to a file at a specified filepath
  *
  * @author Matthias Brück
+ * @author Dominik Kaisers
  */
 public final class JSONExporter {
 
@@ -23,37 +21,59 @@ public final class JSONExporter {
     }
 
     /**
+     * Export the given entities to a .lef file.
      *
-     * @param allEntities - map w/ all baseEntities that should be exported
-     * @param filepath - the location where the file should be saved
+     * @param allEntitites Entities to serialize.
+     * @param filepath Filepath.
      */
-    public static void exportToJson(Map<String, List<BaseEntity>> allEntities, String filepath) {
-        JSONObject json = new JSONObject();
-        Set<Map.Entry<String, List<BaseEntity>>> entrySet = allEntities.entrySet();
-        for (Map.Entry<String, List<BaseEntity>> set : entrySet) {
-            for (BaseEntity entity : set.getValue()) {
-                OSQLSynchQuery<ODocument> query = new OSQLSynchQuery<>("select from index:uuid where key = '" + entity.getUniqueIdentifier() + "'");
-                List<ODocument> result = OrientDBConnector.connection().query(query);
-                if (!result.isEmpty()) {
-                    ODocument d = result.get(0).field("rid");
-                    json.append(set.getKey(), new JSONObject(d.toJSON("class,attribSameRow")));
-                }
-            }
+    public static void export(Map<String, List<BaseEntity>> allEntitites, String filepath) {
+        // Remove local database IDs
+        for (List<BaseEntity> entityList : allEntitites.values()) {
+            nullifyIds(entityList);
         }
-        writeJSON(json, filepath);
+
+        // Serialize to file
+        writeToFile(allEntitites, filepath);
     }
 
     /**
-     * Print/write JSON-object to specified filepath
+     * Sets the if of the given entities to null for export.
      *
-     * @param json - JSON object that is to be saved
-     * @param filepath - the location where the file should be saved
+     * @param entities Entitites to nullify.
      */
-    private static void writeJSON(JSONObject json, String filepath) {
-        try (PrintWriter out = new PrintWriter(filepath)) {
-            out.print(json.toString());
+    private static void nullifyIds(List<BaseEntity> entities) {
+        for (BaseEntity entity : entities) {
+            entity.setId(null);
+        }
+    }
+
+    /**
+     * Serialize an object to the specified location on disk.
+     *
+     * @param obj Object to serialize.
+     * @param filepath Filepath.
+     */
+    private static void writeToFile(Object obj, String filepath) {
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try {
+            if (filepath == null) {
+                return;
+            }
+            fos = new FileOutputStream(filepath, false);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(obj);
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            ex.printStackTrace(System.err);
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        } finally {
+            try {
+                fos.close();
+                oos.close();
+            } catch (IOException ex) {
+                ex.printStackTrace(System.err);
+            }
         }
     }
 }

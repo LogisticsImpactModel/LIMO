@@ -18,13 +18,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import nl.fontys.sofa.limo.externaltrader.JSONImporter;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.externaltrader.JSONImporter;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.DefaultTableModel;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.EventDataDialog;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.HubDataDialog;
@@ -45,7 +45,7 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
 
     public ImportConflictPanel(String path) {
         if (!path.isEmpty()) {
-            duplicatedElements = JSONImporter.importFromJSON(path);
+            duplicatedElements = JSONImporter.importData(path);
             System.out.println("PATH: " + path);
         } else {
             duplicatedElements = new HashMap<>();
@@ -58,11 +58,11 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         this.setLayout(layout);
         lbImport = new JLabel("Number of total entities: " + JSONImporter.getLastEntitiesInFileCount());
         this.add(lbImport, cc.xyw(2, 2, 5));
-        lbDone = new JLabel("Already imported entities: " + JSONImporter.getLastDirectImportedEntitiesCount());
+        lbDone = new JLabel("Already imported entities: " + JSONImporter.getLastDirectImportedEntityCount());
         this.add(lbDone, cc.xyw(2, 4, 5));
-        lbConflicts = new JLabel("Number of conflicts: " + JSONImporter.getLastDuplicatedEntitieCount());
+        lbConflicts = new JLabel("Number of conflicts: " + JSONImporter.getLastDuplicatedEntityCount());
         this.add(lbConflicts, cc.xyw(2, 6, 5));
-        lbOlder = new JLabel("Number of entities that were older than yours: " + JSONImporter.getLastOlderEntitieCount());
+        lbOlder = new JLabel("Number of entities that were older than yours: " + JSONImporter.getLastOlderEntityCount());
         this.add(lbOlder, cc.xyw(2, 8, 5));
         btnSelectAll = new JButton("Select All");
         btnSelectAll.addActionListener(this);
@@ -186,10 +186,10 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
     @Override
     public void mouseExited(MouseEvent e) {
     }
-    
-    public void updateTable(String filePath){
+
+    public void updateTable(String filePath) {
         if (!filePath.isEmpty()) {
-            duplicatedElements = JSONImporter.importFromJSON(filePath);
+            duplicatedElements = JSONImporter.importData(filePath);
             System.out.println("PATH: " + filePath);
         } else {
             duplicatedElements = new HashMap<>();
@@ -215,10 +215,10 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         tblmdlEntities.addTableModelListener(this);
         tblEntities.setModel(tblmdlEntities);
         tblmdlEntities.fireTableDataChanged();
-        
+
         lbImport.setText("Number of total entities: " + JSONImporter.getLastEntitiesInFileCount());
-        lbDone.setText("Already imported entities: " + JSONImporter.getLastDirectImportedEntitiesCount());
-        lbConflicts.setText("Number of conflicts: " + JSONImporter.getLastDuplicatedEntitieCount());
-        lbOlder.setText("Number of entities that are the same as yours: " + JSONImporter.getLastOlderEntitieCount());
+        lbDone.setText("Already imported entities: " + JSONImporter.getLastDirectImportedEntityCount());
+        lbConflicts.setText("Number of conflicts: " + JSONImporter.getLastDuplicatedEntityCount());
+        lbOlder.setText("Number of entities that are the same as yours: " + JSONImporter.getLastOlderEntityCount());
     }
 }

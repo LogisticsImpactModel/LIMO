@@ -80,7 +80,7 @@ public final class ExportWizardAction implements ActionListener {
             objectsToExport.put(HUBS, (List<BaseEntity>) wizardDescriptor.getProperty(HUBS));
             objectsToExport.put(EVENTS, (List<BaseEntity>) wizardDescriptor.getProperty(EVENTS));
             String filepath = (String) wizardDescriptor.getProperty(PATH);
-            JSONExporter.exportToJson(objectsToExport, filepath);
+            JSONExporter.export(objectsToExport, filepath);
         }
     }
 }
