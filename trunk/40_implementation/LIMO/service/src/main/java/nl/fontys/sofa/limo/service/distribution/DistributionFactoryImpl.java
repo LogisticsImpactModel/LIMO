@@ -14,8 +14,8 @@ import org.openide.util.lookup.ServiceProvider;
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
 @ServiceProvider(service = DistributionFactory.class)
-public class DistributionFactoryImpl implements DistributionFactory{
-    
+public class DistributionFactoryImpl implements DistributionFactory {
+
     private static HashMap<String, Class<?>> types = null;
 
     public DistributionFactoryImpl() {
@@ -25,17 +25,18 @@ public class DistributionFactoryImpl implements DistributionFactory{
     @Override
     public String[] getDistributionTypes() {
         initTypes();
-        
+
         String[] returnValue = new String[types.size()];
         types.keySet().toArray(returnValue);
         return returnValue;
     }
-    
+
     @Override
     public String getNameForDistributionType(Class<?> type) {
         for (Map.Entry<String, Class<?>> entry : types.entrySet()) {
-            if (type == entry.getValue())
+            if (type == entry.getValue()) {
                 return entry.getKey();
+            }
         }
         return null;
     }
@@ -43,7 +44,7 @@ public class DistributionFactoryImpl implements DistributionFactory{
     @Override
     public Distribution getDistributionTypeByName(String name) {
         initTypes();
-        
+
         Class<?> clazz = types.get(name);
         if (clazz != null) {
             try {
@@ -52,14 +53,15 @@ public class DistributionFactoryImpl implements DistributionFactory{
                 Logger.getLogger(DistributionFactoryImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         return null;
     }
-    
+
     private void initTypes() {
-        if (types != null)
+        if (types != null) {
             return;
-        
+        }
+
         types = new HashMap<>();
         types.put("Cauchy", CauchyDistribution.class);
         types.put("Chi Squared", ChiSquaredDistribution.class);
@@ -73,5 +75,5 @@ public class DistributionFactoryImpl implements DistributionFactory{
         types.put("Triangular", TriangularDistribution.class);
         types.put("Weibull", WeibullDistribution.class);
     }
-    
+
 }
