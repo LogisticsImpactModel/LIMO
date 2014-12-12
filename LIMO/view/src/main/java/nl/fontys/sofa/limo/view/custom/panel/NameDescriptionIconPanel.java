@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -19,6 +18,7 @@ import javax.swing.JTextField;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.view.util.IconFileChooser;
 import nl.fontys.sofa.limo.view.util.IconUtil;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 public class NameDescriptionIconPanel<T extends Class> extends JPanel {
 
@@ -28,19 +28,17 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
     private JTextField tfDesc;
     private JFileChooser fc;
 
-    private final ResourceBundle bundle;
     private Icon newIcon;
     private final Class clazz;
 
     public NameDescriptionIconPanel(T clazz) {
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         this.clazz = clazz;
         initComponents();
     }
 
     @Override
     public String getName() {
-        return bundle.getString("BASIC_DATA");
+        return LIMOResourceBundle.getString("BASIC_DATA");
     }
 
     private void initComponents() {
@@ -50,9 +48,9 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         lblPreview.setMaximumSize(new Dimension(20, 20));
         lblPreview.setMinimumSize(new Dimension(20, 20));
         lblPreview.setSize(new Dimension(20, 20));
-        btnSelect = new JButton(bundle.getString("CHOOSE"));
-        btnRemove = new JButton(bundle.getString("REMOVE"));
-        btnRemove.setToolTipText(bundle.getString("REMOVE_ICON_HINT"));
+        btnSelect = new JButton(LIMOResourceBundle.getString("CHOOSE"));
+        btnRemove = new JButton(LIMOResourceBundle.getString("REMOVE"));
+        btnRemove.setToolTipText(LIMOResourceBundle.getString("REMOVE_ICON_HINT"));
         fc = new IconFileChooser();
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -61,7 +59,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 0;
-        add(new JLabel(bundle.getString("NAME")), c);
+        add(new JLabel(LIMOResourceBundle.getString("NAME")), c);
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 0;
@@ -71,7 +69,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 1;
-        add(new JLabel(bundle.getString("DESCRIPTION")), c);
+        add(new JLabel(LIMOResourceBundle.getString("DESCRIPTION")), c);
         c.weightx = 0.3;
         c.gridx = 1;
         c.gridy = 1;
@@ -81,7 +79,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 2;
-        add(new JLabel(bundle.getString("ICON")), c);
+        add(new JLabel(LIMOResourceBundle.getString("ICON")), c);
         c.weightx = 0.4;
         c.gridx = 1;
         c.gridy = 2;
@@ -164,7 +162,5 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         public int getIconWidth() {
             return SIZE;
         }
-
     }
-
 }

@@ -2,10 +2,10 @@ package nl.fontys.sofa.limo.view.custom.panel;
 
 import java.awt.BorderLayout;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.custom.procedure.ProcedureComponent;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * This panel can be used by the wizards which uses procedures.
@@ -22,7 +22,7 @@ public final class ProceduresPanel extends JPanel {
 
     @Override
     public String getName() {
-        return ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("PROCEDURES");
+        return LIMOResourceBundle.getString("PROCEDURES");
     }
 
     private void initComponents() {

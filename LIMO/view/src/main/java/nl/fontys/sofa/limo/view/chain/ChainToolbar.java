@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JToolBar;
 import javax.swing.text.NumberFormatter;
 import nl.fontys.sofa.limo.view.action.SimulateAction;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * ChainToolbar represents a {@link javax.swing.JToolBar} in the
@@ -48,7 +49,7 @@ public class ChainToolbar extends JToolBar {
         add(toolbarPresenter);
         add(new JToolBar.Separator());
         add(inputRunsTF);
-        add(new JLabel("times..."));
+        add(new JLabel(LIMOResourceBundle.getString("TIMES...")));
     }
 
     /**

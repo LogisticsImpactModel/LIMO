@@ -10,6 +10,7 @@ import javax.activation.DataHandler;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * A TableRowTransferHandler that handles Drag 'n Drop in tables.
@@ -28,7 +29,7 @@ public class TableRowTransferHandler extends TransferHandler {
      */
     public TableRowTransferHandler(JTable table) {
         this.table = table;
-        this.localObjectFlavor = new DataFlavor(Integer.class, "Integer Row Index");
+        this.localObjectFlavor = new DataFlavor(Integer.class, LIMOResourceBundle.getString("INTEGER_ROW_INDEX"));
     }
 
     @Override

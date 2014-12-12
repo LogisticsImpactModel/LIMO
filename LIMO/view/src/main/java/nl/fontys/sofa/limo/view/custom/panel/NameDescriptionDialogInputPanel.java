@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.view.custom.panel;
 
-import java.util.ResourceBundle;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
@@ -10,6 +9,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.validation.api.Problem;
 import org.netbeans.validation.api.builtin.stringvalidation.StringValidators;
 import org.netbeans.validation.api.ui.ValidationUI;
@@ -37,9 +37,8 @@ public class NameDescriptionDialogInputPanel extends JPanel
      */
     public NameDescriptionDialogInputPanel() {
         initComponents();
-        ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/custom/panel/Bundle");
-        nameTF.setName(bundle.getString("NAME"));
-        descriptionTF.setName(bundle.getString("DESCRIPTION"));
+        nameTF.setName(LIMOResourceBundle.getString("NAME"));
+        descriptionTF.setName(LIMOResourceBundle.getString("DESCRIPTION"));
         group = SwingValidationGroup.create(this);
         group.add(nameTF, StringValidators.REQUIRE_NON_EMPTY_STRING);
         group.add(descriptionTF, StringValidators.REQUIRE_NON_EMPTY_STRING);
@@ -78,7 +77,7 @@ public class NameDescriptionDialogInputPanel extends JPanel
 
         descriptionTF.setColumns(20);
         descriptionTF.setRows(5);
-        descriptionTF.setName("Description"); // NOI18N
+        descriptionTF.setName(LIMOResourceBundle.getString("DESCRIPTION")); // NOI18N
         scrollPane.setViewportView(descriptionTF);
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);

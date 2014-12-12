@@ -8,6 +8,7 @@ import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.node.factory.LegTypeChildFactory;
 import nl.fontys.sofa.limo.view.node.root.LegTypeRootNode;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.OutlineView;
@@ -66,13 +67,13 @@ public final class LegTypeSelectPanel extends JPanel implements ExplorerManager.
     private void initCustomComponents() throws ServiceNotFoundException {
         setLayout(new BorderLayout());
 
-        OutlineView ov = new OutlineView("Legtypes");
+        OutlineView ov = new OutlineView(LIMOResourceBundle.getString("LEG_TYPES"));
         ov.getOutline().setRootVisible(false);
         add(ov, BorderLayout.CENTER);
         Node rootNode;
         Children children = Children.create(new LegTypeChildFactory(), true);
         rootNode = new LegTypeRootNode(children);
-        rootNode.setDisplayName("Legtypes");
+        rootNode.setDisplayName(LIMOResourceBundle.getString("LEG_TYPES"));
         em.setRootContext(rootNode);
     }
 

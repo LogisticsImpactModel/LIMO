@@ -4,6 +4,7 @@ import javax.swing.Action;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.node.factory.CategoryChildFactory;
 import nl.fontys.sofa.limo.view.node.root.CategoryRootNode;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.spi.palette.PaletteActions;
 import org.netbeans.spi.palette.PaletteController;
 import org.netbeans.spi.palette.PaletteFactory;
@@ -39,7 +40,7 @@ public final class ChainPaletteFactory {
     public static PaletteController createPalette() throws ServiceNotFoundException {
         Children children = Children.create(new CategoryChildFactory(), true);
         AbstractNode paletteRoot = new CategoryRootNode(children);
-        paletteRoot.setName("Palette");
+        paletteRoot.setName(LIMOResourceBundle.getString("PALETTE"));
         PaletteController controller = PaletteFactory.createPalette(
                 paletteRoot,
                 new PaletteActions() {

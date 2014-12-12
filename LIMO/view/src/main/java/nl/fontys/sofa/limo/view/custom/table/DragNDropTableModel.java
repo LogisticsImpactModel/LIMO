@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * This class represents a Drag 'n Drop TableModel. It's basically a normal
@@ -112,12 +113,12 @@ public class DragNDropTableModel extends AbstractTableModel {
      */
     private boolean listIsValid(List<Object> newRow) {
         if (newRow.size() < getColumnCount()) {
-            System.out.println("Row got wrong size.");
+            System.out.println(LIMOResourceBundle.getString("ROW_WRONG_SIZE"));
             return false;
         }
         for (int i = 0; i < newRow.size(); i++) {
             if (!(classes[i]).isInstance(newRow.get(i))) {
-                System.out.println("Column " + i + " should be class " + classes[i] + " but is class " + newRow.get(i).getClass());
+                System.out.println(LIMOResourceBundle.getString("COLUMN_WRONG_CLASS", i, classes[i], newRow.get(i).getClass()));
                 return false;
             }
         }

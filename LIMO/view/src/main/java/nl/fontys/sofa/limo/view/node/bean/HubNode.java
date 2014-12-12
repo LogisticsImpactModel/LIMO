@@ -23,6 +23,7 @@ import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.netbeans.api.visual.widget.LabelWidget;
@@ -50,12 +51,12 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             ic.add(p);
         }
     }
-
+    
     @Override
     public boolean canDestroy() {
         return true;
     }
-
+    
     @Override
     public Widget getWidget(Scene scene) {
         try {
@@ -63,10 +64,10 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             return hw;
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
-            return new LabelWidget(scene, "Unknown Widget");
+            return new LabelWidget(scene, LIMOResourceBundle.getString("UNKNOWN_WIDGET"));
         }
     }
-
+    
     @Override
     public boolean isAcceptable(Widget widget, Point point) {
         if (widget instanceof ChainGraphScene) {
@@ -74,11 +75,11 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
         }
         return false;
     }
-
+    
     @Override
     public Action[] getActions(boolean context) {
         ArrayList<Action> actionList = new ArrayList<>();
-        actionList.add(new AbstractAction("Edit") {
+        actionList.add(new AbstractAction(LIMOResourceBundle.getString("EDIT")) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HubWizardAction wiz = new HubWizardAction();
@@ -88,11 +89,12 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
                 setSheet(getSheet());
             }
         });
-        actionList.add(new AbstractAction("Delete") {
-
+        actionList.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
+            
             @Override
             public void actionPerformed(ActionEvent e) {
-                int reply = JOptionPane.showConfirmDialog(null, "Are you sure to delete " + bean.getName(), "Are you sure...?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                int reply = JOptionPane.showConfirmDialog(null, LIMOResourceBundle.getString("DELETE_QUESTION", bean.getName()), LIMOResourceBundle.getString("ARE_YOU_SURE"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE
+                );
                 if (reply == JOptionPane.YES_OPTION) {
                     HubService service = Lookup.getDefault().lookup(HubService.class);
                     service.delete(bean);
@@ -101,53 +103,53 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
         });
         return actionList.toArray(new Action[actionList.size()]);
     }
-
+    
     @Override
     protected void createProperties(Hub bean, BeanInfo info) {
         Sheet sets = getSheet();
         Sheet.Set generalSet = Sheet.createPropertiesSet();
         generalSet.setName("properties");
-        generalSet.setDisplayName("Properties");
-
+        generalSet.setDisplayName(LIMOResourceBundle.getString("PROPERTIES"));
+        
         try {
             StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");
             name.addPropertyChangeListener(getListener());
-            name.setDisplayName("Name");
-            name.setShortDescription("The name of the procedure category.");
-
+            name.setDisplayName(LIMOResourceBundle.getString("NAME"));
+            name.setShortDescription(LIMOResourceBundle.getString("NAME_OF", "Hub"));
+            
             StupidProperty description = new StupidProperty<>(getBean(), String.class, "description");
             description.addPropertyChangeListener(getListener());
-            description.setDisplayName("Description");
-            description.setShortDescription("An optional short description of the procedure category.");
-
+            description.setDisplayName(LIMOResourceBundle.getString("DESCRIPTION"));
+            description.setShortDescription(LIMOResourceBundle.getString("DESCRIPTION_OF", "Hub"));
+            
             StupidProperty iconProp = new StupidProperty(getBean(), Icon.class, "icon");
             iconProp.addPropertyChangeListener(getListener());
             iconProp.setPropertyEditorClass(IconPropertyEditor.HubIconPropertyEditor.class);
-            iconProp.setDisplayName("Icon");
-            iconProp.setShortDescription("The icon that gets displayed with this Leg-Type.");
+            iconProp.setDisplayName(LIMOResourceBundle.getString("ICON"));
+            iconProp.setShortDescription(LIMOResourceBundle.getString("ICON_OF", "Hub"));
             iconProp.setValue("valueIcon", new ImageIcon(getBean().getIcon().getImage()));
             iconProp.setValue("canEditAsText", false);
-
+            
             StupidProperty locProp = new StupidProperty(getBean(), Location.class, "location");
             locProp.addPropertyChangeListener(getListener());
-            locProp.setDisplayName("Location");
-            locProp.setShortDescription("The hub's location");
+            locProp.setDisplayName(LIMOResourceBundle.getString("LOCATION"));
+            locProp.setShortDescription(LIMOResourceBundle.getString("LOCATION_OF", "Hub"));
             locProp.setValue("canEditAsText", false);
-
+            
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
             eventProp.addPropertyChangeListener(getListener());
             eventProp.setPropertyEditorClass(EventPropertyEditor.class);
-            eventProp.setDisplayName("Event");
-            eventProp.setShortDescription("All Events stored with this Hub.");
+            eventProp.setDisplayName(LIMOResourceBundle.getString("EVENTS"));
+            eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", "Hub"));
             eventProp.setValue("canEditAsText", false);
-
+            
             StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
             procedureProp.addPropertyChangeListener(getListener());
             procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
-            procedureProp.setDisplayName("Procedure");
-            procedureProp.setShortDescription("All Procedures stored with this Hub.");
+            procedureProp.setDisplayName(LIMOResourceBundle.getString("PROCEDURES"));
+            procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", "Hub"));
             procedureProp.setValue("canEditAsText", false);
-
+            
             generalSet.put(name);
             generalSet.put(description);
             generalSet.put(iconProp);
@@ -157,10 +159,10 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();
         }
-
+        
         sets.put(generalSet);
     }
-
+    
     @Override
     public AbstractBeanNode getDetachedNodeCopy() {
         try {
@@ -173,7 +175,7 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
         }
         return null;
     }
-
+    
     @Override
     Class getServiceClass() {
         return HubService.class;

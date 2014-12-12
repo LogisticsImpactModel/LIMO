@@ -2,10 +2,10 @@ package nl.fontys.sofa.limo.view.custom.table;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.table.AbstractTableModel;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  *
@@ -14,7 +14,6 @@ import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 public class EventTableModel extends AbstractTableModel {
 
     private List<Event> events;
-    private ResourceBundle bundle;
 
     public EventTableModel() {
         this(new ArrayList<Event>());
@@ -22,7 +21,6 @@ public class EventTableModel extends AbstractTableModel {
 
     public EventTableModel(List<Event> events) {
         this.events = events;
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
     }
 
     public List<Event> getEvents() {
@@ -59,7 +57,7 @@ public class EventTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int column) {
-        return column == 0 ? bundle.getString("EVENT") : bundle.getString("DEPENDENCY");
+        return column == 0 ? LIMOResourceBundle.getString("EVENT") : LIMOResourceBundle.getString("DEPENDENCY");
     }
 
     @Override
