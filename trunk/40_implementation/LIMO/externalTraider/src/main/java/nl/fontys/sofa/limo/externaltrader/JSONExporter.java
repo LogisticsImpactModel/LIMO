@@ -51,7 +51,7 @@ public final class JSONExporter {
      * Serialize an object to the specified location on disk.
      *
      * @param obj Object to serialize.
-     * @param filepath Filepath.
+     * @param filepath Filepath where file should be saved
      */
     private static void writeToFile(Object obj, String filepath) {
         FileOutputStream fos = null;
