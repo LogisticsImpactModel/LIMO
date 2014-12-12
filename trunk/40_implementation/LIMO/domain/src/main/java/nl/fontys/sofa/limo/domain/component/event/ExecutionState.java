@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.domain.component.event;
 import java.io.Serializable;
 
 /**
+ * Execution state used for events and sub-event dependencies.
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
