@@ -17,6 +17,7 @@ import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.EventLegTypeWizard;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.ProceduresLegTypeWizard;
@@ -74,14 +75,14 @@ public final class ScheduledLegWizardAction implements ActionListener {
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
-        wiz.setTitle("Scheduled Leg");
+        wiz.setTitle(LIMOResourceBundle.getString("SCHEDULED_LEG"));
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             ScheduledLeg leg = (ScheduledLeg) wiz.getProperty("leg");
             leg.setEvents((List<Event>) wiz.getProperty("events"));
             leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
 
             legListener.finishedLeg(leg);
-            Lookup.getDefault().lookup(StatusBarService.class).setMessage("Scheduled Leg", StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+            Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("SCHEDULED_LEG"), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
 
         }
     }

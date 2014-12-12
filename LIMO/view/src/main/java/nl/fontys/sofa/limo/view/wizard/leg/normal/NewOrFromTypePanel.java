@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
 import java.awt.GridBagConstraints;
@@ -18,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
 public final class NewOrFromTypePanel extends JPanel {
@@ -37,7 +33,7 @@ public final class NewOrFromTypePanel extends JPanel {
 
     @Override
     public String getName() {
-        return "Create new Leg";
+        return LIMOResourceBundle.getString("CREATE_LEG");
     }
 
     private void initComponents() {
@@ -52,7 +48,7 @@ public final class NewOrFromTypePanel extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         buttonGroup1.add(rbFromScratch);
-        rbFromScratch.setText("From Scratch");
+        rbFromScratch.setText(LIMOResourceBundle.getString("FROM_SCRATCH"));
         add(rbFromScratch, c);
         rbFromScratch.setSelected(true);
 
@@ -66,7 +62,7 @@ public final class NewOrFromTypePanel extends JPanel {
         });
 
         buttonGroup1.add(rbFromLegType);
-        rbFromLegType.setText("From LegType");
+        rbFromLegType.setText(LIMOResourceBundle.getString("FROM_LEGTYPE"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 3;

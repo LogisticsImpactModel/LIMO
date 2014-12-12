@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import static nl.fontys.sofa.limo.api.service.status.StatusBarService.ACTION_NULL;
 import static nl.fontys.sofa.limo.api.service.status.StatusBarService.STATE_NONE;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.ImageUtilities;
 import org.openide.util.lookup.ServiceProvider;
 
@@ -30,9 +31,9 @@ public class StatusBarEntry implements StatusBarService, ActionListener {
     private static final ImageIcon NONE = new ImageIcon(ImageUtilities.loadImage("icons/grey.png"));
     private static final ImageIcon FAIL = new ImageIcon(ImageUtilities.loadImage("icons/red.png"));
 
-    private static final String[] NAME = new String[]{"", "Error occures", "Success", "Error occures"};
-    private static final String[] TEXT = new String[]{"", "Something was going wrong: ", "Successfully ", "Could not successfully "};
-    private static final String[] ACTION = new String[]{"", "created ", "updated ", "deleted ", "founded ", "added ", "connected "};
+    private static final String[] NAME = new String[]{"", LIMOResourceBundle.getString("ERROR_OCCURES"), LIMOResourceBundle.getString("SUCCESS"), LIMOResourceBundle.getString("ERROR_OCCURES")};
+    private static final String[] TEXT = new String[]{"", LIMOResourceBundle.getString("SOMETHING_WRONG") + ": ", LIMOResourceBundle.getString("SUCCESSFULLY") + " ", LIMOResourceBundle.getString("COULD_NOT_SUCCESSFULLY") + " "};
+    private static final String[] ACTION = new String[]{"", LIMOResourceBundle.getString("CREATED") + "", LIMOResourceBundle.getString("UPDATED") + " ", LIMOResourceBundle.getString("DELETED") + " ", LIMOResourceBundle.getString("FOUND") + " ", LIMOResourceBundle.getString("ADDED") + " ", LIMOResourceBundle.getString("CONNECTED") + " "};
 
     private final JPanel panel;
     private final JButton errorIndicatorButton;
@@ -51,7 +52,7 @@ public class StatusBarEntry implements StatusBarService, ActionListener {
         errorIndicatorButton.setOpaque(false);
         errorIndicatorButton.setContentAreaFilled(false);
         errorIndicatorButton.setBorderPainted(false);
-        errorMessageBuilder = new StringBuilder("Following problem(s) occure(s): ");
+        errorMessageBuilder = new StringBuilder(LIMOResourceBundle.getString("PROBLEMS_OCCURE"));
         errorIndicatorButton.addActionListener(this);
         errorIndicatorButton.setEnabled(false);
         panel.setLayout(new BorderLayout());
@@ -68,7 +69,7 @@ public class StatusBarEntry implements StatusBarService, ActionListener {
     public void setMessage(String msg, int action, int statusState, final Exception e) {
         if (e != null) {
             number++;
-            errorMessageBuilder.append("\n \nError: ")
+            errorMessageBuilder.append("\n \n" + LIMOResourceBundle.getString("ERROR"))
                     .append(e.getMessage())
                     .append("\n");
             for (StackTraceElement ste : e.getStackTrace()) {
@@ -124,9 +125,9 @@ public class StatusBarEntry implements StatusBarService, ActionListener {
             }
         };
         if (number > 0) {
-            Object[] options = {"Ok"};
+            Object[] options = {LIMOResourceBundle.getString("OK")};
             int result = JOptionPane.showOptionDialog(null,
-                    jsp, "Error",
+                    jsp, LIMOResourceBundle.getString("ERROR"),
                     JOptionPane.ERROR_MESSAGE,
                     JOptionPane.ERROR_MESSAGE,
                     null,
@@ -135,7 +136,7 @@ public class StatusBarEntry implements StatusBarService, ActionListener {
             if (result == 0) {
                 number = 0;
                 errorMessageBuilder.setLength(0);
-                errorMessageBuilder.append("Following problem(s) occure(s): ");
+                errorMessageBuilder.append(LIMOResourceBundle.getString("PROBLEMS_OCCURE"));
                 setMessage("", ACTION_NULL, STATE_NONE, null);
             }
         }

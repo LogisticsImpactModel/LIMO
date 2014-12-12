@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * @author Matthias Brück
@@ -30,17 +31,17 @@ public class HubDataDialog extends DataDialog<Hub> {
                 "5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px");
         this.setLayout(layout);
         this.add(getComponentViewPanel(), cc.xyw(2, 2, 3));
-        lblIcon = new JLabel("Icon");
+        lblIcon = new JLabel(LIMOResourceBundle.getString("ICON"));
         this.add(lblIcon, cc.xy(2, 4));
         icon = new ImageIcon(entity.getIcon().getImage());
         lblIconPreview = new JLabel(icon);
         this.add(lblIconPreview, cc.xy(4, 4));
-        lblContinent = new JLabel("Continent");
+        lblContinent = new JLabel(LIMOResourceBundle.getString("CONTINENT"));
         this.add(lblContinent, cc.xy(2, 6));
         tfContinent = new JTextField(entity.getLocation().getContinent().name());
         tfContinent.setEditable(false);
         this.add(tfContinent, cc.xy(4, 6));
-        lblCountry = new JLabel("Country");
+        lblCountry = new JLabel(LIMOResourceBundle.getString("COUNTRY"));
         this.add(lblCountry, cc.xy(2, 8));
         tfCountry = new JTextField();
         tfCountry.setEditable(false);
@@ -48,7 +49,7 @@ public class HubDataDialog extends DataDialog<Hub> {
             tfCountry.setText(entity.getLocation().getCountry().getValue());
         }
         this.add(tfCountry, cc.xy(4, 8));
-        lblState = new JLabel("State");
+        lblState = new JLabel(LIMOResourceBundle.getString("STATE"));
         this.add(lblState, cc.xy(2, 10));
         tfState = new JTextField();
         tfState.setEditable(false);
@@ -56,7 +57,7 @@ public class HubDataDialog extends DataDialog<Hub> {
             tfState.setText(entity.getLocation().getState());
         }
         this.add(tfState, cc.xy(4, 10));
-        lblTown = new JLabel("Town");
+        lblTown = new JLabel(LIMOResourceBundle.getString("TOWN"));
         this.add(lblTown, cc.xy(2, 12));
         tfTown = new JTextField();
         tfTown.setEditable(false);
@@ -64,7 +65,7 @@ public class HubDataDialog extends DataDialog<Hub> {
             tfTown.setText(entity.getLocation().getTown());
         }
         this.add(tfTown, cc.xy(4, 12));
-        lblPostcode = new JLabel("Postcode");
+        lblPostcode = new JLabel(LIMOResourceBundle.getString("ZIP"));
         this.add(lblPostcode, cc.xy(2, 14));
         tfPostcode = new JTextField();
         tfPostcode.setEditable(false);
@@ -72,7 +73,7 @@ public class HubDataDialog extends DataDialog<Hub> {
             tfPostcode.setText(entity.getLocation().getPostcode());
         }
         this.add(tfPostcode, cc.xy(4, 14));
-        lblStreet = new JLabel("Street");
+        lblStreet = new JLabel(LIMOResourceBundle.getString("STREET"));
         this.add(lblStreet, cc.xy(2, 16));
         tfStreet = new JTextField();
         tfStreet.setEditable(false);
@@ -80,7 +81,7 @@ public class HubDataDialog extends DataDialog<Hub> {
             tfStreet.setText(entity.getLocation().getStreet());
         }
         this.add(tfStreet, cc.xy(4, 16));
-        lblHouseNumber = new JLabel("House Number");
+        lblHouseNumber = new JLabel(LIMOResourceBundle.getString("NUMBER"));
         this.add(lblHouseNumber, cc.xy(2, 18));
         tfHouseNumber = new JTextField();
         tfHouseNumber.setEditable(false);
@@ -88,7 +89,7 @@ public class HubDataDialog extends DataDialog<Hub> {
             tfHouseNumber.setText(entity.getLocation().getHousenumber());
         }
         this.add(tfHouseNumber, cc.xy(4, 18));
-        lblLatitude = new JLabel("Latitude");
+        lblLatitude = new JLabel(LIMOResourceBundle.getString("LATITUDE"));
         this.add(lblLatitude, cc.xy(2, 20));
         tfLatitude = new JTextField();
         tfLatitude.setEditable(false);
@@ -96,7 +97,7 @@ public class HubDataDialog extends DataDialog<Hub> {
             tfLatitude.setText(entity.getLocation().getPosition().getLatitude() + "");
         }
         this.add(tfLatitude, cc.xy(4, 20));
-        lblLongitude = new JLabel("Longitude");
+        lblLongitude = new JLabel(LIMOResourceBundle.getString("LONGITUDE"));
         this.add(lblLongitude, cc.xy(2, 22));
         tfLongitude = new JTextField();
         tfLongitude.setEditable(false);

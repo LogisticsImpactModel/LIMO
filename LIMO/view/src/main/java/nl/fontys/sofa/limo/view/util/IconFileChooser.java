@@ -60,7 +60,7 @@ public class IconFileChooser extends JFileChooser {
 
         @Override
         public String getDescription() {
-            return "Icon (.png, .bmp, .jpg, .jpeg)";
+            return LIMOResourceBundle.getString("ICON_FILES");
         }
     }
 }

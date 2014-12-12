@@ -10,6 +10,7 @@ import java.util.List;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.view.custom.procedure.ProcedureComponent;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  *
@@ -21,9 +22,9 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
     public String getAsText() {
         List<Procedure> procedures = (List<Procedure>) getValue();
         if (procedures == null) {
-            return "Number of Procedures: 0";
+            return LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES"), 0);
         }
-        return "Number of Procedures: " + procedures.size();
+        return LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES"), procedures.size());
     }
 
     @Override

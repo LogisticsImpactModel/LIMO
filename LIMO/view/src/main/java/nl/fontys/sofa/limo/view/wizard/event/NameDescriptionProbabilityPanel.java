@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -29,6 +28,7 @@ import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.PoissonDistribution;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
 /**
@@ -50,30 +50,28 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
     private Distribution prop;
     private DistributionFactory distributionFactory;
-    private final ResourceBundle bundle;
 
     public NameDescriptionProbabilityPanel() {
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         initComponents();
     }
 
     @Override
     public String getName() {
-        return bundle.getString("BASIC_DATA");
+        return LIMOResourceBundle.getString("BASIC_DATA");
     }
 
     private void initComponents() {
         GridBagConstraints c = initLayout();
         initName();
 
-        descriptionLabel = new JLabel(bundle.getString("DESCRIPTION"));
+        descriptionLabel = new JLabel(LIMOResourceBundle.getString("DESCRIPTION"));
         descriptionTextArea = new JTextArea();
         descriptionTextArea.setRows(4);
 
         parametersLabel = new JPanel();
         parametersLabel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
-                bundle.getString("PARAMETERS"),
+                LIMOResourceBundle.getString("PARAMETERS"),
                 TitledBorder.LEFT,
                 TitledBorder.TOP
         ));
@@ -164,7 +162,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     }
 
     private void initName() {
-        nameLabel = new JLabel(bundle.getString("NAME"));
+        nameLabel = new JLabel(LIMOResourceBundle.getString("NAME"));
         nameTextField = new JTextField();
     }
 
@@ -173,7 +171,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         List<String> distTypes = Arrays.asList(distributionFactory.getDistributionTypes());
         Collections.sort(distTypes);
         String[] cbModel = distTypes.toArray(new String[distTypes.size()]);
-        distributionTypeLabel = new JLabel(bundle.getString("DISTRIBUTION_TYPE"));
+        distributionTypeLabel = new JLabel(LIMOResourceBundle.getString("DISTRIBUTION_TYPE"));
         distributionTypeComboBox = new JComboBox<>(cbModel);
         distributionTypeComboBox.addActionListener(new ActionListener() {
             @Override
@@ -252,7 +250,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
         @Override
         public String getColumnName(int column) {
-            return column == 0 ? bundle.getString("NAME") : bundle.getString("VALUE");
+            return column == 0 ? LIMOResourceBundle.getString("NAME") : LIMOResourceBundle.getString("VALUE");
         }
 
         @Override
@@ -273,14 +271,14 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                         n = Double.parseDouble((String) aValue);
                     } catch (NumberFormatException nfe) {
                         n = null;
-                        JOptionPane.showMessageDialog(parametersTable, bundle.getString("REQUIRES_FLOATING-POINT_VALUE"), bundle.getString("NOT_FLOATING-POINT"), JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(parametersTable, LIMOResourceBundle.getString("REQUIRES_FLOATING-POINT_VALUE"), LIMOResourceBundle.getString("NOT_FLOATING-POINT"), JOptionPane.WARNING_MESSAGE);
                     }
                 } else if (inputType.equals(Integer.class)) {
                     try {
                         n = Integer.parseInt((String) aValue);
                     } catch (NumberFormatException nfe) {
                         n = null;
-                        JOptionPane.showMessageDialog(parametersTable, bundle.getString("REQUIRES_INTERGER_VALUE"), bundle.getString("NOT_INTERGER"), JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(parametersTable, LIMOResourceBundle.getString("REQUIRES_INTERGER_VALUE"), LIMOResourceBundle.getString("NOT_INTERGER"), JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
                     n = 0;
@@ -293,5 +291,4 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
             }
         }
     }
-
 }

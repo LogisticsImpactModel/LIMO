@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -16,6 +15,7 @@ import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
 public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
@@ -28,16 +28,14 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
 
     private List<Hub> hubs;
     private List<HubType> hubTypes;
-    private final ResourceBundle bundle;
 
     public NewDuplicatedOrHubTypeHubPanel() {
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         initComponents();
     }
 
     @Override
     public String getName() {
-        return bundle.getString("HUB");
+        return LIMOResourceBundle.getString("HUB");
     }
 
     private void initComponents() {
@@ -54,12 +52,12 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         buttonGroup1.add(hubFromScratchSelection);
-        hubFromScratchSelection.setText(bundle.getString("FROM_SCRATCH"));
+        hubFromScratchSelection.setText(LIMOResourceBundle.getString("FROM_SCRATCH"));
         add(hubFromScratchSelection, c);
         hubFromScratchSelection.setSelected(true);
 
         buttonGroup1.add(hubCopySelection);
-        hubCopySelection.setText(bundle.getString("COPY_HUB"));
+        hubCopySelection.setText(LIMOResourceBundle.getString("COPY_HUB"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
@@ -80,7 +78,7 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
         hubCb.setEnabled(false);
 
         buttonGroup1.add(hubFromTypeSelection);
-        hubFromTypeSelection.setText(bundle.getString("FROM_HUBTYPE"));
+        hubFromTypeSelection.setText(LIMOResourceBundle.getString("FROM_HUBTYPE"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 3;
@@ -168,5 +166,4 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
         }
         return hub;
     }
-
 }

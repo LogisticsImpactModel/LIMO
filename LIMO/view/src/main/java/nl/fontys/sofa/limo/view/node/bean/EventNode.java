@@ -71,16 +71,16 @@ public class EventNode extends AbstractBeanNode<Event> {
             StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");
             name.addPropertyChangeListener(getListener());
             name.setDisplayName(LIMOResourceBundle.getString("NAME"));
-            name.setShortDescription(LIMOResourceBundle.getString("NAME_OF", "Procedure Category"));
+            name.setShortDescription(LIMOResourceBundle.getString("NAME_OF", LIMOResourceBundle.getString("EVENT")));
             
             StupidProperty description = new StupidProperty<>(getBean(), String.class, "description");
             description.addPropertyChangeListener(getListener());
             description.setDisplayName(LIMOResourceBundle.getString("DESCRIPTION"));
-            description.setShortDescription(LIMOResourceBundle.getString("DESCRIPTION_OF", "Procedure Category"));
+            description.setShortDescription(LIMOResourceBundle.getString("DESCRIPTION_OF", LIMOResourceBundle.getString("EVENT")));
             
             StupidProperty distributionProp = new StupidProperty(getBean(), Distribution.class, "probability");
             distributionProp.addPropertyChangeListener(getListener());
-            distributionProp.setDisplayName(LIMOResourceBundle.getString("Probability"));
+            distributionProp.setDisplayName(LIMOResourceBundle.getString("PROBABILITY"));
             distributionProp.setShortDescription(LIMOResourceBundle.getString("PROBABILITY_DESC"));
             distributionProp.setValue("canEditAsText", false);
             
@@ -88,14 +88,14 @@ public class EventNode extends AbstractBeanNode<Event> {
             eventProp.addPropertyChangeListener(getListener());
             eventProp.setPropertyEditorClass(EventPropertyEditor.class);
             eventProp.setDisplayName(LIMOResourceBundle.getString("EVENTS"));
-            eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", "Event"));
+            eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", LIMOResourceBundle.getString("EVENT")));
             eventProp.setValue("canEditAsText", false);
             
             StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
             procedureProp.addPropertyChangeListener(getListener());
             procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
             procedureProp.setDisplayName(LIMOResourceBundle.getString("PROCEDURES"));
-            procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", "Hub"));
+            procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", LIMOResourceBundle.getString("EVENT")));
             procedureProp.setValue("canEditAsText", false);
             
             set.put(name);

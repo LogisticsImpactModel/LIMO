@@ -4,6 +4,7 @@ import java.io.IOException;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.nodes.Children;
 import org.openide.util.datatransfer.NewType;
@@ -35,7 +36,7 @@ public class LegTypeRootNode extends AbstractRootNode {
 
             @Override
             public String getName() {
-                return "Leg Type";
+                return LIMOResourceBundle.getString("LEG_TYPE");
             }
 
             @Override

@@ -67,5 +67,4 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(TYPE_EVENT, component.getEvents());
     }
-
 }

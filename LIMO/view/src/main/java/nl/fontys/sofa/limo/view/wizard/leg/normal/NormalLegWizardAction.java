@@ -18,6 +18,7 @@ import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
@@ -68,7 +69,7 @@ public final class NormalLegWizardAction implements ActionListener {
         }
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
-        wiz.setTitle("Create Normal leg");
+        wiz.setTitle(LIMOResourceBundle.getString("CREATE_NORMAL_LEG"));
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             Leg leg = new Leg();
             leg.setName((String) wiz.getProperty("name"));
@@ -77,7 +78,7 @@ public final class NormalLegWizardAction implements ActionListener {
             leg.setEvents((List<Event>) wiz.getProperty("events"));
             leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
             legListener.finishedLeg(leg);
-            Lookup.getDefault().lookup(StatusBarService.class).setMessage("Leg "+ leg.getName(), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+            Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("LEG") + " " + leg.getName(), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
         }
     }
 

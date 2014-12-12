@@ -6,12 +6,12 @@ import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
@@ -52,7 +52,6 @@ public final class EventWizardAction implements ActionListener {
     private Event eventUpdate;
     private boolean isUpdate = false;
     private final EventService service = Lookup.getDefault().lookup(EventService.class);
-    private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -84,10 +83,10 @@ public final class EventWizardAction implements ActionListener {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         if (isUpdate) {
-            wiz.setTitle(bundle.getString("EDIT_EVENT"));
+            wiz.setTitle(LIMOResourceBundle.getString("EDIT_EVENT"));
             wiz.putProperty(EVENT, eventUpdate);
         } else {
-            wiz.setTitle(bundle.getString("ADD_EVENT"));
+            wiz.setTitle(LIMOResourceBundle.getString("ADD_EVENT"));
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             handleWizardFinishClick(wiz);
@@ -117,5 +116,4 @@ public final class EventWizardAction implements ActionListener {
         this.isUpdate = true;
         this.eventUpdate = event;
     }
-
 }

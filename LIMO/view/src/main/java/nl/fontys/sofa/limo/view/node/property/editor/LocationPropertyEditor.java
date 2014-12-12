@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 import nl.fontys.sofa.limo.domain.component.hub.Continent;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
 import nl.fontys.sofa.limo.domain.component.hub.SerializableCountry;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.nodes.PropertyEditorRegistration;
 
 /**
@@ -61,7 +62,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
 
     @Override
     public String getAsText() {
-        return "Location";
+        return LIMOResourceBundle.getString("LOCATION");
     }
 
     private static class LocationEditor extends JDialog implements ActionListener {
@@ -88,7 +89,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             setModal(true);
             setLocationRelativeTo(null);
             setPreferredSize(new Dimension(480, 240));
-            setTitle("Edit Location");
+            setTitle(LIMOResourceBundle.getString("EDIT_OF", "Location"));
 
             initComponents();
         }
@@ -107,10 +108,10 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             setLayout(new BorderLayout());
             add(container, BorderLayout.CENTER);
 
-            btnOk = new JButton("OK");
+            btnOk = new JButton(LIMOResourceBundle.getString("OK"));
             btnOk.addActionListener(this);
 
-            btnCancel = new JButton("Cancel");
+            btnCancel = new JButton(LIMOResourceBundle.getString("CANCEL"));
             btnCancel.addActionListener(this);
 
             JPanel buttonBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -179,7 +180,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             c.gridy = 0;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            container.add(new JLabel("Continent"), c);
+            container.add(new JLabel(LIMOResourceBundle.getString("CONTINENT")), c);
             c.gridx = 1;
             c.gridy = 0;
             c.gridwidth = 4;
@@ -190,7 +191,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             c.gridy = 1;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            container.add(new JLabel("Country"), c);
+            container.add(new JLabel(LIMOResourceBundle.getString("COUNTRY")), c);
             c.gridx = 1;
             c.gridy = 1;
             c.gridwidth = 4;
@@ -201,7 +202,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             c.gridy = 2;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            container.add(new JLabel("Street"), c);
+            container.add(new JLabel(LIMOResourceBundle.getString("STREET")), c);
             c.gridx = 1;
             c.gridy = 2;
             c.gridwidth = 2;
@@ -211,7 +212,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             c.gridy = 2;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            container.add(new JLabel("Number"), c);
+            container.add(new JLabel(LIMOResourceBundle.getString("NUMBER")), c);
             c.gridx = 4;
             c.gridy = 2;
             c.gridwidth = 1;
@@ -222,7 +223,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             c.gridy = 3;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            container.add(new JLabel("City"), c);
+            container.add(new JLabel(LIMOResourceBundle.getString("CITY")), c);
             c.gridx = 1;
             c.gridy = 3;
             c.gridwidth = 2;
@@ -232,7 +233,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             c.gridy = 3;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            container.add(new JLabel("Postcode"), c);
+            container.add(new JLabel(LIMOResourceBundle.getString("POSTCODE")), c);
             c.gridx = 4;
             c.gridy = 3;
             c.gridwidth = 1;
@@ -243,7 +244,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             c.gridy = 4;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            container.add(new JLabel("State"), c);
+            container.add(new JLabel(LIMOResourceBundle.getString("STATE")), c);
             c.gridx = 1;
             c.gridy = 4;
             c.gridwidth = 2;
@@ -271,7 +272,6 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
                 }
                 hubLocation = loc;
             }
-
             for (WindowListener wl : getWindowListeners()) {
                 wl.windowClosing(null);
             }
@@ -291,10 +291,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
                 countries[i + 1] = country.getName();
                 countriesByName.put(country.getName(), country);
             }
-
             return countries;
         }
-
     }
-
 }

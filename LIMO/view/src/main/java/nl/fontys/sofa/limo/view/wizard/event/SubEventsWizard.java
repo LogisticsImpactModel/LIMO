@@ -58,5 +58,4 @@ public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor>
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(EVENT_EVENTS, component.getEvents());
     }
-
 }

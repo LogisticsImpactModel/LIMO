@@ -14,21 +14,20 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
 public final class NewOrDuplicatedHubTypePanel extends JPanel {
 
     private List<HubType> ht;
-    private final ResourceBundle bundle;
 
     public NewOrDuplicatedHubTypePanel() {
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         initComponents();
     }
 
     @Override
     public String getName() {
-        return bundle.getString("HUB_TYPE");
+        return LIMOResourceBundle.getString("HUB_TYPE");
     }
 
     private void initComponents() {
@@ -44,7 +43,7 @@ public final class NewOrDuplicatedHubTypePanel extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         buttonGroup1.add(rbFromScratch);
-        rbFromScratch.setText(bundle.getString("FROM_SCRATCH"));
+        rbFromScratch.setText(LIMOResourceBundle.getString("FROM_SCRATCH"));
         add(rbFromScratch, c);
         rbFromScratch.setSelected(true);
 
@@ -58,7 +57,7 @@ public final class NewOrDuplicatedHubTypePanel extends JPanel {
         });
 
         buttonGroup1.add(rbCopyFrom);
-        rbCopyFrom.setText(bundle.getString("COPY_EXISTING"));
+        rbCopyFrom.setText(LIMOResourceBundle.getString("COPY_EXISTING"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;

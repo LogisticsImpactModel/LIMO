@@ -1,8 +1,8 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
-import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
@@ -55,7 +55,7 @@ public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<Wizard
     @Override
     public void validate() throws WizardValidationException {
         if (getComponent().isEventCopySelected() && getComponent().getEvent() == null) {
-            throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("EVENT_NOT_SET"));
+            throw new WizardValidationException(null, null, LIMOResourceBundle.getString("EVENT_NOT_SET"));
         }
     }
 }

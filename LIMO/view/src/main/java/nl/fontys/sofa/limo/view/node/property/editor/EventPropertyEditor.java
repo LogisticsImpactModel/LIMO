@@ -12,6 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  *
@@ -23,9 +24,9 @@ public class EventPropertyEditor extends PropertyEditorSupport {
     public String getAsText() {
         List<Event> events = (List<Event>) getValue();
         if (events == null) {
-            return "Number of Events: 0";
+            return LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("EVENTS"), 0);
         }
-        return "Number of Events: " + events.size();
+        return LIMOResourceBundle.getString("NUMBER_OF",LIMOResourceBundle.getString("EVENTS"), events.size());
     }
 
     @Override

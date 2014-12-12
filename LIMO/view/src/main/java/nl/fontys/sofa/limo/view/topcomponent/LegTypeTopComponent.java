@@ -4,6 +4,7 @@ import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.node.factory.LegTypeChildFactory;
 import nl.fontys.sofa.limo.view.node.root.AbstractRootNode;
 import nl.fontys.sofa.limo.view.node.root.LegTypeRootNode;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -60,7 +61,7 @@ public final class LegTypeTopComponent extends BaseEntityTopComponent {
     @Override
     protected AbstractRootNode getRootNode(Children children) throws ServiceNotFoundException {
         AbstractRootNode rootNode = new LegTypeRootNode(children);
-        rootNode.setDisplayName("Legtypes");
+        rootNode.setDisplayName(LIMOResourceBundle.getString("LEG_TYPE"));
         return rootNode;
     }
 

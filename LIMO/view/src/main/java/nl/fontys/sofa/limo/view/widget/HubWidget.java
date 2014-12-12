@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.layout.LayoutFactory;
@@ -89,12 +90,12 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         containerWidget.setLayout(LayoutFactory.createHorizontalFlowLayout());
 
         procedureWidget = new ProcedureWidget(scene);
-        procedureWidget.setToolTipText("Number of procedures: " + numberOfProcedures);
+        procedureWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES"), numberOfProcedures));
         if (numberOfProcedures == 0) {
             procedureWidget.setVisible(false);
         }
         eventWidget = new EventsWidget(scene);
-        eventWidget.setToolTipText("Number of main events: " + numberOfEvents);
+        eventWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("EVENTS"), numberOfEvents));
         if (numberOfEvents == 0) {
             eventWidget.setVisible(false);
         }
@@ -156,14 +157,14 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
             eventWidget.setVisible(false);
         } else {
             eventWidget.setVisible(true);
-            eventWidget.setToolTipText("Number of main events: " + numberOfEvents);
+            eventWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("MAIN_EVENTS"), numberOfEvents));
         }
 
         if (numberOfProcedures == 0) {
             procedureWidget.setVisible(false);
         } else {
             procedureWidget.setVisible(true);
-            procedureWidget.setToolTipText("Number of procedures: " + numberOfProcedures);
+            procedureWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES", numberOfProcedures)));
         }
     }
 
@@ -203,7 +204,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         @Override
         public JPopupMenu getPopupMenu(Widget widget, Point localLocation) {
             JPopupMenu popup = new JPopupMenu();
-            popup.add(new AbstractAction("Set Start Hub") {
+            popup.add(new AbstractAction(LIMOResourceBundle.getString("SET_START_HUB")) {
 
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -211,7 +212,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     scene.setStartWidget(HubWidget.this);
                 }
             });
-            popup.add(new AbstractAction("Delete") {
+            popup.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
 
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -223,5 +224,4 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
             return popup;
         }
     }
-
 }

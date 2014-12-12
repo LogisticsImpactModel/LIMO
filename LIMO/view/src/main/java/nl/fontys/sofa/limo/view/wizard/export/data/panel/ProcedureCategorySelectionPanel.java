@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.wizard.export.data.panel;
 import java.awt.event.MouseEvent;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.ProcedureCategoryDataDialog;
 import org.openide.WizardDescriptor;
@@ -18,7 +19,7 @@ public class ProcedureCategorySelectionPanel extends BaseEntitySelectionPanel<Pr
     protected void initAllEntities() {
         ProcedureCategoryService hubService = Lookup.getDefault().lookup(ProcedureCategoryService.class);
         allEntities = hubService.findAll();
-        component.setName("Procedure Categories");
+        component.setName(LIMOResourceBundle.getString("PROCEDURE_CATEGORIES"));
     }
 
     @Override
@@ -38,5 +39,4 @@ public class ProcedureCategorySelectionPanel extends BaseEntitySelectionPanel<Pr
         }
         wiz.putProperty(ExportWizardAction.CATEGORIES, selectedEntities);
     }
-
 }

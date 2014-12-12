@@ -1,12 +1,11 @@
 package nl.fontys.sofa.limo.view.wizard.types.hub;
 
-import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -58,7 +57,7 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
                 getComponent().update(hubType.getName(), hubType.getDescription(), hubType.getIcon());
             }
         } else {
-            if(lastType != null){
+            if (lastType != null) {
                 getComponent().update("", "", null);
             }
         }
@@ -76,7 +75,7 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
     public void validate() throws WizardValidationException {
         ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         if (component.getNameInput().isEmpty()) {
-            throw new WizardValidationException(null, MessageFormat.format(bundle.getString("VALUE_NOT_SET"), bundle.getString("NAME")), null);
+            throw new WizardValidationException(null, LIMOResourceBundle.getString("VALUE_NOT_SET", bundle.getString("NAME")), null);
         }
     }
 

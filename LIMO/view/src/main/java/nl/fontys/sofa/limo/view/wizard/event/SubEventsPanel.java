@@ -51,5 +51,4 @@ public class SubEventsPanel extends EventsPanel {
     public String getName() {
         return LIMOResourceBundle.getString("SUB_EVENTS");
     }
-
 }

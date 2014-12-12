@@ -5,6 +5,7 @@ import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.node.root.AbstractRootNode;
 import nl.fontys.sofa.limo.view.node.root.HubRootNode;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
 import org.openide.util.Exceptions;
@@ -28,7 +29,7 @@ import org.openide.util.LookupListener;
  */
 public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
         implements LookupListener {
-
+    
     private final HubChildFactory hubFactory;
     private final Result<Hub> lookupResult;
 
@@ -42,28 +43,27 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
         lookupResult = hubFactory.getLookup().lookupResult(Hub.class);
         lookupResult.addLookupListener(this);
     }
-
+    
     @Override
     protected boolean createKeys(List<AbstractRootNode> list) {
         try {
             Children hubChildren = Children.create(hubFactory, true);
             AbstractRootNode hubRootNode = new HubRootNode(hubChildren);
-            hubRootNode.setDisplayName("Hubs");
+            hubRootNode.setDisplayName(LIMOResourceBundle.getString("HUBS"));
             list.add(hubRootNode);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
         }
         return true;
     }
-
+    
     @Override
     protected AbstractRootNode createNodeForKey(AbstractRootNode key) {
         return key;
     }
-
+    
     @Override
     public void resultChanged(LookupEvent ev) {
         refresh(true);
     }
-
 }

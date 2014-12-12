@@ -17,6 +17,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.DefaultTableModel;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -45,15 +46,15 @@ public abstract class BaseEntitySelectionPanel<T extends BaseEntity> implements 
             entityModel[i][1] = false;
         }
         //COMPONENT BASIC
-        tblmdlEntities = new DefaultTableModel(entityModel, new String[]{"Name", "Selected"}, new boolean[]{false, true}, new Class[]{String.class, Boolean.class});
+        tblmdlEntities = new DefaultTableModel(entityModel, new String[]{LIMOResourceBundle.getString("NAME"), LIMOResourceBundle.getString("SELECTED")}, new boolean[]{false, true}, new Class[]{String.class, Boolean.class});
         cc = new CellConstraints();
         layout = new FormLayout("5px, pref, 5px, pref, pref:grow, 5px", "5px, pref, 5px, pref:grow, 5px");
         component.setLayout(layout);
         //BUTTONS
-        btnSelectAll = new JButton("Select All");
+        btnSelectAll = new JButton(LIMOResourceBundle.getString("SELECT_ALL"));
         btnSelectAll.addActionListener(this);
         component.add(btnSelectAll, cc.xy(2, 2));
-        btnDeselectAll = new JButton("Deselect All");
+        btnDeselectAll = new JButton(LIMOResourceBundle.getString("DESELECT_ALL"));
         btnDeselectAll.addActionListener(this);
         component.add(btnDeselectAll, cc.xy(4, 2));
         //TABLE

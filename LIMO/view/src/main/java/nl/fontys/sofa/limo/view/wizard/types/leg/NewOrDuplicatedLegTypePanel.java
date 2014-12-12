@@ -6,25 +6,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.JPanel;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
 public final class NewOrDuplicatedLegTypePanel extends JPanel {
 
     private List<LegType> lt;
-    private final ResourceBundle bundle;
 
     public NewOrDuplicatedLegTypePanel() {
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         initComponents();
     }
 
     @Override
     public String getName() {
-        return bundle.getString("LEG_TYPE");
+        return LIMOResourceBundle.getString("LEG_TYPE");
     }
 
     /**
@@ -45,7 +43,7 @@ public final class NewOrDuplicatedLegTypePanel extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         buttonGroup1.add(rbFromScratch);
-        rbFromScratch.setText(bundle.getString("FROM_SCRATCH"));
+        rbFromScratch.setText(LIMOResourceBundle.getString("FROM_SCRATCH"));
         add(rbFromScratch, c);
         rbFromScratch.setSelected(true);
 
@@ -59,7 +57,7 @@ public final class NewOrDuplicatedLegTypePanel extends JPanel {
         });
 
         buttonGroup1.add(rbCopyFrom);
-        rbCopyFrom.setText(bundle.getString("COPY_EXISTING"));
+        rbCopyFrom.setText(LIMOResourceBundle.getString("COPY_EXISTING"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;

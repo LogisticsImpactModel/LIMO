@@ -1,9 +1,9 @@
 package nl.fontys.sofa.limo.view.wizard.hub;
 
-import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_COPY;
 import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_TYPE;
 import org.openide.WizardDescriptor;
@@ -65,10 +65,10 @@ public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<W
     @Override
     public void validate() throws WizardValidationException {
         if (getComponent().isHubCopySelected() && getComponent().getHub() == null) {
-            throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("HUB_NOT_SET"));
+            throw new WizardValidationException(null, null, LIMOResourceBundle.getString("HUB_NOT_SET"));
         }
         if (getComponent().isHubTypeSelected() && getComponent().getHubType() == null) {
-            throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("HUB_TYPE_NOT_SET"));
+            throw new WizardValidationException(null, null, LIMOResourceBundle.getString("HUB_TYPE_NOT_SET"));
         }
     }
 
