@@ -58,8 +58,7 @@ public class ChainFileChooser extends JFileChooser {
 
         @Override
         public String getDescription() {
-            return "Supply Chain Files (.lsc)";
+            return LIMOResourceBundle.getString("SUPPLY_CHAIN_FILES");
         }
-
     }
 }

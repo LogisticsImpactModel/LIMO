@@ -4,6 +4,7 @@ import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.node.factory.EventChildFactory;
 import nl.fontys.sofa.limo.view.node.root.AbstractRootNode;
 import nl.fontys.sofa.limo.view.node.root.EventRootNode;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -61,7 +62,7 @@ public final class EventTopComponent extends BaseEntityTopComponent {
     @Override
     protected AbstractRootNode getRootNode(Children children) throws ServiceNotFoundException {
         AbstractRootNode rootNode = new EventRootNode(children);
-        rootNode.setDisplayName("Event");
+        rootNode.setDisplayName(LIMOResourceBundle.getString("EVENT"));
         return rootNode;
     }
 

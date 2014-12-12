@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
@@ -13,6 +12,7 @@ import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
@@ -62,7 +62,7 @@ public final class HubTypeWizardAction extends TypeWizardAction {
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
-        wiz.setTitle(ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("ADD_HUB_TYPE"));
+        wiz.setTitle(LIMOResourceBundle.getString("ADD_HUB_TYPE"));
         if (isUpdate) {
             wiz.putProperty(TYPE_NAME, hubType.getName());
             wiz.putProperty(TYPE_DESCRIPTION, hubType.getDescription());

@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.util.NbBundle.Messages;
@@ -67,10 +68,10 @@ public final class StartpageTopComponent extends TopComponent {
         footerPane = new JPanel();
 
         setBorder(BorderFactory.createEmptyBorder(25, 100, 75, 100));
-        setDisplayName("Startpage");
+        setDisplayName(LIMOResourceBundle.getString("STARTPAGE"));
         setMaximumSize(new java.awt.Dimension(10000, 5000));
         setMinimumSize(new java.awt.Dimension(700, 500));
-        setName("Startpage");
+        setName(LIMOResourceBundle.getString("STATPAGE"));
         setPreferredSize(new java.awt.Dimension(10000, 500));
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 

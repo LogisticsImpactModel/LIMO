@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.wizard.export.data.panel;
 import java.awt.event.MouseEvent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.EventDataDialog;
 import org.openide.WizardDescriptor;
@@ -17,7 +18,7 @@ public class EventSelectionPanel extends BaseEntitySelectionPanel<Event> {
     protected void initAllEntities() {
         EventService eventService = Lookup.getDefault().lookup(EventService.class);
         allEntities = eventService.findAll();
-        component.setName("Events");
+        component.setName(LIMOResourceBundle.getString("EVENTS"));
     }
 
     @Override

@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.view.widget;
 
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.Scene;
 
@@ -15,7 +16,7 @@ public class StartWidget extends ImageWidget {
     public StartWidget(Scene scene) throws IOException {
         super(scene);
         setImage(ImageIO.read(getClass().getResourceAsStream("/icons/start-flag.png")));
-        setToolTipText("Starting Point");
+        setToolTipText(LIMOResourceBundle.getString("STARTING_POINT"));
     }
 
 }

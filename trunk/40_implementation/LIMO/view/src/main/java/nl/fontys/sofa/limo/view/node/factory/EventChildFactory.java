@@ -92,5 +92,4 @@ public class EventChildFactory extends ChildFactory<Event>
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
     }
-
 }

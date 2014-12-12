@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.wizard.export.data.panel;
 import java.awt.event.MouseEvent;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.HubDataDialog;
 import org.openide.WizardDescriptor;
@@ -23,7 +24,7 @@ public class HubSelectionPanel extends BaseEntitySelectionPanel<Hub> {
     protected void initAllEntities() {
         HubService hubService = Lookup.getDefault().lookup(HubService.class);
         allEntities = hubService.findAll();
-        component.setName("Hubs");
+        component.setName(LIMOResourceBundle.getString("HUBS"));
     }
 
     @Override

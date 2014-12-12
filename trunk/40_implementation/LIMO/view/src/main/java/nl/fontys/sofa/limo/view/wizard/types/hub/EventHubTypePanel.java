@@ -14,6 +14,7 @@ import javax.swing.table.TableColumn;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 public final class EventHubTypePanel extends EventsPanel {
 
@@ -23,7 +24,7 @@ public final class EventHubTypePanel extends EventsPanel {
 
     @Override
     public String getName() {
-        return "Events";
+        return LIMOResourceBundle.getString("EVENTS");
     }
 
     /**

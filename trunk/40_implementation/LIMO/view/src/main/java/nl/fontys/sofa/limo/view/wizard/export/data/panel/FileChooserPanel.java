@@ -5,6 +5,7 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
@@ -54,13 +55,12 @@ public class FileChooserPanel implements WizardDescriptor.Panel<WizardDescriptor
 
     @Override
     public void validate() throws WizardValidationException {
-        ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         if (component.getPath().equals("") || component.getFileName().equals("")) {
-            throw new WizardValidationException(null, MessageFormat.format(bundle.getString("VALUE_NOT_SET"), "Path"), null);
+            throw new WizardValidationException(null, MessageFormat.format(LIMOResourceBundle.getString("VALUE_NOT_SET"), "Path"), null);
         }
         File f = new File(component.getPath() + "\\" + component.getFileName() + ".lef");
         if (f.exists()) {
-            throw new WizardValidationException(null, MessageFormat.format(bundle.getString("FILE_EXISTS"), new Object[]{}), null);
+            throw new WizardValidationException(null, MessageFormat.format(LIMOResourceBundle.getString("FILE_ALREADY_EXISTS"), new Object[]{}), null);
         }
     }
 }

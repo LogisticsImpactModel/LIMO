@@ -12,6 +12,7 @@ import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * @author Matthias Brück
@@ -32,7 +33,7 @@ public class ComponentViewPanel extends JPanel {
 
         this.add(new BaseEntityViewPanel(entity), cc.xyw(2, 2, 3));
 
-        lblEvent = new JLabel("Events");
+        lblEvent = new JLabel(LIMOResourceBundle.getString("EVENTS"));
         this.add(lblEvent, cc.xyw(2, 4, 3));
         events = entity.getEvents().toArray(new Event[]{});
         Object[][] eventsModel = new Object[events.length][2];
@@ -40,11 +41,11 @@ public class ComponentViewPanel extends JPanel {
             eventsModel[i][0] = events[i].getName();
             eventsModel[i][1] = events[i].getDependency();
         }
-        tblmdlEvents = new DefaultTableModel(eventsModel, new String[]{"Name", "Dependency"}, null, new Class[]{String.class, ExecutionState.class});
+        tblmdlEvents = new DefaultTableModel(eventsModel, new String[]{LIMOResourceBundle.getString("NAME"), LIMOResourceBundle.getString("DEPENDENCY")}, null, new Class[]{String.class, ExecutionState.class});
         tblEvents = new JTable(tblmdlEvents);
         JScrollPane tblEventsPane = new JScrollPane(tblEvents);
         this.add(tblEventsPane, cc.xyw(2, 6, 3));
-        lblProcedure = new JLabel("Procedures");
+        lblProcedure = new JLabel(LIMOResourceBundle.getString("PROCEDURES"));
         this.add(lblProcedure, cc.xyw(2, 8, 3));
         Procedure[] procedures = entity.getProcedures().toArray(new Procedure[]{});
         Object[][] procedureModel = new Object[procedures.length][3];
@@ -52,7 +53,7 @@ public class ComponentViewPanel extends JPanel {
             procedureModel[i][0] = procedures[i].getName();
             procedureModel[i][1] = procedures[i].getCategory();
         }
-        tblmdlProcedures = new DefaultTableModel(procedureModel, new String[]{"Name", "Category"}, null, new Class[]{String.class, String.class});
+        tblmdlProcedures = new DefaultTableModel(procedureModel, new String[]{LIMOResourceBundle.getString("NAME"), LIMOResourceBundle.getString("CATEGORY")}, null, new Class[]{String.class, String.class});
         tblProcedures = new JTable(tblmdlProcedures);
         JScrollPane tblProcedurePane = new JScrollPane(tblProcedures);
         this.add(tblProcedurePane, cc.xyw(2, 10, 3));

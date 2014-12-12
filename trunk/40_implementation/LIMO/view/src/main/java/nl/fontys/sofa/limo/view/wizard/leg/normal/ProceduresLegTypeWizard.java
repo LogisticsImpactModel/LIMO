@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -18,10 +12,8 @@ import org.openide.util.HelpCtx;
 public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private ProceduresPanel component;
-    private final ResourceBundle bundle;
 
     public ProceduresLegTypeWizard() {
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
     }
 
     @Override
@@ -74,7 +66,7 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
     @Override
     public void validate() throws WizardValidationException {
         if (component.getProcedures().isEmpty()) {
-            throw new WizardValidationException(null, null, MessageFormat.format(bundle.getString("VALUE_NOT_SET2"), bundle.getString("PROCEDURES")));
+            throw new WizardValidationException(null, null, LIMOResourceBundle.getString("VALUE_NOT_SET2", LIMOResourceBundle.getString("PROCEDURES")));
         }
     }
 

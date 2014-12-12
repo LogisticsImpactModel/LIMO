@@ -5,7 +5,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -14,34 +13,33 @@ import javax.swing.JTextField;
 import nl.fontys.sofa.limo.domain.component.hub.Continent;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
 import nl.fontys.sofa.limo.domain.component.hub.SerializableCountry;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 public final class LocationHubPanel extends JPanel {
 
-    private final ResourceBundle bundle;
 
     public LocationHubPanel() {
-        bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         initComponents();
     }
 
     @Override
     public String getName() {
-        return bundle.getString("LOCATION");
+        return LIMOResourceBundle.getString("LOCATION");
     }
 
     private void initComponents() {
-        lblStreet = new JLabel(bundle.getString("STREET"));
-        lblCity = new JLabel(bundle.getString("CITY"));
-        lblState = new JLabel(bundle.getString("STATE"));
-        lblCountry = new JLabel(bundle.getString("COUNTRY"));
-        lblContinent = new JLabel(bundle.getString("CONTINENT"));
+        lblStreet = new JLabel(LIMOResourceBundle.getString("STREET"));
+        lblCity = new JLabel(LIMOResourceBundle.getString("CITY"));
+        lblState = new JLabel(LIMOResourceBundle.getString("STATE"));
+        lblCountry = new JLabel(LIMOResourceBundle.getString("COUNTRY"));
+        lblContinent = new JLabel(LIMOResourceBundle.getString("CONTINENT"));
         tfStreet = new JTextField();
         tfCity = new JTextField();
         tfState = new JTextField();
         cmbCountry = new JComboBox();
         cmbContinent = new JComboBox();
-        lblNumber = new JLabel(" " + bundle.getString("NUMBER"));
-        lblZip = new JLabel(" " + bundle.getString("ZIP"));
+        lblNumber = new JLabel(" " + LIMOResourceBundle.getString("NUMBER"));
+        lblZip = new JLabel(" " + LIMOResourceBundle.getString("ZIP"));
         tfNumber = new JTextField();
         tfZip = new JTextField();
 
@@ -125,7 +123,7 @@ public final class LocationHubPanel extends JPanel {
         add(tfState, c);
 
         ArrayList<String> continents = new ArrayList<>();
-        continents.add(bundle.getString("NONE"));
+        continents.add(LIMOResourceBundle.getString("NONE"));
         for (Continent continent : Continent.values()) {
             continents.add(continent.getName());
         }
@@ -136,7 +134,7 @@ public final class LocationHubPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String selected = (String) cmbContinent.getSelectedItem();
 
-                if (!selected.equals(bundle.getString("NONE"))) {
+                if (!selected.equals(LIMOResourceBundle.getString("NONE"))) {
                     ArrayList<String> continents = new ArrayList<>();
                     for (Continent continent : Continent.values()) {
                         continents.add(continent.getName());
@@ -146,7 +144,7 @@ public final class LocationHubPanel extends JPanel {
 
                     String selectedCountry = (String) cmbCountry.getSelectedItem();
                     ArrayList<String> countries = new ArrayList<>();
-                    countries.add(bundle.getString("NONE"));
+                    countries.add(LIMOResourceBundle.getString("NONE"));
                     for (SerializableCountry country : Continent.values()[continents.indexOf(selected)].getCountries()) {
                         countries.add(country.getName());
                     }
@@ -160,14 +158,14 @@ public final class LocationHubPanel extends JPanel {
         });
 
         ArrayList<String> countryList = new ArrayList();
-        countryList.add(bundle.getString("NONE"));
+        countryList.add(LIMOResourceBundle.getString("NONE"));
         cmbCountry.setModel(new DefaultComboBoxModel(countryList.toArray()));
         cmbCountry.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selected = (String) cmbCountry.getSelectedItem();
-                boolean enable = !selected.equals(bundle.getString("NONE"));
+                boolean enable = !selected.equals(LIMOResourceBundle.getString("NONE"));
 
                 tfStreet.setEnabled(enable);
                 tfNumber.setEnabled(enable);
@@ -204,7 +202,7 @@ public final class LocationHubPanel extends JPanel {
             tfState.setText("");
             ArrayList<String> continents = new ArrayList<>();
             continents.clear();
-            continents.add(bundle.getString("NONE"));
+            continents.add(LIMOResourceBundle.getString("NONE"));
             for (Continent continent : Continent.values()) {
                 continents.add(continent.getName());
             }
@@ -214,7 +212,7 @@ public final class LocationHubPanel extends JPanel {
     }
 
     public Location getHubLocation() {
-        boolean valid = !bundle.getString("NONE").equals(cmbContinent.getSelectedItem());
+        boolean valid = !LIMOResourceBundle.getString("NONE").equals(cmbContinent.getSelectedItem());
         if (valid) {
             location = new Location(Continent.values()[cmbContinent.getSelectedIndex()]);
 

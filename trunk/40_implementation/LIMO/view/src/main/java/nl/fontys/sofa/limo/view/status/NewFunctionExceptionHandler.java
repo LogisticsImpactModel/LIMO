@@ -4,6 +4,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
 public class NewFunctionExceptionHandler extends Handler {
@@ -12,7 +13,7 @@ public class NewFunctionExceptionHandler extends Handler {
     public void publish(LogRecord record) {
         if (record != null && record.getMessage() != null) {
             // This is an uncaught exception being thrown.
-            Exception e = new Exception("Error", record.getThrown());
+            Exception e = new Exception(LIMOResourceBundle.getString("ERROR"), record.getThrown());
             if (record.getLevel() == Level.SEVERE || record.getLevel() == Level.FINE) {
                 if (record.getMessage() != null) {
                     e = new Exception(record.getMessage(), record.getThrown());

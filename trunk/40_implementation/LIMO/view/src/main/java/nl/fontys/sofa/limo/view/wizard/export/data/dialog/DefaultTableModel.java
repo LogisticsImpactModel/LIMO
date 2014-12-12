@@ -67,5 +67,4 @@ public class DefaultTableModel extends javax.swing.table.DefaultTableModel {
         }
         return false;
     }
-
 }

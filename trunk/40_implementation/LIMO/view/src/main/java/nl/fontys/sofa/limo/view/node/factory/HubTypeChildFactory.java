@@ -80,5 +80,4 @@ public class HubTypeChildFactory extends ChildFactory<HubType>
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
     }
-
 }

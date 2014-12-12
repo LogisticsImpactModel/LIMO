@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * @author Matthias Brück
@@ -23,12 +24,12 @@ public class BaseEntityViewPanel extends JPanel {
         cc = new CellConstraints();
         layout = new FormLayout("5px, pref, 10px, pref:grow, 5px", "5px, pref, 5px, pref:grow, 5px");
         this.setLayout(layout);
-        lblName = new JLabel("Name");
+        lblName = new JLabel(LIMOResourceBundle.getString("NAME"));
         this.add(lblName, cc.xy(2, 2));
         tfName = new JTextField(entity.getName());
         tfName.setEditable(false);
         this.add(tfName, cc.xy(4, 2));
-        lblDescription = new JLabel("Description");
+        lblDescription = new JLabel(LIMOResourceBundle.getString("DESCRIPTION"));
         this.add(lblDescription, cc.xy(2, 4));
         taDescription = new JTextArea(entity.getDescription());
         taDescription.setEditable(false);

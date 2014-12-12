@@ -92,5 +92,4 @@ public class LegTypeChildFactory extends ChildFactory<LegType>
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
     }
-
 }

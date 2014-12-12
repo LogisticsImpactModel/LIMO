@@ -5,6 +5,7 @@ import java.beans.IntrospectionException;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
 
@@ -32,13 +33,13 @@ public class ProcedureCategoryNode extends AbstractBeanNode<ProcedureCategory> {
         try {
             StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");
             name.addPropertyChangeListener(getListener());
-            name.setDisplayName("Name");
-            name.setShortDescription("The name of the procedure category.");
+            name.setDisplayName(LIMOResourceBundle.getString("NAME"));
+            name.setShortDescription(LIMOResourceBundle.getString("NAME OF", LIMOResourceBundle.getString("PROCEDURE_CATEGORY")));
 
             StupidProperty description = new StupidProperty<>(getBean(), String.class, "description");
             description.addPropertyChangeListener(getListener());
-            description.setDisplayName("Description");
-            description.setShortDescription("An optional short description of the procedure category.");
+            description.setDisplayName(LIMOResourceBundle.getString("DESCRIPTION"));
+            description.setShortDescription(LIMOResourceBundle.getString("DESCRIPTION_OF", LIMOResourceBundle.getString("PROCEDURE_CATEGORY")));
 
             set.put(name);
             set.put(description);
@@ -51,12 +52,11 @@ public class ProcedureCategoryNode extends AbstractBeanNode<ProcedureCategory> {
 
     @Override
     public AbstractBeanNode getDetachedNodeCopy() {
-        throw new UnsupportedOperationException("Copying not supported for procedurecategory.");
+        throw new UnsupportedOperationException(LIMOResourceBundle.getString("COPY_NOT_SUPPORTED"));
     }
 
     @Override
     Class getServiceClass() {
         return ProcedureCategoryService.class;
     }
-
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.externaltrader.JSONExporter;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.EventSelectionPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.FileChooserPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.HubSelectionPanel;
@@ -76,7 +77,7 @@ public final class ExportWizardAction implements ActionListener {
         }
         WizardDescriptor wizardDescriptor = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wizardDescriptor.setTitleFormat(new MessageFormat("{0}"));
-        wizardDescriptor.setTitle("Export data");
+        wizardDescriptor.setTitle(LIMOResourceBundle.getString("EXPORT_DATA"));
         if (DialogDisplayer.getDefault().notify(wizardDescriptor) == WizardDescriptor.FINISH_OPTION) {
             handleWizardFinishClick(wizardDescriptor);
         }

@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
@@ -15,6 +14,7 @@ import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
@@ -57,7 +57,6 @@ public final class HubWizardAction implements ActionListener {
 
     private Hub hubUpdate;
     private boolean update = false;
-    private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -90,10 +89,10 @@ public final class HubWizardAction implements ActionListener {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         if (update) {
-            wiz.setTitle(bundle.getString("ADD_HUB"));
+            wiz.setTitle(LIMOResourceBundle.getString("ADD_HUB"));
             wiz.putProperty(HUB_COPY, hubUpdate);
         } else {
-            wiz.setTitle(bundle.getString("EDIT_HUB"));
+            wiz.setTitle(LIMOResourceBundle.getString("EDIT_HUB"));
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             handleWizardFinishClick(wiz);

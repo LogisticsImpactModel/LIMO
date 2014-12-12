@@ -22,6 +22,7 @@ import javax.swing.table.TableRowSorter;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.util.IconUtil;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
 
@@ -44,7 +45,7 @@ public final class ScheduledLegSchedulePanel extends JPanel {
 
     @Override
     public String getName() {
-        return "Schedule";
+        return LIMOResourceBundle.getString("SCHEDULE");
     }
 
     private void initComponents() {
@@ -54,17 +55,17 @@ public final class ScheduledLegSchedulePanel extends JPanel {
         btnEdit = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.EDIT)));
         btnDelete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
         table = new JTable();
-        lblAlt = new JLabel("Alternative");
-        lblMessage = new JLabel("All values are in minutes!");
+        lblAlt = new JLabel(LIMOResourceBundle.getString("ALTERNATIVE"));
+        lblMessage = new JLabel(LIMOResourceBundle.getString("VALUES_IN_MINUTES"));
         lblAltName = new JLabel("");
-        lblExpected = new JLabel("Expected time");
-        lblWaiting = new JLabel("Waiting time");
+        lblExpected = new JLabel(LIMOResourceBundle.getString("EXPECTED_TIME"));
+        lblWaiting = new JLabel(LIMOResourceBundle.getString("WAITING_TIME"));
         tfExpected = new JTextField();
         tfExpected.setText("0");
         tfExpected.setMinimumSize(new Dimension(60, tfExpected.getHeight()));
         tfWaiting = new JTextField();
         tfWaiting.setText("0");
-        btnAddAlt = new JButton("Add");
+        btnAddAlt = new JButton(LIMOResourceBundle.getString("ADD"));
         setLayout(new BorderLayout());
         panelCenter.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -104,14 +105,14 @@ public final class ScheduledLegSchedulePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (btnAddAlt.getText().equals("Add")) {
+                if (btnAddAlt.getText().equals(LIMOResourceBundle.getString("ADD"))) {
                     NormalLegWizardAction wiz = new NormalLegWizardAction(new MultimodeLegTablePanel.FinishedLegListener() {
 
                         @Override
                         public void finishedLeg(Leg leg) {
                             altLeg = leg;
                             lblAltName.setText(leg.getName());
-                            btnAddAlt.setText("Edit");
+                            btnAddAlt.setText(LIMOResourceBundle.getString("EDIT"));
                         }
                     });
                     wiz.actionPerformed(e);
@@ -150,15 +151,15 @@ public final class ScheduledLegSchedulePanel extends JPanel {
                 long aTime = 0;
 
                 String time = JOptionPane.showInputDialog(ScheduledLegSchedulePanel.this,
-                        "Acceptance Time", null);
+                        LIMOResourceBundle.getString("ACCEPTANCE_TIME"), null);
                 if (time != null) {
                     if (!time.isEmpty()) {
                         try {
                             aTime = Long.parseLong(time.replace(",", "."));
                         } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(ScheduledLegSchedulePanel.this,
-                                    "Not a number!",
-                                    "Number error",
+                                    LIMOResourceBundle.getString("NOT_A_NUMBER"),
+                                    LIMOResourceBundle.getString("NUMBER_ERROR"),
                                     JOptionPane.ERROR_MESSAGE);
                         }
                     }
@@ -172,15 +173,15 @@ public final class ScheduledLegSchedulePanel extends JPanel {
                 if (table.getSelectedRow() >= 0) {
                     long aTime = 0;
                     String time = JOptionPane.showInputDialog(ScheduledLegSchedulePanel.this,
-                            "Acceptance Time", model.getValueAt(table.getSelectedRow(), 0));
+                            LIMOResourceBundle.getString("ACCEPTANCE_TIME"), model.getValueAt(table.getSelectedRow(), 0));
                     if (time != null) {
                         if (!time.isEmpty()) {
                             try {
                                 aTime = Long.parseLong(time.replace(",", "."));
                             } catch (NumberFormatException ex) {
                                 JOptionPane.showMessageDialog(ScheduledLegSchedulePanel.this,
-                                        "Not a number!",
-                                        "Number error",
+                                        LIMOResourceBundle.getString("NOT_A_NUMBER"),
+                                        LIMOResourceBundle.getString("NUMBER_ERROR"),
                                         JOptionPane.ERROR_MESSAGE);
                             }
                         }
@@ -216,8 +217,8 @@ public final class ScheduledLegSchedulePanel extends JPanel {
             leg.setWaitingTimeLimit(Long.parseLong(tfWaiting.getText().replace(",", ".")));
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(ScheduledLegSchedulePanel.this,
-                    "Not a number!",
-                    "Number error",
+                    LIMOResourceBundle.getString("NOT_A_NUMBER"),
+                    LIMOResourceBundle.getString("NUMBER_ERROR"),
                     JOptionPane.ERROR_MESSAGE);
             leg.setExpectedTime(0);
             leg.setWaitingTimeLimit(0);

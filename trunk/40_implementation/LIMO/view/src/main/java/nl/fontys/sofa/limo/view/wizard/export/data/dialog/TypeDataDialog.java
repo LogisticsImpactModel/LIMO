@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import nl.fontys.sofa.limo.domain.component.type.Type;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * @author Matthias Brück
@@ -28,7 +29,7 @@ public class TypeDataDialog extends DataDialog<Type> {
                 "5px, pref, 5px, pref, 5px, pref, 5px");
         this.setLayout(layout);
         this.add(getComponentViewPanel(), cc.xyw(2, 2, 3));
-        lblIcon = new JLabel("Icon");
+        lblIcon = new JLabel(LIMOResourceBundle.getString("ICON"));
         this.add(lblIcon, cc.xy(2, 6));
         icon = new ImageIcon(entity.getIcon().getImage());
         lblIconPreview = new JLabel(icon);

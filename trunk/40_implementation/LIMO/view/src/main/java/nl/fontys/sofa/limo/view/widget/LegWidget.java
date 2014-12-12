@@ -13,6 +13,7 @@ import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import static nl.fontys.sofa.limo.view.util.IconUtil.getScaledImageFromIcon;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.anchor.AnchorShape;
@@ -86,7 +87,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
 
     @Override
     public boolean drop(ChainGraphScene scene, Widget widget, Point point) {
-        throw new UnsupportedOperationException("Not droppable yet");
+        throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_DROPPABLE"));
     }
 
     public Leg getLeg() {
@@ -99,7 +100,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
 //    }
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_SUPPORTED")); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -110,7 +111,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         @Override
         public JPopupMenu getPopupMenu(Widget widget, Point localLocation) {
             JPopupMenu popup = new JPopupMenu();
-            popup.add(new AbstractAction("Delete") {
+            popup.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
 
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -121,5 +122,4 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
             return popup;
         }
     }
-
 }

@@ -4,6 +4,7 @@ import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.node.factory.HubTypeChildFactory;
 import nl.fontys.sofa.limo.view.node.root.AbstractRootNode;
 import nl.fontys.sofa.limo.view.node.root.HubTypeRootNode;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -61,7 +62,7 @@ public final class HubTypeTopComponent extends BaseEntityTopComponent {
     @Override
     protected AbstractRootNode getRootNode(Children children) throws ServiceNotFoundException {
         AbstractRootNode rootNode = new HubTypeRootNode(children);
-        rootNode.setDisplayName("Hubtypes");
+        rootNode.setDisplayName(LIMOResourceBundle.getString("HUB_TYPE"));
         return rootNode;
     }
 

@@ -115,39 +115,39 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");
             name.addPropertyChangeListener(getListener());
             name.setDisplayName(LIMOResourceBundle.getString("NAME"));
-            name.setShortDescription(LIMOResourceBundle.getString("NAME_OF", "Hub"));
+            name.setShortDescription(LIMOResourceBundle.getString("NAME_OF", LIMOResourceBundle.getString("HUB")));
             
             StupidProperty description = new StupidProperty<>(getBean(), String.class, "description");
             description.addPropertyChangeListener(getListener());
             description.setDisplayName(LIMOResourceBundle.getString("DESCRIPTION"));
-            description.setShortDescription(LIMOResourceBundle.getString("DESCRIPTION_OF", "Hub"));
+            description.setShortDescription(LIMOResourceBundle.getString("DESCRIPTION_OF", LIMOResourceBundle.getString("HUB")));
             
             StupidProperty iconProp = new StupidProperty(getBean(), Icon.class, "icon");
             iconProp.addPropertyChangeListener(getListener());
             iconProp.setPropertyEditorClass(IconPropertyEditor.HubIconPropertyEditor.class);
             iconProp.setDisplayName(LIMOResourceBundle.getString("ICON"));
-            iconProp.setShortDescription(LIMOResourceBundle.getString("ICON_OF", "Hub"));
+            iconProp.setShortDescription(LIMOResourceBundle.getString("ICON_OF", LIMOResourceBundle.getString("HUB")));
             iconProp.setValue("valueIcon", new ImageIcon(getBean().getIcon().getImage()));
             iconProp.setValue("canEditAsText", false);
             
             StupidProperty locProp = new StupidProperty(getBean(), Location.class, "location");
             locProp.addPropertyChangeListener(getListener());
             locProp.setDisplayName(LIMOResourceBundle.getString("LOCATION"));
-            locProp.setShortDescription(LIMOResourceBundle.getString("LOCATION_OF", "Hub"));
+            locProp.setShortDescription(LIMOResourceBundle.getString("LOCATION_OF", LIMOResourceBundle.getString("HUB")));
             locProp.setValue("canEditAsText", false);
             
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
             eventProp.addPropertyChangeListener(getListener());
             eventProp.setPropertyEditorClass(EventPropertyEditor.class);
             eventProp.setDisplayName(LIMOResourceBundle.getString("EVENTS"));
-            eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", "Hub"));
+            eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", LIMOResourceBundle.getString("HUB")));
             eventProp.setValue("canEditAsText", false);
             
             StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
             procedureProp.addPropertyChangeListener(getListener());
             procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
             procedureProp.setDisplayName(LIMOResourceBundle.getString("PROCEDURES"));
-            procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", "Hub"));
+            procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", LIMOResourceBundle.getString("HUB")));
             procedureProp.setValue("canEditAsText", false);
             
             generalSet.put(name);

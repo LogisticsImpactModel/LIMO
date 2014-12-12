@@ -46,7 +46,6 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
     public ImportConflictPanel(String path) {
         if (!path.isEmpty()) {
             duplicatedElements = JSONImporter.importData(path);
-            System.out.println("PATH: " + path);
         } else {
             duplicatedElements = new HashMap<>();
         }

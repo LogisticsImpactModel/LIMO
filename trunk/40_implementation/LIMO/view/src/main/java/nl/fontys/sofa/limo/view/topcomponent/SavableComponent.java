@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.spi.actions.AbstractSavable;
 
 public class SavableComponent extends AbstractSavable {
@@ -30,7 +31,7 @@ public class SavableComponent extends AbstractSavable {
             supplyChain.setFilepath(file.getAbsolutePath() + File.separator + supplyChain.getName() + ".lsc");
             supplyChain.saveToFile();
         } else {
-            System.out.println("No directory selected.");
+            System.out.println(LIMOResourceBundle.getString("NO_DIRECTORY_SELECTED"));
         }
     }
 

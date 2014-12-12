@@ -1,10 +1,10 @@
 package nl.fontys.sofa.limo.view.wizard.hub;
 
 import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.*;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
@@ -74,9 +74,8 @@ public class LocationHubWizard implements WizardDescriptor.Panel<WizardDescripto
 
     @Override
     public void validate() throws WizardValidationException {
-        ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         if (component.getHubLocation() == null) {
-            throw new WizardValidationException(null, MessageFormat.format(bundle.getString("VALUE_NOT_SET"), bundle.getString("CONTINENT")), null);
+            throw new WizardValidationException(null, MessageFormat.format(LIMOResourceBundle.getString("VALUE_NOT_SET"), LIMOResourceBundle.getString("CONTINENT")), null);
         }
     }
 

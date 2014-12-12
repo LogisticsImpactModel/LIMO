@@ -16,6 +16,7 @@ import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
@@ -27,21 +28,21 @@ import org.openide.util.Lookup;
  * @author Sebastiaan Heijmann
  */
 public class LegTypeNode extends AbstractBeanNode<LegType> {
-
+    
     public LegTypeNode(LegType bean) throws IntrospectionException {
         super(bean, LegType.class);
         this.bean = bean;
     }
-
+    
     @Override
     public boolean canDestroy() {
         return true;
     }
-
+    
     @Override
     public Action[] getActions(boolean context) {
         ArrayList<Action> actionList = new ArrayList<>();
-        actionList.add(new AbstractAction("Edit") {
+        actionList.add(new AbstractAction(LIMOResourceBundle.getString("EDIT")) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LegTypeWizardAction wiz = new LegTypeWizardAction();
@@ -51,11 +52,11 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
                 setSheet(getSheet());
             }
         });
-        actionList.add(new AbstractAction("Delete") {
-
+        actionList.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
+            
             @Override
             public void actionPerformed(ActionEvent e) {
-                int reply = JOptionPane.showConfirmDialog(null, "Are you sure to delete " + bean.getName(), "Are you sure...?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                int reply = JOptionPane.showConfirmDialog(null, LIMOResourceBundle.getString("DELETE_QUESTION", bean.getName()), LIMOResourceBundle.getString("ARE_YOU_SURE"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 if (reply == JOptionPane.YES_OPTION) {
                     LegTypeService service = Lookup.getDefault().lookup(LegTypeService.class);
                     service.delete(bean);
@@ -64,47 +65,47 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
         });
         return actionList.toArray(new Action[actionList.size()]);
     }
-
+    
     @Override
     protected void createProperties(LegType bean, BeanInfo info) {
         Sheet sets = getSheet();
         Sheet.Set set = Sheet.createPropertiesSet();
         set.setName("properties");
-        set.setDisplayName("Properties");
-
+        set.setDisplayName(LIMOResourceBundle.getString("PROPERTIES"));
+        
         try {
             StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");
             name.addPropertyChangeListener(getListener());
-            name.setDisplayName("Name");
-            name.setShortDescription("The name of the procedure category.");
-
+            name.setDisplayName(LIMOResourceBundle.getString("NAME"));
+            name.setShortDescription(LIMOResourceBundle.getString("NAME_OF", LIMOResourceBundle.getString("LEG_TYPE")));
+            
             StupidProperty description = new StupidProperty<>(getBean(), String.class, "description");
             description.addPropertyChangeListener(getListener());
-            description.setDisplayName("Description");
-            description.setShortDescription("An optional short description of the procedure category.");
-
+            description.setDisplayName(LIMOResourceBundle.getString("DESCRIPTION"));
+            description.setShortDescription(LIMOResourceBundle.getString("DESCRIPTION_OF", LIMOResourceBundle.getString("LEG_TYPE")));
+            
             StupidProperty iconProp = new StupidProperty(getBean(), Icon.class, "icon");
             iconProp.addPropertyChangeListener(getListener());
             iconProp.setPropertyEditorClass(IconPropertyEditor.LegIconPropertyEditor.class);
-            iconProp.setDisplayName("Icon");
-            iconProp.setShortDescription("The icon that gets displayed with this Leg-Type.");
+            iconProp.setDisplayName(LIMOResourceBundle.getString("ICON"));
+            iconProp.setShortDescription(LIMOResourceBundle.getString("ICON_OF", LIMOResourceBundle.getString("LEG_TYPE")));
             iconProp.setValue("valueIcon", new ImageIcon(getBean().getIcon().getImage()));
             iconProp.setValue("canEditAsText", false);
-
+            
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
             eventProp.addPropertyChangeListener(getListener());
             eventProp.setPropertyEditorClass(EventPropertyEditor.class);
-            eventProp.setDisplayName("Event");
-            eventProp.setShortDescription("All Events stored with this Hub.");
+            eventProp.setDisplayName(LIMOResourceBundle.getString("EVENTS"));
+            eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", LIMOResourceBundle.getString("LEG_TYPE")));
             eventProp.setValue("canEditAsText", false);
-
+            
             StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
             procedureProp.addPropertyChangeListener(getListener());
             procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
-            procedureProp.setDisplayName("Procedure");
-            procedureProp.setShortDescription("All Procedures stored with this Hub.");
+            procedureProp.setDisplayName(LIMOResourceBundle.getString("PROCEDURES"));
+            procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", LIMOResourceBundle.getString("LEG_TYPE")));
             procedureProp.setValue("canEditAsText", false);
-
+            
             set.put(name);
             set.put(description);
             set.put(iconProp);
@@ -115,12 +116,12 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
         }
         sets.put(set);
     }
-
+    
     @Override
     public AbstractBeanNode getDetachedNodeCopy() {
-        throw new UnsupportedOperationException("Copying not supported for legtype.");
+        throw new UnsupportedOperationException(LIMOResourceBundle.getString("COPY_NOT_SUPPORTED"));
     }
-
+    
     @Override
     Class getServiceClass() {
         return LegType.class;

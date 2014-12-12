@@ -19,6 +19,7 @@ import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.util.IconFileChooser;
 import nl.fontys.sofa.limo.view.util.IconUtil;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  *
@@ -57,9 +58,9 @@ public abstract class IconPropertyEditor extends PropertyEditorSupport {
 
         public CustomEditor() {
             lblPreview = new JLabel();
-            btnSelect = new JButton("Choose");
-            btnRemove = new JButton("Remove");
-            btnRemove.setToolTipText("Removes the current icon and takes the standard one.");
+            btnSelect = new JButton(LIMOResourceBundle.getString("CHOOSE"));
+            btnRemove = new JButton(LIMOResourceBundle.getString("REMOVE"));
+            btnRemove.setToolTipText(LIMOResourceBundle.getString("REMOVE_ICON_HINT"));
             fc = new IconFileChooser();
 
             setLayout(new GridBagLayout());
@@ -128,6 +129,5 @@ public abstract class IconPropertyEditor extends PropertyEditorSupport {
         protected Class getBeanType() {
             return LegType.class;
         }
-
     }
 }

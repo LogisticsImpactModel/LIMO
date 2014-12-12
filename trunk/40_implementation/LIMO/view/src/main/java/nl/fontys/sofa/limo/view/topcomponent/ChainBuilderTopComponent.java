@@ -13,6 +13,7 @@ import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
@@ -72,7 +73,7 @@ public final class ChainBuilderTopComponent extends TopComponent
         initCustomComponents();
 
         SupplyChain chain = graphScene.getSupplyChain();
-        NotifyDescriptor.InputLine dd = new DialogDescriptor.InputLine("Name:", "Set supply chain name");
+        NotifyDescriptor.InputLine dd = new DialogDescriptor.InputLine(LIMOResourceBundle.getString("NAME"), LIMOResourceBundle.getString("SET_NAME_OF", LIMOResourceBundle.getString("SUPPLY_CHAIN")));
 
         if (DialogDisplayer.getDefault().notify(dd) == NotifyDescriptor.OK_OPTION) {
             String name = dd.getInputText();
@@ -90,9 +91,7 @@ public final class ChainBuilderTopComponent extends TopComponent
                 associateLookup(pl);
             } catch (ServiceNotFoundException ex) {
                 Exceptions.printStackTrace(ex);
-                NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
-                        + "a problem. Please contact "
-                        + "your administrator...",
+                NotifyDescriptor d = new NotifyDescriptor.Message(LIMOResourceBundle.getString("LIMO_ERROR"),
                         NotifyDescriptor.ERROR_MESSAGE);
             }
         } else {
@@ -112,7 +111,7 @@ public final class ChainBuilderTopComponent extends TopComponent
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);
-            createView.putClientProperty("print.name", "Supply Chain: " + chain.getName());
+            createView.putClientProperty("print.name", LIMOResourceBundle.getString("SUPPLY_CHAIN") + ": " + chain.getName());
             shapePane.setViewportView(createView);
 
             add(shapePane, BorderLayout.CENTER);

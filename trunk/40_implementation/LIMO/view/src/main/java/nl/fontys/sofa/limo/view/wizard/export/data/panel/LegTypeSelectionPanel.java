@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.wizard.export.data.panel;
 import java.awt.event.MouseEvent;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.TypeDataDialog;
 import org.openide.WizardDescriptor;
@@ -22,7 +23,7 @@ public class LegTypeSelectionPanel extends BaseEntitySelectionPanel<LegType> {
     protected void initAllEntities() {
         LegTypeService hubService = Lookup.getDefault().lookup(LegTypeService.class);
         allEntities = hubService.findAll();
-        component.setName("Leg Types");
+        component.setName(LIMOResourceBundle.getString("LEG_TYPES"));
     }
 
     @Override

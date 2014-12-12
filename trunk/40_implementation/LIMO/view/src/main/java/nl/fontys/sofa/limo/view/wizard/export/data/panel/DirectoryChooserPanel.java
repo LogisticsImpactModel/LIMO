@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * @author Matthias Brück
@@ -36,7 +37,7 @@ public class DirectoryChooserPanel extends JPanel implements ActionListener {
         tfFileName = new JTextField();
         tfFileName.setText("");
         this.add(tfFileName, cc.xy(2, 4));
-        lbFileName = new JLabel("Filename");
+        lbFileName = new JLabel(LIMOResourceBundle.getString("FILENAME"));
         this.add(lbFileName, cc.xy(4, 4));
         fc = new JFileChooser();
         String currentPath = fc.getFileSystemView().getDefaultDirectory().toString();

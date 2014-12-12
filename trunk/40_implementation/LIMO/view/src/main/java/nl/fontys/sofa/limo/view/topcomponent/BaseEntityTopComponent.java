@@ -5,6 +5,7 @@ import javax.swing.ActionMap;
 import javax.swing.GroupLayout;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.view.node.root.AbstractRootNode;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.explorer.ExplorerManager;
@@ -38,8 +39,8 @@ public abstract class BaseEntityTopComponent extends TopComponent implements Exp
 
         initComponents();
         setLayout(new BorderLayout());
-        OutlineView ov = new OutlineView("Name");
-        ov.setPropertyColumns("description", "Description");
+        OutlineView ov = new OutlineView(LIMOResourceBundle.getString("NAME"));
+        ov.setPropertyColumns("description", LIMOResourceBundle.getString("DESCRIPTION"));
         ov.getOutline().setRootVisible(false);
         add(ov, BorderLayout.CENTER);
 
@@ -49,9 +50,7 @@ public abstract class BaseEntityTopComponent extends TopComponent implements Exp
             entityManager.setRootContext(rootNode);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
-            NotifyDescriptor d = new NotifyDescriptor.Message("Limo encountered "
-                    + "a problem, changes made will not be saved. Please contact "
-                    + "your administrator...",
+            NotifyDescriptor d = new NotifyDescriptor.Message(LIMOResourceBundle.getString("LIMO_ERROR"),
                     NotifyDescriptor.ERROR_MESSAGE);
             DialogDisplayer.getDefault().notify(d);
         }
@@ -92,5 +91,4 @@ public abstract class BaseEntityTopComponent extends TopComponent implements Exp
     public void componentClosed() {
         // TODO add custom code on component closing
     }
-
 }

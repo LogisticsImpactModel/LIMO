@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.node.root;
 import java.io.IOException;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
 import org.openide.nodes.Children;
 import org.openide.util.datatransfer.NewType;
@@ -34,7 +35,7 @@ public class EventRootNode extends AbstractRootNode {
 
             @Override
             public String getName() {
-                return "Event";
+                return LIMOResourceBundle.getString("EVENT");
             }
 
             @Override

@@ -11,7 +11,6 @@ import java.beans.PropertyEditorSupport;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -26,6 +25,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.nodes.PropertyEditorRegistration;
 import org.openide.util.Lookup;
 
@@ -65,10 +65,7 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
 
         private DistributionFactory distributionFactory;
 
-        private final ResourceBundle bundle;
-
         public CustomEditor() {
-            bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
             setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
@@ -79,7 +76,7 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
             parametersLabel = new javax.swing.JPanel();
             parametersLabel.setBorder(BorderFactory.createTitledBorder(
                     BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
-                    bundle.getString("PARAMETERS"),
+                    LIMOResourceBundle.getString("PARAMETERS"),
                     TitledBorder.LEFT,
                     TitledBorder.TOP
             ));
@@ -112,7 +109,7 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
             List<String> distTypes = Arrays.asList(distributionFactory.getDistributionTypes());
             Collections.sort(distTypes);
             String[] cbModel = distTypes.toArray(new String[distTypes.size()]);
-            distributionTypeLabel = new javax.swing.JLabel(bundle.getString("DISTRIBUTION_TYPE"));
+            distributionTypeLabel = new javax.swing.JLabel(LIMOResourceBundle.getString("DISTRIBUTION_TYPE"));
             distributionTypeComboBox = new javax.swing.JComboBox<>(cbModel);
             String nameForDistributionType = distributionFactory.getNameForDistributionType(getDistribution().getClass());
             distributionTypeComboBox.getModel().setSelectedItem(nameForDistributionType);
@@ -172,7 +169,7 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
 
             @Override
             public String getColumnName(int column) {
-                return column == 0 ? bundle.getString("NAME") : bundle.getString("VALUE");
+                return column == 0 ? LIMOResourceBundle.getString("NAME") : LIMOResourceBundle.getString("VALUE");
             }
 
             @Override
@@ -193,14 +190,14 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
                             n = Double.parseDouble((String) aValue);
                         } catch (NumberFormatException nfe) {
                             n = null;
-                            javax.swing.JOptionPane.showMessageDialog(parametersTable, bundle.getString("REQUIRES_FLOATING-POINT_VALUE"), bundle.getString("NOT_FLOATING-POINT"), JOptionPane.WARNING_MESSAGE);
+                            javax.swing.JOptionPane.showMessageDialog(parametersTable, LIMOResourceBundle.getString("REQUIRES_FLOATING-POINT_VALUE"), LIMOResourceBundle.getString("NOT_FLOATING-POINT"), JOptionPane.WARNING_MESSAGE);
                         }
                     } else if (inputType.equals(Integer.class)) {
                         try {
                             n = Integer.parseInt((String) aValue);
                         } catch (NumberFormatException nfe) {
                             n = null;
-                            javax.swing.JOptionPane.showMessageDialog(parametersTable, bundle.getString("REQUIRES_INTERGER_VALUE"), bundle.getString("NOT_INTERGER"), JOptionPane.WARNING_MESSAGE);
+                            javax.swing.JOptionPane.showMessageDialog(parametersTable, LIMOResourceBundle.getString("REQUIRES_INTERGER_VALUE"), LIMOResourceBundle.getString("NOT_INTERGER"), JOptionPane.WARNING_MESSAGE);
                         }
                     } else {
                         n = 0;
@@ -218,7 +215,5 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
                 }
             }
         }
-
     }
-
 }
