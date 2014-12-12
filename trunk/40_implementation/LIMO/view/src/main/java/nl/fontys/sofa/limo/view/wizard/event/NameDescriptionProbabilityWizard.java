@@ -4,7 +4,10 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
-import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.*;
+import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT;
+import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT_DESCRIPTION;
+import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT_NAME;
+import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT_PROBABILITY;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -48,7 +51,7 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
                 getComponent().updateEvent((Event) event);
             }
         } else {
-            if(lastEvent != null){
+            if (lastEvent != null) {
                 getComponent().updateEvent(null);
             }
         }

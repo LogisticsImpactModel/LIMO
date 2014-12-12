@@ -8,6 +8,7 @@ import javax.swing.DefaultComboBoxModel;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 public class SubEventsPanel extends EventsPanel {
 
@@ -23,7 +24,6 @@ public class SubEventsPanel extends EventsPanel {
                 selected.setDependency(ExecutionState.INDEPENDENT);
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();
-                //eventsComboBox.removeItemAt(eventsComboBox.getSelectedIndex());
                 checkDeleteButtonState();
             }
         });
@@ -49,7 +49,7 @@ public class SubEventsPanel extends EventsPanel {
 
     @Override
     public String getName() {
-        return bundle.getString("SUB_EVENTS");
+        return LIMOResourceBundle.getString("SUB_EVENTS");
     }
 
 }

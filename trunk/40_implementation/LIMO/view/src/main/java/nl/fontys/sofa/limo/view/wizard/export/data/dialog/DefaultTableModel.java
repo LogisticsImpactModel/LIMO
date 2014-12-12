@@ -1,8 +1,7 @@
 package nl.fontys.sofa.limo.view.wizard.export.data.dialog;
 
 /**
- * Extension of the DefaultTableModel. Adds functionality to change
- * editablility.
+ * Extension of the DefaultTableModel. Adds functionality to change editability.
  *
  * @author Matthias Brück
  */
@@ -33,7 +32,7 @@ public class DefaultTableModel extends javax.swing.table.DefaultTableModel {
     }
 
     /**
-     * Sets a columns editble state.
+     * Sets a columns editable state.
      *
      * @param isEditable the state.
      * @param column number of the column starting with 1. If the number is too
