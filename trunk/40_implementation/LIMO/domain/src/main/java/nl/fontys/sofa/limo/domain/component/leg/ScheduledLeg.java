@@ -65,6 +65,11 @@ public class ScheduledLeg extends Leg {
         this.delay = delay;
     }
 
+    /**
+     * Sorts the arrayList acceptanceTimes and returns it
+     *
+     * @return a sorted list (asc) with times that are acceptable
+     */
     public List<Long> getAcceptanceTimes() {
         Collections.sort(acceptanceTimes);
         return acceptanceTimes;
