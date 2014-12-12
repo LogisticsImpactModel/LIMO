@@ -15,7 +15,6 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
  */
 public class Event extends Component {
 
-    private transient Component parent;
     private ExecutionState dependency;
     @Embedded
     private Distribution probability;
@@ -25,20 +24,11 @@ public class Event extends Component {
         super();
     }
 
-    public Event(String name, String description, Component parent, ExecutionState dependency, Distribution probability, ExecutionState executionState) {
+    public Event(String name, String description, ExecutionState dependency, Distribution probability, ExecutionState executionState) {
         super(name, description);
-        this.parent = parent;
         this.dependency = dependency;
         this.probability = probability;
         this.executionState = executionState;
-    }
-
-    public Component getParent() {
-        return parent;
-    }
-
-    public void setParent(Component parent) {
-        this.parent = parent;
     }
 
     public ExecutionState getDependency() {
