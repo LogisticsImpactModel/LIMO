@@ -54,7 +54,7 @@ public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<Wizard
 
     @Override
     public void validate() throws WizardValidationException {
-        if (getComponent().eventCopySelection.isSelected() && getComponent().getEvent() == null) {
+        if (getComponent().isEventCopySelected() && getComponent().getEvent() == null) {
             throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("EVENT_NOT_SET"));
         }
     }

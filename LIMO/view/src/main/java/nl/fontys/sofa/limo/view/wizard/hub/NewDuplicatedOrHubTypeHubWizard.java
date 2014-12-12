@@ -64,10 +64,10 @@ public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<W
 
     @Override
     public void validate() throws WizardValidationException {
-        if (getComponent().rbCopyFrom.isSelected() && getComponent().getHub() == null) {
+        if (getComponent().isHubCopySelected() && getComponent().getHub() == null) {
             throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("HUB_NOT_SET"));
         }
-        if (getComponent().rbFromHubType.isSelected() && getComponent().getHubType() == null) {
+        if (getComponent().isHubTypeSelected() && getComponent().getHubType() == null) {
             throw new WizardValidationException(null, null, ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle").getString("HUB_TYPE_NOT_SET"));
         }
     }

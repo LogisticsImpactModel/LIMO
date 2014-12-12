@@ -20,8 +20,14 @@ import org.openide.util.Lookup;
 
 public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
 
-    private List<Hub> hl;
-    private List<HubType> htl;
+    private JComboBox hubCb;
+    private JComboBox hubTypeCb;
+    private JRadioButton hubCopySelection;
+    private JRadioButton hubFromTypeSelection;
+    private JRadioButton hubFromScratchSelection;
+
+    private List<Hub> hubs;
+    private List<HubType> hubTypes;
     private final ResourceBundle bundle;
 
     public NewDuplicatedOrHubTypeHubPanel() {
@@ -35,130 +41,132 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
     }
 
     private void initComponents() {
-        buttonGroup1 = new ButtonGroup();
-        rbFromScratch = new JRadioButton();
-        rbFromHubType = new JRadioButton();
-        rbCopyFrom = new JRadioButton();
-        cmbHubType = new JComboBox();
-        cmbHub = new JComboBox();
+        ButtonGroup buttonGroup1 = new ButtonGroup();
+        hubFromScratchSelection = new JRadioButton();
+        hubFromTypeSelection = new JRadioButton();
+        hubCopySelection = new JRadioButton();
+        hubTypeCb = new JComboBox();
+        hubCb = new JComboBox();
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 0;
-        buttonGroup1.add(rbFromScratch);
-        rbFromScratch.setText(bundle.getString("FROM_SCRATCH"));
-        add(rbFromScratch, c);
-        rbFromScratch.setSelected(true);
+        buttonGroup1.add(hubFromScratchSelection);
+        hubFromScratchSelection.setText(bundle.getString("FROM_SCRATCH"));
+        add(hubFromScratchSelection, c);
+        hubFromScratchSelection.setSelected(true);
 
-        rbFromScratch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbFromScratch.isSelected()) {
-                    cmbHubType.setEnabled(false);
-                    cmbHub.setEnabled(false);
-                }
-            }
-        });
-
-        buttonGroup1.add(rbCopyFrom);
-        rbCopyFrom.setText(bundle.getString("COPY_HUB"));
+        buttonGroup1.add(hubCopySelection);
+        hubCopySelection.setText(bundle.getString("COPY_HUB"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
-        add(rbCopyFrom, c);
-
-        rbCopyFrom.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbCopyFrom.isSelected()) {
-                    cmbHubType.setEnabled(false);
-                    cmbHub.setEnabled(true);
-
-                }
-            }
-        });
+        add(hubCopySelection, c);
 
         HubService hubService = Lookup.getDefault().lookup(HubService.class);
-        hl = hubService.findAll();
+        hubs = hubService.findAll();
         List<String> hubNameList = new ArrayList<>();
-        for (Hub hub : hl) {
+        for (Hub hub : hubs) {
             hubNameList.add(hub.getName());
         }
 
-        cmbHub.setModel(new DefaultComboBoxModel(hubNameList.toArray()));
+        hubCb.setModel(new DefaultComboBoxModel(hubNameList.toArray()));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 2;
-        add(cmbHub, c);
-        cmbHub.setEnabled(false);
+        add(hubCb, c);
+        hubCb.setEnabled(false);
 
-        buttonGroup1.add(rbFromHubType);
-        rbFromHubType.setText(bundle.getString("FROM_HUBTYPE"));
+        buttonGroup1.add(hubFromTypeSelection);
+        hubFromTypeSelection.setText(bundle.getString("FROM_HUBTYPE"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 3;
-        add(rbFromHubType, c);
-
-        rbFromHubType.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbFromHubType.isSelected()) {
-                    cmbHubType.setEnabled(true);
-                    cmbHub.setEnabled(false);
-                }
-            }
-        });
+        add(hubFromTypeSelection, c);
 
         HubTypeService hubTypeService = Lookup.getDefault().lookup(HubTypeService.class);
-        htl = hubTypeService.findAll();
+        hubTypes = hubTypeService.findAll();
         ArrayList<String> hubTypeList = new ArrayList<>();
-        for (HubType hubType : htl) {
+        for (HubType hubType : hubTypes) {
             hubTypeList.add(hubType.getName());
         }
 
-        cmbHubType.setModel(new DefaultComboBoxModel(hubTypeList.toArray()));
+        hubTypeCb.setModel(new DefaultComboBoxModel(hubTypeList.toArray()));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 4;
-        add(cmbHubType, c);
-        cmbHubType.setEnabled(false);
-        
-        if(hubNameList.isEmpty()){
-            cmbHub.setEditable(false);
-            rbCopyFrom.setEnabled(false);
-        }
-        
-        if(hubTypeList.isEmpty()){
-            cmbHubType.setEditable(false);
-            rbFromHubType.setEnabled(false);
+        add(hubTypeCb, c);
+        hubTypeCb.setEnabled(false);
+
+        if (hubNameList.isEmpty()) {
+            hubCb.setEditable(false);
+            hubCopySelection.setEnabled(false);
         }
 
+        if (hubTypeList.isEmpty()) {
+            hubTypeCb.setEditable(false);
+            hubFromTypeSelection.setEnabled(false);
+        }
+        initActionsListener();
+    }
+
+    private void initActionsListener() {
+        hubFromTypeSelection.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (hubFromTypeSelection.isSelected()) {
+                    hubTypeCb.setEnabled(true);
+                    hubCb.setEnabled(false);
+                }
+            }
+        });
+        hubFromScratchSelection.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (hubFromScratchSelection.isSelected()) {
+                    hubTypeCb.setEnabled(false);
+                    hubCb.setEnabled(false);
+                }
+            }
+        });
+        hubCopySelection.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (hubCopySelection.isSelected()) {
+                    hubTypeCb.setEnabled(false);
+                    hubCb.setEnabled(true);
+
+                }
+            }
+        });
     }
 
     public HubType getHubType() {
-        if (rbFromHubType.isSelected()) {
-            return htl.get(cmbHubType.getSelectedIndex());
+        if (hubFromTypeSelection.isSelected()) {
+            return hubTypes.get(hubTypeCb.getSelectedIndex());
         } else {
             return null;
         }
     }
 
+    public boolean isHubCopySelected() {
+        return hubCopySelection.isSelected();
+    }
+
+    public boolean isHubTypeSelected() {
+        return hubFromTypeSelection.isSelected();
+    }
+
     public Hub getHub() {
         Hub hub = null;
-        if (rbCopyFrom.isSelected()) {
-            hub = hl.get(cmbHub.getSelectedIndex());
+        if (hubCopySelection.isSelected()) {
+            hub = hubs.get(hubCb.getSelectedIndex());
             hub.setId(null);
             hub.setUniqueIdentifier(null);
         }
         return hub;
     }
 
-    ButtonGroup buttonGroup1;
-    JComboBox cmbHubType;
-    JComboBox cmbHub;
-    JRadioButton rbFromHubType;
-    JRadioButton rbFromScratch;
-    JRadioButton rbCopyFrom;
 }

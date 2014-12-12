@@ -8,8 +8,7 @@ import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.Scene;
 
 /**
- * ProceduresWidget is responsible for displaying the procedures inside the
- * GrapgScene.
+ * EventsWidget is responsible for displaying the events inside the GraphScene.
  *
  * @author Sebastiaan Heijmann
  */

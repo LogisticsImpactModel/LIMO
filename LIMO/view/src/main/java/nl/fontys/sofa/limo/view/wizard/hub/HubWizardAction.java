@@ -24,8 +24,22 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
-@ActionID(category = "Hub", id = "nl.fontys.sofa.limo.view.wizzard.hub.HubWizardAction")
-@ActionRegistration(displayName = "New Hub...", iconBase = "icons/gui/add.gif")
+/**
+ * The HubWizardAction is the entry point of the hub wizard which is used for
+ * creation and editing of hubs. The wizard includes the choice for new,
+ * duplicate or hub from hub type, name, description, icon, location, procedures
+ * and events.
+ *
+ * @author Pascal Lindner
+ */
+@ActionID(
+        category = "Hub",
+        id = "nl.fontys.sofa.limo.view.wizzard.hub.HubWizardAction"
+)
+@ActionRegistration(
+        displayName = "New Hub...",
+        iconBase = "icons/gui/add.gif"
+)
 @ActionReferences({
     @ActionReference(path = "Menu/Master Data/Hub", position = 20),
     @ActionReference(path = "Shortcuts", name = "DS-H")
@@ -41,8 +55,8 @@ public final class HubWizardAction implements ActionListener {
     static final String HUB_COPY = "hubCopy";
     static final String HUB_TYPE = "hubType";
 
-    private boolean update = false;
     private Hub hubUpdate;
+    private boolean update = false;
     private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     @Override
@@ -75,7 +89,6 @@ public final class HubWizardAction implements ActionListener {
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
-
         if (update) {
             wiz.setTitle(bundle.getString("ADD_HUB"));
             wiz.putProperty(HUB_COPY, hubUpdate);
@@ -83,21 +96,29 @@ public final class HubWizardAction implements ActionListener {
             wiz.setTitle(bundle.getString("EDIT_HUB"));
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            HubService hubService = Lookup.getDefault().lookup(HubService.class);
-            hubUpdate.setName((String) wiz.getProperty(HUB_NAME));
-            hubUpdate.setDescription((String) wiz.getProperty(HUB_DESCRIPTION));
-            hubUpdate.setIcon((Icon) wiz.getProperty(HUB_ICON));
-            hubUpdate.setLocation((Location) wiz.getProperty(HUB_LOCATION));
-            hubUpdate.setProcedures((List<Procedure>) wiz.getProperty(HUB_PROCEDURES));
-            hubUpdate.setEvents((List<Event>) wiz.getProperty(HUB_EVENTS));
-            if (update) {
-                hubService.update(hubUpdate);
-            } else {
-                hubUpdate.setId(null);
-                hubUpdate = hubService.insert(hubUpdate);
-            }
+            handleWizardFinishClick(wiz);
         }
+    }
 
+    /**
+     * Save or update the hub based on the inputs.
+     *
+     * @param wiz - the WizardDescriptor which contains the inputs.
+     */
+    private void handleWizardFinishClick(final WizardDescriptor wiz) {
+        HubService hubService = Lookup.getDefault().lookup(HubService.class);
+        hubUpdate.setName((String) wiz.getProperty(HUB_NAME));
+        hubUpdate.setDescription((String) wiz.getProperty(HUB_DESCRIPTION));
+        hubUpdate.setIcon((Icon) wiz.getProperty(HUB_ICON));
+        hubUpdate.setLocation((Location) wiz.getProperty(HUB_LOCATION));
+        hubUpdate.setProcedures((List<Procedure>) wiz.getProperty(HUB_PROCEDURES));
+        hubUpdate.setEvents((List<Event>) wiz.getProperty(HUB_EVENTS));
+        if (update) {
+            hubService.update(hubUpdate);
+        } else {
+            hubUpdate.setId(null);
+            hubUpdate = hubService.insert(hubUpdate);
+        }
     }
 
     public void isUpdate(Hub hubUpdate) {

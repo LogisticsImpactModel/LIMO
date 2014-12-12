@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.widget;
 
 import java.awt.Image;
@@ -13,6 +8,8 @@ import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.Scene;
 
 /**
+ * ProceduresWidget is responsible for displaying the procedures inside the
+ * GraphScene.
  *
  * @author Sebastiaan Heijmann
  */

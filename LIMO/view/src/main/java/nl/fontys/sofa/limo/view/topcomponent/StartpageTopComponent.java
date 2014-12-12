@@ -67,10 +67,10 @@ public final class StartpageTopComponent extends TopComponent {
         footerPane = new JPanel();
 
         setBorder(BorderFactory.createEmptyBorder(25, 100, 75, 100));
-        setDisplayName(org.openide.util.NbBundle.getMessage(StartpageTopComponent.class, "StartpageTopComponent.displayName")); // NOI18N
+        setDisplayName("Startpage");
         setMaximumSize(new java.awt.Dimension(10000, 5000));
         setMinimumSize(new java.awt.Dimension(700, 500));
-        setName("Startpage"); // NOI18N
+        setName("Startpage");
         setPreferredSize(new java.awt.Dimension(10000, 500));
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -83,7 +83,7 @@ public final class StartpageTopComponent extends TopComponent {
 
         titleLB.setFont(new java.awt.Font("DejaVu Serif", 1, 24));
         titleLB.setForeground(new Color(255, 65, 0));
-        org.openide.awt.Mnemonics.setLocalizedText(titleLB, org.openide.util.NbBundle.getMessage(StartpageTopComponent.class, "StartpageTopComponent.titleLB.text")); // NOI18N
+        titleLB.setText("Logistics Impact Model");
         titleLB.setHorizontalTextPosition(SwingConstants.CENTER);
         headerPane.add(titleLB);
         add(headerPane);
@@ -95,8 +95,7 @@ public final class StartpageTopComponent extends TopComponent {
         contentPanel.setLayout(new java.awt.BorderLayout());
 
         logoPane.setHorizontalAlignment(SwingConstants.RIGHT);
-        logoPane.setIcon(new ImageIcon(getClass().getResource("/nl/fontys/sofa/limo/view/images/logo.png"))); // NOI18N
-        org.openide.awt.Mnemonics.setLocalizedText(logoPane, org.openide.util.NbBundle.getMessage(StartpageTopComponent.class, "StartpageTopComponent.logoPane.text")); // NOI18N
+        logoPane.setIcon(new ImageIcon(getClass().getResource("/nl/fontys/sofa/limo/view/images/logo.png")));
         logoPane.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 25));
         logoPane.setMaximumSize(new java.awt.Dimension(5000, 300));
         logoPane.setMinimumSize(new java.awt.Dimension(300, 300));

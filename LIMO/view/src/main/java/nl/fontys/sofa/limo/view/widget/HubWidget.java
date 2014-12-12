@@ -11,9 +11,7 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JPopupMenu;
 import javax.swing.border.TitledBorder;
-import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import org.netbeans.api.visual.action.ActionFactory;
@@ -23,7 +21,6 @@ import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.SeparatorWidget;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.api.visual.widget.general.IconNodeWidget;
-import org.openide.util.Lookup.Result;
 
 /**
  * HubWidget which represents a Hub in the GraphScene. It holds HubNode which
@@ -44,9 +41,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     private ProcedureWidget procedureWidget;
     private final Widget startFlagWidget;
 
-    private Result<Procedure> procedureResult;
-    private Result<Event> eventResult;
-
+//    private final Result<Procedure> procedureResult;
+//    private final Result<Event> eventResult;
     /**
      * Constructor sets up the widget by setting the display name and image.
      *
@@ -63,9 +59,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         setToolTipText(hubNode.getName());
         setOpaque(false);
 
-        eventResult = hubNode.getLookup().lookupResult(Event.class);
-        procedureResult = hubNode.getLookup().lookupResult(Procedure.class);
-
+//        eventResult = hubNode.getLookup().lookupResult(Event.class);
+//        procedureResult = hubNode.getLookup().lookupResult(Procedure.class);
         startFlagWidget = new StartWidget(scene);
         startFlagWidget.setVisible(false);
 
@@ -142,6 +137,12 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         return hubNode.getLookup().lookup(Hub.class);
     }
 
+    /**
+     * Update the widgets properties and hide or show the procedures or events
+     * icon.
+     *
+     * @param pce the event.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         Hub hub = getHub();
@@ -194,7 +195,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     }
 
     /**
-     * The popup menu when right clicked on this widget.
+     * The pop up menu when right clicked on this widget. The offered actions
+     * are the selection of the widget to be a start hub or deleting the widget.
      */
     private class WidgetPopupMenu implements PopupMenuProvider {
 
