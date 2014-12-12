@@ -11,9 +11,11 @@ import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.simulation.Simulator;
 import nl.fontys.sofa.limo.simulation.SimulatorTask;
 import nl.fontys.sofa.limo.simulation.SimulatorTaskListener;
+import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.topcomponent.ResultTopComponent;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.util.Lookup;
@@ -92,6 +94,12 @@ public final class SimulateAction extends AbstractAction
         tc.makeBusy(false);
         scene.setEnabled(true);
         scene.setBackground(Color.WHITE);
+
+        for (SimulationResult simResult : task.getResults()) {
+            ResultTopComponent rtc = new ResultTopComponent(simResult);
+            rtc.open();
+            rtc.requestActive();
+        }
     }
 
     /**
