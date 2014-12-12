@@ -41,6 +41,8 @@ public class EventNode extends AbstractBeanNode<Event> {
                 EventWizardAction wiz = new EventWizardAction();
                 wiz.setEvent(bean);
                 wiz.actionPerformed(e);
+                createProperties(getBean(), null);
+                setSheet(getSheet());
             }
         });
         actionList.add(new AbstractAction("Delete") {

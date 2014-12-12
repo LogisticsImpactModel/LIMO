@@ -47,8 +47,8 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
                 LegTypeWizardAction wiz = new LegTypeWizardAction();
                 wiz.isUpdate(bean);
                 wiz.actionPerformed(e);
-                //   createProperties(getBean(), null);
-                //    setSheet(getSheet());
+                createProperties(getBean(), null);
+                setSheet(getSheet());
             }
         });
         actionList.add(new AbstractAction("Delete") {
