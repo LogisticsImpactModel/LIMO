@@ -40,7 +40,7 @@ public final class JSONImporter {
     /**
      * Number of directly imported files from the last JSON file.
      */
-    private static int lastDirectImportedEntitiesCount;
+    private static int lastDirectImportedEntityCount;
 
     /**
      * Number of duplicated elements in the last JSON file. Duplicated means
@@ -60,7 +60,7 @@ public final class JSONImporter {
 
     public static Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> importFromJSON(String filepath) {
         lastEntitiesInFileCount = 0;
-        lastDirectImportedEntitiesCount = 0;
+        lastDirectImportedEntityCount = 0;
         lastDuplicatedEntityCount = 0;
         Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> importedFiles = new HashMap<>();
         File fileToImport = new File(filepath);
@@ -149,7 +149,7 @@ public final class JSONImporter {
             }
         } else {
             doc.save();
-            lastDirectImportedEntitiesCount++;
+            lastDirectImportedEntityCount++;
         }
         return entry;
     }
@@ -158,8 +158,8 @@ public final class JSONImporter {
         return lastEntitiesInFileCount;
     }
 
-    public static int getLastDirectImportedEntitiesCount() {
-        return lastDirectImportedEntitiesCount;
+    public static int getLastDirectImportedEntityCount() {
+        return lastDirectImportedEntityCount;
     }
 
     public static int getLastDuplicatedEntityCount() {
