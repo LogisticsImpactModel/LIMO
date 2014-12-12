@@ -18,6 +18,7 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * This class extends the JDialog and offers editing of the "Value" type from
@@ -26,7 +27,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
  * @author Matthias Brück
  */
 public class EditValueDialog extends JDialog implements ActionListener {
-
+    
     private JButton buttonSave, buttonCancel;
     private JComboBox<String> comboboxValueTypes;
     private JTextField textfieldValue, textfieldMin, textfieldMax;
@@ -35,7 +36,7 @@ public class EditValueDialog extends JDialog implements ActionListener {
     private int activeType = 0;
     private final CellConstraints cc;
     private final AddProcedureDialog.EditValueDialogListener editValueDialogListener;
-
+    
     public EditValueDialog(Value value, AddProcedureDialog.EditValueDialogListener editValueDialogListener) {
         //LAYOUT
         this.editValueDialogListener = editValueDialogListener;
@@ -85,15 +86,15 @@ public class EditValueDialog extends JDialog implements ActionListener {
         textfieldMax = new JTextField();
         singlePanel = new JPanel();
         rangePanel = new JPanel();
-        labelType = new JLabel("Type: ");
-        labelValue = new JLabel("Value: ");
-        labelMin = new JLabel("Min: ");
-        lableMax = new JLabel("Max: ");
+        labelType = new JLabel(LIMOResourceBundle.getString("TYPE"));
+        labelValue = new JLabel(LIMOResourceBundle.getString("VALUE"));
+        labelMin = new JLabel(LIMOResourceBundle.getString("MIN"));
+        lableMax = new JLabel(LIMOResourceBundle.getString("MAX"));
         labelError = new JLabel();
         labelError.setForeground(Color.RED);
-        buttonCancel = new JButton("Cancel");
-        buttonSave = new JButton("Save");
-        comboboxValueTypes = new JComboBox<>(new String[]{"Single", "Range"});
+        buttonCancel = new JButton(LIMOResourceBundle.getString("CANCEL"));
+        buttonSave = new JButton(LIMOResourceBundle.getString("SAVE"));
+        comboboxValueTypes = new JComboBox<>(new String[]{LIMOResourceBundle.getString("SINGLE"), LIMOResourceBundle.getString("RANGE")});
     }
 
     /**
@@ -126,7 +127,7 @@ public class EditValueDialog extends JDialog implements ActionListener {
         this.add(buttonCancel, cc.xy(4, 6));
         this.add(labelError, cc.xyw(2, 8, 5));
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(comboboxValueTypes)) {
@@ -187,7 +188,7 @@ public class EditValueDialog extends JDialog implements ActionListener {
                 editValueDialogListener.newValue(changedValue);
                 this.dispose();
             } catch (NumberFormatException ex) {
-                labelError.setText("NOT A NUMBER");
+                labelError.setText(LIMOResourceBundle.getString("NOT_A_NUMBER"));
             }
         } else {
             try {
@@ -198,10 +199,10 @@ public class EditValueDialog extends JDialog implements ActionListener {
                     editValueDialogListener.newValue(changedValue);
                     this.dispose();
                 } else {
-                    labelError.setText("MAX MUST BE BIGGER THAN MIN");
+                    labelError.setText(LIMOResourceBundle.getString("MAX_BIGGER_MIN"));
                 }
             } catch (NumberFormatException ex) {
-                labelError.setText("NOT A NUMBER");
+                labelError.setText(LIMOResourceBundle.getString("NOT_A_NUMBER"));
             }
         }
     }

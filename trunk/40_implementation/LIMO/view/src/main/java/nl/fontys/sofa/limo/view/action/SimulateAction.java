@@ -3,7 +3,6 @@ package nl.fontys.sofa.limo.view.action;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,6 +13,7 @@ import nl.fontys.sofa.limo.simulation.SimulatorTask;
 import nl.fontys.sofa.limo.simulation.SimulatorTaskListener;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.util.Lookup;
@@ -41,7 +41,6 @@ public final class SimulateAction extends AbstractAction
     private int numberOfRuns = 1000;
     private final JFormattedTextField inputRunsTF;
     private ChainGraphScene scene;
-    private final ResourceBundle bundle;
 
     /**
      * Constructor sets the input text field from where to get the number of
@@ -51,7 +50,6 @@ public final class SimulateAction extends AbstractAction
      */
     public SimulateAction(JFormattedTextField inputRunsTF) {
         this.inputRunsTF = inputRunsTF;
-        this.bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
     }
 
     /**
@@ -81,10 +79,9 @@ public final class SimulateAction extends AbstractAction
                 SimulatorTask task = Simulator.simulate(numberOfRuns, supplyChain);
                 task.addTaskListener(this);
             } else {
-                DialogDisplayer.getDefault().notify(
-                        new NotifyDescriptor.Message(
-                                bundle.getString("CHAIN_VALIDATION_FAILED"),
-                                NotifyDescriptor.WARNING_MESSAGE));
+                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(
+                        LIMOResourceBundle.getString("CHAIN_VALIDATION_FAILED"),
+                        NotifyDescriptor.WARNING_MESSAGE));
             }
         }
     }
@@ -108,7 +105,7 @@ public final class SimulateAction extends AbstractAction
     public Component getToolbarPresenter() {
         JButton button = new JButton(this);
         button.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/gui/simulate.png")));
-        button.setText(bundle.getString("SIMULATE"));
+        button.setText(LIMOResourceBundle.getString("SIMULATE"));
         button.setOpaque(false);
         button.setBorder(null);
         return button;

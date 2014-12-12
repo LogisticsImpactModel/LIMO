@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegWizardAction;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
@@ -29,9 +30,9 @@ public class SelectLegTypePanel extends JPanel {
     }
 
     private void init() {
-        JButton btnNormal = new JButton("Normal Leg");
-        JButton btnMulti = new JButton("Multimode Leg");
-        JButton btnSchedule = new JButton("Scheduled Leg");
+        JButton btnNormal = new JButton(LIMOResourceBundle.getString("NORMAL_LEG"));
+        JButton btnMulti = new JButton(LIMOResourceBundle.getString("MULTIMODE_LEG"));
+        JButton btnSchedule = new JButton(LIMOResourceBundle.getString("SCHEDULED_LEG"));
         optionPane = new JOptionPane();
 
         JPanel panel = new JPanel();
@@ -49,7 +50,6 @@ public class SelectLegTypePanel extends JPanel {
                 });
                 wiz.actionPerformed(e);
                 JOptionPane.getRootFrame().dispose();
-
             }
         });
         btnMulti.addActionListener(new ActionListener() {
@@ -67,7 +67,6 @@ public class SelectLegTypePanel extends JPanel {
                 });
                 wiz.actionPerformed(e);
                 JOptionPane.getRootFrame().dispose();
-
             }
         });
         btnSchedule.addActionListener(new ActionListener() {
@@ -82,17 +81,16 @@ public class SelectLegTypePanel extends JPanel {
                 });
                 wiz.actionPerformed(e);
                 JOptionPane.getRootFrame().dispose();
-
             }
         });
         panel.add(btnNormal);
         panel.add(btnMulti);
         panel.add(btnSchedule);
 
-        Object[] options = {"Cancel"};
+        Object[] options = {LIMOResourceBundle.getString("CANCEL")};
         int result = JOptionPane.showOptionDialog(this,
                 panel,
-                "Select a Leg",
+                LIMOResourceBundle.getString("SELECT_LEG"),
                 JOptionPane.CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE,
                 null,
@@ -101,7 +99,6 @@ public class SelectLegTypePanel extends JPanel {
         if (result == 0) {
             JOptionPane.getRootFrame().dispose();
         }
-
     }
 
     public void setLeg(Leg leg) {

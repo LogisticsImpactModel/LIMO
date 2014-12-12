@@ -23,6 +23,7 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.custom.procedure.ProcedureComponent;
 import nl.fontys.sofa.limo.view.util.IconFileChooser;
 import nl.fontys.sofa.limo.view.util.IconUtil;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import nl.fontys.sofa.limo.view.wizard.hub.LocationHubPanel;
 import org.openide.util.Lookup;
@@ -101,7 +102,7 @@ public final class ManageHubsPanel extends JPanel {
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 0;
-        JLabel lblName = new JLabel("Name:");
+        JLabel lblName = new JLabel(LIMOResourceBundle.getString("NAME"));
         panel.add(lblName, c);
         c.weightx = 1;
         c.gridwidth = 2;
@@ -113,7 +114,7 @@ public final class ManageHubsPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 1;
-        JLabel lblDesc = new JLabel("Description:");
+        JLabel lblDesc = new JLabel(LIMOResourceBundle.getString("DESCRIPTION"));
         panel.add(lblDesc, c);
         c.weightx = 1;
         c.gridx = 1;
@@ -125,13 +126,13 @@ public final class ManageHubsPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 2;
         c.gridwidth = 1;
-        JLabel lblPfad = new JLabel("Image:");
+        JLabel lblPfad = new JLabel(LIMOResourceBundle.getString("IMAGE"));
         panel.add(lblPfad, c);
         c.weightx = 1;
         c.gridx = 1;
         c.gridy = 2;
         c.gridwidth = 2;
-        JButton btnImage = new JButton("Choose");
+        JButton btnImage = new JButton(LIMOResourceBundle.getString("CHOOOSE"));
         btnImage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -150,7 +151,7 @@ public final class ManageHubsPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 3;
         c.gridwidth = 1;
-        JButton btnLocation = new JButton("Location");
+        JButton btnLocation = new JButton(LIMOResourceBundle.getString("LOCATION"));
         panel.add(btnLocation, c);
         c.weightx = 1;
         c.gridx = 1;
@@ -164,14 +165,14 @@ public final class ManageHubsPanel extends JPanel {
                 if (hub.getLocation() != null) {
                     panelLocation.updateLabel(hub.getLocation());
                 }
-                int result = JOptionPane.showConfirmDialog(null, panelLocation, "Add/Change Location",
+                int result = JOptionPane.showConfirmDialog(null, panelLocation, LIMOResourceBundle.getString("ADD_CHANGE_LOCATION"),
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
                     hub.setLocation(panelLocation.getHubLocation());
                 }
             }
         });
-        JButton btnC = new JButton("Costs/Delays/Times");
+        JButton btnC = new JButton(LIMOResourceBundle.getString("COST_DELAYS_TIMES"));
         panel.add(btnC, c);
         c.weightx = 1;
         c.gridx = 2;
@@ -184,14 +185,14 @@ public final class ManageHubsPanel extends JPanel {
                 ProcedureComponent cmp = new ProcedureComponent(hub.getProcedures());
                 if (hub.getProcedures().size() > 0) {
                 }
-                int result = JOptionPane.showConfirmDialog(null, cmp, "Cost/Delays/Times",
+                int result = JOptionPane.showConfirmDialog(null, cmp, LIMOResourceBundle.getString("COST_DELAYS_TIMES"),
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
                     hub.setProcedures(cmp.getActiveTableState());
                 }
             }
         });
-        JButton btnEvent = new JButton("Events");
+        JButton btnEvent = new JButton(LIMOResourceBundle.getString("EVENTS"));
         btnEvent.addActionListener(new ActionListener() {
 
             @Override
@@ -200,7 +201,7 @@ public final class ManageHubsPanel extends JPanel {
                 if (hub.getEvents().size() > 0) {
 
                 }
-                int result = JOptionPane.showConfirmDialog(null, p, "Events",
+                int result = JOptionPane.showConfirmDialog(null, p, LIMOResourceBundle.getString("EVENTS"),
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
 
@@ -208,7 +209,7 @@ public final class ManageHubsPanel extends JPanel {
             }
         });
         panel.add(btnEvent, c);
-        int result = JOptionPane.showConfirmDialog(null, panel, "Edit Hub",
+        int result = JOptionPane.showConfirmDialog(null, panel, LIMOResourceBundle.getString("EDIT_HUB"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             hub.setName(tfName.getText());
@@ -229,9 +230,9 @@ public final class ManageHubsPanel extends JPanel {
         public String getColumnName(int column) {
             switch (column) {
                 case 0:
-                    return "Name";
+                    return LIMOResourceBundle.getString("NAME");
                 case 1:
-                    return "Description";
+                    return LIMOResourceBundle.getString("DESCRIPTION");
             }
             return null;
         }

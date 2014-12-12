@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,6 +22,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * This class extends the JDialog and offers the creation of new procedures.
@@ -62,7 +64,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         int x = (screenSize.width - this.getWidth()) / 2;
         int y = (screenSize.height - this.getHeight()) / 2;
         this.setLocation(x, y);
-        this.setTitle("Procedures");
+        this.setTitle(LIMOResourceBundle.getString("PROCEDURES"));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
@@ -84,24 +86,24 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         costTextField = new JTextField(costValue.toString());
         costTextField.setEditable(false);
         addCostButton = new JButton("...");
-        saveButton = new JButton("Save");
-        cancelButton = new JButton("Cancel");
+        saveButton = new JButton(LIMOResourceBundle.getString("SAVE"));
+        cancelButton = new JButton(LIMOResourceBundle.getString("CANCEL"));
     }
 
     /**
      * Adds the component to the dialog.
      */
     private void addComponents() {
-        this.add(new JLabel("Name:"), cc.xy(2, 2));
+        this.add(new JLabel(LIMOResourceBundle.getString("NAME")), cc.xy(2, 2));
         this.add(nameTextField, cc.xyw(4, 2, 2));
-        this.add(new JLabel("Category:"), cc.xy(2, 4));
+        this.add(new JLabel(LIMOResourceBundle.getString("CATEGORY")), cc.xy(2, 4));
         this.add(categoryCombobox, cc.xyw(4, 4, 2));
-        this.add(new JLabel("Time Type:"), cc.xy(2, 6));
+        this.add(new JLabel(LIMOResourceBundle.getString("TIME_TYPE")), cc.xy(2, 6));
         this.add(timeTypeCombobox, cc.xyw(4, 6, 2));
-        this.add(new JLabel("Time Cost:"), cc.xy(2, 8));
+        this.add(new JLabel(LIMOResourceBundle.getString("TIME_COST")), cc.xy(2, 8));
         this.add(timeTextField, cc.xyw(4, 8, 2));
         this.add(addTimeButton, cc.xy(7, 8));
-        this.add(new JLabel("Money Cost:"), cc.xy(2, 10));
+        this.add(new JLabel(LIMOResourceBundle.getString("MONEY_COST")), cc.xy(2, 10));
         this.add(costTextField, cc.xyw(4, 10, 2));
         this.add(addCostButton, cc.xy(7, 10));
         this.add(saveButton, cc.xy(2, 14));
@@ -158,6 +160,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
             try {
                 category = categoryCombobox.getSelectedItem().toString();
             } catch (Exception ex) {
+                System.out.println(Arrays.toString(ex.getStackTrace()));
             }
             TimeType timeType = (TimeType) timeTypeCombobox.getSelectedItem();
             newProcedure = new Procedure(name, category, costValue, timeValue, timeType);

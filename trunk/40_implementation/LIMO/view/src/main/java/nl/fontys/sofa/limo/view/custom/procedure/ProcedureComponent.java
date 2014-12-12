@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,6 +24,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
 import nl.fontys.sofa.limo.view.util.IconUtil;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
 /**
@@ -42,7 +42,6 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     protected ProcedureCategoryDAO procedureCategoryDao;
     protected Value changedValue;
     protected JComboBox procedureCategoryCheckbox, timeTypesCheckbox;
-    private final ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     /**
      * Creates a new ProcedureComponent with an empty table.
@@ -204,7 +203,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
                 valueList.add(procedure);
             }
         }
-        model = new DragNDropTableModel(new String[]{bundle.getString("PROCEDURE"), bundle.getString("CATEGORY"), bundle.getString("TIME_COST"), bundle.getString("TIME_TYPE"), bundle.getString("MONEY_COST")},
+        model = new DragNDropTableModel(new String[]{LIMOResourceBundle.getString("PROCEDURE"), LIMOResourceBundle.getString("CATEGORY"), LIMOResourceBundle.getString("TIME_COST"), LIMOResourceBundle.getString("TIME_TYPE"), LIMOResourceBundle.getString("MONEY_COST")},
                 valueList, new Class[]{String.class, String.class, Value.class, TimeType.class, Value.class});
         table.setModel(model);
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();

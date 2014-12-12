@@ -17,6 +17,7 @@ import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
@@ -216,7 +217,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     @Override
     public void connectHubWidgets(HubWidget source, ConnectionWidget legWidget, HubWidget target) {
-        Lookup.getDefault().lookup(StatusBarService.class).setMessage(source.getHub().getName() + " and " + target.getHub().getName(), StatusBarService.ACTION_CONNECT, StatusBarService.STATE_SUCCESS, null);
+        Lookup.getDefault().lookup(StatusBarService.class).setMessage(source.getHub().getName() + " " + LIMOResourceBundle.getString("AND") + " " + target.getHub().getName(), StatusBarService.ACTION_CONNECT, StatusBarService.STATE_SUCCESS, null);
         AbstractBeanNode sourceNode = (AbstractBeanNode) findObject(source);
         AbstractBeanNode legNode = (AbstractBeanNode) findObject(legWidget);
         AbstractBeanNode targetNode = (AbstractBeanNode) findObject(target);
