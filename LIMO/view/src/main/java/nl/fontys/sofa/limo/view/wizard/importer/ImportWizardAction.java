@@ -93,6 +93,6 @@ public final class ImportWizardAction implements ActionListener {
         T old = (T) pcDAO.findByUniqueIdentifier(item.getUniqueIdentifier());
         System.out.println(item);
         pcDAO.delete(old);
-        pcDAO.insert(item);
+        pcDAO.insert(item, false);
     }
 }

@@ -25,6 +25,13 @@ public final class IconUtil {
     private IconUtil() {
     }
 
+    /**
+     * Get icon by class. (for nodes.)
+     *
+     * @param clazz Class.
+     * @param type Icon type (size and color).
+     * @return Icon.
+     */
     public static Image getIcon(Class clazz, int type) {
         if (!isSetUp) {
             setUp();
@@ -39,6 +46,12 @@ public final class IconUtil {
         return i;
     }
 
+    /**
+     * Get an icon by the UI_ICON enum.
+     *
+     * @param uiIcon Desired ui icon.
+     * @return Icon.
+     */
     public static Image getIcon(UI_ICON uiIcon) {
         if (!isSetUp) {
             setUp();
@@ -55,6 +68,9 @@ public final class IconUtil {
         return uiIcons.get(uiIcon);
     }
 
+    /**
+     * Set up method for all known icons.
+     */
     private static void setUp() {
         typeIcons = new HashMap<>();
 
@@ -101,40 +117,41 @@ public final class IconUtil {
          * @return Image icon.
          */
         public Image getIcon(int type) {
-            switch (type) {
-                case 1:
-                    if (!iconsPerType.containsKey(type)) {
-                        iconsPerType.put(type, loadImage(ICON_COLOR_16X16));
-                    }
-                    return iconsPerType.get(type);
-
-                case 2:
-                    if (!iconsPerType.containsKey(type)) {
-                        iconsPerType.put(type, loadImage(ICON_COLOR_32X32));
-                    }
-                    return iconsPerType.get(type);
-
-                case 3:
-                    if (!iconsPerType.containsKey(type)) {
-                        iconsPerType.put(type, loadImage(ICON_MONO_16X16));
-                    }
-                    return iconsPerType.get(type);
-
-                case 4:
-                    if (!iconsPerType.containsKey(type)) {
-                        iconsPerType.put(type, loadImage(ICON_MONO_32X32));
-                    }
-                    return iconsPerType.get(type);
-            }
-
-            return null;
+            iconsPerType.put(type, loadImage(getIconType(type)));
+            return iconsPerType.get(type);
         }
 
+        /**
+         * Get the icon name extension by type.
+         *
+         * @param type Type.
+         * @return Icon file name extension.
+         */
+        private String getIconType(int type) {
+            switch (type) {
+                case 1:
+                    return ICON_COLOR_16X16;
+                case 2:
+                    return ICON_COLOR_32X32;
+                case 3:
+                    return ICON_MONO_16X16;
+                case 4:
+                    return ICON_MONO_32X32;
+                default:
+                    return "";
+            }
+        }
+
+        /**
+         * Load image.
+         *
+         * @param extension File extension.
+         * @return Image.
+         */
         private Image loadImage(String extension) {
             try {
                 return ImageIO.read(getClass().getClassLoader().getResource("icons/" + filename + extension));
             } catch (IOException ex) {
-                ex.printStackTrace();
                 return null;
             }
         }

@@ -61,11 +61,19 @@ public abstract class OrientDBAbstractDAO<T extends BaseEntity> implements DAO<T
 
     @Override
     public T insert(T entity) {
+        return insert(entity, true);
+    }
+
+    @Override
+    public T insert(T entity, boolean updateTimestamp) {
         if (entity == null || entity.getId() != null) {
             return null;
         }
 
-        entity.setLastUpdate(new Date().getTime());
+        if (updateTimestamp) {
+            entity.setLastUpdate(new Date().getTime());
+        }
+
         return OrientDBConnector.connection().detachAll(OrientDBConnector.connection().save(entity), true);
     }
 

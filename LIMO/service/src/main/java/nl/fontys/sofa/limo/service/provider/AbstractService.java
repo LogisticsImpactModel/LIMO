@@ -61,8 +61,13 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
 
     @Override
     public T insert(T entity) {
+        return insert(entity, true);
+    }
+
+    @Override
+    public T insert(T entity, boolean updateTimestamp) {
         try {
-            T result = (T) dao.insert(entity);
+            T result = (T) dao.insert(entity, updateTimestamp);
             instanceContent.add(result);
             status.setMessage(entity.getName(), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
             return result;
