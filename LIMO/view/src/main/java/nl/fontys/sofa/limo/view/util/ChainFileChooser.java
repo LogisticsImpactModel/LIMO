@@ -6,18 +6,19 @@ import javax.swing.filechooser.FileFilter;
 import org.openide.util.NbPreferences;
 
 /**
- * File chooser for icons which automatically opens the last chosen directory.
+ * File chooser for supply chain files which automatically opens the last chosen
+ * directory.
  *
  * @author Sven Mäurer
  */
-public class IconFileChooser extends JFileChooser {
+public class ChainFileChooser extends JFileChooser {
 
     /**
      * Sets the directory to be opened to the last opened one.
      */
-    public IconFileChooser() {
-        super(NbPreferences.forModule(IconFileChooser.class).get("ICON_PATH", ""));
-        setFileFilter(new IconFileFilter());
+    public ChainFileChooser() {
+        super(NbPreferences.forModule(ChainFileFilter.class).get("CHAIN_PATH", ""));
+        setFileFilter(new ChainFileChooser.ChainFileFilter());
         setFileSelectionMode(JFileChooser.FILES_ONLY);
         setMultiSelectionEnabled(false);
     }
@@ -32,35 +33,33 @@ public class IconFileChooser extends JFileChooser {
     public File getSelectedFile() {
         File file = super.getSelectedFile();
         if (file != null) {
-            NbPreferences.forModule(IconFileChooser.class).put("ICON_PATH", file.getPath());
+            NbPreferences.forModule(ChainFileChooser.class).put("CHAIN_PATH", file.getPath());
         }
         return file;
     }
 
     /**
-     * Accepts only proper image formats for the icons.
+     * Class responsible for validating the selection of a chain file from a
+     * file chooser.
      *
-     * @author Sven Mäurer
+     * @author Sebastiaan Heijmann
      */
-    public class IconFileFilter extends FileFilter {
+    private class ChainFileFilter extends FileFilter {
 
         @Override
         public boolean accept(File f) {
             if (f.isDirectory()) {
                 return true;
-            } else if (f.getAbsolutePath().endsWith(".png")) {
-                return true;
-            } else if (f.getAbsolutePath().endsWith(".bmp")) {
-                return true;
-            } else if (f.getAbsolutePath().endsWith(".jpeg")) {
+            } else if (f.getAbsolutePath().endsWith(".lsc")) {
                 return true;
             }
-            return f.getAbsolutePath().endsWith(".jpg");
+            return false;
         }
 
         @Override
         public String getDescription() {
-            return "Icon (.png, .bmp, .jpg, .jpeg)";
+            return "Supply Chain Files (.lsc)";
         }
+
     }
 }

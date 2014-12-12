@@ -17,7 +17,6 @@ public class EventsWidget extends ImageWidget {
 
     public EventsWidget(Scene scene) {
         super(scene);
-
         Image icon = IconUtil.getIcon(Event.class, BeanInfo.ICON_COLOR_32x32);
         setImage(icon);
     }

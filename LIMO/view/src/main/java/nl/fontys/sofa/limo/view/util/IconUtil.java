@@ -16,7 +16,7 @@ import org.openide.util.Exceptions;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class IconUtil {
+public final class IconUtil {
 
     private static boolean isSetUp = false;
     private static HashMap<Class, IconHolder> typeIcons;
