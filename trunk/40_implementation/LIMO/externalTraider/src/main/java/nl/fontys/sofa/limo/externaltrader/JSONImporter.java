@@ -54,7 +54,7 @@ public final class JSONImporter {
     /**
      * Import database entities from a serialized .lef file.
      *
-     * @param filepath Filepath.
+     * @param filepath Filepath where the lef file can be loaded from
      * @return Map with entities that have a conflict with the local database.
      */
     public static Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> importData(String filepath) {
