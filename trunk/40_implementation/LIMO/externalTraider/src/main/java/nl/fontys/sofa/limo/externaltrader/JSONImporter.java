@@ -178,7 +178,7 @@ public final class JSONImporter {
                 lastOlderEntityCount++;
             }
         } else {
-            dao.insert(newItem);
+            dao.insert(newItem, false);
             lastDirectImportedEntityCount++;
         }
 
