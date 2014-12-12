@@ -57,6 +57,10 @@ public class DistributionFactoryImpl implements DistributionFactory {
         return null;
     }
 
+    /**
+     * Puts all distribution types that are defined in classes with their name
+     * (as string) into hashMap
+     */
     private void initTypes() {
         if (types != null) {
             return;
