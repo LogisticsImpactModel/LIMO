@@ -43,17 +43,17 @@ public final class JSONImporter {
     private static int lastDirectImportedEntitiesCount;
 
     /**
-     * Number of dublicated elements in the from the last JSON file. Duplicated
-     * means that there is already an entity inside the database that has the
-     * same unique identifier.
+     * Number of duplicated elements in the last JSON file. Duplicated means
+     * that there is already an entity inside the database that has the same
+     * unique identifier.
      */
-    private static int lastDuplicatedEntitieCount;
+    private static int lastDuplicatedEntityCount;
 
     /**
      * Number of entities in JSON file that are from an older date then the ones
      * in the database.
      */
-    private static int lastOlderEntitieCount;
+    private static int lastOlderEntityCount;
 
     private JSONImporter() {
     }
@@ -61,7 +61,7 @@ public final class JSONImporter {
     public static Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> importFromJSON(String filepath) {
         lastEntitiesInFileCount = 0;
         lastDirectImportedEntitiesCount = 0;
-        lastDuplicatedEntitieCount = 0;
+        lastDuplicatedEntityCount = 0;
         Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> importedFiles = new HashMap<>();
         File fileToImport = new File(filepath);
         try (BufferedReader reader = new BufferedReader(new FileReader(fileToImport))) {
@@ -143,9 +143,9 @@ public final class JSONImporter {
             newC = OrientDBConnector.connection().detachAll(newC, true);
             if (old.getLastUpdate() != newC.getLastUpdate()) {
                 entry = new AbstractMap.SimpleEntry<>(old, newC);
-                lastDuplicatedEntitieCount++;
+                lastDuplicatedEntityCount++;
             } else {
-                lastOlderEntitieCount++;
+                lastOlderEntityCount++;
             }
         } else {
             doc.save();
@@ -162,12 +162,12 @@ public final class JSONImporter {
         return lastDirectImportedEntitiesCount;
     }
 
-    public static int getLastDuplicatedEntitieCount() {
-        return lastDuplicatedEntitieCount;
+    public static int getLastDuplicatedEntityCount() {
+        return lastDuplicatedEntityCount;
     }
 
-    public static int getLastOlderEntitieCount() {
-        return lastOlderEntitieCount;
+    public static int getLastOlderEntityCount() {
+        return lastOlderEntityCount;
     }
 
 }
