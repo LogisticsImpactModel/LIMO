@@ -10,15 +10,20 @@ import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 
 /**
+ * Decorator for DAOs, i.e. DAOS handle database communication, but this Service
+ * handles updating data in the application when data in the DB has changed in
+ * the meanwhile (e.g. when a tuple is removed in DB, this service makes sure
+ * that this data is not available anymore in the application itself
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @param <T> - baseEntities
  */
 public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Provider {
 
     protected final DAO dao;
     protected final InstanceContent instanceContent;
     protected final Lookup lookup;
-    private StatusBarService status;
+    private final StatusBarService status;
 
     public AbstractService(Class<? extends DAO> daoClass) throws DAONotFoundException {
         this.dao = Lookup.getDefault().lookup(daoClass);
@@ -74,7 +79,7 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
             status.setMessage(entity.getName(), StatusBarService.ACTION_UPDATE, StatusBarService.STATE_SUCCESS, null);
             return result;
         } catch (Exception e) {
-            status.setMessage("",StatusBarService.ACTION_UPDATE, StatusBarService.STATE_FAIL, e);
+            status.setMessage("", StatusBarService.ACTION_UPDATE, StatusBarService.STATE_FAIL, e);
             return false;
         }
     }
