@@ -15,7 +15,7 @@ import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
-import nl.fontys.sofa.limo.view.util.ChainFileFilter;
+import nl.fontys.sofa.limo.view.util.ChainFileChooser;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
@@ -95,13 +95,13 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     }
 
     private File openSupplyChain() {
-        JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(new ChainFileFilter());
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setMultiSelectionEnabled(false);
-        fc.showOpenDialog(null);
-
-        return fc.getSelectedFile();
+        JFileChooser fc = new ChainFileChooser();
+        int result = fc.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            return fc.getSelectedFile();
+        } else {
+            return null;
+        }
     }
 
     void initCustomComponents(SupplyChain supplyChain) {
