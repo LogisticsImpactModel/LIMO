@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
@@ -32,7 +31,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
 
     private JButton saveButton, cancelButton, addTimeButton, addCostButton;
     private JTextField nameTextField, costTextField, timeTextField;
-    private JComboBox timeTypeCombobox, directionCombobox, categoryCombobox;
+    private JComboBox timeTypeCombobox, categoryCombobox;
     private Value timeValue, costValue;
     private Procedure newProcedure;
     private final DragNDropTable table;
@@ -161,15 +160,13 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
             } catch (Exception ex) {
             }
             TimeType timeType = (TimeType) timeTypeCombobox.getSelectedItem();
-            ProcedureResponsibilityDirection direction = (ProcedureResponsibilityDirection) directionCombobox.getSelectedItem();
-            newProcedure = new Procedure(name, category, costValue, timeValue, timeType, direction);
+            newProcedure = new Procedure(name, category, costValue, timeValue, timeType);
             List<Object> newRow = new ArrayList<>();
             newRow.add(newProcedure.getName());
             newRow.add(newProcedure.getCategory());
             newRow.add(newProcedure.getTime());
             newRow.add(newProcedure.getTimeType());
             newRow.add(newProcedure.getCost());
-            newRow.add(newProcedure.getDirection());
             ((DragNDropTableModel) table.getModel()).addRow(newRow);
             ((DragNDropTableModel) table.getModel()).fireTableDataChanged();
             table.revalidate();
