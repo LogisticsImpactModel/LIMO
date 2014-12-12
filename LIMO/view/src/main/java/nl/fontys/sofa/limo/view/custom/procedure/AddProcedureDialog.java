@@ -16,31 +16,66 @@ import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.domain.component.procedure.ProcedureResponsibilityDirection;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
 
+/**
+ * This class extends the JDialog and offers the creation of new procedures.
+ *
+ * @author Matthias Brück
+ */
 public class AddProcedureDialog extends JDialog implements ActionListener {
 
-    private final JButton saveButton, cancelButton, addTimeButton, addCostButton;
-    private final JTextField nameTextField, costTextField, timeTextField;
-    private final JComboBox timeTypeCombobox, categoryCombobox;
+    private JButton saveButton, cancelButton, addTimeButton, addCostButton;
+    private JTextField nameTextField, costTextField, timeTextField;
+    private JComboBox timeTypeCombobox, directionCombobox, categoryCombobox;
     private Value timeValue, costValue;
     private Procedure newProcedure;
     private final DragNDropTable table;
+    private final CellConstraints cc;
 
     public AddProcedureDialog(ProcedureCategoryDAO procedureCategoryDao, DragNDropTable dragNDropTable) {
         this.table = dragNDropTable;
+        cc = new CellConstraints();
         //LAYOUT
-        CellConstraints cc = new CellConstraints();
         FormLayout layout = new FormLayout("5px, pref, 5px, pref, pref:grow, 5px, pref, 5px",
                 "5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px");
         this.setLayout(layout);
         //COMPONENTS
+        initComponents(procedureCategoryDao.findAll().toArray());
+        //ADD COMPONENTS
+        addComponents();
+        //ADD COMPONENTS TO LISTENER
+        cancelButton.addActionListener(this);
+        saveButton.addActionListener(this);
+        addCostButton.addActionListener(this);
+        addTimeButton.addActionListener(this);
+        //DIALOG OPTIONS
+        this.setSize(250, 300);
+        this.setModal(true);
+        this.setAlwaysOnTop(true);
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+        int x = (screenSize.width - this.getWidth()) / 2;
+        int y = (screenSize.height - this.getHeight()) / 2;
+        this.setLocation(x, y);
+        this.setTitle("Procedures");
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setVisible(true);
+    }
+
+    /**
+     * Initializes the components.
+     *
+     * @param categories the categories that gets used in the categoryCombobox.
+     */
+    private void initComponents(Object[] categories) {
         nameTextField = new JTextField();
-        categoryCombobox = new JComboBox(procedureCategoryDao.findAll().toArray());
+        categoryCombobox = new JComboBox(categories);
         timeTypeCombobox = new JComboBox(TimeType.values());
         timeValue = new SingleValue(0.0);
         timeTextField = new JTextField(timeValue.toString());
@@ -52,7 +87,12 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         addCostButton = new JButton("...");
         saveButton = new JButton("Save");
         cancelButton = new JButton("Cancel");
-        //ADD COMPONENTS
+    }
+
+    /**
+     * Adds the component to the dialog.
+     */
+    private void addComponents() {
         this.add(new JLabel("Name:"), cc.xy(2, 2));
         this.add(nameTextField, cc.xyw(4, 2, 2));
         this.add(new JLabel("Category:"), cc.xy(2, 4));
@@ -67,27 +107,6 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         this.add(addCostButton, cc.xy(7, 10));
         this.add(saveButton, cc.xy(2, 14));
         this.add(cancelButton, cc.xy(4, 14));
-        //ADD COMPONENTS TO LISTENER
-        cancelButton.addActionListener(this);
-        saveButton.addActionListener(this);
-        addCostButton.addActionListener(this);
-        addTimeButton.addActionListener(this);
-        //DIALOG OPTIONS
-        this.setSize(400, 300);
-        this.setModal(true);
-        this.setAlwaysOnTop(true);
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Dimension screenSize = toolkit.getScreenSize();
-        int x = (screenSize.width - this.getWidth()) / 2;
-        int y = (screenSize.height - this.getHeight()) / 2;
-        this.setLocation(x, y);
-        this.setTitle("Procedures");
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setVisible(true);
-    }
-
-    private boolean isValidProcedure() {
-        return !(nameTextField.getText().equals("") || nameTextField.getText().equals("") || costTextField.getText().equals(""));
     }
 
     @Override
@@ -124,32 +143,62 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
             this.dispose();
         }
         if (e.getSource().equals(saveButton)) {
-            if (isValidProcedure()) {
-                String name = nameTextField.getText();
-                String category = "";
-                try {
-                    category = categoryCombobox.getSelectedItem().toString();
-                } catch (Exception ex) {
-                }
-                TimeType timeType = (TimeType) timeTypeCombobox.getSelectedItem();
-                newProcedure = new Procedure(name, category, costValue, timeValue, timeType);
-                List<Object> newRow = new ArrayList<>();
-                newRow.add(newProcedure.getName());
-                newRow.add(newProcedure.getCategory());
-                newRow.add(newProcedure.getTime());
-                newRow.add(newProcedure.getTimeType());
-                newRow.add(newProcedure.getCost());
-                ((DragNDropTableModel) table.getModel()).addRow(newRow);
-                ((DragNDropTableModel) table.getModel()).fireTableDataChanged();
-                table.revalidate();
-                table.repaint();
-                this.dispose();
-            }
+
         }
     }
 
+    /**
+     * This method represents the action that happens when the save button was
+     * pressed. It validates the model and closes the dialog if everythin is
+     * valid.
+     */
+    private void actionSave() {
+        if (isValidProcedure()) {
+            String name = nameTextField.getText();
+            String category = "";
+            try {
+                category = categoryCombobox.getSelectedItem().toString();
+            } catch (Exception ex) {
+            }
+            TimeType timeType = (TimeType) timeTypeCombobox.getSelectedItem();
+            ProcedureResponsibilityDirection direction = (ProcedureResponsibilityDirection) directionCombobox.getSelectedItem();
+            newProcedure = new Procedure(name, category, costValue, timeValue, timeType, direction);
+            List<Object> newRow = new ArrayList<>();
+            newRow.add(newProcedure.getName());
+            newRow.add(newProcedure.getCategory());
+            newRow.add(newProcedure.getTime());
+            newRow.add(newProcedure.getTimeType());
+            newRow.add(newProcedure.getCost());
+            newRow.add(newProcedure.getDirection());
+            ((DragNDropTableModel) table.getModel()).addRow(newRow);
+            ((DragNDropTableModel) table.getModel()).fireTableDataChanged();
+            table.revalidate();
+            table.repaint();
+            this.dispose();
+        }
+    }
+
+    /**
+     * Checks if the model is valid. Returns true if it is and false if it is
+     * not.
+     *
+     * @return True if the model is valid, false if not.
+     */
+    private boolean isValidProcedure() {
+        return !(nameTextField.getText().equals("") || nameTextField.getText().equals("") || costTextField.getText().equals(""));
+    }
+
+    /**
+     * This listener offers functionality for what happens when a value of a
+     * procedure got changed.
+     */
     public interface EditValueDialogListener {
 
+        /**
+         * Handles what happens when a new value for a procedure got specified.
+         *
+         * @param value The new value for a procedure.
+         */
         void newValue(Value value);
     }
 }

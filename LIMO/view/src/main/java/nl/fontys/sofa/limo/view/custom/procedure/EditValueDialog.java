@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -18,13 +19,19 @@ import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 
+/**
+ * This class extends the JDialog and offers editing of the "Value" type from
+ * the domain model.
+ *
+ * @author Matthias Brück
+ */
 public class EditValueDialog extends JDialog implements ActionListener {
 
-    private final JButton btn_dialogSave, btn_dialogCancel;
-    private final JComboBox<String> cbox_valueType;
-    private final JTextField tf_value, tf_min, tf_max;
-    private final JPanel singlePanel, rangePanel;
-    private final JLabel lbl_type, lbl_value, lbl_min, lbl_max, lbl_error;
+    private JButton buttonSave, buttonCancel;
+    private JComboBox<String> comboboxValueTypes;
+    private JTextField textfieldValue, textfieldMin, textfieldMax;
+    private JPanel singlePanel, rangePanel;
+    private JLabel labelType, labelValue, labelMin, lableMax, labelError;
     private int activeType = 0;
     private final CellConstraints cc;
     private final AddProcedureDialog.EditValueDialogListener editValueDialogListener;
@@ -39,58 +46,23 @@ public class EditValueDialog extends JDialog implements ActionListener {
         FormLayout singleLayout = new FormLayout("5px, pref, 5px, pref:grow, 5px", "5px, pref, 5px");
         this.setLayout(mainLayout);
         //COMPONENTS
-        tf_value = new JTextField();
-        tf_min = new JTextField();
-        tf_max = new JTextField();
-        singlePanel = new JPanel();
-        rangePanel = new JPanel();
-        lbl_type = new JLabel("Type: ");
-        lbl_value = new JLabel("Value: ");
-        lbl_min = new JLabel("Min: ");
-        lbl_max = new JLabel("Max: ");
-        lbl_error = new JLabel();
-        lbl_error.setForeground(Color.RED);
-        btn_dialogCancel = new JButton("Cancel");
-        btn_dialogSave = new JButton("Save");
-        cbox_valueType = new JComboBox<>(new String[]{"Single", "Range"});
+        initComponents();
         //ADD COMPONENTS TO SINGLE PANEL
         singlePanel.setLayout(singleLayout);
-        singlePanel.add(lbl_value, cc.xy(2, 2));
-        singlePanel.add(tf_value, cc.xy(4, 2));
+        singlePanel.add(labelValue, cc.xy(2, 2));
+        singlePanel.add(textfieldValue, cc.xy(4, 2));
         //ADD COMPONENTS TO RANGE PANEL
         rangePanel.setLayout(rangeLayout);
-        rangePanel.add(lbl_min, cc.xy(2, 2));
-        rangePanel.add(tf_min, cc.xy(4, 2));
-        rangePanel.add(lbl_max, cc.xy(2, 4));
-        rangePanel.add(tf_max, cc.xy(4, 4));
+        rangePanel.add(labelMin, cc.xy(2, 2));
+        rangePanel.add(textfieldMin, cc.xy(4, 2));
+        rangePanel.add(lableMax, cc.xy(2, 4));
+        rangePanel.add(textfieldMax, cc.xy(4, 4));
         //ADD COMPONENTS TO DIALOG
-        this.add(lbl_type, cc.xy(2, 2));
-        this.add(cbox_valueType, cc.xyw(4, 2, 3));
-        if (value != null) {
-            if (value instanceof SingleValue) {
-                this.add(singlePanel, cc.xyw(2, 4, 5));
-                cbox_valueType.setSelectedIndex(0);
-                tf_value.setText(value.getValue() + "");
-                activeType = 0;
-            } else {
-                this.add(rangePanel, cc.xyw(2, 4, 5));
-                cbox_valueType.setSelectedIndex(1);
-                tf_min.setText(value.getMin() + "");
-                tf_max.setText(value.getMax() + "");
-                activeType = 1;
-            }
-        } else {
-            this.add(singlePanel, cc.xyw(2, 4, 5));
-            cbox_valueType.setSelectedIndex(0);
-            activeType = 0;
-        }
-        this.add(btn_dialogSave, cc.xy(2, 6));
-        this.add(btn_dialogCancel, cc.xy(4, 6));
-        this.add(lbl_error, cc.xyw(2, 8, 5));
+        addComponentsToDialog(value);
         //ADD COMPONENTS TO LISTENER
-        btn_dialogCancel.addActionListener(this);
-        btn_dialogSave.addActionListener(this);
-        cbox_valueType.addActionListener(this);
+        buttonCancel.addActionListener(this);
+        buttonSave.addActionListener(this);
+        comboboxValueTypes.addActionListener(this);
         //DIALOG OPTIONS
         this.setModal(true);
         this.setSize(300, 350);
@@ -104,63 +76,132 @@ public class EditValueDialog extends JDialog implements ActionListener {
         this.setVisible(true);
     }
 
+    /**
+     * Initializes the components.
+     */
+    private void initComponents() {
+        textfieldValue = new JTextField();
+        textfieldMin = new JTextField();
+        textfieldMax = new JTextField();
+        singlePanel = new JPanel();
+        rangePanel = new JPanel();
+        labelType = new JLabel("Type: ");
+        labelValue = new JLabel("Value: ");
+        labelMin = new JLabel("Min: ");
+        lableMax = new JLabel("Max: ");
+        labelError = new JLabel();
+        labelError.setForeground(Color.RED);
+        buttonCancel = new JButton("Cancel");
+        buttonSave = new JButton("Save");
+        comboboxValueTypes = new JComboBox<>(new String[]{"Single", "Range"});
+    }
+
+    /**
+     * Adds the components to the dialog.
+     *
+     * @param value The value that has to be used.
+     */
+    private void addComponentsToDialog(Value value) {
+        this.add(labelType, cc.xy(2, 2));
+        this.add(comboboxValueTypes, cc.xyw(4, 2, 3));
+        if (value != null) {
+            if (value instanceof SingleValue) {
+                this.add(singlePanel, cc.xyw(2, 4, 5));
+                comboboxValueTypes.setSelectedIndex(0);
+                textfieldValue.setText(value.getValue() + "");
+                activeType = 0;
+            } else {
+                this.add(rangePanel, cc.xyw(2, 4, 5));
+                comboboxValueTypes.setSelectedIndex(1);
+                textfieldMin.setText(value.getMin() + "");
+                textfieldMax.setText(value.getMax() + "");
+                activeType = 1;
+            }
+        } else {
+            this.add(singlePanel, cc.xyw(2, 4, 5));
+            comboboxValueTypes.setSelectedIndex(0);
+            activeType = 0;
+        }
+        this.add(buttonSave, cc.xy(2, 6));
+        this.add(buttonCancel, cc.xy(4, 6));
+        this.add(labelError, cc.xyw(2, 8, 5));
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(cbox_valueType)) {
-            if (activeType != cbox_valueType.getSelectedIndex()) {
-                double activeValue;
-                if (activeType == 0) {
-                    activeValue = 0;
-                    try {
-                        activeValue = Double.parseDouble(tf_value.getText());
-                    } catch (NumberFormatException ex) {
-                    }
-                    this.remove(singlePanel);
-                    this.add(rangePanel, cc.xyw(2, 4, 5));
-                    tf_min.setText(activeValue + "");
-                    lbl_error.setText("");
-                } else {
-                    activeValue = 0;
-                    try {
-                        activeValue = Double.parseDouble(tf_min.getText());
-                    } catch (NumberFormatException ex) {
-                    }
-                    this.remove(rangePanel);
-                    this.add(singlePanel, cc.xyw(2, 4, 5));
-                    tf_value.setText(activeValue + "");
-                    lbl_error.setText("");
-                }
-                activeType = cbox_valueType.getSelectedIndex();
-                this.revalidate();
-                this.repaint();
-            }
+        if (e.getSource().equals(comboboxValueTypes)) {
+            actionCombobox();
         }
-        if (e.getSource().equals(btn_dialogCancel)) {
+        if (e.getSource().equals(buttonCancel)) {
             this.dispose();
         }
-        if (e.getSource().equals(btn_dialogSave)) {
+        if (e.getSource().equals(buttonSave)) {
+            actionSave();
+        }
+    }
+
+    /**
+     * The action that has to happen when the ActionListener registrated an
+     * action in the Combobox. It sets the field to either a Single or Range
+     * Value. It uses the Min value as value when switching from range to single
+     * and the value as Min when switching from single to range value.
+     */
+    private void actionCombobox() {
+        if (activeType != comboboxValueTypes.getSelectedIndex()) {
+            double activeValue = 0;
             if (activeType == 0) {
                 try {
-                    SingleValue changedValue = new SingleValue(Double.parseDouble(tf_value.getText()));
-                    editValueDialogListener.newValue(changedValue);
-                    this.dispose();
+                    activeValue = Double.parseDouble(textfieldValue.getText());
                 } catch (NumberFormatException ex) {
-                    lbl_error.setText("NOT A NUMBER");
+                    System.out.println(Arrays.toString(ex.getStackTrace()));
                 }
+                this.remove(singlePanel);
+                this.add(rangePanel, cc.xyw(2, 4, 5));
+                textfieldMin.setText(activeValue + "");
             } else {
                 try {
-                    double min = Double.parseDouble(tf_min.getText());
-                    double max = Double.parseDouble(tf_max.getText());
-                    if (max > min) {
-                        RangeValue changedValue = new RangeValue(min, max);
-                        editValueDialogListener.newValue(changedValue);
-                        this.dispose();
-                    } else {
-                        lbl_error.setText("MAX MUST BE BIGGER THAN MIN");
-                    }
+                    activeValue = Double.parseDouble(textfieldMin.getText());
                 } catch (NumberFormatException ex) {
-                    lbl_error.setText("NOT A NUMBER");
+                    System.out.println(Arrays.toString(ex.getStackTrace()));
                 }
+                this.remove(rangePanel);
+                this.add(singlePanel, cc.xyw(2, 4, 5));
+                textfieldValue.setText(activeValue + "");
+            }
+            labelError.setText("");
+            activeType = comboboxValueTypes.getSelectedIndex();
+            this.revalidate();
+            this.repaint();
+        }
+    }
+
+    /**
+     * The action that happens when the save-button was pressed. Tries to parse
+     * the textfields to Double values. If it works it gets saved in the given
+     * DialogListener. Sets the error label otherwise.
+     */
+    private void actionSave() {
+        if (activeType == 0) {
+            try {
+                SingleValue changedValue = new SingleValue(Double.parseDouble(textfieldValue.getText()));
+                editValueDialogListener.newValue(changedValue);
+                this.dispose();
+            } catch (NumberFormatException ex) {
+                labelError.setText("NOT A NUMBER");
+            }
+        } else {
+            try {
+                double min = Double.parseDouble(textfieldMin.getText());
+                double max = Double.parseDouble(textfieldMax.getText());
+                if (max > min) {
+                    RangeValue changedValue = new RangeValue(min, max);
+                    editValueDialogListener.newValue(changedValue);
+                    this.dispose();
+                } else {
+                    labelError.setText("MAX MUST BE BIGGER THAN MIN");
+                }
+            } catch (NumberFormatException ex) {
+                labelError.setText("NOT A NUMBER");
             }
         }
     }

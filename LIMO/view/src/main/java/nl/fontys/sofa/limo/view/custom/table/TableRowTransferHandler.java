@@ -12,7 +12,7 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 /**
- * A TableRowTransferHandler that handles Drag{@literal &}Drop in tables.
+ * A TableRowTransferHandler that handles Drag 'n Drop in tables.
  *
  * @author Matthias Brück
  */
@@ -21,6 +21,11 @@ public class TableRowTransferHandler extends TransferHandler {
     private final JTable table;
     private final DataFlavor localObjectFlavor;
 
+    /**
+     * Creates a new TableRowTransferHandler with the sepcified table.
+     *
+     * @param table The table that has to be used in this transfer handler.
+     */
     public TableRowTransferHandler(JTable table) {
         this.table = table;
         this.localObjectFlavor = new DataFlavor(Integer.class, "Integer Row Index");
