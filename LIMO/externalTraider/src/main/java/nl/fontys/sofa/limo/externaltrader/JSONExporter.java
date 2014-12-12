@@ -12,6 +12,9 @@ import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
 import org.json.JSONObject;
 
 /**
+ * JSON Exporter takes care of converting a list w/ BaseEntities to a JSON
+ * object, which is then written to a file at a specified filepath
+ *
  * @author Matthias Brück
  */
 public final class JSONExporter {
@@ -19,6 +22,11 @@ public final class JSONExporter {
     private JSONExporter() {
     }
 
+    /**
+     *
+     * @param allEntities - map w/ all baseEntities that should be exported
+     * @param filepath - the location where the file should be saved
+     */
     public static void exportToJson(Map<String, List<BaseEntity>> allEntities, String filepath) {
         JSONObject json = new JSONObject();
         Set<Map.Entry<String, List<BaseEntity>>> entrySet = allEntities.entrySet();
@@ -35,6 +43,12 @@ public final class JSONExporter {
         writeJSON(json, filepath);
     }
 
+    /**
+     * Print/write JSON-object to specified filepath
+     *
+     * @param json - JSON object that is to be saved
+     * @param filepath - the location where the file should be saved
+     */
     private static void writeJSON(JSONObject json, String filepath) {
         try (PrintWriter out = new PrintWriter(filepath)) {
             out.print(json.toString());
