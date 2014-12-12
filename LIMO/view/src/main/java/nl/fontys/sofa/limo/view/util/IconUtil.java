@@ -76,10 +76,10 @@ public final class IconUtil {
      */
     private static class IconHolder {
 
-        private static final String ICON_COLOR_16x16 = "_16x16.png";
-        private static final String ICON_COLOR_32x32 = "_32x32.png";
-        private static final String ICON_MONO_16x16 = "_SW_16x16.png";
-        private static final String ICON_MONO_32x32 = "_SW_32x32.png";
+        private static final String ICON_COLOR_16X16 = "_16x16.png";
+        private static final String ICON_COLOR_32X32 = "_32x32.png";
+        private static final String ICON_MONO_16X16 = "_SW_16x16.png";
+        private static final String ICON_MONO_32X32 = "_SW_32x32.png";
 
         private final String filename;
         private final HashMap<Integer, Image> iconsPerType;
@@ -104,25 +104,25 @@ public final class IconUtil {
             switch (type) {
                 case 1:
                     if (!iconsPerType.containsKey(type)) {
-                        iconsPerType.put(type, loadImage(ICON_COLOR_16x16));
+                        iconsPerType.put(type, loadImage(ICON_COLOR_16X16));
                     }
                     return iconsPerType.get(type);
 
                 case 2:
                     if (!iconsPerType.containsKey(type)) {
-                        iconsPerType.put(type, loadImage(ICON_COLOR_32x32));
+                        iconsPerType.put(type, loadImage(ICON_COLOR_32X32));
                     }
                     return iconsPerType.get(type);
 
                 case 3:
                     if (!iconsPerType.containsKey(type)) {
-                        iconsPerType.put(type, loadImage(ICON_MONO_16x16));
+                        iconsPerType.put(type, loadImage(ICON_MONO_16X16));
                     }
                     return iconsPerType.get(type);
 
                 case 4:
                     if (!iconsPerType.containsKey(type)) {
-                        iconsPerType.put(type, loadImage(ICON_MONO_32x32));
+                        iconsPerType.put(type, loadImage(ICON_MONO_32X32));
                     }
                     return iconsPerType.get(type);
             }
