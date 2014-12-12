@@ -81,6 +81,7 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
     public boolean update(T entity) {
         try {
             boolean result = dao.update(entity);
+            instanceContent.set(dao.findAll(), null);
             status.setMessage(entity.getName(), StatusBarService.ACTION_UPDATE, StatusBarService.STATE_SUCCESS, null);
             return result;
         } catch (Exception e) {
