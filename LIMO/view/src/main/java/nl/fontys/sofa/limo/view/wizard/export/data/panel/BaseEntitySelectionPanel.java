@@ -15,8 +15,8 @@ import javax.swing.JTable;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import nl.fontys.sofa.limo.view.wizard.export.data.dialog.DefaultTableModel;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.view.wizard.export.data.dialog.DefaultTableModel;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -143,7 +143,7 @@ public abstract class BaseEntitySelectionPanel<T extends BaseEntity> implements 
     public void tableChanged(TableModelEvent e) {
         if (e.getSource().equals(tblmdlEntities)) {
             if (tblEntities.getSelectedRow() >= 0 && tblEntities.getSelectedRow() < allEntities.size()) {
-                if ((boolean)(((DefaultTableModel)e.getSource()).getValueAt(tblEntities.getSelectedRow(), 1))) {
+                if ((boolean) (((DefaultTableModel) e.getSource()).getValueAt(tblEntities.getSelectedRow(), 1))) {
                     selectedEntities.add(allEntities.get(tblEntities.getSelectedRow()));
                 } else {
                     selectedEntities.remove(allEntities.get(tblEntities.getSelectedRow()));

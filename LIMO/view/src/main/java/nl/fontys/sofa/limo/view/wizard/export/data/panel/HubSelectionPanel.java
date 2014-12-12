@@ -1,14 +1,15 @@
 package nl.fontys.sofa.limo.view.wizard.export.data.panel;
 
-import nl.fontys.sofa.limo.view.wizard.export.data.dialog.HubDataDialog;
 import java.awt.event.MouseEvent;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction;
+import nl.fontys.sofa.limo.view.wizard.export.data.dialog.HubDataDialog;
 import org.openide.WizardDescriptor;
 import org.openide.util.Lookup;
 
 /**
+ * Specific data selection panel for hubs.
  *
  * @author Matthias Brück
  */

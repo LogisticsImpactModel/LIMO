@@ -40,7 +40,7 @@ public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<Wizard
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        // use wiz.getProperty to retrieve previous panel state
+
     }
 
     @Override

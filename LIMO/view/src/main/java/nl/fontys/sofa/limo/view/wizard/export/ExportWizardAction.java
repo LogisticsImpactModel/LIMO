@@ -27,15 +27,19 @@ import org.openide.awt.ActionRegistration;
 /**
  * @author Matthias Brück
  */
-@ActionID(category = "Master Data", id = "nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction")
-@ActionRegistration(displayName = "Export Master Data...", iconBase = "icons/gui/database.gif")
+@ActionID(category
+        = "Master Data",
+        id = "nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction"
+)
+@ActionRegistration(
+        displayName = "Export Master Data...",
+        iconBase = "icons/gui/database.gif"
+)
 @ActionReferences({
     @ActionReference(path = "Menu/Master Data", position = 60, separatorBefore = 55),
     @ActionReference(path = "Shortcuts", name = "DOS-E")
 })
 public final class ExportWizardAction implements ActionListener {
-
-    private Map<String, List<BaseEntity>> objectsToExport;
 
     public static final String CATEGORIES = "categories";
     public static final String LEG_TYPES = "legtypes";
@@ -44,20 +48,21 @@ public final class ExportWizardAction implements ActionListener {
     public static final String EVENTS = "events";
     public static final String PATH = "path";
 
+    private Map<String, List<BaseEntity>> objectsToExport;
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<WizardDescriptor.Panel<WizardDescriptor>> wizardDescritorPanels = new ArrayList<>();
+        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
+        panels.add(new ProcedureCategorySelectionPanel());
+        panels.add(new LegTypeSelectionPanel());
+        panels.add(new HubTypeSelectionPanel());
+        panels.add(new HubSelectionPanel());
+        panels.add(new EventSelectionPanel());
+        panels.add(new FileChooserPanel());
 
-        wizardDescritorPanels.add(new ProcedureCategorySelectionPanel());
-        wizardDescritorPanels.add(new LegTypeSelectionPanel());
-        wizardDescritorPanels.add(new HubTypeSelectionPanel());
-        wizardDescritorPanels.add(new HubSelectionPanel());
-        wizardDescritorPanels.add(new EventSelectionPanel());
-        wizardDescritorPanels.add(new FileChooserPanel());
-
-        String[] steps = new String[wizardDescritorPanels.size()];
-        for (int i = 0; i < wizardDescritorPanels.size(); i++) {
-            Component c = wizardDescritorPanels.get(i).getComponent();
+        String[] steps = new String[panels.size()];
+        for (int i = 0; i < panels.size(); i++) {
+            Component c = panels.get(i).getComponent();
             // Default step name to component name of panel.
             steps[i] = c.getName();
             if (c instanceof JComponent) { // assume Swing components
@@ -69,18 +74,27 @@ public final class ExportWizardAction implements ActionListener {
                 component.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
-        WizardDescriptor wizardDescriptor = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(wizardDescritorPanels));
+        WizardDescriptor wizardDescriptor = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wizardDescriptor.setTitleFormat(new MessageFormat("{0}"));
         wizardDescriptor.setTitle("Export data");
         if (DialogDisplayer.getDefault().notify(wizardDescriptor) == WizardDescriptor.FINISH_OPTION) {
-            objectsToExport = new HashMap<>();
-            objectsToExport.put(CATEGORIES, (List<BaseEntity>) wizardDescriptor.getProperty(CATEGORIES));
-            objectsToExport.put(LEG_TYPES, (List<BaseEntity>) wizardDescriptor.getProperty(LEG_TYPES));
-            objectsToExport.put(HUB_TYPES, (List<BaseEntity>) wizardDescriptor.getProperty(HUB_TYPES));
-            objectsToExport.put(HUBS, (List<BaseEntity>) wizardDescriptor.getProperty(HUBS));
-            objectsToExport.put(EVENTS, (List<BaseEntity>) wizardDescriptor.getProperty(EVENTS));
-            String filepath = (String) wizardDescriptor.getProperty(PATH);
-            JSONExporter.export(objectsToExport, filepath);
+            handleWizardFinishClick(wizardDescriptor);
         }
+    }
+
+    /**
+     * Save the selected data with the JSONExporter.
+     *
+     * @param wiz - the WizardDescriptor which contains the inputs.
+     */
+    private void handleWizardFinishClick(final WizardDescriptor wizardDescriptor) {
+        objectsToExport = new HashMap<>();
+        objectsToExport.put(CATEGORIES, (List<BaseEntity>) wizardDescriptor.getProperty(CATEGORIES));
+        objectsToExport.put(LEG_TYPES, (List<BaseEntity>) wizardDescriptor.getProperty(LEG_TYPES));
+        objectsToExport.put(HUB_TYPES, (List<BaseEntity>) wizardDescriptor.getProperty(HUB_TYPES));
+        objectsToExport.put(HUBS, (List<BaseEntity>) wizardDescriptor.getProperty(HUBS));
+        objectsToExport.put(EVENTS, (List<BaseEntity>) wizardDescriptor.getProperty(EVENTS));
+        String filepath = (String) wizardDescriptor.getProperty(PATH);
+        JSONExporter.export(objectsToExport, filepath);
     }
 }

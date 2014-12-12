@@ -23,10 +23,7 @@ public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public HelpCtx getHelp() {
-        // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
-        // If you have context help:
-        // return new HelpCtx("help.key.here");
     }
 
     @Override
@@ -50,7 +47,7 @@ public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor>
                 getComponent().update(event.getEvents());
             }
         } else {
-            if(lastEvent != null){
+            if (lastEvent != null) {
                 getComponent().update(new ArrayList<Event>());
             }
         }
@@ -60,7 +57,6 @@ public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor>
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(EVENT_EVENTS, component.getEvents());
-
     }
 
 }
