@@ -12,8 +12,8 @@ import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
-import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
+import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.util.ChainFileFilter;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -31,9 +31,6 @@ import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
 
-/**
- * Top component which displays something.
- */
 @ConvertAsProperties(
         dtd = "-//nl.fontys.sofa.limo.view.topcomponent//ChainLoader//EN",
         autostore = false
@@ -43,11 +40,17 @@ import org.openide.windows.TopComponent;
         iconBase = "icons/gui/link.gif",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
-@TopComponent.Registration(mode = "editor", openAtStartup = false)
-@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ChainLoaderTopComponent")
+@TopComponent.Registration(
+        mode = "editor",
+        openAtStartup = false
+)
+@ActionID(
+        category = "Window",
+        id = "nl.fontys.sofa.limo.view.topcomponent.ChainLoaderTopComponent"
+)
 @ActionReferences({
     @ActionReference(path = "Menu/File", position = 3),
-    @ActionReference(path = "Toolbars/File", position = 0),
+    //@ActionReference(path = "Toolbars/File", position = 0),
     @ActionReference(path = "Shortcuts", name = "D-N")
 })
 @TopComponent.OpenActionRegistration(
@@ -55,8 +58,7 @@ import org.openide.windows.TopComponent;
 )
 @Messages({
     "CTL_ChainLoaderAction=Load Supply Chain..",
-    "CTL_ChainLoaderTopComponent=Load Supply Chain",
-    "HINT_ChainLoaderTopComponent=Load a chain"
+    "CTL_ChainLoaderTopComponent=Load Supply Chain"
 })
 public final class ChainLoaderTopComponent extends TopComponent implements
         DynamicExplorerManagerProvider {
@@ -66,7 +68,6 @@ public final class ChainLoaderTopComponent extends TopComponent implements
 
     public ChainLoaderTopComponent() {
         initComponents();
-        setToolTipText(Bundle.HINT_ChainLoaderTopComponent());
 
         File chainFile = openSupplyChain();
         if (chainFile != null) {

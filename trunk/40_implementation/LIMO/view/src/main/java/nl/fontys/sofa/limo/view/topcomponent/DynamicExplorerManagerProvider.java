@@ -4,7 +4,7 @@ import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import org.openide.explorer.ExplorerManager;
 
 /**
- * DynamicRootContext defines methods for topcomponents to dynamically update
+ * DynamicRootContext defines methods for top components to dynamically update
  * the root context of the ExplorerManager.
  *
  * @author Sebastiaan Heijmann
@@ -19,6 +19,6 @@ public interface DynamicExplorerManagerProvider extends ExplorerManager.Provider
     void setRootContext(AbstractBeanNode node);
 
     @Override
-    public ExplorerManager getExplorerManager();
+    ExplorerManager getExplorerManager();
 
 }
