@@ -32,7 +32,7 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.PoissonDistributi
 import org.openide.util.Lookup;
 
 /**
- * c
+ *
  *
  * @author Sven Mäurer
  */
