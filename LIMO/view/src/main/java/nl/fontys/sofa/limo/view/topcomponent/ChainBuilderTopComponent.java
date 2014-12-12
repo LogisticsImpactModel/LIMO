@@ -10,8 +10,8 @@ import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
-import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
+import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.DialogDescriptor;
@@ -42,11 +42,17 @@ import org.openide.windows.TopComponent;
         iconBase = "icons/gui/link.gif",
         persistenceType = TopComponent.PERSISTENCE_NEVER
 )
-@TopComponent.Registration(mode = "editor", openAtStartup = false)
-@ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent")
+@TopComponent.Registration(
+        mode = "editor",
+        openAtStartup = false
+)
+@ActionID(
+        category = "Window",
+        id = "nl.fontys.sofa.limo.view.topcomponent.ChainBuilderTopComponent"
+)
 @ActionReferences({
     @ActionReference(path = "Menu/File", position = 2),
-    @ActionReference(path = "Toolbars/File", position = 0),
+    //@ActionReference(path = "Toolbars/File", position = 0),
     @ActionReference(path = "Shortcuts", name = "D-N")
 })
 @TopComponent.OpenActionRegistration(
@@ -54,11 +60,8 @@ import org.openide.windows.TopComponent;
 )
 @Messages({
     "CTL_ChainBuilderAction=New Supply Chain..",
-    "CTL_ChainBuilderTopComponent=New Supply Chain",
-    "HINT_ChainBuilderTopComponent=Build a chain"
-})
-public final class ChainBuilderTopComponent
-        extends TopComponent
+    "CTL_ChainBuilderTopComponent=New Supply Chain",})
+public final class ChainBuilderTopComponent extends TopComponent
         implements DynamicExplorerManagerProvider {
 
     private ExplorerManager em = new ExplorerManager();
@@ -67,7 +70,6 @@ public final class ChainBuilderTopComponent
     public ChainBuilderTopComponent() {
         initComponents();
         initCustomComponents();
-        setToolTipText(Bundle.HINT_ChainBuilderTopComponent());
 
         SupplyChain chain = graphScene.getSupplyChain();
         NotifyDescriptor.InputLine dd = new DialogDescriptor.InputLine("Name:", "Set supply chain name");

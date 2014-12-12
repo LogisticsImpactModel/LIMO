@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.status;
 
 import java.awt.Component;
@@ -15,10 +10,10 @@ import org.openide.util.lookup.ServiceProvider;
  *
  * @author lnx
  */
-@ServiceProvider(service = StatusLineElementProvider.class, position=-10)
+@ServiceProvider(service = StatusLineElementProvider.class, position = -10)
 public class StatusBar implements StatusLineElementProvider {
 
-    private Component component
+    private final Component component
             = Lookup.getDefault().lookup(StatusBarService.class).getComponent();
 
     @Override
