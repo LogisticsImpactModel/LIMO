@@ -7,15 +7,15 @@ import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
- * Implementation of the CostCategoryService interface.
+ * Implementation of the ProcedureCategoryService interface.
  *
  * @author Sebastiaan Heijmann
  */
 @ServiceProvider(service = ProcedureCategoryService.class)
-public class ProcedureCategoryServiceImpl extends AbstractService<ProcedureCategory> implements ProcedureCategoryService{
+public class ProcedureCategoryServiceImpl extends AbstractService<ProcedureCategory> implements ProcedureCategoryService {
 
     public ProcedureCategoryServiceImpl() throws DAONotFoundException {
         super(ProcedureCategoryDAO.class);
     }
-	
+
 }
