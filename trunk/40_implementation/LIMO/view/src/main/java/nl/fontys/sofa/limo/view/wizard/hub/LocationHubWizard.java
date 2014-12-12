@@ -5,7 +5,9 @@ import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.*;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_COPY;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_LOCATION;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_TYPE;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -26,10 +28,7 @@ public class LocationHubWizard implements WizardDescriptor.Panel<WizardDescripto
 
     @Override
     public HelpCtx getHelp() {
-        // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
-        // If you have context help:
-        // return new HelpCtx("help.key.here");
     }
 
     @Override

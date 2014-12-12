@@ -27,7 +27,8 @@ public class ProcedureCategorySelectionPanel extends BaseEntitySelectionPanel<Pr
         if (tblEntities.getSelectedRow() >= 0 && tblEntities.getSelectedRow() < allEntities.size()) {
             if (tblEntities.getSelectedColumn() == 0) {
                 ProcedureCategory entity = allEntities.get(tblEntities.getSelectedRow());
-                new ProcedureCategoryDataDialog(entity);
+                ProcedureCategoryDataDialog dialog = new ProcedureCategoryDataDialog(entity);
+                dialog.setVisible(true);
             }
         }
     }

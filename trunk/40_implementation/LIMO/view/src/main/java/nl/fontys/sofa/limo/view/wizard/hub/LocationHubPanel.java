@@ -17,6 +17,21 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 public final class LocationHubPanel extends JPanel {
 
+    private JComboBox cmbContinent;
+    private JComboBox cmbCountry;
+    private JLabel lblCity;
+    private JLabel lblContinent;
+    private JLabel lblCountry;
+    private JLabel lblNumber;
+    private JLabel lblState;
+    private JLabel lblStreet;
+    private JLabel lblZip;
+    private JTextField tfCity;
+    private JTextField tfNumber;
+    private JTextField tfState;
+    private JTextField tfStreet;
+    private JTextField tfZip;
+    private Location location;
 
     public LocationHubPanel() {
         initComponents();
@@ -174,8 +189,8 @@ public final class LocationHubPanel extends JPanel {
                 tfState.setEnabled(enable);
             }
         });
-        cmbCountry.setEnabled(false);
 
+        cmbCountry.setEnabled(false);
         tfStreet.setEnabled(false);
         tfNumber.setEnabled(false);
         tfCity.setEnabled(false);
@@ -239,19 +254,4 @@ public final class LocationHubPanel extends JPanel {
         return location;
     }
 
-    private JComboBox cmbContinent;
-    private JComboBox cmbCountry;
-    private JLabel lblCity;
-    private JLabel lblContinent;
-    private JLabel lblCountry;
-    private JLabel lblNumber;
-    private JLabel lblState;
-    private JLabel lblStreet;
-    private JLabel lblZip;
-    private JTextField tfCity;
-    private JTextField tfNumber;
-    private JTextField tfState;
-    private JTextField tfStreet;
-    private JTextField tfZip;
-    private Location location;
 }

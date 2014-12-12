@@ -5,7 +5,6 @@ import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_TYPE;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -25,10 +24,7 @@ public class EventsHubWizard implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public HelpCtx getHelp() {
-        // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
-        // If you have context help:
-        // return new HelpCtx("help.key.here");
     }
 
     @Override

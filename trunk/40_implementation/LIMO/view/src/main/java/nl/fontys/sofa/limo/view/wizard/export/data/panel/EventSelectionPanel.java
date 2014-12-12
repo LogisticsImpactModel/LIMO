@@ -10,6 +10,8 @@ import org.openide.WizardDescriptor;
 import org.openide.util.Lookup;
 
 /**
+ * Specific data selection panel for events.
+ *
  * @author Matthias Brück
  */
 public class EventSelectionPanel extends BaseEntitySelectionPanel<Event> {
@@ -26,7 +28,8 @@ public class EventSelectionPanel extends BaseEntitySelectionPanel<Event> {
         if (tblEntities.getSelectedRow() >= 0 && tblEntities.getSelectedRow() < allEntities.size()) {
             if (tblEntities.getSelectedColumn() == 0) {
                 Event entity = allEntities.get(tblEntities.getSelectedRow());
-                new EventDataDialog(entity);
+                EventDataDialog dialog = new EventDataDialog(entity);
+                dialog.setVisible(true);
             }
         }
     }

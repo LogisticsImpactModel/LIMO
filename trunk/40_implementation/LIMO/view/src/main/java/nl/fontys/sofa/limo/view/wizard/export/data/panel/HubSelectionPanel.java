@@ -32,7 +32,8 @@ public class HubSelectionPanel extends BaseEntitySelectionPanel<Hub> {
         if (tblEntities.getSelectedRow() >= 0 && tblEntities.getSelectedRow() < allEntities.size()) {
             if (tblEntities.getSelectedColumn() == 0) {
                 Hub entity = allEntities.get(tblEntities.getSelectedRow());
-                new HubDataDialog(entity);
+                HubDataDialog dialog = new HubDataDialog(entity);
+                dialog.setVisible(true);
             }
         }
     }

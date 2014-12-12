@@ -6,7 +6,11 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.*;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_COPY;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_DESCRIPTION;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_ICON;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_NAME;
+import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_TYPE;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -27,10 +31,7 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
 
     @Override
     public HelpCtx getHelp() {
-        // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
-        // If you have context help:
-        // return new HelpCtx("help.key.here");
     }
 
     @Override
