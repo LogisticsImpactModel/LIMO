@@ -7,8 +7,6 @@ package nl.fontys.sofa.limo.domain.component.event;
 
 import nl.fontys.sofa.limo.domain.component.event.distribution.DiscreteDistribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -26,36 +24,12 @@ public class EventTest {
 
     @Before
     public void setUp() {
-        event = new Event("New Event", null, null, ExecutionState.INDEPENDENT, null, ExecutionState.INDEPENDENT);
+        event = new Event("New Event", null, ExecutionState.INDEPENDENT, null, ExecutionState.INDEPENDENT);
     }
 
     @After
     public void tearDown() {
         event = null;
-    }
-
-    /**
-     * Test of getParent method, of class Event.
-     */
-    @Test
-    public void testGetParent() {
-        assertNull(event.getParent());
-    }
-
-    /**
-     * Test of setParent method, of class Event.
-     */
-    @Test
-    public void testSetParent() {
-        Event event2 = new Event();
-        event.setParent(event2);
-        assertEquals(event2, event.getParent());
-        Hub hub = new Hub();
-        event.setParent(hub);
-        assertEquals(hub, event.getParent());
-        Leg leg = new Leg();
-        event.setParent(leg);
-        assertEquals(leg, event.getParent());
     }
 
     @Test

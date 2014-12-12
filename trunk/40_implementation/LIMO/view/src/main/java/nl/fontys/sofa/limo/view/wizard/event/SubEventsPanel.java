@@ -20,7 +20,6 @@ public class SubEventsPanel extends EventsPanel {
             public void actionPerformed(ActionEvent e) {
                 Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
                 selected.setId(null);
-                selected.setParent(event);
                 selected.setDependency(ExecutionState.INDEPENDENT);
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();

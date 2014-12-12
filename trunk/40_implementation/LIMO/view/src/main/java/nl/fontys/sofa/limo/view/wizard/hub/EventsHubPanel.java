@@ -39,7 +39,6 @@ public final class EventsHubPanel extends EventsPanel {
             public void actionPerformed(ActionEvent e) {
                 Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
                 selected.setId(null);
-                selected.setParent(hub);
                 selected.setDependency(ExecutionState.INDEPENDENT);
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();
