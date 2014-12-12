@@ -142,7 +142,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
             this.dispose();
         }
         if (e.getSource().equals(saveButton)) {
-
+            actionSave();
         }
     }
 

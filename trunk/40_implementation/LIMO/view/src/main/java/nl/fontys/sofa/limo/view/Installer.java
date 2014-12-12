@@ -4,6 +4,12 @@ import java.util.logging.Logger;
 import nl.fontys.sofa.limo.view.status.NewFunctionExceptionHandler;
 import org.openide.modules.ModuleInstall;
 
+/**
+ * The installer disables the exceptions NetBeans would show the user. Instead
+ * we use the StatusBar class.
+ *
+ * @author Pascal Lindner
+ */
 public class Installer extends ModuleInstall {
 
     @Override

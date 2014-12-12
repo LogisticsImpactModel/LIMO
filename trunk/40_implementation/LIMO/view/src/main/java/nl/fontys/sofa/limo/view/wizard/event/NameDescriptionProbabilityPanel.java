@@ -31,25 +31,25 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.PoissonDistribution;
 import org.openide.util.Lookup;
 
+/**
+ * c
+ *
+ * @author Sven Mäurer
+ */
 public final class NameDescriptionProbabilityPanel extends JPanel {
 
     private JLabel nameLabel;
     private JTextField nameTextField;
-
     private JLabel descriptionLabel;
     private JTextArea descriptionTextArea;
-
     private JLabel distributionTypeLabel;
     private JComboBox<String> distributionTypeComboBox;
-
     private JPanel parametersLabel;
     private JTable parametersTable;
-
     private JTextArea distributionDescription;
 
     private Distribution prop;
     private DistributionFactory distributionFactory;
-
     private final ResourceBundle bundle;
 
     public NameDescriptionProbabilityPanel() {

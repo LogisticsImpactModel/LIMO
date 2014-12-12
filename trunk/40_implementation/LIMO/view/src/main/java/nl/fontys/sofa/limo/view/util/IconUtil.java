@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
+import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
@@ -84,6 +85,10 @@ public final class IconUtil {
         uiIcons = new HashMap<>();
 
         isSetUp = true;
+    }
+
+    public static Image getScaledImageFromIcon(Icon icon) {
+        return icon.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
     }
 
     /**

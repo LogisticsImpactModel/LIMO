@@ -18,10 +18,9 @@ import org.openide.util.Lookup;
 
 public final class NewOrDuplicatedEventPanel extends JPanel {
 
-    ButtonGroup buttonGroup1;
-    JComboBox eventsCb;
-    JRadioButton eventFromScratchSelection;
-    JRadioButton eventCopySelection;
+    private JComboBox eventsCb;
+    private JRadioButton eventCopySelection;
+    private JRadioButton eventFromScratchSelection;
 
     private List<Event> eventList;
     private EventService service;
@@ -38,10 +37,10 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
     }
 
     private void initComponents() {
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        eventFromScratchSelection = new javax.swing.JRadioButton();
-        eventCopySelection = new javax.swing.JRadioButton();
-        eventsCb = new javax.swing.JComboBox();
+        ButtonGroup buttonGroup1 = new ButtonGroup();
+        eventFromScratchSelection = new JRadioButton();
+        eventCopySelection = new JRadioButton();
+        eventsCb = new JComboBox();
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -53,30 +52,12 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
         add(eventFromScratchSelection, c);
         eventFromScratchSelection.setSelected(true);
 
-        eventFromScratchSelection.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (eventFromScratchSelection.isSelected()) {
-                    eventsCb.setEnabled(false);
-                }
-            }
-        });
-
         buttonGroup1.add(eventCopySelection);
         eventCopySelection.setText(bundle.getString("COPY_EXISTING"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
         add(eventCopySelection, c);
-
-        eventCopySelection.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (eventCopySelection.isSelected()) {
-                    eventsCb.setEnabled(true);
-                }
-            }
-        });
 
         Lookup l = Lookup.getDefault();
         service = l.lookup(EventService.class);
@@ -96,6 +77,31 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
             eventCopySelection.setEnabled(false);
             eventsCb.setEditable(false);
         }
+
+        initActionsListener();
+    }
+
+    private void initActionsListener() {
+        eventFromScratchSelection.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (eventFromScratchSelection.isSelected()) {
+                    eventsCb.setEnabled(false);
+                }
+            }
+        });
+        eventCopySelection.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (eventCopySelection.isSelected()) {
+                    eventsCb.setEnabled(true);
+                }
+            }
+        });
+    }
+
+    public boolean isEventCopySelected() {
+        return eventCopySelection.isSelected();
     }
 
     public Event getEvent() {
