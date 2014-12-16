@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import nl.fontys.sofa.limo.simulation.result.TestCaseResult;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
@@ -17,6 +16,7 @@ import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.simulation.result.TestCaseResult;
 
 /**
  *
@@ -156,22 +156,26 @@ public class TestCase implements Runnable {
             if (!costsByCategory.containsKey(procedure.getCategory())) {
                 costsByCategory.put(procedure.getCategory(), 0d);
             }
-            if (!costsByNode.containsKey(procedure.getCategory())) {
-                costsByNode.put(procedure.getCategory(), 0d);
+            double newCategoryCost = costsByCategory.get(procedure.getCategory()) + pCost;
+            costsByCategory.put(procedure.getCategory(), newCategoryCost);
+
+            if (!costsByNode.containsKey(calcNode.getName())) {
+                costsByNode.put(calcNode.getName(), 0d);
             }
-            double newCost = costsByCategory.get(procedure.getCategory()) + pCost;
-            costsByCategory.put(procedure.getCategory(), newCost);
-            costsByNode.put(procedure.getCategory(), newCost);
+            double newNodeCost = costsByNode.get(calcNode.getName()) + pCost;
+            costsByNode.put(calcNode.getName(), newNodeCost);
 
             if (!leadTimesByCategory.containsKey(procedure.getCategory())) {
                 leadTimesByCategory.put(procedure.getCategory(), 0d);
             }
-            if (!leadTimesByNode.containsKey(procedure.getCategory())) {
-                leadTimesByNode.put(procedure.getCategory(), 0d);
+            double newCategoryLeadTime = leadTimesByCategory.get(procedure.getCategory()) + pLeadTime;
+            leadTimesByCategory.put(procedure.getCategory(), newCategoryLeadTime);
+
+            if (!leadTimesByNode.containsKey(calcNode.getName())) {
+                leadTimesByNode.put(calcNode.getName(), 0d);
             }
-            double newLeadTime = leadTimesByCategory.get(procedure.getCategory()) + pLeadTime;
-            leadTimesByCategory.put(procedure.getCategory(), newLeadTime);
-            leadTimesByNode.put(procedure.getCategory(), newLeadTime);
+            double newNodeLeadTime = leadTimesByCategory.get(calcNode.getName()) + pLeadTime;
+            leadTimesByNode.put(calcNode.getName(), newNodeLeadTime);
         }
     }
 
@@ -211,12 +215,14 @@ public class TestCase implements Runnable {
                         if (!delaysByCategory.containsKey(procedure.getCategory())) {
                             delaysByCategory.put(procedure.getCategory(), 0d);
                         }
+                        double newCategoryDelay = delaysByCategory.get(procedure.getCategory()) + pDelay;
+                        delaysByCategory.put(procedure.getCategory(), newCategoryDelay);
+
                         if (!delaysByNode.containsKey(nodeKey)) {
                             delaysByNode.put(nodeKey, 0d);
                         }
-                        double newLeadTime = delaysByCategory.get(procedure.getCategory()) + pDelay;
-                        delaysByCategory.put(procedure.getCategory(), newLeadTime);
-                        delaysByNode.put(nodeKey, newLeadTime);
+                        double newNodeDelay = delaysByCategory.get(nodeKey) + pDelay;
+                        delaysByNode.put(nodeKey, newNodeDelay);
 
                         executedEvents.add(event);
                     }
