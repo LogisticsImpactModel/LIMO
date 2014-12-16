@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel;
@@ -29,7 +30,7 @@ import org.openide.windows.TopComponent;
         iconBase = "icons/gui/result.png",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
-@TopComponent.Registration(mode = "editor", openAtStartup = true)
+@TopComponent.Registration(mode = "editor", openAtStartup = false)
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_ResultAction",
         preferredID = "ResultTopComponent"
@@ -55,6 +56,7 @@ public final class ResultTopComponent extends TopComponent {
 
         jTabbedPane1.addTab("Totals", createTotalsPane());
         jTabbedPane1.addTab("By Category", createCategoryPane());
+        jTabbedPane1.addTab("By Node", createNodePane());
     }
 
     private JScrollPane createTotalsPane() {
@@ -101,6 +103,42 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         DataEntryTableModel detm = new DataEntryTableModel(categories, map);
+        return new JScrollPane(new JTable(detm));
+    }
+
+    private JScrollPane createNodePane() {
+        List<String> names = new ArrayList<>();
+        List<DataEntry> costs = new ArrayList<>();
+        List<DataEntry> leadTimes = new ArrayList<>();
+        List<DataEntry> extraCosts = new ArrayList<>();
+        List<DataEntry> delays = new ArrayList<>();
+
+        Node currentNode = result.getSupplyChain().getStart();
+        while (currentNode != null) {
+            String name = currentNode.getName();
+            names.add(name);
+
+            DataEntry cost = result.getCostsByNode().get(name);
+            costs.add(cost == null ? new DataEntry(0, 0, 0) : cost);
+
+            DataEntry leadTime = result.getLeadTimesByNode().get(name);
+            leadTimes.add(leadTime == null ? new DataEntry(0, 0, 0) : leadTime);
+
+            DataEntry extraCost = result.getExtraCostsByNode().get(name);
+            extraCosts.add(extraCost == null ? new DataEntry(0, 0, 0) : extraCost);
+
+            DataEntry delay = result.getDelaysByNode().get(name);
+            delays.add(delay == null ? new DataEntry(0, 0, 0) : delay);
+
+            currentNode = currentNode.getNext();
+        }
+
+        Map<String, List<DataEntry>> map = new HashMap<>();
+        map.put(DataEntryTableModel.COSTS_ID, costs);
+        map.put(DataEntryTableModel.LEAD_TIMES_ID, leadTimes);
+        map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
+        map.put(DataEntryTableModel.DELAYS_ID, delays);
+        DataEntryTableModel detm = new DataEntryTableModel(names, map);
         return new JScrollPane(new JTable(detm));
     }
 

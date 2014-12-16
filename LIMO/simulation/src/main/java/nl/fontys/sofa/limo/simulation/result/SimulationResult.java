@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import nl.fontys.sofa.limo.simulation.util.MathUtil;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.simulation.util.MathUtil;
 
 /**
  * A SimulationResult encapsulates the data resulting from a simulation of a
@@ -92,6 +92,22 @@ public class SimulationResult {
 
     public Map<String, DataEntry> getExtraCostsByCategory() {
         return extraCostsByCategory;
+    }
+
+    public Map<String, DataEntry> getCostsByNode() {
+        return costsByNode;
+    }
+
+    public Map<String, DataEntry> getLeadTimesByNode() {
+        return leadTimesByNode;
+    }
+
+    public Map<String, DataEntry> getDelaysByNode() {
+        return delaysByNode;
+    }
+
+    public Map<String, DataEntry> getExtraCostsByNode() {
+        return extraCostsByNode;
     }
 
     public Map<String, Double> getEventExecutionRate() {
