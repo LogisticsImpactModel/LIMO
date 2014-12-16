@@ -49,8 +49,6 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        String name = getComponent().getNameInput();
-        String description = getComponent().getDescriptionInput();
         Hub hub = (Hub) wiz.getProperty(HUB_COPY);
         HubType hubType = (HubType) wiz.getProperty(HUB_TYPE);
         if (hub != null) {
