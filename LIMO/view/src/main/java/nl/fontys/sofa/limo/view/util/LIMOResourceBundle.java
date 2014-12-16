@@ -1,6 +1,7 @@
 package nl.fontys.sofa.limo.view.util;
 
 import java.text.MessageFormat;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
@@ -15,7 +16,11 @@ public final class LIMOResourceBundle {
     private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
 
     public static String getString(String name) {
-        return BUNDLE.getString(name);
+        try {
+            return (String) BUNDLE.getObject(name);
+        } catch (MissingResourceException e) {
+            return "?";
+        }
     }
 
     public static String getString(String name, Object... params) {
