@@ -8,6 +8,11 @@ import nl.fontys.sofa.limo.domain.component.type.HubType;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
+    /**
+     * Wizard for events in Hub. Responsible for store and read settings.
+     * @author Pascal Lindner
+     */
+
 public class EventsHubWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     private EventsHubPanel component;
@@ -40,6 +45,7 @@ public class EventsHubWizard implements WizardDescriptor.Panel<WizardDescriptor>
     public void removeChangeListener(ChangeListener l) {
     }
 
+    //Set text for the panel if exists a HubCopy, HubType oder Hub itself for update.
     @Override
     public void readSettings(WizardDescriptor wiz) {
         Hub hub = (Hub) wiz.getProperty(HubWizardAction.HUB_COPY);
@@ -60,7 +66,7 @@ public class EventsHubWizard implements WizardDescriptor.Panel<WizardDescriptor>
         lastHub = hub;
         lastHubType = hubType;
     }
-
+    //Store settings
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(HubWizardAction.HUB_EVENTS, component.getEvents());
