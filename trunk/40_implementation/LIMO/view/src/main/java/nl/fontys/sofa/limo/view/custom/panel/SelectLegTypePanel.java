@@ -17,76 +17,29 @@ import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
 import nl.fontys.sofa.limo.view.wizard.leg.scheduled.ScheduledLegWizardAction;
 
 /**
+ * Panel to select what kind of leg should be created.
  *
- * @author lnx
+ * @author Pascal Lindner
  */
 public class SelectLegTypePanel extends JPanel {
 
-    private static JOptionPane optionPane;
     private Leg leg;
+    private JButton btnNormal, btnMulti, btnSchedule;
 
     public SelectLegTypePanel() {
         init();
     }
 
     private void init() {
-        JButton btnNormal = new JButton(LIMOResourceBundle.getString("NORMAL_LEG"));
-        JButton btnMulti = new JButton(LIMOResourceBundle.getString("MULTIMODE_LEG"));
-        JButton btnSchedule = new JButton(LIMOResourceBundle.getString("SCHEDULED_LEG"));
-        optionPane = new JOptionPane();
-
+        btnNormal = new JButton(LIMOResourceBundle.getString("NORMAL_LEG"));
+        btnMulti = new JButton(LIMOResourceBundle.getString("MULTIMODE_LEG"));
+        btnSchedule = new JButton(LIMOResourceBundle.getString("SCHEDULED_LEG"));
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
-        btnNormal.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                NormalLegWizardAction wiz = new NormalLegWizardAction(new MultimodeLegTablePanel.FinishedLegListener() {
-
-                    @Override
-                    public void finishedLeg(Leg leg) {
-                        SelectLegTypePanel.this.setLeg(leg);
-                    }
-                });
-                wiz.actionPerformed(e);
-                JOptionPane.getRootFrame().dispose();
-            }
-        });
-        btnMulti.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MultimodeLegWizardAction wiz = new MultimodeLegWizardAction(new MultimodeLegTablePanel.FinishedMapListener() {
-
-                    @Override
-                    public void finishedLeg(Map map) {
-                        MultiModeLeg leg = new MultiModeLeg();
-                        leg.setLegs(map);
-                        SelectLegTypePanel.this.setLeg(leg);
-                    }
-                });
-                wiz.actionPerformed(e);
-                JOptionPane.getRootFrame().dispose();
-            }
-        });
-        btnSchedule.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ScheduledLegWizardAction wiz = new ScheduledLegWizardAction(new MultimodeLegTablePanel.FinishedScheduledLegListener() {
-
-                    @Override
-                    public void finishedLeg(ScheduledLeg leg) {
-                        SelectLegTypePanel.this.setLeg(leg);
-                    }
-                });
-                wiz.actionPerformed(e);
-                JOptionPane.getRootFrame().dispose();
-            }
-        });
         panel.add(btnNormal);
         panel.add(btnMulti);
         panel.add(btnSchedule);
-
+        setButtonListener();
         Object[] options = {LIMOResourceBundle.getString("CANCEL")};
         int result = JOptionPane.showOptionDialog(this,
                 panel,
@@ -107,5 +60,54 @@ public class SelectLegTypePanel extends JPanel {
 
     public Leg getLeg() {
         return leg;
+    }
+
+    public void setButtonListener() {
+        btnNormal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Call the wizard
+                NormalLegWizardAction wiz = new NormalLegWizardAction(new MultimodeLegTablePanel.FinishedLegListener() {
+                    //Get the Leg
+                    @Override
+                    public void finishedLeg(Leg leg) {
+                        SelectLegTypePanel.this.setLeg(leg);
+                    }
+                });
+                wiz.actionPerformed(e);
+                JOptionPane.getRootFrame().dispose();
+            }
+        });
+        btnMulti.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MultimodeLegWizardAction wiz = new MultimodeLegWizardAction(new MultimodeLegTablePanel.FinishedMapListener() {
+                    //Get the Leg
+                    @Override
+                    public void finishedLeg(Map map) {
+                        MultiModeLeg leg = new MultiModeLeg();
+                        leg.setLegs(map);
+                        SelectLegTypePanel.this.setLeg(leg);
+                    }
+                });
+                wiz.actionPerformed(e);
+                JOptionPane.getRootFrame().dispose();
+            }
+        });
+        btnSchedule.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Call the wizard
+                ScheduledLegWizardAction wiz = new ScheduledLegWizardAction(new MultimodeLegTablePanel.FinishedScheduledLegListener() {
+                    //Get the Leg
+                    @Override
+                    public void finishedLeg(ScheduledLeg leg) {
+                        SelectLegTypePanel.this.setLeg(leg);
+                    }
+                });
+                wiz.actionPerformed(e);
+                JOptionPane.getRootFrame().dispose();
+            }
+        });
     }
 }
