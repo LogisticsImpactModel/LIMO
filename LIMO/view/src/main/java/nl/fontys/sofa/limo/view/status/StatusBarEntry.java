@@ -21,8 +21,9 @@ import org.openide.util.ImageUtilities;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
+ * Create the Status bar.
  *
- * @author lnx
+ * @author Pascal Lindner
  */
 @ServiceProvider(service = StatusBarService.class)
 public class StatusBarEntry implements StatusBarService, ActionListener {
@@ -65,6 +66,9 @@ public class StatusBarEntry implements StatusBarService, ActionListener {
         return panel;
     }
 
+    /**
+     * Call this Method for setting the status.
+     */
     @Override
     public void setMessage(String msg, int action, int statusState, final Exception e) {
         if (e != null) {
