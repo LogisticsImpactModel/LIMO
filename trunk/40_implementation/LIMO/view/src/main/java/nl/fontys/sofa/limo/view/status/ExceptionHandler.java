@@ -7,6 +7,11 @@ import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
+/**
+ * New Handler for Exceptions. It pass the Exception to the new Status bar
+ * @author Pascal Lindner
+ */
+
 public class ExceptionHandler extends Handler {
 
     @Override

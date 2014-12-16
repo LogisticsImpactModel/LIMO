@@ -7,8 +7,8 @@ import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
- *
- * @author lnx
+ * Tell the Platform that there will be a new Status line element provider.
+ * @author Pascal Lindner
  */
 @ServiceProvider(service = StatusLineElementProvider.class, position = -10)
 public class StatusBar implements StatusLineElementProvider {
