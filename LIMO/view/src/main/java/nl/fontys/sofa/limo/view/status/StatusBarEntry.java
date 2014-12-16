@@ -27,7 +27,8 @@ import org.openide.util.lookup.ServiceProvider;
  */
 @ServiceProvider(service = StatusBarService.class)
 public class StatusBarEntry implements StatusBarService, ActionListener {
-
+    
+    // Variables for possible status
     private static final ImageIcon SUCCESS = new ImageIcon(ImageUtilities.loadImage("icons/green.png"));
     private static final ImageIcon NONE = new ImageIcon(ImageUtilities.loadImage("icons/grey.png"));
     private static final ImageIcon FAIL = new ImageIcon(ImageUtilities.loadImage("icons/red.png"));
@@ -92,6 +93,7 @@ public class StatusBarEntry implements StatusBarService, ActionListener {
         }
     }
 
+    //Set the Icon
     private void setStatusIcon() {
         Icon icon;
         switch (this.statusState) {
