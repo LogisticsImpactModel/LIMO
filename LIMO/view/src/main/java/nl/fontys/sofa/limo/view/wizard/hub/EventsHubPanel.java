@@ -11,6 +11,11 @@ import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
+    /**
+     * Shows the Panel to select the events. Events can't created out of this.
+     * @author Pascal Lindner
+     */
+
 public final class EventsHubPanel extends EventsPanel {
 
     public EventsHubPanel() {
@@ -41,7 +46,6 @@ public final class EventsHubPanel extends EventsPanel {
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();
                 deleteButton.setEnabled(true);
-                //eventsComboBox.removeItemAt(eventsComboBox.getSelectedIndex());
                 checkAddButtonState();
                 checkDeleteButtonState();
             }
