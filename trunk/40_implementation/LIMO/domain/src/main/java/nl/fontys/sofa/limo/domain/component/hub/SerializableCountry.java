@@ -3,7 +3,6 @@ package nl.fontys.sofa.limo.domain.component.hub;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Currency;
 import java.util.List;
 
 /**
@@ -71,14 +70,14 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
     public static final SerializableCountry Burundi = new SerializableCountry("Burundi", 108, "BI", "BDI", Continent.Africa);
     public static final SerializableCountry Cambodia = new SerializableCountry("Cambodia", 116, "KH", "KHM", Continent.Asia);
     public static final SerializableCountry Cameroon = new SerializableCountry("Cameroon", 120, "CM", "CMR", Continent.Africa);
-    public static final SerializableCountry Canada = new SerializableCountry("Canada", 124, "CA", "CAN", Continent.NorthAmerica, "en");
+    public static final SerializableCountry Canada = new SerializableCountry("Canada", 124, "CA", "CAN", Continent.NorthAmerica);
     public static final SerializableCountry CapeVerde = new SerializableCountry("Cape Verde", 132, "CV", "CPV", Continent.Africa);
     public static final SerializableCountry CaymanIslands = new SerializableCountry("Cayman Islands", 136, "KY", "CYM", Continent.SouthAmerica);
     public static final SerializableCountry CentralAfricanRepublic = new SerializableCountry("Central African Republic", 140, "CF", "CAF",
             Continent.Africa);
     public static final SerializableCountry Chad = new SerializableCountry("Chad", 148, "TD", "TCD", Continent.Africa);
     public static final SerializableCountry Chile = new SerializableCountry("Chile", 152, "CL", "CHL", Continent.SouthAmerica);
-    public static final SerializableCountry China = new SerializableCountry("China", 156, "CN", "CHN", Continent.Asia, "zh");
+    public static final SerializableCountry China = new SerializableCountry("China", 156, "CN", "CHN", Continent.Asia);
     public static final SerializableCountry ChristmasIsland = new SerializableCountry("Christmas Island", 0, "CX", "", Continent.Oceania);
     public static final SerializableCountry CocosIslands = new SerializableCountry("Cocos Islands", 0, "CC", "", Continent.Oceania);
     public static final SerializableCountry Colombia = new SerializableCountry("Colombia", 170, "CO", "COL", Continent.SouthAmerica);
@@ -110,17 +109,15 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
     public static final SerializableCountry FaroeIslands = new SerializableCountry("Faroe Islands", 234, "FO", "FRO", Continent.Europe);
     public static final SerializableCountry Fiji = new SerializableCountry("Fiji", 242, "FJ", "FJI", Continent.Oceania);
     public static final SerializableCountry Finland = new SerializableCountry("Finland", 246, "FI", "FIN", Continent.Europe);
-    public static final SerializableCountry France = new SerializableCountry("France", 250, "FR", "FRA", Continent.Europe, "fr");
-    public static final SerializableCountry FrenchGuiana = new SerializableCountry("French Guiana", 254, "GF", "GUF", Continent.SouthAmerica,
-            "fr");
-    public static final SerializableCountry FrenchPolynesia = new SerializableCountry("French Polynesia", 258, "PF", "PYF", Continent.Oceania,
-            "fr");
+    public static final SerializableCountry France = new SerializableCountry("France", 250, "FR", "FRA", Continent.Europe);
+    public static final SerializableCountry FrenchGuiana = new SerializableCountry("French Guiana", 254, "GF", "GUF", Continent.SouthAmerica);
+    public static final SerializableCountry FrenchPolynesia = new SerializableCountry("French Polynesia", 258, "PF", "PYF", Continent.Oceania);
     public static final SerializableCountry FrenchSouthernTerritories = new SerializableCountry("French Southern Territories", 0, "TF", "",
             Continent.Antartica);
     public static final SerializableCountry Gabon = new SerializableCountry("Gabon", 266, "GA", "GAB", Continent.Africa);
     public static final SerializableCountry Gambia = new SerializableCountry("Gambia", 270, "GM", "GMB", Continent.Africa);
     public static final SerializableCountry Georgia = new SerializableCountry("Georgia", 268, "GE", "GEO", Continent.Asia);
-    public static final SerializableCountry Germany = new SerializableCountry("Germany", 276, "DE", "DEU", Continent.Europe, "de");
+    public static final SerializableCountry Germany = new SerializableCountry("Germany", 276, "DE", "DEU", Continent.Europe);
     public static final SerializableCountry Ghana = new SerializableCountry("Ghana", 288, "GH", "GHA", Continent.Africa);
     public static final SerializableCountry Gibraltar = new SerializableCountry("Gibraltar", 292, "GI", "GIB", Continent.Europe);
     public static final SerializableCountry Greece = new SerializableCountry("Greece", 300, "GR", "GRC", Continent.Europe);
@@ -146,15 +143,15 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
     public static final SerializableCountry Iraq = new SerializableCountry("Iraq", 368, "IQ", "IRQ", Continent.Asia);
     public static final SerializableCountry Ireland = new SerializableCountry("Ireland", 372, "IE", "IRL", Continent.Europe);
     public static final SerializableCountry Israel = new SerializableCountry("Israel", 376, "IL", "ISR", Continent.Asia);
-    public static final SerializableCountry Italy = new SerializableCountry("Italy", 380, "IT", "ITA", Continent.Europe, "it");
+    public static final SerializableCountry Italy = new SerializableCountry("Italy", 380, "IT", "ITA", Continent.Europe);
     public static final SerializableCountry Jamaica = new SerializableCountry("Jamaica", 388, "JM", "JAM", Continent.SouthAmerica);
-    public static final SerializableCountry Japan = new SerializableCountry("Japan", 392, "JP", "JPN", Continent.Asia, "ja");
+    public static final SerializableCountry Japan = new SerializableCountry("Japan", 392, "JP", "JPN", Continent.Asia);
     public static final SerializableCountry Jordan = new SerializableCountry("Jordan", 400, "JO", "JOR", Continent.Asia);
     public static final SerializableCountry Kazakhstan = new SerializableCountry("Kazakhstan", 398, "KZ", "KAZ", Continent.Asia);
     public static final SerializableCountry Kenya = new SerializableCountry("Kenya", 404, "KE", "KEN", Continent.Africa);
     public static final SerializableCountry Kiribati = new SerializableCountry("Kiribati", 296, "KI", "KIR", Continent.Oceania);
-    public static final SerializableCountry NorthKorea = new SerializableCountry("North Korea", 408, "KP", "PRK", Continent.Asia, "ko");
-    public static final SerializableCountry SouthKorea = new SerializableCountry("South Korea", 410, "KR", "KOR", Continent.Asia, "ko");
+    public static final SerializableCountry NorthKorea = new SerializableCountry("North Korea", 408, "KP", "PRK", Continent.Asia);
+    public static final SerializableCountry SouthKorea = new SerializableCountry("South Korea", 410, "KR", "KOR", Continent.Asia);
     public static final SerializableCountry Kuwait = new SerializableCountry("Kuwait", 414, "KW", "KWT", Continent.Asia);
     public static final SerializableCountry Kyrgyzstan = new SerializableCountry("Kyrgyzstan", 417, "KG", "KGZ", Continent.Asia);
     public static final SerializableCountry Laos = new SerializableCountry("Laos", 418, "LA", "LAO", Continent.Asia);
@@ -256,7 +253,7 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
     public static final SerializableCountry Sweden = new SerializableCountry("Sweden", 752, "SE", "SWE", Continent.Europe);
     public static final SerializableCountry Switzerland = new SerializableCountry("Switzerland", 756, "CH", "CHE", Continent.Europe);
     public static final SerializableCountry Syria = new SerializableCountry("Syrian Arab Republic", 760, "SY", "SYR", Continent.Asia);
-    public static final SerializableCountry Taiwan = new SerializableCountry("Taiwan", 158, "TW", "TWN", Continent.Asia, "zh");
+    public static final SerializableCountry Taiwan = new SerializableCountry("Taiwan", 158, "TW", "TWN", Continent.Asia);
     public static final SerializableCountry Tajikistan = new SerializableCountry("Tajikistan", 762, "TJ", "TJK", Continent.Asia);
     public static final SerializableCountry Tanzania = new SerializableCountry("Tanzania, United Republic Of", 834, "TZ", "TZA",
             Continent.Africa);
@@ -276,11 +273,10 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
     public static final SerializableCountry Uganda = new SerializableCountry("Uganda", 800, "UG", "UGA", Continent.Africa);
     public static final SerializableCountry Ukraine = new SerializableCountry("Ukraine", 804, "UA", "UKR", Continent.Europe);
     public static final SerializableCountry UAE = new SerializableCountry("United Arab Emirates", 784, "AE", "ARE", Continent.Asia);
-    public static final SerializableCountry US = new SerializableCountry("United States", 840, "US", "USA", Continent.NorthAmerica,
-            "en");
+    public static final SerializableCountry US = new SerializableCountry("United States", 840, "US", "USA", Continent.NorthAmerica);
     public static final SerializableCountry USMinorOutlyingIslands = new SerializableCountry("United States Minor Outlying Islands", 0, "UM", "",
             Continent.SouthAmerica);
-    public static final SerializableCountry UK = new SerializableCountry("United Kingdom", 826, "GB", "GBR", Continent.Europe, "en");
+    public static final SerializableCountry UK = new SerializableCountry("United Kingdom", 826, "GB", "GBR", Continent.Europe);
     public static final SerializableCountry Uruguay = new SerializableCountry("Uruguay", 858, "UY", "URY", Continent.SouthAmerica);
     public static final SerializableCountry Uzbekistan = new SerializableCountry("Uzbekistan", 860, "UZ", "UZB", Continent.Asia);
     public static final SerializableCountry Vanuatu = new SerializableCountry("Vanuatu", 548, "VU", "VUT", Continent.Oceania);
@@ -634,22 +630,13 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
     private final Continent continent;
     private final int isoNumber3;
     private final String name, isoAlpha2, isoAlpha3;
-    private String language;
 
     protected SerializableCountry(String name, int number, String iso2, String iso3, Continent continent) {
-
         this.name = name;
         this.isoNumber3 = number;
         this.isoAlpha2 = iso2;
         this.isoAlpha3 = iso3;
         this.continent = continent;
-        this.language = "en";
-    }
-
-    protected SerializableCountry(String name, int number, String iso2, String iso3, Continent continent, String language) {
-
-        this(name, number, iso2, iso3, continent);
-        this.language = language;
     }
 
     /*
@@ -683,13 +670,6 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
     }
 
     /**
-     * Returns the 3 letter ISO currency code for this country
-     */
-    public Currency getCurrency() {
-        return Currency.getInstance(isoAlpha3);
-    }
-
-    /**
      * Returns the ISO 2 character alpha code for this country
      *
      * @return
@@ -718,15 +698,6 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
 
     public String getLabel() {
         return getName();
-    }
-
-    /**
-     * Returns the Language code for this country
-     *
-     * @return language code
-     */
-    public String getLanguage() {
-        return language;
     }
 
     /**
