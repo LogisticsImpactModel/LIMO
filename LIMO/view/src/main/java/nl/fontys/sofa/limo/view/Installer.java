@@ -1,7 +1,7 @@
 package nl.fontys.sofa.limo.view;
 
 import java.util.logging.Logger;
-import nl.fontys.sofa.limo.view.status.NewFunctionExceptionHandler;
+import nl.fontys.sofa.limo.view.status.ExceptionHandler;
 import org.openide.modules.ModuleInstall;
 
 /**
@@ -16,7 +16,7 @@ public class Installer extends ModuleInstall {
     public void restored() {
         System.setProperty("netbeans.exception.report.min.level", "999999");
         System.setProperty("netbeans.exception.alert.min.level", "999999");
-        Logger.getLogger("").addHandler(new NewFunctionExceptionHandler());
+        Logger.getLogger("").addHandler(new ExceptionHandler());
         super.restored();
     }
 
