@@ -7,7 +7,7 @@ import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
-public class NewFunctionExceptionHandler extends Handler {
+public class ExceptionHandler extends Handler {
 
     @Override
     public void publish(LogRecord record) {
