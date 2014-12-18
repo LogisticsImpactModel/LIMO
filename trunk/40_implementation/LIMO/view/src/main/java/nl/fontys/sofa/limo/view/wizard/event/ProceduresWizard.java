@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
@@ -13,6 +12,11 @@ import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
+/**
+ * Wizard which uses the ProceduresPanel to add procedures to the event.
+ *
+ * @author Sven Mäurer
+ */
 public class ProceduresWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private ProceduresPanel component;
@@ -55,7 +59,7 @@ public class ProceduresWizard implements WizardDescriptor.Panel<WizardDescriptor
                 getComponent().update(event.getProcedures());
             }
         } else {
-            if(lastEvent != null){
+            if (lastEvent != null) {
                 getComponent().update(new ArrayList<Procedure>());
             }
         }

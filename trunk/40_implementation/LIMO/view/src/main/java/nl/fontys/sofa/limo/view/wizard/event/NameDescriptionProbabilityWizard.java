@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
-import java.text.MessageFormat;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -12,6 +11,12 @@ import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
+/**
+ * Wizard which uses the NameDescriptionProbabilityPanel to enter name,
+ * description and probability.
+ *
+ * @author Sven Mäurer
+ */
 public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NameDescriptionProbabilityPanel component;
@@ -43,6 +48,11 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
     public void removeChangeListener(ChangeListener l) {
     }
 
+    /**
+     * Get data of event to edit or copy from.
+     *
+     * @param wiz the WizardDescriptor.
+     */
     @Override
     public void readSettings(WizardDescriptor wiz) {
         Event event = (Event) wiz.getProperty(EVENT);
@@ -58,6 +68,11 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
         lastEvent = event;
     }
 
+    /**
+     * Set data entered in the panel in the WizardDescriptor.
+     *
+     * @param wiz the WizardDescriptor.
+     */
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(EVENT_NAME, getComponent().getNameInput());

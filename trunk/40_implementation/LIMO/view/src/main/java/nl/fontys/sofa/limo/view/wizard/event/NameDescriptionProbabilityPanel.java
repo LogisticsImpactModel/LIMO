@@ -31,7 +31,7 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
 /**
- *
+ * Panel to enter name, description and probability of an event.
  *
  * @author Sven Mäurer
  */
@@ -109,6 +109,10 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
     }
 
+    /**
+     * Change the view behavior of the components especially let the table look
+     * nice.
+     */
     private void setComponentProperties() {
         descriptionTextArea.setRows(4);
         parametersLabel.setBorder(BorderFactory.createTitledBorder(
@@ -160,6 +164,9 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         return c;
     }
 
+    /**
+     * Initialize the distribution combo box including the selection behavior.
+     */
     private void initDistribution() {
         distributionDescription.setEditable(false);
         distributionFactory = Lookup.getDefault().lookup(DistributionFactory.class);
@@ -180,6 +187,12 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         distributionDescription.setText(distributionFactory.getDistributionTypeByName(distributionTypeComboBox.getModel().getElementAt(0)).getDescription());
     }
 
+    /**
+     * Update the name, description and the probability table based on the
+     * event.
+     *
+     * @param event to be used.
+     */
     public void updateEvent(Event event) {
         if (event != null) {
             nameTextField.setText(event.getName());
