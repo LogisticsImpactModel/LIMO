@@ -5,7 +5,7 @@ import nl.fontys.sofa.limo.view.status.ExceptionHandler;
 import org.openide.modules.ModuleInstall;
 
 /**
- * The installer disables the exceptions NetBeans would show the user. Instead
+ * The installer disables the exceptions NetBeans. Instead
  * we use the StatusBar class.
  *
  * @author Pascal Lindner
