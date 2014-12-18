@@ -6,13 +6,19 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_COPY;
 import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_PROCEDURES;
 import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_TYPE;
-import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
+
+/**
+ * Procedure Wizard for Hub.
+ *
+ * @author Pascal Lindner
+ */
 
 public class ProceduresHubWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
@@ -49,6 +55,7 @@ public class ProceduresHubWizard implements WizardDescriptor.Panel<WizardDescrip
     public void removeChangeListener(ChangeListener l) {
     }
 
+    // Update Labels and Entrys
     @Override
     public void readSettings(WizardDescriptor wiz) {
         Hub hub = (Hub) wiz.getProperty(HUB_COPY);
@@ -70,11 +77,13 @@ public class ProceduresHubWizard implements WizardDescriptor.Panel<WizardDescrip
         lastHubType = hubType;
     }
 
+    //Store procedures
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(HUB_PROCEDURES, getComponent().getProcedures());
     }
 
+    //Validate input
     @Override
     public void validate() throws WizardValidationException {
         if (component.getProcedures().isEmpty()) {

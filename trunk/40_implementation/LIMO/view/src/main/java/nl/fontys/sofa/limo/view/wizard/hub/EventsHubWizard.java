@@ -8,10 +8,11 @@ import nl.fontys.sofa.limo.domain.component.type.HubType;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
-    /**
-     * Wizard for events in Hub. Responsible for store and read settings.
-     * @author Pascal Lindner
-     */
+/**
+ * Wizard for events in Hub. Responsible for store and read settings.
+ *
+ * @author Pascal Lindner
+ */
 
 public class EventsHubWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 

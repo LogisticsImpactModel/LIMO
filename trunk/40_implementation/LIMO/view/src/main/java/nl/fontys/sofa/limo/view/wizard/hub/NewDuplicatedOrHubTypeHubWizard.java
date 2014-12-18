@@ -12,6 +12,11 @@ import org.openide.util.HelpCtx;
 
 public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
+    /**
+     * Evaluate panel data for Hub.
+     *
+     * @author Pascal Lindner
+     */
     private NewDuplicatedOrHubTypeHubPanel component;
 
     @Override
@@ -44,7 +49,7 @@ public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<W
     public void readSettings(WizardDescriptor wiz) {
 
     }
-
+    //Store Copy or HubType
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(HUB_TYPE, null);
@@ -58,7 +63,7 @@ public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<W
             wiz.putProperty(HUB_TYPE, hubType);
         }
     }
-
+    //Validate for empty selection
     @Override
     public void validate() throws WizardValidationException {
         if (getComponent().isHubCopySelected() && getComponent().getHub() == null) {
