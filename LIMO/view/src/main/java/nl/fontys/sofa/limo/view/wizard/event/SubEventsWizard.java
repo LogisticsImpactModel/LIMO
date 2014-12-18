@@ -8,6 +8,11 @@ import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT_EVEN
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
+/**
+ * Wizard which uses the SubEventsPanel to add sub events to the event.
+ *
+ * @author Sven Mäurer
+ */
 public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     private SubEventsPanel component;

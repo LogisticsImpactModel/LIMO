@@ -7,6 +7,7 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
+ * Table Model for the distribution of an event.
  *
  * @author Sven Mäurer
  */
@@ -55,6 +56,13 @@ public class DistributionParameterTableModel extends AbstractTableModel {
         return columnIndex == 1;
     }
 
+    /**
+     * Set a value in the table model. It is either a double or an integer.
+     *
+     * @param aValue to be set.
+     * @param rowIndex of the value.
+     * @param columnIndex of the value.
+     */
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         if (columnIndex == 1) {

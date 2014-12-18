@@ -8,6 +8,12 @@ import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
+/**
+ * Wizard which uses the NewOrDuplicatedEventPanel to choose if you want to
+ * create a new event or choose an existing as base.
+ *
+ * @author Sven Mäurer
+ */
 public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NewOrDuplicatedEventPanel component;
@@ -43,6 +49,11 @@ public class NewOrDuplicatedEventWizard implements WizardDescriptor.Panel<Wizard
 
     }
 
+    /**
+     * Save data of event to copy from if copy is selected.
+     *
+     * @param wiz the WizardDescriptor.
+     */
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(EVENT, null);
