@@ -10,6 +10,8 @@ import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
+ * This panel provides a view for all BaseEntity properties.
+ *
  * @author Matthias Brück
  */
 public class BaseEntityViewPanel extends JPanel {

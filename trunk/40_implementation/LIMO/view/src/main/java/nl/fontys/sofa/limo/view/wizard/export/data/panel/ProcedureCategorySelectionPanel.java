@@ -5,7 +5,7 @@ import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction;
-import nl.fontys.sofa.limo.view.wizard.export.data.dialog.ProcedureCategoryDataDialog;
+import nl.fontys.sofa.limo.view.wizard.export.data.dialog.ProcedureDataDialog;
 import org.openide.WizardDescriptor;
 import org.openide.util.Lookup;
 
@@ -27,7 +27,7 @@ public class ProcedureCategorySelectionPanel extends BaseEntitySelectionPanel<Pr
         if (tblEntities.getSelectedRow() >= 0 && tblEntities.getSelectedRow() < allEntities.size()) {
             if (tblEntities.getSelectedColumn() == 0) {
                 ProcedureCategory entity = allEntities.get(tblEntities.getSelectedRow());
-                ProcedureCategoryDataDialog dialog = new ProcedureCategoryDataDialog(entity);
+                ProcedureDataDialog dialog = new ProcedureDataDialog(entity);
                 dialog.setVisible(true);
             }
         }

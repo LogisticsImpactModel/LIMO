@@ -23,6 +23,8 @@ import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
 /**
+ * Abstract panel for selecting BaseEntities.
+ *
  * @author Matthias Brück
  */
 public abstract class BaseEntitySelectionPanel<T extends BaseEntity> implements ActionListener, MouseListener, TableModelListener, WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
@@ -36,6 +38,9 @@ public abstract class BaseEntitySelectionPanel<T extends BaseEntity> implements 
     private final CellConstraints cc;
     private final FormLayout layout;
 
+    /**
+     * Initializes a new BaseEntitySelectionPanel.
+     */
     public BaseEntitySelectionPanel() {
         component = new JPanel();
         initAllEntities();
@@ -65,6 +70,9 @@ public abstract class BaseEntitySelectionPanel<T extends BaseEntity> implements 
         component.add(tblEntitiesPane, cc.xyw(2, 4, 4));
     }
 
+    /**
+     * Inits all entities.
+     */
     protected abstract void initAllEntities();
 
     public List<T> getSelectedEntities() {

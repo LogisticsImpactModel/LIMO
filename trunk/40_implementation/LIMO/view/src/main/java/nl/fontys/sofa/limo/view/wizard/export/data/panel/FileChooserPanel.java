@@ -3,7 +3,6 @@ package nl.fontys.sofa.limo.view.wizard.export.data.panel;
 import java.awt.Component;
 import java.io.File;
 import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction;
@@ -12,6 +11,9 @@ import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
 /**
+ * This Class is the Wizard Action containing all method for choosing a filename
+ * and a directory.
+ *
  * @author Matthias Brück
  */
 public class FileChooserPanel implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
