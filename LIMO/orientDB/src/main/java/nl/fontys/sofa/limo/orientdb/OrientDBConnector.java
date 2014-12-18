@@ -218,7 +218,8 @@ public class OrientDBConnector {
             return databaseURL;
         }
 
-        Path path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "/LIMO");
+       // Path path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "/LIMO");
+        Path path = FileSystems.getDefault().getPath(System.getProperty("user.dir"), "/LIMO");
         if (!Files.exists(path)) {
             try {
                 Files.createDirectory(path);
