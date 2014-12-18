@@ -9,6 +9,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
+import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
@@ -84,21 +85,8 @@ public class EventNode extends AbstractBeanNode<Event> {
     @Override
     protected void createProperties(Event bean, BeanInfo info) {
         Sheet sets = getSheet();
-        Sheet.Set set = Sheet.createPropertiesSet();
-        set.setName("properties");
-        set.setDisplayName(LIMOResourceBundle.getString("PROPERTIES"));
-
+        Sheet.Set set = super.getNameDescriptionPropertySheet();
         try {
-            StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");
-            name.addPropertyChangeListener(getListener());
-            name.setDisplayName(LIMOResourceBundle.getString("NAME"));
-            name.setShortDescription(LIMOResourceBundle.getString("NAME_OF", LIMOResourceBundle.getString("EVENT")));
-
-            StupidProperty description = new StupidProperty<>(getBean(), String.class, "description");
-            description.addPropertyChangeListener(getListener());
-            description.setDisplayName(LIMOResourceBundle.getString("DESCRIPTION"));
-            description.setShortDescription(LIMOResourceBundle.getString("DESCRIPTION_OF", LIMOResourceBundle.getString("EVENT")));
-
             StupidProperty distributionProp = new StupidProperty(getBean(), Distribution.class, "probability");
             distributionProp.addPropertyChangeListener(getListener());
             distributionProp.setDisplayName(LIMOResourceBundle.getString("PROBABILITY"));
@@ -119,8 +107,6 @@ public class EventNode extends AbstractBeanNode<Event> {
             procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", LIMOResourceBundle.getString("EVENT")));
             procedureProp.setValue("canEditAsText", false);
 
-            set.put(name);
-            set.put(description);
             set.put(distributionProp);
             set.put(procedureProp);
             set.put(eventProp);
@@ -138,6 +124,11 @@ public class EventNode extends AbstractBeanNode<Event> {
     @Override
     Class getServiceClass() {
         return EventService.class;
+    }
+
+    @Override
+    protected Icon getBeanIcon() {
+        throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_SUPPORTED"));
     }
 
 }

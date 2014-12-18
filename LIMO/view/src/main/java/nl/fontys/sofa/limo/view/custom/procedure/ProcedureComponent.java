@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableCellRenderer;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
@@ -132,7 +133,9 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      * Handles the adding of a procedure via a dialog.
      */
     protected void addProcedure() {
-        new AddProcedureDialog(procedureCategoryDao, table);
+        AddProcedureDialog addProcedureDialog = new AddProcedureDialog(procedureCategoryDao, table);
+        addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        addProcedureDialog.setVisible(true);
     }
 
     /**
@@ -153,7 +156,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         if (table.getSelectedColumn() == 2 || table.getSelectedColumn() == 4) {
             changedValue = (Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
             Object valueAt = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
-            new EditValueDialog((Value) valueAt, new AddProcedureDialog.EditValueDialogListener() {
+            EditValueDialog editValueDialog = new EditValueDialog((Value) valueAt, new AddProcedureDialog.EditValueDialogListener() {
 
                 @Override
                 public void newValue(Value value) {
@@ -163,6 +166,8 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
                     ProcedureComponent.this.repaint();
                 }
             });
+            editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            editValueDialog.setVisible(true);
         }
     }
 

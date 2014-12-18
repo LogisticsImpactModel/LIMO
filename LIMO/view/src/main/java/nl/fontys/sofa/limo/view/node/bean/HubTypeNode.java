@@ -7,14 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
-import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.types.hub.HubTypeWizardAction;
@@ -69,29 +67,9 @@ public class HubTypeNode extends AbstractBeanNode<HubType> {
     @Override
     protected void createProperties(HubType bean, BeanInfo info) {
         Sheet sets = getSheet();
-        Sheet.Set set = Sheet.createPropertiesSet();
-        set.setName("properties");
-        set.setDisplayName(LIMOResourceBundle.getString("PROPERTIES"));
+        Sheet.Set set = super.getBaseEntityPropertySheet();
 
         try {
-            StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");
-            name.addPropertyChangeListener(getListener());
-            name.setDisplayName(LIMOResourceBundle.getString("NAME"));
-            name.setShortDescription(LIMOResourceBundle.getString("NAME_OF", LIMOResourceBundle.getString("HUB_TYPE")));
-
-            StupidProperty description = new StupidProperty<>(getBean(), String.class, "description");
-            description.addPropertyChangeListener(getListener());
-            description.setDisplayName(LIMOResourceBundle.getString("DESCRIPTION"));
-            description.setShortDescription(LIMOResourceBundle.getString("DESCRIPTION OF", LIMOResourceBundle.getString("HUB_TYPE")));
-
-            StupidProperty iconProp = new StupidProperty(getBean(), Icon.class, "icon");
-            iconProp.addPropertyChangeListener(getListener());
-            iconProp.setPropertyEditorClass(IconPropertyEditor.HubIconPropertyEditor.class);
-            iconProp.setDisplayName(LIMOResourceBundle.getString("ICON"));
-            iconProp.setShortDescription(LIMOResourceBundle.getString("ICON_OF", LIMOResourceBundle.getString("HUB_TYPE")));
-            iconProp.setValue("valueIcon", new ImageIcon(getBean().getIcon().getImage()));
-            iconProp.setValue("canEditAsText", false);
-
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
             eventProp.addPropertyChangeListener(getListener());
             eventProp.setPropertyEditorClass(EventPropertyEditor.class);
@@ -106,9 +84,6 @@ public class HubTypeNode extends AbstractBeanNode<HubType> {
             procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", LIMOResourceBundle.getString("HUB_TYPE")));
             procedureProp.setValue("canEditAsText", false);
 
-            set.put(name);
-            set.put(description);
-            set.put(iconProp);
             set.put(procedureProp);
             set.put(eventProp);
         } catch (NoSuchMethodException ex) {
@@ -125,5 +100,10 @@ public class HubTypeNode extends AbstractBeanNode<HubType> {
     @Override
     Class getServiceClass() {
         return HubTypeService.class;
+    }
+
+    @Override
+    protected Icon getBeanIcon() {
+        return getBean().getIcon();
     }
 }
