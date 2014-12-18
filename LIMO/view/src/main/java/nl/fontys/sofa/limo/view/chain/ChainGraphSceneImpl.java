@@ -57,6 +57,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     private final DynamicExplorerManagerProvider parent;
     private final ChainBuilder chainBuilder;
+    private SupplyChain loadedChain;
 
     // The layers to draw things on.
     private final LayerWidget mainLayer;
@@ -86,7 +87,8 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
      */
     public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain) throws IOException, IntrospectionException {
         this.parent = parent;
-        chainBuilder = new ChainBuilderImpl(chain);
+        chainBuilder = new ChainBuilderImpl();
+        loadedChain = chain;
 
         this.mainLayer = new LayerWidget(this);
         this.connectionLayer = new LayerWidget(this);
@@ -118,9 +120,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     @Override
     public JComponent createView() {
         JComponent component = super.createView(); //To change body of generated methods, choose Tools | Templates.
-        if (chainBuilder.getStartHub() != null) {
+        if (loadedChain.getStart() != null) {
             try {
-                drawExistingSupplyChain(chainBuilder);
+                drawExistingSupplyChain(loadedChain);
             } catch (IntrospectionException ex) {
                 Exceptions.printStackTrace(ex);
             }
@@ -128,10 +130,10 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         return component;
     }
 
-    void drawExistingSupplyChain(ChainBuilder chainBuilder) throws IntrospectionException {
+    void drawExistingSupplyChain(SupplyChain supplyChain) throws IntrospectionException {
         Point point = new Point(100, 100);
         mainLayer.setLayout(LayoutFactory.createAbsoluteLayout());
-        Node currentNode = chainBuilder.getStartHub();
+        Node currentNode = supplyChain.getStart();
 
         HubWidget previousWidget = null;
         ConnectionWidget connectionWidget = null;
@@ -141,7 +143,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             if (currentNode instanceof Hub) {
                 HubWidget w = (HubWidget) addNode(new HubNode((Hub) currentNode));
                 addHubWidget(w);
-                if (currentNode == chainBuilder.getStartHub()) {
+                if (currentNode == supplyChain.getStart()) {
                     setStartWidget(w);
                 }
                 w.setPreferredLocation(point);
