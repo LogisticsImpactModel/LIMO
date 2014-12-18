@@ -19,6 +19,7 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
@@ -65,7 +66,7 @@ public final class ImportWizardAction implements ActionListener {
         }
         WizardDescriptor wizardDescriptor = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(wizardDescritorPanels));
         wizardDescriptor.setTitleFormat(new MessageFormat("{0}"));
-        wizardDescriptor.setTitle("Import Masterdata");
+        wizardDescriptor.setTitle(LIMOResourceBundle.getString("IMPORT_MASTERDATA"));
         if (DialogDisplayer.getDefault().notify(wizardDescriptor) == WizardDescriptor.FINISH_OPTION) {
             handleWizardFinishClick(wizardDescriptor);
         }
@@ -97,6 +98,14 @@ public final class ImportWizardAction implements ActionListener {
         }
     }
 
+    /**
+     * Updates an entity inside the database.
+     *
+     * @param <T> The Class of the entitiy. Needs to extend BaseEntity
+     * @param item The item with the new information that has to overwrite the
+     * old one.
+     * @param daoclass The Class of the DAO that communicates with the database.
+     */
     private static <T extends BaseEntity> void updateItem(T item, Class daoclass) {
         DAO pcDAO = (DAO) Lookup.getDefault().lookup(daoclass);
         T old = (T) pcDAO.findByUniqueIdentifier(item.getUniqueIdentifier());

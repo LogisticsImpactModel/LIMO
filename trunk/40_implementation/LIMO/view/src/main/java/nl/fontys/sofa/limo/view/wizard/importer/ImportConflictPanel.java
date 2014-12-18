@@ -25,13 +25,16 @@ import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.externaltrader.JSONImporter;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.DefaultTableModel;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.EventDataDialog;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.HubDataDialog;
-import nl.fontys.sofa.limo.view.wizard.export.data.dialog.ProcedureCategoryDataDialog;
+import nl.fontys.sofa.limo.view.wizard.export.data.dialog.ProcedureDataDialog;
 import nl.fontys.sofa.limo.view.wizard.export.data.dialog.TypeDataDialog;
 
 /**
+ * This class handles conflicts while importing a set of data.
+ *
  * @author Matthias Brück
  */
 public class ImportConflictPanel extends JPanel implements MouseListener, ActionListener, TableModelListener {
@@ -43,6 +46,12 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
     private Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> duplicatedElements;
     private final JLabel lbConflicts, lbImport, lbDone, lbOlder;
 
+    /**
+     * Creates a new ImportConflictPanel with a given path to a selected file
+     * that should get imported.
+     *
+     * @param path The String containing the filepath to the import file.
+     */
     public ImportConflictPanel(String path) {
         if (!path.isEmpty()) {
             duplicatedElements = JSONImporter.importData(path);
@@ -55,18 +64,18 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         CellConstraints cc = new CellConstraints();
         FormLayout layout = new FormLayout("5px, pref, 5px, pref, 5px, pref:grow, 5px", "5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref:grow, 5px");
         this.setLayout(layout);
-        lbImport = new JLabel("Number of total entities: " + JSONImporter.getLastEntitiesInFileCount());
+        lbImport = new JLabel(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("ALL", LIMOResourceBundle.getString("Entities"))) + ": " + JSONImporter.getLastEntitiesInFileCount());
         this.add(lbImport, cc.xyw(2, 2, 5));
-        lbDone = new JLabel("Already imported entities: " + JSONImporter.getLastDirectImportedEntityCount());
+        lbDone = new JLabel(LIMOResourceBundle.getString("ALREADY_IMPORTED") + " " + JSONImporter.getLastDirectImportedEntityCount());
         this.add(lbDone, cc.xyw(2, 4, 5));
-        lbConflicts = new JLabel("Number of conflicts: " + JSONImporter.getLastDuplicatedEntityCount());
+        lbConflicts = new JLabel(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("CONFLICTS")) + ": " + JSONImporter.getLastDuplicatedEntityCount());
         this.add(lbConflicts, cc.xyw(2, 6, 5));
-        lbOlder = new JLabel("Number of entities that were older than yours: " + JSONImporter.getLastOlderEntityCount());
+        lbOlder = new JLabel(LIMOResourceBundle.getString("NUMBER_OF_OLDER_ENTITIES") + " " + JSONImporter.getLastOlderEntityCount());
         this.add(lbOlder, cc.xyw(2, 8, 5));
-        btnSelectAll = new JButton("Select All");
+        btnSelectAll = new JButton(LIMOResourceBundle.getString("SELECT_ALL"));
         btnSelectAll.addActionListener(this);
         this.add(btnSelectAll, cc.xy(2, 10));
-        btnDeselectAll = new JButton("Deselect All");
+        btnDeselectAll = new JButton(LIMOResourceBundle.getString("DESELECT_ALL"));
         btnDeselectAll.addActionListener(this);
         this.add(btnDeselectAll, cc.xy(4, 10));
 
@@ -84,7 +93,11 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
             data[i][3] = new Date(allEntitiesNew.get(i).getLastUpdate());
             data[i][4] = false;
         }
-        tblmdlEntities = new DefaultTableModel(data, new String[]{"Old Entry", "Date from old", "New Entry", "Date from new", "Override old?"}, new boolean[]{false, false, false, false, true}, new Class[]{BaseEntity.class, Date.class, BaseEntity.class, Date.class, Boolean.class});
+        tblmdlEntities = new DefaultTableModel(data, new String[]{LIMOResourceBundle.getString("OLD_ENTITY"),
+            LIMOResourceBundle.getString("DATE_OF", LIMOResourceBundle.getString("OLD_ENTITY")),
+            LIMOResourceBundle.getString("NEW_ENTITY"), LIMOResourceBundle.getString("DATE_OF", LIMOResourceBundle.getString("NEW_ENTITY")),
+            LIMOResourceBundle.getString("OVERWRITE_YOUR_ENTITY")}, new boolean[]{false, false, false, false, true},
+                new Class[]{BaseEntity.class, Date.class, BaseEntity.class, Date.class, Boolean.class});
         tblmdlEntities.addTableModelListener(this);
         tblEntities = new JTable(tblmdlEntities);
         tblEntities.addMouseListener(this);
@@ -92,6 +105,11 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         this.add(scpane, cc.xyw(2, 12, 5));
     }
 
+    /**
+     * Returns all entities that should be overwritten.
+     *
+     * @return A List containing all entities the user has chosen to overwrite.
+     */
     public List<BaseEntity> getEntitiesToOverride() {
         return entitiesToOverride;
     }
@@ -134,7 +152,7 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
             if (tblEntities.getSelectedColumn() == 0) {
                 BaseEntity entity = allEntitiesOld.get(tblEntities.getSelectedRow());
                 if (entity instanceof ProcedureCategory) {
-                    new ProcedureCategoryDataDialog((ProcedureCategory) entity);
+                    new ProcedureDataDialog((ProcedureCategory) entity);
                 }
                 if (entity instanceof LegType) {
                     new TypeDataDialog((LegType) entity);
@@ -152,7 +170,7 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
             if (tblEntities.getSelectedColumn() == 2) {
                 BaseEntity entity = allEntitiesNew.get(tblEntities.getSelectedRow());
                 if (entity instanceof ProcedureCategory) {
-                    new ProcedureCategoryDataDialog((ProcedureCategory) entity);
+                    new ProcedureDataDialog((ProcedureCategory) entity);
                 }
                 if (entity instanceof LegType) {
                     new TypeDataDialog((LegType) entity);
@@ -186,10 +204,14 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
     public void mouseExited(MouseEvent e) {
     }
 
+    /**
+     * Updates the table with a new filepath.
+     *
+     * @param filePath The new file containing the entities to import.
+     */
     public void updateTable(String filePath) {
         if (!filePath.isEmpty()) {
             duplicatedElements = JSONImporter.importData(filePath);
-            System.out.println("PATH: " + filePath);
         } else {
             duplicatedElements = new HashMap<>();
         }
@@ -210,14 +232,18 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
             data[i][3] = new Date(allEntitiesNew.get(i).getLastUpdate());
             data[i][4] = false;
         }
-        tblmdlEntities = new DefaultTableModel(data, new String[]{"Old Entry", "Date from old", "New Entry", "Date from new", "Override old?"}, new boolean[]{false, false, false, false, true}, new Class[]{BaseEntity.class, Date.class, BaseEntity.class, Date.class, Boolean.class});
+        tblmdlEntities = new DefaultTableModel(data, new String[]{LIMOResourceBundle.getString("OLD_ENTITY"),
+            LIMOResourceBundle.getString("DATE_OF", LIMOResourceBundle.getString("OLD_ENTITY")),
+            LIMOResourceBundle.getString("NEW_ENTITY"), LIMOResourceBundle.getString("DATE_OF", LIMOResourceBundle.getString("NEW_ENTITY")),
+            LIMOResourceBundle.getString("OVERWRITE_YOUR_ENTITY")}, new boolean[]{false, false, false, false, true},
+                new Class[]{BaseEntity.class, Date.class, BaseEntity.class, Date.class, Boolean.class});
         tblmdlEntities.addTableModelListener(this);
         tblEntities.setModel(tblmdlEntities);
         tblmdlEntities.fireTableDataChanged();
 
-        lbImport.setText("Number of total entities: " + JSONImporter.getLastEntitiesInFileCount());
-        lbDone.setText("Already imported entities: " + JSONImporter.getLastDirectImportedEntityCount());
-        lbConflicts.setText("Number of conflicts: " + JSONImporter.getLastDuplicatedEntityCount());
-        lbOlder.setText("Number of entities that are the same as yours: " + JSONImporter.getLastOlderEntityCount());
+        lbImport.setText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("ALL", LIMOResourceBundle.getString("Entities"))) + ": " + JSONImporter.getLastEntitiesInFileCount());
+        lbDone.setText(LIMOResourceBundle.getString("ALREADY_IMPORTED") + " " + JSONImporter.getLastDirectImportedEntityCount());
+        lbConflicts.setText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("CONFLICTS")) + ": " + JSONImporter.getLastDuplicatedEntityCount());
+        lbOlder.setText(LIMOResourceBundle.getString("NUMBER_OF_OLDER_ENTITIES") + " " + JSONImporter.getLastOlderEntityCount());
     }
 }
