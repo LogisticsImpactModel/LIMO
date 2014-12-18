@@ -5,12 +5,19 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import javax.swing.ImageIcon;
 import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.view.node.DetachableNode;
+import nl.fontys.sofa.limo.view.node.property.StupidProperty;
+import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import nl.fontys.sofa.limo.view.util.IconUtil;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.openide.ErrorManager;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.Children;
+import org.openide.nodes.Sheet;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
@@ -82,23 +89,63 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
                     service.update(getBean());
 //                    ((AbstractRootNode) getParentNode()).getService().update(getBean());
                     firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-                    switch (evt.getPropertyName()) {
-                        case "name":
-                            setDisplayName((String) evt.getNewValue());
-                            break;
-                        case "description":
-                            setShortDescription((String) evt.getNewValue());
-                            break;
-                        case "icon":
-                            createProperties(getBean(), null);
-                            setSheet(getSheet());
-                            break;
+                    if (evt.getPropertyName().equals("name")) {
+                        setDisplayName((String) evt.getNewValue());
+                    } else if (evt.getPropertyName().equals("description")) {
+                        setShortDescription((String) evt.getNewValue());
+                    } else if (evt.getPropertyName().equals("icon")) {
+                        createProperties(getBean(), null);
+                        setSheet(getSheet());
                     }
                 }
             };
         }
 
         return this.listener;
+    }
+
+    protected Sheet.Set getNameDescriptionPropertySheet() {
+        Sheet.Set set = Sheet.createPropertiesSet();
+        set.setName("properties");
+        set.setDisplayName(LIMOResourceBundle.getString("PROPERTIES"));
+
+        try {
+            StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");
+            name.addPropertyChangeListener(getListener());
+            name.setDisplayName(LIMOResourceBundle.getString("NAME"));
+            name.setShortDescription(LIMOResourceBundle.getString("NAME_OF", LIMOResourceBundle.getString("EVENT")));
+
+            StupidProperty description = new StupidProperty<>(getBean(), String.class, "description");
+            description.addPropertyChangeListener(getListener());
+            description.setDisplayName(LIMOResourceBundle.getString("DESCRIPTION"));
+            description.setShortDescription(LIMOResourceBundle.getString("DESCRIPTION_OF", LIMOResourceBundle.getString("EVENT")));
+
+            set.put(name);
+            set.put(description);
+        } catch (NoSuchMethodException ex) {
+            ErrorManager.getDefault();
+        }
+        return set;
+    }
+
+    protected Sheet.Set getBaseEntityPropertySheet() {
+        Sheet.Set set = this.getNameDescriptionPropertySheet();
+
+        try {
+            StupidProperty iconProp = new StupidProperty(getBean(), Icon.class, "icon");
+            iconProp.addPropertyChangeListener(getListener());
+            iconProp.setPropertyEditorClass(IconPropertyEditor.HubIconPropertyEditor.class);
+            iconProp.setDisplayName(LIMOResourceBundle.getString("ICON"));
+            iconProp.setShortDescription(LIMOResourceBundle.getString("ICON_OF", LIMOResourceBundle.getString("HUB_TYPE")));
+            iconProp.setValue("valueIcon", new ImageIcon(getBeanIcon().getImage()));
+            iconProp.setValue("canEditAsText", false);
+
+            set.put(iconProp);
+        } catch (NoSuchMethodException ex) {
+            ErrorManager.getDefault();
+        }
+
+        return set;
     }
 
     /**
@@ -116,4 +163,7 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
      * @return Class - the service class.
      */
     abstract Class getServiceClass();
+
+    protected abstract Icon getBeanIcon();
+
 }
