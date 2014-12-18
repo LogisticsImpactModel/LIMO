@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
 import javax.swing.event.ChangeListener;
@@ -10,6 +5,12 @@ import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
+
+/**
+ * Event for leg Wizard
+ *
+ * @author Pascal Lindner
+ */
 
 public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
@@ -43,7 +44,8 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
     @Override
     public void removeChangeListener(ChangeListener l) {
     }
-
+    
+    //Update label
     @Override
     public void readSettings(WizardDescriptor wiz) {
         Leg leg = (Leg) wiz.getProperty("leg");
@@ -55,6 +57,7 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
             }
     }
 
+    //Store events
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty("events", component.getEvents());

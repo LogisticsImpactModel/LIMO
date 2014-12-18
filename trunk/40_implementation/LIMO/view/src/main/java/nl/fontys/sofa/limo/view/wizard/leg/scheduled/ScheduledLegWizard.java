@@ -1,25 +1,23 @@
-package nl.fontys.sofa.limo.view.wizard.leg.normal;
+package nl.fontys.sofa.limo.view.wizard.leg.scheduled;
 
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
 /**
- * New or From LegType Wizard
+ * Wizard to create Scheduled Leg
  *
  * @author Pascal Lindner
  */
 
-public class NewOrFromTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
+public class ScheduledLegWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
-
-    private NewOrFromTypePanel component;
+    private ScheduledLegPanel component;
 
     @Override
-    public NewOrFromTypePanel getComponent() {
+    public ScheduledLegPanel getComponent() {
         if (component == null) {
-            component = new NewOrFromTypePanel();
+            component = new ScheduledLegPanel();
         }
         return component;
     }
@@ -46,13 +44,10 @@ public class NewOrFromTypeWizard implements WizardDescriptor.Panel<WizardDescrip
     public void readSettings(WizardDescriptor wiz) {
     }
 
-    //store legType if seleceted
+    //Store leg
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        LegType legType = getComponent().getLegType();
-        if (legType != null) {
-            wiz.putProperty("legTypeCopy", legType);
-        }
+        wiz.putProperty("leg", component.getSchedueldLeg());
     }
 
 }

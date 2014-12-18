@@ -16,11 +16,13 @@ import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
+/**
+ * Selection for new or from LegType panel
+ *
+ * @author Pascal Lindner
+ */
 public final class NewOrFromTypePanel extends JPanel {
 
-    /**
-     * Creates new form NormalLegVisualPanel1
-     */
     private ButtonGroup buttonGroup1;
     private JComboBox cmbLegType;
     private JRadioButton rbFromLegType;
@@ -52,15 +54,6 @@ public final class NewOrFromTypePanel extends JPanel {
         add(rbFromScratch, c);
         rbFromScratch.setSelected(true);
 
-        rbFromScratch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbFromScratch.isSelected()) {
-                    cmbLegType.setEnabled(false);
-                }
-            }
-        });
-
         buttonGroup1.add(rbFromLegType);
         rbFromLegType.setText(LIMOResourceBundle.getString("FROM_LEGTYPE"));
         c.weightx = 1;
@@ -68,15 +61,7 @@ public final class NewOrFromTypePanel extends JPanel {
         c.gridy = 3;
         add(rbFromLegType, c);
 
-        rbFromLegType.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbFromLegType.isSelected()) {
-                    cmbLegType.setEnabled(true);
-                }
-            }
-        });
-
+        setActionListener();
         LegTypeService legTypeService = Lookup.getDefault().lookup(LegTypeService.class);
         htl = legTypeService.findAll();
         ArrayList<String> legTypeList = new ArrayList<>();
@@ -90,10 +75,29 @@ public final class NewOrFromTypePanel extends JPanel {
         c.gridy = 4;
         add(cmbLegType, c);
         cmbLegType.setEnabled(false);
-        if(htl.isEmpty()){
+        if (htl.isEmpty()) {
             rbFromLegType.setEnabled(false);
             cmbLegType.setEditable(false);
         }
+    }
+
+    public void setActionListener() {
+        rbFromScratch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rbFromScratch.isSelected()) {
+                    cmbLegType.setEnabled(false);
+                }
+            }
+        });
+        rbFromLegType.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rbFromLegType.isSelected()) {
+                    cmbLegType.setEnabled(true);
+                }
+            }
+        });
     }
 
     public LegType getLegType() {

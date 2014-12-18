@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
 import java.awt.Component;
@@ -25,9 +20,13 @@ import org.openide.WizardDescriptor;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
-// An example action demonstrating how the wizard could be called from within
-// your code. You can move the code below wherever you need, or register an action:
-//@ActionID(category = "Leg", id = "nl.fontys.limo.view.wizzard.leg.normal.NormalLegWizardAction")
+/**
+ * Normal Leg Wizard Action
+ *
+ * @author Pascal Lindner
+ */
+
+//Not shown in menubar because is not stored in DB
 //@ActionRegistration(displayName = "Add Normal leg")
 //@ActionReference(path = "Menu/Master Data/Leg", position = 20)
 public final class NormalLegWizardAction implements ActionListener {

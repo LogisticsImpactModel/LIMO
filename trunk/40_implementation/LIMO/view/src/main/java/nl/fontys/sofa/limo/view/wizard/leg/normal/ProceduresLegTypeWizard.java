@@ -9,6 +9,12 @@ import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
+/**
+ * Add Procedure to leg
+ *
+ * @author Pascal Lindner
+ */
+
 public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private ProceduresPanel component;
@@ -26,10 +32,7 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
 
     @Override
     public HelpCtx getHelp() {
-        // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
-        // If you have context help:
-        // return new HelpCtx("help.key.here");
     }
 
     @Override
@@ -45,6 +48,7 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
     public void removeChangeListener(ChangeListener l) {
     }
 
+    //Update procedures
     @Override
     public void readSettings(WizardDescriptor wiz) {
         Leg leg = (Leg) wiz.getProperty("leg");
@@ -58,11 +62,13 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
         }
     }
 
+    //Store procedures
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty("procedures", getComponent().getProcedures());
     }
 
+    //Validate
     @Override
     public void validate() throws WizardValidationException {
         if (component.getProcedures().isEmpty()) {
