@@ -42,8 +42,6 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     private ProcedureWidget procedureWidget;
     private final Widget startFlagWidget;
 
-//    private final Result<Procedure> procedureResult;
-//    private final Result<Event> eventResult;
     /**
      * Constructor sets up the widget by setting the display name and image.
      *
@@ -60,8 +58,6 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         setToolTipText(hubNode.getName());
         setOpaque(false);
 
-//        eventResult = hubNode.getLookup().lookupResult(Event.class);
-//        procedureResult = hubNode.getLookup().lookupResult(Procedure.class);
         startFlagWidget = new StartWidget(scene);
         startFlagWidget.setVisible(false);
 

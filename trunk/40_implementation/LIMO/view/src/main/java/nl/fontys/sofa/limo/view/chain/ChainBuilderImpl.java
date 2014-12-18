@@ -28,25 +28,6 @@ public class ChainBuilderImpl implements ChainBuilder {
         hubList = new ArrayList<>();
     }
 
-    /**
-     * Constructor for the ChainBuilderImpl. It opens a new
-     * {@link nl.fontys.sofa.limo.domain.component.SupplyChain} and a list of
-     * hubs.
-     *
-     * @param chain
-     */
-    public ChainBuilderImpl(SupplyChain chain) {
-        this.chain = chain;
-        hubList = new ArrayList<>();
-        Node currentNode = chain.getStart();
-        while (currentNode != null) {
-            if (currentNode instanceof Hub) {
-                hubList.add((Hub) currentNode);
-            }
-            currentNode = currentNode.getNext();
-        }
-    }
-
     @Override
     public void addHub(Hub hub) {
         hubList.add(hub);

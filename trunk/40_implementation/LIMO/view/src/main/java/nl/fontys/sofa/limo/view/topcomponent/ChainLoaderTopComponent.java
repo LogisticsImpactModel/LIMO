@@ -32,6 +32,11 @@ import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
 
+/**
+ * Top component which loads an existing
+ * {@link nl.fontys.sofa.limo.domain.component.SupplyChain} and displays a
+ * GraphScene and Palette to build a chain with.
+ */
 @ConvertAsProperties(
         dtd = "-//nl.fontys.sofa.limo.view.topcomponent//ChainLoader//EN",
         autostore = false
@@ -39,7 +44,7 @@ import org.openide.windows.TopComponent;
 @TopComponent.Description(
         preferredID = "ChainLoaderTopComponent",
         iconBase = "icons/gui/link.gif",
-        persistenceType = TopComponent.PERSISTENCE_ALWAYS
+        persistenceType = TopComponent.PERSISTENCE_NEVER
 )
 @TopComponent.Registration(
         mode = "editor",
@@ -50,99 +55,99 @@ import org.openide.windows.TopComponent;
         id = "nl.fontys.sofa.limo.view.topcomponent.ChainLoaderTopComponent"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/File", position = 3),
-    //@ActionReference(path = "Toolbars/File", position = 0),
-    @ActionReference(path = "Shortcuts", name = "D-N")
+  @ActionReference(path = "Menu/File", position = 3),
+  //@ActionReference(path = "Toolbars/File", position = 0),
+  @ActionReference(path = "Shortcuts", name = "D-N")
 })
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_ChainLoaderAction"
 )
 @Messages({
-    "CTL_ChainLoaderAction=Load Supply Chain..",
-    "CTL_ChainLoaderTopComponent=Load Supply Chain"
+  "CTL_ChainLoaderAction=Load Supply Chain..",
+  "CTL_ChainLoaderTopComponent=Load Supply Chain"
 })
 public final class ChainLoaderTopComponent extends TopComponent implements
         DynamicExplorerManagerProvider {
 
-    private ExplorerManager em = new ExplorerManager();
-    private ChainGraphScene graphScene;
+  private ExplorerManager em = new ExplorerManager();
+  private ChainGraphScene graphScene;
 
-    public ChainLoaderTopComponent() {
-        initComponents();
+  public ChainLoaderTopComponent() {
+    initComponents();
 
-        File chainFile = openSupplyChain();
-        if (chainFile != null) {
-            SupplyChain supplyChain = SupplyChain.createFromFile(chainFile);
-            setName(supplyChain.getName());
-            initCustomComponents(supplyChain);
+    File chainFile = openSupplyChain();
+    if (chainFile != null) {
+      SupplyChain supplyChain = SupplyChain.createFromFile(chainFile);
+      setName(supplyChain.getName());
+      initCustomComponents(supplyChain);
 
-            try {
-                SavableComponent savable = new SavableComponent(graphScene.getSupplyChain());
+      try {
+        SavableComponent savable = new SavableComponent(graphScene.getSupplyChain());
 
-                Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
-                Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
-                Lookup graphLookup = Lookups.singleton(graphScene);
-                Lookup savableLookup = Lookups.singleton(savable);
-                ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup);
-                associateLookup(pl);
-            } catch (ServiceNotFoundException ex) {
-                Exceptions.printStackTrace(ex);
-                NotifyDescriptor d = new NotifyDescriptor.Message(LIMOResourceBundle.getString("LIMO_ERROR"),
-                        NotifyDescriptor.ERROR_MESSAGE);
-            }
-        }
+        Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
+        Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
+        Lookup graphLookup = Lookups.singleton(graphScene);
+        Lookup savableLookup = Lookups.singleton(savable);
+        ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup);
+        associateLookup(pl);
+      } catch (ServiceNotFoundException ex) {
+        Exceptions.printStackTrace(ex);
+        NotifyDescriptor d = new NotifyDescriptor.Message(LIMOResourceBundle.getString("LIMO_ERROR"),
+                NotifyDescriptor.ERROR_MESSAGE);
+      }
     }
+  }
 
-    private File openSupplyChain() {
-        JFileChooser fc = new ChainFileChooser();
-        int result = fc.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            return fc.getSelectedFile();
-        } else {
-            return null;
-        }
+  private File openSupplyChain() {
+    JFileChooser fc = new ChainFileChooser();
+    int result = fc.showOpenDialog(null);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      return fc.getSelectedFile();
+    } else {
+      return null;
     }
+  }
 
-    void initCustomComponents(SupplyChain supplyChain) {
-        setLayout(new BorderLayout());
-        try {
-            ChainToolbar toolbar = new ChainToolbar();
-            add(toolbar, BorderLayout.NORTH);
+  void initCustomComponents(SupplyChain supplyChain) {
+    setLayout(new BorderLayout());
+    try {
+      ChainToolbar toolbar = new ChainToolbar();
+      add(toolbar, BorderLayout.NORTH);
 
-            graphScene = new ChainGraphSceneImpl(this, supplyChain);
-            JScrollPane shapePane = new JScrollPane();
-            JComponent createView = graphScene.createView();
-            createView.putClientProperty("print.printable", Boolean.TRUE);
-            createView.putClientProperty("print.name", LIMOResourceBundle.getString("SUPPLY_CHAIN") + ": " + supplyChain.getName());
-            shapePane.setViewportView(createView);
+      graphScene = new ChainGraphSceneImpl(this, supplyChain);
+      JScrollPane shapePane = new JScrollPane();
+      JComponent createView = graphScene.createView();
+      createView.putClientProperty("print.printable", Boolean.TRUE);
+      createView.putClientProperty("print.name", LIMOResourceBundle.getString("SUPPLY_CHAIN") + ": " + supplyChain.getName());
+      shapePane.setViewportView(createView);
 
-            add(shapePane, BorderLayout.CENTER);
-            add(graphScene.createSatelliteView(), BorderLayout.SOUTH);
-        } catch (IOException | IntrospectionException ex) {
-            Exceptions.printStackTrace(ex);
-        }
+      add(shapePane, BorderLayout.CENTER);
+      add(graphScene.createSatelliteView(), BorderLayout.SOUTH);
+    } catch (IOException | IntrospectionException ex) {
+      Exceptions.printStackTrace(ex);
     }
+  }
 
-    @Override
-    public ExplorerManager getExplorerManager() {
-        return em;
+  @Override
+  public ExplorerManager getExplorerManager() {
+    return em;
+  }
+
+  @Override
+  public void setRootContext(AbstractBeanNode node) {
+    em.setRootContext(node);
+    try {
+      em.setSelectedNodes(new Node[]{node});
+    } catch (PropertyVetoException ex) {
+      Exceptions.printStackTrace(ex);
     }
+  }
 
-    @Override
-    public void setRootContext(AbstractBeanNode node) {
-        em.setRootContext(node);
-        try {
-            em.setSelectedNodes(new Node[]{node});
-        } catch (PropertyVetoException ex) {
-            Exceptions.printStackTrace(ex);
-        }
-    }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+  /**
+   * This method is called from within the constructor to initialize the form.
+   * WARNING: Do NOT modify this code. The content of this method is always
+   * regenerated by the Form Editor.
+   */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -161,24 +166,24 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
     @Override
-    public void componentOpened() {
-        // TODO add custom code on component opening
-    }
+  public void componentOpened() {
+    // TODO add custom code on component opening
+  }
 
-    @Override
-    public void componentClosed() {
-        // TODO add custom code on component closing
-    }
+  @Override
+  public void componentClosed() {
+    // TODO add custom code on component closing
+  }
 
-    void writeProperties(java.util.Properties p) {
+  void writeProperties(java.util.Properties p) {
         // better to version settings since initial version as advocated at
-        // http://wiki.apidesign.org/wiki/PropertyFiles
-        p.setProperty("version", "1.0");
-        // TODO store your settings
-    }
+    // http://wiki.apidesign.org/wiki/PropertyFiles
+    p.setProperty("version", "1.0");
+    // TODO store your settings
+  }
 
-    void readProperties(java.util.Properties p) {
-        String version = p.getProperty("version");
-        // TODO read your settings according to their version
-    }
+  void readProperties(java.util.Properties p) {
+    String version = p.getProperty("version");
+    // TODO read your settings according to their version
+  }
 }

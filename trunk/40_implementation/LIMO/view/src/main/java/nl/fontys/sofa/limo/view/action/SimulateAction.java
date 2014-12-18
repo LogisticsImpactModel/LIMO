@@ -40,83 +40,92 @@ import org.openide.windows.TopComponent;
 public final class SimulateAction extends AbstractAction
         implements Presenter.Toolbar, SimulatorTaskListener {
 
-    private int numberOfRuns = 1000;
-    private final JFormattedTextField inputRunsTF;
-    private ChainGraphScene scene;
+  public static final int DEFAULT_NUM_RUNS = 1000;
 
-    /**
-     * Constructor sets the input text field from where to get the number of
-     * simulation runs from.
-     *
-     * @param inputRunsTF the formatted text field.
-     */
-    public SimulateAction(JFormattedTextField inputRunsTF) {
-        this.inputRunsTF = inputRunsTF;
-    }
+  private final JFormattedTextField inputRunsTF;
+  private ChainGraphScene scene;
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Invokes the simulate action.
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        SupplyChain supplyChain;
-        Lookup global = Utilities.actionsGlobalContext();
-        scene = global.lookup(ChainGraphScene.class);
+  /**
+   * Constructor sets the input text field from where to get the number of
+   * simulation runs from.
+   *
+   * @param inputRunsTF the formatted text field.
+   */
+  public SimulateAction(JFormattedTextField inputRunsTF) {
+    this.inputRunsTF = inputRunsTF;
+  }
 
-        if (scene != null) {
-            TopComponent tc = (TopComponent) scene.getParent();
-            ChainBuilder chainBuilder = scene.getChainBuilder();
-            if (inputRunsTF.isEditValid()) {
-                numberOfRuns = (int) inputRunsTF.getValue();
-            }
+  /**
+   * {@inheritDoc}
+   * <p>
+   * Invokes the simulate action.
+   */
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    Lookup global = Utilities.actionsGlobalContext();
+    scene = global.lookup(ChainGraphScene.class);
+    int numberOfRuns = DEFAULT_NUM_RUNS;
 
-            if (chainBuilder != null && chainBuilder.validate()) {
-                supplyChain = chainBuilder.getSupplyChain();
-
-                tc.makeBusy(true);
-                scene.setEnabled(false);
-                scene.setBackground(Color.LIGHT_GRAY);
-                SimulatorTask task = Simulator.simulate(numberOfRuns, supplyChain);
-                task.addTaskListener(this);
-            } else {
-                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(
-                        LIMOResourceBundle.getString("CHAIN_VALIDATION_FAILED"),
-                        NotifyDescriptor.WARNING_MESSAGE));
-            }
+    if (scene != null) {
+      if (inputRunsTF.isEditValid()) {
+        Object input = inputRunsTF.getValue();
+        if (input != null) {
+          numberOfRuns = (int) input;
         }
-    }
+        performSimulation(scene, numberOfRuns);
+      }
 
-    @Override
-    public void taskFinished(SimulatorTask task) {
-        TopComponent tc = (TopComponent) scene.getParent();
-        tc.makeBusy(false);
-        scene.setEnabled(true);
-        scene.setBackground(Color.WHITE);
-
-        for (SimulationResult simResult : task.getResults()) {
-            ResultTopComponent rtc = new ResultTopComponent(simResult);
-            rtc.open();
-            rtc.requestActive();
-        }
     }
+  }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Creates a new simulation button to invoke this action from.
-     *
-     * @return the component as a {@link javax.swing.JButton}.
-     */
-    @Override
-    public Component getToolbarPresenter() {
-        JButton button = new JButton(this);
-        button.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/gui/simulate.png")));
-        button.setText(LIMOResourceBundle.getString("SIMULATE"));
-        button.setOpaque(false);
-        button.setBorder(null);
-        return button;
+  @Override
+  public void taskFinished(SimulatorTask task) {
+    TopComponent tc = (TopComponent) scene.getParent();
+    tc.makeBusy(false);
+    scene.setEnabled(true);
+    scene.setBackground(Color.WHITE);
+
+    for (SimulationResult simResult : task.getResults()) {
+      ResultTopComponent rtc = new ResultTopComponent(simResult);
+      rtc.open();
+      rtc.requestActive();
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   * <p>
+   * Creates a new simulation button to invoke this action from.
+   *
+   * @return the component as a {@link javax.swing.JButton}.
+   */
+  @Override
+  public Component getToolbarPresenter() {
+    JButton button = new JButton(this);
+    button.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/gui/simulate.png")));
+    button.setText(LIMOResourceBundle.getString("SIMULATE"));
+    button.setOpaque(false);
+    button.setBorder(null);
+    return button;
+  }
+
+  private void performSimulation(ChainGraphScene scene, int numberOfRuns) {
+    ChainBuilder chainBuilder = scene.getChainBuilder();
+
+    if (chainBuilder != null && chainBuilder.validate()) {
+      TopComponent tc = (TopComponent) scene.getParent();
+      SupplyChain supplyChain = chainBuilder.getSupplyChain();
+
+      tc.makeBusy(true);
+      scene.setEnabled(false);
+      scene.setBackground(Color.LIGHT_GRAY);
+      SimulatorTask task = Simulator.simulate(numberOfRuns, supplyChain);
+      task.addTaskListener(this);
+    } else {
+      DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(
+              LIMOResourceBundle.getString("CHAIN_VALIDATION_FAILED"),
+              NotifyDescriptor.WARNING_MESSAGE));
+    }
+  }
 
 }

@@ -59,7 +59,7 @@ public final class LegTypeTopComponent extends BaseEntityTopComponent {
     }
 
     @Override
-    protected AbstractRootNode getRootNode(Children children) throws ServiceNotFoundException {
+    protected AbstractRootNode createRootNode(Children children) throws ServiceNotFoundException {
         AbstractRootNode rootNode = new LegTypeRootNode(children);
         rootNode.setDisplayName(LIMOResourceBundle.getString("LEG_TYPE"));
         return rootNode;

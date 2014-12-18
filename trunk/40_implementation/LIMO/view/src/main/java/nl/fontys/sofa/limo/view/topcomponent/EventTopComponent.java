@@ -60,7 +60,7 @@ public final class EventTopComponent extends BaseEntityTopComponent {
     }
 
     @Override
-    protected AbstractRootNode getRootNode(Children children) throws ServiceNotFoundException {
+    protected AbstractRootNode createRootNode(Children children) throws ServiceNotFoundException {
         AbstractRootNode rootNode = new EventRootNode(children);
         rootNode.setDisplayName(LIMOResourceBundle.getString("EVENT"));
         return rootNode;
