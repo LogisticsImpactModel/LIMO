@@ -25,6 +25,7 @@ public class FileChooserPanel implements WizardDescriptor.Panel<WizardDescriptor
         if (component == null) {
             component = new DirectoryChooserPanel();
         }
+        component.setName(LIMOResourceBundle.getString("CHOOSE_FILE"));
         return component;
     }
 
