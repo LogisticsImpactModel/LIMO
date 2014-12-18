@@ -12,6 +12,11 @@ import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
+/**
+ * Location Wizard for Hub.
+ *
+ * @author Pascal Lindner
+ */
 public class LocationHubWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private LocationHubPanel component;
@@ -44,6 +49,7 @@ public class LocationHubWizard implements WizardDescriptor.Panel<WizardDescripto
     public void removeChangeListener(ChangeListener l) {
     }
 
+    //Update Labels for Location. Depends on Hub or HubType.
     @Override
     public void readSettings(WizardDescriptor wiz) {
         Hub hub = (Hub) wiz.getProperty(HUB_COPY);
@@ -66,11 +72,13 @@ public class LocationHubWizard implements WizardDescriptor.Panel<WizardDescripto
         lastHubType = hubType;
     }
 
+    //Save Location
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(HUB_LOCATION, getComponent().getHubLocation());
     }
 
+    //Validate that Continent is set.
     @Override
     public void validate() throws WizardValidationException {
         if (component.getHubLocation() == null) {

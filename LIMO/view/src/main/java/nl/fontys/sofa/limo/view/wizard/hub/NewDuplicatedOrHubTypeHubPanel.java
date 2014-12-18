@@ -18,6 +18,12 @@ import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
+/**
+ * 1th Panel for Hub. New, delete or copy
+ *
+ * @author Pascal Lindner
+ */
+
 public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
 
     private JComboBox hubCb;
@@ -107,10 +113,10 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
             hubTypeCb.setEditable(false);
             hubFromTypeSelection.setEnabled(false);
         }
-        initActionsListener();
+        setActionsListener();
     }
 
-    private void initActionsListener() {
+    private void setActionsListener() {
         hubFromTypeSelection.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

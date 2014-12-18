@@ -15,6 +15,12 @@ import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
+/**
+ * Basic information Panel Wizard for Hub. (Name, Description, Icon)
+ *
+ * @author Pascal Lindner
+ */
+
 public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NameDescriptionIconPanel component;
@@ -47,6 +53,7 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
     public void removeChangeListener(ChangeListener l) {
     }
 
+    //Update Labels
     @Override
     public void readSettings(WizardDescriptor wiz) {
         Hub hub = (Hub) wiz.getProperty(HUB_COPY);
@@ -68,13 +75,15 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
         lastHubType = hubType;
     }
 
+    //Store name, description and icon
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(HUB_NAME, getComponent().getNameInput());
         wiz.putProperty(HUB_DESCRIPTION, getComponent().getDescriptionInput());
         wiz.putProperty(HUB_ICON, getComponent().getIcon());
     }
-
+    
+    //Validate that name is set.
     @Override
     public void validate() throws WizardValidationException {
         if (component.getNameInput().isEmpty()) {
