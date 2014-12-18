@@ -9,6 +9,8 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
+ * This class provides a view for Hubs. It extends the DataDialog.
+ *
  * @author Matthias Brück
  */
 public class HubDataDialog extends DataDialog<Hub> {

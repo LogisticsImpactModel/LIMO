@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 
 /**
+ * This class provides a view for Events. It extends the DataDialog.
+ *
  * @author Matthias Brück
  */
 public class EventDataDialog extends DataDialog<Event> {

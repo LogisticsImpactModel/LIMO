@@ -44,6 +44,13 @@ public class DefaultTableModel extends javax.swing.table.DefaultTableModel {
         }
     }
 
+    /**
+     * Returns the class of the objects in a given column.
+     *
+     * @param columnIndex The column whichs class should be returned.
+     * @return The class of the given column. If the column is out of range,
+     * Object.class is returned.
+     */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         if (columnIndex < classes.length && columnIndex >= 0) {

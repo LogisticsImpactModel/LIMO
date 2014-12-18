@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
+ * This Panel lets you choose a directory and a filename.
+ *
  * @author Matthias Brück
  */
 public class DirectoryChooserPanel extends JPanel implements ActionListener {
@@ -24,6 +26,9 @@ public class DirectoryChooserPanel extends JPanel implements ActionListener {
     private final FormLayout layout;
     private final JFileChooser fc;
 
+    /**
+     * Initializes a new DirectoryChoosePanel.
+     */
     public DirectoryChooserPanel() {
         cc = new CellConstraints();
         layout = new FormLayout("5px, 200, 5px, pref, 5px", "5px, pref, 5px, pref, 5px");
@@ -46,10 +51,20 @@ public class DirectoryChooserPanel extends JPanel implements ActionListener {
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     }
 
+    /**
+     * Returns the path to the chosen directory.
+     *
+     * @return A String containing the path to the chosen directory.
+     */
     public String getPath() {
         return tfDirectory.getText();
     }
 
+    /**
+     * Returns the chosen filename.
+     *
+     * @return A String containing the chosen filename.
+     */
     public String getFileName() {
         return tfFileName.getText();
     }

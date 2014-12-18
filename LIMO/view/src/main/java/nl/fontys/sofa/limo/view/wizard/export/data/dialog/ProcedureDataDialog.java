@@ -5,17 +5,18 @@ import java.awt.Dimension;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 
 /**
- * Specific data selection panel for procedure categories.
+ * This class provides a view for Procedures. It extends the DataDialog.
  *
  * @author Matthias Brück
  */
-public class ProcedureCategoryDataDialog extends DataDialog<ProcedureCategory> {
+public class ProcedureDataDialog extends DataDialog<ProcedureCategory> {
 
-    public ProcedureCategoryDataDialog(ProcedureCategory entity) {
+    public ProcedureDataDialog(ProcedureCategory entity) {
         super(entity);
         this.setSize(new Dimension(350, 100));
         this.setModal(true);
         this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     @Override

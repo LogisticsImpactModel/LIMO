@@ -26,6 +26,8 @@ import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 
 /**
+ * This class handles the Action of the Export Wizard.
+ *
  * @author Matthias Brück
  */
 @ActionID(category

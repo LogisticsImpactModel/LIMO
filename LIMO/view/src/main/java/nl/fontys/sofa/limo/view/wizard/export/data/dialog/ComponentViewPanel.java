@@ -15,9 +15,11 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
+ * This class provides a view for all properties of a component.
+ *
  * @author Matthias Brück
  */
-public class ComponentViewPanel extends JPanel {
+public class ComponentViewPanel extends JPanel implements MouseListener {
 
     private final JLabel lblEvent, lblProcedure;
     private final JTable tblEvents, tblProcedures;
@@ -30,9 +32,7 @@ public class ComponentViewPanel extends JPanel {
         cc = new CellConstraints();
         layout = new FormLayout("5px, pref, 5px, pref:grow, 5px", "5px, pref, 5px, pref, 5px, 125, 5px, pref, 5px, 125, 5px");
         this.setLayout(layout);
-
         this.add(new BaseEntityViewPanel(entity), cc.xyw(2, 2, 3));
-
         lblEvent = new JLabel(LIMOResourceBundle.getString("EVENTS"));
         this.add(lblEvent, cc.xyw(2, 4, 3));
         events = entity.getEvents().toArray(new Event[]{});
@@ -57,33 +57,32 @@ public class ComponentViewPanel extends JPanel {
         tblProcedures = new JTable(tblmdlProcedures);
         JScrollPane tblProcedurePane = new JScrollPane(tblProcedures);
         this.add(tblProcedurePane, cc.xyw(2, 10, 3));
-        tblEvents.addMouseListener(new MouseListener() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getSource().equals(tblEvents)) {
-                    if (tblEvents.getSelectedRow() >= 0 && tblEvents.getSelectedRow() < tblmdlEvents.getRowCount()) {
-                        new EventDataDialog(events[tblEvents.getSelectedRow()]);
-                    }
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-            }
-        });
+        tblEvents.addMouseListener(this);
         this.setVisible(true);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource().equals(tblEvents)) {
+            if (tblEvents.getSelectedRow() >= 0 && tblEvents.getSelectedRow() < tblmdlEvents.getRowCount()) {
+                new EventDataDialog(events[tblEvents.getSelectedRow()]);
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }

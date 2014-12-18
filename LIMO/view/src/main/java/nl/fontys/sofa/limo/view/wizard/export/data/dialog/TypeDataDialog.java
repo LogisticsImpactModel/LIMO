@@ -8,6 +8,9 @@ import nl.fontys.sofa.limo.domain.component.type.Type;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
+ * This class provides a view for HubTypes and LegTypes. Also the abstract Type
+ * implementation is supported. It extends the DataDialog.
+ *
  * @author Matthias Brück
  */
 public class TypeDataDialog extends DataDialog<Type> {
