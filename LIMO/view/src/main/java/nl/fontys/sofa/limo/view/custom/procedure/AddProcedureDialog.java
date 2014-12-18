@@ -113,7 +113,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(addCostButton)) {
-            new EditValueDialog(costValue, new EditValueDialogListener() {
+            EditValueDialog editValueDialog = new EditValueDialog(costValue, new EditValueDialogListener() {
 
                 @Override
                 public void newValue(Value changedValue) {
@@ -125,9 +125,11 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
                     }
                 }
             });
+            editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            editValueDialog.setVisible(true);
         }
         if (e.getSource().equals(addTimeButton)) {
-            new EditValueDialog(timeValue, new EditValueDialogListener() {
+            EditValueDialog editValueDialog = new EditValueDialog(timeValue, new EditValueDialogListener() {
 
                 @Override
                 public void newValue(Value changedValue) {
@@ -139,6 +141,8 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
                     }
                 }
             });
+            editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            editValueDialog.setVisible(true);
         }
         if (e.getSource().equals(cancelButton)) {
             this.dispose();
@@ -191,6 +195,8 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
     /**
      * This listener offers functionality for what happens when a value of a
      * procedure got changed.
+     *
+     * @author Sven Mäurer
      */
     public interface EditValueDialogListener {
 

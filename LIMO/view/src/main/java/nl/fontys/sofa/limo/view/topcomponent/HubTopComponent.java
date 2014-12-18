@@ -17,7 +17,7 @@ import org.openide.windows.TopComponent;
 /**
  * BaseEntityTopComponent for hub.
  *
- * @author
+ * @author Sven Mäurer
  */
 @ConvertAsProperties(
         dtd = "-//nl.fontys.sofa.limo.view.topcomponent//Hub//EN",
