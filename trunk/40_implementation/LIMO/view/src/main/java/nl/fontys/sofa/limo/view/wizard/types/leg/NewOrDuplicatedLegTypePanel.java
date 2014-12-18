@@ -12,6 +12,11 @@ import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
+/**
+ * Selection for New or Copy LegType Panel
+ *
+ * @author Pascal Lindner
+ */
 public final class NewOrDuplicatedLegTypePanel extends JPanel {
 
     private List<LegType> lt;
@@ -47,31 +52,13 @@ public final class NewOrDuplicatedLegTypePanel extends JPanel {
         add(rbFromScratch, c);
         rbFromScratch.setSelected(true);
 
-        rbFromScratch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbFromScratch.isSelected()) {
-                    cmbLegType.setEnabled(false);
-                }
-            }
-        });
-
         buttonGroup1.add(rbCopyFrom);
         rbCopyFrom.setText(LIMOResourceBundle.getString("COPY_EXISTING"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
         add(rbCopyFrom, c);
-
-        rbCopyFrom.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbCopyFrom.isSelected()) {
-                    cmbLegType.setEnabled(true);
-                }
-            }
-        });
-
+        addActionListener();
         LegTypeService legTypeService = Lookup.getDefault().lookup(LegTypeService.class);
         lt = legTypeService.findAll();
         List<String> legTypeList = new ArrayList<>();
@@ -85,11 +72,33 @@ public final class NewOrDuplicatedLegTypePanel extends JPanel {
         c.gridy = 2;
         add(cmbLegType, c);
         cmbLegType.setEnabled(false);
-        
-        if(lt.isEmpty()){
+
+        if (lt.isEmpty()) {
             rbCopyFrom.setEnabled(false);
             cmbLegType.setEditable(false);
         }
+
+    }
+
+    //Set Action Listener
+    public void addActionListener() {
+        rbFromScratch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rbFromScratch.isSelected()) {
+                    cmbLegType.setEnabled(false);
+                }
+            }
+        });
+
+        rbCopyFrom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rbCopyFrom.isSelected()) {
+                    cmbLegType.setEnabled(true);
+                }
+            }
+        });
 
     }
 

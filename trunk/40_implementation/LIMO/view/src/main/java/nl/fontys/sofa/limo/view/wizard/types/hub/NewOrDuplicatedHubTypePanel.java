@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -17,6 +16,11 @@ import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
+/**
+ * Selection for New or Copy LegType
+ *
+ * @author Pascal Lindner
+ */
 public final class NewOrDuplicatedHubTypePanel extends JPanel {
 
     private List<HubType> ht;
@@ -47,31 +51,13 @@ public final class NewOrDuplicatedHubTypePanel extends JPanel {
         add(rbFromScratch, c);
         rbFromScratch.setSelected(true);
 
-        rbFromScratch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbFromScratch.isSelected()) {
-                    cmbHubType.setEnabled(false);
-                }
-            }
-        });
-
         buttonGroup1.add(rbCopyFrom);
         rbCopyFrom.setText(LIMOResourceBundle.getString("COPY_EXISTING"));
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
         add(rbCopyFrom, c);
-
-        rbCopyFrom.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbCopyFrom.isSelected()) {
-                    cmbHubType.setEnabled(true);
-                }
-            }
-        });
-
+        setActionListener();
         HubTypeService hubTypeService = Lookup.getDefault().lookup(HubTypeService.class);
         ht = hubTypeService.findAll();
         List<String> hubTypeList = new ArrayList<>();
@@ -85,8 +71,8 @@ public final class NewOrDuplicatedHubTypePanel extends JPanel {
         c.gridy = 2;
         add(cmbHubType, c);
         cmbHubType.setEnabled(false);
-        
-        if(ht.isEmpty()){
+
+        if (ht.isEmpty()) {
             rbCopyFrom.setEnabled(false);
             cmbHubType.setEditable(false);
         }
@@ -98,6 +84,26 @@ public final class NewOrDuplicatedHubTypePanel extends JPanel {
         } else {
             return null;
         }
+    }
+
+    //AddActionListener
+    public void setActionListener() {
+        rbFromScratch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rbFromScratch.isSelected()) {
+                    cmbHubType.setEnabled(false);
+                }
+            }
+        });
+        rbCopyFrom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rbCopyFrom.isSelected()) {
+                    cmbHubType.setEnabled(true);
+                }
+            }
+        });
     }
 
     private ButtonGroup buttonGroup1;

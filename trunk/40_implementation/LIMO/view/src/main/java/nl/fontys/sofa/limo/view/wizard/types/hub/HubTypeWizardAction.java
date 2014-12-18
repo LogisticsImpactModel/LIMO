@@ -29,6 +29,13 @@ import org.openide.util.Lookup;
     @ActionReference(path = "Menu/Master Data/Hub Type", position = 20),
     @ActionReference(path = "Shortcuts", name = "DOS-H")
 })
+
+/**
+ * HubType Wizard Action.
+ *
+ * @author Pascal Lindner
+ */
+
 public final class HubTypeWizardAction extends TypeWizardAction {
 
     private HubType hubType;
@@ -88,6 +95,7 @@ public final class HubTypeWizardAction extends TypeWizardAction {
         }
     }
 
+    //For Update
     public void isUpdate(HubType hubType) {
         this.hubType = hubType;
         this.isUpdate = true;
