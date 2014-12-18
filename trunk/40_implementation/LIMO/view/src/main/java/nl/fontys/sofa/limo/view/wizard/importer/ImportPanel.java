@@ -2,6 +2,7 @@ package nl.fontys.sofa.limo.view.wizard.importer;
 
 import java.awt.Component;
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
@@ -28,6 +29,7 @@ public class ImportPanel implements WizardDescriptor.Panel<WizardDescriptor>, Wi
         if (component == null) {
             initComponent();
         }
+        component.setName(LIMOResourceBundle.getString("RESOLVE_CONFLICTS"));
         return component;
     }
 

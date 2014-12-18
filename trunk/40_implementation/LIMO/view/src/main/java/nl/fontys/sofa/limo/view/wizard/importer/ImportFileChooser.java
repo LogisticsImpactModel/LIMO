@@ -22,6 +22,7 @@ public class ImportFileChooser implements WizardDescriptor.Panel<WizardDescripto
         if (component == null) {
             component = new ImportFileChooserComponent();
         }
+        component.setName(LIMOResourceBundle.getString("CHOOSE_FILE"));
         return component;
     }
 
