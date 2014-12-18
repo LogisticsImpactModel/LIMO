@@ -14,7 +14,6 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -22,12 +21,12 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.PoissonDistribution;
+import nl.fontys.sofa.limo.view.custom.table.DistributionParameterTableModel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
@@ -38,18 +37,15 @@ import org.openide.util.Lookup;
  */
 public final class NameDescriptionProbabilityPanel extends JPanel {
 
-    private JLabel nameLabel;
     private JTextField nameTextField;
-    private JLabel descriptionLabel;
     private JTextArea descriptionTextArea;
-    private JLabel distributionTypeLabel;
     private JComboBox<String> distributionTypeComboBox;
     private JPanel parametersLabel;
     private JTable parametersTable;
     private JTextArea distributionDescription;
 
-    private Distribution prop;
     private DistributionFactory distributionFactory;
+    private DistributionParameterTableModel tableModel;
 
     public NameDescriptionProbabilityPanel() {
         initComponents();
@@ -61,55 +57,16 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     }
 
     private void initComponents() {
+        assignComponents();
         GridBagConstraints c = initLayout();
-        initName();
-
-        descriptionLabel = new JLabel(LIMOResourceBundle.getString("DESCRIPTION"));
-        descriptionTextArea = new JTextArea();
-        descriptionTextArea.setRows(4);
-
-        parametersLabel = new JPanel();
-        parametersLabel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
-                LIMOResourceBundle.getString("PARAMETERS"),
-                TitledBorder.LEFT,
-                TitledBorder.TOP
-        ));
-        parametersLabel.setLayout(new BorderLayout());
-        parametersTable = new JTable() {
-
-            @Override
-            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-                Component c = super.prepareRenderer(renderer, row, column);
-                if (isCellSelected(row, column)) {
-                    c.setBackground(getSelectionBackground());
-                } else if (column == 0) {
-                    c.setBackground(UIManager.getColor("Panel.background"));
-                } else {
-                    c.setBackground(null);
-                }
-                return c;
-            }
-
-        };
-        parametersTable.setModel(new DistributionParameterTableModel());
-        parametersTable.setShowGrid(true);
-        parametersTable.putClientProperty("terminateEditOnFocusLost", true);
-        DefaultCellEditor singleClick = (DefaultCellEditor) parametersTable.getDefaultEditor(parametersTable.getColumnClass(1));
-        singleClick.setClickCountToStart(1);
-        parametersTable.setDefaultEditor(parametersTable.getColumnClass(1), singleClick);
-        parametersLabel.add(parametersTable, BorderLayout.CENTER);
-
-        distributionDescription = new JTextArea();
-        distributionDescription.setEditable(false);
-
+        setComponentProperties();
         initDistribution();
 
         c.weightx = 0.3;
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
-        add(nameLabel, c);
+        add(new JLabel(LIMOResourceBundle.getString("NAME")), c);
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 0;
@@ -120,7 +77,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 1;
-        add(descriptionLabel, c);
+        add(new JLabel(LIMOResourceBundle.getString("DESCRIPTION")), c);
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 1;
@@ -131,7 +88,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 2;
         c.gridwidth = 1;
-        add(distributionTypeLabel, c);
+        add(new JLabel(LIMOResourceBundle.getString("DISTRIBUTION_TYPE")), c);
         c.weightx = 0.7;
         c.gridx = 1;
         c.gridy = 2;
@@ -152,6 +109,48 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
     }
 
+    private void setComponentProperties() {
+        descriptionTextArea.setRows(4);
+        parametersLabel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+                LIMOResourceBundle.getString("PARAMETERS"),
+                TitledBorder.LEFT,
+                TitledBorder.TOP
+        ));
+        parametersLabel.setLayout(new BorderLayout());
+        tableModel = new DistributionParameterTableModel(parametersTable);
+        parametersTable.setModel(tableModel);
+        parametersTable.setShowGrid(true);
+        parametersTable.putClientProperty("terminateEditOnFocusLost", true);
+        DefaultCellEditor singleClick = (DefaultCellEditor) parametersTable.getDefaultEditor(parametersTable.getColumnClass(1));
+        singleClick.setClickCountToStart(1);
+        parametersTable.setDefaultEditor(parametersTable.getColumnClass(1), singleClick);
+        parametersLabel.add(parametersTable, BorderLayout.CENTER);
+    }
+
+    private void assignComponents() {
+        nameTextField = new JTextField();
+        descriptionTextArea = new JTextArea();
+        distributionDescription = new JTextArea();
+        parametersLabel = new JPanel();
+        parametersTable = new JTable() {
+
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component c = super.prepareRenderer(renderer, row, column);
+                if (isCellSelected(row, column)) {
+                    c.setBackground(getSelectionBackground());
+                } else if (column == 0) {
+                    c.setBackground(UIManager.getColor("Panel.background"));
+                } else {
+                    c.setBackground(null);
+                }
+                return c;
+            }
+
+        };
+    }
+
     private GridBagConstraints initLayout() {
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -161,23 +160,19 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         return c;
     }
 
-    private void initName() {
-        nameLabel = new JLabel(LIMOResourceBundle.getString("NAME"));
-        nameTextField = new JTextField();
-    }
-
     private void initDistribution() {
+        distributionDescription.setEditable(false);
         distributionFactory = Lookup.getDefault().lookup(DistributionFactory.class);
         List<String> distTypes = Arrays.asList(distributionFactory.getDistributionTypes());
         Collections.sort(distTypes);
         String[] cbModel = distTypes.toArray(new String[distTypes.size()]);
-        distributionTypeLabel = new JLabel(LIMOResourceBundle.getString("DISTRIBUTION_TYPE"));
         distributionTypeComboBox = new JComboBox<>(cbModel);
         distributionTypeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                prop = distributionFactory.getDistributionTypeByName((String) distributionTypeComboBox.getSelectedItem());
-                ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
+                Distribution prop = distributionFactory.getDistributionTypeByName((String) distributionTypeComboBox.getSelectedItem());
+                tableModel.setProperty(prop);
+                tableModel.fireTableDataChanged();
                 distributionDescription.setText(prop.getDescription());
             }
         });
@@ -193,8 +188,8 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
             if (probability != null) {
                 String nameForDistributionType = distributionFactory.getNameForDistributionType(probability.getClass());
                 distributionTypeComboBox.getModel().setSelectedItem(nameForDistributionType);
-                prop = probability;
-                ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
+                tableModel.setProperty(probability);
+                tableModel.fireTableDataChanged();
                 distributionDescription.setText(probability.getDescription());
             } else {
                 distributionTypeComboBox.setSelectedItem(distributionFactory.getNameForDistributionType(PoissonDistribution.class));
@@ -217,78 +212,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     }
 
     Distribution getProbability() {
-        return prop;
+        return tableModel.getProbability();
     }
 
-    public class DistributionParameterTableModel extends AbstractTableModel {
-
-        @Override
-        public int getRowCount() {
-            return prop == null ? 0 : prop.getNames().size();
-        }
-
-        @Override
-        public int getColumnCount() {
-            return 2;
-        }
-
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            String inputValueName = prop.getNames().get(rowIndex);
-
-            if (columnIndex == 0) {
-                return inputValueName;
-            } else {
-                return prop.getValue(inputValueName);
-            }
-        }
-
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            return String.class;
-        }
-
-        @Override
-        public String getColumnName(int column) {
-            return column == 0 ? LIMOResourceBundle.getString("NAME") : LIMOResourceBundle.getString("VALUE");
-        }
-
-        @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return columnIndex == 1;
-        }
-
-        @Override
-        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-            if (columnIndex == 1) {
-                String inputValueName = prop.getNames().get(rowIndex);
-                Number n;
-
-                Class<?> inputType = prop.getType(inputValueName);
-
-                if (inputType.equals(Double.class)) {
-                    try {
-                        n = Double.parseDouble((String) aValue);
-                    } catch (NumberFormatException nfe) {
-                        n = null;
-                        JOptionPane.showMessageDialog(parametersTable, LIMOResourceBundle.getString("REQUIRES_FLOATING-POINT_VALUE"), LIMOResourceBundle.getString("NOT_FLOATING-POINT"), JOptionPane.WARNING_MESSAGE);
-                    }
-                } else if (inputType.equals(Integer.class)) {
-                    try {
-                        n = Integer.parseInt((String) aValue);
-                    } catch (NumberFormatException nfe) {
-                        n = null;
-                        JOptionPane.showMessageDialog(parametersTable, LIMOResourceBundle.getString("REQUIRES_INTERGER_VALUE"), LIMOResourceBundle.getString("NOT_INTERGER"), JOptionPane.WARNING_MESSAGE);
-                    }
-                } else {
-                    n = 0;
-                }
-
-                if (n != null) {
-                    prop.setInputValue(inputValueName, n);
-                }
-                fireTableCellUpdated(rowIndex, columnIndex);
-            }
-        }
-    }
 }
