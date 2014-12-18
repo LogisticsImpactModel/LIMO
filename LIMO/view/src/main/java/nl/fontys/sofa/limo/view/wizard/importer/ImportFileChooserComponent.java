@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  *
@@ -51,7 +52,7 @@ public class ImportFileChooserComponent extends JPanel implements ActionListener
 
             @Override
             public String getDescription() {
-                return "Filter for LIMO import files.";
+                return LIMOResourceBundle.getString("IMPORT_FILES");
             }
         });
     }

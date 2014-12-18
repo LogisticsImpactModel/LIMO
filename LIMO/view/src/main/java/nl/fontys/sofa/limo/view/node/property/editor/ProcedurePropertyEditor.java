@@ -13,6 +13,7 @@ import nl.fontys.sofa.limo.view.custom.procedure.ProcedureComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
+ * This class implements property editor for procedures.
  *
  * @author Matthias Brück
  */
@@ -41,15 +42,20 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
         return true;
     }
 
+    /**
+     * This is the custom editor for editing the procedure property.
+     */
     private class CustomEditor extends ProcedureComponent implements ItemListener {
 
+        /**
+         * Creates a new instance of this custom editor.
+         */
         public CustomEditor() {
             super();
             List<Procedure> procedures = (List<Procedure>) getValue();
             if (procedures != null) {
                 setProcedureTable(procedures);
             }
-
             procedureCategoryCheckbox.addItemListener(this);
             timeTypesCheckbox.addItemListener(this);
         }

@@ -14,6 +14,7 @@ import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.util.NbBundle.Messages;
 import org.openide.windows.TopComponent;
@@ -54,9 +55,9 @@ public final class ResultTopComponent extends TopComponent {
         this();
         this.result = result;
 
-        jTabbedPane1.addTab("Totals", createTotalsPane());
-        jTabbedPane1.addTab("By Category", createCategoryPane());
-        jTabbedPane1.addTab("By Node", createNodePane());
+        jTabbedPane1.addTab(LIMOResourceBundle.getString("TOTALS"), createTotalsPane());
+        jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("CATEGORY")), createCategoryPane());
+        jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("NODE")), createNodePane());
     }
 
     private JScrollPane createTotalsPane() {

@@ -5,6 +5,7 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -35,7 +36,6 @@ public class ImportFileChooser implements WizardDescriptor.Panel<WizardDescripto
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        System.out.println("PATH: " + component.getAbsoluteFilePath());
         wiz.putProperty(ImportWizardAction.PATH, component.getAbsoluteFilePath());
     }
 
@@ -56,11 +56,11 @@ public class ImportFileChooser implements WizardDescriptor.Panel<WizardDescripto
     public void validate() throws WizardValidationException {
         ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         if (component.getAbsoluteFilePath().equals("")) {
-            throw new WizardValidationException(null, MessageFormat.format(bundle.getString("VALUE_NOT_SET"), "Path"), null);
+            throw new WizardValidationException(null, LIMOResourceBundle.getString("VALUE_NOT_SET", LIMOResourceBundle.getString("FILEPATH")), null);
         }
         File f = new File(component.getAbsoluteFilePath());
         if (!f.exists()) {
-            throw new WizardValidationException(null, MessageFormat.format(bundle.getString("FILE_NOT_EXISTS"), new Object[]{}), null);
+            throw new WizardValidationException(null, LIMOResourceBundle.getString("FILE_NOT_EXISTS"), null);
         }
     }
 }
