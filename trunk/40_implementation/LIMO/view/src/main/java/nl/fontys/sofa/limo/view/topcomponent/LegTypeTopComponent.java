@@ -17,7 +17,7 @@ import org.openide.windows.TopComponent;
 /**
  * BaseEntityTopComponent for leg type.
  *
- * @author
+ * @author Sven Mäurer
  */
 @ConvertAsProperties(
         dtd = "-//nl.fontys.sofa.limo.view.topcomponent//LegType//EN",

@@ -14,7 +14,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
@@ -27,7 +26,7 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
  * @author Matthias Brück
  */
 public class EditValueDialog extends JDialog implements ActionListener {
-    
+
     private JButton buttonSave, buttonCancel;
     private JComboBox<String> comboboxValueTypes;
     private JTextField textfieldValue, textfieldMin, textfieldMax;
@@ -36,7 +35,7 @@ public class EditValueDialog extends JDialog implements ActionListener {
     private int activeType = 0;
     private final CellConstraints cc;
     private final AddProcedureDialog.EditValueDialogListener editValueDialogListener;
-    
+
     public EditValueDialog(Value value, AddProcedureDialog.EditValueDialogListener editValueDialogListener) {
         //LAYOUT
         this.editValueDialogListener = editValueDialogListener;
@@ -73,8 +72,6 @@ public class EditValueDialog extends JDialog implements ActionListener {
         int x = (screenSize.width - this.getWidth()) / 2;
         int y = (screenSize.height - this.getHeight()) / 2;
         this.setLocation(x, y);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setVisible(true);
     }
 
     /**
@@ -127,7 +124,7 @@ public class EditValueDialog extends JDialog implements ActionListener {
         this.add(buttonCancel, cc.xy(4, 6));
         this.add(labelError, cc.xyw(2, 8, 5));
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(comboboxValueTypes)) {
