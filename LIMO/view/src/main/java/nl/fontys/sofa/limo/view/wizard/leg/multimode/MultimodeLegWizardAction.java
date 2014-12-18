@@ -21,21 +21,18 @@ import org.openide.WizardDescriptor;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
-// An example action demonstrating how the wizard could be called from within
-// your code. You can move the code below wherever you need, or register an action:
+/**
+ * Multimode leg Wizard
+ *
+ * @author Pascal Lindner
+ */
+
+//Not displayed in menubar because leg is not saved.
 //@ActionID(category = "Multimode", id = "nl.fontys.limo.view.wizzard.leg.multimode.NormalLegWizardAction")
 //@ActionRegistration(displayName = "Add Multimode leg")
 //@ActionReference(path = "Menu/Master Data/Leg", position = 20)
 public final class MultimodeLegWizardAction implements ActionListener {
 
-//    public MultimodeLegWizardAction(){
-//        legListener = new MultimodeLegTablePanel.FinishedMapListener() {
-//
-//            @Override
-//            public void finishedLeg(Map map) {
-//            }
-//        };
-//    }
     public MultimodeLegWizardAction(MultimodeLegTablePanel.FinishedMapListener legListener) {
         this.legListener = legListener;
     }

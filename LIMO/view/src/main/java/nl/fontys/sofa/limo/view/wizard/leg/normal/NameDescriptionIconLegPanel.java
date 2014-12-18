@@ -1,7 +1,5 @@
 package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
@@ -10,6 +8,12 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
+
+/**
+ * Panel for name, description and icon
+ *
+ * @author Pascal Lindner
+ */
 
 public class NameDescriptionIconLegPanel implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
@@ -41,6 +45,7 @@ public class NameDescriptionIconLegPanel implements WizardDescriptor.Panel<Wizar
     public void removeChangeListener(ChangeListener l) {
     }
 
+    //Update legs
     @Override
     public void readSettings(WizardDescriptor wiz) {
         Leg leg = (Leg) wiz.getProperty("leg");
@@ -54,6 +59,7 @@ public class NameDescriptionIconLegPanel implements WizardDescriptor.Panel<Wizar
         }
     }
 
+    //Validate name
     @Override
     public void validate() throws WizardValidationException {
         if (component.getNameInput().isEmpty()) {
@@ -61,6 +67,7 @@ public class NameDescriptionIconLegPanel implements WizardDescriptor.Panel<Wizar
         }
     }
 
+    //Store name, description and icon
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty("name", getComponent().getNameInput());

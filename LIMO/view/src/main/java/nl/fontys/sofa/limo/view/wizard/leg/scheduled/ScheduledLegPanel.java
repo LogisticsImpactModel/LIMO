@@ -26,7 +26,12 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
 
-public final class ScheduledLegSchedulePanel extends JPanel {
+/**
+ * Panel to create ScheduledLeg
+ *
+ * @author Pascal Lindner
+ */
+public final class ScheduledLegPanel extends JPanel {
 
     private JPanel panelCenter, panelRight;
     private JButton btnAdd, btnEdit, btnDelete, btnAddAlt;
@@ -36,10 +41,7 @@ public final class ScheduledLegSchedulePanel extends JPanel {
     private DefaultTableModel model;
     private Leg altLeg;
 
-    /**
-     * Creates new form ScheduledLegVisualPanel2
-     */
-    public ScheduledLegSchedulePanel() {
+    public ScheduledLegPanel() {
         initComponents();
     }
 
@@ -67,6 +69,135 @@ public final class ScheduledLegSchedulePanel extends JPanel {
         tfWaiting.setText("0");
         btnAddAlt = new JButton(LIMOResourceBundle.getString("ADD"));
         setLayout(new BorderLayout());
+        setLayoutConstraints();
+        add(panelCenter, BorderLayout.CENTER);
+        model = new DefaultTableModel();
+        model.addColumn("Acceptance Times");
+        Box bv = Box.createVerticalBox();
+        table = new JTable(model);
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+        table.setRowSorter(sorter);
+        JScrollPane sc = new JScrollPane(table);
+        sc.setPreferredSize(new Dimension(160, 0));
+        panelRight.add(sc, BorderLayout.CENTER);
+        setActionListener();
+        bv.add(btnAdd);
+        bv.add(btnEdit);
+        bv.add(btnDelete);
+        panelRight.add(bv, BorderLayout.EAST);
+        add(panelRight, BorderLayout.EAST);
+
+    }
+    
+    //Return leg
+    public ScheduledLeg getSchedueldLeg() {
+        ScheduledLeg leg = new ScheduledLeg();
+        try {
+            leg.setExpectedTime(Long.parseLong(tfExpected.getText().replace(",", ".")));
+            leg.setWaitingTimeLimit(Long.parseLong(tfWaiting.getText().replace(",", ".")));
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(ScheduledLegPanel.this,
+                    LIMOResourceBundle.getString("NOT_A_NUMBER"),
+                    LIMOResourceBundle.getString("NUMBER_ERROR"),
+                    JOptionPane.ERROR_MESSAGE);
+            leg.setExpectedTime(0);
+            leg.setWaitingTimeLimit(0);
+            tfExpected.setText("0");
+            tfWaiting.setText("0");
+        }
+        return leg;
+    }
+
+    //AddActionListener
+    public void setActionListener() {
+        btnAddAlt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (btnAddAlt.getText().equals(LIMOResourceBundle.getString("ADD"))) {
+                    NormalLegWizardAction wiz = new NormalLegWizardAction(new MultimodeLegTablePanel.FinishedLegListener() {
+
+                        @Override
+                        public void finishedLeg(Leg leg) {
+                            altLeg = leg;
+                            lblAltName.setText(leg.getName());
+                            btnAddAlt.setText(LIMOResourceBundle.getString("EDIT"));
+                        }
+                    });
+                    wiz.actionPerformed(e);
+                } else {
+                    NormalLegWizardAction wiz = new NormalLegWizardAction(new MultimodeLegTablePanel.FinishedLegListener() {
+
+                        @Override
+                        public void finishedLeg(Leg leg) {
+                            altLeg = leg;
+                            lblAltName.setText(leg.getName());
+                        }
+                    });
+                    wiz.update(altLeg);
+                    wiz.actionPerformed(e);
+                }
+            }
+        });
+
+        btnAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                long aTime = 0;
+
+                String time = JOptionPane.showInputDialog(ScheduledLegPanel.this,
+                        LIMOResourceBundle.getString("ACCEPTANCE_TIME"), null);
+                if (time != null) {
+                    if (!time.isEmpty()) {
+                        try {
+                            aTime = Long.parseLong(time.replace(",", "."));
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(ScheduledLegPanel.this,
+                                    LIMOResourceBundle.getString("NOT_A_NUMBER"),
+                                    LIMOResourceBundle.getString("NUMBER_ERROR"),
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    model.addRow(new Long[]{aTime});
+                }
+            }
+        });
+        btnEdit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (table.getSelectedRow() >= 0) {
+                    long aTime = 0;
+                    String time = JOptionPane.showInputDialog(ScheduledLegPanel.this,
+                            LIMOResourceBundle.getString("ACCEPTANCE_TIME"), model.getValueAt(table.getSelectedRow(), 0));
+                    if (time != null) {
+                        if (!time.isEmpty()) {
+                            try {
+                                aTime = Long.parseLong(time.replace(",", "."));
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(ScheduledLegPanel.this,
+                                        LIMOResourceBundle.getString("NOT_A_NUMBER"),
+                                        LIMOResourceBundle.getString("NUMBER_ERROR"),
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                        model.setValueAt(aTime, table.getSelectedRow(), 0);
+                    }
+                }
+            }
+        });
+        btnDelete.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (table.getSelectedRow() >= 0) {
+                    model.removeRow(table.getSelectedRow());
+                }
+            }
+        });
+    }
+
+    //SetLayoutConstraints
+    public void setLayoutConstraints() {
         panelCenter.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -101,131 +232,7 @@ public final class ScheduledLegSchedulePanel extends JPanel {
         c.gridwidth = 2;
         c.gridx = 1;
         c.gridy = 3;
-        btnAddAlt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                if (btnAddAlt.getText().equals(LIMOResourceBundle.getString("ADD"))) {
-                    NormalLegWizardAction wiz = new NormalLegWizardAction(new MultimodeLegTablePanel.FinishedLegListener() {
-
-                        @Override
-                        public void finishedLeg(Leg leg) {
-                            altLeg = leg;
-                            lblAltName.setText(leg.getName());
-                            btnAddAlt.setText(LIMOResourceBundle.getString("EDIT"));
-                        }
-                    });
-                    wiz.actionPerformed(e);
-                } else {
-                    NormalLegWizardAction wiz = new NormalLegWizardAction(new MultimodeLegTablePanel.FinishedLegListener() {
-
-                        @Override
-                        public void finishedLeg(Leg leg) {
-                            altLeg = leg;
-                            lblAltName.setText(leg.getName());
-                        }
-                    });
-                    wiz.update(altLeg);
-                    wiz.actionPerformed(e);
-                }
-            }
-        });
         panelCenter.add(btnAddAlt, c);
-
-        add(panelCenter, BorderLayout.CENTER);
-        model = new DefaultTableModel();
-        model.addColumn("Acceptance Times");
-
-        Box bv = Box.createVerticalBox();
-        table = new JTable(model);
-        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-    table.setRowSorter(sorter);
-
-        JScrollPane sc = new JScrollPane(table);
-        sc.setPreferredSize(new Dimension(160, 0));
-        panelRight.add(sc, BorderLayout.CENTER);
-
-        btnAdd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                long aTime = 0;
-
-                String time = JOptionPane.showInputDialog(ScheduledLegSchedulePanel.this,
-                        LIMOResourceBundle.getString("ACCEPTANCE_TIME"), null);
-                if (time != null) {
-                    if (!time.isEmpty()) {
-                        try {
-                            aTime = Long.parseLong(time.replace(",", "."));
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(ScheduledLegSchedulePanel.this,
-                                    LIMOResourceBundle.getString("NOT_A_NUMBER"),
-                                    LIMOResourceBundle.getString("NUMBER_ERROR"),
-                                    JOptionPane.ERROR_MESSAGE);
-                        }
-                    }
-                    model.addRow(new Long[]{aTime});
-                }
-            }
-        });
-        btnEdit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() >= 0) {
-                    long aTime = 0;
-                    String time = JOptionPane.showInputDialog(ScheduledLegSchedulePanel.this,
-                            LIMOResourceBundle.getString("ACCEPTANCE_TIME"), model.getValueAt(table.getSelectedRow(), 0));
-                    if (time != null) {
-                        if (!time.isEmpty()) {
-                            try {
-                                aTime = Long.parseLong(time.replace(",", "."));
-                            } catch (NumberFormatException ex) {
-                                JOptionPane.showMessageDialog(ScheduledLegSchedulePanel.this,
-                                        LIMOResourceBundle.getString("NOT_A_NUMBER"),
-                                        LIMOResourceBundle.getString("NUMBER_ERROR"),
-                                        JOptionPane.ERROR_MESSAGE);
-                            }
-                        }
-                        model.setValueAt(aTime, table.getSelectedRow(), 0);
-                    }
-                }
-            }
-        });
-
-        btnDelete.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() >= 0) {
-                    model.removeRow(table.getSelectedRow());
-                }
-            }
-        });
-
-        bv.add(btnAdd);
-        bv.add(btnEdit);
-        bv.add(btnDelete);
-
-        panelRight.add(bv, BorderLayout.EAST);
-        add(panelRight, BorderLayout.EAST);
-
     }
-
-    public ScheduledLeg getSchedueldLeg() {
-        ScheduledLeg leg = new ScheduledLeg();
-        try {
-            leg.setExpectedTime(Long.parseLong(tfExpected.getText().replace(",", ".")));
-            leg.setWaitingTimeLimit(Long.parseLong(tfWaiting.getText().replace(",", ".")));
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(ScheduledLegSchedulePanel.this,
-                    LIMOResourceBundle.getString("NOT_A_NUMBER"),
-                    LIMOResourceBundle.getString("NUMBER_ERROR"),
-                    JOptionPane.ERROR_MESSAGE);
-            leg.setExpectedTime(0);
-            leg.setWaitingTimeLimit(0);
-            tfExpected.setText("0");
-            tfWaiting.setText("0");
-        }
-        return leg;
-    }
-
 }

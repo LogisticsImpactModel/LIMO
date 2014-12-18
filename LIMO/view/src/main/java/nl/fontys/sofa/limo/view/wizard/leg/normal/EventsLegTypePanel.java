@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
 import java.awt.event.ActionEvent;
@@ -15,6 +10,12 @@ import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+
+/**
+ * Event leg panel.
+ *
+ * @author Pascal Lindner
+ */
 
 public final class EventsLegTypePanel extends EventsPanel {
 
@@ -35,7 +36,8 @@ public final class EventsLegTypePanel extends EventsPanel {
         TableColumn tcol = eventsTable.getColumnModel().getColumn(1);
         eventsTable.getColumnModel().removeColumn(tcol);
     }
-
+    
+    //add Listener
     @Override
     protected void setAddButtonListener() {
         addButton.addActionListener(new ActionListener() {

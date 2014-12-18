@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.wizard.leg.scheduled;
 
 import java.awt.Component;
@@ -26,22 +21,18 @@ import org.openide.WizardDescriptor;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
-// An example action demonstrating how the wizard could be called from within
-// your code. You can move the code below wherever you need, or register an action:
+/**
+ * Wizard Action for ScheduledLeg.
+ *
+ * @author Pascal Lindner
+ */
+
+//Not shown because not saved in DB
 //@ActionID(category = "Leg", id = "nl.fontys.limo.view.wizzard.leg.scheduled.ScheduledLegWizardAction")
 //@ActionRegistration(displayName = "Add Scheduled leg")
 //@ActionReference(path = "Menu/Master Data/Leg", position = 20)
 public final class ScheduledLegWizardAction implements ActionListener {
 
-//    public ScheduledLegWizardAction(){
-//        legListener = new MultimodeLegTablePanel.FinishedScheduledLegListener() {
-//
-//            @Override
-//            public void finishedLeg(ScheduledLeg leg) {
-//
-//            }
-//        };
-//    }
     public ScheduledLegWizardAction(MultimodeLegTablePanel.FinishedScheduledLegListener legListener) {
         this.legListener = legListener;
     }
@@ -50,7 +41,7 @@ public final class ScheduledLegWizardAction implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
         panels.add(new NameDescriptionIconLegPanel());
-        panels.add(new ScheduledLegScheduleWizard());
+        panels.add(new ScheduledLegWizard());
         panels.add(new ProceduresLegTypeWizard());
         EventService eventService = Lookup.getDefault().lookup(EventService.class);
         if (!eventService.findAll().isEmpty()) {
