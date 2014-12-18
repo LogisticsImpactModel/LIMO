@@ -60,7 +60,7 @@ public final class ProcedureCategoryTopComponent extends BaseEntityTopComponent 
     }
 
     @Override
-    protected AbstractRootNode getRootNode(Children children) throws ServiceNotFoundException {
+    protected AbstractRootNode createRootNode(Children children) throws ServiceNotFoundException {
         AbstractRootNode rootNode = new ProcedureCategoryRootNode(children);
         rootNode.setDisplayName(LIMOResourceBundle.getString("NAME"));
         return rootNode;

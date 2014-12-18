@@ -60,7 +60,7 @@ public final class HubTypeTopComponent extends BaseEntityTopComponent {
     }
 
     @Override
-    protected AbstractRootNode getRootNode(Children children) throws ServiceNotFoundException {
+    protected AbstractRootNode createRootNode(Children children) throws ServiceNotFoundException {
         AbstractRootNode rootNode = new HubTypeRootNode(children);
         rootNode.setDisplayName(LIMOResourceBundle.getString("HUB_TYPE"));
         return rootNode;

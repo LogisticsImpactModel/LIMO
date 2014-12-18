@@ -18,77 +18,88 @@ import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 
 /**
- * This top component shows a list and is the base class for other top
- * components where the shown class extends the class BeseEntity. The sub
- * classes have to override the getName method for showing the name in the tab.
- * Usually the top component name from the messages annotation like
- * CTL_EventTopComponent should be returned.
+ * Abstract class which is responsible for displaying a view of a type of
+ * {@link nl.fontys.sofa.limo.domain.BaseEntity}.
+ * <p>
+ * A {@link org.openide.windows.TopComponent} which want to display their
+ * relating entity should extend this class.
+ * <p>
+ * Subclasses have to override the getName method for displaying the correct
+ * name.
  *
  * @author Sven Mäurer
  */
-public abstract class BaseEntityTopComponent extends TopComponent implements ExplorerManager.Provider {
+public abstract class BaseEntityTopComponent
+        extends TopComponent
+        implements ExplorerManager.Provider {
 
-    protected final ExplorerManager entityManager;
+  protected final ExplorerManager entityManager;
 
-    /**
-     * Initialize the top components with name, description columns. It also
-     * enables a delete action
-     */
-    public BaseEntityTopComponent() {
-        entityManager = new ExplorerManager();
+  /**
+   * Initialize the top components by creating the view components and children
+   * to be displayed and each child has a delete action attached to it.
+   *
+   */
+  public BaseEntityTopComponent() {
+    entityManager = new ExplorerManager();
+    initComponents();
+    addChildren();
 
-        initComponents();
-        setLayout(new BorderLayout());
-        OutlineView ov = new OutlineView(LIMOResourceBundle.getString("NAME"));
-        ov.setPropertyColumns("description", LIMOResourceBundle.getString("DESCRIPTION"));
-        ov.getOutline().setRootVisible(false);
-        add(ov, BorderLayout.CENTER);
+    ActionMap map = getActionMap();
+    map.put("delete", ExplorerUtils.actionDelete(entityManager, true));
+    associateLookup(ExplorerUtils.createLookup(entityManager, map));
+  }
 
-        try {
-            Children children = Children.create(getChildFactory(), true);
-            Node rootNode = getRootNode(children);
-            entityManager.setRootContext(rootNode);
-        } catch (ServiceNotFoundException ex) {
-            Exceptions.printStackTrace(ex);
-            NotifyDescriptor d = new NotifyDescriptor.Message(LIMOResourceBundle.getString("LIMO_ERROR"),
-                    NotifyDescriptor.ERROR_MESSAGE);
-            DialogDisplayer.getDefault().notify(d);
-        }
+  @Override
+  public ExplorerManager getExplorerManager() {
+    return entityManager;
+  }
 
-        ActionMap map = getActionMap();
-        map.put("delete", ExplorerUtils.actionDelete(entityManager, true));
-        associateLookup(ExplorerUtils.createLookup(entityManager, map));
+  /**
+   * Get the child factory from the subclass.
+   *
+   * @return the belonging child factory.
+   */
+  protected abstract ChildFactory getChildFactory();
+
+  /**
+   * Create a root node with the given children.
+   *
+   * @param children the children of the root node.
+   * @return the root node.
+   * @throws ServiceNotFoundException
+   */
+  protected abstract AbstractRootNode createRootNode(Children children) throws ServiceNotFoundException;
+
+  private void initComponents() {
+    GroupLayout layout = new GroupLayout(this);
+    this.setLayout(layout);
+    layout.setHorizontalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+    );
+    layout.setVerticalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+    );
+
+    setLayout(new BorderLayout());
+    OutlineView ov = new OutlineView(LIMOResourceBundle.getString("NAME"));
+    ov.setPropertyColumns("description", LIMOResourceBundle.getString("DESCRIPTION"));
+    ov.getOutline().setRootVisible(false);
+    add(ov, BorderLayout.CENTER);
+  }
+
+  private void addChildren() {
+    try {
+      Children children = Children.create(getChildFactory(), true);
+      Node rootNode = createRootNode(children);
+      entityManager.setRootContext(rootNode);
+    } catch (ServiceNotFoundException ex) {
+      Exceptions.printStackTrace(ex);
+      NotifyDescriptor d = new NotifyDescriptor.Message(LIMOResourceBundle.getString("LIMO_ERROR"),
+              NotifyDescriptor.ERROR_MESSAGE);
+      DialogDisplayer.getDefault().notify(d);
     }
-
-    protected abstract ChildFactory getChildFactory();
-
-    protected abstract AbstractRootNode getRootNode(Children children) throws ServiceNotFoundException;
-
-    private void initComponents() {
-        GroupLayout layout = new GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGap(0, 300, Short.MAX_VALUE)
-        );
-    }
-
-    @Override
-    public ExplorerManager getExplorerManager() {
-        return entityManager;
-    }
-
-    @Override
-    public void componentOpened() {
-        // TODO add custom code on component opening
-    }
-
-    @Override
-    public void componentClosed() {
-        // TODO add custom code on component closing
-    }
+  }
 }

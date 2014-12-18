@@ -42,6 +42,7 @@ public class ChainToolbar extends JToolBar {
         formatter.setMaximum(Integer.MAX_VALUE);
         JFormattedTextField inputRunsTF = new JFormattedTextField(formatter);
         inputRunsTF.setMaximumSize(new Dimension(100, 50));
+        inputRunsTF.setValue(SimulateAction.DEFAULT_NUM_RUNS);
         simulateAction = new SimulateAction(inputRunsTF);
 
         Component toolbarPresenter = simulateAction.getToolbarPresenter();
