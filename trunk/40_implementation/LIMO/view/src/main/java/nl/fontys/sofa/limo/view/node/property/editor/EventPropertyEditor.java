@@ -26,7 +26,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
         if (events == null) {
             return LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("EVENTS"), 0);
         }
-        return LIMOResourceBundle.getString("NUMBER_OF",LIMOResourceBundle.getString("EVENTS"), events.size());
+        return LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("EVENTS"), events.size());
     }
 
     @Override
@@ -121,7 +121,8 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
                         setTableAndCheckbox();
                         setValue(events);
-                        checkButtonStates();
+                        checkAddButtonState();
+                        checkDeleteButtonState();
                     }
                 }
             } else if (e.getSource().equals(deleteButton)) {
@@ -135,14 +136,10 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
                     setTableAndCheckbox();
                     setValue(events);
-                    checkButtonStates();
+                    checkAddButtonState();
+                    checkDeleteButtonState();
                 }
             }
-        }
-
-        private void checkButtonStates() {
-            deleteButton.setEnabled(eventsTableModel.getRowCount() > 0);
-            addButton.setEnabled(eventsComboBox.getItemCount() > 0);
         }
 
         @Override

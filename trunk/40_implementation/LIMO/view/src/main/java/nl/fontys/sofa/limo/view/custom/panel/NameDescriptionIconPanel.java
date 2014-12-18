@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.view.custom.panel;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -20,13 +19,20 @@ import nl.fontys.sofa.limo.view.util.IconFileChooser;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
-public class NameDescriptionIconPanel<T extends Class> extends JPanel {
+/**
+ * This panel can be used by every wizard or other panel which has to gather
+ * name, description and icon. The class which is given as generic the standard
+ * icon is chosen by default.
+ *
+ * @author Sven Mäurer
+ * @param <T> the class whose name, description and icon should be set.
+ */
+public class NameDescriptionIconPanel<T extends Class> extends JPanel implements ActionListener {
 
-    private JButton btnSelect, btnRemove;
-    private JLabel lblPreview;
-    private JTextField tfName;
-    private JTextField tfDesc;
-    private JFileChooser fc;
+    private JButton addIconButton, removeIconButton;
+    private JLabel preview;
+    private JTextField nameInput, descriptionInput;
+    private JFileChooser iconFileChooser;
 
     private Icon newIcon;
     private final Class clazz;
@@ -42,16 +48,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
     }
 
     private void initComponents() {
-        tfName = new JTextField();
-        tfDesc = new JTextField();
-        lblPreview = new JLabel();
-        lblPreview.setMaximumSize(new Dimension(20, 20));
-        lblPreview.setMinimumSize(new Dimension(20, 20));
-        lblPreview.setSize(new Dimension(20, 20));
-        btnSelect = new JButton(LIMOResourceBundle.getString("CHOOSE"));
-        btnRemove = new JButton(LIMOResourceBundle.getString("REMOVE"));
-        btnRemove.setToolTipText(LIMOResourceBundle.getString("REMOVE_ICON_HINT"));
-        fc = new IconFileChooser();
+        assignComponents();
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -64,7 +61,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 3;
-        add(tfName, c);
+        add(nameInput, c);
         c.gridwidth = 1;
         c.weightx = 0.3;
         c.gridx = 0;
@@ -74,7 +71,7 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         c.gridx = 1;
         c.gridy = 1;
         c.gridwidth = 3;
-        add(tfDesc, c);
+        add(descriptionInput, c);
         c.gridwidth = 1;
         c.weightx = 0.3;
         c.gridx = 0;
@@ -83,68 +80,92 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel {
         c.weightx = 0.4;
         c.gridx = 1;
         c.gridy = 2;
-        add(lblPreview, c);
+        add(preview, c);
         c.weightx = 0.3;
         c.gridx = 2;
         c.gridy = 2;
-        add(btnSelect, c);
-        btnSelect.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int returnVal = fc.showOpenDialog(NameDescriptionIconPanel.this);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File icon = fc.getSelectedFile();
-                    newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage(), icon.getPath().split("\\.")[icon.getPath().split("\\.").length - 1]);
-                    lblPreview.setIcon(new SmallIcon(newIcon.getImage()));
-                    btnRemove.setEnabled(true);
-                }
-            }
-        });
+        add(addIconButton, c);
+        addIconButton.addActionListener(this);
         c.weightx = 0.3;
         c.gridx = 3;
         c.gridy = 2;
-        add(btnRemove, c);
-        btnRemove.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                resetIcon();
-            }
-        });
+        add(removeIconButton, c);
+        removeIconButton.addActionListener(this);
         resetIcon();
+    }
+
+    private void assignComponents() {
+        nameInput = new JTextField();
+        descriptionInput = new JTextField();
+        preview = new JLabel();
+        addIconButton = new JButton(LIMOResourceBundle.getString("CHOOSE"));
+        removeIconButton = new JButton(LIMOResourceBundle.getString("REMOVE"));
+        removeIconButton.setToolTipText(LIMOResourceBundle.getString("REMOVE_ICON_HINT"));
+        iconFileChooser = new IconFileChooser();
     }
 
     private void resetIcon() {
         Image image = IconUtil.getIcon(clazz, 2);
         newIcon = new Icon((BufferedImage) image, "png");
-        lblPreview.setIcon(new SmallIcon(newIcon.getImage()));
-        btnRemove.setEnabled(false);
+        preview.setIcon(new SmallIcon(newIcon.getImage()));
+        removeIconButton.setEnabled(false);
     }
 
+    /**
+     * Update the view based on name, description and icon.
+     *
+     * @param name to be set.
+     * @param description to be set.
+     * @param icon to be set.
+     */
     public void update(String name, String description, Icon icon) {
-        tfName.setText(name);
-        tfDesc.setText(description);
+        nameInput.setText(name);
+        descriptionInput.setText(description);
         if (icon != null) {
             newIcon = icon;
             Image img = icon.getImage();
-            lblPreview.setIcon(new SmallIcon(img));
+            preview.setIcon(new SmallIcon(img));
         } else {
             resetIcon();
         }
     }
 
     public String getNameInput() {
-        return tfName.getText();
+        return nameInput.getText();
     }
 
     public String getDescriptionInput() {
-        return tfDesc.getText();
+        return descriptionInput.getText();
     }
 
     public Icon getIcon() {
         return newIcon;
     }
 
+    /**
+     * Open a file chooser and sets the icon if you want to add an icon or reset
+     * the icon if choose to delete it.
+     *
+     * @param e the event of the calling button.
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(addIconButton)) {
+            int returnVal = iconFileChooser.showOpenDialog(NameDescriptionIconPanel.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File icon = iconFileChooser.getSelectedFile();
+                newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage(), icon.getPath().split("\\.")[icon.getPath().split("\\.").length - 1]);
+                preview.setIcon(new SmallIcon(newIcon.getImage()));
+                removeIconButton.setEnabled(true);
+            }
+        } else if (e.getSource().equals(removeIconButton)) {
+            resetIcon();
+        }
+    }
+
+    /**
+     * ImageIcon with the size 32 x 32.
+     */
     private static final class SmallIcon extends ImageIcon {
 
         private static final int SIZE = 32;

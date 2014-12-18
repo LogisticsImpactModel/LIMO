@@ -587,25 +587,6 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
     }
 
     /**
-     * Returns the country instance matching the Iso number code or null if none
-     * do
-     */
-    public static SerializableCountry getInstance(int numberCode) {
-
-        if (numberCode == 0) {
-            return null;
-        }
-
-        for (SerializableCountry country : all) {
-            if (country.getIsoNumber3() == numberCode) {
-                return country;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Returns the country that matches the 2 or 3 character alpha code passed
      * in or null if no country matches.
      *
@@ -694,10 +675,6 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
      */
     public int getIsoNumber3() {
         return isoNumber3;
-    }
-
-    public String getLabel() {
-        return getName();
     }
 
     /**

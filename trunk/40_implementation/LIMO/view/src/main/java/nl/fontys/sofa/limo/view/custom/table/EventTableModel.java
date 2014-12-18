@@ -8,6 +8,8 @@ import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
+ * Default table model for events which shows the events name and the
+ * dependency.
  *
  * @author Sven Mäurer
  */
@@ -15,10 +17,18 @@ public class EventTableModel extends AbstractTableModel {
 
     private List<Event> events;
 
+    /**
+     * Create a new empty table model.
+     */
     public EventTableModel() {
         this(new ArrayList<Event>());
     }
 
+    /**
+     * Create a table model based on already existing events.
+     *
+     * @param events to be set.
+     */
     public EventTableModel(List<Event> events) {
         this.events = events;
     }
@@ -72,9 +82,8 @@ public class EventTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        switch (columnIndex) {
-            case 1:
-                this.events.get(rowIndex).setDependency((ExecutionState) aValue);
+        if (columnIndex == 1) {
+            this.events.get(rowIndex).setDependency((ExecutionState) aValue);
         }
     }
 
