@@ -26,6 +26,9 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
 /**
+ * Base class for wizards or property sheets that have to add events to a domain
+ * object. The table model and the add action has to be implemented by the
+ * implementing class.
  *
  * @author Sven Mäurer
  */
@@ -57,6 +60,9 @@ public abstract class EventsPanel extends JPanel {
         checkDeleteButtonState();
     }
 
+    /**
+     * Initialize the view components.
+     */
     protected void assignComponents() {
         eventsComboBox = new JComboBox();
         eventsTableModel = new EventTableModel();
@@ -83,6 +89,10 @@ public abstract class EventsPanel extends JPanel {
         return eventsTableModel.getEvents();
     }
 
+    /**
+     * The add action where you have to add the event to the table model and
+     * adapt the view status.
+     */
     protected abstract void setAddButtonListener();
 
     private void setTable() {
@@ -91,8 +101,14 @@ public abstract class EventsPanel extends JPanel {
         setTableModel();
     }
 
+    /**
+     * Set the table model based on the parts of the event you need.
+     */
     protected abstract void setTableModel();
 
+    /**
+     * Delete an event from the table model and adapt the view status.
+     */
     private void setDeleteButtonListener() {
         deleteButton.addActionListener(new ActionListener() {
             @Override
@@ -105,6 +121,18 @@ public abstract class EventsPanel extends JPanel {
                 }
             }
         });
+    }
+
+    /**
+     * Set the events as the events of the table model.
+     *
+     * @param events to be used.
+     */
+    public void update(List<Event> events) {
+        eventsTableModel.getEvents().clear();
+        eventsTableModel.getEvents().addAll(events);
+        eventsTableModel.fireTableDataChanged();
+        checkDeleteButtonState();
     }
 
     private void buildView() {
@@ -138,13 +166,6 @@ public abstract class EventsPanel extends JPanel {
         c.gridy = 1;
         c.gridwidth = 5;
         add(panel, c);
-    }
-
-    public void update(List<Event> events) {
-        eventsTableModel.getEvents().clear();
-        eventsTableModel.getEvents().addAll(events);
-        eventsTableModel.fireTableDataChanged();
-        checkDeleteButtonState();
     }
 
 }
