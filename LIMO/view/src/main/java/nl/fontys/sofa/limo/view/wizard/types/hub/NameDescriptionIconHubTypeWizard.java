@@ -3,12 +3,18 @@ package nl.fontys.sofa.limo.view.wizard.types.hub;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
-import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
+
+/**
+ * Name Description and Icon for HubType
+ *
+ * @author Pascal Lindner
+ */
 
 public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
@@ -25,20 +31,12 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
 
     @Override
     public HelpCtx getHelp() {
-        // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
-        // If you have context help:
-        // return new HelpCtx("help.key.here");
     }
 
     @Override
     public boolean isValid() {
-        // If it is always OK to press Next or Finish, then:
         return true;
-        // If it depends on some condition (form filled out...) and
-        // this condition changes (last form field filled in...) then
-        // use ChangeSupport to implement add/removeChangeListener below.
-        // WizardDescriptor.ERROR/WARNING/INFORMATION_MESSAGE will also be useful.
     }
 
     @Override
@@ -49,6 +47,7 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
     public void removeChangeListener(ChangeListener l) {
     }
 
+    //Update Labels
     @Override
     public void readSettings(WizardDescriptor wiz) {
         HubType hubType = (HubType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
@@ -64,6 +63,7 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
         lastType = hubType;
     }
 
+    //Store Name, Description and Icon
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(HubTypeWizardAction.TYPE_NAME, getComponent().getNameInput());
@@ -71,6 +71,7 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
         wiz.putProperty(HubTypeWizardAction.TYPE_ICON, getComponent().getIcon());
     }
 
+    //Validate
     @Override
     public void validate() throws WizardValidationException {
         ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");

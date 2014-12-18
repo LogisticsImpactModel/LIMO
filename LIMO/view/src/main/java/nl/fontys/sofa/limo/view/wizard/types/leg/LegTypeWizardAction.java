@@ -23,6 +23,12 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
+/**
+ * LegType Wizard Action
+ *
+ * @author Pascal Lindner
+ */
+
 @ActionID(category = "LegType", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
 @ActionRegistration(displayName = "New Leg Type..", iconBase = "icons/gui/add.gif")
 @ActionReferences({
@@ -89,6 +95,7 @@ public final class LegTypeWizardAction extends TypeWizardAction {
         }
     }
 
+    //For Update LegType
     public void isUpdate(LegType legType) {
         this.legType = legType;
         this.isUpdate = true;

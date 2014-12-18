@@ -6,6 +6,12 @@ import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_OLDTYP
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
+/**
+ * New or Duplicated HubType Wizard
+ *
+ * @author Pascal Lindner
+ */
+
 public class NewOrDuplicatedHubTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     private NewOrDuplicatedHubTypePanel component;
@@ -20,10 +26,7 @@ public class NewOrDuplicatedHubTypeWizard implements WizardDescriptor.Panel<Wiza
 
     @Override
     public HelpCtx getHelp() {
-        // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
-        // If you have context help:
-        // return new HelpCtx("help.key.here");
     }
 
     @Override
@@ -41,9 +44,9 @@ public class NewOrDuplicatedHubTypeWizard implements WizardDescriptor.Panel<Wiza
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        // use wiz.getProperty to retrieve previous panel state
     }
 
+    //Store HubType
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(TYPE_OLDTYPE, null);

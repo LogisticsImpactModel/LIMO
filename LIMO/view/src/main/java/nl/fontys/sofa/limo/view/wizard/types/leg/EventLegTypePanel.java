@@ -11,6 +11,12 @@ import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
+/**
+ * Add Event to LegType Panel
+ *
+ * @author Pascal Lindner
+ */
+
 public final class EventLegTypePanel extends EventsPanel {
 
     public EventLegTypePanel() {
@@ -30,6 +36,7 @@ public final class EventLegTypePanel extends EventsPanel {
         eventsTable.getColumnModel().removeColumn(tcol);
     }
 
+    //Add Listener
     @Override
     protected void setAddButtonListener() {
         addButton.addActionListener(new ActionListener() {

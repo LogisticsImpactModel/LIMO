@@ -1,16 +1,21 @@
 package nl.fontys.sofa.limo.view.wizard.types.leg;
 
-import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.*;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_DESCRIPTION;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_ICON;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_NAME;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
+
+/**
+ * Name, Description Icon for LegType.
+ *
+ * @author Pascal Lindner
+ */
 
 public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
@@ -27,20 +32,12 @@ public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<
 
     @Override
     public HelpCtx getHelp() {
-        // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
-        // If you have context help:
-        // return new HelpCtx("help.key.here");
     }
 
     @Override
     public boolean isValid() {
-        // If it is always OK to press Next or Finish, then:
         return true;
-        // If it depends on some condition (form filled out...) and
-        // this condition changes (last form field filled in...) then
-        // use ChangeSupport to implement add/removeChangeListener below.
-        // WizardDescriptor.ERROR/WARNING/INFORMATION_MESSAGE will also be useful.
     }
 
     @Override
@@ -51,6 +48,7 @@ public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<
     public void removeChangeListener(ChangeListener l) {
     }
 
+    //Update Name, Description and Icon
     @Override
     public void readSettings(WizardDescriptor wiz) {
         LegType legType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
@@ -66,6 +64,7 @@ public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<
         lastType = legType;
     }
 
+    //Store name, description and input
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         wiz.putProperty(TYPE_NAME, getComponent().getNameInput());
@@ -73,6 +72,7 @@ public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<
         wiz.putProperty(TYPE_ICON, getComponent().getIcon());
     }
 
+    //Validate
     @Override
     public void validate() throws WizardValidationException {
         if (component.getNameInput().isEmpty()) {
