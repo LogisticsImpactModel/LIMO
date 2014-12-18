@@ -50,15 +50,7 @@ public final class MultimodeLegTablePanel extends JPanel {
         btnAdd = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
         btnEdit = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.EDIT)));
         btnDelete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
-        btnDelete.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() >= 0) {
-                    model.removeLeg(table.getSelectedRow());
-                }
-            }
-        });
+        setActionListener();
         bv.add(btnAdd);
         bv.add(btnEdit);
         bv.add(btnDelete);
@@ -126,6 +118,15 @@ public final class MultimodeLegTablePanel extends JPanel {
                 });
                 wiz.update(model.getLeg(table.getSelectedRow()));
                 wiz.actionPerformed(e);
+            }
+        });
+        btnDelete.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (table.getSelectedRow() >= 0) {
+                    model.removeLeg(table.getSelectedRow());
+                }
             }
         });
     }
