@@ -6,6 +6,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -88,13 +90,24 @@ public final class ScheduledLegPanel extends JPanel {
         add(panelRight, BorderLayout.EAST);
 
     }
-    
+
     //Return leg
     public ScheduledLeg getSchedueldLeg() {
         ScheduledLeg leg = new ScheduledLeg();
         try {
             leg.setExpectedTime(Long.parseLong(tfExpected.getText().replace(",", ".")));
             leg.setWaitingTimeLimit(Long.parseLong(tfWaiting.getText().replace(",", ".")));
+            List<Long> times = new ArrayList<>();
+            for (int i = 0; i < table.getRowCount(); i++) {
+                times.add(Long.parseLong(table.getValueAt(i, 0).toString()));
+
+            }
+            if (times.size() > 0) {
+                leg.setAcceptanceTimes(times);
+            }
+            if (altLeg != null) {
+                leg.setAlternative(altLeg);
+            }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(ScheduledLegPanel.this,
                     LIMOResourceBundle.getString("NOT_A_NUMBER"),
