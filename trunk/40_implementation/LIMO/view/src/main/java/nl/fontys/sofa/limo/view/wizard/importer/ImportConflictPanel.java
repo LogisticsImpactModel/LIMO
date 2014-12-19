@@ -64,7 +64,7 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         CellConstraints cc = new CellConstraints();
         FormLayout layout = new FormLayout("5px, pref, 5px, pref, 5px, pref:grow, 5px", "5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref:grow, 5px");
         this.setLayout(layout);
-        lbImport = new JLabel(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("ALL", LIMOResourceBundle.getString("Entities"))) + ": " + JSONImporter.getLastEntitiesInFileCount());
+        lbImport = new JLabel(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("ALL", LIMOResourceBundle.getString("ENTITIES"))) + ": " + JSONImporter.getLastEntitiesInFileCount());
         this.add(lbImport, cc.xyw(2, 2, 5));
         lbDone = new JLabel(LIMOResourceBundle.getString("ALREADY_IMPORTED") + " " + JSONImporter.getLastDirectImportedEntityCount());
         this.add(lbDone, cc.xyw(2, 4, 5));

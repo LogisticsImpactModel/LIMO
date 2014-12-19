@@ -1,5 +1,8 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,9 +11,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import nl.fontys.sofa.limo.domain.component.Node;
+import nl.fontys.sofa.limo.externaltrader.CSVExporter;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel;
@@ -44,6 +51,7 @@ import org.openide.windows.TopComponent;
 public final class ResultTopComponent extends TopComponent {
 
     private SimulationResult result;
+    private JTable totalsTable, categoryTable, nodesTable;
 
     public ResultTopComponent() {
         initComponents();
@@ -58,6 +66,26 @@ public final class ResultTopComponent extends TopComponent {
         jTabbedPane1.addTab(LIMOResourceBundle.getString("TOTALS"), createTotalsPane());
         jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("CATEGORY")), createCategoryPane());
         jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("NODE")), createNodePane());
+        jButton1.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                String currentPath = fc.getFileSystemView().getDefaultDirectory().toString();
+                fc.setCurrentDirectory(new File(currentPath));
+                fc.setMultiSelectionEnabled(false);
+                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                if (fc.showSaveDialog(jTabbedPane1)== JFileChooser.APPROVE_OPTION) {
+                    String path =  fc.getSelectedFile().getPath();
+                    String filename = (String)JOptionPane.showInputDialog(jTabbedPane1, LIMOResourceBundle.getString("CHOOSE_FILE"),  LIMOResourceBundle.getString("CHOOSE_FILE"), JOptionPane.PLAIN_MESSAGE);
+                    if(filename != null){
+                        if(!filename.isEmpty()){
+                            CSVExporter.exportTables(path + "\\" + filename + ".csv", new JTable[]{totalsTable, categoryTable, nodesTable}, new String[]{"Totals", "By Categories", "By Nodes"});
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private JScrollPane createTotalsPane() {
@@ -67,7 +95,8 @@ public final class ResultTopComponent extends TopComponent {
         totalMap.put(DataEntryTableModel.EXTRA_COSTS_ID, Arrays.asList(result.getTotalExtraCosts()));
         totalMap.put(DataEntryTableModel.DELAYS_ID, Arrays.asList(result.getTotalDelays()));
         DataEntryTableModel detm = new DataEntryTableModel(Arrays.asList("Total"), totalMap);
-        return new JScrollPane(new JTable(detm));
+        totalsTable = new JTable(detm);
+        return new JScrollPane(totalsTable);
     }
 
     private JScrollPane createCategoryPane() {
@@ -104,7 +133,8 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         DataEntryTableModel detm = new DataEntryTableModel(categories, map);
-        return new JScrollPane(new JTable(detm));
+        categoryTable = new JTable(detm);
+        return new JScrollPane(categoryTable);
     }
 
     private JScrollPane createNodePane() {
@@ -140,7 +170,8 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         DataEntryTableModel detm = new DataEntryTableModel(names, map);
-        return new JScrollPane(new JTable(detm));
+        nodesTable = new JTable(detm);
+        return new JScrollPane(nodesTable);
     }
 
     /**
