@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
@@ -44,7 +45,7 @@ public final class MultimodeLegTablePanel extends JPanel {
         model = new MultimodeLegModel();
         table = new JTable(model);
         setLayout(new BorderLayout());
-        add(table, BorderLayout.CENTER);
+        add(new JScrollPane(table), BorderLayout.CENTER);
         //   panel = new JPanel();
         Box bv = Box.createVerticalBox();
         btnAdd = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
@@ -148,6 +149,18 @@ public final class MultimodeLegTablePanel extends JPanel {
         public MultimodeLegModel() {
             legMap = new HashMap<>();
             legList = new ArrayList<>();
+        }
+
+        @Override
+        public String getColumnName(int column) {
+            switch (column) {
+                case 0:
+                    return LIMOResourceBundle.getString("LEG");
+                case 1:
+                    return LIMOResourceBundle.getString("WEIGHT");
+                default:
+                    return "";
+            }
         }
 
         @Override
