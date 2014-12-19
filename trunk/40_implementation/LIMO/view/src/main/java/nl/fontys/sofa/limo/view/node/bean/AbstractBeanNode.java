@@ -72,9 +72,6 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
     }
 
     @Override
-    public abstract boolean canDestroy();
-
-    @Override
     public void destroy() throws IOException {
         fireNodeDestroyed();
     }
@@ -165,5 +162,25 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
     abstract Class getServiceClass();
 
     protected abstract Icon getBeanIcon();
+
+    @Override
+    public boolean canDestroy() {
+        return false;
+    }
+
+    @Override
+    public boolean canCut() {
+        return false;
+    }
+
+    @Override
+    public boolean canCopy() {
+        return false;
+    }
+
+    @Override
+    public boolean canRename() {
+        return false;
+    }
 
 }

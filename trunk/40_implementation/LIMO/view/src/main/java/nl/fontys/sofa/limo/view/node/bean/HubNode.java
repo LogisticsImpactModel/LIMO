@@ -51,11 +51,6 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
     }
 
     @Override
-    public boolean canDestroy() {
-        return true;
-    }
-
-    @Override
     public Widget getWidget(Scene scene) {
         try {
             HubWidget hw = new HubWidget(scene, this);
