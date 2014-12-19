@@ -9,12 +9,14 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.simulation.SimulationExecutor;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
-import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import org.netbeans.api.progress.aggregate.AggregateProgressFactory;
 import org.netbeans.api.progress.aggregate.ProgressContributor;
+import org.openide.util.Cancellable;
 import org.openide.util.Exceptions;
 import org.openide.util.RequestProcessor.Task;
 import org.openide.util.TaskListener;
@@ -23,7 +25,9 @@ import org.openide.util.TaskListener;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class Simulation implements Runnable, TaskListener {
+public class Simulation implements Runnable, TaskListener, Cancellable {
+
+    private AtomicBoolean running;
 
     private final SupplyChain supplyChain;
     private final Map<org.openide.util.Task, TestCase> testCaseTasks;
@@ -45,6 +49,7 @@ public class Simulation implements Runnable, TaskListener {
         this.finishedCount = new AtomicInteger(0);
         this.scPool = new LinkedBlockingQueue<>();
         this.progressContributor = AggregateProgressFactory.createProgressContributor(id);
+        this.running = new AtomicBoolean(false);
     }
 
     public boolean isDone() {
@@ -89,6 +94,7 @@ public class Simulation implements Runnable, TaskListener {
 
     @Override
     public void run() {
+        running.set(true);
         testCaseTasks.clear();
         progressContributor.start(testCaseCount);
         finishedCount = new AtomicInteger(0);
@@ -107,7 +113,7 @@ public class Simulation implements Runnable, TaskListener {
         }
 
         int i = 0;
-        while (i < testCaseCount) {
+        while (i < testCaseCount && running.get()) {
             SupplyChain sc = null;
 
             synchronized (scPool) {
@@ -154,14 +160,18 @@ public class Simulation implements Runnable, TaskListener {
         synchronized (pcLock) {
             if (finishedCount.get() % 1000 == 0) {
                 progressContributor.progress(finishedCount.get() + " of " + testCaseCount + " test cases run.", finishedCount.get());
-                System.out.println(finishedCount.get() + " of " + testCaseCount + " test cases run.");
             }
             if (isDone()) {
+                running.set(false);
                 progressContributor.finish();
-                System.out.println("-> Simulation finished!");
-                System.out.println("     -> Gathered " + result.getTestCaseCount() + " test cases.");
             }
         }
+    }
+
+    @Override
+    public boolean cancel() {
+        running.set(false);
+        return true;
     }
 
 }
