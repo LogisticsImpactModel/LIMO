@@ -24,6 +24,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.TableCellRenderer;
 import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.event.distribution.DiscreteDistribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.PoissonDistribution;
 import nl.fontys.sofa.limo.view.custom.table.DistributionParameterTableModel;
@@ -183,7 +184,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                 distributionDescription.setText(prop.getDescription());
             }
         });
-        distributionTypeComboBox.setSelectedItem(distributionFactory.getNameForDistributionType(PoissonDistribution.class));
+        distributionTypeComboBox.setSelectedItem(distributionFactory.getNameForDistributionType(DiscreteDistribution.class));
         distributionDescription.setText(distributionFactory.getDistributionTypeByName(distributionTypeComboBox.getModel().getElementAt(0)).getDescription());
     }
 

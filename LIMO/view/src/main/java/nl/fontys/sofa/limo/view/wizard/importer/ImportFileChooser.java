@@ -2,8 +2,6 @@ package nl.fontys.sofa.limo.view.wizard.importer;
 
 import java.awt.Component;
 import java.io.File;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
@@ -55,7 +53,6 @@ public class ImportFileChooser implements WizardDescriptor.Panel<WizardDescripto
 
     @Override
     public void validate() throws WizardValidationException {
-        ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
         if (component.getAbsoluteFilePath().equals("")) {
             throw new WizardValidationException(null, LIMOResourceBundle.getString("VALUE_NOT_SET", LIMOResourceBundle.getString("FILEPATH")), null);
         }
