@@ -13,6 +13,10 @@ import nl.fontys.sofa.limo.api.dao.HubDAO;
 import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
 import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
+import nl.fontys.sofa.limo.api.service.provider.HubService;
+import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
+import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
@@ -84,16 +88,16 @@ public final class ImportWizardAction implements ActionListener {
                 ImportWizardAction.<ProcedureCategory>updateItem((ProcedureCategory) entity, ProcedureCategoryDAO.class);
             }
             if (entity instanceof LegType) {
-                ImportWizardAction.<LegType>updateItem((LegType) entity, LegTypeDAO.class);
+                ImportWizardAction.<LegType>updateItem((LegType) entity, LegTypeService.class);
             }
             if (entity instanceof HubType) {
-                ImportWizardAction.<HubType>updateItem((HubType) entity, HubTypeDAO.class);
+                ImportWizardAction.<HubType>updateItem((HubType) entity, HubTypeService.class);
             }
             if (entity instanceof Hub) {
-                ImportWizardAction.<Hub>updateItem((Hub) entity, HubDAO.class);
+                ImportWizardAction.<Hub>updateItem((Hub) entity, HubService.class);
             }
             if (entity instanceof Event) {
-                ImportWizardAction.<Event>updateItem((Event) entity, EventDAO.class);
+                ImportWizardAction.<Event>updateItem((Event) entity, EventService.class);
             }
         }
     }
@@ -104,13 +108,10 @@ public final class ImportWizardAction implements ActionListener {
      * @param <T> The Class of the entitiy. Needs to extend BaseEntity
      * @param item The item with the new information that has to overwrite the
      * old one.
-     * @param daoclass The Class of the DAO that communicates with the database.
+     * @param serviceClass The Class of the service that communicates with the database.
      */
-    private static <T extends BaseEntity> void updateItem(T item, Class daoclass) {
-        DAO pcDAO = (DAO) Lookup.getDefault().lookup(daoclass);
-        T old = (T) pcDAO.findByUniqueIdentifier(item.getUniqueIdentifier());
-        System.out.println(item);
-        pcDAO.delete(old);
-        pcDAO.insert(item, false);
+    private static <T extends BaseEntity> void updateItem(T item, Class serviceClass) {
+        DAO service = (DAO) Lookup.getDefault().lookup(serviceClass);
+        service.update(item);
     }
 }

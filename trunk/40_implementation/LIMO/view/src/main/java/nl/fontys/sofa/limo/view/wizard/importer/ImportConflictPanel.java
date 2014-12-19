@@ -64,11 +64,11 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         CellConstraints cc = new CellConstraints();
         FormLayout layout = new FormLayout("5px, pref, 5px, pref, 5px, pref:grow, 5px", "5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref:grow, 5px");
         this.setLayout(layout);
-        lbImport = new JLabel(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("ALL", LIMOResourceBundle.getString("ENTITIES"))) + ": " + JSONImporter.getLastEntitiesInFileCount());
+        lbImport = new JLabel(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("ALL", LIMOResourceBundle.getString("ENTITIES")), JSONImporter.getLastEntitiesInFileCount()));
         this.add(lbImport, cc.xyw(2, 2, 5));
         lbDone = new JLabel(LIMOResourceBundle.getString("ALREADY_IMPORTED") + " " + JSONImporter.getLastDirectImportedEntityCount());
         this.add(lbDone, cc.xyw(2, 4, 5));
-        lbConflicts = new JLabel(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("CONFLICTS")) + ": " + JSONImporter.getLastDuplicatedEntityCount());
+        lbConflicts = new JLabel(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("CONFLICTS"), JSONImporter.getLastDuplicatedEntityCount()));
         this.add(lbConflicts, cc.xyw(2, 6, 5));
         lbOlder = new JLabel(LIMOResourceBundle.getString("NUMBER_OF_OLDER_ENTITIES") + " " + JSONImporter.getLastOlderEntityCount());
         this.add(lbOlder, cc.xyw(2, 8, 5));
@@ -87,9 +87,9 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         }
         Object[][] data = new Object[allEntitiesOld.size()][5];
         for (int i = 0; i < allEntitiesOld.size(); i++) {
-            data[i][0] = allEntitiesOld.get(i);
+            data[i][0] = allEntitiesOld.get(i).getName();
             data[i][1] = new Date(allEntitiesOld.get(i).getLastUpdate());
-            data[i][2] = allEntitiesNew.get(i);
+            data[i][2] = allEntitiesNew.get(i).getName();
             data[i][3] = new Date(allEntitiesNew.get(i).getLastUpdate());
             data[i][4] = false;
         }
@@ -116,9 +116,16 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(btnDeselectAll)) {
+        if (e.getSource().equals(btnSelectAll)) {
             entitiesToOverride.clear();
             entitiesToOverride.addAll(allEntitiesNew);
+            for (BaseEntity newent : entitiesToOverride) {
+                for (BaseEntity oldent : allEntitiesOld) {
+                    if (newent.getUniqueIdentifier().equals(oldent.getUniqueIdentifier())) {
+                        newent.setId(oldent.getId());
+                    }
+                }
+            }
             for (int i = 0; i < tblmdlEntities.getRowCount(); i++) {
                 tblmdlEntities.setValueAt(true, i, 4);
             }
@@ -138,9 +145,21 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         if (e.getSource().equals(tblmdlEntities)) {
             if (tblEntities.getSelectedRow() >= 0 && tblEntities.getSelectedRow() < allEntitiesNew.size()) {
                 if ((boolean) (((DefaultTableModel) e.getSource()).getValueAt(tblEntities.getSelectedRow(), 4))) {
-                    entitiesToOverride.add(allEntitiesNew.get(tblEntities.getSelectedRow()));
+                    BaseEntity newent = allEntitiesNew.get(tblEntities.getSelectedRow());
+                    for (BaseEntity oldent : allEntitiesOld) {
+                        if (newent.getUniqueIdentifier().equals(oldent.getUniqueIdentifier())) {
+                            newent.setId(oldent.getId());
+                        }
+                    }
+                    entitiesToOverride.add(newent);
                 } else {
-                    entitiesToOverride.remove(allEntitiesNew.get(tblEntities.getSelectedRow()));
+                    BaseEntity newent = allEntitiesNew.get(tblEntities.getSelectedRow());
+                    for (BaseEntity oldent : allEntitiesOld) {
+                        if (newent.getUniqueIdentifier().equals(oldent.getUniqueIdentifier())) {
+                            newent.setId(oldent.getId());
+                        }
+                    }
+                    entitiesToOverride.remove(newent);
                 }
             }
         }
@@ -226,9 +245,9 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         }
         Object[][] data = new Object[allEntitiesOld.size()][5];
         for (int i = 0; i < allEntitiesOld.size(); i++) {
-            data[i][0] = allEntitiesOld.get(i);
+            data[i][0] = allEntitiesOld.get(i).getName();
             data[i][1] = new Date(allEntitiesOld.get(i).getLastUpdate());
-            data[i][2] = allEntitiesNew.get(i);
+            data[i][2] = allEntitiesNew.get(i).getName();
             data[i][3] = new Date(allEntitiesNew.get(i).getLastUpdate());
             data[i][4] = false;
         }
@@ -241,9 +260,9 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         tblEntities.setModel(tblmdlEntities);
         tblmdlEntities.fireTableDataChanged();
 
-        lbImport.setText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("ALL", LIMOResourceBundle.getString("Entities"))) + ": " + JSONImporter.getLastEntitiesInFileCount());
+        lbImport.setText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("ALL", LIMOResourceBundle.getString("ENTITIES")), JSONImporter.getLastEntitiesInFileCount()));
         lbDone.setText(LIMOResourceBundle.getString("ALREADY_IMPORTED") + " " + JSONImporter.getLastDirectImportedEntityCount());
-        lbConflicts.setText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("CONFLICTS")) + ": " + JSONImporter.getLastDuplicatedEntityCount());
+        lbConflicts.setText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("CONFLICTS"), JSONImporter.getLastDuplicatedEntityCount()));
         lbOlder.setText(LIMOResourceBundle.getString("NUMBER_OF_OLDER_ENTITIES") + " " + JSONImporter.getLastOlderEntityCount());
     }
 }
