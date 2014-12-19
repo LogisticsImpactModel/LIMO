@@ -39,7 +39,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
     private Widget containerWidget;
     private EventsWidget eventWidget;
-    private ProcedureWidget procedureWidget;
+//    private ProcedureWidget procedureWidget;
     private final Widget startFlagWidget;
 
     /**
@@ -85,18 +85,18 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         containerWidget = new Widget(scene);
         containerWidget.setLayout(LayoutFactory.createHorizontalFlowLayout());
 
-        procedureWidget = new ProcedureWidget(scene);
-        procedureWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES"), numberOfProcedures));
-        if (numberOfProcedures == 0) {
-            procedureWidget.setVisible(false);
-        }
+//        procedureWidget = new ProcedureWidget(scene);
+//        procedureWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES"), numberOfProcedures));
+//        if (numberOfProcedures == 0) {
+//            procedureWidget.setVisible(false);
+//        }
         eventWidget = new EventsWidget(scene);
         eventWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("EVENTS"), numberOfEvents));
         if (numberOfEvents == 0) {
             eventWidget.setVisible(false);
         }
 
-        containerWidget.addChild(procedureWidget);
+//        containerWidget.addChild(procedureWidget);
         containerWidget.addChild(eventWidget);
 
         addChild(containerWidget);
@@ -156,12 +156,12 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
             eventWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("MAIN_EVENTS"), numberOfEvents));
         }
 
-        if (numberOfProcedures == 0) {
-            procedureWidget.setVisible(false);
-        } else {
-            procedureWidget.setVisible(true);
-            procedureWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES", numberOfProcedures)));
-        }
+//        if (numberOfProcedures == 0) {
+//            procedureWidget.setVisible(false);
+//        } else {
+//            procedureWidget.setVisible(true);
+//            procedureWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES", numberOfProcedures)));
+//        }
     }
 
     /**
@@ -174,11 +174,11 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         } else {
             eventWidget.setVisible(true);
         }
-        if (hub.getProcedures().isEmpty()) {
-            procedureWidget.setVisible(false);
-        } else {
-            procedureWidget.setVisible(true);
-        }
+//        if (hub.getProcedures().isEmpty()) {
+//            procedureWidget.setVisible(false);
+//        } else {
+//            procedureWidget.setVisible(true);
+//        }
         repaint();
     }
 

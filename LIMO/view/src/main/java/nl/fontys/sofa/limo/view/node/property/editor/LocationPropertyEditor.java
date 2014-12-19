@@ -87,11 +87,11 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             this.hubLocation = hubLocation;
             this.shouldSafe = false;
             setModal(true);
-            setLocationRelativeTo(null);
             setPreferredSize(new Dimension(480, 240));
             setTitle(LIMOResourceBundle.getString("EDIT_OF", "Location"));
 
             initComponents();
+            setLocationRelativeTo(null);
         }
 
         public Location getHubLocation() {
