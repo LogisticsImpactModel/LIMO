@@ -14,6 +14,11 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_DESCRIPTION;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_EVENT;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_ICON;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_NAME;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
@@ -23,19 +28,17 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
+/**
+ * HubType Wizard Action.
+ *
+ * @author Pascal Lindner
+ */
 @ActionID(category = "HubType", id = "nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
 @ActionRegistration(displayName = "New Hub Type..", iconBase = "icons/gui/add.gif")
 @ActionReferences({
     @ActionReference(path = "Menu/Master Data/Hub Type", position = 20),
     @ActionReference(path = "Shortcuts", name = "DOS-H")
 })
-
-/**
- * HubType Wizard Action.
- *
- * @author Pascal Lindner
- */
-
 public final class HubTypeWizardAction extends TypeWizardAction {
 
     private HubType hubType;
@@ -78,26 +81,27 @@ public final class HubTypeWizardAction extends TypeWizardAction {
             wiz.putProperty(TYPE_PROCEDURES, hubType.getProcedures());
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            if (saveToDatabase) {
-                HubTypeService service = Lookup.getDefault().lookup(HubTypeService.class);
-                hubType.setDescription((String) wiz.getProperty(TYPE_DESCRIPTION));
-                hubType.setIcon((Icon) wiz.getProperty(TYPE_ICON));
-                hubType.setName((String) wiz.getProperty(TYPE_NAME));
-                hubType.setEvents((List<Event>) wiz.getProperty(TYPE_EVENT));
-                hubType.setProcedures((List<Procedure>) wiz.getProperty(TYPE_PROCEDURES));
-                if (isUpdate) {
-                    service.update(hubType);
-                } else {
-                    hubType.setId(null);
-                    hubType = service.insert(hubType);
-                }
-            }
+            finishWizard(wiz);
         }
     }
 
-    //For Update
     public void isUpdate(HubType hubType) {
         this.hubType = hubType;
         this.isUpdate = true;
+    }
+
+    private void finishWizard(WizardDescriptor wiz) {
+        HubTypeService service = Lookup.getDefault().lookup(HubTypeService.class);
+        hubType.setDescription((String) wiz.getProperty(TYPE_DESCRIPTION));
+        hubType.setIcon((Icon) wiz.getProperty(TYPE_ICON));
+        hubType.setName((String) wiz.getProperty(TYPE_NAME));
+        hubType.setEvents((List<Event>) wiz.getProperty(TYPE_EVENT));
+        hubType.setProcedures((List<Procedure>) wiz.getProperty(TYPE_PROCEDURES));
+        if (isUpdate) {
+            service.update(hubType);
+        } else {
+            hubType.setId(null);
+            hubType = service.insert(hubType);
+        }
     }
 }

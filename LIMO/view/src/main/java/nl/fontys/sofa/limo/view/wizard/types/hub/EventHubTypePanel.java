@@ -16,7 +16,6 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
  *
  * @author Pascal Lindner
  */
-
 public final class EventHubTypePanel extends EventsPanel {
 
     public EventHubTypePanel() {
@@ -36,7 +35,6 @@ public final class EventHubTypePanel extends EventsPanel {
         eventsTable.getColumnModel().removeColumn(tcol);
     }
 
-    //Add ActionListener
     @Override
     protected void setAddButtonListener() {
         addButton.addActionListener(new ActionListener() {
@@ -44,7 +42,6 @@ public final class EventHubTypePanel extends EventsPanel {
             public void actionPerformed(ActionEvent e) {
                 Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
                 selected.setId(null);
-  //              selected.setParent(ht);
                 selected.setDependency(ExecutionState.INDEPENDENT);
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();

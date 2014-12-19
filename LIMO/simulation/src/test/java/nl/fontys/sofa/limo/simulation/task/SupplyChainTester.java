@@ -15,13 +15,21 @@ import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.simulation.result.TestCaseResult;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
+ * Base class for supply chain tests which offers a start and end hub which are
+ * connected by a leg. Also procedures and events are connected to the hubs and
+ * leg.
  *
  * @author Sven Mäurer
  */
 public abstract class SupplyChainTester {
+
+    private static final String PORT_VENLO = "Port Venlo";
+    private static final String PORT_ROTTERDAM = "Port Rotterdam";
+    private static final String LEG = "Rotterdam-Venlo-Express";
 
     protected static final String MANDATORY = "mandatory";
 
@@ -36,11 +44,11 @@ public abstract class SupplyChainTester {
         always.setInputValue("Y", 1);
         supplyChain = new SupplyChain();
         start = new Hub();
-        start.setName("Port Rotterdam");
+        start.setName(PORT_ROTTERDAM);
         Location location = new Location(Continent.Europe, SerializableCountry.Netherlands, "Zeeland", "Rotterdam", "1233", "", "");
         start.setLocation(location);
         end = new Hub();
-        end.setName("Port Venlo");
+        end.setName(PORT_VENLO);
         end.setLocation(location);
     }
 
@@ -62,7 +70,7 @@ public abstract class SupplyChainTester {
         end.getEvents().add(event2);
 
         leg = new Leg();
-        leg.setName("Rotterdam-Venlo-Express");
+        leg.setName(LEG);
         Event event3 = new Event("Storm", "Storm slows down the ship.", ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
         event3.getProcedures().add(new Procedure("waiting", MANDATORY, new SingleValue(0), new RangeValue(30, 60), TimeType.MINUTES));
         leg.getEvents().add(event3);
@@ -91,6 +99,24 @@ public abstract class SupplyChainTester {
         assertTrue(result.getLeadTimesByCategory().containsKey(MANDATORY));
         assertTrue("Min 5 hours lead time.", 5 * 60 <= result.getTotalLeadTimes());
         assertTrue("Max 7 hours lead time.", 7 * 60 >= result.getTotalLeadTimes());
+
+        double startHubCosts = result.getCostsByNode().get(PORT_ROTTERDAM);
+        assertNotNull(startHubCosts);
+        assertTrue(3000 <= startHubCosts);
+        assertTrue(4000 >= startHubCosts);
+
+        double endHubsCosts = result.getCostsByNode().get(PORT_VENLO);
+        assertNotNull(endHubsCosts);
+        assertTrue(2000 <= endHubsCosts);
+        assertTrue(3000 >= endHubsCosts);
+
+        double legCosts = result.getCostsByNode().get(LEG);
+        assertNotNull(legCosts);
+        assertTrue(0 == legCosts);
+
+        result.getDelaysByNode();
+        result.getExtraCostsByNode();
+        result.getLeadTimesByNode();
     }
 
 }
