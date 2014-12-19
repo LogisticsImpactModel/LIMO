@@ -7,10 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.simulation.task.Simulation;
 import org.netbeans.api.progress.aggregate.AggregateProgressFactory;
 import org.netbeans.api.progress.aggregate.AggregateProgressHandle;
+import org.openide.util.Cancellable;
 import org.openide.util.Task;
 import org.openide.util.TaskListener;
 
@@ -18,19 +20,22 @@ import org.openide.util.TaskListener;
  *
  * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
  */
-public class SimulatorTask implements TaskListener {
+public class SimulatorTask implements TaskListener, Cancellable {
 
     private final Map<Task, Simulation> simulations;
     private final List<SimulationResult> results;
     private Set<SimulatorTaskListener> list;
     private final AggregateProgressHandle processHandle;
 
+    private AtomicBoolean cancelled;
+
     public SimulatorTask() {
         simulations = new HashMap<>();
         results = new ArrayList<>();
-        processHandle = AggregateProgressFactory.createHandle("Simulating...", null, null, null);
+        processHandle = AggregateProgressFactory.createHandle("Simulating...", null, this, null);
         processHandle.start();
         System.out.println("-> Starting simulation @ " + new Date());
+        cancelled = new AtomicBoolean(false);
     }
 
     public boolean isDone() {
@@ -96,6 +101,24 @@ public class SimulatorTask implements TaskListener {
         }
 
         list.remove(l);
+    }
+
+    @Override
+    public boolean cancel() {
+        for (Simulation s : simulations.values()) {
+            boolean canceled = s.cancel();
+
+            if (!canceled) {
+                return false;
+            }
+        }
+
+        cancelled.set(true);
+        return true;
+    }
+
+    public AtomicBoolean getCancelled() {
+        return cancelled;
     }
 
 }

@@ -67,7 +67,7 @@ public final class MultimodeLegTablePanel extends JPanel {
                     @Override
                     public void finishedLeg(Leg leg) {
                         String prop = JOptionPane.showInputDialog(MultimodeLegTablePanel.this,
-                                LIMOResourceBundle.getString("PROBABILITY_PERCENT"), null);
+                                LIMOResourceBundle.getString("WEIGHT"), null);
                         double propability = 0.0;
                         if (prop != null) {
                             try {
@@ -97,7 +97,7 @@ public final class MultimodeLegTablePanel extends JPanel {
                     public void finishedLeg(Leg leg) {
                         if (table.getSelectedRow() >= 0) {
                             String prop = JOptionPane.showInputDialog(MultimodeLegTablePanel.this,
-                                    LIMOResourceBundle.getString("PROBABILITY"), model.getPropability(table.getSelectedRow()));
+                                    LIMOResourceBundle.getString("WEIGHT"), model.getPropability(table.getSelectedRow()));
                             double propability = 0.0;
 
                             if (prop != null) {
