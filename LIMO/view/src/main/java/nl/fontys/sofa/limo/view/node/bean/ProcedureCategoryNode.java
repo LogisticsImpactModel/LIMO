@@ -20,11 +20,6 @@ public class ProcedureCategoryNode extends AbstractBeanNode<ProcedureCategory> {
     }
 
     @Override
-    public boolean canDestroy() {
-        return true;
-    }
-
-    @Override
     protected void createProperties(ProcedureCategory bean, BeanInfo info) {
         Sheet sets = getSheet();
         Sheet.Set set = getNameDescriptionPropertySheet();

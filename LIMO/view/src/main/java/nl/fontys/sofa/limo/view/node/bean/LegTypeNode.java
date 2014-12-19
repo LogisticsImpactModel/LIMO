@@ -33,11 +33,6 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
     }
 
     @Override
-    public boolean canDestroy() {
-        return true;
-    }
-
-    @Override
     public Action[] getActions(boolean context) {
         ArrayList<Action> actionList = new ArrayList<>();
         actionList.add(new AbstractAction(LIMOResourceBundle.getString("EDIT")) {
