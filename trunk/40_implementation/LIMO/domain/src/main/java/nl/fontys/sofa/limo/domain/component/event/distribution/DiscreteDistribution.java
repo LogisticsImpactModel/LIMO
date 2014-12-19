@@ -10,7 +10,7 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.input.IntegerInpu
 public class DiscreteDistribution extends Distribution {
 
     public DiscreteDistribution() {
-        super(new IntegerInputValue("X", 0), new IntegerInputValue("Y", 1));
+        super(new IntegerInputValue("X", 1), new IntegerInputValue("Y", 20));
         this.description = "This distribution calculates the probability\n"
                 + "of X / Y.\n"
                 + "X is elemnt of (negativ infinity, positiv infinity)\n"

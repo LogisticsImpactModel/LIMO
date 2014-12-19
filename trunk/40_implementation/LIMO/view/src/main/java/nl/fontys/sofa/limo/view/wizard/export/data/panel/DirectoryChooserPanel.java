@@ -4,12 +4,12 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import nl.fontys.sofa.limo.view.util.ExportFileChooser;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
@@ -44,11 +44,7 @@ public class DirectoryChooserPanel extends JPanel implements ActionListener {
         this.add(tfFileName, cc.xy(2, 4));
         lbFileName = new JLabel(LIMOResourceBundle.getString("FILENAME"));
         this.add(lbFileName, cc.xy(4, 4));
-        fc = new JFileChooser();
-        String currentPath = fc.getFileSystemView().getDefaultDirectory().toString();
-        fc.setCurrentDirectory(new File(currentPath));
-        fc.setMultiSelectionEnabled(false);
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fc = new ExportFileChooser();
     }
 
     /**

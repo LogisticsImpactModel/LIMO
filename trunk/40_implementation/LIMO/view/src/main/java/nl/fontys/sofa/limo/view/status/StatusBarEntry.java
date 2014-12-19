@@ -27,7 +27,7 @@ import org.openide.util.lookup.ServiceProvider;
  */
 @ServiceProvider(service = StatusBarService.class)
 public class StatusBarEntry implements StatusBarService, ActionListener {
-    
+
     // Variables for possible status
     private static final ImageIcon SUCCESS = new ImageIcon(ImageUtilities.loadImage("icons/green.png"));
     private static final ImageIcon NONE = new ImageIcon(ImageUtilities.loadImage("icons/grey.png"));
@@ -35,7 +35,7 @@ public class StatusBarEntry implements StatusBarService, ActionListener {
 
     private static final String[] NAME = new String[]{"", LIMOResourceBundle.getString("ERROR_OCCURES"), LIMOResourceBundle.getString("SUCCESS"), LIMOResourceBundle.getString("ERROR_OCCURES")};
     private static final String[] TEXT = new String[]{"", LIMOResourceBundle.getString("SOMETHING_WRONG") + ": ", LIMOResourceBundle.getString("SUCCESSFULLY") + " ", LIMOResourceBundle.getString("COULD_NOT_SUCCESSFULLY") + " "};
-    private static final String[] ACTION = new String[]{"", LIMOResourceBundle.getString("CREATED") + "", LIMOResourceBundle.getString("UPDATED") + " ", LIMOResourceBundle.getString("DELETED") + " ", LIMOResourceBundle.getString("FOUND") + " ", LIMOResourceBundle.getString("ADDED") + " ", LIMOResourceBundle.getString("CONNECTED") + " "};
+    private static final String[] ACTION = new String[]{"", LIMOResourceBundle.getString("CREATED") + " ", LIMOResourceBundle.getString("UPDATED") + " ", LIMOResourceBundle.getString("DELETED") + " ", LIMOResourceBundle.getString("FOUND") + " ", LIMOResourceBundle.getString("ADDED") + " ", LIMOResourceBundle.getString("CONNECTED") + " "};
 
     private final JPanel panel;
     private final JButton errorIndicatorButton;

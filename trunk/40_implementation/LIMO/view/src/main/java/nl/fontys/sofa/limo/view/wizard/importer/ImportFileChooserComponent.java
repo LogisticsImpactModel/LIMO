@@ -4,13 +4,10 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileFilter;
-import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  *
@@ -34,27 +31,7 @@ public class ImportFileChooserComponent extends JPanel implements ActionListener
         btnChooser = new JButton("...");
         btnChooser.addActionListener(this);
         this.add(btnChooser, cc.xy(4, 2));
-        fc = new JFileChooser();
-        String currentPath = fc.getFileSystemView().getDefaultDirectory().toString();
-        fc.setCurrentDirectory(new File(currentPath));
-        fc.setMultiSelectionEnabled(false);
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setDialogType(JFileChooser.OPEN_DIALOG);
-        fc.setFileFilter(new FileFilter() {
-
-            @Override
-            public boolean accept(File f) {
-                if (f.isDirectory()) {
-                    return true;
-                }
-                return f.getAbsolutePath().endsWith(".lef");
-            }
-
-            @Override
-            public String getDescription() {
-                return LIMOResourceBundle.getString("IMPORT_FILES");
-            }
-        });
+        fc = new nl.fontys.sofa.limo.view.util.ImportFileChooser();
     }
 
     public String getAbsoluteFilePath() {
