@@ -225,6 +225,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         AbstractBeanNode legNode = (AbstractBeanNode) findObject(legWidget);
         AbstractBeanNode targetNode = (AbstractBeanNode) findObject(target);
 
+        setEdgeSource(legNode, sourceNode);
+        setEdgeTarget(legNode, targetNode);
+
         Hub hubSource = sourceNode.getLookup().lookup(Hub.class);
         Leg leg = legNode.getLookup().lookup(Leg.class);
         Hub hubTarget = targetNode.getLookup().lookup(Hub.class);
@@ -402,10 +405,6 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
                         ConnectionWidget connectionWidget
                                 = (ConnectionWidget) addEdge(legNode);
-                        if (connectionWidget != null) {
-                            setEdgeSource(legNode, source);
-                            setEdgeTarget(legNode, target);
-                        }
 
                         connectHubWidgets(
                                 hubSourceWidget,
