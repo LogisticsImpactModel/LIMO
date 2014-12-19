@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.simulation.task;
 
-import nl.fontys.sofa.limo.simulation.task.Simulation;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
@@ -8,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
+ * Test the complete simulation.
  *
  * @author Sven Mäurer
  */

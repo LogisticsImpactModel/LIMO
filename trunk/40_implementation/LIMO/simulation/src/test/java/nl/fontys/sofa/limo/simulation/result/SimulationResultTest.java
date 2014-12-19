@@ -1,7 +1,5 @@
 package nl.fontys.sofa.limo.simulation.result;
 
-import nl.fontys.sofa.limo.simulation.result.SimulationResult;
-import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 

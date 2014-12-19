@@ -24,11 +24,10 @@ import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 
 /**
- * LegType Wizard Action
+ * LegType Wizard Action.
  *
  * @author Pascal Lindner
  */
-
 @ActionID(category = "LegType", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
 @ActionRegistration(displayName = "New Leg Type..", iconBase = "icons/gui/add.gif")
 @ActionReferences({
@@ -52,7 +51,6 @@ public final class LegTypeWizardAction extends TypeWizardAction {
         if (!eventService.findAll().isEmpty()) {
             panels.add(new EventLegTypeWizard());
         }
-        panels.add(new EventLegTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -78,20 +76,7 @@ public final class LegTypeWizardAction extends TypeWizardAction {
             wiz.putProperty(TYPE_PROCEDURES, legType.getProcedures());
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            if (saveToDatabase) {
-                LegTypeService service = Lookup.getDefault().lookup(LegTypeService.class);
-                legType.setDescription((String) wiz.getProperty(TYPE_DESCRIPTION));
-                legType.setIcon((Icon) wiz.getProperty(TYPE_ICON));
-                legType.setName((String) wiz.getProperty(TYPE_NAME));
-                legType.setEvents((List<Event>) wiz.getProperty(TYPE_EVENT));
-                legType.setProcedures((List<Procedure>) wiz.getProperty(TYPE_PROCEDURES));
-                if (isUpdate) {
-                    service.update(legType);
-                } else {
-                    legType.setId(null);
-                    legType = service.insert(legType);
-                }
-            }
+            finishWizard(wiz);
         }
     }
 
@@ -99,6 +84,21 @@ public final class LegTypeWizardAction extends TypeWizardAction {
     public void isUpdate(LegType legType) {
         this.legType = legType;
         this.isUpdate = true;
+    }
+
+    private void finishWizard(WizardDescriptor wiz) {
+        LegTypeService service = Lookup.getDefault().lookup(LegTypeService.class);
+        legType.setDescription((String) wiz.getProperty(TYPE_DESCRIPTION));
+        legType.setIcon((Icon) wiz.getProperty(TYPE_ICON));
+        legType.setName((String) wiz.getProperty(TYPE_NAME));
+        legType.setEvents((List<Event>) wiz.getProperty(TYPE_EVENT));
+        legType.setProcedures((List<Procedure>) wiz.getProperty(TYPE_PROCEDURES));
+        if (isUpdate) {
+            service.update(legType);
+        } else {
+            legType.setId(null);
+            legType = service.insert(legType);
+        }
     }
 
 }
