@@ -18,6 +18,7 @@ import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.util.ChainFileChooser;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -82,7 +83,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
       initCustomComponents(supplyChain);
 
       try {
-        SavableComponent savable = new SavableComponent(graphScene.getSupplyChain());
+        SavableComponent savable = new SavableComponent(graphScene.getChainBuilder());
 
         Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
         Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
@@ -94,7 +95,10 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         Exceptions.printStackTrace(ex);
         NotifyDescriptor d = new NotifyDescriptor.Message(LIMOResourceBundle.getString("LIMO_ERROR"),
                 NotifyDescriptor.ERROR_MESSAGE);
+        DialogDisplayer.getDefault().notify(d);
       }
+    }else{
+      this.close();
     }
   }
 

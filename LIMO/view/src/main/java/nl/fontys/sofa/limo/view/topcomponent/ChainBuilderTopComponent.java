@@ -81,7 +81,7 @@ public final class ChainBuilderTopComponent extends TopComponent
             setName(name);
 
             try {
-                SavableComponent savable = new SavableComponent(graphScene.getSupplyChain());
+                SavableComponent savable = new SavableComponent(graphScene.getChainBuilder());
 
                 Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
                 Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
@@ -93,6 +93,7 @@ public final class ChainBuilderTopComponent extends TopComponent
                 Exceptions.printStackTrace(ex);
                 NotifyDescriptor d = new NotifyDescriptor.Message(LIMOResourceBundle.getString("LIMO_ERROR"),
                         NotifyDescriptor.ERROR_MESSAGE);
+                DialogDisplayer.getDefault().notify(d);
             }
         } else {
             this.close();

@@ -4,15 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.spi.actions.AbstractSavable;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 
 public class SavableComponent extends AbstractSavable {
 
+    private final ChainBuilder chainBuilder;
     private final SupplyChain supplyChain;
 
-    public SavableComponent(SupplyChain supplyChain) {
-        this.supplyChain = supplyChain;
+    public SavableComponent(ChainBuilder chainBuilder) {
+        this.chainBuilder = chainBuilder;
+        this.supplyChain = chainBuilder.getSupplyChain();
         register();
     }
 
@@ -23,15 +28,22 @@ public class SavableComponent extends AbstractSavable {
 
     @Override
     protected void handleSave() throws IOException {
-        JFileChooser fc = new JFileChooser();
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int result = fc.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            supplyChain.setFilepath(file.getAbsolutePath() + File.separator + supplyChain.getName() + ".lsc");
-            supplyChain.saveToFile();
-        } else {
-            System.out.println(LIMOResourceBundle.getString("NO_DIRECTORY_SELECTED"));
+        if (chainBuilder.validate()) {
+            JFileChooser fc = new JFileChooser();
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int result = fc.showOpenDialog(null);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                supplyChain.setFilepath(file.getAbsolutePath() + File.separator + supplyChain.getName() + ".lsc");
+                supplyChain.saveToFile();
+            } else {
+                System.out.println(LIMOResourceBundle.getString("NO_DIRECTORY_SELECTED"));
+            }
+        }else{
+            NotifyDescriptor d = new NotifyDescriptor.Message(
+                    LIMOResourceBundle.getString("CHAIN_NOT_SAVABLE"),
+                    NotifyDescriptor.ERROR_MESSAGE);
+            DialogDisplayer.getDefault().notify(d);
         }
     }
 
