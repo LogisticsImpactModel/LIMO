@@ -119,7 +119,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     @Override
     public JComponent createView() {
-        JComponent component = super.createView(); //To change body of generated methods, choose Tools | Templates.
+        JComponent component = super.createView();
         if (loadedChain.getStart() != null) {
             try {
                 drawExistingSupplyChain(loadedChain);
@@ -149,6 +149,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 w.setPreferredLocation(point);
                 nextWidget = w;
                 point = new Point(((int) point.getX() + 200), (int) point.getY());
+
                 if (connectionWidget != null) {
                     connectHubWidgets(previousWidget, connectionWidget, nextWidget);
                 }
@@ -223,9 +224,6 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         AbstractBeanNode sourceNode = (AbstractBeanNode) findObject(source);
         AbstractBeanNode legNode = (AbstractBeanNode) findObject(legWidget);
         AbstractBeanNode targetNode = (AbstractBeanNode) findObject(target);
-
-        setEdgeSource(legNode, sourceNode);
-        setEdgeTarget(legNode, targetNode);
 
         Hub hubSource = sourceNode.getLookup().lookup(Hub.class);
         Leg leg = legNode.getLookup().lookup(Leg.class);
@@ -400,18 +398,20 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                         LegNode legNode = new LegNode(leg);
 
                         HubWidget hubSourceWidget = (HubWidget) findWidget(source);
+                        HubWidget hubTargetWidget = (HubWidget) findWidget(target);
+
                         ConnectionWidget connectionWidget
                                 = (ConnectionWidget) addEdge(legNode);
-                        HubWidget hubTargetWidget = (HubWidget) findWidget(target);
+                        if (connectionWidget != null) {
+                            setEdgeSource(legNode, source);
+                            setEdgeTarget(legNode, target);
+                        }
 
                         connectHubWidgets(
                                 hubSourceWidget,
                                 connectionWidget,
                                 hubTargetWidget);
 
-                        if (connectionWidget != null) {
-
-                        }
                     } catch (IntrospectionException ex) {
                         Exceptions.printStackTrace(ex);
                     }

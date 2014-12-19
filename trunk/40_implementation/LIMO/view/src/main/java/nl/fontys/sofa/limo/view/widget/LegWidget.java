@@ -32,94 +32,90 @@ import org.netbeans.api.visual.widget.Widget;
  */
 public class LegWidget extends ConnectionWidget implements BasicWidget {
 
-    private Map<Leg, Double> legs;
-    private final AbstractBeanNode legNode;
+  private Map<Leg, Double> legs;
+  private final AbstractBeanNode legNode;
 
-    public LegWidget(Scene scene, AbstractBeanNode legNode) {
-        super(scene);
-        this.legNode = legNode;
-        setChildLegWidgets();
-        setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
-        setStroke(new BasicStroke(3.0f));
-        setEndPointShape(PointShape.SQUARE_FILLED_BIG);
-    }
+  public LegWidget(Scene scene, AbstractBeanNode legNode) {
+    super(scene);
+    this.legNode = legNode;
+    setChildLegWidgets();
+    setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
+    setStroke(new BasicStroke(3.0f));
+    setEndPointShape(PointShape.SQUARE_FILLED_BIG);
+  }
 
-    @Override
-    public void addActions(ChainGraphScene scene) {
-        getActions().addAction(scene.createObjectHoverAction());
-        getActions().addAction(scene.createSelectAction());
+  @Override
+  public void addActions(ChainGraphScene scene) {
+    getActions().addAction(scene.createObjectHoverAction());
+    getActions().addAction(scene.createSelectAction());
 //        getActions().addAction(scene.reconnectAction);
-        getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
-    }
+    getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
+  }
 
-    private void setChildLegWidgets() {
-        Leg leg = getLeg();
-        if (leg instanceof MultiModeLeg) {
-            setMultiModeLegWidgets(leg);
-        }
-        if (leg instanceof ScheduledLeg) {
-            setScheduledLegWidgets(leg);
-        } else {
-            setNormalLegWidgets(leg);
-        }
+  private void setChildLegWidgets() {
+    Leg leg = getLeg();
+    if (leg instanceof MultiModeLeg) {
+      setMultiModeLegWidgets(leg);
+    } else if (leg instanceof ScheduledLeg) {
+      setScheduledLegWidgets(leg);
+    } else {
+      setNormalLegWidgets(leg);
     }
+  }
 
-    private void setNormalLegWidgets(Leg leg) {
-        ImageWidget iw = new ImageWidget(getScene());
-        iw.setImage(getScaledImageFromIcon(leg.getIcon()));
-        iw.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
-        this.setConstraint(iw, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 10);
-        this.addChild(iw);
-    }
+  private void setNormalLegWidgets(Leg leg) {
+    ImageWidget iw = new ImageWidget(getScene());
+    iw.setImage(getScaledImageFromIcon(leg.getIcon()));
+    iw.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
+    this.setConstraint(iw, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 10);
+    this.addChild(iw);
+  }
 
-    private void setScheduledLegWidgets(Leg leg) {
-        ScheduledLeg sl = (ScheduledLeg) leg;
-        setNormalLegWidgets(sl.getAlternative());
-        setNormalLegWidgets(sl.getAlternative());
-    }
+  private void setScheduledLegWidgets(Leg leg) {
+    ScheduledLeg sl = (ScheduledLeg) leg;
+    setNormalLegWidgets(sl);
+    setNormalLegWidgets(sl.getAlternative());
+  }
 
-    private void setMultiModeLegWidgets(Leg leg) {
-        MultiModeLeg mml = (MultiModeLeg) leg;
-        for (Map.Entry<Leg, Double> entry : legs.entrySet()) {
-            setNormalLegWidgets(entry.getKey());
-        }
+  private void setMultiModeLegWidgets(Leg leg) {
+    MultiModeLeg mml = (MultiModeLeg) leg;
+    legs = mml.getLegs();
+    for (Map.Entry<Leg, Double> entry : legs.entrySet()) {
+      setNormalLegWidgets(entry.getKey());
     }
+  }
+
+  @Override
+  public boolean drop(ChainGraphScene scene, Widget widget, Point point) {
+    throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_DROPPABLE"));
+  }
+
+  public Leg getLeg() {
+    return legNode.getLookup().lookup(Leg.class);
+  }
+
+  @Override
+  public void propertyChange(PropertyChangeEvent pce) {
+    throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_SUPPORTED")); //To change body of generated methods, choose Tools | Templates.
+  }
+
+  /**
+   * The popup menu when right clicked on this widget.
+   */
+  private class WidgetPopupMenu implements PopupMenuProvider {
 
     @Override
-    public boolean drop(ChainGraphScene scene, Widget widget, Point point) {
-        throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_DROPPABLE"));
-    }
-
-    public Leg getLeg() {
-        return legNode.getLookup().lookup(Leg.class);
-    }
-
-//    @Override
-//    public void setContainer(ContainerNode container) {
-//        this.legNode = container;
-//    }
-    @Override
-    public void propertyChange(PropertyChangeEvent pce) {
-        throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_SUPPORTED")); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    /**
-     * The popup menu when right clicked on this widget.
-     */
-    private class WidgetPopupMenu implements PopupMenuProvider {
+    public JPopupMenu getPopupMenu(Widget widget, Point localLocation) {
+      JPopupMenu popup = new JPopupMenu();
+      popup.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
 
         @Override
-        public JPopupMenu getPopupMenu(Widget widget, Point localLocation) {
-            JPopupMenu popup = new JPopupMenu();
-            popup.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
-
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    ChainGraphScene scene = (ChainGraphScene) getScene();
-                    scene.removeEdge(legNode);
-                }
-            });
-            return popup;
+        public void actionPerformed(ActionEvent ae) {
+          ChainGraphScene scene = (ChainGraphScene) getScene();
+          scene.removeEdge(legNode);
         }
+      });
+      return popup;
     }
+  }
 }
