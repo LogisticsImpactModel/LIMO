@@ -21,7 +21,7 @@ public class DirectoryChooserPanel extends JPanel implements ActionListener {
 
     private final JButton btnChooser;
     private final JTextField tfDirectory, tfFileName;
-    private final JLabel lbFileName;
+    private final JLabel lbFileName, lbFolder;
     private final CellConstraints cc;
     private final FormLayout layout;
     private final JFileChooser fc;
@@ -31,19 +31,21 @@ public class DirectoryChooserPanel extends JPanel implements ActionListener {
      */
     public DirectoryChooserPanel() {
         cc = new CellConstraints();
-        layout = new FormLayout("5px, 200, 5px, pref, 5px", "5px, pref, 5px, pref, 5px");
+        layout = new FormLayout("5px, pref, 5px, 200, 5px, pref, 5px", "5px, pref, 5px, pref, 5px");
         this.setLayout(layout);
+        lbFolder = new JLabel(LIMOResourceBundle.getString("FOLDER"));
+        this.add(lbFolder, cc.xy(2, 2));
         tfDirectory = new JTextField("");
         tfDirectory.setEditable(false);
-        this.add(tfDirectory, cc.xy(2, 2));
+        this.add(tfDirectory, cc.xy(4, 2));
         btnChooser = new JButton("...");
         btnChooser.addActionListener(this);
-        this.add(btnChooser, cc.xy(4, 2));
+        this.add(btnChooser, cc.xy(6, 2));
+        lbFileName = new JLabel(LIMOResourceBundle.getString("FILENAME"));
+        this.add(lbFileName, cc.xy(2, 4));
         tfFileName = new JTextField();
         tfFileName.setText("");
-        this.add(tfFileName, cc.xy(2, 4));
-        lbFileName = new JLabel(LIMOResourceBundle.getString("FILENAME"));
-        this.add(lbFileName, cc.xy(4, 4));
+        this.add(tfFileName, cc.xy(4, 4));
         fc = new ExportFileChooser();
     }
 
