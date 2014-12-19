@@ -9,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.TitledBorder;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
@@ -62,7 +63,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         startFlagWidget.setVisible(false);
 
         setImage(getHub().getIcon().getImage());
-        createBorder();
+        setLabel(beanNode.getName());
+//        createBorder();
         addSeparator();
         addChildren();
     }
@@ -147,7 +149,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         int numberOfProcedures = hub.getProcedures().size();
 
         setImage(hub.getIcon().getImage());
-        createBorder();
+        setLabel(hub.getName());
+//        createBorder();
 
         if (numberOfEvents == 0) {
             eventWidget.setVisible(false);

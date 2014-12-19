@@ -73,7 +73,11 @@ public final class ChainBuilderTopComponent extends TopComponent
         initCustomComponents();
 
         SupplyChain chain = graphScene.getSupplyChain();
-        NotifyDescriptor.InputLine dd = new DialogDescriptor.InputLine(LIMOResourceBundle.getString("NAME"), LIMOResourceBundle.getString("SET_NAME_OF", LIMOResourceBundle.getString("SUPPLY_CHAIN")));
+        NotifyDescriptor.InputLine dd =
+                new DialogDescriptor.InputLine(
+                        LIMOResourceBundle.getString("NAME"),
+                        LIMOResourceBundle.getString("SET_NAME_OF",
+                        LIMOResourceBundle.getString("SUPPLY_CHAIN")));
 
         if (DialogDisplayer.getDefault().notify(dd) == NotifyDescriptor.OK_OPTION) {
             String name = dd.getInputText();
@@ -120,7 +124,6 @@ public final class ChainBuilderTopComponent extends TopComponent
         } catch (IOException | IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
         }
-
     }
 
     @Override

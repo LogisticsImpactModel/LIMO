@@ -29,9 +29,9 @@ import org.openide.util.LookupListener;
  */
 public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
         implements LookupListener {
-    
-    private final HubChildFactory hubFactory;
-    private final Result<Hub> lookupResult;
+
+    private HubChildFactory hubFactory;
+    private Result<Hub> lookupResult;
 
     /**
      * Constructor creates a new CategoryChildFactory and attaches
@@ -43,11 +43,14 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
         lookupResult = hubFactory.getLookup().lookupResult(Hub.class);
         lookupResult.addLookupListener(this);
     }
-    
+
     @Override
     protected boolean createKeys(List<AbstractRootNode> list) {
         try {
-            Children hubChildren = Children.create(hubFactory, true);
+            hubFactory = new HubChildFactory();
+
+            Children hubChildren = Children.create(hubFactory, false);
+
             AbstractRootNode hubRootNode = new HubRootNode(hubChildren);
             hubRootNode.setDisplayName(LIMOResourceBundle.getString("HUBS"));
             list.add(hubRootNode);
@@ -56,12 +59,12 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
         }
         return true;
     }
-    
+
     @Override
     protected AbstractRootNode createNodeForKey(AbstractRootNode key) {
         return key;
     }
-    
+
     @Override
     public void resultChanged(LookupEvent ev) {
         refresh(true);
