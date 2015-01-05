@@ -95,13 +95,6 @@
             <artifactId>LIMO-view</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>nl.fontys.limo</groupId>
-            <artifactId>LIMO_Service</artifactId>
-            <version>0.1-ALPHA</version>
-            <scope>test</scope>
-            <type>jar</type>
-        </dependency>
     </dependencies>
 
     <build>
