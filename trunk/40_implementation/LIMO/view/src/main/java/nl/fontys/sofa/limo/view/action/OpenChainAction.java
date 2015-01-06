@@ -21,20 +21,18 @@ import org.openide.util.NbBundle.Messages;
  */
 @ActionID(
         category = "Window",
-        id = "nl.fontys.sofa.limo.view.topcomponent.ChainLoaderTopComponent"
+        id = "nl.fontys.sofa.limo.view.action.OpenChainAction"
 )
 @ActionRegistration(
         iconBase = "icons/gui/link.gif",
-        displayName = "#CTL_ChainLoaderAction"
+        displayName = "#CTL_OpenChainAction"
 )
 @ActionReferences({
     @ActionReference(path = "Menu/File", position = 3),
-    //@ActionReference(path = "Toolbars/File", position = 0),
-    @ActionReference(path = "Shortcuts", name = "D-N")
+    @ActionReference(path = "Shortcuts", name = "D-O")
 })
 @Messages({
-    "CTL_ChainLoaderAction=Load Supply Chain...",
-    "CTL_ChainLoaderTopComponent=Load Supply Chain"
+    "CTL_OpenChainAction=Load Supply Chain..."
 })
 public final class OpenChainAction implements ActionListener {
 
