@@ -8,6 +8,7 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import com.orientechnologies.orient.object.serialization.OObjectSerializerContext;
 import com.orientechnologies.orient.object.serialization.OObjectSerializerHelper;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -219,7 +220,7 @@ public class OrientDBConnector {
         }
 
        // Path path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "/LIMO");
-        Path path = FileSystems.getDefault().getPath(System.getProperty("user.dir"), "/LIMO");
+        Path path = FileSystems.getDefault().getPath(System.getProperty("user.dir")+File.separator +"LIMO_DB");
         if (!Files.exists(path)) {
             try {
                 Files.createDirectory(path);
