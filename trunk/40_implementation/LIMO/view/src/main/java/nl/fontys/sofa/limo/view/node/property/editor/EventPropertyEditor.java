@@ -15,8 +15,10 @@ import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
+ * This class is the Property Editor for our events. It enables you to change
+ * the events with the same component as in the wizards.
  *
- * @author Matthias BrÃƒÆ’Ã‚Â¼ck
+ * @author Matthias Brück
  */
 public class EventPropertyEditor extends PropertyEditorSupport {
 
@@ -43,6 +45,9 @@ public class EventPropertyEditor extends PropertyEditorSupport {
         return true;
     }
 
+    /**
+     * This CustomEditor is the actual JLabel that gets displayed as Editor.
+     */
     private class CustomEditor extends EventsPanel implements ActionListener, ItemListener {
 
         public CustomEditor() {
@@ -68,6 +73,9 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             setTableAndCheckbox();
         }
 
+        /**
+         * Sets the table, combobox and checkboxes of the used and unused items.
+         */
         private void setTableAndCheckbox() {
             ArrayList<String> allEventsName = new ArrayList<>();
             List<Event> usedEvents = null;
@@ -103,43 +111,53 @@ public class EventPropertyEditor extends PropertyEditorSupport {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(addButton)) {
                 if (eventsComboBox.getSelectedIndex() >= 0 && eventsComboBox.getSelectedIndex() < eventsComboBox.getItemCount()) {
-                    Event selected = null;
-                    for (int i = 0; i < allEvents.size(); i++) {
-                        if (((String) eventsComboBox.getSelectedItem()).equals(allEvents.get(i).getName())) {
-                            selected = service.findById(allEvents.get(i).getId());
-                            break;
-                        }
-                    }
-                    if (selected != null) {
-                        List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
-                        selected.setId(null);
-                        selected.setDependency(ExecutionState.INDEPENDENT);
-                        events.add(selected);
-
-                        eventsTableModel.setEvents(events);
-                        eventsTableModel.fireTableDataChanged();
-
-                        setTableAndCheckbox();
-                        setValue(events);
-                        checkAddButtonState();
-                        checkDeleteButtonState();
-                    }
+                    addClicked();
                 }
             } else if (e.getSource().equals(deleteButton)) {
                 if (eventsTable.getSelectedRow() >= 0 && eventsTable.getSelectedRow() < eventsTableModel.getRowCount()) {
-                    List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
-                    Event eventToRemove = events.get(eventsTable.getSelectedRow());
-                    events.remove(eventToRemove);
-
-                    eventsTableModel.setEvents(events);
-                    eventsTableModel.fireTableDataChanged();
-
-                    setTableAndCheckbox();
-                    setValue(events);
-                    checkAddButtonState();
-                    checkDeleteButtonState();
+                    deleteClicked();
                 }
             }
+        }
+
+        /**
+         * Handles what should happen when you clicked on the "add" button.
+         */
+        private void addClicked() {
+            Event selected = null;
+            for (int i = 0; i < allEvents.size(); i++) {
+                if (((String) eventsComboBox.getSelectedItem()).equals(allEvents.get(i).getName())) {
+                    selected = service.findById(allEvents.get(i).getId());
+                    break;
+                }
+            }
+            if (selected != null) {
+                List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
+                selected.setId(null);
+                selected.setDependency(ExecutionState.INDEPENDENT);
+                events.add(selected);
+                eventsTableModel.setEvents(events);
+                eventsTableModel.fireTableDataChanged();
+                setTableAndCheckbox();
+                setValue(events);
+                checkAddButtonState();
+                checkDeleteButtonState();
+            }
+        }
+
+        /**
+         * Handles what should happen when you clicked on the "delete" button.
+         */
+        private void deleteClicked() {
+            List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
+            Event eventToRemove = events.get(eventsTable.getSelectedRow());
+            events.remove(eventToRemove);
+            eventsTableModel.setEvents(events);
+            eventsTableModel.fireTableDataChanged();
+            setTableAndCheckbox();
+            setValue(events);
+            checkAddButtonState();
+            checkDeleteButtonState();
         }
 
         @Override

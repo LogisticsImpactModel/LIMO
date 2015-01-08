@@ -10,9 +10,7 @@ import org.openide.util.HelpCtx;
  *
  * @author Pascal Lindner
  */
-
 public class NewOrFromTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
-
 
     private NewOrFromTypePanel component;
 
@@ -49,10 +47,10 @@ public class NewOrFromTypeWizard implements WizardDescriptor.Panel<WizardDescrip
     //store legType if seleceted
     @Override
     public void storeSettings(WizardDescriptor wiz) {
+        wiz.putProperty("legTypeCopy", null);
         LegType legType = getComponent().getLegType();
         if (legType != null) {
             wiz.putProperty("legTypeCopy", legType);
         }
     }
-
 }
