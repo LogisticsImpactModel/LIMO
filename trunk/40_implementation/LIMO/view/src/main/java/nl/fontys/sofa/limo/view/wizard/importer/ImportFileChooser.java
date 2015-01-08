@@ -9,6 +9,8 @@ import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
 /**
+ * This class represents the WizardDescriptor for choosing the file to import.
+ *
  * @author Matthias Brück
  */
 public class ImportFileChooser implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
