@@ -9,6 +9,9 @@ import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
 /**
+ * This class represents the WizardDescriptor for resolving conflicts while
+ * importing.
+ *
  * @author Matthias Brück
  */
 public class ImportPanel implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {

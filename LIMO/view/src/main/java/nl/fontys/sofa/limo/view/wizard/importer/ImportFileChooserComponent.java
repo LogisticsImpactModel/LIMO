@@ -10,6 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
+ * This Component extends JPanel and displays a Button and a Textfield. Clicking
+ * the button opens a FileChooser that let's you choose LIMO import files. The
+ * Textfield is uneditable and shows the selected file.
  *
  * @author Matthias Brück
  */
