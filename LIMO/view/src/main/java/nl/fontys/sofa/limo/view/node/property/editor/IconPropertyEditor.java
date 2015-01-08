@@ -22,6 +22,8 @@ import nl.fontys.sofa.limo.view.util.IconUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
+ * This class is the Property Editor for our custom icon. It enables you to
+ * change the icon with the same component as in the wizards.
  *
  * @author Matthias Brück
  */
@@ -48,13 +50,16 @@ public abstract class IconPropertyEditor extends PropertyEditorSupport {
         return true;
     }
 
-    private class CustomEditor extends JLabel {
+    /**
+     * This CustomEditor is the actual JLabel that gets displayed as Editor.
+     */
+    private class CustomEditor extends JLabel implements ActionListener {
 
-        private JLabel lblPreview;
-        private JButton btnSelect;
-        private JButton btnRemove;
-        private JFileChooser fc;
-        private Icon oldIcon;
+        private final JLabel lblPreview;
+        private final JButton btnSelect;
+        private final JButton btnRemove;
+        private final JFileChooser fc;
+        private final Icon oldIcon;
 
         public CustomEditor() {
             lblPreview = new JLabel();
@@ -76,53 +81,53 @@ public abstract class IconPropertyEditor extends PropertyEditorSupport {
             c.gridx = 1;
             c.gridy = 0;
             add(btnSelect, c);
-            btnSelect.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            int returnVal = fc.showOpenDialog(CustomEditor.this);
-                            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                                File icon = fc.getSelectedFile();
-                                Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage(), icon.getPath().split("\\.")[icon.getPath().split("\\.").length - 1]);
-                                setValue(newIcon);
-                                lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
-                                btnRemove.setEnabled(true);
-                            }
-                        }
-                    }
-            );
+            btnSelect.addActionListener(this);
 
             c.weightx = 0.3;
             c.gridx = 2;
             c.gridy = 0;
             add(btnRemove, c);
-            btnRemove.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            Image image = IconUtil.getIcon(getBeanType(), 2);
-                            Icon newIcon = new Icon((BufferedImage) image, "png");
-                            setValue(newIcon);
-                            lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
-                            btnRemove.setEnabled(false);
-                        }
-                    }
-            );
+            btnRemove.addActionListener(this);
             oldIcon = (Icon) getValue();
             lblPreview.setIcon(new ImageIcon(oldIcon.getImage()));
             this.setPreferredSize(new Dimension(350, 150));
         }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource().equals(btnSelect)) {
+                int returnVal = fc.showOpenDialog(CustomEditor.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File icon = fc.getSelectedFile();
+                    Icon newIcon = new Icon(new ImageIcon(icon.getAbsolutePath()).getImage(), icon.getPath().split("\\.")[icon.getPath().split("\\.").length - 1]);
+                    setValue(newIcon);
+                    lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
+                    btnRemove.setEnabled(true);
+                }
+            } else if (e.getSource().equals(btnRemove)) {
+                Image image = IconUtil.getIcon(getBeanType(), 2);
+                Icon newIcon = new Icon((BufferedImage) image, "png");
+                setValue(newIcon);
+                lblPreview.setIcon(new ImageIcon(newIcon.getImage()));
+                btnRemove.setEnabled(false);
+            }
+        }
     }
 
+    /**
+     * Editor for HubIcons.
+     */
     public static class HubIconPropertyEditor extends IconPropertyEditor {
 
         @Override
         protected Class getBeanType() {
             return HubType.class;
         }
-
     }
 
+    /**
+     * Editor for LegIcons.
+     */
     public static class LegIconPropertyEditor extends IconPropertyEditor {
 
         @Override

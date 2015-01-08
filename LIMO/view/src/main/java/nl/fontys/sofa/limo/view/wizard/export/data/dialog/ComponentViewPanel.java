@@ -21,10 +21,10 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
  */
 public class ComponentViewPanel extends JPanel implements MouseListener {
 
-    private final JLabel lblEvent, lblProcedure;
-    private final JTable tblEvents, tblProcedures;
-    private final DefaultTableModel tblmdlEvents, tblmdlProcedures;
-    private final Event[] events;
+    private JLabel lblEvent, lblProcedure;
+    private JTable tblEvents, tblProcedures;
+    private DefaultTableModel tblmdlEvents, tblmdlProcedures;
+    private Event[] events;
     private final CellConstraints cc;
     private final FormLayout layout;
 
@@ -33,6 +33,16 @@ public class ComponentViewPanel extends JPanel implements MouseListener {
         layout = new FormLayout("5px, pref, 5px, pref:grow, 5px", "5px, pref, 5px, pref, 5px, 125, 5px, pref, 5px, 125, 5px");
         this.setLayout(layout);
         this.add(new BaseEntityViewPanel(entity), cc.xyw(2, 2, 3));
+        initComponents(entity);
+        this.setVisible(true);
+    }
+
+    /**
+     * Initializes the components displayed.
+     *
+     * @param entity
+     */
+    private void initComponents(Component entity) {
         lblEvent = new JLabel(LIMOResourceBundle.getString("EVENTS"));
         this.add(lblEvent, cc.xyw(2, 4, 3));
         events = entity.getEvents().toArray(new Event[]{});
@@ -58,7 +68,6 @@ public class ComponentViewPanel extends JPanel implements MouseListener {
         JScrollPane tblProcedurePane = new JScrollPane(tblProcedures);
         this.add(tblProcedurePane, cc.xyw(2, 10, 3));
         tblEvents.addMouseListener(this);
-        this.setVisible(true);
     }
 
     @Override
