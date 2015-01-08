@@ -26,7 +26,6 @@ import org.openide.util.Lookup;
  *
  * @author Pascal Lindner
  */
-
 //Not shown because not saved in DB
 //@ActionID(category = "Leg", id = "nl.fontys.limo.view.wizzard.leg.scheduled.ScheduledLegWizardAction")
 //@ActionRegistration(displayName = "Add Scheduled leg")
@@ -39,7 +38,7 @@ public final class ScheduledLegWizardAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
+        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         panels.add(new NameDescriptionIconLegPanel());
         panels.add(new ScheduledLegWizard());
         panels.add(new ProceduresLegTypeWizard());
@@ -47,7 +46,6 @@ public final class ScheduledLegWizardAction implements ActionListener {
         if (!eventService.findAll().isEmpty()) {
             panels.add(new EventLegTypeWizard());
         }
-        panels.add(new EventLegTypeWizard());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -62,7 +60,7 @@ public final class ScheduledLegWizardAction implements ActionListener {
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
-        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));

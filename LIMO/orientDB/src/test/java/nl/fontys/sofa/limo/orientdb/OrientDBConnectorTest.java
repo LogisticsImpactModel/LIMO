@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.orientdb;
 
 import java.io.File;
@@ -24,20 +19,19 @@ import org.junit.Test;
  * @author Ben
  */
 public class OrientDBConnectorTest {
-    
+
     public OrientDBConnectorTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
-        
 
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         //unset databaseUrl so that the connection string starts with pLocal
@@ -50,13 +44,14 @@ public class OrientDBConnectorTest {
             Logger.getLogger(OrientProcedureCategoryDAOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @After
     public void tearDown() {
     }
 
     /**
-     * Test of getInstance method, of class OrientDBConnector. Implicitly tested by testConnection()
+     * Test of getInstance method, of class OrientDBConnector. Implicitly tested
+     * by testConnection()
      */
     @Test
     public void testGetInstance() {
@@ -85,21 +80,25 @@ public class OrientDBConnectorTest {
     public void testClose() {
         testConnection();
         OrientDBConnector.close();//then close it by getting the instance and calling closeConnection, calling close() on actual connection
-        assertTrue("DBConn instance should be closed",OrientDBConnector.INSTANCE.connection.isClosed());//..so that it should be closed
-        
+        assertTrue("DBConn instance should be closed", OrientDBConnector.INSTANCE.connection.isClosed());//..so that it should be closed
+
     }
 
     /**
-     * Test of checkConnection method, of class OrientDBConnector. Checkconnection is called by getConnection, which is called by connection() on OrientDBConnector. No further testing required because of implicit testing by testClose()
+     * Test of checkConnection method, of class OrientDBConnector.
+     * Checkconnection is called by getConnection, which is called by
+     * connection() on OrientDBConnector. No further testing required because of
+     * implicit testing by testClose()
      */
     @Test
     public void testCheckConnection() {
         System.out.println("checkConnection");
-        
+
     }
 
     /**
-     * Test of createSchema method, of class OrientDBConnector. Implicitly tested by checkConnection
+     * Test of createSchema method, of class OrientDBConnector. Implicitly
+     * tested by checkConnection
      */
     @Test
     public void testCreateSchema() {
@@ -115,15 +114,16 @@ public class OrientDBConnectorTest {
      */
     @Test
     public void testGetDatabaseURL() {
-       System.out.println("getDatabaseURL");
-       OrientDBConnector instance = new OrientDBConnector();
-       String expResult = "plocal:" + System.getProperty("user.home") + File.separator + "LIMO_DB";
-       String result = instance.getDatabaseURL();
-    //   assertEquals(expResult, result);
+        System.out.println("getDatabaseURL");
+        OrientDBConnector instance = new OrientDBConnector();
+        String expResult = "plocal:" + System.getProperty("user.home") + File.separator + "LIMO_DB";
+        String result = instance.getDatabaseURL();
+        //   assertEquals(expResult, result);
     }
 
     /**
-     * Test of getConnection method, of class OrientDBConnector. Implicitly tested by connection()
+     * Test of getConnection method, of class OrientDBConnector. Implicitly
+     * tested by connection()
      */
     @Test
     public void testGetConnection() {
@@ -140,5 +140,5 @@ public class OrientDBConnectorTest {
         OrientDBConnector.close();
         assertTrue("Connection should be open but is closed", OrientDBConnector.INSTANCE.connection.isClosed());
     }
-    
+
 }
