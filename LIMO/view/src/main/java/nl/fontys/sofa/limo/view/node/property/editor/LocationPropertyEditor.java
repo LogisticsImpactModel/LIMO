@@ -51,6 +51,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
 
             @Override
             public void windowClosing(WindowEvent e) {
+                // Only save if wanted
                 if (loc.shouldSafe) {
                     setValue(loc.hubLocation);
                 }
@@ -65,6 +66,9 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
         return LIMOResourceBundle.getString("LOCATION");
     }
 
+    /**
+     * Custom location editor.
+     */
     private static class LocationEditor extends JDialog implements ActionListener {
 
         private Location hubLocation;
@@ -83,6 +87,11 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
 
         private Map<String, SerializableCountry> countriesByName;
 
+        /**
+         * Create location editor and init UI.
+         *
+         * @param hubLocation Old location.
+         */
         public LocationEditor(Location hubLocation) {
             this.hubLocation = hubLocation;
             this.shouldSafe = false;
@@ -94,14 +103,27 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             setLocationRelativeTo(null);
         }
 
+        /**
+         * Get updated location.
+         *
+         * @return Location.
+         */
         public Location getHubLocation() {
             return hubLocation;
         }
 
+        /**
+         * Should the new location be saved or not.
+         *
+         * @return Save true/false.
+         */
         public boolean isShouldSafe() {
             return shouldSafe;
         }
 
+        /**
+         * Initialize UI.
+         */
         public final void initComponents() {
             JPanel container = new JPanel();
             container.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
@@ -258,6 +280,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(btnOk)) {
+                // Only done when should save data
                 shouldSafe = true;
 
                 Location loc = new Location();
@@ -272,13 +295,21 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
                 }
                 hubLocation = loc;
             }
+            // Notify listeners of window close event
             for (WindowListener wl : getWindowListeners()) {
                 wl.windowClosing(null);
             }
+            // Close window
             setVisible(false);
             dispose();
         }
 
+        /**
+         * Get possible countries for given continent.
+         *
+         * @param continent Continent.
+         * @return List of countries for continent.
+         */
         private String[] getCountries(Continent continent) {
             List<SerializableCountry> countryList = continent == null ? SerializableCountry.getAll() : continent.getCountries();
             String[] countries = new String[countryList.size() + 1];

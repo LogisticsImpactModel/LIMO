@@ -51,10 +51,18 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
         return ((Distribution) getValue()).getClass().getSimpleName();
     }
 
+    /**
+     * Convenience method to get editor value as distribution.
+     *
+     * @return
+     */
     protected Distribution getDistribution() {
         return (Distribution) getValue();
     }
 
+    /**
+     * Private class. Defining the custom distribution property editor.
+     */
     private class CustomEditor extends JPanel {
 
         private JLabel distributionTypeLabel;
@@ -65,14 +73,19 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
 
         private DistributionFactory distributionFactory;
 
+        /**
+         * Create editor and init UI.
+         */
         public CustomEditor() {
 
+            // Create layout
             setLayout(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
             c.fill = GridBagConstraints.HORIZONTAL;
             c.anchor = GridBagConstraints.NORTH;
             c.insets = new Insets(3, 3, 3, 3);
 
+            // Create parameter input
             parametersLabel = new javax.swing.JPanel();
             parametersLabel.setBorder(BorderFactory.createTitledBorder(
                     BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
@@ -85,6 +98,7 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
 
                 @Override
                 public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                    // Only select editable cells, not whole row
                     Component c = super.prepareRenderer(renderer, row, column);
                     if (isCellSelected(row, column)) {
                         c.setBackground(getSelectionBackground());
@@ -105,6 +119,7 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
             parametersTable.setDefaultEditor(parametersTable.getColumnClass(1), singleClick);
             parametersLabel.add(parametersTable, BorderLayout.CENTER);
 
+            // Get distributions and add to combo box
             distributionFactory = Lookup.getDefault().lookup(DistributionFactory.class);
             List<String> distTypes = Arrays.asList(distributionFactory.getDistributionTypes());
             Collections.sort(distTypes);
@@ -139,6 +154,9 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
             add(parametersLabel, c);
         }
 
+        /**
+         * Table model for distribution property editor.
+         */
         private class DistributionParameterTableModel extends AbstractTableModel {
 
             @Override
