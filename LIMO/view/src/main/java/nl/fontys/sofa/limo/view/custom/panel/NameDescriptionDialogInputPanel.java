@@ -132,4 +132,12 @@ public class NameDescriptionDialogInputPanel extends JPanel
     public void clearProblem() {
     }
 
+    public void setBeanName(String name) {
+        nameTF.setText(name);
+    }
+
+    public void setBeanDescription(String description) {
+        descriptionTF.setText(description);
+    }
+
 }

@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
+import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionDialogInputPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.nodes.Sheet;
 import org.openide.util.Lookup;
@@ -28,6 +29,13 @@ public class ProcedureCategoryNode extends AbstractBeanNode<ProcedureCategory> {
     @Override
     public Action[] getActions(boolean context) {
         ArrayList<Action> actionList = new ArrayList<>();
+        actionList.add(new AbstractAction(LIMOResourceBundle.getString("EDIT")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editProcedure();
+            }
+
+        });
         actionList.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
 
             @Override
@@ -37,6 +45,24 @@ public class ProcedureCategoryNode extends AbstractBeanNode<ProcedureCategory> {
 
         });
         return actionList.toArray(new Action[actionList.size()]);
+    }
+
+    /**
+     * Open an procedure panel with the procedure for editing.
+     */
+    private void editProcedure() {
+        NameDescriptionDialogInputPanel inputPane = new NameDescriptionDialogInputPanel();
+        inputPane.setBeanName(bean.getName());
+        inputPane.setBeanDescription(bean.getDescription());
+        int result = JOptionPane.showConfirmDialog(null, inputPane, LIMOResourceBundle.getString("ADD_PROCEDURE_CATEGORY"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
+        if (result == JOptionPane.OK_OPTION) {
+            bean.setName(inputPane.getNameFieldValue());
+            bean.setDescription(inputPane.getDescriptionFieldValue());
+            ProcedureCategoryService service = Lookup.getDefault().lookup(ProcedureCategoryService.class);
+            service.update(bean);
+            createProperties(getBean(), null);
+            setSheet(getSheet());
+        }
     }
 
     /**
