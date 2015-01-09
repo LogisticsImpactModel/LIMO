@@ -31,7 +31,8 @@ public class SavableComponent extends AbstractSavable {
     protected void handleSave() throws IOException {
         if (chainBuilder.validate()) {
             JFileChooser fc = new ChainSaveFileChooser();
-            int result = fc.showSaveDialog(null);
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int result = fc.showOpenDialog(null);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
                 supplyChain.setFilepath(file.getAbsolutePath() + File.separator + supplyChain.getName() + ".lsc");

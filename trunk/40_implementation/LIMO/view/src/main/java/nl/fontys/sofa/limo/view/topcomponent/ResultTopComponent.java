@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -75,11 +74,11 @@ public final class ResultTopComponent extends TopComponent {
                 fc.setCurrentDirectory(new File(currentPath));
                 fc.setMultiSelectionEnabled(false);
                 fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                if (fc.showSaveDialog(jTabbedPane1)== JFileChooser.APPROVE_OPTION) {
-                    String path =  fc.getSelectedFile().getPath();
-                    String filename = (String)JOptionPane.showInputDialog(jTabbedPane1, LIMOResourceBundle.getString("CHOOSE_FILE"),  LIMOResourceBundle.getString("CHOOSE_FILE"), JOptionPane.PLAIN_MESSAGE);
-                    if(filename != null){
-                        if(!filename.isEmpty()){
+                if (fc.showOpenDialog(jTabbedPane1) == JFileChooser.APPROVE_OPTION) {
+                    String path = fc.getSelectedFile().getPath();
+                    String filename = (String) JOptionPane.showInputDialog(jTabbedPane1, LIMOResourceBundle.getString("CHOOSE_FILE"), LIMOResourceBundle.getString("CHOOSE_FILE"), JOptionPane.PLAIN_MESSAGE);
+                    if (filename != null) {
+                        if (!filename.isEmpty()) {
                             CSVExporter.exportTables(path + "\\" + filename + ".csv", new JTable[]{totalsTable, categoryTable, nodesTable}, new String[]{"Totals", "By Categories", "By Nodes"});
                         }
                     }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  *
@@ -83,31 +84,31 @@ public class DataEntryTableModel extends AbstractTableModel {
     public String getColumnName(int column) {
         switch (column) {
             case 0:
-                return "Name";
+                return LIMOResourceBundle.getString("NAME");
             case 1:
-                return "Costs Min";
+                return LIMOResourceBundle.getString("COSTS MIN");
             case 2:
-                return "Costs Avg";
+                return LIMOResourceBundle.getString("COSTS AVG");
             case 3:
-                return "Costs Max";
+                return LIMOResourceBundle.getString("COSTS MAX");
             case 4:
-                return "Lead Times Min";
+                return LIMOResourceBundle.getString("LEAD TIMES MIN");
             case 5:
-                return "Lead Times Avg";
+                return LIMOResourceBundle.getString("LEAD TIMES AVG");
             case 6:
-                return "Lead Times Max";
+                return LIMOResourceBundle.getString("LEAD TIMES MAX");
             case 7:
-                return "Extra Costs Min";
+                return LIMOResourceBundle.getString("EXTRA COSTS MIN");
             case 8:
-                return "Extra Costs Avg";
+                return LIMOResourceBundle.getString("EXTRA COSTS AVG");
             case 9:
-                return "Extra Costs Max";
+                return LIMOResourceBundle.getString("EXTRA COSTS MAX");
             case 10:
-                return "Delays Min";
+                return LIMOResourceBundle.getString("DELAYS MIN");
             case 11:
-                return "Delays Avg";
+                return LIMOResourceBundle.getString("DELAYS AVG");
             case 12:
-                return "Delays Max";
+                return LIMOResourceBundle.getString("DELAYS MAX");
             default:
                 return "";
         }
