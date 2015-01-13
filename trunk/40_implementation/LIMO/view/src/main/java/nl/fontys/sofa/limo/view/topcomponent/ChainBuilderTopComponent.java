@@ -53,6 +53,10 @@ public final class ChainBuilderTopComponent extends TopComponent
     private ExplorerManager em = new ExplorerManager();
     private ChainGraphScene graphScene;
 
+    /**
+     * Constructor creates a new ChainBuilderTopComponent.
+     *
+     */
     public ChainBuilderTopComponent(String name) {
         initComponents();
         initCustomComponents();
@@ -78,6 +82,9 @@ public final class ChainBuilderTopComponent extends TopComponent
         }
     }
 
+    /**
+     * Initialize the custom placed components of this TopComponent.
+     */
     private void initCustomComponents() {
         setLayout(new BorderLayout());
         SupplyChain chain = new SupplyChain();

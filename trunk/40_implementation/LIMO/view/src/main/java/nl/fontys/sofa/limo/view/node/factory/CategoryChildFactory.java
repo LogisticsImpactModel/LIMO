@@ -36,7 +36,7 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
     /**
      * Constructor creates a new CategoryChildFactory and attaches
      * {@link org.openide.util.LookupListener} on the child factories to listen
-     * for changes in the and to react appropriately.
+     * for changes in the data models.
      */
     public CategoryChildFactory() {
         hubFactory = new HubChildFactory();

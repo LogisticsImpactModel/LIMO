@@ -39,6 +39,13 @@ import org.openide.util.Lookup;
  */
 public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
 
+    /**
+     * constructor for HubNode, adds the bean, it's events and it's procedures
+     * to the instancecontent.
+     *
+     * @param bean the hub to create a node from.
+     * @throws IntrospectionException
+     */
     public HubNode(Hub bean) throws IntrospectionException {
         super(bean, Hub.class);
         this.bean = bean;

@@ -36,6 +36,11 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
     private final Result<ProcedureCategory> lookupResult;
     private final ProcedureCategoryService service;
 
+    /**
+     * Constructor creates a new ProcedureCategoryChildFactory and attaches
+     * {@link org.openide.util.LookupListener} on the child factories to listen
+     * for changes in the data models.
+     */
     public ProcedureCategoryChildFactory() {
         service = Lookup.getDefault().lookup(ProcedureCategoryService.class);
         lookupResult = service.getLookup().lookupResult(ProcedureCategory.class);

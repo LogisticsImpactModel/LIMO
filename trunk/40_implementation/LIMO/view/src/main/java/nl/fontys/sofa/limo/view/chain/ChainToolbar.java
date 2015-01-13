@@ -34,6 +34,9 @@ public class ChainToolbar extends JToolBar {
         initCustomComponents();
     }
 
+    /**
+     * Initialize the custom placed components of this toolbar.
+     */
     private void initCustomComponents() {
         NumberFormat format = NumberFormat.getIntegerInstance();
         NumberFormatter formatter = new NumberFormatter(format);

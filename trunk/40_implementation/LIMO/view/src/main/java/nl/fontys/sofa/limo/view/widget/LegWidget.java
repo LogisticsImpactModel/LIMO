@@ -35,6 +35,12 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
   private Map<Leg, Double> legs;
   private final AbstractBeanNode legNode;
 
+  /**
+   * Constructor creates a new LegWidget.
+   *
+   * @param scene the scene to draw this widget on.
+   * @param legNode the node this widget belongs to.
+   */
   public LegWidget(Scene scene, AbstractBeanNode legNode) {
     super(scene);
     this.legNode = legNode;
@@ -52,6 +58,9 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
     getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
   }
 
+  /**
+   * Set the children of this widget.
+   */
   private void setChildLegWidgets() {
     Leg leg = getLeg();
     if (leg instanceof MultiModeLeg) {
@@ -63,6 +72,10 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
     }
   }
 
+  /**
+   * Attach the normal leg widgets to this widget.
+   * @param leg
+   */
   private void setNormalLegWidgets(Leg leg) {
     ImageWidget iw = new ImageWidget(getScene());
     iw.setImage(getScaledImageFromIcon(leg.getIcon()));
@@ -71,12 +84,20 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
     this.addChild(iw);
   }
 
+  /**
+   * Attach the scheduled leg widgets to this widget.
+   * @param leg
+   */
   private void setScheduledLegWidgets(Leg leg) {
     ScheduledLeg sl = (ScheduledLeg) leg;
     setNormalLegWidgets(sl);
     setNormalLegWidgets(sl.getAlternative());
   }
 
+  /**
+   * Attach the multimode leg widgets to this widget.
+   * @param leg
+   */
   private void setMultiModeLegWidgets(Leg leg) {
     MultiModeLeg mml = (MultiModeLeg) leg;
     legs = mml.getLegs();
@@ -90,6 +111,10 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
     throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_DROPPABLE"));
   }
 
+  /**
+   * Get the leg that belongs to this widget.
+   * @return
+   */
   public Leg getLeg() {
     return legNode.getLookup().lookup(Leg.class);
   }

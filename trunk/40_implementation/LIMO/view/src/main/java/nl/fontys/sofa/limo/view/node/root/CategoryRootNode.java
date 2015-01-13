@@ -5,11 +5,18 @@ import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 
 /**
+ * RootNode for the categories. The categories are used to display in the
+ * palette.
  *
  * @author Sebastiaan Heijmann
  */
 public class CategoryRootNode extends AbstractNode {
 
+    /**
+     * Constructor creates a new CategoryRootNode.
+     *
+     * @param children the children of this node.
+     */
     public CategoryRootNode(Children children) {
         super(children);
     }

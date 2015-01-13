@@ -37,6 +37,10 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     private ExplorerManager em = new ExplorerManager();
     private ChainGraphScene graphScene;
 
+    /**
+     * Constructor creates a new ChainLoaderTopcomponent.
+     * @param chainFile the file where the supplychain is located.
+     */
     public ChainLoaderTopComponent(File chainFile) {
         initComponents();
 
@@ -61,6 +65,11 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         }
     }
 
+    /**
+     * Initialize the custom components of this TopComponent.
+     *
+     * @param supplyChain the supplychain which is loaded.
+     */
     void initCustomComponents(SupplyChain supplyChain) {
         setLayout(new BorderLayout());
         try {

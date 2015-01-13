@@ -78,6 +78,9 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
     }
 
+    /**
+     * Add the children to this widget.
+     */
     private void addChildren() {
         Scene scene = getScene();
         Hub hub = getHub();
@@ -87,30 +90,30 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         containerWidget = new Widget(scene);
         containerWidget.setLayout(LayoutFactory.createHorizontalFlowLayout());
 
-//        procedureWidget = new ProcedureWidget(scene);
-//        procedureWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES"), numberOfProcedures));
-//        if (numberOfProcedures == 0) {
-//            procedureWidget.setVisible(false);
-//        }
         eventWidget = new EventsWidget(scene);
         eventWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("EVENTS"), numberOfEvents));
         if (numberOfEvents == 0) {
             eventWidget.setVisible(false);
         }
 
-//        containerWidget.addChild(procedureWidget);
         containerWidget.addChild(eventWidget);
 
         addChild(containerWidget);
         addChild(startFlagWidget);
     }
 
+    /**
+     * Add a separator to this widget.
+     */
     private void addSeparator() {
         SeparatorWidget separatorWidget = new SeparatorWidget(getScene(), SeparatorWidget.Orientation.HORIZONTAL);
         separatorWidget.setThickness(10);
         addChild(separatorWidget);
     }
 
+    /**
+     * Create a border around this widget.
+     */
     private void createBorder() {
         setBorder(BorderFactory.createCompoundBorder(
                 new TitledBorder(
@@ -132,6 +135,10 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         return true;
     }
 
+    /**
+     * Get the hub which belongs to this widget.
+     * @return
+     */
     public Hub getHub() {
         return hubNode.getLookup().lookup(Hub.class);
     }
@@ -159,12 +166,6 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
             eventWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("MAIN_EVENTS"), numberOfEvents));
         }
 
-//        if (numberOfProcedures == 0) {
-//            procedureWidget.setVisible(false);
-//        } else {
-//            procedureWidget.setVisible(true);
-//            procedureWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES", numberOfProcedures)));
-//        }
     }
 
     /**
@@ -177,11 +178,6 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         } else {
             eventWidget.setVisible(true);
         }
-//        if (hub.getProcedures().isEmpty()) {
-//            procedureWidget.setVisible(false);
-//        } else {
-//            procedureWidget.setVisible(true);
-//        }
         repaint();
     }
 

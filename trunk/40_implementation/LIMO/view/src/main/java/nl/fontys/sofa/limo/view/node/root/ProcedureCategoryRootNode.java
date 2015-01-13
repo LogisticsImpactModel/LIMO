@@ -17,33 +17,39 @@ import org.openide.util.datatransfer.NewType;
  * @author Sebastiaan Heijmann
  */
 public class ProcedureCategoryRootNode extends AbstractRootNode {
-    
+
     private final ProcedureCategoryService service;
-    
+
+    /**
+     * Constructor creates a new ProcedureCategoryRootNode.
+     *
+     * @param children the children of the rootnode.
+     * @throws ServiceNotFoundException
+     */
     public ProcedureCategoryRootNode(Children children) throws ServiceNotFoundException {
         super(children);
         service = Lookup.getDefault().lookup(ProcedureCategoryService.class);
     }
-    
+
     @Override
     Class getBeanClass() {
         return ProcedureCategory.class;
     }
-    
+
     @Override
     Class getServiceClass() {
         return ProcedureCategoryService.class;
     }
-    
+
     @Override
     public NewType[] getNewTypes() {
         return new NewType[]{new NewType() {
-            
+
             @Override
             public String getName() {
                 return LIMOResourceBundle.getString("PROCEDURE_CATEGORY");
             }
-            
+
             @Override
             public void create() throws IOException {
                 NameDescriptionDialogInputPanel inputPane = new NameDescriptionDialogInputPanel();

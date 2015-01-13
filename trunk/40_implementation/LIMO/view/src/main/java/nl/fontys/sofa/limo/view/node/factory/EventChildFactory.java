@@ -32,12 +32,21 @@ public class EventChildFactory extends ChildFactory<Event>
     private final EventService service;
     private List<Event> eventList;
 
+    /**
+     * Constructor creates a new EventChildFactory and attaches
+     * {@link org.openide.util.LookupListener} on the child factories to listen
+     * for changes in the data models.
+     */
     public EventChildFactory() {
         service = Lookup.getDefault().lookup(EventService.class);
         lookupResult = service.getLookup().lookupResult(Event.class);
         lookupResult.addLookupListener(this);
     }
 
+    /**
+     * Constructor creates a new EventChildFactory from a list of events.
+     * @param events
+     */
     public EventChildFactory(List<Event> events) {
         lookupResult = null;
         service = null;

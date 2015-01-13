@@ -31,6 +31,11 @@ public class HubChildFactory extends ChildFactory<Hub>
     private final HubService service;
     private final Result<Hub> lookupResult;
 
+    /**
+     * Constructor creates a new HubChildFactory and attaches
+     * {@link org.openide.util.LookupListener} on the child factories to listen
+     * for changes in the data models.
+     */
     public HubChildFactory() {
         service = Lookup.getDefault().lookup(HubService.class);
         lookupResult = service.getLookup().lookupResult(Hub.class);

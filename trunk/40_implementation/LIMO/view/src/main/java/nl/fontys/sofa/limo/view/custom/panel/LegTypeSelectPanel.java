@@ -30,6 +30,12 @@ public final class LegTypeSelectPanel extends JPanel implements ExplorerManager.
     private Lookup.Result result = null;
     private final List<LegType> selectedLegTypes;
 
+    /**
+     * Constructor creates the components and attaches a listener to a lookup
+     * result.
+     * 
+     * @throws ServiceNotFoundException
+     */
     public LegTypeSelectPanel() throws ServiceNotFoundException {
         initComponents();
         initCustomComponents();
@@ -64,6 +70,13 @@ public final class LegTypeSelectPanel extends JPanel implements ExplorerManager.
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Initialize the custom placed components in this panel.
+     *
+     * @throws ServiceNotFoundException thrown when a given service cannot be
+     * found.
+     */
     private void initCustomComponents() throws ServiceNotFoundException {
         setLayout(new BorderLayout());
 
