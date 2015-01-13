@@ -57,7 +57,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     private final DynamicExplorerManagerProvider parent;
     private final ChainBuilder chainBuilder;
-    private SupplyChain loadedChain;
+    private final SupplyChain loadedChain;
 
     // The layers to draw things on.
     private final LayerWidget mainLayer;
@@ -130,6 +130,11 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         return component;
     }
 
+    /**
+     * Draw an existing supplychain onto the scene.
+     * @param supplyChain the supplychain to draw.
+     * @throws IntrospectionException
+     */
     void drawExistingSupplyChain(SupplyChain supplyChain) throws IntrospectionException {
         Point point = new Point(100, 100);
         mainLayer.setLayout(LayoutFactory.createAbsoluteLayout());
@@ -418,6 +423,12 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             }
         }
 
+        /**
+         * Validate a connection between two widgets.
+         * @param sourceWidget the connection source.
+         * @param targetWidget the connection target.
+         * @return
+         */
         private boolean validateConnection(
                 Widget sourceWidget,
                 Widget targetWidget) {

@@ -27,6 +27,12 @@ import org.openide.util.Lookup;
  */
 public class LegTypeNode extends AbstractBeanNode<LegType> {
 
+    /**
+     * constructor for LegTypeNode, adds the bean to the instancecontent.
+     *
+     * @param bean
+     * @throws IntrospectionException
+     */
     public LegTypeNode(LegType bean) throws IntrospectionException {
         super(bean, LegType.class);
         this.bean = bean;

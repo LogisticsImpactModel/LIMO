@@ -76,6 +76,11 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
         fireNodeDestroyed();
     }
 
+    /**
+     * Get the property change listener.
+     *
+     * @return the property change listener.
+     */
     protected PropertyChangeListener getListener() {
         if (this.listener == null) {
             this.listener = new PropertyChangeListener() {
@@ -84,7 +89,6 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
                 public void propertyChange(PropertyChangeEvent evt) {
                     DAO service = (DAO) Lookup.getDefault().lookup(getServiceClass());
                     service.update(getBean());
-//                    ((AbstractRootNode) getParentNode()).getService().update(getBean());
                     firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
                     if (evt.getPropertyName().equals("name")) {
                         setDisplayName((String) evt.getNewValue());
@@ -101,6 +105,11 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
         return this.listener;
     }
 
+    /**
+     * Get the propertysheet for name and description.
+     *
+     * @return the propertysheet set.
+     */
     protected Sheet.Set getNameDescriptionPropertySheet() {
         Sheet.Set set = Sheet.createPropertiesSet();
         set.setName("properties");
@@ -125,6 +134,11 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
         return set;
     }
 
+    /**
+     * Get the propertysheet for the base entity.
+     *
+     * @return the propertysheet set.
+     */
     protected Sheet.Set getBaseEntityPropertySheet() {
         Sheet.Set set = this.getNameDescriptionPropertySheet();
 
@@ -161,6 +175,11 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
      */
     abstract Class getServiceClass();
 
+    /**
+     * Get the icon for this bean.
+     *
+     * @return the icon of the bean.
+     */
     protected abstract Icon getBeanIcon();
 
     @Override

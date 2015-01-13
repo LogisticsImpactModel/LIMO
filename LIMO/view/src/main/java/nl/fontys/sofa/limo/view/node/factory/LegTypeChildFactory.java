@@ -33,6 +33,11 @@ public class LegTypeChildFactory extends ChildFactory<LegType>
     private final Result<LegType> lookupResult;
     private final LegTypeService service;
 
+    /**
+     * Constructor creates a new LegTypeChildFactory and attaches
+     * {@link org.openide.util.LookupListener} on the child factories to listen
+     * for changes in the data models.
+     */
     public LegTypeChildFactory() {
         service = Lookup.getDefault().lookup(LegTypeService.class);
         lookupResult = service.getLookup().lookupResult(LegType.class);

@@ -60,6 +60,9 @@ public final class StartpageTopComponent extends TopComponent {
         setName(Bundle.CTL_StartpageTopComponent());
     }
 
+    /**
+     * Initialize the components of the startpage.
+     */
     private void initComponents() {
         headerPane = new JPanel();
         titleLB = new JLabel();

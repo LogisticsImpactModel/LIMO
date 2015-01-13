@@ -27,6 +27,12 @@ import org.openide.util.Lookup;
  */
 public class HubTypeNode extends AbstractBeanNode<HubType> {
 
+    /**
+     * constructor for HubTypeNode, adds the bean to the instancecontent.
+     *
+     * @param bean
+     * @throws IntrospectionException
+     */
     public HubTypeNode(HubType bean) throws IntrospectionException {
         super(bean, HubType.class);
         this.bean = bean;

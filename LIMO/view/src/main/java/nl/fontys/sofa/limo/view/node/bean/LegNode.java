@@ -13,10 +13,25 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
  */
 public class LegNode extends AbstractBeanNode {
 
+    /**
+     * /**
+     * constructor for LegNode, calls the second constructor with the correct
+     * class name.
+     *
+     * @param bean
+     * @throws IntrospectionException
+     */
     public LegNode(BaseEntity bean) throws IntrospectionException {
         this(bean, Leg.class);
     }
 
+    /**
+     * constructor for LegNode, adds the bean to the instancecontent.
+     *
+     * @param bean the base entity
+     * @param entityClass the class name of the entity
+     * @throws IntrospectionException
+     */
     public LegNode(BaseEntity bean, Class entityClass) throws IntrospectionException {
         super(bean, entityClass);
     }

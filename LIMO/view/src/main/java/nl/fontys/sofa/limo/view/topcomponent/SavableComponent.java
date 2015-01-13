@@ -11,11 +11,21 @@ import org.netbeans.spi.actions.AbstractSavable;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 
+/**
+ * SavableComponent enables saving of a supplychain.
+ *
+ * @author Sebastiaan Heijmann
+ */
 public class SavableComponent extends AbstractSavable {
 
     private final ChainBuilder chainBuilder;
     private final SupplyChain supplyChain;
 
+    /**
+     * Constructor creates a new SavableComponent.
+     *
+     * @param chainBuilder the chainbuilder which contains the supplychains.
+     */
     public SavableComponent(ChainBuilder chainBuilder) {
         this.chainBuilder = chainBuilder;
         this.supplyChain = chainBuilder.getSupplyChain();
