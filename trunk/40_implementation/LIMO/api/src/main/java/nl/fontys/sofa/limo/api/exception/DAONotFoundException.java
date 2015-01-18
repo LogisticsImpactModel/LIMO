@@ -5,12 +5,12 @@ package nl.fontys.sofa.limo.api.exception;
  *
  * @author Sebastiaan Heijmann
  */
-public class DAONotFoundException extends Exception{
+public class DAONotFoundException extends Exception {
 
-	public DAONotFoundException() {
-	}
+    public DAONotFoundException() {
+    }
 
-	public DAONotFoundException(String message) {
-		super(message);
-	}
+    public DAONotFoundException(String message) {
+        super(message);
+    }
 }

@@ -5,13 +5,13 @@ package nl.fontys.sofa.limo.api.exception;
  *
  * @author Sebastiaan Heijmann
  */
-public class ServiceNotFoundException extends Exception{
+public class ServiceNotFoundException extends Exception {
 
-	public ServiceNotFoundException() {
-	}
+    public ServiceNotFoundException() {
+    }
 
-	public ServiceNotFoundException(String message) {
-		super(message);
-	}
+    public ServiceNotFoundException(String message) {
+        super(message);
+    }
 
 }

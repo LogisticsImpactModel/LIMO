@@ -3,6 +3,14 @@ package nl.fontys.sofa.limo.api.dao;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 
+/**
+ * Interface for the Data Access Object Pattern. Every class which has to be
+ * persisted, which indicates that it inherits from BaseEntity, has to
+ * implemented a DAO of this interface.
+ *
+ * @author Sven Mäurer
+ * @param <T> the class to be persisted.
+ */
 public interface DAO<T extends BaseEntity> {
 
     /**
