@@ -1,24 +1,16 @@
 //package nl.fontys.sofa.limo.test.functional.masterdata;
 //
-//import java.lang.reflect.Field;
 //import java.util.Arrays;
 //import java.util.List;
 //import java.util.Map;
 //import java.util.Random;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 //import junit.framework.Test;
-//import nl.fontys.sofa.limo.api.dao.EventDAO;
 //import nl.fontys.sofa.limo.api.service.distribution.DistributionFactory;
 //import nl.fontys.sofa.limo.api.service.provider.EventService;
 //import nl.fontys.sofa.limo.domain.component.event.Event;
 //import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 //import nl.fontys.sofa.limo.domain.component.event.distribution.input.InputValue;
-//import nl.fontys.sofa.limo.orientdb.OrientDBConnector;
-//import nl.fontys.sofa.limo.orientdb.dao.OrientDBEventDAO;
 //import nl.fontys.sofa.limo.test.mock.service.EventMockService;
-//import org.junit.After;
-//import org.junit.Before;
 //import org.junit.BeforeClass;
 //import org.netbeans.jellytools.JellyTestCase;
 //import org.netbeans.jellytools.WizardOperator;
@@ -33,6 +25,11 @@
 //import org.netbeans.junit.NbModuleSuite.Configuration;
 //import org.openide.util.Lookup;
 //
+///**
+// * Test the event wizard.
+// *
+// * @author Sven Mäurer
+// */
 //public class AddNewEventTest extends JellyTestCase {
 //
 //    private static final String NEW_EVENT_NAME = "Pirates";
