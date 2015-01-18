@@ -16,7 +16,7 @@ import org.junit.Test;
 
 /**
  *
- * @author Ben
+ * @author Sven Mäurer and Ben Stassen
  */
 public class OrientDBConnectorTest {
 

@@ -16,6 +16,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.netbeans.junit.NbTestCase;
 
+/**
+ *
+ * @author Sven Mäurer
+ */
 public class OrientDBHubTypeDAOTest extends NbTestCase {
 
     private OrientDBHubTypeDAO dao;
