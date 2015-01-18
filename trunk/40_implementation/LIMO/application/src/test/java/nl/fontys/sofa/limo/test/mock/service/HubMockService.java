@@ -10,6 +10,11 @@ import nl.fontys.sofa.limo.service.provider.AbstractService;
 import org.openide.util.Exceptions;
 import org.openide.util.lookup.ServiceProvider;
 
+/**
+ * Mock the hub service for using an in memory database.
+ *
+ * @author Sven Mäurer
+ */
 @ServiceProvider(service = HubService.class)
 public class HubMockService extends AbstractService<Hub> implements HubService {
 
