@@ -17,6 +17,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.netbeans.junit.NbTestCase;
 
+/**
+ *
+ * @author Sven Mäurer
+ */
 public class OrientDBEventDAOTest extends NbTestCase {
 
     private static final String EVENT_NAME = "Pirates";
