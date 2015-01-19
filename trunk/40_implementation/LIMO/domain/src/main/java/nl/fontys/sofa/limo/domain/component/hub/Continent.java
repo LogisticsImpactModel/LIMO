@@ -22,7 +22,7 @@ import java.util.List;
  *
  * Changes made to project default: adding Implements Serializable
  *
- * @author SM
+ * @author Sven Mäurer
  */
 public enum Continent implements Comparable<Continent> {
 
