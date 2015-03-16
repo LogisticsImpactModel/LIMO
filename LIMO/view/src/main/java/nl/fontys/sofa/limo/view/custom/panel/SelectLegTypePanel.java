@@ -74,8 +74,9 @@ public class SelectLegTypePanel extends JPanel {
                         SelectLegTypePanel.this.setLeg(leg);
                     }
                 });
-                wiz.actionPerformed(e);
                 JOptionPane.getRootFrame().dispose();
+                wiz.actionPerformed(e);
+
             }
         });
         btnMulti.addActionListener(new ActionListener() {
@@ -90,8 +91,9 @@ public class SelectLegTypePanel extends JPanel {
                         SelectLegTypePanel.this.setLeg(leg);
                     }
                 });
-                wiz.actionPerformed(e);
                 JOptionPane.getRootFrame().dispose();
+                wiz.actionPerformed(e);
+
             }
         });
         btnSchedule.addActionListener(new ActionListener() {
@@ -105,8 +107,9 @@ public class SelectLegTypePanel extends JPanel {
                         SelectLegTypePanel.this.setLeg(leg);
                     }
                 });
-                wiz.actionPerformed(e);
                 JOptionPane.getRootFrame().dispose();
+                wiz.actionPerformed(e);
+
             }
         });
     }
