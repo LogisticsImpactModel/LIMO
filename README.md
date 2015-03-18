@@ -7,17 +7,18 @@ The LIMO application consists out of the following features:
 - Defining sequencing of hubs, connected by legs, linked with events
 - Defining the probability of event occurrence
 - Handling probability with the following distribution types:
-		* Cauchy
-		* Chi Squared
-		* Discrete
-		* Exponential
-		* F
-		* Gamma
-		* Log Normal
-		* Normal
-		* Poisson
-		* Triangular
-		* Weibull
+
+		- Cauchy
+		- Chi Squared
+		- Discrete
+		- Exponential
+		- F
+		- Gamma
+		- Log Normal
+		- Normal
+		- Poisson
+		- Triangular
+		- Weibull
 - Exporting and importing master data (for exchange and collaboration) to and from LIMO-files, which can be stored on all kinds of storage media.
 - Generating reports on time and costs, based on defined risk occurrence probabilities and their respective distribution types
 
