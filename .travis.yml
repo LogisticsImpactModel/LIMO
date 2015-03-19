@@ -4,5 +4,7 @@ jdk:
   - oraclejdk7
   - openjdk7
   - openjdk6
-before_install: mvn install -DskipTests=true 
+before_install: 
+- cd LIMO
+- mvn install -DskipTests=true 
 install: mvn test
