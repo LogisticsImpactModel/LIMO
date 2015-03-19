@@ -36,7 +36,8 @@ LIMO can be easily build and run using Netbeans. The following section will desc
 
 **LIMO-app** is used to run the application. It will load all other modules upon start.
 
-**LIMO-dependencyWrapper** is used to share the same jar file for dependencies between modules. If you add a dependency to two modules directly, Maven will add a jar for the dependecy to each module. This can cause problems when sharing objects between modules that are manipulated at runtime, as is done by OrientDB. To be able to share a dependency, its packages need to be declared public in the POM file.
+**LIMO-dependencyWrapper** is used to share the same jar file for dependencies between modules. If you add a dependency to two modules directly, Maven will add a jar for the dependecy to each module. 
+This can cause problems when sharing objects between modules that are manipulated at runtime, as is done by OrientDB. To be able to share a dependency, its packages need to be declared public in the POM file.
 
 **LIMO-branding** Logicless module providing branding (e.g. the splash screen). Standard module for a NetBeans platform application.
 
