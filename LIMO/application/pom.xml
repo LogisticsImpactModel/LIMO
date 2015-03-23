@@ -38,6 +38,7 @@
             <artifactId>org-netbeans-modules-jellytools-platform</artifactId>
             <version>RELEASE80</version>
             <scope>test</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.modules</groupId>
@@ -50,12 +51,14 @@
             <artifactId>org-netbeans-modules-jellytools</artifactId>
             <version>RELEASE67</version>
             <scope>test</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-jellytools-ide</artifactId>
             <version>RELEASE80</version>
             <scope>test</scope>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -113,8 +116,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.13</version>
-                <extensions>true</extensions>
+                <version>2.12.2</version>
                 <configuration>
                     <systemPropertyVariables>
                         <all.clusters>${all.clusters}</all.clusters>
