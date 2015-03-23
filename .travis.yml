@@ -1,5 +1,5 @@
 language: java
 jdk:
   - openjdk7
-script: "mvn -P deployment -f ./LIMO/pom.xml -X clean install" 
 bundler_args: --retry 3
+install: mvn -P deployment -f ./LIMO/pom.xml -X clean install
