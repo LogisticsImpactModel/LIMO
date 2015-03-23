@@ -4,4 +4,4 @@ jdk:
   - oraclejdk7
   - openjdk7
   - openjdk6
-script: "mvn -f ./LIMO/pom.xml install" 
+script: "mvn -f ./LIMO/pom.xml -X install" 
