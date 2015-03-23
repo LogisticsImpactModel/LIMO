@@ -1,5 +1,4 @@
 language: java
 jdk:
   - openjdk7
-bundler_args: --retry 3
 install: travis_retry mvn -f ./LIMO/pom.xml -X clean install
