@@ -51,14 +51,12 @@
             <artifactId>org-netbeans-modules-jellytools</artifactId>
             <version>RELEASE67</version>
             <scope>test</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-jellytools-ide</artifactId>
             <version>RELEASE80</version>
             <scope>test</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
