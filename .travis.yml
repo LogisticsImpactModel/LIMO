@@ -1,5 +1,6 @@
 language: java
 jdk:
   - openjdk7
-install: mvn --settings settings.xml -f ./LIMO/pom.xml -X test
+install: mvn --settings settings.xml -f ./LIMO/pom.xml -DskipTests=true clean install
+script: mvn --settings settings.xml -f ./LIMO/pom.xml -X test
 
