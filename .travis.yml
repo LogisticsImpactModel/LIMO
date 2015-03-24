@@ -1,4 +1,7 @@
 language: java
 jdk:
   - openjdk7
-install: mvn --settings settings.xml -f ./LIMO/pom.xml -X  deploy
+install:
+  - mvn --settings settings.xml -f ./LIMO/pom.xml -X  clean install
+  - mvn --settings settings.xml -f ./LIMO/pom.xml -X test
+
