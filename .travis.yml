@@ -1,4 +1,4 @@
 language: java
 jdk:
   - openjdk7
-install: travis_wait mvn -f ./LIMO/pom.xml -X clean install
+install: travis_wait mvn --settings ./settings.xml -f ./LIMO/pom.xml -X clean install
