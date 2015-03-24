@@ -1,4 +1,4 @@
 language: java
 jdk:
   - openjdk7
-script: mvn --settings settings.xml -f ./LIMO/pom.xml -X clean install
+install: mvn --settings settings.xml -f ./LIMO/pom.xml -X clean install
