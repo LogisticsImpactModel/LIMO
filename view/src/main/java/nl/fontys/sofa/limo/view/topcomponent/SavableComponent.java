@@ -10,6 +10,7 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.spi.actions.AbstractSavable;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
+import org.openide.awt.StatusDisplayer;
 
 /**
  * SavableComponent enables saving of a supplychain.
@@ -55,6 +56,7 @@ public class SavableComponent extends AbstractSavable {
                     LIMOResourceBundle.getString("CHAIN_NOT_SAVABLE"),
                     NotifyDescriptor.ERROR_MESSAGE);
             DialogDisplayer.getDefault().notify(d);
+            StatusDisplayer.getDefault().setStatusText("chain could not be saved", 2);
         }
     }
 
