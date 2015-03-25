@@ -21,6 +21,8 @@ public class ImportFileChooser extends JFileChooser {
     public ImportFileChooser() {
         super(NbPreferences.forModule(ExportFileChooser.class).get("IMPORT_PATH", ""));
         setMultiSelectionEnabled(false);
+        setDialogTitle("Import");
+        setApproveButtonText("Import");
         setFileSelectionMode(JFileChooser.FILES_ONLY);
         setDialogType(JFileChooser.OPEN_DIALOG);
         setFileFilter(new FileFilter() {
