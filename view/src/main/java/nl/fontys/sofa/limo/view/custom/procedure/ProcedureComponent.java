@@ -108,7 +108,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         for (List<Object> value : values) {
             Procedure p = new Procedure();
             p.setName((String) value.get(0));
-            p.setCategory((String) value.get(1));
+            p.setCategory(((ProcedureCategory) value.get(1)).getName());
             p.setTime((Value) value.get(2));
             p.setTimeType((TimeType) value.get(3));
             p.setCost((Value) value.get(4));
