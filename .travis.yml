@@ -3,4 +3,10 @@ jdk:
   - openjdk7
 install: mvn --settings settings.xml  -DskipTests=true clean install
 script: mvn --settings settings.xml  -X test
+notifications:
+  email:
+    recipients:
+      - limo@fontysvenlo.org
+    on_success: change # default: change
+    on_failure: always # default: always
 
