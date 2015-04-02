@@ -151,5 +151,5 @@
             </build>
         </profile>
     </profiles>
-    <version>0.1-ALPHA</version>
+    <version>0.1-Snapshot</version>
 </project>
