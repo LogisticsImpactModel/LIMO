@@ -60,7 +60,7 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
         HubType hubType = (HubType) wiz.getProperty(HUB_TYPE);
         if (hub != null) {
             if (hub != lastHub) {
-                getComponent().update(hub.getName(), hub.getDescription(), hub.getIcon());
+                getComponent().update(hub.getName()+LIMOResourceBundle.getString("COPY_NAME_EXTENSION"), hub.getDescription(), hub.getIcon());
             }
         } else if (hubType != null) {
             if (hubType != lastHubType) {
@@ -78,7 +78,7 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
     //Store name, description and icon
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(HUB_NAME, getComponent().getNameInput());
+        wiz.putProperty(HUB_NAME, getComponent().getNameInput()+"-copy");
         wiz.putProperty(HUB_DESCRIPTION, getComponent().getDescriptionInput());
         wiz.putProperty(HUB_ICON, getComponent().getIcon());
     }
