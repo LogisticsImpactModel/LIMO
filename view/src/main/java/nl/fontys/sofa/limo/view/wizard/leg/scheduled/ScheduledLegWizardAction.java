@@ -68,6 +68,8 @@ public final class ScheduledLegWizardAction implements ActionListener {
         wiz.setTitle(LIMOResourceBundle.getString("SCHEDULED_LEG"));
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             ScheduledLeg leg = (ScheduledLeg) wiz.getProperty("leg");
+            leg.setName((String) wiz.getProperty("name"));
+            leg.setDescription((String)wiz.getProperty("description")) ;
             leg.setIcon((Icon) wiz.getProperty("icon"));
             leg.setEvents((List<Event>) wiz.getProperty("events"));
             leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
