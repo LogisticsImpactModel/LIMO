@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.node.factory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
-import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
@@ -19,7 +18,6 @@ import org.openide.util.Lookup;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.util.Utilities;
 
 /**
  * Factory responsible for creating the ProcedureCategory children.
@@ -72,16 +70,6 @@ public class ProcedureCategoryChildFactory extends ChildFactory<ProcedureCategor
 
     @Override
     public void nodeDestroyed(NodeEvent ne) {
-        Node node = ne.getNode();
-        ProcedureCategory pc = (ProcedureCategory) node.getLookup().lookup(ProcedureCategory.class);
-
-        Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(ProcedureCategory.class);
-        Collection<ProcedureCategory> selectedBeans = result.allInstances();
-        for (ProcedureCategory bean : selectedBeans) {
-            if (bean == pc) {
-                service.delete(pc);
-            }
-        }
         refresh(true);
     }
 
