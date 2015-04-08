@@ -20,7 +20,7 @@ public class StupidProperty<T> extends PropertySupport.Reflection<T> {
     private final ArrayList<PropertyChangeListener> listeners;
 
     /**
-     * Create new StupidProperty with refelction methods.
+     * Create new StupidProperty with reflection methods.
      *
      * @param instance Object containing value.
      * @param valueType Type of value.
