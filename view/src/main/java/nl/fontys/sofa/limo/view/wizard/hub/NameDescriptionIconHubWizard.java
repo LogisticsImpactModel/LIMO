@@ -78,7 +78,7 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
     //Store name, description and icon
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(HUB_NAME, getComponent().getNameInput()+"-copy");
+        wiz.putProperty(HUB_NAME, getComponent().getNameInput());
         wiz.putProperty(HUB_DESCRIPTION, getComponent().getDescriptionInput());
         wiz.putProperty(HUB_ICON, getComponent().getIcon());
     }
