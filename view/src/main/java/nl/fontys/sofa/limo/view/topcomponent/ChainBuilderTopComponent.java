@@ -158,7 +158,34 @@ public final class ChainBuilderTopComponent extends TopComponent
 
     @Override
     public void componentClosed() {
-      
+
+    }
+
+    /**
+     * Check if the TopComponent is ready to close. In this case, the user is
+     * prompted with a question to save the supply chain or discard it. 
+     *
+     * @return true if the TopComponent should close.
+     */
+    @Override
+    public boolean canClose() {
+        DialogDescriptor dialogDescriptor = new DialogDescriptor("Do you want to save the " + graphScene.getSupplyChain().getName()
+                + " supply chain?", "Save the supply chain");
+
+        dialogDescriptor.setMessageType(DialogDescriptor.QUESTION_MESSAGE);
+        dialogDescriptor.setOptions(new Object[]{"Save", "Discard"});
+        Object retval = DialogDisplayer.getDefault().notify(dialogDescriptor);
+        if (retval.equals("Save")) {
+            try {
+                savable.handleSave();
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+            return false;
+        } else if (retval.equals("Discard")) {
+            savable.unregisterChainBuilder(); //Unregister supply chain from registry so it is not shown in the 'save dialog'
+        }
+        return true;
     }
 
     void writeProperties(java.util.Properties p) {
