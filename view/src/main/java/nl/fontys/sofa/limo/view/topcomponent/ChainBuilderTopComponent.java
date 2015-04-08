@@ -163,7 +163,7 @@ public final class ChainBuilderTopComponent extends TopComponent
 
     /**
      * Check if the TopComponent is ready to close. In this case, the user is
-     * prompted with a question to save the supply chain or discard it. 
+     * prompted with a question to save the supply chain or discard it.
      *
      * @return true if the TopComponent should close.
      */
@@ -177,27 +177,25 @@ public final class ChainBuilderTopComponent extends TopComponent
         Object retval = DialogDisplayer.getDefault().notify(dialogDescriptor);
         if (retval.equals("Save")) {
             try {
-                savable.handleSave();
+                savable.handleSave(); //Try to save the supply chain
             } catch (IOException ex) {
                 Exceptions.printStackTrace(ex);
+                return false; //The supply chain window cannot be closed because an exception is trown while saving
             }
-            return false;
         } else if (retval.equals("Discard")) {
             savable.unregisterChainBuilder(); //Unregister supply chain from registry so it is not shown in the 'save dialog'
         }
-        return true;
+        return true; //The supply chain window can now be closed
     }
 
     void writeProperties(java.util.Properties p) {
         // better to version settings since initial version as advocated at
         // http://wiki.apidesign.org/wiki/PropertyFiles
         p.setProperty("version", "1.0");
-        // TODO store your settings
     }
 
     void readProperties(java.util.Properties p) {
         String version = p.getProperty("version");
-        // TODO read your settings according to their version
     }
 
 }

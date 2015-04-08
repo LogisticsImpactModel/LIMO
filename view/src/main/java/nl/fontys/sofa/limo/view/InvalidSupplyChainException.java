@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.view;
 
+import java.io.IOException;
+
 /**
  * This exception is thrown when trying to save an invalid supply chain. An
  * invalid supply chain cannot be saved due to technical limitations. The supply
@@ -8,7 +10,7 @@ package nl.fontys.sofa.limo.view;
  *
  * @author Mike de Roode
  */
-public class InvalidSupplyChainException extends Exception {
+public class InvalidSupplyChainException extends IOException {
 
     public InvalidSupplyChainException() {
     }
