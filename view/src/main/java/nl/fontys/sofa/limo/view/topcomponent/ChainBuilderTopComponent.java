@@ -14,6 +14,7 @@ import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
@@ -23,6 +24,8 @@ import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
+import org.openide.util.lookup.AbstractLookup;
+import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
@@ -52,6 +55,8 @@ public final class ChainBuilderTopComponent extends TopComponent
 
     private ExplorerManager em = new ExplorerManager();
     private ChainGraphScene graphScene;
+    private InstanceContent ic = new InstanceContent();
+    SavableComponent savable;
 
     /**
      * Constructor creates a new ChainBuilderTopComponent.
@@ -65,14 +70,17 @@ public final class ChainBuilderTopComponent extends TopComponent
         chain.setName(name);
         setName(name);
 
-        try {
-            SavableComponent savable = new SavableComponent(graphScene.getChainBuilder());
+        savable = new SavableComponent(graphScene.getChainBuilder());
 
+        try {
             Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
             Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
             Lookup graphLookup = Lookups.singleton(graphScene);
             Lookup savableLookup = Lookups.singleton(savable);
-            ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup);
+            Lookup instanceContent = new AbstractLookup(ic);
+
+            ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup, instanceContent);
+
             associateLookup(pl);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
@@ -145,12 +153,12 @@ public final class ChainBuilderTopComponent extends TopComponent
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
-        // TODO add custom code on component opening
+        // add custom code on component opening
     }
 
     @Override
     public void componentClosed() {
-        // TODO add custom code on component closing
+      
     }
 
     void writeProperties(java.util.Properties p) {

@@ -6,11 +6,9 @@ import javax.swing.JFileChooser;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.util.ChainSaveFileChooser;
-import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.spi.actions.AbstractSavable;
+import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
-import org.openide.awt.StatusDisplayer;
 
 /**
  * SavableComponent enables saving of a supplychain.
@@ -32,6 +30,10 @@ public class SavableComponent extends AbstractSavable {
         this.supplyChain = chainBuilder.getSupplyChain();
         register();
     }
+    
+    public void unregisterChainBuilder(){
+        unregister();
+    }
 
     @Override
     protected String findDisplayName() {
@@ -49,14 +51,19 @@ public class SavableComponent extends AbstractSavable {
                 supplyChain.setFilepath(file.getAbsolutePath() + File.separator + supplyChain.getName() + ".lsc");
                 supplyChain.saveToFile();
             } else {
-                System.out.println(LIMOResourceBundle.getString("NO_DIRECTORY_SELECTED"));
+                throw new IOException("The supply chain " + supplyChain.getName() + " is invalid.");
             }
         } else {
-            NotifyDescriptor d = new NotifyDescriptor.Message(
-                    LIMOResourceBundle.getString("CHAIN_NOT_SAVABLE"),
-                    NotifyDescriptor.ERROR_MESSAGE);
-            DialogDisplayer.getDefault().notify(d);
-            StatusDisplayer.getDefault().setStatusText("chain could not be saved", 2);
+
+            DialogDescriptor dialogDescriptor = new DialogDescriptor("The supply chain " + supplyChain.getName()
+                    + " is invalid. An invalid supply chain cannot be saved. Please close the window and make the supply chain valid.", "Error while saving");
+
+            dialogDescriptor.setMessageType(DialogDescriptor.PLAIN_MESSAGE);
+            dialogDescriptor.setOptions(new Object[]{DialogDescriptor.OK_OPTION});
+            Object retval = DialogDisplayer.getDefault().notify(dialogDescriptor);
+            if (retval.equals(DialogDescriptor.OK_OPTION)) {
+                throw new IOException("The supply chain " + supplyChain.getName() + " is invalid.");
+            }
         }
     }
 
