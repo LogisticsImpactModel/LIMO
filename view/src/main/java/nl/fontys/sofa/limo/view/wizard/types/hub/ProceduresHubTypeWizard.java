@@ -22,6 +22,7 @@ public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDes
 
     private ProceduresPanel component;
     private HubType lastType;
+    private HubType hubType;
 
     public ProceduresHubTypeWizard() {
     }
@@ -55,7 +56,7 @@ public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDes
     //Uodate procedures
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        HubType hubType = (HubType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
+        hubType = (HubType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
         if (hubType != null) {
             if (hubType != lastType) {
                 getComponent().update(hubType.getProcedures());
@@ -71,7 +72,7 @@ public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDes
     //Store settings
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(TYPE_PROCEDURES, component.getProcedures());
+        hubType.setProcedures(getComponent().getProcedures());
     }
 
     //Validate

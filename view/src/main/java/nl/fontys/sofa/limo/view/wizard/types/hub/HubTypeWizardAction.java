@@ -8,17 +8,9 @@ import java.util.List;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
-import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_DESCRIPTION;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_EVENT;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_ICON;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_NAME;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_PROCEDURES;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
@@ -73,13 +65,8 @@ public final class HubTypeWizardAction extends TypeWizardAction {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("ADD_HUB_TYPE"));
-        if (isUpdate) {
-            wiz.putProperty(TYPE_NAME, hubType.getName());
-            wiz.putProperty(TYPE_DESCRIPTION, hubType.getDescription());
-            wiz.putProperty(TYPE_ICON, hubType.getIcon());
-            wiz.putProperty(TYPE_EVENT, hubType.getEvents());
-            wiz.putProperty(TYPE_PROCEDURES, hubType.getProcedures());
-        }
+        wiz.putProperty(TYPE_OLDTYPE, hubType);
+        
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             finishWizard(wiz);
         }
@@ -92,11 +79,7 @@ public final class HubTypeWizardAction extends TypeWizardAction {
 
     private void finishWizard(WizardDescriptor wiz) {
         HubTypeService service = Lookup.getDefault().lookup(HubTypeService.class);
-        hubType.setDescription((String) wiz.getProperty(TYPE_DESCRIPTION));
-        hubType.setIcon((Icon) wiz.getProperty(TYPE_ICON));
-        hubType.setName((String) wiz.getProperty(TYPE_NAME));
-        hubType.setEvents((List<Event>) wiz.getProperty(TYPE_EVENT));
-        hubType.setProcedures((List<Procedure>) wiz.getProperty(TYPE_PROCEDURES));
+
         if (isUpdate) {
             service.update(hubType);
         } else {

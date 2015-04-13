@@ -49,7 +49,7 @@ public class NewOrDuplicatedLegTypeWizard implements WizardDescriptor.Panel<Wiza
     //Store legType
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(TYPE_OLDTYPE, null);
+//        wiz.putProperty(TYPE_OLDTYPE, null);
         LegType legType = getComponent().getLegType();
         if (legType != null) {
             wiz.putProperty(TYPE_OLDTYPE, legType);

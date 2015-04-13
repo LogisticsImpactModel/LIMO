@@ -62,6 +62,7 @@ public class HubChildFactory extends ChildFactory<Hub>
 
     @Override
     public void resultChanged(LookupEvent le) {
+        refresh(true);
     }
 
     @Override
@@ -71,14 +72,16 @@ public class HubChildFactory extends ChildFactory<Hub>
 
     @Override
     public void childrenAdded(NodeMemberEvent ev) {
+        refresh(true);
     }
 
     @Override
     public void childrenRemoved(NodeMemberEvent ev) {
-    }
+        refresh(true);
+   }
 
     @Override
-    public void childrenReordered(NodeReorderEvent ev) {
+    public  void childrenReordered(NodeReorderEvent ev) {
     }
 
     @Override
