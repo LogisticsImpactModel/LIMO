@@ -62,7 +62,6 @@ public class HubChildFactory extends ChildFactory<Hub>
 
     @Override
     public void resultChanged(LookupEvent le) {
-        refresh(true);
     }
 
     @Override
