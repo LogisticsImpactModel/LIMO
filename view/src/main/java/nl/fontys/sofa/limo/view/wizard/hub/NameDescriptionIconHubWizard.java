@@ -26,6 +26,17 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
     private NameDescriptionIconPanel component;
     private Hub lastHub = null;
     private HubType lastHubType = null;
+    private boolean update;
+
+    public NameDescriptionIconHubWizard() {
+    }
+
+    public NameDescriptionIconHubWizard(boolean update) {
+        this.update = update;
+    }
+    
+    
+    
 
     @Override
     public NameDescriptionIconPanel getComponent() {
@@ -59,7 +70,10 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
         Hub hub = (Hub) wiz.getProperty(HUB_COPY);
         HubType hubType = (HubType) wiz.getProperty(HUB_TYPE);
         if (hub != null) {
-            if (hub != lastHub) {
+            if (hub != lastHub && update) {
+                getComponent().update(hub.getName(), hub.getDescription(), hub.getIcon());
+            }
+            else if (hub != lastHub && !update) {
                 getComponent().update(hub.getName()+LIMOResourceBundle.getString("COPY_NAME_EXTENSION"), hub.getDescription(), hub.getIcon());
             }
         } else if (hubType != null) {
