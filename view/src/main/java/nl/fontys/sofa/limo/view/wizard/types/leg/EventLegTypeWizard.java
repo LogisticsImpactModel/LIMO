@@ -18,6 +18,7 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
 
     private EventLegTypePanel component;
     private LegType lastType;
+    private LegType legType;
 
     @Override
     public EventLegTypePanel getComponent() {
@@ -48,7 +49,7 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
     //Update Events
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        LegType legType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
+        legType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
         if (legType != null) {
             if (legType != lastType) {
                 getComponent().update(legType.getEvents());
@@ -64,6 +65,6 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
     //Store events
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(TYPE_EVENT, component.getEvents());
+        legType.setEvents(component.getEvents());
     }
 }
