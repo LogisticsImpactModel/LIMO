@@ -25,6 +25,12 @@
         </repository>
     </repositories>
 
+    <scm>
+        <connection>scm:git:https://github.com/LogisticsImpactModel/LIMO.git</connection>		
+        <developerConnection>scm:git:https://github.com:LogisticsImpactModel/LIMO.git</developerConnection>
+        <url>https://github.com/LogisticsImpactModel/LIMO/</url>
+    </scm>
+    
     <build>
         <pluginManagement>
             <plugins>
