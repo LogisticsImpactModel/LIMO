@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
@@ -79,11 +80,14 @@ public final class HubTypeWizardAction extends TypeWizardAction {
 
     private void finishWizard(WizardDescriptor wiz) {
         HubTypeService service = Lookup.getDefault().lookup(HubTypeService.class);
+        
+        hubType = (HubType) wiz.getProperty(TYPE_OLDTYPE); //Overwrite object (is used when copying a hub type from an existing hub type)
 
         if (isUpdate) {
             service.update(hubType);
         } else {
             hubType.setId(null);
+            hubType.setUniqueIdentifier(UUID.randomUUID().toString());
             hubType = service.insert(hubType);
         }
     }

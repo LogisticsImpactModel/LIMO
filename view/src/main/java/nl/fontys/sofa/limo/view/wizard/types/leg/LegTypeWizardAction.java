@@ -63,11 +63,11 @@ public final class LegTypeWizardAction extends TypeWizardAction {
             }
         }
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
-        wiz.putProperty(LegTypeWizardAction.TYPE_OLDTYPE, legType);
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("ADD_LEG_TYPE"));
-        
+        wiz.putProperty(TYPE_OLDTYPE, legType);
+
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             finishWizard(wiz);
         }
@@ -81,8 +81,9 @@ public final class LegTypeWizardAction extends TypeWizardAction {
 
     private void finishWizard(WizardDescriptor wiz) {
         LegTypeService service = Lookup.getDefault().lookup(LegTypeService.class);
+
+        legType = (LegType) wiz.getProperty(TYPE_OLDTYPE); //Overwrite object (is used when copying a legtype from an existing leg type)
         
-        legType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
         if (isUpdate) {
             service.update(legType);
         } else {
