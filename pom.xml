@@ -42,6 +42,8 @@
                     <pushFeatures>true</pushFeatures>  
                     <pushReleases>true</pushReleases>
                     <pushHotfixes>true</pushHotfixes>
+                    <noDeploy>true</noDeploy>
+
                     <flowInitContext>
                         <masterBranchName>master</masterBranchName>
                         <developBranchName>develop</developBranchName>
