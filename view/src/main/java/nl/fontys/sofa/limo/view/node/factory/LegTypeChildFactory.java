@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.node.factory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
-import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
@@ -19,7 +18,6 @@ import org.openide.util.Lookup;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.util.Utilities;
 
 /**
  * Factory responsible for creating the LegType children. It listens to changes
@@ -69,16 +67,6 @@ public class LegTypeChildFactory extends ChildFactory<LegType>
 
     @Override
     public void nodeDestroyed(NodeEvent ne) {
-        Node node = ne.getNode();
-        LegType lt = (LegType) node.getLookup().lookup(LegType.class);
-
-        Lookup.Result result = Utilities.actionsGlobalContext().lookupResult(LegType.class);
-        Collection<LegType> selectedBeans = result.allInstances();
-        for (LegType bean : selectedBeans) {
-            if (bean == lt) {
-                service.delete(lt);
-            }
-        }
         refresh(true);
     }
 
