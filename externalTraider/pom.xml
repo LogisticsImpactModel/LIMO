@@ -4,7 +4,7 @@
     <parent>
         <groupId>nl.fontys.sofa.limo</groupId>
         <artifactId>LIMO-parent</artifactId>
-        <version>0.1-Snapshot</version>
+        <version>0.2-SNAPSHOT</version>
     </parent>
     <artifactId>LIMO-externalTrader</artifactId>
     <packaging>nbm</packaging>
