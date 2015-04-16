@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
+import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
@@ -67,6 +68,9 @@ public final class ScheduledLegWizardAction implements ActionListener {
         wiz.setTitle(LIMOResourceBundle.getString("SCHEDULED_LEG"));
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             ScheduledLeg leg = (ScheduledLeg) wiz.getProperty("leg");
+            leg.setName((String) wiz.getProperty("name"));
+            leg.setDescription((String)wiz.getProperty("description")) ;
+            leg.setIcon((Icon) wiz.getProperty("icon"));
             leg.setEvents((List<Event>) wiz.getProperty("events"));
             leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
 

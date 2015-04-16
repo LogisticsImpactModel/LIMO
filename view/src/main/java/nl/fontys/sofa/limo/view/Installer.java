@@ -20,4 +20,8 @@ public class Installer extends ModuleInstall {
         super.restored();
     }
 
+    @Override
+    public boolean closing() {
+        return super.closing();
+    }
 }

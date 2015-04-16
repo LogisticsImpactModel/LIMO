@@ -43,7 +43,7 @@ public class ImportFileChooserComponent extends JPanel implements ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             tfFile.setText(fc.getSelectedFile().getPath());
         }
     }

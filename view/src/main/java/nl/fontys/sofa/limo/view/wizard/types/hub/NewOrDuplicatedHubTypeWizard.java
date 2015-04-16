@@ -49,9 +49,8 @@ public class NewOrDuplicatedHubTypeWizard implements WizardDescriptor.Panel<Wiza
     //Store HubType
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(TYPE_OLDTYPE, null);
-        HubType hubType = getComponent().getHubType();
-        if (hubType != null) {
+        HubType hubType = getComponent().getHubType(); //Selected existing hub type
+        if (hubType != null) { //If some hub type is selected (copy from existing hub type)
             wiz.putProperty(TYPE_OLDTYPE, hubType);
         }
     }

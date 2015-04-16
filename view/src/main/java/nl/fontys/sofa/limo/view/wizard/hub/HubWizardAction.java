@@ -65,7 +65,7 @@ public final class HubWizardAction implements ActionListener {
             hubUpdate = new Hub();
             panels.add(new NewDuplicatedOrHubTypeHubWizard());
         }
-        panels.add(new NameDescriptionIconHubWizard());
+        panels.add(new NameDescriptionIconHubWizard(update));
         panels.add(new LocationHubWizard());
         panels.add(new ProceduresHubWizard());
         EventService eventService = Lookup.getDefault().lookup(EventService.class);
@@ -120,9 +120,12 @@ public final class HubWizardAction implements ActionListener {
         }
     }
 
-    public void isUpdate(Hub hubUpdate) {
+/**
+ * 
+ * @param hubUpdate True when wizard are used to edit a hub. False when wizards are used to create a new hub
+ */    
+    public void setUpdate(Hub hubUpdate) {
         this.update = true;
         this.hubUpdate = hubUpdate;
     }
-
 }

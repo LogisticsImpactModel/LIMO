@@ -5,12 +5,10 @@ import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
-import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction;
@@ -42,8 +40,8 @@ public final class LegTypeWizardAction extends TypeWizardAction {
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!isUpdate) {
-            panels.add(new NewOrDuplicatedLegTypeWizard());
             legType = new LegType();
+            panels.add(new NewOrDuplicatedLegTypeWizard());
         }
         panels.add(new NameDescriptionIconLegTypeWizard());
         panels.add(new ProceduresLegTypeWizard());
@@ -68,13 +66,8 @@ public final class LegTypeWizardAction extends TypeWizardAction {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("ADD_LEG_TYPE"));
-        if (isUpdate) {
-            wiz.putProperty(TYPE_NAME, legType.getName());
-            wiz.putProperty(TYPE_DESCRIPTION, legType.getDescription());
-            wiz.putProperty(TYPE_ICON, legType.getIcon());
-            wiz.putProperty(TYPE_EVENT, legType.getEvents());
-            wiz.putProperty(TYPE_PROCEDURES, legType.getProcedures());
-        }
+        wiz.putProperty(TYPE_OLDTYPE, legType);
+
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             finishWizard(wiz);
         }
@@ -88,15 +81,14 @@ public final class LegTypeWizardAction extends TypeWizardAction {
 
     private void finishWizard(WizardDescriptor wiz) {
         LegTypeService service = Lookup.getDefault().lookup(LegTypeService.class);
-        legType.setDescription((String) wiz.getProperty(TYPE_DESCRIPTION));
-        legType.setIcon((Icon) wiz.getProperty(TYPE_ICON));
-        legType.setName((String) wiz.getProperty(TYPE_NAME));
-        legType.setEvents((List<Event>) wiz.getProperty(TYPE_EVENT));
-        legType.setProcedures((List<Procedure>) wiz.getProperty(TYPE_PROCEDURES));
+
+        legType = (LegType) wiz.getProperty(TYPE_OLDTYPE); //Overwrite object (is used when copying a legtype from an existing leg type)
+        
         if (isUpdate) {
             service.update(legType);
         } else {
             legType.setId(null);
+            legType.setUniqueIdentifier(UUID.randomUUID().toString());
             legType = service.insert(legType);
         }
     }

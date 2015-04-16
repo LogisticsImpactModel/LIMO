@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.fontys.sofa.limo</groupId>
     <artifactId>LIMO-parent</artifactId>
-    <version>0.1-ALPHA</version>
+    <version>1.2</version>
     <packaging>pom</packaging>
 
     <name>LIMO-parent</name>
@@ -25,78 +25,96 @@
         </repository>
     </repositories>
 
-    <scm>
-        <connection>scm:git:https://github.com/LogisticsImpactModel/LIMO.git</connection>		
-        <developerConnection>scm:git:https://github.com:LogisticsImpactModel/LIMO.git</developerConnection>
-        <url>https://github.com/LogisticsImpactModel/LIMO/</url>
-    </scm>
-    
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>nbm-maven-plugin</artifactId>
-                    <version>3.14</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <brandingToken>${brandingToken}</brandingToken>
-                        <cluster>${brandingToken}</cluster>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.5.1</version>
-                    <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.5</version>
-                </plugin>
+        <plugins>
+            <plugin>
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
+                <version>1.0-m4.3</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <pushFeatures>true</pushFeatures>  
+                    <pushReleases>true</pushReleases>
+                    <pushHotfixes>true</pushHotfixes>
+                    <noDeploy>true</noDeploy>
 
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.7.2.201409121644</version>
-                    <configuration>
-                        <excludes>
-                            <exclude>nl/fontys/sofa/limo/view/**/*.java</exclude>
-                        </excludes>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>report</id>
-                            <phase>prepare-package</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+                    <flowInitContext>
+                        <masterBranchName>master</masterBranchName>
+                        <developBranchName>develop</developBranchName>
+                        <featureBranchPrefix>feature-</featureBranchPrefix>
+                        <releaseBranchPrefix>release-</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
+                        <versionTagPrefix>version-</versionTagPrefix>
+                    </flowInitContext>
+                </configuration>
+            </plugin>
+        </plugins>
+        <build>
+            <pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>nbm-maven-plugin</artifactId>
+                        <version>3.14</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <brandingToken>${brandingToken}</brandingToken>
+                            <cluster>${brandingToken}</cluster>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>2.5.1</version>
+                        <configuration>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>2.5</version>
+                    </plugin>
 
-    <modules>
-        <module>branding</module>
-        <module>application</module>
-        <module>api</module>
-        <module>orientDB</module>
-        <module>view</module>
-        <module>dependecyWrapper</module>
-        <module>domain</module>
-        <module>service</module>
-        <module>simulation</module>
-        <module>externalTraider</module>
-    </modules>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.7.2.201409121644</version>
+                        <configuration>
+                            <excludes>
+                                <exclude>nl/fontys/sofa/limo/view/**/*.java</exclude>
+                            </excludes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </pluginManagement>
+        </build>
+
+        <modules>
+            <module>branding</module>
+            <module>application</module>
+            <module>api</module>
+            <module>orientDB</module>
+            <module>view</module>
+            <module>dependecyWrapper</module>
+            <module>domain</module>
+            <module>service</module>
+            <module>simulation</module>
+            <module>externalTraider</module>
+        </modules>
 </project>

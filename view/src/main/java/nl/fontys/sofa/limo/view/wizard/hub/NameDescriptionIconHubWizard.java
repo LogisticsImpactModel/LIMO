@@ -20,12 +20,19 @@ import org.openide.util.HelpCtx;
  *
  * @author Pascal Lindner
  */
-
 public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NameDescriptionIconPanel component;
     private Hub lastHub = null;
     private HubType lastHubType = null;
+    private boolean update;
+
+    public NameDescriptionIconHubWizard() {
+    }
+
+    public NameDescriptionIconHubWizard(boolean update) {
+        this.update = update;
+    }
 
     @Override
     public NameDescriptionIconPanel getComponent() {
@@ -59,8 +66,10 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
         Hub hub = (Hub) wiz.getProperty(HUB_COPY);
         HubType hubType = (HubType) wiz.getProperty(HUB_TYPE);
         if (hub != null) {
-            if (hub != lastHub) {
+            if (hub != lastHub && update) {
                 getComponent().update(hub.getName(), hub.getDescription(), hub.getIcon());
+            } else if (hub != lastHub && !update) {
+                getComponent().update(hub.getName() + LIMOResourceBundle.getString("COPY_NAME_EXTENSION"), hub.getDescription(), hub.getIcon());
             }
         } else if (hubType != null) {
             if (hubType != lastHubType) {
@@ -82,7 +91,7 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
         wiz.putProperty(HUB_DESCRIPTION, getComponent().getDescriptionInput());
         wiz.putProperty(HUB_ICON, getComponent().getIcon());
     }
-    
+
     //Validate that name is set.
     @Override
     public void validate() throws WizardValidationException {

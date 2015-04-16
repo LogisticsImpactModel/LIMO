@@ -83,10 +83,12 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HubWizardAction wiz = new HubWizardAction();
-                wiz.isUpdate(bean);
+                wiz.setUpdate(bean);
                 wiz.actionPerformed(e);
                 createProperties(getBean(), null);
                 setSheet(getSheet());
+
+                setDisplayName(getBean().getName()); //Manually update the displayname 
             }
         });
         actionList.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {

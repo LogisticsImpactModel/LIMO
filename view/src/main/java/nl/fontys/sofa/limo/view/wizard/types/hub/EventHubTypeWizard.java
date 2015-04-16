@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_EVENT;
 import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
@@ -19,6 +18,7 @@ public class EventHubTypeWizard implements WizardDescriptor.Panel<WizardDescript
 
     private EventHubTypePanel component;
     private HubType lastType;
+    private HubType hubType;
 
     @Override
     public EventHubTypePanel getComponent() {
@@ -49,7 +49,7 @@ public class EventHubTypeWizard implements WizardDescriptor.Panel<WizardDescript
     //Update Events if HubType is copied
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        HubType hubType = (HubType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
+        hubType = (HubType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
         if (hubType != null) {
             if (hubType != lastType) {
                 getComponent().update(hubType.getEvents());
@@ -65,6 +65,6 @@ public class EventHubTypeWizard implements WizardDescriptor.Panel<WizardDescript
     //Store events
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(TYPE_EVENT, component.getEvents());
+        hubType.setEvents(component.getEvents());
     }
 }

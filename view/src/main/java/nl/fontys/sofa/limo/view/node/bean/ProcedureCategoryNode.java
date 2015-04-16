@@ -24,6 +24,7 @@ public class ProcedureCategoryNode extends AbstractBeanNode<ProcedureCategory> {
 
     public ProcedureCategoryNode(ProcedureCategory bean) throws IntrospectionException {
         super(bean, ProcedureCategory.class);
+        this.bean = bean;
     }
 
     @Override
