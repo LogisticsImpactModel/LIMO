@@ -24,7 +24,7 @@
             </snapshots>
         </repository>
     </repositories>
-
+    <build>
         <plugins>
             <plugin>
                 <groupId>external.atlassian.jgitflow</groupId>
@@ -48,72 +48,72 @@
                 </configuration>
             </plugin>
         </plugins>
-        <build>
-            <pluginManagement>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>nbm-maven-plugin</artifactId>
-                        <version>3.14</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <brandingToken>${brandingToken}</brandingToken>
-                            <cluster>${brandingToken}</cluster>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <version>2.5.1</version>
-                        <configuration>
-                            <source>1.7</source>
-                            <target>1.7</target>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <version>2.5</version>
-                    </plugin>
+    
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>nbm-maven-plugin</artifactId>
+                    <version>3.14</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <brandingToken>${brandingToken}</brandingToken>
+                        <cluster>${brandingToken}</cluster>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.5.1</version>
+                    <configuration>
+                        <source>1.7</source>
+                        <target>1.7</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.5</version>
+                </plugin>
 
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.7.2.201409121644</version>
-                        <configuration>
-                            <excludes>
-                                <exclude>nl/fontys/sofa/limo/view/**/*.java</exclude>
-                            </excludes>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </pluginManagement>
-        </build>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.7.2.201409121644</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>nl/fontys/sofa/limo/view/**/*.java</exclude>
+                        </excludes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
-        <modules>
-            <module>branding</module>
-            <module>application</module>
-            <module>api</module>
-            <module>orientDB</module>
-            <module>view</module>
-            <module>dependecyWrapper</module>
-            <module>domain</module>
-            <module>service</module>
-            <module>simulation</module>
-            <module>externalTraider</module>
-        </modules>
+    <modules>
+        <module>branding</module>
+        <module>application</module>
+        <module>api</module>
+        <module>orientDB</module>
+        <module>view</module>
+        <module>dependecyWrapper</module>
+        <module>domain</module>
+        <module>service</module>
+        <module>simulation</module>
+        <module>externalTraider</module>
+    </modules>
 </project>
