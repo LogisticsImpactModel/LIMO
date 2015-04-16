@@ -25,7 +25,6 @@
         </repository>
     </repositories>
 
-    <build>
         <plugins>
             <plugin>
                 <groupId>external.atlassian.jgitflow</groupId>
