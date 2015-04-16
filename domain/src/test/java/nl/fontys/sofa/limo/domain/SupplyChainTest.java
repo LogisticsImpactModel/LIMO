@@ -93,8 +93,8 @@ public class SupplyChainTest {
     @Test
     public void testGetStart() {
         Hub startHub = new Hub();
-        supplyChain.setStart(startHub);
-        assertEquals(startHub, supplyChain.getStart());
+        supplyChain.setStartHub(startHub);
+        assertEquals(startHub, supplyChain.getStartHub());
     }
 
     /**
@@ -103,8 +103,8 @@ public class SupplyChainTest {
     @Test
     public void testSetStart() {
         Hub startHub = new Hub();
-        supplyChain.setStart(startHub);
-        assertEquals(startHub, supplyChain.getStart());
+        supplyChain.setStartHub(startHub);
+        assertEquals(startHub, supplyChain.getStartHub());
     }
 
     /**

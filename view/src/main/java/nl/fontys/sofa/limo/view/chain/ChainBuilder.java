@@ -62,6 +62,13 @@ public interface ChainBuilder {
     void connectHubsByLeg(Hub source, Leg connection, Hub target);
 
     /**
+     * Remove the leg from the chain.
+     *
+     * @param leg the leg to be removed.
+     */
+    void disconnectLeg(Leg leg);
+
+    /**
      * Validate the supply chain.
      *
      * @return true if validation succeeds.

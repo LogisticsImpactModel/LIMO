@@ -123,6 +123,10 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
   public void propertyChange(PropertyChangeEvent pce) {
     throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_SUPPORTED")); //To change body of generated methods, choose Tools | Templates.
   }
+  
+  protected LegWidget getLegWidget(){
+      return this;
+  }
 
   /**
    * The popup menu when right clicked on this widget.
@@ -138,6 +142,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         public void actionPerformed(ActionEvent ae) {
           ChainGraphScene scene = (ChainGraphScene) getScene();
           scene.removeEdge(legNode);
+          scene.disconnectLegWidget(getLegWidget());
         }
       });
       return popup;

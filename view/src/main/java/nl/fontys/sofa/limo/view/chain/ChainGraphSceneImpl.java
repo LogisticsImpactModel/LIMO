@@ -120,7 +120,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     @Override
     public JComponent createView() {
         JComponent component = super.createView();
-        if (loadedChain.getStart() != null) {
+        if (loadedChain.getStartHub() != null) {
             try {
                 drawExistingSupplyChain(loadedChain);
             } catch (IntrospectionException ex) {
@@ -132,13 +132,14 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     /**
      * Draw an existing supplychain onto the scene.
+     *
      * @param supplyChain the supplychain to draw.
      * @throws IntrospectionException
      */
     void drawExistingSupplyChain(SupplyChain supplyChain) throws IntrospectionException {
         Point point = new Point(100, 100);
         mainLayer.setLayout(LayoutFactory.createAbsoluteLayout());
-        Node currentNode = supplyChain.getStart();
+        Node currentNode = supplyChain.getStartHub();
 
         HubWidget previousWidget = null;
         ConnectionWidget connectionWidget = null;
@@ -148,7 +149,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             if (currentNode instanceof Hub) {
                 HubWidget w = (HubWidget) addNode(new HubNode((Hub) currentNode));
                 addHubWidget(w);
-                if (currentNode == supplyChain.getStart()) {
+                if (currentNode == supplyChain.getStartHub()) {
                     setStartWidget(w);
                 }
                 w.setPreferredLocation(point);
@@ -246,6 +247,13 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     @Override
     public void removeHubWidget(HubWidget hubWidget) {
         chainBuilder.removeHub(hubWidget.getHub());
+    }
+
+    @Override
+    public void disconnectLegWidget(LegWidget legWidget) {
+        Lookup.getDefault().lookup(StatusBarService.class).setMessage(legWidget.getLeg().getName(),
+                StatusBarService.ACTION_DELETE, StatusBarService.STATE_SUCCESS, null);
+        chainBuilder.disconnectLeg(legWidget.getLeg());
     }
 
     @Override
@@ -425,6 +433,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
         /**
          * Validate a connection between two widgets.
+         *
          * @param sourceWidget the connection source.
          * @param targetWidget the connection target.
          * @return

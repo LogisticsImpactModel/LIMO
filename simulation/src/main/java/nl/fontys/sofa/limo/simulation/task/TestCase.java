@@ -71,7 +71,7 @@ public class TestCase implements Runnable {
         executedEvents = new ArrayList<>();
 
         lastDelay = 0;
-        Node currentNode = supplyChain.getStart();
+        Node currentNode = supplyChain.getStartHub();
 
         while (currentNode != null) {
             Node calcNode = currentNode;

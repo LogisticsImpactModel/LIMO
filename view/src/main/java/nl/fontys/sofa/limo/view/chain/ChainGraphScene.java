@@ -4,6 +4,7 @@ import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
+import nl.fontys.sofa.limo.view.widget.LegWidget;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.graph.GraphScene;
 import org.netbeans.api.visual.widget.ConnectionWidget;
@@ -92,6 +93,13 @@ public abstract class ChainGraphScene
      * @param hubWidget the hub widget to be removed.
      */
     public abstract void removeHubWidget(HubWidget hubWidget);
+    
+     /**
+     * Remove a leg widget from the scene.
+     *
+     * @param legWidget the leg widget to be removed.
+     */
+    public abstract void disconnectLegWidget(LegWidget legWidget);
 
     /**
      * Get the number of hubs currently displayed in scene.

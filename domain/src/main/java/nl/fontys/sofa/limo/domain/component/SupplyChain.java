@@ -18,8 +18,15 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
  */
 public class SupplyChain implements Serializable {
 
+    private static final long serialVersionUID = 1185813427289144002L;
+
     private String name;
     private String filepath;
+    /**
+     * The supply chain does only contain the start hub because via the start
+     * hub it can get the complete supply chain due the properties of a
+     * LinkedList.
+     */
     private Hub startHub;
 
     public String getName() {
@@ -38,11 +45,11 @@ public class SupplyChain implements Serializable {
         this.filepath = filepath;
     }
 
-    public Hub getStart() {
+    public Hub getStartHub() {
         return startHub;
     }
 
-    public void setStart(Hub startHub) {
+    public void setStartHub(Hub startHub) {
         this.startHub = startHub;
     }
 
@@ -62,17 +69,20 @@ public class SupplyChain implements Serializable {
             return (SupplyChain) ois.readObject();
         } catch (FileNotFoundException ex) {
             ex.printStackTrace(System.err);
-        } catch (IOException | ClassNotFoundException ex) {
+        } catch (ClassNotFoundException | IOException ex) {
             ex.printStackTrace(System.err);
         } finally {
             try {
-                fis.close();
-                ois.close();
+                if (fis != null) {
+                    fis.close();
+                }
+                if (ois != null) {
+                    ois.close();
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
         }
-
         return null;
     }
 
@@ -95,12 +105,15 @@ public class SupplyChain implements Serializable {
             ex.printStackTrace(System.err);
         } finally {
             try {
-                fos.close();
-                oos.close();
+                if (fos != null) {
+                    fos.close();
+                }
+                if (oos != null) {
+                    oos.close();
+                }
             } catch (IOException ex) {
                 ex.printStackTrace(System.err);
             }
         }
     }
-
 }
