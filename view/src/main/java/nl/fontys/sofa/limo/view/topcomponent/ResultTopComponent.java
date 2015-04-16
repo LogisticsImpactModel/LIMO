@@ -143,7 +143,7 @@ public final class ResultTopComponent extends TopComponent {
         List<DataEntry> extraCosts = new ArrayList<>();
         List<DataEntry> delays = new ArrayList<>();
 
-        Node currentNode = result.getSupplyChain().getStart();
+        Node currentNode = result.getSupplyChain().getStartHub();
         while (currentNode != null) {
             String name = currentNode.getName();
             names.add(name);
