@@ -53,8 +53,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
   @Override
   public void addActions(ChainGraphScene scene) {
     getActions().addAction(scene.createObjectHoverAction());
-    getActions().addAction(scene.createSelectAction());
-//        getActions().addAction(scene.reconnectAction);
+    getActions().addAction(scene.getSelectAction());
     getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
   }
 
