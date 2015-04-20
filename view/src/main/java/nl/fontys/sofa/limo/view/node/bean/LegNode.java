@@ -1,17 +1,18 @@
 package nl.fontys.sofa.limo.view.node.bean;
 
+import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
-import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.openide.nodes.Sheet;
 
 /**
  * View representation of a Leg.
  *
  * @author Sebastiaan Heijmann
  */
-public class LegNode extends AbstractBeanNode {
+public class LegNode extends AbstractBeanNode<Leg> {
 
     /**
      * /**
@@ -21,7 +22,7 @@ public class LegNode extends AbstractBeanNode {
      * @param bean
      * @throws IntrospectionException
      */
-    public LegNode(BaseEntity bean) throws IntrospectionException {
+    public LegNode(Leg bean) throws IntrospectionException {
         this(bean, Leg.class);
     }
 
@@ -32,7 +33,7 @@ public class LegNode extends AbstractBeanNode {
      * @param entityClass the class name of the entity
      * @throws IntrospectionException
      */
-    public LegNode(BaseEntity bean, Class entityClass) throws IntrospectionException {
+    public LegNode(Leg bean, Class entityClass) throws IntrospectionException {
         super(bean, entityClass);
     }
 
@@ -53,7 +54,14 @@ public class LegNode extends AbstractBeanNode {
 
     @Override
     protected Icon getBeanIcon() {
-        throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_SUPPORTED"));
+          return getBean().getIcon();
     }
+    
+    @Override
+    protected void createProperties(Leg bean, BeanInfo info) {
+        Sheet sets = getSheet();
+        Sheet.Set set = super.getBaseEntityPropertySheet();
 
+        sets.put(set);
+    }
 }

@@ -12,10 +12,10 @@ import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
+import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
-import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.widget.BasicWidget;
@@ -160,7 +160,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                     connectHubWidgets(previousWidget, connectionWidget, nextWidget);
                 }
             } else if (currentNode instanceof Leg) {
-                connectionWidget = (ConnectionWidget) addEdge(new LegNode(currentNode));
+                connectionWidget = (ConnectionWidget) addEdge(new LegNode((Leg)currentNode));
                 previousWidget = nextWidget;
             }
             currentNode = currentNode.getNext();
