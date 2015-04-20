@@ -85,9 +85,7 @@ public class SelectLegTypePanel extends JPanel {
                 MultimodeLegWizardAction wiz = new MultimodeLegWizardAction(new MultimodeLegTablePanel.FinishedMapListener() {
                     //Get the Leg
                     @Override
-                    public void finishedLeg(Map map) {
-                        MultiModeLeg leg = new MultiModeLeg();
-                        leg.setLegs(map);
+                    public void finishedLeg(MultiModeLeg leg) {
                         SelectLegTypePanel.this.setLeg(leg);
                     }
                 });
