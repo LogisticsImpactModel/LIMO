@@ -2,9 +2,16 @@ package nl.fontys.sofa.limo.view.node.bean;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.List;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.view.node.property.StupidProperty;
+import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
+import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
 
 /**
@@ -37,6 +44,23 @@ public class LegNode extends AbstractBeanNode<Leg> {
         super(bean, entityClass);
     }
 
+    protected PropertyChangeListener getListener() {
+        return new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                if (evt.getPropertyName().equals("name")) {
+                    setDisplayName((String) evt.getNewValue());
+                } else if (evt.getPropertyName().equals("description")) {
+                    setShortDescription((String) evt.getNewValue());
+                } else if (evt.getPropertyName().equals("icon")) {
+                    createProperties(getBean(), null);
+                    setSheet(getSheet());
+                }
+            }
+        };
+    }
+
     @Override
     public boolean canDestroy() {
         throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_SUPPORTED"));
@@ -49,19 +73,39 @@ public class LegNode extends AbstractBeanNode<Leg> {
 
     @Override
     Class getServiceClass() {
-        throw new UnsupportedOperationException(LIMOResourceBundle.getString("SERVICE_UNAVAILABLE"));
+        return null;
     }
 
     @Override
     protected Icon getBeanIcon() {
-          return getBean().getIcon();
+        return getBean().getIcon();
     }
-    
+
     @Override
     protected void createProperties(Leg bean, BeanInfo info) {
         Sheet sets = getSheet();
         Sheet.Set set = super.getBaseEntityPropertySheet();
 
+        try {
+            StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
+            eventProp.addPropertyChangeListener(getListener());
+            eventProp.setPropertyEditorClass(EventPropertyEditor.class);
+            eventProp.setDisplayName(LIMOResourceBundle.getString("EVENTS"));
+            eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", LIMOResourceBundle.getString("HUB")));
+            eventProp.setValue("canEditAsText", false);
+
+            StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
+            procedureProp.addPropertyChangeListener(getListener());
+            procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
+            procedureProp.setDisplayName(LIMOResourceBundle.getString("PROCEDURES"));
+            procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", LIMOResourceBundle.getString("HUB")));
+            procedureProp.setValue("canEditAsText", false);
+            set.put(procedureProp);
+            set.put(eventProp);
+        } catch (NoSuchMethodException ex) {
+            ErrorManager.getDefault();
+        }
         sets.put(set);
     }
+
 }

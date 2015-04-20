@@ -11,11 +11,13 @@ import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
+import nl.fontys.sofa.limo.view.node.bean.ScheduleLegNode;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.widget.BasicWidget;
@@ -160,7 +162,13 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                     connectHubWidgets(previousWidget, connectionWidget, nextWidget);
                 }
             } else if (currentNode instanceof Leg) {
-                connectionWidget = (ConnectionWidget) addEdge(new LegNode((Leg)currentNode));
+                LegNode node = null;
+                if (currentNode instanceof ScheduledLeg) {
+                    node = new ScheduleLegNode((ScheduledLeg) currentNode);
+                } else {
+                    node = new LegNode((Leg) currentNode);
+                }
+                connectionWidget = (ConnectionWidget) addEdge(node);
                 previousWidget = nextWidget;
             }
             currentNode = currentNode.getNext();
@@ -411,8 +419,12 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
                 if (leg != null) {
                     try {
-                        LegNode legNode = new LegNode(leg);
-
+                        LegNode legNode = null;
+                        if (leg instanceof ScheduledLeg) {
+                            legNode = new ScheduleLegNode((ScheduledLeg) leg);
+                        } else {
+                            legNode = new LegNode(leg);
+                        }
                         HubWidget hubSourceWidget = (HubWidget) findWidget(source);
                         HubWidget hubTargetWidget = (HubWidget) findWidget(target);
 

@@ -87,6 +87,7 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
 
                 @Override
                 public void propertyChange(PropertyChangeEvent evt) {
+                    
                     DAO service = (DAO) Lookup.getDefault().lookup(getServiceClass());
                     service.update(getBean());
                     firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
