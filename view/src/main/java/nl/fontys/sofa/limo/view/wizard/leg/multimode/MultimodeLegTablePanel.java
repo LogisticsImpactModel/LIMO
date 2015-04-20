@@ -16,7 +16,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
-import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -256,7 +255,7 @@ public final class MultimodeLegTablePanel extends JPanel {
 
     public interface FinishedMapListener {
 
-        public void finishedLeg(MultiModeLeg leg);
+        public void finishedLeg(Map map);
     }
 
     public interface FinishedScheduledLegListener {
