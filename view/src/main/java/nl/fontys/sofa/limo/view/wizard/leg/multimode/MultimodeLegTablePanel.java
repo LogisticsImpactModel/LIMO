@@ -119,7 +119,7 @@ public class MultimodeLegTablePanel extends JPanel {
                         }
                     }
                 });
-                wiz.update(model.getLeg(table.getSelectedRow()));
+                wiz.setUpdate(model.getLeg(table.getSelectedRow()));
                 wiz.actionPerformed(e);
             }
         });
