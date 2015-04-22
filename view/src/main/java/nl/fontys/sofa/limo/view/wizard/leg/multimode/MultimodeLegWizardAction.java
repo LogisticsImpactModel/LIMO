@@ -15,7 +15,9 @@ import java.util.Map;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.util.ImageUtilities;
@@ -26,21 +28,21 @@ import org.openide.util.Lookup;
  *
  * @author Pascal Lindner
  */
-
-//Not displayed in menubar because leg is not saved.
-//@ActionID(category = "Multimode", id = "nl.fontys.limo.view.wizzard.leg.multimode.NormalLegWizardAction")
-//@ActionRegistration(displayName = "Add Multimode leg")
-//@ActionReference(path = "Menu/Master Data/Leg", position = 20)
 public final class MultimodeLegWizardAction implements ActionListener {
 
-    public MultimodeLegWizardAction(MultimodeLegTablePanel.FinishedMapListener legListener) {
+    private MultiModeLeg leg;
+
+    public MultimodeLegWizardAction(MultimodeLegTablePanel.FinishedMultiModeLegListener legListener) {
         this.legListener = legListener;
+        this.leg = new MultiModeLeg();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
+        panels.add(new NameDescriptionIconHubTypeWizard());
         panels.add(new MultimodeLegTableWizard());
+
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -56,18 +58,20 @@ public final class MultimodeLegWizardAction implements ActionListener {
             }
         }
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
-        // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
+
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("MULTIMODE_LEG"));
-        if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            Map<Leg, Double> map = (Map<Leg, Double>) wiz.getProperty("map");
-            legListener.finishedLeg(map);
-            Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("MULTIMODE_LEG") + " ",StatusBarService.ACTION_CREATE , StatusBarService.STATE_SUCCESS, null);
+        wiz.putProperty(TypeWizardAction.TYPE_OLDTYPE, leg);
 
+        if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
+            leg = (MultiModeLeg) wiz.getProperty(TypeWizardAction.TYPE_OLDTYPE);
+            
+            legListener.finishedLeg(leg);
+            Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("MULTIMODE_LEG") + " ", StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
         }
     }
 
-    private final MultimodeLegTablePanel.FinishedMapListener legListener;
+    private final MultimodeLegTablePanel.FinishedMultiModeLegListener legListener;
 
 }
