@@ -11,10 +11,8 @@ import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
-import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction;
@@ -34,6 +32,10 @@ public final class MultimodeLegWizardAction implements ActionListener {
 
     public MultimodeLegWizardAction(MultimodeLegTablePanel.FinishedMultiModeLegListener legListener) {
         this.legListener = legListener;
+        this.leg = new MultiModeLeg();
+    }
+
+    public MultimodeLegWizardAction() {
         this.leg = new MultiModeLeg();
     }
 
@@ -66,12 +68,28 @@ public final class MultimodeLegWizardAction implements ActionListener {
 
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             leg = (MultiModeLeg) wiz.getProperty(TypeWizardAction.TYPE_OLDTYPE);
-            
-            legListener.finishedLeg(leg);
-            Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("MULTIMODE_LEG") + " ", StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+
+            if (legListener != null) { //legListener can be null if the wizard is used for editing an exisitn gleg 
+                legListener.finishedLeg(leg);
+                Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("MULTIMODE_LEG") + " ", StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+            }
         }
     }
 
-    private final MultimodeLegTablePanel.FinishedMultiModeLegListener legListener;
+    public MultiModeLeg getLeg() {
+        return leg;
+    }
+
+    /**
+     * Defines whether the wizard is used for editing an existing leg or
+     * creating a new leg
+     *
+     * @param leg Leg which should be updated
+     */
+    public void setUpdate(MultiModeLeg leg) {
+        this.leg = leg;
+    }
+
+    private MultimodeLegTablePanel.FinishedMultiModeLegListener legListener;
 
 }

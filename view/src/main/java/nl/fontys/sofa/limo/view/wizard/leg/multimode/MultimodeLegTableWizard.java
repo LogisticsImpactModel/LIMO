@@ -45,7 +45,9 @@ public class MultimodeLegTableWizard implements WizardDescriptor.Panel<WizardDes
     @Override
     public void readSettings(WizardDescriptor wiz) {
         leg = (MultiModeLeg) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
-        getComponent().getLegModel().addLegs(leg.getLegs());
+        if (leg.getLegs() != null) {
+            getComponent().getLegModel().addLegs(leg.getLegs());
+        }
     }
 
     //Save the Map of Legs
