@@ -11,12 +11,14 @@ import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
+import nl.fontys.sofa.limo.view.node.bean.MultiModeLegNode;
 import nl.fontys.sofa.limo.view.node.bean.ScheduledLegNode;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -164,7 +166,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             } else if (currentNode instanceof Leg) {
                 if (currentNode instanceof ScheduledLeg) {
                     connectionWidget = (ConnectionWidget) addEdge(new ScheduledLegNode((ScheduledLeg) currentNode));
-                } else {
+                } else if (currentNode instanceof MultiModeLeg) {
+                    connectionWidget = (ConnectionWidget) addEdge(new MultiModeLegNode((MultiModeLeg) currentNode));
+                } else if (currentNode instanceof Leg) {
                     connectionWidget = (ConnectionWidget) addEdge(new LegNode((Leg) currentNode));
                 }
                 previousWidget = nextWidget;
@@ -425,6 +429,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                         if (leg instanceof ScheduledLeg) {
                             connectionWidget
                                     = (ConnectionWidget) addEdge(new ScheduledLegNode((ScheduledLeg) leg));
+                        } else if (leg instanceof MultiModeLeg) {
+                            connectionWidget
+                                    = (ConnectionWidget) addEdge(new MultiModeLegNode((MultiModeLeg) leg));
                         } else {
                             connectionWidget
                                     = (ConnectionWidget) addEdge(new LegNode((Leg) leg));

@@ -15,7 +15,8 @@ import org.openide.ErrorManager;
 import org.openide.nodes.Sheet;
 
 /**
- * View representation of a Leg.
+ * View representation of a Leg. This class is used to display a NormalLeg and
+ * is used by ScheduledLegNode and MultiModeLegNode.
  *
  * @author Sebastiaan Heijmann
  */
