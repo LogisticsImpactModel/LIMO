@@ -1,10 +1,10 @@
 package nl.fontys.sofa.limo.view.widget;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
@@ -17,7 +17,6 @@ import static nl.fontys.sofa.limo.view.util.IconUtil.getScaledImageFromIcon;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegWizardAction;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
-import nl.fontys.sofa.limo.view.wizard.leg.scheduled.ScheduledLegWizardAction;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.anchor.AnchorShape;
@@ -68,8 +67,10 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         Leg leg = getLeg();
         if (leg instanceof MultiModeLeg) {
             setMultiModeLegWidgets(leg);
+            setLineColor(new Color(0, 0, 128));
         } else if (leg instanceof ScheduledLeg) {
             setScheduledLegWidgets(leg);
+            setLineColor(new Color(0, 100, 0));
         } else {
             setNormalLegWidgets(leg);
         }
