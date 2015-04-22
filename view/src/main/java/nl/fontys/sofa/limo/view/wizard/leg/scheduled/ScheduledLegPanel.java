@@ -94,7 +94,7 @@ public final class ScheduledLegPanel extends JPanel {
     //Return leg
     public ScheduledLeg getSchedueldLeg() {
         ScheduledLeg leg = new ScheduledLeg();
-        try {
+        
             leg.setExpectedTime(Long.parseLong(tfExpected.getText().replace(",", ".")));
             leg.setWaitingTimeLimit(Long.parseLong(tfWaiting.getText().replace(",", ".")));
             List<Long> times = new ArrayList<>();
@@ -108,16 +108,16 @@ public final class ScheduledLegPanel extends JPanel {
             if (altLeg != null) {
                 leg.setAlternative(altLeg);
             }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(ScheduledLegPanel.this,
-                    LIMOResourceBundle.getString("NOT_A_NUMBER"),
-                    LIMOResourceBundle.getString("NUMBER_ERROR"),
-                    JOptionPane.ERROR_MESSAGE);
-            leg.setExpectedTime(0);
-            leg.setWaitingTimeLimit(0);
-            tfExpected.setText("0");
-            tfWaiting.setText("0");
-        }
+//        } catch (NumberFormatException ex) {
+//            JOptionPane.showMessageDialog(ScheduledLegPanel.this,
+//                    LIMOResourceBundle.getString("NOT_A_NUMBER"),
+//                    LIMOResourceBundle.getString("NUMBER_ERROR"),
+//                    JOptionPane.ERROR_MESSAGE);
+//            leg.setExpectedTime(0);
+//            leg.setWaitingTimeLimit(0);
+//            tfExpected.setText("0");
+//            tfWaiting.setText("0");
+//        }
         return leg;
     }
 
@@ -164,6 +164,8 @@ public final class ScheduledLegPanel extends JPanel {
                     if (!time.isEmpty()) {
                         try {
                             aTime = Long.parseLong(time.replace(",", "."));
+                            model.addRow(new Long[]{aTime});
+//                            firePropertyChange("acceptance_time", null, aTime);
                         } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(ScheduledLegPanel.this,
                                     LIMOResourceBundle.getString("NOT_A_NUMBER"),
@@ -171,7 +173,7 @@ public final class ScheduledLegPanel extends JPanel {
                                     JOptionPane.ERROR_MESSAGE);
                         }
                     }
-                    model.addRow(new Long[]{aTime});
+//                    model.addRow(new Long[]{aTime});
                 }
             }
         });
@@ -185,7 +187,11 @@ public final class ScheduledLegPanel extends JPanel {
                     if (time != null) {
                         if (!time.isEmpty()) {
                             try {
+                                Long oldValue = Long.parseLong(((String) model.getValueAt(table.getSelectedRow(), 0)).replace(",", "."));
                                 aTime = Long.parseLong(time.replace(",", "."));
+                                model.setValueAt(aTime, table.getSelectedRow(), 0);
+                                
+//                                firePropertyChange("acceptance_time", oldValue, (Long) aTime);
                             } catch (NumberFormatException ex) {
                                 JOptionPane.showMessageDialog(ScheduledLegPanel.this,
                                         LIMOResourceBundle.getString("NOT_A_NUMBER"),
@@ -193,7 +199,7 @@ public final class ScheduledLegPanel extends JPanel {
                                         JOptionPane.ERROR_MESSAGE);
                             }
                         }
-                        model.setValueAt(aTime, table.getSelectedRow(), 0);
+//                        model.setValueAt(aTime, table.getSelectedRow(), 0);
                     }
                 }
             }
