@@ -6,24 +6,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowSorter;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
-import nl.fontys.sofa.limo.view.util.IconUtil;
+import nl.fontys.sofa.limo.view.custom.panel.AcceptanceTimePanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
@@ -35,12 +26,11 @@ import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
  */
 public final class ScheduledLegPanel extends JPanel {
 
-    private JPanel panelCenter, panelRight;
-    private JButton btnAdd, btnEdit, btnDelete, btnAddAlt;
-    private JTable table;
+    private JPanel panelCenter;
+    private AcceptanceTimePanel acceptancePanel;
+    private JButton btnAddAlt;
     private JLabel lblAlt, lblExpected, lblWaiting, lblAltName, lblMessage;
     private JTextField tfExpected, tfWaiting;
-    private DefaultTableModel model;
     private Leg altLeg;
 
     public ScheduledLegPanel() {
@@ -54,11 +44,8 @@ public final class ScheduledLegPanel extends JPanel {
 
     private void initComponents() {
         panelCenter = new JPanel();
-        panelRight = new JPanel(new BorderLayout());
-        btnAdd = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
-        btnEdit = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.EDIT)));
-        btnDelete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
-        table = new JTable();
+        acceptancePanel = new AcceptanceTimePanel();
+
         lblAlt = new JLabel(LIMOResourceBundle.getString("ALTERNATIVE"));
         lblMessage = new JLabel(LIMOResourceBundle.getString("VALUES_IN_MINUTES"));
         lblAltName = new JLabel("");
@@ -73,21 +60,8 @@ public final class ScheduledLegPanel extends JPanel {
         setLayout(new BorderLayout());
         setLayoutConstraints();
         add(panelCenter, BorderLayout.CENTER);
-        model = new DefaultTableModel();
-        model.addColumn("Acceptance Times");
-        Box bv = Box.createVerticalBox();
-        table = new JTable(model);
-        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-        table.setRowSorter(sorter);
-        JScrollPane sc = new JScrollPane(table);
-        sc.setPreferredSize(new Dimension(160, 0));
-        panelRight.add(sc, BorderLayout.CENTER);
         setActionListener();
-        bv.add(btnAdd);
-        bv.add(btnEdit);
-        bv.add(btnDelete);
-        panelRight.add(bv, BorderLayout.EAST);
-        add(panelRight, BorderLayout.EAST);
+        add(acceptancePanel, BorderLayout.EAST);
 
     }
 
@@ -97,11 +71,8 @@ public final class ScheduledLegPanel extends JPanel {
         try {
             leg.setExpectedTime(Long.parseLong(tfExpected.getText().replace(",", ".")));
             leg.setWaitingTimeLimit(Long.parseLong(tfWaiting.getText().replace(",", ".")));
-            List<Long> times = new ArrayList<>();
-            for (int i = 0; i < table.getRowCount(); i++) {
-                times.add(Long.parseLong(table.getValueAt(i, 0).toString()));
+            List<Long> times = acceptancePanel.getAcceptanceTimes();
 
-            }
             if (times.size() > 0) {
                 leg.setAcceptanceTimes(times);
             }
@@ -153,60 +124,6 @@ public final class ScheduledLegPanel extends JPanel {
             }
         });
 
-        btnAdd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                long aTime = 0;
-
-                String time = JOptionPane.showInputDialog(ScheduledLegPanel.this,
-                        LIMOResourceBundle.getString("ACCEPTANCE_TIME"), null);
-                if (time != null) {
-                    if (!time.isEmpty()) {
-                        try {
-                            aTime = Long.parseLong(time.replace(",", "."));
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(ScheduledLegPanel.this,
-                                    LIMOResourceBundle.getString("NOT_A_NUMBER"),
-                                    LIMOResourceBundle.getString("NUMBER_ERROR"),
-                                    JOptionPane.ERROR_MESSAGE);
-                        }
-                    }
-                    model.addRow(new Long[]{aTime});
-                }
-            }
-        });
-        btnEdit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() >= 0) {
-                    long aTime = 0;
-                    String time = JOptionPane.showInputDialog(ScheduledLegPanel.this,
-                            LIMOResourceBundle.getString("ACCEPTANCE_TIME"), model.getValueAt(table.getSelectedRow(), 0));
-                    if (time != null) {
-                        if (!time.isEmpty()) {
-                            try {
-                                aTime = Long.parseLong(time.replace(",", "."));
-                            } catch (NumberFormatException ex) {
-                                JOptionPane.showMessageDialog(ScheduledLegPanel.this,
-                                        LIMOResourceBundle.getString("NOT_A_NUMBER"),
-                                        LIMOResourceBundle.getString("NUMBER_ERROR"),
-                                        JOptionPane.ERROR_MESSAGE);
-                            }
-                        }
-                        model.setValueAt(aTime, table.getSelectedRow(), 0);
-                    }
-                }
-            }
-        });
-        btnDelete.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() >= 0) {
-                    model.removeRow(table.getSelectedRow());
-                }
-            }
-        });
     }
 
     //SetLayoutConstraints
