@@ -13,6 +13,7 @@ import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.node.bean.LegNode;
 import static nl.fontys.sofa.limo.view.util.IconUtil.getScaledImageFromIcon;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegWizardAction;
@@ -36,7 +37,7 @@ import org.netbeans.api.visual.widget.Widget;
 public class LegWidget extends ConnectionWidget implements BasicWidget {
 
     private Map<Leg, Double> legs;
-    private final AbstractBeanNode legNode;
+    private LegNode legNode;
 
     /**
      * Constructor creates a new LegWidget.
@@ -46,7 +47,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
      */
     public LegWidget(Scene scene, AbstractBeanNode legNode) {
         super(scene);
-        this.legNode = legNode;
+        this.legNode = (LegNode) legNode;
         setChildLegWidgets();
         setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
         setStroke(new BasicStroke(3.0f));
@@ -176,6 +177,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
                             wizard.actionPerformed(ae);
                         }
                         propertyChange(null);
+                        legNode.refresh();
                     }
                 });
             }
