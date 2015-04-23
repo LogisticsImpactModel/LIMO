@@ -68,10 +68,8 @@ public final class HubWizardAction implements ActionListener {
         panels.add(new NameDescriptionIconHubWizard(update));
         panels.add(new LocationHubWizard());
         panels.add(new ProceduresHubWizard());
-        EventService eventService = Lookup.getDefault().lookup(EventService.class);
-        if (!eventService.findAll().isEmpty()) {
-            panels.add(new EventsHubWizard());
-        }
+        panels.add(new EventsHubWizard());
+
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -120,10 +118,11 @@ public final class HubWizardAction implements ActionListener {
         }
     }
 
-/**
- * 
- * @param hubUpdate True when wizard are used to edit a hub. False when wizards are used to create a new hub
- */    
+    /**
+     *
+     * @param hubUpdate True when wizard are used to edit a hub. False when
+     * wizards are used to create a new hub
+     */
     public void setUpdate(Hub hubUpdate) {
         this.update = true;
         this.hubUpdate = hubUpdate;

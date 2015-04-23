@@ -114,7 +114,7 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
     protected Sheet.Set getNameDescriptionPropertySheet() {
         Sheet.Set set = Sheet.createPropertiesSet();
         set.setName("properties");
-        set.setDisplayName(LIMOResourceBundle.getString("PROPERTIES"));
+        set.setDisplayName("General properties");
 
         try {
             StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");

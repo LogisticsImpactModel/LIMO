@@ -1,6 +1,8 @@
 package nl.fontys.sofa.limo.view.wizard.leg.multimode;
 
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
+import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -9,10 +11,10 @@ import org.openide.util.HelpCtx;
  *
  * @author Pascal Lindner
  */
-
 public class MultimodeLegTableWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     private MultimodeLegTablePanel component;
+    private MultiModeLeg leg;
 
     @Override
     public MultimodeLegTablePanel getComponent() {
@@ -42,12 +44,16 @@ public class MultimodeLegTableWizard implements WizardDescriptor.Panel<WizardDes
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
+        leg = (MultiModeLeg) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
+        if (leg.getLegs() != null) {
+            getComponent().getLegModel().addLegs(leg.getLegs());
+        }
     }
 
     //Save the Map of Legs
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("map", getComponent().getMap());
+        leg.setLegs(getComponent().getLegModel().getMap());
     }
 
 }

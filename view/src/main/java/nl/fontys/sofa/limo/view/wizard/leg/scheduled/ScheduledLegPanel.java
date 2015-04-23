@@ -147,7 +147,7 @@ public final class ScheduledLegPanel extends JPanel {
                             lblAltName.setText(leg.getName());
                         }
                     });
-                    wiz.update(altLeg);
+                    wiz.setUpdate(altLeg);
                     wiz.actionPerformed(e);
                 }
             }
