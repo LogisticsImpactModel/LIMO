@@ -72,7 +72,7 @@ public class SimulatorTask implements TaskListener, Cancellable {
 
     /**
      * Add a listener to the task. The listener will be called once the task
-     * {@link #isFinished()}. In case the task is already finished, the listener
+     * {@link #taskFinished(Task task)}. In case the task is already finished, the listener
      * is called immediately.
      *
      * @param l the listener to add
