@@ -6,14 +6,11 @@ import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.JComponent;
-import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
-import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.domain.component.hub.Location;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.domain.component.util.HubUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
@@ -46,26 +43,19 @@ import org.openide.util.Lookup;
 })
 public final class HubWizardAction implements ActionListener {
 
-    static final String HUB_NAME = "hubName";
-    static final String HUB_DESCRIPTION = "hubDescription";
-    static final String HUB_ICON = "hubIcon";
-    static final String HUB_PROCEDURES = "hubProcedures";
-    static final String HUB_LOCATION = "hubLocation";
-    static final String HUB_EVENTS = "hubEvents";
-    static final String HUB_COPY = "hubCopy";
-    static final String HUB_TYPE = "hubType";
-
-    private Hub hubUpdate;
+    private Hub originalHub, hub;
     private boolean update = false;
 
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!update) {
-            hubUpdate = new Hub();
+            originalHub = new Hub();
             panels.add(new NewDuplicatedOrHubTypeHubWizard());
         }
-        panels.add(new NameDescriptionIconHubWizard(update));
+        hub = HubUtil.deepCopy(originalHub);
+
+        panels.add(new NameDescriptionIconHubWizard());
         panels.add(new LocationHubWizard());
         panels.add(new ProceduresHubWizard());
         panels.add(new EventsHubWizard());
@@ -86,12 +76,16 @@ public final class HubWizardAction implements ActionListener {
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
+        wiz.putProperty("hub", hub);
+        wiz.putProperty("original_hub", originalHub);
+        wiz.putProperty("update", update);
+
         if (update) {
             wiz.setTitle(LIMOResourceBundle.getString("ADD_HUB"));
-            wiz.putProperty(HUB_COPY, hubUpdate);
         } else {
             wiz.setTitle(LIMOResourceBundle.getString("EDIT_HUB"));
         }
+
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             handleWizardFinishClick(wiz);
         }
@@ -104,27 +98,21 @@ public final class HubWizardAction implements ActionListener {
      */
     private void handleWizardFinishClick(final WizardDescriptor wiz) {
         HubService hubService = Lookup.getDefault().lookup(HubService.class);
-        hubUpdate.setName((String) wiz.getProperty(HUB_NAME));
-        hubUpdate.setDescription((String) wiz.getProperty(HUB_DESCRIPTION));
-        hubUpdate.setIcon((Icon) wiz.getProperty(HUB_ICON));
-        hubUpdate.setLocation((Location) wiz.getProperty(HUB_LOCATION));
-        hubUpdate.setProcedures((List<Procedure>) wiz.getProperty(HUB_PROCEDURES));
-        hubUpdate.setEvents((List<Event>) wiz.getProperty(HUB_EVENTS));
+
+        hub = (Hub) wiz.getProperty("hub");
+        HubUtil.deepOverwrite(hub, originalHub);
+
         if (update) {
-            hubService.update(hubUpdate);
+            hubService.update(originalHub);
         } else {
-            hubUpdate.setId(null);
-            hubUpdate = hubService.insert(hubUpdate);
+            originalHub.setId(null);
+            originalHub.setUniqueIdentifier(UUID.randomUUID().toString());
+            originalHub = hubService.insert(originalHub);
         }
     }
 
-    /**
-     *
-     * @param hubUpdate True when wizard are used to edit a hub. False when
-     * wizards are used to create a new hub
-     */
-    public void setUpdate(Hub hubUpdate) {
+    public void setUpdate(Hub hub) {
         this.update = true;
-        this.hubUpdate = hubUpdate;
+        this.originalHub = hub;
     }
 }

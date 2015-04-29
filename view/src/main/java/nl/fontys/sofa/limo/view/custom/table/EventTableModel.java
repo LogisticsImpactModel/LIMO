@@ -86,5 +86,4 @@ public class EventTableModel extends AbstractTableModel {
             this.events.get(rowIndex).setDependency((ExecutionState) aValue);
         }
     }
-
 }
