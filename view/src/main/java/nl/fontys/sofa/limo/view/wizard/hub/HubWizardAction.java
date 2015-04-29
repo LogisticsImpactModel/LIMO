@@ -52,8 +52,10 @@ public final class HubWizardAction implements ActionListener {
         if (!update) {
             originalHub = new Hub();
             panels.add(new NewDuplicatedOrHubTypeHubWizard());
+            hub = new Hub();
+        } else {
+            hub = HubUtil.deepCopy(originalHub);
         }
-        hub = HubUtil.deepCopy(originalHub);
 
         panels.add(new NameDescriptionIconHubWizard());
         panels.add(new LocationHubWizard());
