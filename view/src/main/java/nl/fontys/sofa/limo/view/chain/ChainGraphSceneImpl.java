@@ -86,7 +86,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
      * layers and the available actions.
      *
      * @param parent the parent of this scene.
+     * @param chain
      * @throws IOException can occur when certain resources like images cannot
+     * @throws IntrospectionException
      * be found.
      */
     public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain) throws IOException, IntrospectionException {
