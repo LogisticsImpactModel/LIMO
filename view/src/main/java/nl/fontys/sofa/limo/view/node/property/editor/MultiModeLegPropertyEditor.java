@@ -13,7 +13,7 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 
 /**
- * This class is the Property Editor for the Map<Leg, Double> attribute of a
+ * This class is the Property Editor for the {@code Map<Leg, Double> }attribute of a
  * MultiModeLeg. It enables you to change the legs with the build in property
  * window of NetBeans Platform.
  *
