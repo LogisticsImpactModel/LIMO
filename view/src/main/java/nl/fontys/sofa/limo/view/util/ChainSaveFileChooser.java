@@ -11,7 +11,7 @@ public class ChainSaveFileChooser extends JFileChooser {
 
     public ChainSaveFileChooser() {
         setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        
+        setApproveButtonText("Save");
     }
 
     @Override

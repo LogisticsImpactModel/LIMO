@@ -46,16 +46,17 @@ public class SavableComponent extends AbstractSavable {
     @Override
     protected void handleSave() throws IOException {
         if (chainBuilder.validate()) {
-            if (supplyChain.getFilepath() != null) {
-                NotifyDescriptor dd = new NotifyDescriptor.Confirmation("Would you like to overwrite the existing supplychain");
+            if (supplyChain.getFilepath() != null) { 
+                NotifyDescriptor dd = new NotifyDescriptor.Confirmation("Would you like to overwrite the existing supply chain file?");
                 dd.setMessageType(DialogDescriptor.YES_NO_CANCEL_OPTION);
                 Object retval = DialogDisplayer.getDefault().notify(dd);
                 if (retval.equals(DialogDescriptor.YES_OPTION)) {
+                    supplyChain.setFilepath(supplyChain.getFilepath()+ File.separator + supplyChain.getName()+".lsc" ); //
                     supplyChain.saveToFile();
                 } else if (retval.equals(DialogDescriptor.NO_OPTION)) {
                     openFileChooser();
                 }
-            } else {         
+            } else { //If a new supply chain needs to be saved.        
                 openFileChooser();
             }
 
@@ -73,19 +74,20 @@ public class SavableComponent extends AbstractSavable {
     }
 
     private void openFileChooser() throws HeadlessException, IOException {
-        //If folder is selected than save the supply chain.
-        //If no folder is selected throw an exception so the saving process is cancelled.
         JFileChooser fc = new ChainSaveFileChooser();
-        if (supplyChain.getFilepath() != null) {
+        if (supplyChain.getFilepath() != null) { //This happens if a supply chain is loaded. 
             fc.setCurrentDirectory(new File(supplyChain.getFilepath()).getParentFile());
         }
-        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setSelectedFile(new File(supplyChain.getName()));
         int result = fc.showOpenDialog(null);
+        String fileName= fc.getSelectedFile().getName();
         if (result == JFileChooser.APPROVE_OPTION) { //If folder is selected than save the supply chain.
-            File file = fc.getSelectedFile();
-            supplyChain.setFilepath(file.getAbsolutePath() + File.separator + supplyChain.getName() + ".lsc");
-            supplyChain.saveToFile();
-            unregister();
+                supplyChain.setName(fileName);
+                File file = fc.getSelectedFile();
+                supplyChain.setFilepath(file.getParent()+ File.separator+ supplyChain.getName() +".lsc" );
+                supplyChain.saveToFile();
+                unregister();
         } else { //If no folder is selected throw an exception so the saving process is cancelled.
             throw new IOException("The supply chain " + supplyChain.getName() + " is invalid.");
         }
