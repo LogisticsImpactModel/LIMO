@@ -10,6 +10,7 @@
     <folder name="Menu">
         <folder name="File">
             <attr name="position" intvalue="1"/>
+            <file name="org-openide-actions-SaveAsAction.shadow_hidden"/>
         </folder>
         <attr name="OpenIDE-Folder-SortMode" stringvalue="O"/>
         <file name="Edit_hidden"/>

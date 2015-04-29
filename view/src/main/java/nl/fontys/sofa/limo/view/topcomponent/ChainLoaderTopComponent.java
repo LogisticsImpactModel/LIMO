@@ -15,6 +15,7 @@ import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.explorer.ExplorerManager;
@@ -36,6 +37,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
 
     private ExplorerManager em = new ExplorerManager();
     private ChainGraphScene graphScene;
+    private SavableComponent savable;
 
     /**
      * Constructor creates a new ChainLoaderTopcomponent.
@@ -45,12 +47,14 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         initComponents();
 
         SupplyChain supplyChain = SupplyChain.createFromFile(chainFile);
+        supplyChain.setName(chainFile.getName().replace(".lsc", ""));
         supplyChain.setFilepath(chainFile.getParent());
+        
         setName(supplyChain.getName());
         initCustomComponents(supplyChain);
 
         try {
-            SavableComponent savable = new SavableComponent(graphScene.getChainBuilder());
+            savable = new SavableComponent(graphScene.getChainBuilder());
 
             Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
             Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
@@ -89,6 +93,33 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         } catch (IOException | IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
         }
+    }
+    
+    /**
+     * Check if the TopComponent is ready to close. In this case, the user is
+     * prompted with a question to save the supply chain or discard it.
+     *
+     * @return true if the TopComponent should close.
+     */
+    @Override
+    public boolean canClose() {
+        DialogDescriptor dialogDescriptor = new DialogDescriptor("Do you want to save the " + graphScene.getSupplyChain().getName()
+                + " supply chain?", "Save the supply chain");
+
+        dialogDescriptor.setMessageType(DialogDescriptor.QUESTION_MESSAGE);
+        dialogDescriptor.setOptions(new Object[]{"Save", "Discard"});
+        Object retval = DialogDisplayer.getDefault().notify(dialogDescriptor);
+        if (retval.equals("Save")) {
+            try {
+                savable.handleSave(); //Try to save the supply chain
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+                return false; //The supply chain window cannot be closed because an exception is trown while saving
+            }
+        } else if (retval.equals("Discard")) {
+            savable.unregisterChainBuilder(); //Unregister supply chain from registry so it is not shown in the 'save dialog'
+        }
+        return true; //The supply chain window can now be closed
     }
 
     @Override

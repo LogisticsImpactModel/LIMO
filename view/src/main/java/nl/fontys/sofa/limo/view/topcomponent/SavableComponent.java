@@ -51,7 +51,7 @@ public class SavableComponent extends AbstractSavable {
                 dd.setMessageType(DialogDescriptor.YES_NO_CANCEL_OPTION);
                 Object retval = DialogDisplayer.getDefault().notify(dd);
                 if (retval.equals(DialogDescriptor.YES_OPTION)) {
-                    supplyChain.setFilepath(supplyChain.getFilepath()+ File.separator + supplyChain.getName()+".lsc" ); //
+                    supplyChain.setFilepath(supplyChain.getFilepath()+ File.separator + supplyChain.getName()); //
                     supplyChain.saveToFile();
                 } else if (retval.equals(DialogDescriptor.NO_OPTION)) {
                     openFileChooser();
@@ -76,7 +76,7 @@ public class SavableComponent extends AbstractSavable {
     private void openFileChooser() throws HeadlessException, IOException {
         JFileChooser fc = new ChainSaveFileChooser();
         if (supplyChain.getFilepath() != null) { //This happens if a supply chain is loaded. 
-            fc.setCurrentDirectory(new File(supplyChain.getFilepath()).getParentFile());
+            fc.setCurrentDirectory(new File(supplyChain.getFilepath()));
         }
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fc.setSelectedFile(new File(supplyChain.getName()));
@@ -85,7 +85,7 @@ public class SavableComponent extends AbstractSavable {
         if (result == JFileChooser.APPROVE_OPTION) { //If folder is selected than save the supply chain.
                 supplyChain.setName(fileName);
                 File file = fc.getSelectedFile();
-                supplyChain.setFilepath(file.getParent()+ File.separator+ supplyChain.getName() +".lsc" );
+                supplyChain.setFilepath(file.getParent()+ File.separator+ supplyChain.getName() );
                 supplyChain.saveToFile();
                 unregister();
         } else { //If no folder is selected throw an exception so the saving process is cancelled.
