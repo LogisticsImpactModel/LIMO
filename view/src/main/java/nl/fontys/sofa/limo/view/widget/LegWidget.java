@@ -1,7 +1,6 @@
 package nl.fontys.sofa.limo.view.widget;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -68,10 +67,8 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         Leg leg = getLeg();
         if (leg instanceof MultiModeLeg) {
             setMultiModeLegWidgets(leg);
-            setLineColor(new Color(0, 0, 128));
         } else if (leg instanceof ScheduledLeg) {
             setScheduledLegWidgets(leg);
-            setLineColor(new Color(0, 100, 0));
         } else {
             setNormalLegWidgets(leg);
         }
