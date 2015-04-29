@@ -2,7 +2,7 @@ package nl.fontys.sofa.limo.simulation;
 
 /**
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public interface SimulatorTaskListener {
 

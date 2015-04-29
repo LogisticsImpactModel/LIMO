@@ -5,7 +5,7 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.input.IntegerInpu
 /**
  * Discrete distribution implementation.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class DiscreteDistribution extends Distribution {
 

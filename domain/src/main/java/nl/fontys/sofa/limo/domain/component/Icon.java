@@ -19,7 +19,7 @@ import javax.imageio.stream.MemoryCacheImageInputStream;
 /**
  * An icon used by hubs and legs.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class Icon implements Serializable {
 

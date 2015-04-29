@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Abstract super class for all possible inputs for a distribution. Handles
  * storage of name, value and type for distribution input parameters.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  * @param <T> Number type of the implementing class.
  */
 public abstract class InputValue<T extends Number> implements Serializable {

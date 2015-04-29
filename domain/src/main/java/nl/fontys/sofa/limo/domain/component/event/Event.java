@@ -11,7 +11,7 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
  * an event parent, are only possible to be executed, if their parent's
  * execution state is equal to the event's execution dependency.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class Event extends Component {
 

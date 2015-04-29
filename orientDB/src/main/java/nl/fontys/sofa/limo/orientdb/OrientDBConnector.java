@@ -55,7 +55,7 @@ import nl.fontys.sofa.limo.orientdb.serialization.TimeTypeSerializer;
  * Singleton connection to OrientDB file database. Maintaines schema and allows
  * for communciation to database for the OrientDB DAOs.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class OrientDBConnector {
 

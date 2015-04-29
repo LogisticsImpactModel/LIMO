@@ -14,7 +14,7 @@ import nl.fontys.sofa.limo.simulation.util.MathUtil;
  * single supply chain. There is data on the single test cases and accumulated
  * data (min, max, avg) on the whole simulation.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class SimulationResult {
 

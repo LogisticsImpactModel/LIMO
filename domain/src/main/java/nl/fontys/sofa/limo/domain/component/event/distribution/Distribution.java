@@ -12,7 +12,7 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.input.InputValue;
  * A distribution that can be used for an event to generate a probability of
  * that event happening during a simulation iteration.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public abstract class Distribution implements Serializable {
 

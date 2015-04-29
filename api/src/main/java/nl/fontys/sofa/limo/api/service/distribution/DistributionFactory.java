@@ -5,7 +5,7 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 /**
  * Interface for the distribution type factory.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public interface DistributionFactory {
     

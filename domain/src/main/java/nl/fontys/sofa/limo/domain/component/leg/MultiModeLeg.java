@@ -8,7 +8,7 @@ import javax.persistence.Embedded;
  * Multi mode leg which consists of multiple legs, each with a weight for
  * probability of the specific leg to be used.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class MultiModeLeg extends Leg {
 

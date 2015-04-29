@@ -3,7 +3,7 @@ package nl.fontys.sofa.limo.domain.component.procedure;
 /**
  * Time type.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public enum TimeType {
 

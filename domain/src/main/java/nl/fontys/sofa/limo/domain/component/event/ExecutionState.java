@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Execution state used for events and sub-event dependencies.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public enum ExecutionState implements Serializable {
 

@@ -7,7 +7,7 @@ import nl.fontys.sofa.limo.domain.component.Icon;
 /**
  * A type is a template object for either a hub or a leg.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public abstract class Type extends Component {
 
