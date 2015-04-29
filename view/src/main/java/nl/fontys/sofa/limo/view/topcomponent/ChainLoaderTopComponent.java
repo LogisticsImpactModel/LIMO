@@ -45,6 +45,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         initComponents();
 
         SupplyChain supplyChain = SupplyChain.createFromFile(chainFile);
+        supplyChain.setFilepath(chainFile.getAbsolutePath());
         setName(supplyChain.getName());
         initCustomComponents(supplyChain);
 

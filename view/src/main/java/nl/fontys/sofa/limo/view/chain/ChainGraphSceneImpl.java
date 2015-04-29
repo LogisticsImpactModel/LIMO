@@ -12,10 +12,10 @@ import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
+import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
-import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.widget.BasicWidget;
@@ -88,6 +88,10 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain) throws IOException, IntrospectionException {
         this.parent = parent;
         chainBuilder = new ChainBuilderImpl();
+        chainBuilder.getSupplyChain().setName(chain.getName()); //sets the name of 
+                //the supplyChain so that when you load an existing supplychain and 
+                //then save it at another location dont get a file named null.lsc
+        chainBuilder.getSupplyChain().setFilepath(chain.getFilepath());
         loadedChain = chain;
 
         this.mainLayer = new LayerWidget(this);

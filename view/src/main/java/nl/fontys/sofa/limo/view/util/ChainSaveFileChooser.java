@@ -10,7 +10,8 @@ import javax.swing.JFileChooser;
 public class ChainSaveFileChooser extends JFileChooser {
 
     public ChainSaveFileChooser() {
-        setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        
     }
 
     @Override

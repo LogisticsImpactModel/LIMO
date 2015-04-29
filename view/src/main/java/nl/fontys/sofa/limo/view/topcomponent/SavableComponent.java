@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
@@ -10,6 +11,7 @@ import nl.fontys.sofa.limo.view.util.ChainSaveFileChooser;
 import org.netbeans.spi.actions.AbstractSavable;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 
 /**
  * SavableComponent enables saving of a supply chain.
@@ -31,8 +33,8 @@ public class SavableComponent extends AbstractSavable {
         this.supplyChain = chainBuilder.getSupplyChain();
         register();
     }
-    
-    public void unregisterChainBuilder(){
+
+    public void unregisterChainBuilder() {
         unregister();
     }
 
@@ -44,17 +46,19 @@ public class SavableComponent extends AbstractSavable {
     @Override
     protected void handleSave() throws IOException {
         if (chainBuilder.validate()) {
-            JFileChooser fc = new ChainSaveFileChooser();
-            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int result = fc.showOpenDialog(null);
-            if (result == JFileChooser.APPROVE_OPTION) { //If folder is selected than save the supply chain.
-                File file = fc.getSelectedFile();
-                supplyChain.setFilepath(file.getAbsolutePath() + File.separator + supplyChain.getName() + ".lsc");
-                supplyChain.saveToFile();
-                unregister();
-            } else { //If no folder is selected throw an exception so the saving process is cancelled. 
-                throw new IOException("The supply chain " + supplyChain.getName() + " is invalid.");
+            if (supplyChain.getFilepath() != null) {
+                NotifyDescriptor dd = new NotifyDescriptor.Confirmation("Would you like to overwrite the existing supplychain");
+                dd.setMessageType(DialogDescriptor.YES_NO_CANCEL_OPTION);
+                Object retval = DialogDisplayer.getDefault().notify(dd);
+                if (retval.equals(DialogDescriptor.YES_OPTION)) {
+                    supplyChain.saveToFile();
+                } else if (retval.equals(DialogDescriptor.NO_OPTION)) {
+                    openFileChooser();
+                }
+            } else {         
+                openFileChooser();
             }
+
         } else { //When the supply chain is invalid, display a dialog.
             DialogDescriptor dialogDescriptor = new DialogDescriptor("The supply chain " + supplyChain.getName()
                     + " is invalid. An invalid supply chain cannot be saved. Please close the window and make the supply chain valid.", "Error while saving");
@@ -65,6 +69,25 @@ public class SavableComponent extends AbstractSavable {
             if (retval.equals(DialogDescriptor.OK_OPTION)) { //Throw an exception when the OK-button is selected so the saving process is cancelled
                 throw new InvalidSupplyChainException("The supply chain " + supplyChain.getName() + " is invalid.");
             }
+        }
+    }
+
+    private void openFileChooser() throws HeadlessException, IOException {
+        //If folder is selected than save the supply chain.
+        //If no folder is selected throw an exception so the saving process is cancelled.
+        JFileChooser fc = new ChainSaveFileChooser();
+        if (supplyChain.getFilepath() != null) {
+            fc.setCurrentDirectory(new File(supplyChain.getFilepath()).getParentFile());
+        }
+        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        int result = fc.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) { //If folder is selected than save the supply chain.
+            File file = fc.getSelectedFile();
+            supplyChain.setFilepath(file.getAbsolutePath() + File.separator + supplyChain.getName() + ".lsc");
+            supplyChain.saveToFile();
+            unregister();
+        } else { //If no folder is selected throw an exception so the saving process is cancelled.
+            throw new IOException("The supply chain " + supplyChain.getName() + " is invalid.");
         }
     }
 
