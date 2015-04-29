@@ -20,7 +20,7 @@ import nl.fontys.sofa.limo.simulation.result.TestCaseResult;
 
 /**
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class TestCase implements Runnable {
 

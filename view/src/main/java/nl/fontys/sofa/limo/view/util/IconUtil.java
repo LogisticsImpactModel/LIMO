@@ -15,7 +15,7 @@ import org.openide.util.Exceptions;
 
 /**
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public final class IconUtil {
 

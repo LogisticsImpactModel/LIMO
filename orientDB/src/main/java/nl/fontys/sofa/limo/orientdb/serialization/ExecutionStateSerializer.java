@@ -6,7 +6,7 @@ import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 /**
  * Serializer for event execution states.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class ExecutionStateSerializer implements OObjectSerializer<ExecutionState, String>{
 

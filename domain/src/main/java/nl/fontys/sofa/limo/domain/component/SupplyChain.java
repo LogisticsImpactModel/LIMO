@@ -14,7 +14,7 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
  * Holder of a complete supply chain with actors, hubs, legs and events. Can be
  * stored to file and recreated from file.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class SupplyChain implements Serializable {
 

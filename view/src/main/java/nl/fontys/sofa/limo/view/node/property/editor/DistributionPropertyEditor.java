@@ -31,7 +31,7 @@ import org.openide.util.Lookup;
 
 /**
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 @PropertyEditorRegistration(targetType = Distribution.class)
 public class DistributionPropertyEditor extends PropertyEditorSupport {

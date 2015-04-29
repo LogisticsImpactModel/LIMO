@@ -5,7 +5,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 
 /**
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class TimeTypeSerializer implements OObjectSerializer<TimeType, String> {
 

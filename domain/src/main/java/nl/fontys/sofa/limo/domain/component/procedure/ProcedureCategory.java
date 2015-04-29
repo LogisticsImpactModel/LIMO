@@ -6,7 +6,7 @@ import nl.fontys.sofa.limo.domain.BaseEntity;
  * ProcedureCategory is used to store possible categories of procedures in the
  * database and use them to group related procedures.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class ProcedureCategory extends BaseEntity {
 

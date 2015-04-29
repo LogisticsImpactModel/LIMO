@@ -6,7 +6,7 @@ import nl.fontys.sofa.limo.domain.component.hub.Continent;
 /**
  * Serializer for continents.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class ContinentSerializer implements OObjectSerializer<Continent, String> {
 

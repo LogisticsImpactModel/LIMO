@@ -87,6 +87,7 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
 
                 @Override
                 public void propertyChange(PropertyChangeEvent evt) {
+                    
                     DAO service = (DAO) Lookup.getDefault().lookup(getServiceClass());
                     service.update(getBean());
                     firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
@@ -113,7 +114,7 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
     protected Sheet.Set getNameDescriptionPropertySheet() {
         Sheet.Set set = Sheet.createPropertiesSet();
         set.setName("properties");
-        set.setDisplayName(LIMOResourceBundle.getString("PROPERTIES"));
+        set.setDisplayName("General properties");
 
         try {
             StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");

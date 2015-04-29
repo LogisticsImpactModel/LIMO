@@ -15,7 +15,7 @@ import org.openide.util.lookup.InstanceContent;
  * the meanwhile (e.g. when a tuple is removed in DB, this service makes sure
  * that this data is not available anymore in the application itself
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  * @param <T> - baseEntities
  */
 public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Provider {

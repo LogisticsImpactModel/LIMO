@@ -6,7 +6,7 @@ import javax.persistence.Embedded;
 /**
  * The location of a hub is stored in this class. Only continent is mandatory.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class Location implements Serializable {
 

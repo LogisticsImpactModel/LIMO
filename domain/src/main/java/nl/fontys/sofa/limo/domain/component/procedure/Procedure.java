@@ -9,7 +9,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
  * costs in terms of monetary costs and time. For reporting purposes each
  * procedure belongs to a procedure category.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class Procedure implements Serializable {
 

@@ -25,14 +25,19 @@ import org.openide.util.Lookup;
  *
  * @author Pascal Lindner
  */
-
-//Not shown in menubar because is not stored in DB
-//@ActionRegistration(displayName = "Add Normal leg")
-//@ActionReference(path = "Menu/Master Data/Leg", position = 20)
 public final class NormalLegWizardAction implements ActionListener {
 
+    private MultimodeLegTablePanel.FinishedLegListener legListener;
+    private Leg leg;
+    private boolean update;
+
     public NormalLegWizardAction(MultimodeLegTablePanel.FinishedLegListener legListener) {
+        this();
         this.legListener = legListener;
+    }
+
+    public NormalLegWizardAction() {
+        this.leg = new Leg();
     }
 
     @Override
@@ -43,10 +48,8 @@ public final class NormalLegWizardAction implements ActionListener {
         }
         panels.add(new NameDescriptionIconLegPanel());
         panels.add(new ProceduresLegTypeWizard());
-        EventService eventService = Lookup.getDefault().lookup(EventService.class);
-        if (!eventService.findAll().isEmpty()) {
-            panels.add(new EventLegTypeWizard());
-        }
+        panels.add(new EventLegTypeWizard());
+
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -70,22 +73,25 @@ public final class NormalLegWizardAction implements ActionListener {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle(LIMOResourceBundle.getString("CREATE_NORMAL_LEG"));
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            Leg leg = new Leg();
             leg.setName((String) wiz.getProperty("name"));
             leg.setDescription((String) wiz.getProperty("description"));
             leg.setIcon((Icon) wiz.getProperty("icon"));
             leg.setEvents((List<Event>) wiz.getProperty("events"));
             leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
-            legListener.finishedLeg(leg);
-            Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("LEG") + " " + leg.getName(), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+
+            if (legListener != null) {
+                legListener.finishedLeg(leg);
+                Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("LEG") + " " + leg.getName(), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+            }
         }
     }
 
-    public void update(Leg leg) {
+    public void setUpdate(Leg leg) {
         this.leg = leg;
         update = true;
     }
-    private final MultimodeLegTablePanel.FinishedLegListener legListener;
-    private Leg leg;
-    private boolean update;
+
+    public Leg getLeg() {
+        return leg;
+    }
 }

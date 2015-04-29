@@ -6,7 +6,7 @@ import nl.fontys.sofa.limo.domain.component.hub.SerializableCountry;
 /**
  * Serializer for countries.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class CountrySerializer implements OObjectSerializer<SerializableCountry, String> {
 

@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.wizard.leg.multimode;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -26,7 +28,7 @@ import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
  *
  * @author Pascal Lindner
  */
-public final class MultimodeLegTablePanel extends JPanel {
+public class MultimodeLegTablePanel extends JPanel {
 
     private JTable table;
     private MultimodeLegModel model;
@@ -46,7 +48,6 @@ public final class MultimodeLegTablePanel extends JPanel {
         table = new JTable(model);
         setLayout(new BorderLayout());
         add(new JScrollPane(table), BorderLayout.CENTER);
-        //   panel = new JPanel();
         Box bv = Box.createVerticalBox();
         btnAdd = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
         btnEdit = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.EDIT)));
@@ -56,7 +57,6 @@ public final class MultimodeLegTablePanel extends JPanel {
         bv.add(btnEdit);
         bv.add(btnDelete);
         add(bv, BorderLayout.EAST);
-
     }
 
     public void setActionListener() {
@@ -81,7 +81,7 @@ public final class MultimodeLegTablePanel extends JPanel {
                             }
                         }
                         model.addLeg(leg, propability);
-
+                        firePropertyChange("leg", null, leg);
                     }
                 });
                 wiz.actionPerformed(e);
@@ -114,10 +114,12 @@ public final class MultimodeLegTablePanel extends JPanel {
                                 propability = model.getPropability(table.getSelectedRow());
                             }
                             model.updateLeg(leg, propability, table.getSelectedRow());
+                            firePropertyChange("leg", null, leg);
+
                         }
                     }
                 });
-                wiz.update(model.getLeg(table.getSelectedRow()));
+                wiz.setUpdate(model.getLeg(table.getSelectedRow()));
                 wiz.actionPerformed(e);
             }
         });
@@ -127,13 +129,14 @@ public final class MultimodeLegTablePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (table.getSelectedRow() >= 0) {
                     model.removeLeg(table.getSelectedRow());
+                    firePropertyChange("leg", null, null);
                 }
             }
         });
     }
 
-    public Map<Leg, Double> getMap() {
-        return model.getMap();
+    public MultimodeLegModel getLegModel() {
+        return model;
     }
 
     /**
@@ -188,6 +191,21 @@ public final class MultimodeLegTablePanel extends JPanel {
             fireTableDataChanged();
         }
 
+        /**
+         * Add multiple legs to the model
+         *
+         * @param legs The legs which should be added.
+         */
+        public void addLegs(Map<Leg, Double> legs) {
+            if (legs != null) {
+                for (Map.Entry<Leg, Double> entry : legs.entrySet()) {
+                    addLeg(entry.getKey(), entry.getValue());
+                }
+
+                fireTableDataChanged();
+            }
+        }
+
         public Map<Leg, Double> getMap() {
             return legMap;
         }
@@ -216,10 +234,7 @@ public final class MultimodeLegTablePanel extends JPanel {
 
         @Override
         public boolean isCellEditable(int row, int col) {
-            if (col == 1) {
-                return true;
-            }
-            return false;
+            return (col == 1);
         }
 
         @Override
@@ -240,7 +255,6 @@ public final class MultimodeLegTablePanel extends JPanel {
                 fireTableDataChanged();
             }
         }
-
     }
 
     /**
@@ -253,9 +267,9 @@ public final class MultimodeLegTablePanel extends JPanel {
         public void finishedLeg(Leg leg);
     }
 
-    public interface FinishedMapListener {
+    public interface FinishedMultiModeLegListener {
 
-        public void finishedLeg(Map map);
+        public void finishedLeg(MultiModeLeg leg);
     }
 
     public interface FinishedScheduledLegListener {

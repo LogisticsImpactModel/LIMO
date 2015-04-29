@@ -3,7 +3,7 @@ package nl.fontys.sofa.limo.simulation.util;
 /**
  * MathuUtil incorporates methods that help in simulating the supply chains.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public final class MathUtil {
 

@@ -12,7 +12,7 @@ import org.netbeans.junit.NbTestCase;
 
 /**
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class OrientProcedureCategoryDAOTest extends NbTestCase{
     

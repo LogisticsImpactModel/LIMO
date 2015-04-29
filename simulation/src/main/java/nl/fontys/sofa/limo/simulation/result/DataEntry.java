@@ -4,7 +4,7 @@ package nl.fontys.sofa.limo.simulation.result;
  * A data entry encapsulates the data for one cost or time point in a
  * simulation. It contains the minimum, maximum and average value of that point.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class DataEntry {
 

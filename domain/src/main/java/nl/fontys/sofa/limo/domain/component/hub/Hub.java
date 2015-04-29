@@ -8,7 +8,7 @@ import nl.fontys.sofa.limo.domain.component.leg.Leg;
 /**
  * Hub of a supply chain.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class Hub extends Node<Leg> {
 

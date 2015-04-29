@@ -8,7 +8,7 @@ import javax.persistence.Id;
  * This class is the superclass of all entities that will be saved to their own
  * database table.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class BaseEntity implements Serializable {
 
