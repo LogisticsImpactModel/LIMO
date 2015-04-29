@@ -152,7 +152,7 @@ public class AcceptanceTimePanel extends JPanel{
      
      /**
       * retunring all accaptance times which are shown in the panel
-      * @return List<Long> of acceptance times
+      * @return {@code List<Long>} wiht longs which represents acceptance times
       */
      public List<Long> getAcceptanceTimes(){
          List<Long> times = new ArrayList<>();
