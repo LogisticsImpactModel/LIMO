@@ -88,15 +88,14 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
      * @param parent the parent of this scene.
      * @param chain
      * @throws IOException can occur when certain resources like images cannot
-     * @throws IntrospectionException
-     * be found.
+     * @throws IntrospectionException be found.
      */
     public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain) throws IOException, IntrospectionException {
         this.parent = parent;
         chainBuilder = new ChainBuilderImpl();
         chainBuilder.getSupplyChain().setName(chain.getName()); //sets the name of 
-                //the supplyChain so that when you load an existing supplychain and 
-                //then save it at another location dont get a file named null.lsc
+        //the supplyChain so that when you load an existing supplychain and 
+        //then save it at another location dont get a file named null.lsc
         chainBuilder.getSupplyChain().setFilepath(chain.getFilepath());
         loadedChain = chain;
 
@@ -262,7 +261,13 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     @Override
     public void removeHubWidget(HubWidget hubWidget) {
+        Hub hub = hubWidget.getHub();
         chainBuilder.removeHub(hubWidget.getHub());
+        
+        if(chainBuilder.getStartHub() == hub){
+            chainBuilder.setStartHub(null);
+        }
+
     }
 
     @Override
