@@ -12,6 +12,8 @@ import nl.fontys.sofa.limo.domain.component.type.LegType;
  */
 public class Leg extends Node<Hub> {
 
+    private static final long serialVersionUID = 4146579601096201593L;
+
     private Icon icon;
 
     public Leg() {

@@ -12,7 +12,9 @@ import javax.persistence.Embedded;
  * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class ScheduledLeg extends Leg {
-    
+
+    private static final long serialVersionUID = -836462388111897335L;
+
     public static final String WAIT_CATEGORY = "Waiting Time";
 
     /**
@@ -44,7 +46,7 @@ public class ScheduledLeg extends Leg {
      */
     @Embedded
     private Leg alternative;
-    
+
     public ScheduledLeg() {
         this.acceptanceTimes = new ArrayList<>();
     }
@@ -70,26 +72,26 @@ public class ScheduledLeg extends Leg {
      */
     public void deepOverwrite(ScheduledLeg sourceLeg) {
         super.deepOverwrite(sourceLeg);
-        
+
         setExpectedTime(sourceLeg.getExpectedTime());
         setDelay(sourceLeg.getDelay());
         setAcceptanceTimes(sourceLeg.getAcceptanceTimes());
         setWaitingTimeLimit(sourceLeg.getWaitingTimeLimit());
         setAlternative(sourceLeg.getAlternative());
     }
-    
+
     public long getExpectedTime() {
         return expectedTime;
     }
-    
+
     public void setExpectedTime(long expectedTime) {
         this.expectedTime = expectedTime;
     }
-    
+
     public long getDelay() {
         return delay;
     }
-    
+
     public void setDelay(long delay) {
         this.delay = delay;
     }
@@ -103,25 +105,25 @@ public class ScheduledLeg extends Leg {
         Collections.sort(acceptanceTimes);
         return acceptanceTimes;
     }
-    
+
     public void setAcceptanceTimes(List<Long> acceptanceTimes) {
         this.acceptanceTimes = acceptanceTimes;
     }
-    
+
     public long getWaitingTimeLimit() {
         return waitingTimeLimit;
     }
-    
+
     public void setWaitingTimeLimit(long waitingTimeLimit) {
         this.waitingTimeLimit = waitingTimeLimit;
     }
-    
+
     public Leg getAlternative() {
         return alternative;
     }
-    
+
     public void setAlternative(Leg alternative) {
         this.alternative = alternative;
     }
-    
+
 }
