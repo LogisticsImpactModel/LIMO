@@ -28,20 +28,29 @@ import org.openide.util.Lookup;
  */
 public final class MultimodeLegWizardAction implements ActionListener {
 
-    private MultiModeLeg leg;
+    private MultimodeLegTablePanel.FinishedMultiModeLegListener legListener;
+    private MultiModeLeg originalLeg, leg;
+    private boolean update;
 
     public MultimodeLegWizardAction(MultimodeLegTablePanel.FinishedMultiModeLegListener legListener) {
         this.legListener = legListener;
-        this.leg = new MultiModeLeg();
+        this.originalLeg = new MultiModeLeg();
     }
 
     public MultimodeLegWizardAction() {
-        this.leg = new MultiModeLeg();
+        this.originalLeg = new MultiModeLeg();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
+        List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
+
+        if (!update) {
+            this.leg = new MultiModeLeg();
+        } else {
+            this.leg = new MultiModeLeg(originalLeg); //Creates a new leg with the same attributes. This way the original leg object keeped ontouched. 
+        }
+
         panels.add(new NameDescriptionIconHubTypeWizard());
         panels.add(new MultimodeLegTableWizard());
 
@@ -59,25 +68,26 @@ public final class MultimodeLegWizardAction implements ActionListener {
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
-        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
 
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("MULTIMODE_LEG"));
-        wiz.putProperty(TypeWizardAction.TYPE_OLDTYPE, leg);
+
+        wiz.putProperty(TypeWizardAction.TYPE_OLDTYPE, originalLeg); //TODO delete
+
+        wiz.putProperty("leg", leg);
+        wiz.putProperty("original_leg", originalLeg);
 
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            leg = (MultiModeLeg) wiz.getProperty(TypeWizardAction.TYPE_OLDTYPE);
+            leg = (MultiModeLeg) wiz.getProperty("leg");
+            originalLeg.deepOverwrite(leg);
 
             if (legListener != null) { //legListener can be null if the wizard is used for editing an exisitn gleg 
-                legListener.finishedLeg(leg);
+                legListener.finishedLeg(originalLeg);
                 Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("MULTIMODE_LEG") + " ", StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
             }
         }
-    }
-
-    public MultiModeLeg getLeg() {
-        return leg;
     }
 
     /**
@@ -87,9 +97,7 @@ public final class MultimodeLegWizardAction implements ActionListener {
      * @param leg Leg which should be updated
      */
     public void setUpdate(MultiModeLeg leg) {
-        this.leg = leg;
+        this.originalLeg = leg;
+        this.update = true;
     }
-
-    private MultimodeLegTablePanel.FinishedMultiModeLegListener legListener;
-
 }

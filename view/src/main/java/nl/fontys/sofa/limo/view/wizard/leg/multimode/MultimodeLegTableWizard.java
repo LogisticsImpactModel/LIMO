@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.leg.multimode;
 
+import java.util.HashMap;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
@@ -46,7 +47,7 @@ public class MultimodeLegTableWizard implements WizardDescriptor.Panel<WizardDes
     public void readSettings(WizardDescriptor wiz) {
         leg = (MultiModeLeg) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
         if (leg.getLegs() != null) {
-            getComponent().getLegModel().addLegs(leg.getLegs());
+            getComponent().getLegModel().addLegs(new HashMap<>(leg.getLegs()));
         }
     }
 
