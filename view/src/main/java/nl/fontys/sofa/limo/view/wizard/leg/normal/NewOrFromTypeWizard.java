@@ -1,6 +1,7 @@
 package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
@@ -44,13 +45,11 @@ public class NewOrFromTypeWizard implements WizardDescriptor.Panel<WizardDescrip
     public void readSettings(WizardDescriptor wiz) {
     }
 
-    //store legType if seleceted
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("legTypeCopy", null);
         LegType legType = getComponent().getLegType();
         if (legType != null) {
-            wiz.putProperty("legTypeCopy", legType);
+            wiz.putProperty("leg", new Leg(legType));
         }
     }
 }

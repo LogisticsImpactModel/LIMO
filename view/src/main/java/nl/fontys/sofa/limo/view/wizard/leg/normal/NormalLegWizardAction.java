@@ -7,12 +7,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
-import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
-import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import org.openide.DialogDisplayer;
@@ -28,7 +24,7 @@ import org.openide.util.Lookup;
 public final class NormalLegWizardAction implements ActionListener {
 
     private MultimodeLegTablePanel.FinishedLegListener legListener;
-    private Leg leg;
+    private Leg originalLeg, leg;
     private boolean update;
 
     public NormalLegWizardAction(MultimodeLegTablePanel.FinishedLegListener legListener) {
@@ -37,7 +33,7 @@ public final class NormalLegWizardAction implements ActionListener {
     }
 
     public NormalLegWizardAction() {
-        this.leg = new Leg();
+        this.originalLeg = new Leg();
     }
 
     @Override
@@ -45,7 +41,11 @@ public final class NormalLegWizardAction implements ActionListener {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!update) {
             panels.add(new NewOrFromTypeWizard());
+            this.leg = new Leg();
+        } else {
+            this.leg = new Leg(originalLeg); //Creates a new leg with the same attributes. This way the original leg object keeped ontouched. 
         }
+
         panels.add(new NameDescriptionIconLegPanel());
         panels.add(new ProceduresLegTypeWizard());
         panels.add(new EventLegTypeWizard());
@@ -64,34 +64,31 @@ public final class NormalLegWizardAction implements ActionListener {
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
-        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
-        if (update) {
-            wiz.putProperty("leg", leg);
-        }
-        // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
+
+        wiz.putProperty("leg", leg);
+        wiz.putProperty("original_leg", originalLeg);
+
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle(LIMOResourceBundle.getString("CREATE_NORMAL_LEG"));
+
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            leg.setName((String) wiz.getProperty("name"));
-            leg.setDescription((String) wiz.getProperty("description"));
-            leg.setIcon((Icon) wiz.getProperty("icon"));
-            leg.setEvents((List<Event>) wiz.getProperty("events"));
-            leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
+            originalLeg.deepOverwrite((Leg) wiz.getProperty("leg"));
 
             if (legListener != null) {
-                legListener.finishedLeg(leg);
-                Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("LEG") + " " + leg.getName(), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+                legListener.finishedLeg(originalLeg);
+                Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("LEG") + " " + originalLeg.getName(), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
             }
         }
     }
 
     public void setUpdate(Leg leg) {
-        this.leg = leg;
+        this.originalLeg = leg;
         update = true;
     }
 
     public Leg getLeg() {
-        return leg;
+        return originalLeg;
     }
 }

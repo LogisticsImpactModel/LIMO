@@ -1,8 +1,8 @@
 package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
+import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
-import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -11,10 +11,10 @@ import org.openide.util.HelpCtx;
  *
  * @author Pascal Lindner
  */
-
 public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     private EventsLegTypePanel component;
+    private Leg leg;
 
     @Override
     public EventsLegTypePanel getComponent() {
@@ -44,23 +44,16 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
     @Override
     public void removeChangeListener(ChangeListener l) {
     }
-    
-    //Update label
+
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Leg leg = (Leg) wiz.getProperty("leg");
-        if (leg != null) {
-            getComponent().update(leg.getEvents());
-        } LegType htyp = (LegType) wiz.getProperty("legTypeCopy");
-            if (htyp != null) {
-                getComponent().update(htyp.getEvents());
-            }
+        leg = (Leg) wiz.getProperty("leg");
+        getComponent().update(new ArrayList(leg.getEvents()));
     }
 
-    //Store events
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("events", component.getEvents());
+        leg.setEvents(component.getEvents());
     }
 
 }
