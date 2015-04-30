@@ -19,6 +19,31 @@ public class MultiModeLeg extends Leg {
         legs = new HashMap<>();
     }
 
+    /**
+     * Overwrites all attributes of the {@link MultiModeLeg}-object with the
+     * attributes of the sourceLeg. The previous and next attributes are not
+     * copied.
+     *
+     * @param sourceLeg
+     */
+    public MultiModeLeg(MultiModeLeg sourceLeg) {
+        super();
+        deepOverwrite(sourceLeg);
+    }
+
+    /**
+     * Overwrites all attributes of the {@link MultiModeLeg}-object with the
+     * attributes of the sourceLeg. The previous and next attributes are not
+     * copied.
+     *
+     * @param sourceLeg
+     */
+    public void deepOverwrite(MultiModeLeg sourceLeg) {
+        super.deepOverwrite(sourceLeg);
+
+        setLegs((sourceLeg).getLegs());
+    }
+
     public Map<Leg, Double> getLegs() {
         return legs;
     }

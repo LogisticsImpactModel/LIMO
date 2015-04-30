@@ -24,8 +24,7 @@ public class Hub extends Node<Leg> {
         super();
     }
 
-    /**
-     *    /**
+    /**  
      * Generates a {@link Hub} object from a {@link HubType} object.
      *
      * @param hubType The hub should be based on this type
