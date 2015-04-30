@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.hub;
 
+import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import org.openide.WizardDescriptor;
@@ -45,7 +46,7 @@ public class EventsHubWizard implements WizardDescriptor.Panel<WizardDescriptor>
     public void readSettings(WizardDescriptor wiz) {
         hub = (Hub) wiz.getProperty("hub");
         if (hub != null) {
-            getComponent().update(hub.getEvents());
+            getComponent().update(new ArrayList(hub.getEvents()));
         }
     }
 
