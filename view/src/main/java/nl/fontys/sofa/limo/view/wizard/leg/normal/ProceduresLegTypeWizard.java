@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
+import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
@@ -50,7 +51,7 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
     @Override
     public void readSettings(WizardDescriptor wiz) {
         leg = (Leg) wiz.getProperty("leg");
-        getComponent().update(leg.getProcedures());
+        getComponent().update(new ArrayList(leg.getProcedures()));
     }
 
     @Override

@@ -45,9 +45,7 @@ public class EventsHubWizard implements WizardDescriptor.Panel<WizardDescriptor>
     @Override
     public void readSettings(WizardDescriptor wiz) {
         hub = (Hub) wiz.getProperty("hub");
-        if (hub != null) {
-            getComponent().update(new ArrayList(hub.getEvents()));
-        }
+        getComponent().update(new ArrayList(hub.getEvents()));
     }
 
     @Override

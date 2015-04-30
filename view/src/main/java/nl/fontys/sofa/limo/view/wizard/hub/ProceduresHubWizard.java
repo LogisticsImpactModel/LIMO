@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.hub;
 
+import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
@@ -57,7 +58,7 @@ public class ProceduresHubWizard implements WizardDescriptor.Panel<WizardDescrip
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        hub.setProcedures(getComponent().getProcedures());
+        hub.setProcedures(new ArrayList(getComponent().getProcedures()));
     }
 
     @Override
