@@ -85,7 +85,11 @@ public class SavableComponent extends AbstractSavable {
         if (result == JFileChooser.APPROVE_OPTION) { //If folder is selected than save the supply chain.
                 supplyChain.setName(fileName);
                 File file = fc.getSelectedFile();
-                supplyChain.setFilepath(file.getParent()+ File.separator+ supplyChain.getName() );
+                if (supplyChain.getName().contains(".lsc")){
+                    supplyChain.setFilepath(file.getParent()+ File.separator+ supplyChain.getName() );
+                } else {
+                    supplyChain.setFilepath(file.getParent()+ File.separator+ supplyChain.getName() + ".lsc" );
+                }
                 supplyChain.saveToFile();
                 unregister();
         } else { //If no folder is selected throw an exception so the saving process is cancelled.
