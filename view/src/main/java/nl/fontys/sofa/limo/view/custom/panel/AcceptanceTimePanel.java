@@ -4,7 +4,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.fontys.sofa.limo.view.custom.panel;
 
 import java.awt.BorderLayout;
@@ -28,42 +27,39 @@ import nl.fontys.sofa.limo.view.util.IconUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
- * The AcceptanceTimesPropertyEditor class provides the acceptance times in a list. 
- * Beyound that, it provides the option to edit, delete and add acceptance times.
- * 
+ * The AcceptanceTimesPropertyEditor class provides the acceptance times in a
+ * list. Beyound that, it provides the option to edit, delete and add acceptance
+ * times.
+ *
  * @author Christina Zenzes
  */
-public class AcceptanceTimePanel extends JPanel{
-    
+public class AcceptanceTimePanel extends JPanel {
+
     private JPanel panelRight;
     private JButton btnEdit;
     private JTable table;
     private JButton btnDelete;
     protected DefaultTableModel model;
     private JButton btnAdd;
-    
-    public AcceptanceTimePanel(List<Long> acceptanceTime){
-       this();
-       for(Long time : acceptanceTime){
-           model.addRow(new Long[]{time});
-       }
-                
+
+    public AcceptanceTimePanel(List<Long> acceptanceTime) {
+        this();
+        for (Long time : acceptanceTime) {
+            model.addRow(new Long[]{time});
+        }
     }
 
-    public AcceptanceTimePanel(){
+    public AcceptanceTimePanel() {
         initComponents();
     }
 
-
     @Override
     public String getName() {
-        return  LIMOResourceBundle.getString("ACCEPTANCE_TIME");
+        return LIMOResourceBundle.getString("ACCEPTANCE_TIME");
     }
-    
-    
-    
+
     private void initComponents() {
-     
+
         btnAdd = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
         btnEdit = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.EDIT)));
         btnDelete = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
@@ -84,9 +80,9 @@ public class AcceptanceTimePanel extends JPanel{
         bv.add(btnDelete);
         add(bv, BorderLayout.EAST);
     }
-    
-     public void setActionListener() {
-       btnAdd.addActionListener(new ActionListener() {
+
+    public void setActionListener() {
+        btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 long aTime = 0;
@@ -97,7 +93,7 @@ public class AcceptanceTimePanel extends JPanel{
                     if (!time.isEmpty()) {
                         try {
                             aTime = Long.parseLong(time.replace(",", "."));
-                             model.addRow(new Long[]{aTime});
+                            model.addRow(new Long[]{aTime});
                         } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(AcceptanceTimePanel.this,
                                     LIMOResourceBundle.getString("NOT_A_NUMBER"),
@@ -105,9 +101,7 @@ public class AcceptanceTimePanel extends JPanel{
                                     JOptionPane.ERROR_MESSAGE);
                         }
                     }
-                   
-                   
-                    
+
                 }
             }
         });
@@ -130,8 +124,7 @@ public class AcceptanceTimePanel extends JPanel{
                                         JOptionPane.ERROR_MESSAGE);
                             }
                         }
-                        
-                        
+
                     }
                 }
             }
@@ -145,23 +138,24 @@ public class AcceptanceTimePanel extends JPanel{
                 }
             }
         });
-     }
-     
-     protected JTable getTable(){
-         return table;
-     }
-     
-     /**
-      * retunring all accaptance times which are shown in the panel
-      * @return {@code List<Long>} wiht longs which represents acceptance times
-      */
-     public List<Long> getAcceptanceTimes(){
-         List<Long> times = new ArrayList<>();
-          for (int i = 0; i < table.getRowCount(); i++) {
-                times.add(Long.parseLong(table.getValueAt(i, 0).toString()));
+    }
 
-            }
-          return times;
-     }
-    
+    protected JTable getTable() {
+        return table;
+    }
+
+    /**
+     * retunring all accaptance times which are shown in the panel
+     *
+     * @return {@code List<Long>} wiht longs which represents acceptance times
+     */
+    public List<Long> getAcceptanceTimes() {
+        List<Long> times = new ArrayList<>();
+        for (int i = 0; i < table.getRowCount(); i++) {
+            times.add(Long.parseLong(table.getValueAt(i, 0).toString()));
+
+        }
+        return times;
+    }
+
 }

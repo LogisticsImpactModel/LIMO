@@ -17,6 +17,7 @@ import static nl.fontys.sofa.limo.view.util.IconUtil.getScaledImageFromIcon;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegWizardAction;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
+import nl.fontys.sofa.limo.view.wizard.leg.scheduled.ScheduledLegWizardAction;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.anchor.AnchorShape;
@@ -153,31 +154,29 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
                 }
             });
 
-            if (!(getLeg() instanceof ScheduledLeg)) { //Scheduled leg is not implemented yet
-                popup.add(new AbstractAction(LIMOResourceBundle.getString("EDIT")) {
+            popup.add(new AbstractAction(LIMOResourceBundle.getString("EDIT")) {
 
-                    @Override
-                    public void actionPerformed(ActionEvent ae) {
-                        Leg leg = getLeg();
-                        if (leg instanceof MultiModeLeg) {
-                            MultimodeLegWizardAction wizard = new MultimodeLegWizardAction();
-                            wizard.setUpdate((MultiModeLeg) leg);
-                            wizard.actionPerformed(ae);
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    Leg leg = getLeg();
+                    if (leg instanceof MultiModeLeg) {
+                        MultimodeLegWizardAction wizard = new MultimodeLegWizardAction();
+                        wizard.setUpdate((MultiModeLeg) leg);
+                        wizard.actionPerformed(ae);
 
-                        } else if (leg instanceof ScheduledLeg) {
-//                        ScheduledLegWizardAction wizard = new ScheduledLegWizardAction();
-//                        wizard.setUpdate(leg);
-//                        wizard.actionPerformed(ae);
-                        } else {
-                            NormalLegWizardAction wizard = new NormalLegWizardAction();
-                            wizard.setUpdate(leg);
-                            wizard.actionPerformed(ae);
-                        }
-                        propertyChange(null);
-                        legNode.refresh();
+                    } else if (leg instanceof ScheduledLeg) {
+                        ScheduledLegWizardAction wizard = new ScheduledLegWizardAction();
+                        wizard.setUpdate((ScheduledLeg) leg);
+                        wizard.actionPerformed(ae);
+                    } else {
+                        NormalLegWizardAction wizard = new NormalLegWizardAction();
+                        wizard.setUpdate(leg);
+                        wizard.actionPerformed(ae);
                     }
-                });
-            }
+                    propertyChange(null);
+                    legNode.refresh();
+                }
+            });
 
             return popup;
         }
