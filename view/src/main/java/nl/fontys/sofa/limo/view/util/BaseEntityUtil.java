@@ -61,13 +61,13 @@ public class BaseEntityUtil {
      */
     public static String findFirstAvailableAddition(List<BaseEntity> items, String name) {
         int i = 1;
-        if (!containsHubWithName(items, name)) {
+        if (!containsBaseEntityWithName(items, name)) {
             return ""; //No addition is needed
         }
 
         boolean found = false;
         while (!found) {
-            if (!containsHubWithName(items, name + i)) {
+            if (!containsBaseEntityWithName(items, name + i)) {
                 found = true;
             } else {
                 i++;
@@ -83,7 +83,7 @@ public class BaseEntityUtil {
      * @param name Name which should be checked
      * @return True if an item in the list is found with the same name
      */
-    public static boolean containsHubWithName(List<BaseEntity> items, String name) {
+    public static boolean containsBaseEntityWithName(List<BaseEntity> items, String name) {
         boolean contains = false;
 
         for (BaseEntity item : items) {

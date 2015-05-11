@@ -82,7 +82,7 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Validating
         }
 
         if (!update || !originalHub.getName().equals(getComponent().getNameInput())) {//If the hub name did not change (while editing) the name should not be uniques
-            if (BaseEntityUtil.containsHubWithName(BaseEntityUtil.getAllEntities(HubService.class), component.getNameInput())) { //Check if name is unique
+            if (BaseEntityUtil.containsBaseEntityWithName(BaseEntityUtil.getAllEntities(HubService.class), component.getNameInput())) { //Check if name is unique
                 getComponent().update(BaseEntityUtil.getUniqueName(HubService.class, getComponent().getNameInput())); //Update hub name
                 throw new WizardValidationException(null, "Hub name is not unique, a new hub name is generated.", null);
             }
