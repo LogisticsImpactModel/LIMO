@@ -34,7 +34,7 @@ import org.openide.nodes.PropertyEditorRegistration;
 /**
  * Property editor for the location object of hubs.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 @PropertyEditorRegistration(targetType = Location.class)
 public class LocationPropertyEditor extends PropertyEditorSupport {

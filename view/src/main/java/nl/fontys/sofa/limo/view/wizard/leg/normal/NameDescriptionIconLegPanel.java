@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
-import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
@@ -14,10 +13,10 @@ import org.openide.util.HelpCtx;
  *
  * @author Pascal Lindner
  */
-
 public class NameDescriptionIconLegPanel implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NameDescriptionIconPanel component;
+    private Leg leg;
 
     @Override
     public NameDescriptionIconPanel getComponent() {
@@ -34,7 +33,7 @@ public class NameDescriptionIconLegPanel implements WizardDescriptor.Panel<Wizar
 
     @Override
     public boolean isValid() {
-        return true;
+        return true; //Enables next button
     }
 
     @Override
@@ -45,21 +44,12 @@ public class NameDescriptionIconLegPanel implements WizardDescriptor.Panel<Wizar
     public void removeChangeListener(ChangeListener l) {
     }
 
-    //Update legs
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Leg leg = (Leg) wiz.getProperty("leg");
-        if (leg != null) {
-            getComponent().update(leg.getName(), leg.getDescription(), leg.getIcon());
-        }
-
-        LegType legType = (LegType) wiz.getProperty("legTypeCopy");
-        if (legType != null) {
-            getComponent().update("", legType.getDescription(), legType.getIcon());
-        }
+        leg = (Leg) wiz.getProperty("leg");
+        getComponent().update(leg.getName(), leg.getDescription(), leg.getIcon());
     }
 
-    //Validate name
     @Override
     public void validate() throws WizardValidationException {
         if (component.getNameInput().isEmpty()) {
@@ -67,11 +57,10 @@ public class NameDescriptionIconLegPanel implements WizardDescriptor.Panel<Wizar
         }
     }
 
-    //Store name, description and icon
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty("name", getComponent().getNameInput());
-        wiz.putProperty("description", getComponent().getDescriptionInput());
-        wiz.putProperty("icon", getComponent().getIcon());
+        leg.setName(getComponent().getNameInput());
+        leg.setDescription(getComponent().getDescriptionInput());
+        leg.setIcon(getComponent().getIcon());
     }
 }

@@ -9,13 +9,13 @@ import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.TitledBorder;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.layout.LayoutFactory;
@@ -137,10 +137,15 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
     /**
      * Get the hub which belongs to this widget.
+     *
      * @return
      */
     public Hub getHub() {
         return hubNode.getLookup().lookup(Hub.class);
+    }
+
+    public HubWidget getHubWidget() {
+        return this;
     }
 
     /**
@@ -157,7 +162,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
         setImage(hub.getIcon().getImage());
         setLabel(hub.getName());
-//        createBorder();
+        setToolTipText(hub.getName());
 
         if (numberOfEvents == 0) {
             eventWidget.setVisible(false);
@@ -207,6 +212,18 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     scene.setStartWidget(HubWidget.this);
                 }
             });
+
+            popup.add(new AbstractAction(LIMOResourceBundle.getString("EDIT")) {
+
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    HubWizardAction wiz = new HubWizardAction();
+                    wiz.setUpdate(getHub());
+                    wiz.actionPerformed(ae);
+
+                    propertyChange(null);
+                }
+            });
             popup.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
 
                 @Override
@@ -214,6 +231,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
                     scene.removeHubWidget(HubWidget.this);
                     scene.removeNodeWithEdges(hubNode);
+                    propertyChange(null);
                 }
             });
             return popup;

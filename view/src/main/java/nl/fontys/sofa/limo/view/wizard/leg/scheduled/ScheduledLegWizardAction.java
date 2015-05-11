@@ -7,12 +7,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
-import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
-import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.EventLegTypeWizard;
@@ -27,30 +23,37 @@ import org.openide.util.Lookup;
  *
  * @author Pascal Lindner
  */
-//Not shown because not saved in DB
-//@ActionID(category = "Leg", id = "nl.fontys.limo.view.wizzard.leg.scheduled.ScheduledLegWizardAction")
-//@ActionRegistration(displayName = "Add Scheduled leg")
-//@ActionReference(path = "Menu/Master Data/Leg", position = 20)
 public final class ScheduledLegWizardAction implements ActionListener {
+
+    private MultimodeLegTablePanel.FinishedScheduledLegListener legListener;
+    private ScheduledLeg originalLeg, leg;
+    private boolean update;
 
     public ScheduledLegWizardAction(MultimodeLegTablePanel.FinishedScheduledLegListener legListener) {
         this.legListener = legListener;
     }
 
+    public ScheduledLegWizardAction() {
+        originalLeg = new ScheduledLeg();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
+        if (!update) {
+            this.leg = new ScheduledLeg();
+        } else {
+            this.leg = new ScheduledLeg(originalLeg); //Creates a new leg with the same attributes. This way the original leg object keeped ontouched. 
+        }
+
         panels.add(new NameDescriptionIconLegPanel());
         panels.add(new ScheduledLegWizard());
         panels.add(new ProceduresLegTypeWizard());
-        EventService eventService = Lookup.getDefault().lookup(EventService.class);
-        if (!eventService.findAll().isEmpty()) {
-            panels.add(new EventLegTypeWizard());
-        }
+        panels.add(new EventLegTypeWizard());
+
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
-            // Default step name to component name of panel.
             steps[i] = c.getName();
             if (c instanceof JComponent) { // assume Swing components
                 JComponent jc = (JComponent) c;
@@ -61,25 +64,28 @@ public final class ScheduledLegWizardAction implements ActionListener {
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
+
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
-        // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("SCHEDULED_LEG"));
+
+        wiz.putProperty("leg", leg);
+        wiz.putProperty("original_leg", originalLeg);
+
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            ScheduledLeg leg = (ScheduledLeg) wiz.getProperty("leg");
-            leg.setName((String) wiz.getProperty("name"));
-            leg.setDescription((String)wiz.getProperty("description")) ;
-            leg.setIcon((Icon) wiz.getProperty("icon"));
-            leg.setEvents((List<Event>) wiz.getProperty("events"));
-            leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
+            leg = (ScheduledLeg) wiz.getProperty("leg");
+            originalLeg.deepOverwrite(leg);
 
-            legListener.finishedLeg(leg);
-            Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("SCHEDULED_LEG"), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
-
+            if (legListener != null) {
+                legListener.finishedLeg(originalLeg);
+                Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("SCHEDULED_LEG"), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+            }
         }
     }
 
-    private final MultimodeLegTablePanel.FinishedScheduledLegListener legListener;
-
+    public void setUpdate(ScheduledLeg leg) {
+        this.originalLeg = leg;
+        update = true;
+    }
 }

@@ -7,12 +7,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
-import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
-import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import org.openide.DialogDisplayer;
@@ -25,14 +21,19 @@ import org.openide.util.Lookup;
  *
  * @author Pascal Lindner
  */
-
-//Not shown in menubar because is not stored in DB
-//@ActionRegistration(displayName = "Add Normal leg")
-//@ActionReference(path = "Menu/Master Data/Leg", position = 20)
 public final class NormalLegWizardAction implements ActionListener {
 
+    private MultimodeLegTablePanel.FinishedLegListener legListener;
+    private Leg originalLeg, leg;
+    private boolean update;
+
     public NormalLegWizardAction(MultimodeLegTablePanel.FinishedLegListener legListener) {
+        this();
         this.legListener = legListener;
+    }
+
+    public NormalLegWizardAction() {
+        this.originalLeg = new Leg();
     }
 
     @Override
@@ -40,13 +41,15 @@ public final class NormalLegWizardAction implements ActionListener {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         if (!update) {
             panels.add(new NewOrFromTypeWizard());
+            this.leg = new Leg();
+        } else {
+            this.leg = new Leg(originalLeg); //Creates a new leg with the same attributes. This way the original leg object keeped ontouched. 
         }
+
         panels.add(new NameDescriptionIconLegPanel());
         panels.add(new ProceduresLegTypeWizard());
-        EventService eventService = Lookup.getDefault().lookup(EventService.class);
-        if (!eventService.findAll().isEmpty()) {
-            panels.add(new EventLegTypeWizard());
-        }
+        panels.add(new EventLegTypeWizard());
+
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -61,31 +64,31 @@ public final class NormalLegWizardAction implements ActionListener {
                 jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
             }
         }
-        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
-        if (update) {
-            wiz.putProperty("leg", leg);
-        }
-        // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
+
+        wiz.putProperty("leg", leg);
+        wiz.putProperty("original_leg", originalLeg);
+
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.setTitle(LIMOResourceBundle.getString("CREATE_NORMAL_LEG"));
+
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            Leg leg = new Leg();
-            leg.setName((String) wiz.getProperty("name"));
-            leg.setDescription((String) wiz.getProperty("description"));
-            leg.setIcon((Icon) wiz.getProperty("icon"));
-            leg.setEvents((List<Event>) wiz.getProperty("events"));
-            leg.setProcedures((List<Procedure>) wiz.getProperty("procedures"));
-            legListener.finishedLeg(leg);
-            Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("LEG") + " " + leg.getName(), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+            originalLeg.deepOverwrite((Leg) wiz.getProperty("leg"));
+
+            if (legListener != null) {
+                legListener.finishedLeg(originalLeg);
+                Lookup.getDefault().lookup(StatusBarService.class).setMessage(LIMOResourceBundle.getString("LEG") + " " + originalLeg.getName(), StatusBarService.ACTION_CREATE, StatusBarService.STATE_SUCCESS, null);
+            }
         }
     }
 
-    public void update(Leg leg) {
-        this.leg = leg;
+    public void setUpdate(Leg leg) {
+        this.originalLeg = leg;
         update = true;
     }
-    private final MultimodeLegTablePanel.FinishedLegListener legListener;
-    private Leg leg;
-    private boolean update;
+
+    public Leg getLeg() {
+        return originalLeg;
+    }
 }

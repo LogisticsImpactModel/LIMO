@@ -5,10 +5,12 @@ package nl.fontys.sofa.limo.domain.component;
  * previous node. A hub can only have legs as next and previous nodes, while a
  * leg can only have hubs.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  * @param <T> Type of Node. Leg for Hubs and Hub for Legs.
  */
 public abstract class Node<T extends Node> extends Component {
+
+    private static final long serialVersionUID = -7756347619644993900L;
 
     protected T next;
     protected T previous;
@@ -26,6 +28,24 @@ public abstract class Node<T extends Node> extends Component {
         if (this.next.previous == null || !this.next.previous.equals(this)) {
             this.next.previous = this;
         }
+    }
+
+    /**
+     * Remove getNext() object from this object. This method also removes the
+     * getPrevious() object of the next object.
+     */
+    public void removeNext() {
+        this.next.previous = null;
+        this.next = null;
+    }
+
+    /**
+     * Remove getPrevious() object from this object. This method also removes the
+     * getNext() object of the previous object.
+     */
+    public void removePrevious() {
+        this.previous.next = null;
+        this.previous = null;
     }
 
     public T getPrevious() {

@@ -10,7 +10,7 @@ import org.openide.nodes.PropertySupport;
 /**
  * Stupid property used to be able to listen to changes in the property window.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class StupidProperty<T> extends PropertySupport.Reflection<T> {
 

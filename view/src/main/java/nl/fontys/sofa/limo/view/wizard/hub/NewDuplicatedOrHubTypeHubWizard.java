@@ -4,8 +4,6 @@ import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_COPY;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_TYPE;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -18,6 +16,7 @@ public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<W
      * @author Pascal Lindner
      */
     private NewDuplicatedOrHubTypeHubPanel component;
+    private Hub hub;
 
     @Override
     public NewDuplicatedOrHubTypeHubPanel getComponent() {
@@ -47,22 +46,23 @@ public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<W
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-
+        hub = (Hub) wiz.getProperty("hub");
     }
+
     //Store Copy or HubType
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(HUB_TYPE, null);
-        wiz.putProperty(HUB_COPY, null);
-        Hub hub = getComponent().getHub();
-        if (hub != null) {
-            wiz.putProperty(HUB_COPY, hub);
+        Hub copyHub = getComponent().getHub();
+        if (copyHub != null) { //If 'copy from hub' is selected
+            wiz.putProperty("hub", copyHub);
         }
+
         HubType hubType = getComponent().getHubType();
-        if (hubType != null) {
-            wiz.putProperty(HUB_TYPE, hubType);
+        if (hubType != null) { //If 'create from HubType' is selected
+            wiz.putProperty("hub", new Hub(hubType));
         }
     }
+
     //Validate for empty selection
     @Override
     public void validate() throws WizardValidationException {

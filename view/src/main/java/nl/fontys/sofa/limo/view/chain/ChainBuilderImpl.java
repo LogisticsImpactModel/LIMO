@@ -36,6 +36,13 @@ public class ChainBuilderImpl implements ChainBuilder {
     @Override
     public void removeHub(Hub hub) {
         hubList.remove(hub);
+        
+        if (hub.getNext() != null) {
+            disconnectLeg(hub.getNext());
+        }
+        if (hub.getPrevious() != null) {
+            disconnectLeg(hub.getPrevious());
+        }
     }
 
     @Override
@@ -45,12 +52,12 @@ public class ChainBuilderImpl implements ChainBuilder {
 
     @Override
     public Hub getStartHub() {
-        return chain.getStart();
+        return chain.getStartHub();
     }
 
     @Override
     public void setStartHub(Hub hub) {
-        chain.setStart(hub);
+        chain.setStartHub(hub);
     }
 
     @Override
@@ -59,6 +66,13 @@ public class ChainBuilderImpl implements ChainBuilder {
         connection.setPrevious(source);
         connection.setNext(target);
         target.setPrevious(connection);
+    }
+
+    @Override
+    public void disconnectLeg(Leg leg) {
+        leg.removeNext();
+        leg.removePrevious();
+        leg = null;
     }
 
     /**
@@ -87,5 +101,4 @@ public class ChainBuilderImpl implements ChainBuilder {
     public SupplyChain getSupplyChain() {
         return chain;
     }
-
 }

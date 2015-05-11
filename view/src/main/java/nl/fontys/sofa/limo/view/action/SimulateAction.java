@@ -22,6 +22,7 @@ import org.openide.util.Lookup;
 import org.openide.util.Utilities;
 import org.openide.util.actions.Presenter;
 import org.openide.windows.TopComponent;
+import org.openide.windows.WindowManager;
 
 /**
  * Action which is responsible for running the simulation.
@@ -89,10 +90,17 @@ public final class SimulateAction extends AbstractAction
             return;
         }
 
-        for (SimulationResult simResult : task.getResults()) {
-            ResultTopComponent rtc = new ResultTopComponent(simResult);
-            rtc.open();
-            rtc.requestActive();
+        for (final SimulationResult simResult : task.getResults()) {
+            WindowManager.getDefault().invokeWhenUIReady(new Runnable() {
+                
+                @Override
+                public void run() {
+                    ResultTopComponent rtc = new ResultTopComponent(simResult);
+                    rtc.open();
+                    rtc.requestActive();
+                }
+                
+            });
         }
     }
 

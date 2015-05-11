@@ -3,11 +3,7 @@ package nl.fontys.sofa.limo.view.wizard.hub;
 import java.text.MessageFormat;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_COPY;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_LOCATION;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_TYPE;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -20,8 +16,7 @@ import org.openide.util.HelpCtx;
 public class LocationHubWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private LocationHubPanel component;
-    private Hub lastHub;
-    private HubType lastHubType;
+    private Hub hub;
 
     @Override
     public LocationHubPanel getComponent() {
@@ -49,36 +44,20 @@ public class LocationHubWizard implements WizardDescriptor.Panel<WizardDescripto
     public void removeChangeListener(ChangeListener l) {
     }
 
-    //Update Labels for Location. Depends on Hub or HubType.
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Hub hub = (Hub) wiz.getProperty(HUB_COPY);
-        HubType hubType = (HubType) wiz.getProperty(HUB_TYPE);
+        hub = (Hub) wiz.getProperty("hub");
         if (hub != null) {
-            if (hub != lastHub) {
-                getComponent().updateLabel(null);
-                getComponent().updateLabel(hub.getLocation());
-            }
-        } else if (hubType != null) {
-            if (hubType != lastHubType) {
-                getComponent().updateLabel(null);
-            }
-        } else {
-            if (lastHub != null || lastHubType != null) {
-                getComponent().updateLabel(null);
-            }
+            getComponent().updateLabel(null);
+            getComponent().updateLabel(hub.getLocation());
         }
-        lastHub = hub;
-        lastHubType = hubType;
     }
 
-    //Save Location
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(HUB_LOCATION, getComponent().getHubLocation());
+        hub.setLocation(getComponent().getHubLocation());
     }
 
-    //Validate that Continent is set.
     @Override
     public void validate() throws WizardValidationException {
         if (component.getHubLocation() == null) {

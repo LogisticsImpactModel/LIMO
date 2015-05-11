@@ -11,7 +11,7 @@ import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 @ServiceProvider(service = DistributionFactory.class)
 public class DistributionFactoryImpl implements DistributionFactory {

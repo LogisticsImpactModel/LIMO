@@ -22,7 +22,7 @@ public class SimulationTest extends SupplyChainTester {
         buildComplexSupplyChain();
         leg.setNext(end);
         start.setNext(leg);
-        supplyChain.setStart(start);
+        supplyChain.setStartHub(start);
         simulation = new Simulation(supplyChain, NUMBER_OF_SIMULATIONS, "1");
     }
 

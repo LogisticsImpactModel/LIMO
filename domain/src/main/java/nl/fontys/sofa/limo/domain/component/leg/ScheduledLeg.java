@@ -9,9 +9,11 @@ import javax.persistence.Embedded;
  * Leg with a schedule and an alternative, if the schedule can't be uphold. Time
  * is always set in minutes.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class ScheduledLeg extends Leg {
+
+    private static final long serialVersionUID = -836462388111897335L;
 
     public static final String WAIT_CATEGORY = "Waiting Time";
 
@@ -47,6 +49,35 @@ public class ScheduledLeg extends Leg {
 
     public ScheduledLeg() {
         this.acceptanceTimes = new ArrayList<>();
+    }
+
+    /**
+     * Overwrites all attributes of the {@link MultiModeLeg}-object with the
+     * attributes of the sourceLeg. The previous and next attributes are not
+     * copied.
+     *
+     * @param sourceLeg
+     */
+    public ScheduledLeg(ScheduledLeg sourceLeg) {
+        super(sourceLeg);
+        deepOverwrite(sourceLeg);
+    }
+
+    /**
+     * Overwrites all attributes of the {@link ScheduledLeg}-object with the
+     * attributes of the sourceLeg. The previous and next attributes are not
+     * copied.
+     *
+     * @param sourceLeg
+     */
+    public void deepOverwrite(ScheduledLeg sourceLeg) {
+        super.deepOverwrite(sourceLeg);
+
+        setExpectedTime(sourceLeg.getExpectedTime());
+        setDelay(sourceLeg.getDelay());
+        setAcceptanceTimes(sourceLeg.getAcceptanceTimes());
+        setWaitingTimeLimit(sourceLeg.getWaitingTimeLimit());
+        setAlternative(sourceLeg.getAlternative());
     }
 
     public long getExpectedTime() {

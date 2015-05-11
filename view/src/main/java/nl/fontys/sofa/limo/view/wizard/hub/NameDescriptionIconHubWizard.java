@@ -2,15 +2,11 @@ package nl.fontys.sofa.limo.view.wizard.hub;
 
 import java.text.MessageFormat;
 import javax.swing.event.ChangeListener;
+import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
+import nl.fontys.sofa.limo.view.util.BaseEntityUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_COPY;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_DESCRIPTION;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_ICON;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_NAME;
-import static nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction.HUB_TYPE;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -20,19 +16,11 @@ import org.openide.util.HelpCtx;
  *
  * @author Pascal Lindner
  */
-public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
+public class NameDescriptionIconHubWizard implements WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NameDescriptionIconPanel component;
-    private Hub lastHub = null;
-    private HubType lastHubType = null;
+    private Hub hub, originalHub;
     private boolean update;
-
-    public NameDescriptionIconHubWizard() {
-    }
-
-    public NameDescriptionIconHubWizard(boolean update) {
-        this.update = update;
-    }
 
     @Override
     public NameDescriptionIconPanel getComponent() {
@@ -49,7 +37,7 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
 
     @Override
     public boolean isValid() {
-        return true;
+        return true; //Next button is enabled
     }
 
     @Override
@@ -60,36 +48,30 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
     public void removeChangeListener(ChangeListener l) {
     }
 
-    //Update Labels
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Hub hub = (Hub) wiz.getProperty(HUB_COPY);
-        HubType hubType = (HubType) wiz.getProperty(HUB_TYPE);
-        if (hub != null) {
-            if (hub != lastHub && update) {
-                getComponent().update(hub.getName(), hub.getDescription(), hub.getIcon());
-            } else if (hub != lastHub && !update) {
-                getComponent().update(hub.getName() + LIMOResourceBundle.getString("COPY_NAME_EXTENSION"), hub.getDescription(), hub.getIcon());
+        hub = (Hub) wiz.getProperty("hub");
+        originalHub = (Hub) wiz.getProperty("original_hub");
+        update = (boolean) wiz.getProperty("update");
+
+        String name = "";
+        if (!update) { //When a new hub is generated, the name should be unique
+            if (hub.getName() != null) { //This prevents 'null' as name
+                name = BaseEntityUtil.getUniqueName(HubService.class, hub.getName());
             }
-        } else if (hubType != null) {
-            if (hubType != lastHubType) {
-                getComponent().update("", hubType.getDescription(), hubType.getIcon());
-            }
-        } else {
-            if (lastHub != null || lastHubType != null) {
-                getComponent().update("", "", null);
-            }
+        } else { //When a hub is edited, the name should not be unique 
+            name = hub.getName();
         }
-        lastHub = hub;
-        lastHubType = hubType;
+
+        getComponent().update(name, hub.getDescription(), hub.getIcon());
     }
 
     //Store name, description and icon
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(HUB_NAME, getComponent().getNameInput());
-        wiz.putProperty(HUB_DESCRIPTION, getComponent().getDescriptionInput());
-        wiz.putProperty(HUB_ICON, getComponent().getIcon());
+        hub.setName(getComponent().getNameInput());
+        hub.setDescription(getComponent().getDescriptionInput());
+        hub.setIcon(getComponent().getIcon());
     }
 
     //Validate that name is set.
@@ -97,6 +79,13 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Panel<Wiza
     public void validate() throws WizardValidationException {
         if (component.getNameInput().isEmpty()) {
             throw new WizardValidationException(null, MessageFormat.format(LIMOResourceBundle.getString("VALUE_NOT_SET"), LIMOResourceBundle.getString("NAME")), null);
+        }
+
+        if (!update || !originalHub.getName().equals(getComponent().getNameInput())) {//If the hub name did not change (while editing) the name should not be uniques
+            if (BaseEntityUtil.containsHubWithName(BaseEntityUtil.getAllEntities(HubService.class), component.getNameInput())) { //Check if name is unique
+                getComponent().update(BaseEntityUtil.getUniqueName(HubService.class, getComponent().getNameInput())); //Update hub name
+                throw new WizardValidationException(null, "Hub name is not unique, a new hub new is generated.", null);
+            }
         }
     }
 

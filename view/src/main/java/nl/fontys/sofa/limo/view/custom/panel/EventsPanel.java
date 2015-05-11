@@ -130,7 +130,7 @@ public abstract class EventsPanel extends JPanel {
      */
     public void update(List<Event> events) {
         eventsTableModel.getEvents().clear();
-        eventsTableModel.getEvents().addAll(events);
+        eventsTableModel.setEvents(events);
         eventsTableModel.fireTableDataChanged();
         checkDeleteButtonState();
     }

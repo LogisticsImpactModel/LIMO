@@ -129,6 +129,10 @@ public class NameDescriptionIconPanel<T extends Class> extends JPanel implements
             resetIcon();
         }
     }
+    
+    public void update(String name) {
+        nameInput.setText(name);
+    }
 
     public String getNameInput() {
         return nameInput.getText();

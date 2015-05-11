@@ -8,7 +8,7 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class DataEntryTableModel extends AbstractTableModel {
 

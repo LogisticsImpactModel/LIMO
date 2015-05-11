@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * Single value for a process object.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class RangeValue implements Value {
 

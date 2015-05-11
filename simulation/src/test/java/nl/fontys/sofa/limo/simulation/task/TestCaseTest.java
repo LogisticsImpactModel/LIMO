@@ -49,7 +49,7 @@ public class TestCaseTest extends SupplyChainTester {
 
         leg.setNext(end);
         start.setNext(leg);
-        supplyChain.setStart(start);
+        supplyChain.setStartHub(start);
 
         testCase.run();
         TestCaseResult result = testCase.getResult();
@@ -63,7 +63,7 @@ public class TestCaseTest extends SupplyChainTester {
     public void testRunMultiModeLegAlwaysHappen() {
         buildComplexSupplyChain();
 
-        supplyChain.setStart(start);
+        supplyChain.setStartHub(start);
         multiModeLeg = new MultiModeLeg();
         start.setNext(multiModeLeg);
         multiModeLeg.setNext(end);
@@ -86,7 +86,7 @@ public class TestCaseTest extends SupplyChainTester {
         leg2.setNext(end);
         start.setNext(leg2);
 
-        supplyChain.setStart(start);
+        supplyChain.setStartHub(start);
         multiModeLeg = new MultiModeLeg();
         multiModeLeg.setName("Multimode Leg");
         start.setNext(multiModeLeg);
@@ -125,7 +125,7 @@ public class TestCaseTest extends SupplyChainTester {
         leg2.setNext(end);
         start.setNext(leg2);
 
-        supplyChain.setStart(start);
+        supplyChain.setStartHub(start);
         ScheduledLeg scheduledLeg = new ScheduledLeg();
         scheduledLeg.setName("Scheduleg Leg");
         start.setNext(scheduledLeg);
@@ -177,7 +177,7 @@ public class TestCaseTest extends SupplyChainTester {
         leg2.getProcedures().add(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS));
         leg2.setNext(middleHub);
 
-        supplyChain.setStart(start);
+        supplyChain.setStartHub(start);
         ScheduledLeg scheduledLeg = new ScheduledLeg();
         scheduledLeg.setName("Scheduleg Leg");
         start.setNext(scheduledLeg);

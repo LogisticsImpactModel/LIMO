@@ -100,7 +100,7 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
 
     @Override
     Class getServiceClass() {
-        return LegType.class;
+        return LegTypeService.class;
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 @ServiceProvider(service = ProcedureCategoryDAO.class)
 public class OrientDBProcedureCategoryDAO extends OrientDBAbstractDAO<ProcedureCategory> implements ProcedureCategoryDAO{

@@ -23,7 +23,7 @@ import org.openide.util.TaskListener;
 
 /**
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class Simulation implements Runnable, TaskListener, Cancellable {
 

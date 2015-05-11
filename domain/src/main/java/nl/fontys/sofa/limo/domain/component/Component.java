@@ -10,7 +10,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 /**
  * Base class for all main components of a supply chain: hubs, legs and events.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public abstract class Component extends BaseEntity {
 

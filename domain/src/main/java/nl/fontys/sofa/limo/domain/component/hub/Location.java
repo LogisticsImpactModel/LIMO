@@ -6,9 +6,10 @@ import javax.persistence.Embedded;
 /**
  * The location of a hub is stored in this class. Only continent is mandatory.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class Location implements Serializable {
+    private static final long serialVersionUID = -5547100874889198466L;
 
     private Continent continent;
     private SerializableCountry country;
@@ -25,6 +26,16 @@ public class Location implements Serializable {
 
     public Location(Continent continent) {
         this.continent = continent;
+    }
+
+    public Location(Location location) {
+        this.continent = location.continent;
+        this.country = location.country;
+        this.state = location.state;
+        this.town = location.town;
+        this.postcode = location.postcode;
+        this.street = location.street;
+        this.housenumber = location.housenumber;
     }
 
     public Location(Continent continent, SerializableCountry country, String state, String town, String postcode, String street, String housenumber) {

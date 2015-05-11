@@ -11,11 +11,15 @@ import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
+import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
+import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
-import nl.fontys.sofa.limo.view.node.WidgetableNode;
+import nl.fontys.sofa.limo.view.node.bean.MultiModeLegNode;
+import nl.fontys.sofa.limo.view.node.bean.ScheduledLegNode;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.widget.BasicWidget;
@@ -82,12 +86,17 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
      * layers and the available actions.
      *
      * @param parent the parent of this scene.
+     * @param chain
      * @throws IOException can occur when certain resources like images cannot
-     * be found.
+     * @throws IntrospectionException be found.
      */
     public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain) throws IOException, IntrospectionException {
         this.parent = parent;
         chainBuilder = new ChainBuilderImpl();
+        chainBuilder.getSupplyChain().setName(chain.getName()); //sets the name of 
+        //the supplyChain so that when you load an existing supplychain and 
+        //then save it at another location dont get a file named null.lsc
+        chainBuilder.getSupplyChain().setFilepath(chain.getFilepath());
         loadedChain = chain;
 
         this.mainLayer = new LayerWidget(this);
@@ -120,7 +129,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     @Override
     public JComponent createView() {
         JComponent component = super.createView();
-        if (loadedChain.getStart() != null) {
+        if (loadedChain.getStartHub() != null) {
             try {
                 drawExistingSupplyChain(loadedChain);
             } catch (IntrospectionException ex) {
@@ -132,13 +141,14 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     /**
      * Draw an existing supplychain onto the scene.
+     *
      * @param supplyChain the supplychain to draw.
      * @throws IntrospectionException
      */
     void drawExistingSupplyChain(SupplyChain supplyChain) throws IntrospectionException {
         Point point = new Point(100, 100);
         mainLayer.setLayout(LayoutFactory.createAbsoluteLayout());
-        Node currentNode = supplyChain.getStart();
+        Node currentNode = supplyChain.getStartHub();
 
         HubWidget previousWidget = null;
         ConnectionWidget connectionWidget = null;
@@ -148,7 +158,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             if (currentNode instanceof Hub) {
                 HubWidget w = (HubWidget) addNode(new HubNode((Hub) currentNode));
                 addHubWidget(w);
-                if (currentNode == supplyChain.getStart()) {
+                if (currentNode == supplyChain.getStartHub()) {
                     setStartWidget(w);
                 }
                 w.setPreferredLocation(point);
@@ -159,7 +169,13 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                     connectHubWidgets(previousWidget, connectionWidget, nextWidget);
                 }
             } else if (currentNode instanceof Leg) {
-                connectionWidget = (ConnectionWidget) addEdge(new LegNode(currentNode));
+                if (currentNode instanceof ScheduledLeg) {
+                    connectionWidget = (ConnectionWidget) addEdge(new ScheduledLegNode((ScheduledLeg) currentNode));
+                } else if (currentNode instanceof MultiModeLeg) {
+                    connectionWidget = (ConnectionWidget) addEdge(new MultiModeLegNode((MultiModeLeg) currentNode));
+                } else if (currentNode instanceof Leg) {
+                    connectionWidget = (ConnectionWidget) addEdge(new LegNode((Leg) currentNode));
+                }
                 previousWidget = nextWidget;
             }
             currentNode = currentNode.getNext();
@@ -245,7 +261,20 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     @Override
     public void removeHubWidget(HubWidget hubWidget) {
+        Hub hub = hubWidget.getHub();
         chainBuilder.removeHub(hubWidget.getHub());
+        
+        if(chainBuilder.getStartHub() == hub){
+            chainBuilder.setStartHub(null);
+        }
+
+    }
+
+    @Override
+    public void disconnectLegWidget(LegWidget legWidget) {
+        Lookup.getDefault().lookup(StatusBarService.class).setMessage(legWidget.getLeg().getName(),
+                StatusBarService.ACTION_DELETE, StatusBarService.STATE_SUCCESS, null);
+        chainBuilder.disconnectLeg(legWidget.getLeg());
     }
 
     @Override
@@ -403,13 +432,21 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
                 if (leg != null) {
                     try {
-                        LegNode legNode = new LegNode(leg);
 
                         HubWidget hubSourceWidget = (HubWidget) findWidget(source);
                         HubWidget hubTargetWidget = (HubWidget) findWidget(target);
 
-                        ConnectionWidget connectionWidget
-                                = (ConnectionWidget) addEdge(legNode);
+                        ConnectionWidget connectionWidget;
+                        if (leg instanceof ScheduledLeg) {
+                            connectionWidget
+                                    = (ConnectionWidget) addEdge(new ScheduledLegNode((ScheduledLeg) leg));
+                        } else if (leg instanceof MultiModeLeg) {
+                            connectionWidget
+                                    = (ConnectionWidget) addEdge(new MultiModeLegNode((MultiModeLeg) leg));
+                        } else {
+                            connectionWidget
+                                    = (ConnectionWidget) addEdge(new LegNode((Leg) leg));
+                        }
 
                         connectHubWidgets(
                                 hubSourceWidget,
@@ -425,6 +462,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
         /**
          * Validate a connection between two widgets.
+         *
          * @param sourceWidget the connection source.
          * @param targetWidget the connection target.
          * @return

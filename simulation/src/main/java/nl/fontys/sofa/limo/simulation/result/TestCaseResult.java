@@ -9,7 +9,7 @@ import nl.fontys.sofa.limo.domain.component.event.Event;
  * A TestCaseResult is the result of simulating a single supply chain exactly
  * one time.
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class TestCaseResult {
 

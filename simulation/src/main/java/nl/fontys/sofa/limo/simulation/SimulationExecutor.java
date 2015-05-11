@@ -7,7 +7,7 @@ import org.openide.util.RequestProcessor.Task;
 
 /**
  *
- * @author Dominik Kaisers <d.kaisers@student.fontys.nl>
+ * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public final class SimulationExecutor {
 
