@@ -39,7 +39,7 @@ public final class LegTypeWizardAction extends TypeWizardAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
-        if (!isUpdate) {
+        if (!update) {
             legType = new LegType();
             panels.add(new NewOrDuplicatedLegTypeWizard());
         }
@@ -76,7 +76,7 @@ public final class LegTypeWizardAction extends TypeWizardAction {
     //For Update LegType
     public void isUpdate(LegType legType) {
         this.legType = legType;
-        this.isUpdate = true;
+        this.update = true;
     }
 
     private void finishWizard(WizardDescriptor wiz) {
@@ -84,7 +84,7 @@ public final class LegTypeWizardAction extends TypeWizardAction {
 
         legType = (LegType) wiz.getProperty(TYPE_OLDTYPE); //Overwrite object (is used when copying a legtype from an existing leg type)
         
-        if (isUpdate) {
+        if (update) {
             service.update(legType);
         } else {
             legType.setId(null);

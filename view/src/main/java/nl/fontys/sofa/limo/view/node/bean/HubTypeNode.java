@@ -45,7 +45,7 @@ public class HubTypeNode extends AbstractBeanNode<HubType> {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HubTypeWizardAction wiz = new HubTypeWizardAction();
-                wiz.isUpdate(bean);
+                wiz.setUpdate(bean);
                 wiz.actionPerformed(e);
                 createProperties(getBean(), null);
                 setSheet(getSheet());
