@@ -643,6 +643,11 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
         return obj == this;
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     /**
      * Returns the Continent enum that is applicable for this country.
      */
