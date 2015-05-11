@@ -231,6 +231,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
                     scene.removeHubWidget(HubWidget.this);
                     scene.removeNodeWithEdges(hubNode);
+                    propertyChange(null);
                 }
             });
             return popup;

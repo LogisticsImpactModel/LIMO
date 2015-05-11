@@ -11,12 +11,39 @@ import javax.persistence.Embedded;
  * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class MultiModeLeg extends Leg {
+    
+    private static final long serialVersionUID = -777586449163630406L;
 
     @Embedded
     private Map<Leg, Double> legs;
 
     public MultiModeLeg() {
         legs = new HashMap<>();
+    }
+
+    /**
+     * Overwrites all attributes of the {@link MultiModeLeg}-object with the
+     * attributes of the sourceLeg. The previous and next attributes are not
+     * copied.
+     *
+     * @param sourceLeg
+     */
+    public MultiModeLeg(MultiModeLeg sourceLeg) {
+        super();
+        deepOverwrite(sourceLeg);
+    }
+
+    /**
+     * Overwrites all attributes of the {@link MultiModeLeg}-object with the
+     * attributes of the sourceLeg. The previous and next attributes are not
+     * copied.
+     *
+     * @param sourceLeg
+     */
+    public void deepOverwrite(MultiModeLeg sourceLeg) {
+        super.deepOverwrite(sourceLeg);
+
+        setLegs((sourceLeg).getLegs());
     }
 
     public Map<Leg, Double> getLegs() {

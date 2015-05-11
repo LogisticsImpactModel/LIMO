@@ -6,7 +6,6 @@ import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -39,16 +38,12 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Valida
         return true;
     }
 
-    //Update Labels
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        leg = (MultiModeLeg) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
-        if (leg != null) {
-            getComponent().update(leg.getName(), leg.getDescription(), leg.getIcon());
-        }
+        leg = (MultiModeLeg) wiz.getProperty("leg");
+        getComponent().update(leg.getName(), leg.getDescription(), leg.getIcon());
     }
 
-    //Store Name, Description and Icon
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         leg.setName(getComponent().getNameInput());

@@ -31,8 +31,8 @@ public class MultiModeLegNode extends LegNode {
     @Override
     protected void createProperties(Leg bean, BeanInfo info) {
         Sheet sets = this.getSheet();
-        super.createProperties(bean, info); 
-        Sheet.Set set = Sheet.createPropertiesSet();
+        
+        Sheet.Set set = Sheet.createPropertiesSet(); //Procedures and Events should not be included
         set.setName("Multi-mode leg properties");
         set.setDisplayName("Multi-mode properties");
 
@@ -50,6 +50,7 @@ public class MultiModeLegNode extends LegNode {
             Exceptions.printStackTrace(ex);
         }
 
+        sets.put(super.getBaseEntityPropertySheet()); //Name, description, icon
         sets.put(set);
     }
 

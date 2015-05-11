@@ -10,7 +10,6 @@ import java.util.UUID;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.domain.component.util.HubUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
@@ -52,8 +51,10 @@ public final class HubWizardAction implements ActionListener {
         if (!update) {
             originalHub = new Hub();
             panels.add(new NewDuplicatedOrHubTypeHubWizard());
+            hub = new Hub();
+        } else {
+            hub = new Hub(originalHub); //Creates a new hub with the same attributes. This way the original hub object keeped ontouched. 
         }
-        hub = HubUtil.deepCopy(originalHub);
 
         panels.add(new NameDescriptionIconHubWizard());
         panels.add(new LocationHubWizard());
@@ -100,7 +101,7 @@ public final class HubWizardAction implements ActionListener {
         HubService hubService = Lookup.getDefault().lookup(HubService.class);
 
         hub = (Hub) wiz.getProperty("hub");
-        HubUtil.deepOverwrite(hub, originalHub);
+        originalHub.deepOverwrite(hub);
 
         if (update) {
             hubService.update(originalHub);

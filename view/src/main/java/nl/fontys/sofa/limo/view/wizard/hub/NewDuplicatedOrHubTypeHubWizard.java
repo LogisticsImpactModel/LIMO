@@ -3,7 +3,6 @@ package nl.fontys.sofa.limo.view.wizard.hub;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
-import nl.fontys.sofa.limo.domain.component.util.HubUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
@@ -51,7 +50,6 @@ public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<W
     }
 
     //Store Copy or HubType
-
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         Hub copyHub = getComponent().getHub();
@@ -61,7 +59,7 @@ public class NewDuplicatedOrHubTypeHubWizard implements WizardDescriptor.Panel<W
 
         HubType hubType = getComponent().getHubType();
         if (hubType != null) { //If 'create from HubType' is selected
-            wiz.putProperty("hub", HubUtil.generateHubFromHubType(hubType));
+            wiz.putProperty("hub", new Hub(hubType));
         }
     }
 

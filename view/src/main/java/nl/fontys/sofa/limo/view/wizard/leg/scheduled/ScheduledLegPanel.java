@@ -61,10 +61,23 @@ public final class ScheduledLegPanel extends JPanel {
         add(panelCenter, BorderLayout.CENTER);
         setActionListener();
         add(acceptancePanel, BorderLayout.EAST);
-
     }
 
-    //Return leg
+    public void update(long expectedTime, long waitingTime, List<Long> acceptanceTimes, Leg alternativeLeg) {
+        tfExpected.setText("" + expectedTime);
+        tfWaiting.setText("" + waitingTime);
+        altLeg = alternativeLeg;
+
+        remove(acceptancePanel);
+        acceptancePanel = new AcceptanceTimePanel(acceptanceTimes);
+        add(acceptancePanel, BorderLayout.EAST);
+
+        if (altLeg != null) {
+            lblAltName.setText(altLeg.getName());
+            btnAddAlt.setText(LIMOResourceBundle.getString("EDIT"));
+        }
+    }
+
     public ScheduledLeg getSchedueldLeg() {
         ScheduledLeg leg = new ScheduledLeg();
         leg.setExpectedTime(Long.parseLong(tfExpected.getText().replace(",", ".")));
@@ -81,35 +94,39 @@ public final class ScheduledLegPanel extends JPanel {
         return leg;
     }
 
-    //AddActionListener
+    public long getExpcetedTime() {
+        return Long.parseLong(tfExpected.getText().replace(",", "."));
+    }
+
+    public long getWaitingTimeLimit() {
+        return Long.parseLong(tfWaiting.getText().replace(",", "."));
+    }
+
+    public List<Long> getAcceptanceTimes() {
+        return acceptancePanel.getAcceptanceTimes();
+    }
+
+    public Leg getAlternativeLeg() {
+        return altLeg;
+    }
+
     public void setActionListener() {
         btnAddAlt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                NormalLegWizardAction wiz = new NormalLegWizardAction(new MultimodeLegTablePanel.FinishedLegListener() {
 
-                if (btnAddAlt.getText().equals(LIMOResourceBundle.getString("ADD"))) {
-                    NormalLegWizardAction wiz = new NormalLegWizardAction(new MultimodeLegTablePanel.FinishedLegListener() {
-
-                        @Override
-                        public void finishedLeg(Leg leg) {
-                            altLeg = leg;
-                            lblAltName.setText(leg.getName());
-                            btnAddAlt.setText(LIMOResourceBundle.getString("EDIT"));
-                        }
-                    });
-                    wiz.actionPerformed(e);
-                } else {
-                    NormalLegWizardAction wiz = new NormalLegWizardAction(new MultimodeLegTablePanel.FinishedLegListener() {
-
-                        @Override
-                        public void finishedLeg(Leg leg) {
-                            altLeg = leg;
-                            lblAltName.setText(leg.getName());
-                        }
-                    });
+                    @Override
+                    public void finishedLeg(Leg leg) {
+                        altLeg = leg;
+                        lblAltName.setText(leg.getName());
+                        btnAddAlt.setText(LIMOResourceBundle.getString("EDIT"));
+                    }
+                });
+                if (altLeg != null) {
                     wiz.setUpdate(altLeg);
-                    wiz.actionPerformed(e);
                 }
+                wiz.actionPerformed(e);
             }
         });
 
@@ -155,4 +172,3 @@ public final class ScheduledLegPanel extends JPanel {
         panelCenter.add(btnAddAlt, c);
     }
 }
-

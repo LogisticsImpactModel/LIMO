@@ -23,7 +23,6 @@ import org.openide.util.Lookup;
  *
  * @author Pascal Lindner
  */
-
 public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
 
     private JComboBox hubCb;
@@ -164,7 +163,7 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
     }
 
     /**
-     * 
+     *
      * @return Hub which should be copied
      */
     public Hub getHub() {

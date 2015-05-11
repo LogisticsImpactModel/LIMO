@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.domain.component.leg;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 
 /**
  * Leg of supply chain.
@@ -11,9 +12,53 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
  */
 public class Leg extends Node<Hub> {
 
+    private static final long serialVersionUID = 4146579601096201593L;
+
     private Icon icon;
 
     public Leg() {
+    }
+
+    /**
+     * Generates a {@link Leg} object from a {@link LegType} object.
+     *
+     * @param legType The hub should be based on this type
+     */
+    public Leg(LegType legType) {
+        super();
+        setName(legType.getName());
+        setDescription(legType.getDescription());
+        setIcon(legType.getIcon());
+        setEvents(legType.getEvents());
+        setProcedures(legType.getProcedures());
+    }
+
+    /**
+     * Generates a new {@link Leg}-object which contains a copy of all variables
+     * of the sourceLeg. The previous and next attributes are not copied.
+     *
+     * @param sourceLeg The data of this leg is copied to the new hub
+     */
+    public Leg(Leg sourceLeg) {
+        super();
+        deepOverwrite(sourceLeg);
+    }
+
+    /**
+     * Overwrites all attributes of the {@link Leg}-object with the attributes
+     * of the sourceLeg. The previous and next attributes are not copied.
+     *
+     * @param sourceLeg
+     */
+    public void deepOverwrite(Leg sourceLeg) {
+        setId(sourceLeg.getId());
+        setName(sourceLeg.getName());
+        setDescription(sourceLeg.getDescription());
+        setIcon(sourceLeg.getIcon());
+        setEvents(sourceLeg.getEvents());
+        setProcedures(sourceLeg.getProcedures());
+        setIcon(sourceLeg.getIcon());
+        setUniqueIdentifier(sourceLeg.getUniqueIdentifier());
     }
 
     public Icon getIcon() {
