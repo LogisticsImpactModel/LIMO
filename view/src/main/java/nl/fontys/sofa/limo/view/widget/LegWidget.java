@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Map;
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
@@ -68,8 +69,18 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         Leg leg = getLeg();
         if (leg instanceof MultiModeLeg) {
             setMultiModeLegWidgets(leg);
+
+            ImageWidget iw = new ImageWidget(getScene());
+            iw.setImage(new ImageIcon(getClass().getClassLoader().getResource("icons/multimode_smaller.png")).getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH));
+            this.setConstraint(iw, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 1);
+            this.addChild(iw);
         } else if (leg instanceof ScheduledLeg) {
             setScheduledLegWidgets(leg);
+
+            ImageWidget iw = new ImageWidget(getScene());
+            iw.setImage(new ImageIcon(getClass().getClassLoader().getResource("icons/scheduled_smaller.png")).getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH));
+            this.setConstraint(iw, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 1);
+            this.addChild(iw);
         } else {
             setNormalLegWidgets(leg);
         }
