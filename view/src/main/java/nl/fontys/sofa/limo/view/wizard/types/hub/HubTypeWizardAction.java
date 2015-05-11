@@ -39,7 +39,7 @@ public final class HubTypeWizardAction extends TypeWizardAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
-        if (!isUpdate) {
+        if (!update) {
             hubType = new HubType();
             panels.add(new NewOrDuplicatedHubTypeWizard());
         }
@@ -67,15 +67,17 @@ public final class HubTypeWizardAction extends TypeWizardAction {
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("ADD_HUB_TYPE"));
         wiz.putProperty(TYPE_OLDTYPE, hubType);
+        wiz.putProperty("update", update);
+        wiz.putProperty("orignal_type", new HubType(hubType));
         
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             finishWizard(wiz);
         }
     }
 
-    public void isUpdate(HubType hubType) {
+    public void setUpdate(HubType hubType) {
         this.hubType = hubType;
-        this.isUpdate = true;
+        this.update = true;
     }
 
     private void finishWizard(WizardDescriptor wiz) {
@@ -83,7 +85,7 @@ public final class HubTypeWizardAction extends TypeWizardAction {
         
         hubType = (HubType) wiz.getProperty(TYPE_OLDTYPE); //Overwrite object (is used when copying a hub type from an existing hub type)
 
-        if (isUpdate) {
+        if (update) {
             service.update(hubType);
         } else {
             hubType.setId(null);
