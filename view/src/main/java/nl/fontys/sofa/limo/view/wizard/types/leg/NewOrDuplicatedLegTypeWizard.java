@@ -51,7 +51,7 @@ public class NewOrDuplicatedLegTypeWizard implements WizardDescriptor.Panel<Wiza
     public void storeSettings(WizardDescriptor wiz) {
         LegType legType = getComponent().getLegType(); 
         if (legType != null) { //If a leg type is selected (copy from existing leg type)
-            wiz.putProperty(TYPE_OLDTYPE, legType);
+            wiz.putProperty(TYPE_OLDTYPE, new LegType(legType));
         }
     }
 
