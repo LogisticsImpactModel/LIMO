@@ -27,6 +27,7 @@ import java.util.List;
  * @author Sven Mäurer
  */
 public class SerializableCountry implements Comparable<SerializableCountry>, Serializable {
+    private static final long serialVersionUID = 2740914735307544707L;
 
     private static List<SerializableCountry> all;
 
