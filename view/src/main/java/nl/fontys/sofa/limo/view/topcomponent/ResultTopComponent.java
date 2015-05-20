@@ -61,6 +61,8 @@ public final class ResultTopComponent extends TopComponent {
     public ResultTopComponent(SimulationResult result) {
         this();
         this.result = result;
+        
+        setName("Result " + result.getSupplyChain().getName().replace(".lsc", ""));
 
         jTabbedPane1.addTab(LIMOResourceBundle.getString("TOTALS"), createTotalsPane());
         jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("CATEGORY")), createCategoryPane());
