@@ -26,6 +26,7 @@ import org.netbeans.api.visual.anchor.PointShape;
 import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.ImageWidget;
+import org.netbeans.api.visual.widget.LabelWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
@@ -72,6 +73,8 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
 
             ImageWidget iw = new ImageWidget(getScene());
             iw.setImage(new ImageIcon(getClass().getClassLoader().getResource("icons/multimode_smaller.png")).getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH));
+            iw.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
+
             this.setConstraint(iw, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 1);
             this.addChild(iw);
         } else if (leg instanceof ScheduledLeg) {
@@ -79,11 +82,27 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
 
             ImageWidget iw = new ImageWidget(getScene());
             iw.setImage(new ImageIcon(getClass().getClassLoader().getResource("icons/scheduled_smaller.png")).getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH));
+            iw.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
             this.setConstraint(iw, LayoutFactory.ConnectionWidgetLayoutAlignment.TOP_RIGHT, 1);
             this.addChild(iw);
         } else {
             setNormalLegWidgets(leg);
         }
+
+        if (!(leg instanceof MultiModeLeg)) {
+            LabelWidget procedureLabelWidget = new LabelWidget(getScene(), "Procedures: " + getLeg().getProcedures().size());
+            procedureLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
+
+            this.setConstraint(procedureLabelWidget, LayoutFactory.ConnectionWidgetLayoutAlignment.BOTTOM_RIGHT, 1);
+            this.addChild(procedureLabelWidget);
+
+            LabelWidget eventLabelWidget = new LabelWidget(getScene(), "Events: " + getLeg().getEvents().size());
+            eventLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
+
+            this.setConstraint(eventLabelWidget, LayoutFactory.ConnectionWidgetLayoutAlignment.BOTTOM_RIGHT, 1);
+            this.addChild(eventLabelWidget);
+        }
+
     }
 
     /**

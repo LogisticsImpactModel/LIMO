@@ -19,6 +19,7 @@ import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.layout.LayoutFactory;
+import org.netbeans.api.visual.widget.LabelWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.SeparatorWidget;
 import org.netbeans.api.visual.widget.Widget;
@@ -82,23 +83,20 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
      * Add the children to this widget.
      */
     private void addChildren() {
-        Scene scene = getScene();
-        Hub hub = getHub();
-        int numberOfEvents = hub.getEvents().size();
-        int numberOfProcedures = hub.getProcedures().size();
 
-        containerWidget = new Widget(scene);
+        containerWidget = new Widget(getScene());
         containerWidget.setLayout(LayoutFactory.createHorizontalFlowLayout());
 
-        eventWidget = new EventsWidget(scene);
-        eventWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("EVENTS"), numberOfEvents));
-        if (numberOfEvents == 0) {
-            eventWidget.setVisible(false);
-        }
-
-        containerWidget.addChild(eventWidget);
-
         addChild(containerWidget);
+
+        LabelWidget procedureLabelWidget = new LabelWidget(getScene(), "Procedures: " + getHub().getProcedures().size());
+        procedureLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
+        this.addChild(procedureLabelWidget);
+
+        LabelWidget eventLabelWidget = new LabelWidget(getScene(), "Events: " + getHub().getEvents().size());
+        eventLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
+        this.addChild(eventLabelWidget);
+        
         addChild(startFlagWidget);
     }
 
