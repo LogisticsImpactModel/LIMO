@@ -173,17 +173,19 @@ public final class ChainBuilderTopComponent extends TopComponent
                 + " supply chain?", "Save the supply chain");
 
         dialogDescriptor.setMessageType(DialogDescriptor.QUESTION_MESSAGE);
-        dialogDescriptor.setOptions(new Object[]{"Save", "Discard"});
+        dialogDescriptor.setOptions(new Object[]{"Save changes", "Discard changes", "Cancel"});
         Object retval = DialogDisplayer.getDefault().notify(dialogDescriptor);
-        if (retval.equals("Save")) {
+        if (retval.equals("Save changes")) {
             try {
                 savable.handleSave(); //Try to save the supply chain
             } catch (IOException ex) {
                 Exceptions.printStackTrace(ex);
                 return false; //The supply chain window cannot be closed because an exception is trown while saving
             }
-        } else if (retval.equals("Discard")) {
+        } else if (retval.equals("Discard changes")) {
             savable.unregisterChainBuilder(); //Unregister supply chain from registry so it is not shown in the 'save dialog'
+        } else { //Cancel is clicked or the dialog is closed
+            return false;
         }
         return true; //The supply chain window can now be closed
     }
