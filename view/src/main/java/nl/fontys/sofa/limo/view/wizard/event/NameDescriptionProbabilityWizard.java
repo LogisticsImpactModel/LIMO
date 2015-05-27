@@ -3,10 +3,6 @@ package nl.fontys.sofa.limo.view.wizard.event;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT;
-import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT_DESCRIPTION;
-import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT_NAME;
-import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT_PROBABILITY;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
@@ -20,7 +16,7 @@ import org.openide.util.HelpCtx;
 public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private NameDescriptionProbabilityPanel component;
-    private Event lastEvent;
+    private Event event;
 
     @Override
     public NameDescriptionProbabilityPanel getComponent() {
@@ -55,17 +51,8 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
      */
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Event event = (Event) wiz.getProperty(EVENT);
-        if (event != null) {
-            if (event != lastEvent) {
-                getComponent().updateEvent((Event) event);
-            }
-        } else {
-            if (lastEvent != null) {
-                getComponent().updateEvent(null);
-            }
-        }
-        lastEvent = event;
+        event = (Event) wiz.getProperty("event");
+        getComponent().updateEvent(event);
     }
 
     /**
@@ -75,9 +62,9 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
      */
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(EVENT_NAME, getComponent().getNameInput());
-        wiz.putProperty(EVENT_DESCRIPTION, getComponent().getDescriptionInput());
-        wiz.putProperty(EVENT_PROBABILITY, getComponent().getProbability());
+        event.setName(getComponent().getNameInput());
+        event.setDescription(getComponent().getDescriptionInput());
+        event.setProbability(getComponent().getProbability());
     }
 
     @Override
