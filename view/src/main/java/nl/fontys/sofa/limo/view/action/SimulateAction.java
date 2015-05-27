@@ -41,7 +41,7 @@ import org.openide.windows.WindowManager;
 public final class SimulateAction extends AbstractAction
         implements Presenter.Toolbar, SimulatorTaskListener {
 
-    public static final int DEFAULT_NUM_RUNS = 1000;
+    public static final int DEFAULT_NUM_RUNS = 100000;
 
     private final JFormattedTextField inputRunsTF;
     private ChainGraphScene scene;
