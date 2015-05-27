@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.undo.UndoManager;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
@@ -16,6 +18,7 @@ import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
 import static nl.fontys.sofa.limo.view.util.IconUtil.getScaledImageFromIcon;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.util.undoable.widget.leg.DeleteLegWidgetUndoableEdit;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegWizardAction;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
 import nl.fontys.sofa.limo.view.wizard.leg.scheduled.ScheduledLegWizardAction;
@@ -160,8 +163,13 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
+                    UndoManager undoManager = scene.getLookup().lookup(UndoManager.class);
+                    HubWidget source = (HubWidget) scene.findWidget(scene.getEdgeSource(legNode));
+                    HubWidget target = (HubWidget) scene.findWidget(scene.getEdgeTarget(legNode));
+                    undoManager.undoableEditHappened(new UndoableEditEvent(getLegWidget(), new DeleteLegWidgetUndoableEdit(getLegWidget(), source, target,scene)));
                     scene.removeEdge(legNode);
                     scene.disconnectLegWidget(getLegWidget());
+
                 }
             });
 

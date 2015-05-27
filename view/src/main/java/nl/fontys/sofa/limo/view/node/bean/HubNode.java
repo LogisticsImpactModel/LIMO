@@ -61,6 +61,7 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
     public Widget getWidget(Scene scene) {
         try {
             HubWidget hw = new HubWidget(scene, this);
+            
             return hw;
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);

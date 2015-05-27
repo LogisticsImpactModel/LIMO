@@ -18,6 +18,7 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
+import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Node;
@@ -38,6 +39,8 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     private ExplorerManager em = new ExplorerManager();
     private ChainGraphScene graphScene;
     private SavableComponent savable;
+
+    private UndoRedo.Manager undoManager = new UndoRedo.Manager();
 
     /**
      * Constructor creates a new ChainLoaderTopcomponent.
@@ -81,7 +84,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
 
-            graphScene = new ChainGraphSceneImpl(this, supplyChain);
+            graphScene = new ChainGraphSceneImpl(this, supplyChain, undoManager);
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);
@@ -122,6 +125,14 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         return true; //The supply chain window can now be closed
     }
 
+    @Override
+    public UndoRedo getUndoRedo() {
+       return undoManager;
+    }
+
+    
+
+    
     @Override
     public ExplorerManager getExplorerManager() {
         return em;

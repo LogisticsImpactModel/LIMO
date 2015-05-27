@@ -18,6 +18,7 @@ import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
+import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Node;
@@ -56,6 +57,8 @@ public final class ChainBuilderTopComponent extends TopComponent
     private ExplorerManager em = new ExplorerManager();
     private ChainGraphScene graphScene;
     private InstanceContent ic = new InstanceContent();
+    private UndoRedo.Manager undoManager = new UndoRedo.Manager();
+    
     SavableComponent savable;
 
     /**
@@ -100,7 +103,7 @@ public final class ChainBuilderTopComponent extends TopComponent
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
 
-            graphScene = new ChainGraphSceneImpl(this, chain);
+            graphScene = new ChainGraphSceneImpl(this, chain, undoManager);
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);
@@ -114,6 +117,14 @@ public final class ChainBuilderTopComponent extends TopComponent
         }
     }
 
+    @Override
+    public UndoRedo getUndoRedo() {
+        return undoManager;
+    }
+
+    
+
+    
     @Override
     public ExplorerManager getExplorerManager() {
         return em;
