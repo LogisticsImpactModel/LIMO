@@ -11,10 +11,13 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JPopupMenu;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.undo.UndoManager;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.util.undoable.widget.hub.DeleteHubWidgetUndoableEdit;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
@@ -67,6 +70,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 //        createBorder();
         addSeparator();
         addChildren();
+        
+      
     }
 
     @Override
@@ -132,6 +137,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         }
         scene.addHubWidget(this);
         repaint();
+      
         return true;
     }
 
@@ -229,6 +235,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
+                    UndoManager manager = scene.getLookup().lookup(UndoManager.class);
+                    manager.undoableEditHappened(new UndoableEditEvent(HubWidget.this, new DeleteHubWidgetUndoableEdit(scene, HubWidget.this)));
                     scene.removeHubWidget(HubWidget.this);
                     scene.removeNodeWithEdges(hubNode);
                     propertyChange(null);
