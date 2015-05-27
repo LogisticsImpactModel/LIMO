@@ -15,6 +15,7 @@ import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
 import static nl.fontys.sofa.limo.view.util.IconUtil.getScaledImageFromIcon;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -164,8 +165,8 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
                 public void actionPerformed(ActionEvent ae) {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
                     UndoManager undoManager = scene.getLookup().lookup(UndoManager.class);
-                    HubWidget source = (HubWidget) scene.findWidget(scene.getEdgeSource(legNode));
-                    HubWidget target = (HubWidget) scene.findWidget(scene.getEdgeTarget(legNode));
+                    HubNode source = (HubNode) scene.getEdgeSource(legNode);
+                    HubNode target = (HubNode) scene.getEdgeTarget(legNode);
                     undoManager.undoableEditHappened(new UndoableEditEvent(getLegWidget(), new DeleteLegWidgetUndoableEdit(getLegWidget(), source, target,scene)));
                     scene.removeEdge(legNode);
                     scene.disconnectLegWidget(getLegWidget());

@@ -10,6 +10,7 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
+import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
@@ -21,11 +22,11 @@ import nl.fontys.sofa.limo.view.widget.LegWidget;
 public class DeleteLegWidgetUndoableEdit extends AbstractUndoableEdit {
 
     private LegNode legNode;
-    private HubWidget source;
-    private HubWidget target;
+    private HubNode source;
+    private HubNode target;
     private ChainGraphScene scene;
 
-    public DeleteLegWidgetUndoableEdit(LegWidget legWidget, HubWidget source, HubWidget target, ChainGraphScene scene) {
+    public DeleteLegWidgetUndoableEdit(LegWidget legWidget, HubNode source, HubNode target, ChainGraphScene scene) {
         this.scene = scene;
         this.legNode = (LegNode) scene.findObject(legWidget);
         this.source = source;
@@ -40,10 +41,11 @@ public class DeleteLegWidgetUndoableEdit extends AbstractUndoableEdit {
     @Override
     public void undo() throws CannotRedoException {
         LegWidget leg = (LegWidget) scene.addEdge(legNode);
+      
         scene.connectHubWidgets(
-                source,
+                (HubWidget)scene.findWidget(source),
                 leg,
-                target);
+                (HubWidget)scene.findWidget(target));
         scene.validate();
     }
 

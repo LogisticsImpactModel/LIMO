@@ -495,7 +495,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                                 connectionWidget,
                                 hubTargetWidget);
 
-                        undoManager.undoableEditHappened(new UndoableEditEvent(connectionWidget, new AddLegWidgetUndoableEdit((LegWidget) connectionWidget, hubSourceWidget, hubTargetWidget, ChainGraphSceneImpl.this)));
+                        undoManager.undoableEditHappened(new UndoableEditEvent(connectionWidget, new AddLegWidgetUndoableEdit((LegWidget) connectionWidget,(HubNode) source,(HubNode) target, ChainGraphSceneImpl.this)));
                     } catch (IntrospectionException ex) {
                         Exceptions.printStackTrace(ex);
                     }
