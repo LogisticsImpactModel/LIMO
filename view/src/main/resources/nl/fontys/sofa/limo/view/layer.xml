@@ -72,5 +72,7 @@
             <attr name="originalFile" stringvalue="Actions/Window/org-netbeans-modules-palette-ShowPaletteAction.instance"/>
         </file>
     </folder>
-    <file name="Toolbars_hidden"/>
+     <folder name="Toolbars">
+        <file name="Build_hidden"/>
+    </folder>
 </filesystem>
