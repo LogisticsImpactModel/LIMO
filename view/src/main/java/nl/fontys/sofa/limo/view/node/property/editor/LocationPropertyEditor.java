@@ -63,7 +63,8 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
 
     @Override
     public String getAsText() {
-        return LIMOResourceBundle.getString("LOCATION");
+        Location location = ((Location) getValue());
+        return location.getContinent() + " - " + location.getCountry() + " - " + location.getTown();
     }
 
     /**
@@ -255,7 +256,7 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             c.gridy = 3;
             c.gridwidth = 1;
             c.weightx = 0.0;
-            container.add(new JLabel(LIMOResourceBundle.getString("POSTCODE")), c);
+            container.add(new JLabel(LIMOResourceBundle.getString("ZIPCODE")), c);
             c.gridx = 4;
             c.gridy = 3;
             c.gridwidth = 1;
