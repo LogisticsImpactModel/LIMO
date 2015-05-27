@@ -22,10 +22,19 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
     @Override
     public String getAsText() {
         List<Procedure> procedures = (List<Procedure>) getValue();
-        if (procedures == null) {
-            return LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES"), 0);
+        if (procedures == null || procedures.isEmpty()) {
+            return LIMOResourceBundle.getString("PROCEDURES");
         }
-        return LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("PROCEDURES"), procedures.size());
+
+        StringBuilder name = new StringBuilder();
+        for (Procedure prod : procedures) {
+            if (name.toString().length() == 0) {
+                name.append(prod.getName());
+            } else {
+                name.append(" - " + prod.getName());
+            }
+        }
+        return name.toString();
     }
 
     @Override
