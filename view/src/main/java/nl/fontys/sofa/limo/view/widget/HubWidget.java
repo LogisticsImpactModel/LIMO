@@ -40,8 +40,11 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     private final HubNode hubNode;
 
     private Widget containerWidget;
-    private EventsWidget eventWidget;
+//    private EventsWidget eventWidget;
 //    private ProcedureWidget procedureWidget;
+
+    private LabelWidget eventLabelWidget;
+    private LabelWidget procedureLabelWidget;
     private final Widget startFlagWidget;
 
     /**
@@ -83,20 +86,22 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
      * Add the children to this widget.
      */
     private void addChildren() {
-
         containerWidget = new Widget(getScene());
         containerWidget.setLayout(LayoutFactory.createHorizontalFlowLayout());
 
         addChild(containerWidget);
-
-        LabelWidget procedureLabelWidget = new LabelWidget(getScene(), "Procedures: " + getHub().getProcedures().size());
+        procedureLabelWidget = new LabelWidget(getScene(), "Procedures: " + getHub().getProcedures().size());
         procedureLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
         this.addChild(procedureLabelWidget);
 
-        LabelWidget eventLabelWidget = new LabelWidget(getScene(), "Events: " + getHub().getEvents().size());
+        eventLabelWidget = new LabelWidget(getScene());
         eventLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
+
+        if (getHub().getEvents() != null && !getHub().getEvents().isEmpty()) {
+            eventLabelWidget = new LabelWidget(getScene(), "Events: " + getHub().getEvents().size());
+        }
         this.addChild(eventLabelWidget);
-        
+
         addChild(startFlagWidget);
     }
 
@@ -155,33 +160,16 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         Hub hub = getHub();
-        int numberOfEvents = hub.getEvents().size();
-        int numberOfProcedures = hub.getProcedures().size();
 
         setImage(hub.getIcon().getImage());
         setLabel(hub.getName());
         setToolTipText(hub.getName());
+        procedureLabelWidget.setLabel("Procedure: " + getHub().getProcedures().size());
+        eventLabelWidget.setLabel("Events: " + getHub().getEvents().size());
 
-        if (numberOfEvents == 0) {
-            eventWidget.setVisible(false);
-        } else {
-            eventWidget.setVisible(true);
-            eventWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("MAIN_EVENTS"), numberOfEvents));
+        if(getHub().getEvents().size() == 0){
+            removeChild(eventLabelWidget);
         }
-
-    }
-
-    /**
-     * Revalidate and repaint this Widget.
-     */
-    public void validateHubWidget() {
-        Hub hub = getHub();
-        if (hub.getEvents().isEmpty()) {
-            eventWidget.setVisible(false);
-        } else {
-            eventWidget.setVisible(true);
-        }
-        repaint();
     }
 
     /**
