@@ -32,11 +32,11 @@ import org.openide.util.Lookup;
         id = "nl.fontys.sofa.limo.view.wizard.event.EventWizardAction"
 )
 @ActionRegistration(
-        displayName = "New Event...",
+        displayName = "New Event template...",
         iconBase = "icons/gui/add.gif"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data/Event", position = 20),
+    @ActionReference(path = "Menu/Master Data/Event templates", position = 20),
     @ActionReference(path = "Shortcuts", name = "DS-E")
 })
 public final class EventWizardAction implements ActionListener {
