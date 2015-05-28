@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.util.undoable.widget.leg;
 
 import javax.swing.undo.CannotRedoException;
@@ -12,6 +7,9 @@ import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
 
 /**
+ * The
+ * {@link nl.fontys.sofa.limo.view.util.undoable.widget.leg.AddLegWidgetUndoableEdit}
+ * provides undo and redo functionaltiy for when a LegWidget is added.
  *
  * @author Christina Zenzes
  */

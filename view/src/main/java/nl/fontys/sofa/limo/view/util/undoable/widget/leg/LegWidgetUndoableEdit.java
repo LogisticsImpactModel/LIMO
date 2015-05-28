@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.util.undoable.widget.leg;
 
 import javax.swing.undo.AbstractUndoableEdit;
@@ -14,6 +9,14 @@ import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
 
 /**
+ * The
+ * {@link nl.fontys.sofa.limo.view.util.undoable.widget.leg.LegWidgetUndoableEdit}
+ * class is an abstract class which provides methods for creating or deleting a
+ * leg to its child classes. Beyond that, the class extends the
+ * {@link javax.swing.undo.AbstractUndoableEdit} class. The child objects of
+ * this class are meant to be added to an {@link javax.swing.undo.UndoManager}.
+ *
+ *
  *
  * @author Christina Zenzes
  */
