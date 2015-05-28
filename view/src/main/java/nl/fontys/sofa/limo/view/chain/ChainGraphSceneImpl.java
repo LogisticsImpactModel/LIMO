@@ -6,6 +6,8 @@ import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.util.Collections;
 import javax.swing.JComponent;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.undo.UndoManager;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
@@ -22,6 +24,8 @@ import nl.fontys.sofa.limo.view.node.bean.MultiModeLegNode;
 import nl.fontys.sofa.limo.view.node.bean.ScheduledLegNode;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.util.undoable.widget.hub.AddHubWidgetUndoableEdit;
+import nl.fontys.sofa.limo.view.util.undoable.widget.leg.AddLegWidgetUndoableEdit;
 import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
@@ -41,6 +45,9 @@ import org.netbeans.api.visual.widget.Widget;
 import org.openide.nodes.NodeTransfer;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
+import org.openide.util.lookup.Lookups;
+import org.openide.util.lookup.ProxyLookup;
+import org.openide.windows.TopComponent;
 
 /**
  * Implementation of the {@link nl.fontys.sofa.limo.view.chain.ChainGraphScene}
@@ -54,6 +61,14 @@ import org.openide.util.Lookup;
  * <p>
  * Some actions need a provider implementation which is implemented in several
  * private classes within this class.
+ * <p>
+ * The {@link nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl} creates
+ * {@link javax.swing.undo.UndoableEdit} for add and deleting a
+ * {@link nl.fontys.sofa.limo.view.widget.LegWidget} or
+ * {@link nl.fontys.sofa.limo.view.widget.HubWidget}. When a HubWidget is
+ * deleted a undoableEdit is created and added to the UndoManager which is hand
+ * in the constructor. The same belongs to add HubWidget and delete and add
+ * LegWidget.
  *
  * @author Sebastiaan Heijmann
  */
@@ -81,6 +96,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     private HubWidget startHubWidget;
     private final StartWidget startFlagWidget;
 
+    private UndoManager undoManager;
+    private ProxyLookup lookup;
+
     /**
      * Constructor which sets the parent and creates the chain builder, the
      * layers and the available actions.
@@ -91,6 +109,20 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
      * @throws IntrospectionException be found.
      */
     public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain) throws IOException, IntrospectionException {
+        this(parent, chain, null);
+    }
+
+    /**
+     * Constructor which sets the parent and creates the chain builder, the
+     * layers, the available actions and using a undoManager.
+     *
+     * @param parent the parent of this scene.
+     * @param chain
+     * @param undoManager undo manager which should be used to undo changes
+     * @throws IOException can occur when certain resources like images cannot
+     * @throws IntrospectionException be found.
+     */
+    public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain, UndoManager undoManager) throws IOException, IntrospectionException {
         this.parent = parent;
         chainBuilder = new ChainBuilderImpl();
         chainBuilder.getSupplyChain().setName(chain.getName()); //sets the name of 
@@ -124,6 +156,16 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
         startFlagWidget = new StartWidget(this);
 
+        this.undoManager = undoManager;
+
+        Lookup undoRedo = Lookups.singleton(undoManager);
+        lookup = new ProxyLookup(undoRedo, super.getLookup());
+
+    }
+
+    @Override
+    public Lookup getLookup() {
+        return lookup;
     }
 
     @Override
@@ -237,6 +279,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         mainLayer.addChild(hubWidget);
         chainBuilder.addHub(hubWidget.getHub());
         getScene().repaint();
+
     }
 
     @Override
@@ -263,8 +306,8 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     public void removeHubWidget(HubWidget hubWidget) {
         Hub hub = hubWidget.getHub();
         chainBuilder.removeHub(hubWidget.getHub());
-        
-        if(chainBuilder.getStartHub() == hub){
+
+        if (chainBuilder.getStartHub() == hub) {
             chainBuilder.setStartHub(null);
         }
 
@@ -350,6 +393,14 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             BasicWidget w = (BasicWidget) scene.addNode(detachedNode);
             detachedNode.addPropertyChangeListener(w);
             w.drop(scene, widget, point);
+
+            if (undoManager != null) {
+                UndoableEditEvent event = new UndoableEditEvent(w, new AddHubWidgetUndoableEdit(scene, (HubWidget) w));
+                undoManager.undoableEditHappened(event);
+            }
+            TopComponent comp = (TopComponent) parent;
+            comp.requestActive();
+
         }
     }
 
@@ -452,7 +503,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                                 hubSourceWidget,
                                 connectionWidget,
                                 hubTargetWidget);
-
+                        if (undoManager != null) {
+                            undoManager.undoableEditHappened(new UndoableEditEvent(connectionWidget, new AddLegWidgetUndoableEdit((LegWidget) connectionWidget, (HubNode) source, (HubNode) target, ChainGraphSceneImpl.this)));
+                        }
                     } catch (IntrospectionException ex) {
                         Exceptions.printStackTrace(ex);
                     }

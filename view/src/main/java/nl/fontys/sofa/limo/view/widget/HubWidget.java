@@ -11,10 +11,13 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JPopupMenu;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.undo.UndoManager;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.util.undoable.widget.hub.DeleteHubWidgetUndoableEdit;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
@@ -167,8 +170,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         procedureLabelWidget.setLabel("Procedure: " + getHub().getProcedures().size());
         eventLabelWidget.setLabel("Events: " + getHub().getEvents().size());
 
-        if(getHub().getEvents().size() == 0){
-            eventLabelWidget.setLabel("");
+        if (getHub().getEvents().isEmpty()) {
+             eventLabelWidget.setLabel("");
         }
     }
 
@@ -215,6 +218,11 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
+                    UndoManager manager = scene.getLookup().lookup(UndoManager.class);
+                    // add a new UndoableEditEvent to the undoManager of the ChainGraphScene when the undoManager exists
+                    if (manager != null) {
+                        manager.undoableEditHappened(new UndoableEditEvent(HubWidget.this, new DeleteHubWidgetUndoableEdit(scene, HubWidget.this)));
+                    }
                     scene.removeHubWidget(HubWidget.this);
                     scene.removeNodeWithEdges(hubNode);
                     propertyChange(null);

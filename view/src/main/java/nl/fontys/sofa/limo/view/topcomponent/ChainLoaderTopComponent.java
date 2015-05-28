@@ -18,6 +18,7 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
+import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Node;
@@ -39,9 +40,10 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     private ChainGraphScene graphScene;
     private SavableComponent savable;
 
+    private UndoRedo.Manager undoManager = new UndoRedo.Manager();
+
     /**
      * Constructor creates a new ChainLoaderTopcomponent.
-     *
      * @param chainFile the file where the supplychain is located.
      */
     public ChainLoaderTopComponent(File chainFile) {
@@ -50,7 +52,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         SupplyChain supplyChain = SupplyChain.createFromFile(chainFile);
         supplyChain.setName(chainFile.getName());
         supplyChain.setFilepath(chainFile.getParent());
-
+        
         setName(supplyChain.getName().replace(".lsc", ""));
         initCustomComponents(supplyChain);
 
@@ -82,7 +84,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
 
-            graphScene = new ChainGraphSceneImpl(this, supplyChain);
+            graphScene = new ChainGraphSceneImpl(this, supplyChain, undoManager);
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);
@@ -95,7 +97,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
             Exceptions.printStackTrace(ex);
         }
     }
-
+    
     /**
      * Check if the TopComponent is ready to close. In this case, the user is
      * prompted with a question to save the supply chain or discard it.
@@ -108,23 +110,29 @@ public final class ChainLoaderTopComponent extends TopComponent implements
                 + " supply chain?", "Save the supply chain");
 
         dialogDescriptor.setMessageType(DialogDescriptor.QUESTION_MESSAGE);
-        dialogDescriptor.setOptions(new Object[]{"Save changes", "Discard changes", "Cancel"});
+        dialogDescriptor.setOptions(new Object[]{"Save", "Discard"});
         Object retval = DialogDisplayer.getDefault().notify(dialogDescriptor);
-        if (retval.equals("Save changes")) {
+        if (retval.equals("Save")) {
             try {
                 savable.handleSave(); //Try to save the supply chain
             } catch (IOException ex) {
                 Exceptions.printStackTrace(ex);
                 return false; //The supply chain window cannot be closed because an exception is trown while saving
             }
-        } else if (retval.equals("Discard changes")) {
+        } else if (retval.equals("Discard")) {
             savable.unregisterChainBuilder(); //Unregister supply chain from registry so it is not shown in the 'save dialog'
-        } else { //Cancel is clicked or the dialog is closed
-            return false;
         }
         return true; //The supply chain window can now be closed
     }
 
+    @Override
+    public UndoRedo getUndoRedo() {
+       return undoManager;
+    }
+
+    
+
+    
     @Override
     public ExplorerManager getExplorerManager() {
         return em;
