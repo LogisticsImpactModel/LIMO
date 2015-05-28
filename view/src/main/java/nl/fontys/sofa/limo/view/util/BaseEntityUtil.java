@@ -1,26 +1,22 @@
-/*
- *  Created by Mike de Roode
- */
 package nl.fontys.sofa.limo.view.util;
 
 import java.util.List;
 import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.service.provider.AbstractService;
 import org.openide.util.Lookup;
 
 /**
  *
- * @author Mike
+ * @author Mike de Roode
  */
 public class BaseEntityUtil {
 
     /**
      * Check the first available addition for a name. This method does the same
-     * as {@link getAddition} but also includes the original name.
+     * as getAddition but also includes the original name.
      *
      * @param service Service which is used to find entities (e.g.
-     * {@link HubService}, {@link LegTypeService})
+     * {@link nl.fontys.sofa.limo.api.service.provider.HubService}, {@link nl.fontys.sofa.limo.api.service.provider.LegTypeService})
      * @param name The name which should get an addition
      * @return Full unique name
      */
@@ -32,7 +28,7 @@ public class BaseEntityUtil {
      * Check the first available addition for a name.
      *
      * @param service Service which is used to find entities (e.g.
-     * {@link HubService}, {@link LegTypeService})
+     * {@link nl.fontys.sofa.limo.api.service.provider.HubService}, {@link nl.fontys.sofa.limo.api.service.provider.LegTypeService})
      * @param name The name which should get an addition
      * @return Addition of the name
      */
@@ -44,7 +40,7 @@ public class BaseEntityUtil {
      * Returns all entities which are found by the service
      *
      * @param service Service which is used to find entities (e.g.
-     * {@link HubService}, {@link LegTypeService})
+     * {@link nl.fontys.sofa.limo.api.service.provider.HubService}, {@link nl.fontys.sofa.limo.api.service.provider.LegTypeService})
      * @return All entities in a list.
      */
     public static List<BaseEntity> getAllEntities(Class<? extends Lookup.Provider> service) {
@@ -53,7 +49,7 @@ public class BaseEntityUtil {
 
     /**
      * Check the first available addition for a name. This method is used to
-     * check for an unique names of {@link Hub}s. The addition is a number.
+     * check for an unique names of {@link nl.fontys.sofa.limo.domain.component.hub.Hub}s. The addition is a number.
      *
      * @param items Items to check
      * @param name Name which should be checked
