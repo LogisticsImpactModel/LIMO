@@ -1,10 +1,16 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -14,6 +20,7 @@ import javax.swing.SwingConstants;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
+import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
 import org.openide.windows.TopComponent;
 
@@ -54,6 +61,7 @@ public final class StartpageTopComponent extends TopComponent {
     private JPanel headerPane;
     private JLabel logoPane;
     private JLabel titleLB;
+    private JLabel website;
 
     public StartpageTopComponent() {
         initComponents();
@@ -69,6 +77,7 @@ public final class StartpageTopComponent extends TopComponent {
         contentPanel = new JPanel();
         logoPane = new JLabel();
         footerPane = new JPanel();
+        website = new JLabel("Visit http://limo.fontysvenlo.org for more information about LIMO");
 
         setBorder(BorderFactory.createEmptyBorder(25, 100, 75, 100));
         setDisplayName(LIMOResourceBundle.getString("STARTPAGE"));
@@ -112,6 +121,38 @@ public final class StartpageTopComponent extends TopComponent {
         footerPane.setMaximumSize(new java.awt.Dimension(10000, 40));
         footerPane.setMinimumSize(new java.awt.Dimension(600, 40));
         footerPane.setPreferredSize(new java.awt.Dimension(10000, 40));
+
+        website.setFont(new java.awt.Font("DejaVu Serif", 1, 12));
+        website.setForeground(Color.WHITE);
+        website.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("http://limo.fontysvenlo.org"));
+                } catch (IOException | URISyntaxException ex) {
+                    Exceptions.printStackTrace(ex);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+        
+        footerPane.add(website, java.awt.BorderLayout.CENTER);
         add(footerPane);
     }
 
