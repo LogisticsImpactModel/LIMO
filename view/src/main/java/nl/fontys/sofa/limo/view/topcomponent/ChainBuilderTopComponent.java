@@ -18,6 +18,7 @@ import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
+import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Node;
@@ -57,6 +58,7 @@ public final class ChainBuilderTopComponent extends TopComponent
     private ChainGraphScene graphScene;
     private InstanceContent ic = new InstanceContent();
     SavableComponent savable;
+    private UndoRedo.Manager undoManager = new UndoRedo.Manager();
 
     /**
      * Constructor creates a new ChainBuilderTopComponent.
@@ -159,6 +161,11 @@ public final class ChainBuilderTopComponent extends TopComponent
     @Override
     public void componentClosed() {
 
+    }
+
+    @Override
+    public UndoRedo getUndoRedo() {
+        return undoManager;
     }
 
     /**

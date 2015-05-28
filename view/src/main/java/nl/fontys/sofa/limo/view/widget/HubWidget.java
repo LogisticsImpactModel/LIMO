@@ -43,8 +43,6 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     private final HubNode hubNode;
 
     private Widget containerWidget;
-//    private EventsWidget eventWidget;
-//    private ProcedureWidget procedureWidget;
 
     private LabelWidget eventLabelWidget;
     private LabelWidget procedureLabelWidget;
@@ -71,7 +69,6 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
         setImage(getHub().getIcon().getImage());
         setLabel(beanNode.getName());
-//        createBorder();
         addSeparator();
         addChildren();
     }
