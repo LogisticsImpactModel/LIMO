@@ -205,7 +205,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 }
                 w.setPreferredLocation(point);
                 nextWidget = w;
-                point = new Point(((int) point.getX() + 200), (int) point.getY());
+                point = new Point(((int) point.getX() + 300), (int) point.getY());
 
                 if (connectionWidget != null) {
                     connectHubWidgets(previousWidget, connectionWidget, nextWidget);
