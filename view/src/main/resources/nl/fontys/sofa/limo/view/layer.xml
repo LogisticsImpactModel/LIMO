@@ -4,14 +4,23 @@
     <folder name="Menu">
         <folder name="File">
             <attr name="position" intvalue="10"/>
-            <attr name="position" intvalue="1"/>
             <file name="org-openide-actions-SaveAsAction.shadow_hidden"/>
         </folder>
         <attr name="OpenIDE-Folder-SortMode" stringvalue="O"/>
         <file name="Edit_hidden"/>
         <file name="GoTo_hidden"/>
         <file name="Source_hidden"/>
-        <file name="Tools_hidden"/>
+        <folder name="Tools">
+            <attr name="position" intvalue="40"/>
+
+            <file name="PaletteManager_hidden"/>
+            <file name="Separator1.instance_hidden"/>
+            <file name="Separator2.instance_hidden"/>
+            <file name="org-netbeans-modules-autoupdate-ui-actions-PluginManagerAction.shadow_hidden"/>
+            <file name="org-netbeans-modules-options-OptionsWindowAction-separatorBefore.instance_hidden"/>
+            <file name="org-netbeans-modules-templates-actions-TemplatesAction.shadow_hidden"/>
+            <file name="org-openide-actions-ToolsAction.shadow_hidden"/>
+        </folder>
         <file name="View_hidden"/>
         <folder name="Master Data">
             <attr name="position" intvalue="20"/>
@@ -34,8 +43,6 @@
         <folder name="Window">
             <attr name="position" intvalue="30"/>
             <!-- undesired bloatware-->
-            <file name="CloseAllButThisAction.shadow_hidden"/>
-            <file name="CloseWindowAction.shadow_hidden"/>
             <file name="GroupsMenuAction.shadow_hidden"/>
             <file name="SwitchToRecentDocumentAction.shadow_hidden"/>
             <file name="Tools_hidden"/>
@@ -45,6 +52,14 @@
             <file name="org-netbeans-core-windows-actions-ResetWindowsAction.shadow_hidden"/>
             <file name="org-netbeans-modules-favorites-View.shadow_hidden"/>
             <!--end undesire bloatware-->
+            <file name="Close all windows">
+                <attr name="originalFile" stringvalue="Actions/Window/org-netbeans-core-windows-actions-CloseAllDocumentsAction.instance"/>
+                <attr name="position" intvalue="20500"/>
+            </file>
+            <file name="Close other documents">
+                <attr name="originalFile" stringvalue="Actions/Window/org-netbeans-core-windows-actions-CloseAllButThisAction.instance"/>
+                <attr name="position" intvalue="20600"/>
+            </file>
             <file name="ShowPaletteAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Window/org-netbeans-modules-palette-ShowPaletteAction.instance"/>
                 <attr name="position" intvalue="20001"/>
@@ -60,7 +75,7 @@
             </file>
         </folder>
         <folder name="Help">
-            <attr name="position" intvalue="40"/>
+            <attr name="position" intvalue="50"/>
             <file name="org-netbeans-modules-autoupdate-ui-actions-CheckForUpdatesAction.shadow_hidden"/>
         </folder>
     </folder>
@@ -74,11 +89,15 @@
         <file name="D-Z.shadow">
             <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-UndoAction.instance"/>
         </file>
-         <file name="D-Y.shadow">
+        <file name="D-Y.shadow">
             <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-RedoAction.instance"/>
         </file>
     </folder>
-     <folder name="Toolbars">
+    <folder name="Toolbars">
+        <file name="Clipboard_hidden"/>
         <file name="Build_hidden"/>
+        <file name="Memory_hidden"/>
+        <file name="Performance_hidden"/>
+        <file name="Standard.xml" url="Standard.xml"/>
     </folder>
 </filesystem>
