@@ -165,9 +165,12 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
                 public void actionPerformed(ActionEvent ae) {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
                     UndoManager undoManager = scene.getLookup().lookup(UndoManager.class);
-                    HubNode source = (HubNode) scene.getEdgeSource(legNode);
-                    HubNode target = (HubNode) scene.getEdgeTarget(legNode);
-                    undoManager.undoableEditHappened(new UndoableEditEvent(getLegWidget(), new DeleteLegWidgetUndoableEdit(getLegWidget(), source, target,scene)));
+                    // add a new UndoableEditEvent to the undoManager of the ChainGraphScene when the undoManager exists
+                    if (undoManager != null) {
+                        HubNode source = (HubNode) scene.getEdgeSource(legNode);
+                        HubNode target = (HubNode) scene.getEdgeTarget(legNode);
+                        undoManager.undoableEditHappened(new UndoableEditEvent(getLegWidget(), new DeleteLegWidgetUndoableEdit(getLegWidget(), source, target, scene)));
+                    }
                     scene.removeEdge(legNode);
                     scene.disconnectLegWidget(getLegWidget());
 

@@ -70,8 +70,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 //        createBorder();
         addSeparator();
         addChildren();
-        
-      
+
     }
 
     @Override
@@ -137,7 +136,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         }
         scene.addHubWidget(this);
         repaint();
-      
+
         return true;
     }
 
@@ -236,7 +235,10 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                 public void actionPerformed(ActionEvent ae) {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
                     UndoManager manager = scene.getLookup().lookup(UndoManager.class);
-                    manager.undoableEditHappened(new UndoableEditEvent(HubWidget.this, new DeleteHubWidgetUndoableEdit(scene, HubWidget.this)));
+                    // add a new UndoableEditEvent to the undoManager of the ChainGraphScene when the undoManager exists
+                    if (manager != null) {
+                        manager.undoableEditHappened(new UndoableEditEvent(HubWidget.this, new DeleteHubWidgetUndoableEdit(scene, HubWidget.this)));
+                    }
                     scene.removeHubWidget(HubWidget.this);
                     scene.removeNodeWithEdges(hubNode);
                     propertyChange(null);
