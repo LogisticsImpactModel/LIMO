@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
@@ -43,8 +44,14 @@ public final class EventWizardAction implements ActionListener {
     private Event event, originalEvent;
     private boolean update = false;
     private final EventService service = Lookup.getDefault().lookup(EventService.class);
+    private boolean subEventEditor;
 
     public EventWizardAction() {
+        this(false);
+    }
+
+    public EventWizardAction(boolean subEventEditor) {
+        this.subEventEditor = subEventEditor;
         this.originalEvent = new Event();
     }
 
@@ -100,17 +107,24 @@ public final class EventWizardAction implements ActionListener {
      */
     private void handleWizardFinishClick(final WizardDescriptor wiz) {
         originalEvent.deepOverwrite((Event) wiz.getProperty("event"));
-        
-        if (update) {
-            service.update(originalEvent);
-        } else {
-            originalEvent.setId(null);
-            originalEvent = service.insert(originalEvent);
+
+        if (!subEventEditor) {
+            if (update) {
+                service.update(originalEvent);
+            } else {
+                originalEvent.setId(null);
+                originalEvent.setUniqueIdentifier(UUID.randomUUID().toString());
+                originalEvent = service.insert(originalEvent);
+            }
         }
     }
 
     public void setEvent(Event event) {
         this.update = true;
         this.originalEvent = event;
+    }
+
+    public Event getEvent() {
+        return originalEvent;
     }
 }

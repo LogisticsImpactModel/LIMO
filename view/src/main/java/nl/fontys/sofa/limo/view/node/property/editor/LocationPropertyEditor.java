@@ -64,7 +64,9 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
     @Override
     public String getAsText() {
         Location location = ((Location) getValue());
-        return location.getContinent() + " - " + location.getCountry() + " - " + location.getTown();
+        return location.getContinent()
+                + (location.getCountry() == null ? "" : (" - " + location.getCountry()))
+                + (location.getTown() == null ? "" : (" - " + location.getTown()));
     }
 
     /**

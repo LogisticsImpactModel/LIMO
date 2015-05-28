@@ -168,7 +168,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         eventLabelWidget.setLabel("Events: " + getHub().getEvents().size());
 
         if(getHub().getEvents().size() == 0){
-            removeChild(eventLabelWidget);
+            eventLabelWidget.setLabel("");
         }
     }
 

@@ -23,7 +23,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
     @Override
     public String getAsText() {
-         List<Event> events = (List<Event>) getValue();
+        List<Event> events = (List<Event>) getValue();
         if (events == null || events.isEmpty()) {
             return "No events";
         }
@@ -148,8 +148,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                 eventsTableModel.fireTableDataChanged();
                 setTableAndCheckbox();
                 setValue(events);
-                checkAddButtonState();
-                checkDeleteButtonState();
+                checkButtonsState();
             }
         }
 
@@ -164,8 +163,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             eventsTableModel.fireTableDataChanged();
             setTableAndCheckbox();
             setValue(events);
-            checkAddButtonState();
-            checkDeleteButtonState();
+            checkButtonsState();
         }
 
         @Override
