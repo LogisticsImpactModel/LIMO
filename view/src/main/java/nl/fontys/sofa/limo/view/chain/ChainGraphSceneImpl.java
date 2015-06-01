@@ -158,8 +158,13 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
         this.undoManager = undoManager;
 
-        Lookup undoRedo = Lookups.singleton(undoManager);
-        lookup = new ProxyLookup(undoRedo, super.getLookup());
+        if (undoManager != null) {
+            Lookup undoRedo = Lookups.singleton(undoManager);
+            lookup = new ProxyLookup(undoRedo, super.getLookup());
+        } else {
+            lookup = (ProxyLookup) super.getLookup();
+            
+        }
 
     }
 

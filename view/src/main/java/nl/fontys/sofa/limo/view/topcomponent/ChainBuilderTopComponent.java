@@ -102,7 +102,7 @@ public final class ChainBuilderTopComponent extends TopComponent
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
 
-            graphScene = new ChainGraphSceneImpl(this, chain);
+            graphScene = new ChainGraphSceneImpl(this, chain, undoManager);
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);
