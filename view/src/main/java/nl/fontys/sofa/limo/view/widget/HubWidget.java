@@ -17,6 +17,7 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.util.undoable.events.EventUndoableEdit;
 import nl.fontys.sofa.limo.view.util.undoable.widget.hub.DeleteHubWidgetUndoableEdit;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.netbeans.api.visual.action.ActionFactory;
@@ -59,7 +60,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     public HubWidget(Scene scene, HubNode beanNode) throws IOException {
         super(scene);
         this.hubNode = beanNode;
-        hubNode.addPropertyChangeListener(this);
+        // hubNode.addPropertyChangeListener(this);
 
         setPreferredBounds(new Rectangle(widgetWidth, widgetHeight));
         setPreferredSize(new Dimension(widgetWidth, widgetHeight));
@@ -163,15 +164,27 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         Hub hub = getHub();
-
         setImage(hub.getIcon().getImage());
         setLabel(hub.getName());
         setToolTipText(hub.getName());
+        
+        if (pce.getPropertyName().equals("events")) {
+            ChainGraphScene scene = (ChainGraphScene) getScene();
+            UndoManager manager = scene.getLookup().lookup(UndoManager.class);
+            manager.undoableEditHappened(new UndoableEditEvent(this, new EventUndoableEdit(hubNode, scene, eventLabelWidget)));
+        }
+        updateLabels();
+
+    }
+
+    public void updateLabels() {
+
         procedureLabelWidget.setLabel("Procedure: " + getHub().getProcedures().size());
-        eventLabelWidget.setLabel("Events: " + getHub().getEvents().size());
 
         if (getHub().getEvents().isEmpty()) {
-             eventLabelWidget.setLabel("");
+            eventLabelWidget.setLabel("");
+        } else {
+            eventLabelWidget.setLabel("Events: " + getHub().getEvents().size());
         }
     }
 
