@@ -7,6 +7,10 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyEditorSupport;
 import java.util.List;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JTextField;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.view.custom.procedure.ProcedureComponent;
@@ -54,7 +58,9 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
     /**
      * This is the custom editor for editing the procedure property.
      */
-    private class CustomEditor extends ProcedureComponent implements ItemListener {
+    private class CustomEditor extends ProcedureComponent implements ItemListener, CellEditorListener {
+
+        private JTextField name;
 
         /**
          * Creates a new instance of this custom editor.
@@ -67,6 +73,11 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
             }
             procedureCategoryCheckbox.addItemListener(this);
             timeTypesCheckbox.addItemListener(this);
+
+            name = new JTextField();
+            DefaultCellEditor nameEditor = new DefaultCellEditor(name);
+            nameEditor.addCellEditorListener(this);
+            table.getColumnModel().getColumn(0).setCellEditor(nameEditor);
         }
 
         @Override
@@ -112,6 +123,17 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                     timeTypesCheckbox.addItemListener(this);
                 }
             }
+        }
+
+        @Override
+        public void editingStopped(ChangeEvent e) {
+            List<Procedure> procedures = getActiveTableState();
+            setValue(procedures);
+        }
+
+        @Override
+        public void editingCanceled(ChangeEvent e) {
+            /** not used**/
         }
     }
 }
