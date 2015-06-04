@@ -49,17 +49,17 @@ public final class ChainLoaderTopComponent extends TopComponent implements
      */
     public ChainLoaderTopComponent(File chainFile) {
         initComponents();
-
         SupplyChain supplyChain = SupplyChain.createFromFile(chainFile);
         supplyChain.setName(chainFile.getName());
-        supplyChain.setFilepath(chainFile.getParent());
+        supplyChain.setFilepath(chainFile.getPath());
 
         setName(supplyChain.getName().replace(".lsc", ""));
         initCustomComponents(supplyChain);
 
         try {
             savable = new SavableComponent(graphScene.getChainBuilder());
-
+            
+            
             Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
             Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
             Lookup graphLookup = Lookups.singleton(graphScene);
@@ -98,6 +98,9 @@ public final class ChainLoaderTopComponent extends TopComponent implements
             Exceptions.printStackTrace(ex);
         }
     }
+    
+    
+
 
     /**
      * Check if the TopComponent is ready to close. In this case, the user is
@@ -190,5 +193,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     void readProperties(java.util.Properties p) {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
+        
     }
+
 }

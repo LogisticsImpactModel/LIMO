@@ -5,8 +5,8 @@
   <configuration>
     <httpConfiguration>
       <all>
-        <connectionTimeout>120000</connectionTimeout>
-        <readTimeout>120000</readTimeout>
+        <connectionTimeout>1200000</connectionTimeout>
+        <readTimeout>1200000</readTimeout>
       </all>
     </httpConfiguration>
   </configuration>
