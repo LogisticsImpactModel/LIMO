@@ -32,6 +32,7 @@ public class SavableComponent extends AbstractSavable {
         this.chainBuilder = chainBuilder;
         this.supplyChain = chainBuilder.getSupplyChain();
         register();
+
     }
 
     public void unregisterChainBuilder() {
@@ -51,7 +52,7 @@ public class SavableComponent extends AbstractSavable {
                 dd.setMessageType(DialogDescriptor.YES_NO_CANCEL_OPTION);
                 Object retval = DialogDisplayer.getDefault().notify(dd);
                 if (retval.equals(DialogDescriptor.YES_OPTION)) {
-                    supplyChain.setFilepath(supplyChain.getFilepath()+ File.separator + supplyChain.getName()); //
+                    supplyChain.setFilepath(supplyChain.getFilepath()); //
                     supplyChain.saveToFile();
                 } else if (retval.equals(DialogDescriptor.NO_OPTION)) {
                     openFileChooser();
@@ -71,6 +72,7 @@ public class SavableComponent extends AbstractSavable {
                 throw new InvalidSupplyChainException("The supply chain " + supplyChain.getName().replace(".lsc", "") + " is invalid.");
             }
         }
+
     }
 
     private void openFileChooser() throws HeadlessException, IOException {
