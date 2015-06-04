@@ -25,12 +25,13 @@ import org.openide.util.NbBundle.Messages;
         id = "nl.fontys.sofa.limo.view.action.NewChainAction"
 )
 @ActionRegistration(
-        iconBase = "icons/gui/link.gif",
+        iconBase = "icons/gui/file_add.png",
         displayName = "#CTL_NewChainAction"
 )
 @ActionReferences({
     @ActionReference(path = "Menu/File", position = 2),
-    @ActionReference(path = "Shortcuts", name = "D-N")
+    @ActionReference(path = "Shortcuts", name = "D-N"),
+    @ActionReference(path = "Toolbars/File", position = 10)
 })
 @Messages({
     "CTL_NewChainAction=New Supply Chain..."

@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.simulation.result;
 
+import static java.lang.Math.floor;
+
 /**
  * A data entry encapsulates the data for one cost or time point in a
  * simulation. It contains the minimum, maximum and average value of that point.
@@ -19,9 +21,9 @@ public class DataEntry {
     }
 
     public DataEntry(double min, double max, double avg) {
-        this.min = min;
-        this.max = max;
-        this.avg = avg;
+        this.min = floor(100 * min + 0.5) / 100;
+        this.max = floor(100 * max + 0.5) / 100;
+        this.avg = floor(100 * avg + 0.5) / 100;
     }
 
     public Double getMin() {

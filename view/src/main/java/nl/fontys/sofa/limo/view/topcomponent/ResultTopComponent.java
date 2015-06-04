@@ -62,6 +62,8 @@ public final class ResultTopComponent extends TopComponent {
         this();
         this.result = result;
 
+        setName("Result " + result.getSupplyChain().getName().replace(".lsc", ""));
+
         jTabbedPane1.addTab(LIMOResourceBundle.getString("TOTALS"), createTotalsPane());
         jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("CATEGORY")), createCategoryPane());
         jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("NODE")), createNodePane());
@@ -225,5 +227,10 @@ public final class ResultTopComponent extends TopComponent {
     void readProperties(java.util.Properties p) {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
+    }
+
+    @Override
+    public int getPersistenceType() {
+        return TopComponent.PERSISTENCE_NEVER;
     }
 }

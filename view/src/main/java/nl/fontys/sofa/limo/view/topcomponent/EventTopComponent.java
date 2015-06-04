@@ -37,7 +37,7 @@ import org.openide.windows.TopComponent;
         id = "nl.fontys.sofa.limo.view.topcomponent.EventTopComponent"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data/Event", position = 10),
+    @ActionReference(path = "Menu/Master Data/Event templates", position = 10),
     @ActionReference(path = "Shortcuts", name = "D-E")
 })
 @TopComponent.OpenActionRegistration(

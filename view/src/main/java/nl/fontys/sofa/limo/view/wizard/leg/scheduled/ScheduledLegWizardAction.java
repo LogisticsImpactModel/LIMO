@@ -31,6 +31,7 @@ public final class ScheduledLegWizardAction implements ActionListener {
 
     public ScheduledLegWizardAction(MultimodeLegTablePanel.FinishedScheduledLegListener legListener) {
         this.legListener = legListener;
+        this.originalLeg = new ScheduledLeg();
     }
 
     public ScheduledLegWizardAction() {

@@ -14,6 +14,8 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
  */
 public abstract class Component extends BaseEntity {
 
+    private static final long serialVersionUID = 7595293546266887990L;
+
     @Embedded
     protected List<Procedure> procedures;
     @Embedded
@@ -23,6 +25,12 @@ public abstract class Component extends BaseEntity {
         super(name, description);
         this.procedures = new ArrayList<>();
         this.events = new ArrayList<>();
+    }
+
+    public Component(Component component) {
+        this(component.getName(), component.getDescription());
+        this.procedures = component.getProcedures();
+        this.events = component.getEvents();
     }
 
     public Component() {

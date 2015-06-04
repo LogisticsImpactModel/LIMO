@@ -6,11 +6,10 @@ import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
@@ -33,36 +32,42 @@ import org.openide.util.Lookup;
         id = "nl.fontys.sofa.limo.view.wizard.event.EventWizardAction"
 )
 @ActionRegistration(
-        displayName = "New Event...",
+        displayName = "New Event template...",
         iconBase = "icons/gui/add.gif"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data/Event", position = 20),
+    @ActionReference(path = "Menu/Master Data/Event templates", position = 20),
     @ActionReference(path = "Shortcuts", name = "DS-E")
 })
 public final class EventWizardAction implements ActionListener {
 
-    static final String EVENT = "event";
-    static final String EVENT_NAME = "eventName";
-    static final String EVENT_DESCRIPTION = "eventDescription";
-    static final String EVENT_PROCEDURES = "eventProcedures";
-    static final String EVENT_PROBABILITY = "eventProbability";
-    static final String EVENT_EVENTS = "eventEvents";
-
-    private Event eventUpdate;
-    private boolean isUpdate = false;
+    private Event event, originalEvent;
+    private boolean update = false;
     private final EventService service = Lookup.getDefault().lookup(EventService.class);
+    private boolean subEventEditor;
+
+    public EventWizardAction() {
+        this(false);
+    }
+
+    public EventWizardAction(boolean subEventEditor) {
+        this.subEventEditor = subEventEditor;
+        this.originalEvent = new Event();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
-        if (!isUpdate) {
-            eventUpdate = new Event();
+        if (!update) {
+            event = new Event();
             panels.add(new NewOrDuplicatedEventWizard());
+        } else {
+            event = new Event(originalEvent);
         }
+
         panels.add(new NameDescriptionProbabilityWizard());
         List<Event> events = service.findAll();
-        if (!events.isEmpty() && !(events.size() == 1 && events.contains(eventUpdate))) {
+        if (!events.isEmpty() && !(events.size() == 1 && events.contains(event))) {
             panels.add(new SubEventsWizard());
         }
         panels.add(new ProceduresWizard());
@@ -82,10 +87,12 @@ public final class EventWizardAction implements ActionListener {
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
-        if (isUpdate) {
-            wiz.setTitle(LIMOResourceBundle.getString("EDIT_EVENT"));
-            wiz.putProperty(EVENT, eventUpdate);
-        } else {
+        wiz.setTitle(LIMOResourceBundle.getString("EDIT_EVENT"));
+        wiz.putProperty("event", event);
+        wiz.putProperty("update", update);
+        wiz.putProperty("original_event", originalEvent);
+
+        if (!update) {
             wiz.setTitle(LIMOResourceBundle.getString("ADD_EVENT"));
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
@@ -99,21 +106,25 @@ public final class EventWizardAction implements ActionListener {
      * @param wiz - the WizardDescriptor which contains the inputs.
      */
     private void handleWizardFinishClick(final WizardDescriptor wiz) {
-        eventUpdate.setName((String) wiz.getProperty(EVENT_NAME));
-        eventUpdate.setDescription((String) wiz.getProperty(EVENT_DESCRIPTION));
-        eventUpdate.setEvents((List<Event>) wiz.getProperty(EVENT_EVENTS));
-        eventUpdate.setProbability((Distribution) wiz.getProperty(EVENT_PROBABILITY));
-        eventUpdate.setProcedures((List<Procedure>) wiz.getProperty(EVENT_PROCEDURES));
-        if (isUpdate) {
-            service.update(eventUpdate);
-        } else {
-            eventUpdate.setId(null);
-            eventUpdate = service.insert(eventUpdate);
+        originalEvent.deepOverwrite((Event) wiz.getProperty("event"));
+
+        if (!subEventEditor) {
+            if (update) {
+                service.update(originalEvent);
+            } else {
+                originalEvent.setId(null);
+                originalEvent.setUniqueIdentifier(UUID.randomUUID().toString());
+                originalEvent = service.insert(originalEvent);
+            }
         }
     }
 
     public void setEvent(Event event) {
-        this.isUpdate = true;
-        this.eventUpdate = event;
+        this.update = true;
+        this.originalEvent = event;
+    }
+
+    public Event getEvent() {
+        return originalEvent;
     }
 }

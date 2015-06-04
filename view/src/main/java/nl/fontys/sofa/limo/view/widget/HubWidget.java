@@ -11,14 +11,18 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JPopupMenu;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.undo.UndoManager;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.util.undoable.widget.hub.DeleteHubWidgetUndoableEdit;
 import nl.fontys.sofa.limo.view.wizard.hub.HubWizardAction;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.layout.LayoutFactory;
+import org.netbeans.api.visual.widget.LabelWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.SeparatorWidget;
 import org.netbeans.api.visual.widget.Widget;
@@ -39,8 +43,9 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     private final HubNode hubNode;
 
     private Widget containerWidget;
-    private EventsWidget eventWidget;
-//    private ProcedureWidget procedureWidget;
+
+    private LabelWidget eventLabelWidget;
+    private LabelWidget procedureLabelWidget;
     private final Widget startFlagWidget;
 
     /**
@@ -64,7 +69,6 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
         setImage(getHub().getIcon().getImage());
         setLabel(beanNode.getName());
-//        createBorder();
         addSeparator();
         addChildren();
     }
@@ -82,23 +86,22 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
      * Add the children to this widget.
      */
     private void addChildren() {
-        Scene scene = getScene();
-        Hub hub = getHub();
-        int numberOfEvents = hub.getEvents().size();
-        int numberOfProcedures = hub.getProcedures().size();
-
-        containerWidget = new Widget(scene);
+        containerWidget = new Widget(getScene());
         containerWidget.setLayout(LayoutFactory.createHorizontalFlowLayout());
 
-        eventWidget = new EventsWidget(scene);
-        eventWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("EVENTS"), numberOfEvents));
-        if (numberOfEvents == 0) {
-            eventWidget.setVisible(false);
-        }
-
-        containerWidget.addChild(eventWidget);
-
         addChild(containerWidget);
+        procedureLabelWidget = new LabelWidget(getScene(), "Procedures: " + getHub().getProcedures().size());
+        procedureLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
+        this.addChild(procedureLabelWidget);
+
+        eventLabelWidget = new LabelWidget(getScene());
+        eventLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
+
+        if (getHub().getEvents() != null && !getHub().getEvents().isEmpty()) {
+            eventLabelWidget = new LabelWidget(getScene(), "Events: " + getHub().getEvents().size());
+        }
+        this.addChild(eventLabelWidget);
+
         addChild(startFlagWidget);
     }
 
@@ -157,33 +160,16 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         Hub hub = getHub();
-        int numberOfEvents = hub.getEvents().size();
-        int numberOfProcedures = hub.getProcedures().size();
 
         setImage(hub.getIcon().getImage());
         setLabel(hub.getName());
         setToolTipText(hub.getName());
+        procedureLabelWidget.setLabel("Procedure: " + getHub().getProcedures().size());
+        eventLabelWidget.setLabel("Events: " + getHub().getEvents().size());
 
-        if (numberOfEvents == 0) {
-            eventWidget.setVisible(false);
-        } else {
-            eventWidget.setVisible(true);
-            eventWidget.setToolTipText(LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("MAIN_EVENTS"), numberOfEvents));
+        if (getHub().getEvents().isEmpty()) {
+             eventLabelWidget.setLabel("");
         }
-
-    }
-
-    /**
-     * Revalidate and repaint this Widget.
-     */
-    public void validateHubWidget() {
-        Hub hub = getHub();
-        if (hub.getEvents().isEmpty()) {
-            eventWidget.setVisible(false);
-        } else {
-            eventWidget.setVisible(true);
-        }
-        repaint();
     }
 
     /**
@@ -229,6 +215,11 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
+                    UndoManager manager = scene.getLookup().lookup(UndoManager.class);
+                    // add a new UndoableEditEvent to the undoManager of the ChainGraphScene when the undoManager exists
+                    if (manager != null) {
+                        manager.undoableEditHappened(new UndoableEditEvent(HubWidget.this, new DeleteHubWidgetUndoableEdit(scene, HubWidget.this)));
+                    }
                     scene.removeHubWidget(HubWidget.this);
                     scene.removeNodeWithEdges(hubNode);
                     propertyChange(null);

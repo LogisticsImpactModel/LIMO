@@ -6,15 +6,20 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Map;
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.undo.UndoManager;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
 import static nl.fontys.sofa.limo.view.util.IconUtil.getScaledImageFromIcon;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.util.undoable.widget.leg.DeleteLegWidgetUndoableEdit;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegWizardAction;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
 import nl.fontys.sofa.limo.view.wizard.leg.scheduled.ScheduledLegWizardAction;
@@ -25,6 +30,7 @@ import org.netbeans.api.visual.anchor.PointShape;
 import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.ImageWidget;
+import org.netbeans.api.visual.widget.LabelWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
@@ -68,10 +74,41 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         Leg leg = getLeg();
         if (leg instanceof MultiModeLeg) {
             setMultiModeLegWidgets(leg);
+
+            ImageWidget iw = new ImageWidget(getScene());
+            iw.setImage(new ImageIcon(getClass().getClassLoader().getResource("icons/multimode_smaller.png")).getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH));
+            iw.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
+
+            this.setConstraint(iw, LayoutFactory.ConnectionWidgetLayoutAlignment.BOTTOM_LEFT, 1);
+            this.addChild(iw);
         } else if (leg instanceof ScheduledLeg) {
             setScheduledLegWidgets(leg);
+
+            ImageWidget iw = new ImageWidget(getScene());
+            iw.setImage(new ImageIcon(getClass().getClassLoader().getResource("icons/scheduled_smaller.png")).getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH));
+            iw.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
+            this.setConstraint(iw, LayoutFactory.ConnectionWidgetLayoutAlignment.BOTTOM_LEFT, 1);
+            this.addChild(iw);
         } else {
             setNormalLegWidgets(leg);
+        }
+
+        if (!(leg instanceof MultiModeLeg)) {
+            if (getLeg().getProcedures() != null && !getLeg().getProcedures().isEmpty()) {
+                LabelWidget procedureLabelWidget = new LabelWidget(getScene(), "Procedures: " + getLeg().getProcedures().size());
+                procedureLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
+
+                this.setConstraint(procedureLabelWidget, LayoutFactory.ConnectionWidgetLayoutAlignment.BOTTOM_RIGHT, 40);
+                this.addChild(procedureLabelWidget);
+            }
+
+            if (getLeg().getEvents() != null && !getLeg().getEvents().isEmpty()) {
+                LabelWidget eventLabelWidget = new LabelWidget(getScene(), "Events: " + getLeg().getEvents().size());
+                eventLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
+
+                this.setConstraint(eventLabelWidget, LayoutFactory.ConnectionWidgetLayoutAlignment.BOTTOM_RIGHT, 40);
+                this.addChild(eventLabelWidget);
+            }
         }
     }
 
@@ -149,6 +186,13 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     ChainGraphScene scene = (ChainGraphScene) getScene();
+                    UndoManager undoManager = scene.getLookup().lookup(UndoManager.class);
+                    // add a new UndoableEditEvent to the undoManager of the ChainGraphScene when the undoManager exists
+                    if (undoManager != null) {
+                        HubNode source = (HubNode) scene.getEdgeSource(legNode);
+                        HubNode target = (HubNode) scene.getEdgeTarget(legNode);
+                        undoManager.undoableEditHappened(new UndoableEditEvent(getLegWidget(), new DeleteLegWidgetUndoableEdit(getLegWidget(), source, target, scene)));
+                    }
                     scene.removeEdge(legNode);
                     scene.disconnectLegWidget(getLegWidget());
                 }

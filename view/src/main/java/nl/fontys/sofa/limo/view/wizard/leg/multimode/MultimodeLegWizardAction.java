@@ -15,7 +15,6 @@ import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.util.ImageUtilities;
@@ -73,8 +72,6 @@ public final class MultimodeLegWizardAction implements ActionListener {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("MULTIMODE_LEG"));
-
-        wiz.putProperty(TypeWizardAction.TYPE_OLDTYPE, originalLeg); //TODO delete
 
         wiz.putProperty("leg", leg);
         wiz.putProperty("original_leg", originalLeg);

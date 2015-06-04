@@ -32,6 +32,7 @@ public class SavableComponent extends AbstractSavable {
         this.chainBuilder = chainBuilder;
         this.supplyChain = chainBuilder.getSupplyChain();
         register();
+
     }
 
     public void unregisterChainBuilder() {
@@ -71,6 +72,7 @@ public class SavableComponent extends AbstractSavable {
                 throw new InvalidSupplyChainException("The supply chain " + supplyChain.getName().replace(".lsc", "") + " is invalid.");
             }
         }
+
     }
 
     private void openFileChooser() throws HeadlessException, IOException {

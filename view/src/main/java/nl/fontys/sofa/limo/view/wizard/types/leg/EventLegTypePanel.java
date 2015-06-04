@@ -16,7 +16,6 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
  *
  * @author Pascal Lindner
  */
-
 public final class EventLegTypePanel extends EventsPanel {
 
     public EventLegTypePanel() {
@@ -44,7 +43,7 @@ public final class EventLegTypePanel extends EventsPanel {
             public void actionPerformed(ActionEvent e) {
                 Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
                 selected.setId(null);
-   //             selected.setParent(lt);
+                //             selected.setParent(lt);
                 selected.setDependency(ExecutionState.INDEPENDENT);
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();

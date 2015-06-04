@@ -46,8 +46,7 @@ public final class EventsHubPanel extends EventsPanel {
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();
                 deleteButton.setEnabled(true);
-                checkAddButtonState();
-                checkDeleteButtonState();
+                checkButtonsState();
             }
         });
     }

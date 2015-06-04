@@ -43,7 +43,7 @@ public class MultiModeLeg extends Leg {
     public void deepOverwrite(MultiModeLeg sourceLeg) {
         super.deepOverwrite(sourceLeg);
 
-        setLegs((sourceLeg).getLegs());
+        setLegs(sourceLeg.getLegs());
     }
 
     public Map<Leg, Double> getLegs() {

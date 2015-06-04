@@ -18,6 +18,7 @@ import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
+import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Node;
@@ -57,6 +58,7 @@ public final class ChainBuilderTopComponent extends TopComponent
     private ChainGraphScene graphScene;
     private InstanceContent ic = new InstanceContent();
     SavableComponent savable;
+    private UndoRedo.Manager undoManager = new UndoRedo.Manager();
 
     /**
      * Constructor creates a new ChainBuilderTopComponent.
@@ -100,7 +102,7 @@ public final class ChainBuilderTopComponent extends TopComponent
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
 
-            graphScene = new ChainGraphSceneImpl(this, chain);
+            graphScene = new ChainGraphSceneImpl(this, chain, undoManager);
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);
@@ -161,6 +163,11 @@ public final class ChainBuilderTopComponent extends TopComponent
 
     }
 
+    @Override
+    public UndoRedo getUndoRedo() {
+        return undoManager;
+    }
+
     /**
      * Check if the TopComponent is ready to close. In this case, the user is
      * prompted with a question to save the supply chain or discard it.
@@ -173,17 +180,19 @@ public final class ChainBuilderTopComponent extends TopComponent
                 + " supply chain?", "Save the supply chain");
 
         dialogDescriptor.setMessageType(DialogDescriptor.QUESTION_MESSAGE);
-        dialogDescriptor.setOptions(new Object[]{"Save", "Discard"});
+        dialogDescriptor.setOptions(new Object[]{"Save changes", "Discard changes", "Cancel"});
         Object retval = DialogDisplayer.getDefault().notify(dialogDescriptor);
-        if (retval.equals("Save")) {
+        if (retval.equals("Save changes")) {
             try {
                 savable.handleSave(); //Try to save the supply chain
             } catch (IOException ex) {
                 Exceptions.printStackTrace(ex);
                 return false; //The supply chain window cannot be closed because an exception is trown while saving
             }
-        } else if (retval.equals("Discard")) {
+        } else if (retval.equals("Discard changes")) {
             savable.unregisterChainBuilder(); //Unregister supply chain from registry so it is not shown in the 'save dialog'
+        } else { //Cancel is clicked or the dialog is closed
+            return false;
         }
         return true; //The supply chain window can now be closed
     }

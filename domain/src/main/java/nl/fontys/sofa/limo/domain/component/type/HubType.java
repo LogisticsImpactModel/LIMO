@@ -7,4 +7,14 @@ package nl.fontys.sofa.limo.domain.component.type;
  */
 public class HubType extends Type {
 
+    private static final long serialVersionUID = -242677488690439113L;
+    
+    public HubType() {
+    }
+
+    public HubType(HubType type) {
+        super(type);
+    }
+
+    
 }

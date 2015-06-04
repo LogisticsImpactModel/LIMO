@@ -46,11 +46,11 @@ public class SubEventsPanel extends EventsPanel {
                 selected.setDependency(ExecutionState.INDEPENDENT);
                 eventsTableModel.getEvents().add(selected);
                 eventsTableModel.fireTableDataChanged();
-                checkDeleteButtonState();
+                checkButtonsState();
             }
         });
     }
-
+    
     @Override
     protected void setTableModel() {
 
@@ -65,4 +65,5 @@ public class SubEventsPanel extends EventsPanel {
     public String getName() {
         return LIMOResourceBundle.getString("SUB_EVENTS");
     }
+
 }

@@ -12,7 +12,6 @@ import javax.swing.DefaultComboBoxModel;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
-import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
  * This class is the Property Editor for our events. It enables you to change
@@ -25,10 +24,19 @@ public class EventPropertyEditor extends PropertyEditorSupport {
     @Override
     public String getAsText() {
         List<Event> events = (List<Event>) getValue();
-        if (events == null) {
-            return LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("EVENTS"), 0);
+        if (events == null || events.isEmpty()) {
+            return "No events";
         }
-        return LIMOResourceBundle.getString("NUMBER_OF", LIMOResourceBundle.getString("EVENTS"), events.size());
+
+        StringBuilder name = new StringBuilder();
+        for (Event event : events) {
+            if (name.toString().length() == 0) {
+                name.append(event.getName());
+            } else {
+                name.append(" - " + event.getName());
+            }
+        }
+        return name.toString();
     }
 
     @Override
@@ -140,8 +148,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                 eventsTableModel.fireTableDataChanged();
                 setTableAndCheckbox();
                 setValue(events);
-                checkAddButtonState();
-                checkDeleteButtonState();
+                checkButtonsState();
             }
         }
 
@@ -156,8 +163,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             eventsTableModel.fireTableDataChanged();
             setTableAndCheckbox();
             setValue(events);
-            checkAddButtonState();
-            checkDeleteButtonState();
+            checkButtonsState();
         }
 
         @Override

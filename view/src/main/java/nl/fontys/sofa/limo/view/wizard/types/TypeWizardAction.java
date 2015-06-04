@@ -12,6 +12,6 @@ public abstract class TypeWizardAction implements ActionListener {
 
     public static final String TYPE_OLDTYPE = "oldEvent";
 
-    protected boolean isUpdate = false;
+    protected boolean update = false;
 
 }

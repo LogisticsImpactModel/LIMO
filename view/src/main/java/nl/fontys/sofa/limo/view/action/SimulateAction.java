@@ -18,6 +18,10 @@ import nl.fontys.sofa.limo.view.topcomponent.ResultTopComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
+import org.openide.awt.ActionID;
+import org.openide.awt.ActionReference;
+import org.openide.awt.ActionReferences;
+import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 import org.openide.util.Utilities;
 import org.openide.util.actions.Presenter;
@@ -38,10 +42,17 @@ import org.openide.windows.WindowManager;
  *
  * @author Sebastiaan Heijmann
  */
+@ActionID(category = "File", id = "nl.fontys.sofa.limo.view.action.SimulateAction")
+@ActionRegistration(lazy = false, displayName = "NOT-USED")
+
+@ActionReferences({
+    @ActionReference(path = "Toolbars/Run", position = 10),
+    @ActionReference(path = "Shortcuts", name = "D-F5"),
+})
 public final class SimulateAction extends AbstractAction
         implements Presenter.Toolbar, SimulatorTaskListener {
 
-    public static final int DEFAULT_NUM_RUNS = 1000;
+    public static final int DEFAULT_NUM_RUNS = 100000;
 
     private final JFormattedTextField inputRunsTF;
     private ChainGraphScene scene;
@@ -56,6 +67,10 @@ public final class SimulateAction extends AbstractAction
         this.inputRunsTF = inputRunsTF;
     }
 
+    public SimulateAction() {
+        this.inputRunsTF = null;
+    }
+
     /**
      * {@inheritDoc}
      * <p>
@@ -68,14 +83,15 @@ public final class SimulateAction extends AbstractAction
         int numberOfRuns = DEFAULT_NUM_RUNS;
 
         if (scene != null) {
-            if (inputRunsTF.isEditValid()) {
-                Object input = inputRunsTF.getValue();
-                if (input != null) {
-                    numberOfRuns = (int) input;
-                }
-                performSimulation(scene, numberOfRuns);
+            Object input = null;
+            if (inputRunsTF != null && inputRunsTF.isEditValid()) {
+                input = inputRunsTF.getValue();
             }
 
+            if (input != null) {
+                numberOfRuns = (int) input;
+            }
+            performSimulation(scene, numberOfRuns);
         }
     }
 
@@ -92,14 +108,14 @@ public final class SimulateAction extends AbstractAction
 
         for (final SimulationResult simResult : task.getResults()) {
             WindowManager.getDefault().invokeWhenUIReady(new Runnable() {
-                
+
                 @Override
                 public void run() {
                     ResultTopComponent rtc = new ResultTopComponent(simResult);
                     rtc.open();
                     rtc.requestActive();
                 }
-                
+
             });
         }
     }

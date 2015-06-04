@@ -3,8 +3,6 @@ package nl.fontys.sofa.limo.view.wizard.event;
 import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
-import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT;
-import static nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.EVENT_EVENTS;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -16,7 +14,7 @@ import org.openide.util.HelpCtx;
 public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor> {
 
     private SubEventsPanel component;
-    private Event lastEvent;
+    private Event event;
 
     @Override
     public SubEventsPanel getComponent() {
@@ -46,21 +44,12 @@ public class SubEventsWizard implements WizardDescriptor.Panel<WizardDescriptor>
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        Event event = (Event) wiz.getProperty(EVENT);
-        if (event != null) {
-            if (event != lastEvent) {
-                getComponent().update(event.getEvents());
-            }
-        } else {
-            if (lastEvent != null) {
-                getComponent().update(new ArrayList<Event>());
-            }
-        }
-        lastEvent = event;
+        event = (Event) wiz.getProperty("event");
+        getComponent().update(new ArrayList(event.getEvents()));
     }
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        wiz.putProperty(EVENT_EVENTS, component.getEvents());
+        event.setEvents(getComponent().getEvents());
     }
 }

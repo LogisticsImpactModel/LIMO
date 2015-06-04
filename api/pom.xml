@@ -4,7 +4,7 @@
     <parent>
         <groupId>nl.fontys.sofa.limo</groupId>
         <artifactId>LIMO-parent</artifactId>
-        <version>1.3</version>
+        <version>1.4</version>
     </parent>
     <artifactId>LIMO-API</artifactId>
     <name>LIMO-API</name>
@@ -84,4 +84,5 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <version>1.4</version>
 </project>

@@ -24,12 +24,13 @@ import org.openide.util.NbBundle.Messages;
         id = "nl.fontys.sofa.limo.view.action.OpenChainAction"
 )
 @ActionRegistration(
-        iconBase = "icons/gui/link.gif",
+        iconBase = "icons/gui/document_open.png",
         displayName = "#CTL_OpenChainAction"
 )
 @ActionReferences({
     @ActionReference(path = "Menu/File", position = 3),
-    @ActionReference(path = "Shortcuts", name = "D-O")
+    @ActionReference(path = "Shortcuts", name = "D-O"),
+    @ActionReference(path = "Toolbars/File", position = 20)
 })
 @Messages({
     "CTL_OpenChainAction=Load Supply Chain..."
