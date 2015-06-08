@@ -5,7 +5,6 @@ import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.node.root.AbstractRootNode;
 import nl.fontys.sofa.limo.view.node.root.HubRootNode;
-import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
 import org.openide.util.Exceptions;
@@ -52,7 +51,7 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
             Children hubChildren = Children.create(hubFactory, false);
 
             AbstractRootNode hubRootNode = new HubRootNode(hubChildren);
-            hubRootNode.setDisplayName(LIMOResourceBundle.getString("HUBS"));
+            hubRootNode.setDisplayName("Hub templates");
             list.add(hubRootNode);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
