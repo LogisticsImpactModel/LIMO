@@ -45,8 +45,8 @@ import org.openide.windows.TopComponent;
         preferredID = "HubTypeTopComponent"
 )
 @Messages({
-    "CTL_HubTypeAction=Hub Type Catalog",
-    "CTL_HubTypeTopComponent=Hub Type Catalog"
+    "CTL_HubTypeAction=Hub category catalog",
+    "CTL_HubTypeTopComponent=Hub category catalog"
 })
 public final class HubTypeTopComponent extends BaseEntityTopComponent {
 

@@ -45,8 +45,8 @@ import org.openide.windows.TopComponent;
         preferredID = "LegTypeTopComponent"
 )
 @Messages({
-    "CTL_LegTypeAction=Leg Type Catalog",
-    "CTL_LegTypeTopComponent=Leg Type Catalog"})
+    "CTL_LegTypeAction=Leg template catalog",
+    "CTL_LegTypeTopComponent=Leg template catalog"})
 public final class LegTypeTopComponent extends BaseEntityTopComponent {
 
     public LegTypeTopComponent() {

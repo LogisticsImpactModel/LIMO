@@ -45,8 +45,8 @@ import org.openide.windows.TopComponent;
         preferredID = "EventTopComponent"
 )
 @Messages({
-    "CTL_EventAction=Event Catalog",
-    "CTL_EventTopComponent=Event Catalog"
+    "CTL_EventAction=Event catalog",
+    "CTL_EventTopComponent=Event catalog"
 })
 public final class EventTopComponent extends BaseEntityTopComponent {
 

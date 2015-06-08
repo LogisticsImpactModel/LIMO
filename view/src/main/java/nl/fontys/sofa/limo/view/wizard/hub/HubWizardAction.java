@@ -33,7 +33,7 @@ import org.openide.util.Lookup;
         id = "nl.fontys.sofa.limo.view.wizzard.hub.HubWizardAction"
 )
 @ActionRegistration(
-        displayName = "New Hub...",
+        displayName = "New hub...",
         iconBase = "icons/gui/add.gif"
 )
 @ActionReferences({
