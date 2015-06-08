@@ -37,7 +37,7 @@ import org.openide.windows.TopComponent;
         id = "nl.fontys.sofa.limo.view.topcomponent.LegTypeTopComponent"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data/Leg Type", position = 10),
+    @ActionReference(path = "Menu/Master Data/Leg templates", position = 10),
     @ActionReference(path = "Shortcuts", name = "DO-L")
 })
 @TopComponent.OpenActionRegistration(

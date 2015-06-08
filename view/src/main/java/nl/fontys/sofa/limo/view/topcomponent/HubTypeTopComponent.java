@@ -37,7 +37,7 @@ import org.openide.windows.TopComponent;
         id = "nl.fontys.sofa.limo.view.topcomponent.HubTypeTopComponent"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data/Hub Type", position = 10),
+    @ActionReference(path = "Menu/Master Data/Hub category", position = 10),
     @ActionReference(path = "Shortcuts", name = "DO-H")
 })
 @TopComponent.OpenActionRegistration(

@@ -37,7 +37,7 @@ import org.openide.windows.TopComponent;
         id = "nl.fontys.sofa.limo.view.topcomponent.ProcedureCategoryTopComponent"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data/Procedure Category", position = 10),
+    @ActionReference(path = "Menu/Master Data/Procedure category", position = 10),
     @ActionReference(path = "Shortcuts", name = "D-P")
 })
 @TopComponent.OpenActionRegistration(
