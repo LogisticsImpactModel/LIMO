@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,7 +48,7 @@ import org.openide.windows.TopComponent;
 })
 public final class ResultTopComponent extends TopComponent {
 
-    private SimulationResult result;
+    private List<SimulationResult> results;
     private JTable totalsTable, categoryTable, nodesTable;
 
     public ResultTopComponent() {
@@ -58,15 +57,32 @@ public final class ResultTopComponent extends TopComponent {
         setToolTipText(Bundle.HINT_ResultTopComponent());
     }
 
-    public ResultTopComponent(SimulationResult result) {
+    /**
+     * @param results a list which must contain at least one entry and maximal 2
+     * entries
+     */
+    public ResultTopComponent(List<SimulationResult> results) throws InstantiationException {
         this();
-        this.result = result;
+        if (results.isEmpty() || results.size() > 2) {
+            throw new InstantiationException(LIMOResourceBundle.getString("NOT_CORRECT_NUMBER_OF_SIMULATION_RESULT"));
+        }
+        this.results = results;
 
-        setName("Result " + result.getSupplyChain().getName().replace(".lsc", ""));
+        String name = LIMOResourceBundle.getString("DEFAULT_RESULT_WINDOW_NAME");
+        if (results.size() == 2) {
+            name = LIMOResourceBundle.getString("COMPARISION_RESULT_WINDOW_NAME");
+        }
+
+        for (SimulationResult result : results) {
+            name += " " + result.getSupplyChain().getName().replace(".lsc", "");
+        }
+        setName(name);
 
         jTabbedPane1.addTab(LIMOResourceBundle.getString("TOTALS"), createTotalsPane());
-        jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("CATEGORY")), createCategoryPane());
-        jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("NODE")), createNodePane());
+        if (results.size() == 1) {
+            jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("CATEGORY")), createCategoryPane());
+            jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("NODE")), createNodePane());
+        }
         jButton1.addActionListener(new ActionListener() {
 
             @Override
@@ -91,16 +107,74 @@ public final class ResultTopComponent extends TopComponent {
 
     private JScrollPane createTotalsPane() {
         Map<String, List<DataEntry>> totalMap = new HashMap<>();
-        totalMap.put(DataEntryTableModel.COSTS_ID, Arrays.asList(result.getTotalCosts()));
-        totalMap.put(DataEntryTableModel.LEAD_TIMES_ID, Arrays.asList(result.getTotalLeadTimes()));
-        totalMap.put(DataEntryTableModel.EXTRA_COSTS_ID, Arrays.asList(result.getTotalExtraCosts()));
-        totalMap.put(DataEntryTableModel.DELAYS_ID, Arrays.asList(result.getTotalDelays()));
-        DataEntryTableModel detm = new DataEntryTableModel(Arrays.asList("Total"), totalMap);
+        List<DataEntry> cost = new ArrayList<>();
+        List<DataEntry> leadTimes = new ArrayList<>();
+        List<DataEntry> extraCosts = new ArrayList<>();
+        List<DataEntry> delay = new ArrayList<>();
+        List<String> name = new ArrayList<>();
+
+        for (SimulationResult result : results) {
+            cost.add(result.getTotalCosts());
+            leadTimes.add(result.getTotalLeadTimes());
+            extraCosts.add(result.getTotalExtraCosts());
+            delay.add(result.getTotalDelays());
+            name.add(result.getSupplyChain().getName().replace(".lsc", ""));
+        }
+        if (results.size() > 1) {
+            cost.add(getDifference(cost.get(0), cost.get(1)));
+            leadTimes.add(getDifference(leadTimes.get(0), leadTimes.get(1)));
+            extraCosts.add(getDifference(extraCosts.get(0), extraCosts.get(1)));
+            delay.add(getDifference(delay.get(0), delay.get(1)));
+            name.add(LIMOResourceBundle.getString("RESULT_ABSOULTE_DIFFERENCE_ROW_NAME"));
+
+            cost.add(getDifferenceAsPercentage(cost.get(0), cost.get(1)));
+            leadTimes.add(getDifferenceAsPercentage(leadTimes.get(0), leadTimes.get(1)));
+            extraCosts.add(getDifferenceAsPercentage(extraCosts.get(0), extraCosts.get(1)));
+            delay.add(getDifferenceAsPercentage(delay.get(0), delay.get(1)));
+            name.add(LIMOResourceBundle.getString("RESULT_REALTIVE_DIFFERENCE_ROW_NAME"));
+        } else {
+            name.set(0, LIMOResourceBundle.getString("DEFAULT_RESULT_ROW_NAME"));
+        }
+        totalMap.put(DataEntryTableModel.COSTS_ID, cost);
+        totalMap.put(DataEntryTableModel.LEAD_TIMES_ID, leadTimes);
+        totalMap.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
+        totalMap.put(DataEntryTableModel.DELAYS_ID, delay);
+        DataEntryTableModel detm = new DataEntryTableModel(name, totalMap);
         totalsTable = new JTable(detm);
         return new JScrollPane(totalsTable);
     }
 
+    private DataEntry getDifference(DataEntry one, DataEntry two) {
+        double min, max, avg;
+
+        min = Math.abs(two.getMin() - one.getMin());
+        max = Math.abs(two.getMax() - one.getMax());
+        avg = Math.abs(two.getAvg() - one.getAvg());
+        return new DataEntry(min, max, avg);
+    }
+
+    private DataEntry getDifferenceAsPercentage(DataEntry one, DataEntry two) {
+        double min, max, avg;
+        min = calculateDifferenceAsPercentage(one.getMin(), two.getMin());
+        max = calculateDifferenceAsPercentage(one.getMax(), two.getMax());
+        avg = calculateDifferenceAsPercentage(one.getAvg(), two.getAvg());
+        return new DataEntry(min, max, avg);
+    }
+
+    private double calculateDifferenceAsPercentage(double value1, double value2) {
+        double diff = value2 - value1;
+        if (value1 <= 0 && value2 > 0) {
+            return 100;
+        }
+        
+        if(value1<=0){
+            return 0;
+        }
+        return diff * 100 / value1;
+    }
+
     private JScrollPane createCategoryPane() {
+        SimulationResult result = results.get(0);
         Set<String> categorySet = new HashSet<>();
         categorySet.addAll(result.getCostsByCategory().keySet());
         categorySet.addAll(result.getLeadTimesByCategory().keySet());
@@ -144,27 +218,27 @@ public final class ResultTopComponent extends TopComponent {
         List<DataEntry> leadTimes = new ArrayList<>();
         List<DataEntry> extraCosts = new ArrayList<>();
         List<DataEntry> delays = new ArrayList<>();
+        for (SimulationResult result : results) {
+            Node currentNode = result.getSupplyChain().getStartHub();
+            while (currentNode != null) {
+                String name = currentNode.getName();
+                names.add(name);
 
-        Node currentNode = result.getSupplyChain().getStartHub();
-        while (currentNode != null) {
-            String name = currentNode.getName();
-            names.add(name);
+                DataEntry cost = result.getCostsByNode().get(name);
+                costs.add(cost == null ? new DataEntry(0, 0, 0) : cost);
 
-            DataEntry cost = result.getCostsByNode().get(name);
-            costs.add(cost == null ? new DataEntry(0, 0, 0) : cost);
+                DataEntry leadTime = result.getLeadTimesByNode().get(name);
+                leadTimes.add(leadTime == null ? new DataEntry(0, 0, 0) : leadTime);
 
-            DataEntry leadTime = result.getLeadTimesByNode().get(name);
-            leadTimes.add(leadTime == null ? new DataEntry(0, 0, 0) : leadTime);
+                DataEntry extraCost = result.getExtraCostsByNode().get(name);
+                extraCosts.add(extraCost == null ? new DataEntry(0, 0, 0) : extraCost);
 
-            DataEntry extraCost = result.getExtraCostsByNode().get(name);
-            extraCosts.add(extraCost == null ? new DataEntry(0, 0, 0) : extraCost);
+                DataEntry delay = result.getDelaysByNode().get(name);
+                delays.add(delay == null ? new DataEntry(0, 0, 0) : delay);
 
-            DataEntry delay = result.getDelaysByNode().get(name);
-            delays.add(delay == null ? new DataEntry(0, 0, 0) : delay);
-
-            currentNode = currentNode.getNext();
+                currentNode = currentNode.getNext();
+            }
         }
-
         Map<String, List<DataEntry>> map = new HashMap<>();
         map.put(DataEntryTableModel.COSTS_ID, costs);
         map.put(DataEntryTableModel.LEAD_TIMES_ID, leadTimes);
