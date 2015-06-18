@@ -37,7 +37,7 @@ import org.openide.windows.TopComponent;
         id = "nl.fontys.sofa.limo.view.topcomponent.LegTypeTopComponent"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data/Leg Type", position = 10),
+    @ActionReference(path = "Menu/Master Data/Leg templates", position = 10),
     @ActionReference(path = "Shortcuts", name = "DO-L")
 })
 @TopComponent.OpenActionRegistration(
@@ -45,8 +45,8 @@ import org.openide.windows.TopComponent;
         preferredID = "LegTypeTopComponent"
 )
 @Messages({
-    "CTL_LegTypeAction=Leg Type Catalog",
-    "CTL_LegTypeTopComponent=Leg Type Catalog"})
+    "CTL_LegTypeAction=Leg template catalog",
+    "CTL_LegTypeTopComponent=Leg template catalog"})
 public final class LegTypeTopComponent extends BaseEntityTopComponent {
 
     public LegTypeTopComponent() {

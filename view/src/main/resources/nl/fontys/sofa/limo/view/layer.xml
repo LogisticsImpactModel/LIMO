@@ -24,19 +24,20 @@
         <file name="View_hidden"/>
         <folder name="Master Data">
             <attr name="position" intvalue="20"/>
-            <folder name="Procedure Category">
+            <file name="Hub Type_hidden"/>
+            <file name="Hub_hidden"/>
+            <file name="Leg Type_hidden"/>
+            <file name="Procedure Category_hidden"/>
+            <folder name="Procedure category">
                 <attr name="position" intvalue="10"/>
             </folder>
-            <folder name="Event">
-                <attr name="position" intvalue="20"/>
-            </folder>
-            <folder name="Leg Type">
+            <folder name="Leg templates">
                 <attr name="position" intvalue="30"/>
             </folder>
-            <folder name="Hub Type">
+            <folder name="Hub category">
                 <attr name="position" intvalue="40"/>
             </folder>
-            <folder name="Hub">
+            <folder name="Hub templates">
                 <attr name="position" intvalue="50"/>
             </folder>
         </folder>
@@ -91,6 +92,9 @@
         </file>
         <file name="D-Y.shadow">
             <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-RedoAction.instance"/>
+        </file>
+        <file name="D-S.shadow">
+            <attr name="originalFile" stringvalue="Actions/File/org-openide-actions-SaveAllAction.shadow"/>
         </file>
     </folder>
     <folder name="Toolbars">

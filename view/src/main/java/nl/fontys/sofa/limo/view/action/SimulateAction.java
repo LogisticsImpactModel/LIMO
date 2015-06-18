@@ -3,6 +3,8 @@ package nl.fontys.sofa.limo.view.action;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,7 +13,6 @@ import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.simulation.Simulator;
 import nl.fontys.sofa.limo.simulation.SimulatorTask;
 import nl.fontys.sofa.limo.simulation.SimulatorTaskListener;
-import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.topcomponent.ResultTopComponent;
@@ -22,6 +23,7 @@ import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
+import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import org.openide.util.Utilities;
 import org.openide.util.actions.Presenter;
@@ -44,18 +46,15 @@ import org.openide.windows.WindowManager;
  */
 @ActionID(category = "File", id = "nl.fontys.sofa.limo.view.action.SimulateAction")
 @ActionRegistration(lazy = false, displayName = "NOT-USED")
-
 @ActionReferences({
-    @ActionReference(path = "Toolbars/Run", position = 10),
-    @ActionReference(path = "Shortcuts", name = "D-F5"),
-})
+    @ActionReference(path = "Shortcuts", name = "D-F5")})
 public final class SimulateAction extends AbstractAction
         implements Presenter.Toolbar, SimulatorTaskListener {
 
     public static final int DEFAULT_NUM_RUNS = 100000;
 
     private final JFormattedTextField inputRunsTF;
-    private ChainGraphScene scene;
+    private List<ChainGraphScene> scenes;
 
     /**
      * Constructor sets the input text field from where to get the number of
@@ -71,6 +70,11 @@ public final class SimulateAction extends AbstractAction
         this.inputRunsTF = null;
     }
 
+    public SimulateAction(List<ChainGraphScene> scene) {
+        this();
+        this.scenes = scene;
+    }
+
     /**
      * {@inheritDoc}
      * <p>
@@ -78,46 +82,57 @@ public final class SimulateAction extends AbstractAction
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        Lookup global = Utilities.actionsGlobalContext();
-        scene = global.lookup(ChainGraphScene.class);
-        int numberOfRuns = DEFAULT_NUM_RUNS;
-
-        if (scene != null) {
-            Object input = null;
-            if (inputRunsTF != null && inputRunsTF.isEditValid()) {
-                input = inputRunsTF.getValue();
+        if (scenes == null) {
+            scenes = new ArrayList<>();
+            Lookup global = Utilities.actionsGlobalContext();
+            ChainGraphScene scene = global.lookup(ChainGraphScene.class);
+            if(scene == null){
+                return;
             }
-
-            if (input != null) {
-                numberOfRuns = (int) input;
-            }
-            performSimulation(scene, numberOfRuns);
+            
+            scenes.add(scene);
         }
+
+        int numberOfRuns = DEFAULT_NUM_RUNS;
+        Object input = null;
+        if (inputRunsTF != null && inputRunsTF.isEditValid()) {
+            input = inputRunsTF.getValue();
+        }
+
+        if (input != null) {
+            numberOfRuns = (int) input;
+        }
+        performSimulation(scenes, numberOfRuns);
     }
 
     @Override
-    public void taskFinished(SimulatorTask task) {
-        TopComponent tc = (TopComponent) scene.getParent();
-        tc.makeBusy(false);
-        scene.setEnabled(true);
-        scene.setBackground(Color.WHITE);
-
+    public void taskFinished(final SimulatorTask task) {
+        for (ChainGraphScene scene : scenes) {
+            TopComponent tc = (TopComponent) scene.getParent();
+            tc.makeBusy(false);
+            scene.setEnabled(true);
+            scene.setBackground(Color.WHITE);
+        }
         if (task.getCancelled().get()) {
             return;
         }
 
-        for (final SimulationResult simResult : task.getResults()) {
-            WindowManager.getDefault().invokeWhenUIReady(new Runnable() {
+        //for (final SimulationResult simResult : task.getResults()) {
+        WindowManager.getDefault().invokeWhenUIReady(new Runnable() {
 
-                @Override
-                public void run() {
-                    ResultTopComponent rtc = new ResultTopComponent(simResult);
+            @Override
+            public void run() {
+                try {
+                    ResultTopComponent rtc = new ResultTopComponent(task.getResults());
                     rtc.open();
                     rtc.requestActive();
+                } catch (InstantiationException ex) {
+                    Exceptions.printStackTrace(ex);
                 }
+            }
 
-            });
-        }
+        });
+        //}
     }
 
     /**
@@ -137,23 +152,29 @@ public final class SimulateAction extends AbstractAction
         return button;
     }
 
-    private void performSimulation(ChainGraphScene scene, int numberOfRuns) {
-        ChainBuilder chainBuilder = scene.getChainBuilder();
+    private void performSimulation(List<ChainGraphScene> scenes, int numberOfRuns) {
+        List<SupplyChain> chain = new ArrayList<>();
+        for (ChainGraphScene scene : scenes) {
+            ChainBuilder chainBuilder = scene.getChainBuilder();
 
-        if (chainBuilder != null && chainBuilder.validate()) {
-            TopComponent tc = (TopComponent) scene.getParent();
-            SupplyChain supplyChain = chainBuilder.getSupplyChain();
+            if (chainBuilder != null && chainBuilder.validate()) {
+                TopComponent tc = (TopComponent) scene.getParent();
+                SupplyChain supplyChain = chainBuilder.getSupplyChain();
+                chain.add(supplyChain);
+                tc.makeBusy(true);
+                scene.setEnabled(false);
+                scene.setBackground(Color.LIGHT_GRAY);
 
-            tc.makeBusy(true);
-            scene.setEnabled(false);
-            scene.setBackground(Color.LIGHT_GRAY);
-            SimulatorTask task = Simulator.simulate(numberOfRuns, supplyChain);
-            task.addTaskListener(this);
-        } else {
-            DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(
-                    LIMOResourceBundle.getString("CHAIN_VALIDATION_FAILED"),
-                    NotifyDescriptor.WARNING_MESSAGE));
+            } else {
+                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(
+                        LIMOResourceBundle.getString("CHAIN_VALIDATION_FAILED"),
+                        NotifyDescriptor.WARNING_MESSAGE));
+                return;
+            }
         }
+        SupplyChain [] c = chain.toArray(new SupplyChain[chain.size()]);
+        SimulatorTask task = Simulator.simulate(numberOfRuns,c);
+        task.addTaskListener(this);
     }
 
 }

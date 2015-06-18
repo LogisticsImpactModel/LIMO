@@ -37,7 +37,7 @@ import org.openide.windows.TopComponent;
         id = "nl.fontys.sofa.limo.view.topcomponent.HubTopComponent"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data/Hub", position = 10),
+    @ActionReference(path = "Menu/Master Data/Hub templates", position = 10),
     @ActionReference(path = "Shortcuts", name = "D-H")
 })
 @TopComponent.OpenActionRegistration(
@@ -45,8 +45,8 @@ import org.openide.windows.TopComponent;
         preferredID = "HubTopComponent"
 )
 @Messages({
-    "CTL_HubAction=Hub Catalog",
-    "CTL_HubTopComponent=Hub Catalog"
+    "CTL_HubAction=Hub template catalog",
+    "CTL_HubTopComponent=Hub template catalog"
 })
 public final class HubTopComponent extends BaseEntityTopComponent {
 
