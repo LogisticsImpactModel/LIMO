@@ -1,7 +1,11 @@
 package nl.fontys.sofa.limo.view;
 
 import java.util.logging.Logger;
+import nl.fontys.sofa.limo.view.custom.panel.SavablePanel;
 import nl.fontys.sofa.limo.view.status.ExceptionHandler;
+import org.openide.DialogDescriptor;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.modules.ModuleInstall;
 import org.openide.windows.Mode;
 import org.openide.windows.TopComponent;
@@ -40,6 +44,11 @@ public class Installer extends ModuleInstall {
 
     @Override
     public boolean closing() {
-        return super.closing();
-    }
+        DialogDescriptor dd = new DialogDescriptor(new SavablePanel(), "Close");
+        dd.setOptions(new Object[]{DialogDescriptor.YES_OPTION, DialogDescriptor.NO_OPTION});
+        if (DialogDisplayer.getDefault().notify(dd) == NotifyDescriptor.YES_OPTION) {
+            return true;
+        } 
+        return false;
+    }    
 }

@@ -8,7 +8,7 @@ import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.InvalidSupplyChainException;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.util.ChainSaveFileChooser;
-import org.netbeans.spi.actions.AbstractSavable;
+import org.netbeans.api.actions.Savable;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -18,7 +18,7 @@ import org.openide.NotifyDescriptor;
  *
  * @author Sebastiaan Heijmann
  */
-public class SavableComponent extends AbstractSavable {
+public class SavableComponent implements Savable {
 
     private final ChainBuilder chainBuilder;
     private final SupplyChain supplyChain;
@@ -31,21 +31,15 @@ public class SavableComponent extends AbstractSavable {
     public SavableComponent(ChainBuilder chainBuilder) {
         this.chainBuilder = chainBuilder;
         this.supplyChain = chainBuilder.getSupplyChain();
-        register();
 
     }
 
-    public void unregisterChainBuilder() {
-        unregister();
-    }
-
-    @Override
     protected String findDisplayName() {
         return supplyChain.getName().replace(".lsc", "");
     }
 
     @Override
-    protected void handleSave() throws IOException {
+    public void save() throws IOException {
         if (chainBuilder.validate()) {
             if (supplyChain.getFilepath() != null) {
                 NotifyDescriptor dd = new NotifyDescriptor.Confirmation("Would you like to overwrite the '" + supplyChain.getName().replace(".lsc", "") + "' supply chain file?");
@@ -93,7 +87,6 @@ public class SavableComponent extends AbstractSavable {
                 supplyChain.setFilepath(file.getParent() + File.separator + supplyChain.getName() + ".lsc");
             }
             supplyChain.saveToFile();
-            unregister();
         } else { //If no folder is selected throw an exception so the saving process is cancelled.
             throw new IOException("The supply chain " + supplyChain.getName() + " is invalid.");
         }
@@ -108,8 +101,15 @@ public class SavableComponent extends AbstractSavable {
     }
 
     @Override
+    public String toString() {
+        return supplyChain.getName();
+    }
+    
+    @Override
     public int hashCode() {
         return supplyChain.hashCode();
     }
+
+    
 
 }
