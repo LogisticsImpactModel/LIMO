@@ -102,7 +102,7 @@ public class SavableComponent implements Savable {
 
     @Override
     public String toString() {
-        return supplyChain.getName();
+        return supplyChain.getName().replace(".lsc", "");
     }
     
     @Override
