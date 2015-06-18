@@ -105,7 +105,7 @@ public class CompareSupplyChainsAction extends AbstractAction {
             checkboxesPanel.setLayout(new GridLayout(0, 3));
             
             for (ChainGraphScene scene : scenes) {
-                String name = scene.getSupplyChain().getName();
+                String name = scene.getSupplyChain().getName().replace(".lsc", "");
                 JCheckBox box = new JCheckBox(name);
                 box.addItemListener(this);
                 checkboxesPanel.add(box);
