@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.topcomponent;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
+import java.rmi.activation.ActivateFailedException;
 import javax.swing.JFileChooser;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.InvalidSupplyChainException;
@@ -39,7 +40,7 @@ public class SavableComponent implements Savable {
     }
 
     @Override
-    public void save() throws IOException {
+    public void save() throws IOException{
         if (chainBuilder.validate()) {
             if (supplyChain.getFilepath() != null) {
                 NotifyDescriptor dd = new NotifyDescriptor.Confirmation("Would you like to overwrite the '" + supplyChain.getName().replace(".lsc", "") + "' supply chain file?");
@@ -50,6 +51,8 @@ public class SavableComponent implements Savable {
                     supplyChain.saveToFile();
                 } else if (retval.equals(DialogDescriptor.NO_OPTION)) {
                     openFileChooser();
+                } else if (retval.equals(DialogDescriptor.CANCEL_OPTION)) {
+                    throw new ActivateFailedException("The chain should not close because of the canClose method in topComponent");
                 }
             } else { //If a new supply chain needs to be saved.        
                 openFileChooser();
