@@ -47,7 +47,6 @@ import org.openide.windows.WindowManager;
 @ActionID(category = "File", id = "nl.fontys.sofa.limo.view.action.SimulateAction")
 @ActionRegistration(lazy = false, displayName = "NOT-USED")
 @ActionReferences({
-    @ActionReference(path = "Toolbars/Run", position = 30),
     @ActionReference(path = "Shortcuts", name = "D-F5")})
 public final class SimulateAction extends AbstractAction
         implements Presenter.Toolbar, SimulatorTaskListener {
