@@ -35,7 +35,6 @@ public class SavablePanel extends JPanel {
     private JButton discardAll;
 
     public SavablePanel() {
-//        setPreferredSize(new Dimension(250, 250));
         initSelectionList();
         this.setLayout(new BorderLayout());
         textContainer = new JPanel(new BorderLayout());
