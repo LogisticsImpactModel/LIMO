@@ -27,9 +27,9 @@ import org.openide.util.Lookup;
  * @author Pascal Lindner
  */
 @ActionID(category = "HubType", id = "nl.fontys.sofa.limo.view.wizard.hubtype.HubTypeWizardAction")
-@ActionRegistration(displayName = "New hub categories..", iconBase = "icons/gui/add.gif")
+@ActionRegistration(displayName = "New hub category..", iconBase = "icons/gui/add.gif")
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data/Hub Type", position = 20),
+    @ActionReference(path = "Menu/Master Data/Hub category", position = 20),
     @ActionReference(path = "Shortcuts", name = "DOS-H")
 })
 public final class HubTypeWizardAction extends TypeWizardAction {

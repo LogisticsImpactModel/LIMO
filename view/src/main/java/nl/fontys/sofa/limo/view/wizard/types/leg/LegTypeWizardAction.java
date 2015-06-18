@@ -29,7 +29,7 @@ import org.openide.util.Lookup;
 @ActionID(category = "LegType", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
 @ActionRegistration(displayName = "New leg template..", iconBase = "icons/gui/add.gif")
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data/Leg template", position = 20),
+    @ActionReference(path = "Menu/Master Data/Leg templates", position = 20),
     @ActionReference(path = "Shortcuts", name = "DOS-L")
 })
 public final class LegTypeWizardAction extends TypeWizardAction {

@@ -33,11 +33,11 @@ import org.openide.util.Lookup;
         id = "nl.fontys.sofa.limo.view.wizzard.hub.HubWizardAction"
 )
 @ActionRegistration(
-        displayName = "New hub...",
+        displayName = "New hub template...",
         iconBase = "icons/gui/add.gif"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/Master Data/Hub", position = 20),
+    @ActionReference(path = "Menu/Master Data/Hub templates", position = 20),
     @ActionReference(path = "Shortcuts", name = "DS-H")
 })
 public final class HubWizardAction implements ActionListener {
