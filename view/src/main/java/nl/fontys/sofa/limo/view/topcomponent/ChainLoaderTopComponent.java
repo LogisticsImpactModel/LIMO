@@ -123,7 +123,10 @@ public final class ChainLoaderTopComponent extends TopComponent implements
                 Exceptions.printStackTrace(ex);
                 return false; //The supply chain window cannot be closed because an exception is trown while saving
             }
-        } else return retval.equals("Discard changes"); //Cancel is clicked or the dialog is closed
+        } else if (retval.equals("Cancel")){
+            return false;
+        }
+        else return retval.equals("Discard changes"); //Cancel is clicked or the dialog is closed
         
         return true; //The supply chain window can now be closed
     }
