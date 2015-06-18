@@ -28,7 +28,11 @@ public class SavablePanel extends JPanel {
     private List<SavableComponent> allSavableComponents;
     private DefaultListModel<SavableComponent> selectionList;
     private JList list;
-    private JPanel textContainer;
+    private final JPanel textContainer;
+    private JButton saveOne;
+    private JButton saveAll;
+    private JButton discardOne;
+    private JButton discardAll;
 
     public SavablePanel() {
 //        setPreferredSize(new Dimension(250, 250));
@@ -72,7 +76,7 @@ public class SavablePanel extends JPanel {
 
     private void createButtons() {
         JPanel buttomPanel = new JPanel(new BasicOptionPaneUI.ButtonAreaLayout(true, 1));
-        JButton saveOne = new JButton("Save");
+        saveOne = new JButton("Save");
         saveOne.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,48 +84,48 @@ public class SavablePanel extends JPanel {
                 for (SavableComponent s : selectedValuesList) {
                     try {
                         s.save();
-                        selectedValuesList.remove(s);
                         selectionList.removeElement(s);
                     } catch (IOException ex) {
                         Exceptions.printStackTrace(ex);
                     }
+                    toggleEnableButtons();
                 }
             }
         });
-        JButton saveAll = new JButton("Save all");
+        saveAll = new JButton("Save all");
         saveAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (SavableComponent s : allSavableComponents) {
                     try {
                         s.save();
-                        allSavableComponents.remove(s);
                         selectionList.removeElement(s);
                     } catch (IOException ex) {
                         Exceptions.printStackTrace(ex);
                     }
+                    toggleEnableButtons();
                 }
             }
         });
-        JButton discardOne = new JButton("Discard");
+        discardOne = new JButton("Discard");
         discardOne.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<SavableComponent> selectedValuesList = list.getSelectedValuesList();
                 for (SavableComponent s : selectedValuesList) {
-                    selectedValuesList.remove(s);
                     selectionList.removeElement(s);
                 }
+                toggleEnableButtons();
             }
         });
-        JButton discardAll = new JButton("Discard all");
+        discardAll = new JButton("Discard all");
         discardAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (SavableComponent s : allSavableComponents) {
-                    allSavableComponents.remove(s);
                     selectionList.removeElement(s);
                 }
+                toggleEnableButtons();
             }
         });
         buttomPanel.add(saveOne);
@@ -131,4 +135,17 @@ public class SavablePanel extends JPanel {
         this.add(buttomPanel, BorderLayout.SOUTH);
     }
 
+    public void toggleEnableButtons() {
+        if (selectionList.isEmpty()) {
+            saveOne.setEnabled(false);
+            saveAll.setEnabled(false);
+            discardOne.setEnabled(false);
+            discardAll.setEnabled(false);
+        } else {
+            saveOne.setEnabled(true);
+            saveAll.setEnabled(true);
+            discardOne.setEnabled(true);
+            discardAll.setEnabled(true);
+        }
+    }
 }
