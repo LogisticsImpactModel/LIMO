@@ -1,5 +1,5 @@
 # LIMO
-The Logistics Impact Model (LIMO) provides involved companies in logistics chains with a central point of information on which costs they make on the regulatory burden and how costs can be reduced or eliminated
+The Logistics Impact Model (LIMO) provides involved companies in logistics chains with a central point of information on which costs they make on the regulatory bases and how the costs can be reduced or eliminated
 ## Features
 The LIMO application consists out of the following features:
 - Creating and storing hubtypes	
