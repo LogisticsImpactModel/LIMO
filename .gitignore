@@ -8,3 +8,7 @@
 /externalTraider/target/
 /view/target/
 /application/target/
+/application/LIMO_DB/
+/orientDB/LIMO_DB/
+*.pdf
+*~
