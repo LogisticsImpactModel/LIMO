@@ -1,12 +1,17 @@
 language: java
 jdk:
-  - openjdk7
-install: mvn --settings settings.xml  -DskipTests=true clean install
-script: mvn --settings settings.xml  -X test
+- openjdk7
+install: mvn --settings settings.xml  -DskipTests=true clean install -q
+script: mvn --settings settings.xml   test
 notifications:
   email:
     recipients:
-      - limo@fontysvenlo.org
-    on_success: change # default: change
-    on_failure: always # default: always
+    - limo@fontysvenlo.org
+    on_success: change
+    on_failure: always
+  slack:
+    secure: gfhbtlBAa0wAXpJyybz17QoVn3LAG8aR4TIEYIVoIOEr4eFSe0yyD/A6XRq4+BlVX34MQTqRURg1zxkE6A6llAC/lKeo0adXQyORnO06yY511DbPpKft43Bo/V8RWPtvbuHkkbNJ6srzsJqNCqOTbW/ko0wDQeCZYjBtPqovveo=
+
+
+
 

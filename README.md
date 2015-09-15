@@ -1,10 +1,10 @@
 # LIMO
-The Logistics Impact Model (LIMO) provides involved companies in logistics chains with a central point of information on which costs they make on the regulatory burden and how costs can be reduced or eliminated
+The Logistics Impact Model (LIMO) provides involved companies in logistics chains with a central point of information on which costs they make on the regulatory bases and how the costs can be reduced or eliminated
 ## Features
-The LIMO application consists out of the following features:
+The LIMO application consists of the following features:
 - Creating and storing hubtypes	
 - Creating and storing hubs, with the possibility to use a hub type as template
-- Defining sequencing of hubs, connected by legs, linked with events
+- Defining sequencing of hubs, connected by legs with events and procedures
 - Defining the probability of event occurrence
 - Handling probability with the following distribution types:
 
@@ -30,9 +30,9 @@ The LIMO system requires the following software to be installed on your system:
 - JDK 7.*
 
 ### Build and run LIMO
-LIMO can be easily build and run using Netbeans. The following section will describe the purpose of the modules in a little bit more detail. After reading the section you will be able to build and run the application using Netbeans.
+LIMO can be easily build and run using Netbeans. The following section will describe the purpose of the modules in more detail. After reading the section you will be able to build and run the application using Netbeans.
 
-**LIMO-parent** is the basis  for all other modules. Cleaning and/or building it will also clean and/or build all other modules of LIMO. It can be seen as wrapper, combining all modules into a single Maven project.
+**LIMO-parent** is the basis for all other modules. Cleaning and/or building it will also clean and/or build all the other modules of LIMO. It can be seen as wrapper, combining all modules into a single Maven project.
 
 **LIMO-app** is used to run the application. It will load all other modules upon start.
 
@@ -44,7 +44,7 @@ This can cause problems when sharing objects between modules that are manipulate
 **Other modules** provide LIMO specific functionality to the application. Each module is responsible for one part of LIMO's functionality.
 
 ### Build process
-Whenever you change something in a module, you have to clean and build the module, before running the app module. A build alone my not work as jar dependencies with the NetBeans Platform modules system might not notice the new build version. In general, if you have problems during compilation or run time, it is a good practice to cleand and build the parent module, i.e. building the complete project from scratch. 
+Whenever you change something in a module, you have to clean and build the module, before running the app module. A build alone my not work as jar dependencies with the NetBeans Platform modules system might not notice the new build version. In general, if you have problems during compilation or run time, it is a good practice to clean and build the parent module, i.e. building the complete project from scratch. 
 
 ### Generating installers
-To generate an installer that installs the applications on an end user's machine, use the NetBeans option when right-clicking on the project. 
+To generate an installer that installs the application on an end user's machine, use the NetBeans option when right-clicking on the project. 
