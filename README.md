@@ -48,3 +48,4 @@ Whenever you change something in a module, you have to clean and build the modul
 
 ### Generating installers
 To generate an installer that installs the application on an end user's machine, use the NetBeans option when right-clicking on the project. 
+
