@@ -6,11 +6,12 @@ script: mvn --settings settings.xml   test
 before_deploy: "./deploy.sh"
 deploy:
   provider: releases
-  api_key: "1adfdf0da697de54e1407b6d75f8133feae70293"
-  file: "limo.exe"
+  api_key:
+    secure: tEYH+QDm2DCBWAlR4RASk/skzP+duF2SpVlR6nF+9LE8vK2exlskGZ/2+cdeCwrzMWatW9m7ukWS0gk34ItEE4kdTVBsqkSYoOl38VhubFPzqUlRMawlqrky5aMA6HAFFEe5MTkt0+LTTGMSyAwrf0WkK4tFRdVgUpOcn3Dc5no2WbG40u4cLUBM9kgbcQawQE07jjhW9uRC7KS12Obd35TYdLqmOc0KA94Zzv02fE+30odIsT5nJBQWsssnqiozf7U0GlXfqMSO7peEY/lwClZ/MkrvZSfI/sMfVq0zrmA5cZYDRekWpvcXABsp4BDaxZKBNVOv8iHOzn6v5qTn+iG2cMFtIjlX0+a+/2Kprp6bJRQcdEhsDk42s9gYYXy5BkqxBB2q8jBsIWdzvR1MX2SNKjeVJlBuFhQ3rgwC3vPj6eO39Dwx9/1I+Xqp3GUSVu88XawEXULbf642H4C/XUPlBluyl/qBVMyo+EtuXteOcYR2S2BYiYIJtziiYNqUuZvjqcsiGQaqcu70UL4WQw/K11+Au+eNS3vnJP9ougazJnuBm/aIcrkWJMO2IYy0wZH8KE0Ir1JShQyZElMxiId+85nCmwfRT4ISeq884CGHebCuz9BRakwEuZ+vQCZZJuoRRdGuHKpaEsF3Gq2syiWcjRe5ixAL/kQL1gN2PAY=
+  file: limo.exe
   skip_cleanup: true
   on:
-    tags: true
+     tags: true
 notifications:
   email:
     recipients:
@@ -19,7 +20,4 @@ notifications:
     on_failure: always
   slack:
     secure: gfhbtlBAa0wAXpJyybz17QoVn3LAG8aR4TIEYIVoIOEr4eFSe0yyD/A6XRq4+BlVX34MQTqRURg1zxkE6A6llAC/lKeo0adXQyORnO06yY511DbPpKft43Bo/V8RWPtvbuHkkbNJ6srzsJqNCqOTbW/ko0wDQeCZYjBtPqovveo=
-
-
-
 
