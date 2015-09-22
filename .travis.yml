@@ -3,6 +3,14 @@ jdk:
 - openjdk7
 install: mvn --settings settings.xml  -DskipTests=true clean install -q
 script: mvn --settings settings.xml   test
+before_deploy: "./deploy.sh"
+deploy:
+  provider: releases
+  api_key: "1adfdf0da697de54e1407b6d75f8133feae70293"
+  file: "limo.exe"
+  skip_cleanup: true
+  on:
+    tags: true
 notifications:
   email:
     recipients:
