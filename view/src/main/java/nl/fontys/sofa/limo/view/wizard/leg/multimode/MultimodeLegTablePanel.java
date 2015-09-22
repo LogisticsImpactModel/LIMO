@@ -79,8 +79,16 @@ public class MultimodeLegTablePanel extends JPanel {
                                         JOptionPane.ERROR_MESSAGE);
                             }
                         }
-                        model.addLeg(leg, propability);
-                        firePropertyChange("leg", null, leg);
+                        try {
+                            model.addLeg(leg, propability);
+                            firePropertyChange("leg", null, leg);
+                        } catch (IllegalArgumentException ex) {
+                            JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
+                                    LIMOResourceBundle.getString("NOT_POSITIVE"),
+                                    LIMOResourceBundle.getString("NUMBER_ERROR"),
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+
                     }
                 });
                 wiz.actionPerformed(e);
@@ -105,15 +113,22 @@ public class MultimodeLegTablePanel extends JPanel {
                                     propability = Double.parseDouble(prop.replace(",", "."));
                                 } catch (NumberFormatException e) {
                                     JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
-                                            LIMOResourceBundle.getString("NOT_A_NUMBER"),
+                                            LIMOResourceBundle.getString("NOT_POSITIVE"),
                                             LIMOResourceBundle.getString("NUMBER_ERROR"),
                                             JOptionPane.ERROR_MESSAGE);
                                 }
                             } else {
                                 propability = model.getPropability(table.getSelectedRow());
                             }
-                            model.updateLeg(leg, propability, table.getSelectedRow());
-                            firePropertyChange("leg", null, leg);
+                            try {
+                                model.updateLeg(leg, propability, table.getSelectedRow());
+                                firePropertyChange("leg", null, leg);
+                            } catch (IllegalArgumentException ex) {
+                                JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
+                                        LIMOResourceBundle.getString("NOT_A_NUMBER"),
+                                        LIMOResourceBundle.getString("NUMBER_ERROR"),
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
 
                         }
                     }
@@ -184,7 +199,10 @@ public class MultimodeLegTablePanel extends JPanel {
             }
         }
 
-        public void addLeg(Leg leg, double prop) {
+        public void addLeg(Leg leg, double prop) throws IllegalArgumentException {
+            if (prop < 0) {
+                throw new IllegalArgumentException("Prop should be positiv");
+            }
             legMap.put(leg, prop);
             legList.add(leg);
             fireTableDataChanged();
@@ -213,7 +231,10 @@ public class MultimodeLegTablePanel extends JPanel {
             return legList.get(row);
         }
 
-        public void updateLeg(Leg leg, double propability, int row) {
+        public void updateLeg(Leg leg, double propability, int row) throws IllegalArgumentException {
+            if (propability < 0) {
+                throw new IllegalArgumentException("Propeability should be positive");
+            }
             legMap.remove(legList.get(row));
             legMap.put(leg, propability);
             legList.remove(row);
@@ -245,6 +266,14 @@ public class MultimodeLegTablePanel extends JPanel {
                 } else {
                     propability = Double.parseDouble(value.toString());
                 }
+                if (propability < 0) {
+                    JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
+                            LIMOResourceBundle.getString("NOT_POSITIVE"),
+                            LIMOResourceBundle.getString("NUMBER_ERROR"),
+                            JOptionPane.ERROR_MESSAGE);
+                    fireTableDataChanged();
+                }
+
                 legMap.put(legList.get(row), propability);
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,

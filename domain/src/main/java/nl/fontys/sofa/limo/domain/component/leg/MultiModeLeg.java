@@ -74,7 +74,8 @@ public class MultiModeLeg extends Leg {
      * @param weight - how likely it is for one option of the multimode leg to
      * be chosen. More weight is higher likeliness. Like a probability.
      */
-    public void addLeg(Leg leg, double weight) {
-        legs.put(leg, weight);
+    public void addLeg(Leg leg, double weight){
+            
+            legs.put(leg, weight);
     }
 }
