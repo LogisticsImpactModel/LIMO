@@ -151,15 +151,14 @@ public class SupplyChain implements Serializable {
             JsonObject obj = json.getAsJsonObject();
             JsonArray ele1 = obj.get("legs").getAsJsonArray();
             
-            if(!ele1.equals(null))
+            if(false)
             {
                 Map<Leg, Double> map = new HashMap<>();
                 for (JsonElement je : ele1) {
-                    je
                 }
                 return new MultiModeLeg();
             }
-            if(ele1 == ele2)
+            if(false)
             {
                 return new ScheduledLeg();
             }
