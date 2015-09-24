@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component;
 
+import com.google.gson.annotations.Expose;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -23,10 +24,10 @@ import javax.imageio.stream.MemoryCacheImageInputStream;
  */
 public class Icon implements Serializable {
 
-    private byte[] data;
-    private String imageType;
-    private transient BufferedImage image;
-    private static final transient int ICON_WIDTH = 64, ICON_HEIGHT = 64;
+    @Expose private byte[] data;
+    @Expose private String imageType;
+    @Expose private transient BufferedImage image;
+    @Expose private static final transient int ICON_WIDTH = 64, ICON_HEIGHT = 64;
 
     /*
      CONSTRUCTORS

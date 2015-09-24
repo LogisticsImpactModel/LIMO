@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component;
 
+import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Embedded;
@@ -17,9 +18,9 @@ public abstract class Component extends BaseEntity {
     private static final long serialVersionUID = 7595293546266887990L;
 
     @Embedded
-    protected List<Procedure> procedures;
+    @Expose protected List<Procedure> procedures;
     @Embedded
-    protected List<Event> events;
+    @Expose protected List<Event> events;
 
     public Component(String name, String description) {
         super(name, description);

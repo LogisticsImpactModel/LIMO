@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.domain.component;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * Node is a graph node. Each hub and leg is part of a graph with a next and
  * previous node. A hub can only have legs as next and previous nodes, while a
@@ -12,7 +14,7 @@ public abstract class Node<T extends Node> extends Component {
 
     private static final long serialVersionUID = -7756347619644993900L;
 
-    protected T next;
+    @Expose protected T next;
     protected T previous;
 
     public Node() {

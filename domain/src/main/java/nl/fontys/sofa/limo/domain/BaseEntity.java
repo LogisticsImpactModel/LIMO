@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.UUID;
 import javax.persistence.Id;
@@ -13,11 +14,11 @@ import javax.persistence.Id;
 public class BaseEntity implements Serializable {
 
     @Id
-    protected String id;
-    protected String name;
-    protected long lastUpdate;
-    protected String uniqueIdentifier;
-    protected String description;
+    @Expose protected String id;
+    @Expose protected String name;
+    @Expose protected long lastUpdate;
+    @Expose protected String uniqueIdentifier;
+    @Expose protected String description;
 
     public BaseEntity(String name, String description) {
         this.uniqueIdentifier = UUID.randomUUID().toString();

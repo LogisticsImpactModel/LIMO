@@ -1,9 +1,15 @@
 package nl.fontys.sofa.limo.domain.component.leg;
 
+import com.google.gson.annotations.Expose;
+import java.util.ArrayList;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.Node;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  * Leg of supply chain.
@@ -12,9 +18,9 @@ import nl.fontys.sofa.limo.domain.component.type.LegType;
  */
 public class Leg extends Node<Hub> {
 
-    private static final long serialVersionUID = 4146579601096201593L;
+    @Expose private static final long serialVersionUID = 4146579601096201593L;
 
-    private Icon icon;
+    @Expose private Icon icon;
 
     public Leg() {
     }
@@ -22,7 +28,7 @@ public class Leg extends Node<Hub> {
     /**
      * Generates a {@link Leg} object from a {@link LegType} object.
      *
-     * @param legType The hub should be based on this type
+     * @param legType The leg should be based on this type
      */
     public Leg(LegType legType) {
         super();
@@ -68,5 +74,4 @@ public class Leg extends Node<Hub> {
     public void setIcon(Icon icon) {
         this.icon = icon;
     }
-
 }
