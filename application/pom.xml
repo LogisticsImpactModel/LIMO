@@ -94,6 +94,16 @@
             <artifactId>LIMO-view</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-modules-updatecenters</artifactId>
+            <version>RELEASE802</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-modules-autoupdate-ui</artifactId>
+            <version>RELEASE69</version>
+        </dependency>
     </dependencies>
 
     <build>
