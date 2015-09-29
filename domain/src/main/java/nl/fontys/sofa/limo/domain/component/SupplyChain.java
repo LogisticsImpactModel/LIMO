@@ -12,6 +12,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.File;
@@ -26,12 +27,17 @@ import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.value.RangeValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
@@ -143,58 +149,147 @@ public class SupplyChain implements Serializable {
             }
         }
     }
+    
+    private static class IconDeserializer implements JsonDeserializer<Icon> {
+        @Override
+        public Icon deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException 
+        {
+            Gson g = getGson();
+            JsonObject obj = json.getAsJsonObject();
+            byte[] ele1 = g.fromJson(obj.get("data"), byte[].class);
+            String ele2 = obj.get("imageType").getAsString();
+            
+            return new Icon(ele1, ele2);
+        }
+    }
+    
+    private static void setStandard(Leg leg, JsonObject obj, Boolean withNext)
+    {
+        Gson g = getGson();
+        Type tEvent = new TypeToken<ArrayList<Event>>(){}.getType();
+        Type tProcedure = new TypeToken<ArrayList<Procedure>>(){}.getType();
         
+        
+        leg.setDescription(obj.get("description").getAsString());
+        leg.setEvents((List<Event>) g.fromJson(obj.get("events"), tEvent));
+        
+        Icon icon = g.fromJson(obj.get("icon"), Icon.class);
+        leg.setIcon(icon);
+ 
+        //leg.setId(null);
+        leg.setLastUpdate(obj.get("lastUpdate").getAsLong());
+        leg.setName(obj.get("name").getAsString());
+        if(withNext){
+            leg.setNext(g.fromJson(obj.get("next"), Hub.class));
+        }
+        leg.setProcedures((List<Procedure>) g.fromJson(obj.get("procedures"), tProcedure));
+        leg.setUniqueIdentifier(obj.get("uniqueIdentifier").getAsString());
+    }
+    
     private static class LegDeserializer implements JsonDeserializer<Leg> {
         @Override
         public Leg deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException 
         {
             JsonObject obj = json.getAsJsonObject();
-            JsonArray ele1 = obj.get("legs").getAsJsonArray();
+            JsonElement ele1 = obj.get("Legs");
+            JsonElement ele2 = obj.get("expectedTime");
             
-            if(false)
+            if(ele1 != null)
             {
                 Map<Leg, Double> map = new HashMap<>();
-                for (JsonElement je : ele1) {
+                JsonArray array = (JsonArray) ele1;
+                for (JsonElement je : array) 
+                {
+                    JsonObject ob1 = (JsonObject) je;
+                    JsonElement elem1 = ob1.get("Leg");
+                    Leg leg = deserialize(elem1, typeOfT, context);
+                    double elem2 = ob1.get("Value").getAsDouble();
+                    map.put(leg, elem2);                
                 }
-                return new MultiModeLeg();
+                MultiModeLeg mml = new MultiModeLeg();
+                mml.setLegs(map);
+                setStandard(mml, obj, true);
+                return mml;
             }
-            if(false)
+            if(ele2 != null)
             {
-                return new ScheduledLeg();
+                ScheduledLeg schedLeg = new ScheduledLeg();
+                JsonArray array = (JsonArray) obj.get("acceptanceTimes");
+                List<Long> list = new ArrayList<>();
+                for (JsonElement acceptanceTime : array) {
+                    list.add(acceptanceTime.getAsLong());  
+                }
+                schedLeg.setAcceptanceTimes(list);
+                schedLeg.setDelay(obj.get("delay").getAsLong());
+                schedLeg.setExpectedTime(obj.get("expectedTime").getAsLong());
+                schedLeg.setWaitingTimeLimit(obj.get("waitingTimeLimit").getAsLong());
+                
+                JsonElement elem = obj.get("alternative");
+                Leg altLeg = deserialize(elem, typeOfT, context);
+                schedLeg.setAlternative(altLeg);
+                
+                setStandard(schedLeg, obj, true);
+                return schedLeg;
             }
-            else
+            if(ele1 == null && ele2 == null)
             {
-                return new Leg();
+                Leg l = new Leg();
+                setStandard(l, json.getAsJsonObject(), false);
+                return l;
             }
+            
+            return null;
         }
     }
-    private static class LegSerializer implements JsonSerializer<Leg> {
+    private static class MultiModeLegSerializer implements JsonSerializer<MultiModeLeg> {
         @Override
-        public JsonElement serialize(Leg src, Type typeOfSrc, JsonSerializationContext context) {
-            System.out.println("BLAAARRGGGGHHH???????: " + String.valueOf(src instanceof MultiModeLeg));
-            Gson g = getGson();
-            if(src instanceof MultiModeLeg)
-            {                
+        public JsonElement serialize(MultiModeLeg src, Type typeOfSrc, JsonSerializationContext context) {
+                Gson g = getGson();
                 Leg hLeg = new Leg(src);
-                System.out.println("BLAAARRGGGGHHH!!!!!: " + String.valueOf(hLeg instanceof MultiModeLeg));
+                hLeg.setNext(src.getNext());
                 JsonObject ele1 = (JsonObject) g.toJsonTree(hLeg);
                 
-                JsonArray jArray = new JsonArray();
-                MultiModeLeg multiLeg = (MultiModeLeg) src;
-                Map<Leg,Double> map = multiLeg.getLegs();
-                for (Map.Entry<Leg, Double> entrySet : map.entrySet()) {
+                JsonArray array = new JsonArray();
+                
+                Map<Leg, Double> mapToSeri = src.getLegs();
+                
+                for (Map.Entry<Leg, Double> entrySet : mapToSeri.entrySet()) 
+                {
                     Leg key = entrySet.getKey();
-                    Double value = entrySet.getValue(); 
-                    
-                    JsonObject jObj1 = new JsonObject();
-                    jObj1.add("key", g.toJsonTree(key));
-                    jObj1.add("value", g.toJsonTree(value));
-                    jArray.add(jObj1);
+                    Double value = entrySet.getValue();
+                    JsonObject ele2 = new JsonObject();
+                    ele2.add("Leg", g.toJsonTree(key));
+                    ele2.addProperty("Value", value);
+                    array.add(ele2);
                 }
-                ele1.add("legs", jArray);
-                return ele1;
-            }
-            return g.toJsonTree(src);
+                ele1.add("Legs", array);
+            return ele1;
+        }
+    }
+    
+    private static class ScheduleLegSerializer implements JsonSerializer<ScheduledLeg> {
+        @Override
+        public JsonElement serialize(ScheduledLeg src, Type typeOfSrc, JsonSerializationContext context) {
+                Gson g = getGson();
+                
+                Leg hLeg = new Leg(src);
+                hLeg.setNext(src.getNext());
+                JsonObject ele1 = (JsonObject) g.toJsonTree(hLeg);
+                
+                ele1.add("expectedTime", new JsonPrimitive(src.getExpectedTime()));
+                ele1.add("delay", new JsonPrimitive(src.getDelay()));
+                ele1.add("waitingTimeLimit", new JsonPrimitive(src.getWaitingTimeLimit()));
+                
+                JsonArray array = new JsonArray();
+                ArrayList<Long> list = (ArrayList) src.getAcceptanceTimes();
+                for (Long acceptedTime : list) 
+                {
+                    array.add(new JsonPrimitive(acceptedTime));
+                }
+                ele1.add("acceptanceTimes", array);
+                
+                ele1.add("alternative", g.toJsonTree(src.getAlternative()));
+            return ele1;
         }
     }
     
@@ -217,8 +312,10 @@ public class SupplyChain implements Serializable {
             GsonBuilder gsonB = new GsonBuilder();
             gsonB.registerTypeAdapter(Value.class, new ValueSerializer());
             gsonB.registerTypeAdapter(Value.class, new ValueDeserializer());
-            gsonB.registerTypeAdapter(Leg.class, new LegSerializer());
+            gsonB.registerTypeAdapter(MultiModeLeg.class, new MultiModeLegSerializer());
+            gsonB.registerTypeAdapter(ScheduledLeg.class, new ScheduleLegSerializer());
             gsonB.registerTypeAdapter(Leg.class, new LegDeserializer());
+            gsonB.registerTypeAdapter(Icon.class, new IconDeserializer());
             gson = gsonB.excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
         }
         
