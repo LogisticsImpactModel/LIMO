@@ -17,7 +17,7 @@ echo -e "Starting to update modules\n"
   git config --global user.name "Travis"
 
   #using token clone gh-pages branch
-  git clone --quiet --branch=gh-pages https://37af99ab2b0cfc8c4b65bd875e42c30a493882ec@github.com/LogisticsImpactModel/LIMO.git  gh-pages > /dev/null
+  git clone --quiet --branch=gh-pages https://${GH_PAGES}@github.com/LogisticsImpactModel/LIMO.git  gh-pages > /dev/null
   #go into diractory and copy data we're interested in to that directory
   cd gh-pages
   cp -Rf $HOME/update/* .
