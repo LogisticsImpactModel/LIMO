@@ -11,7 +11,7 @@ import javax.persistence.Embedded;
  * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class MultiModeLeg extends Leg {
-    
+
     private static final long serialVersionUID = -777586449163630406L;
 
     @Embedded
@@ -74,8 +74,7 @@ public class MultiModeLeg extends Leg {
      * @param weight - how likely it is for one option of the multimode leg to
      * be chosen. More weight is higher likeliness. Like a probability.
      */
-    public void addLeg(Leg leg, double weight){
-            
-            legs.put(leg, weight);
+    public void addLeg(Leg leg, double weight) {
+        legs.put(leg, weight);
     }
 }
