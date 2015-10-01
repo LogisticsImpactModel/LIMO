@@ -16,7 +16,7 @@ import org.json.simple.JSONArray;
  */
 public class Procedure implements Serializable {
 
-    private String name;
+    @Expose private String name;
     /**
      * category was chosen to be a String rather than a ProcedureCategory, so no
      * actual relations exist. This is easier w/ exporting and importing data.

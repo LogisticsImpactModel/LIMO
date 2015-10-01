@@ -1,10 +1,16 @@
 package nl.fontys.sofa.limo.externaltrader;
 
+import nl.fontys.sofa.limo.domain.component.MasterData;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +23,10 @@ import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.domain.component.serialization.GsonHelper;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
+import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 
 /**
@@ -73,31 +83,28 @@ public final class JSONImporter {
      * @param filepath Filepath.
      * @return Deserialized entities.
      */
-    private static Object loadFromFile(String filepath) {
-        File fileToImport = new File(filepath);
-
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
+    private static Object loadFromFile(String filepath) {  
         try {
-            fis = new FileInputStream(fileToImport);
-            ois = new ObjectInputStream(fis);
-
-            return ois.readObject();
-        } catch (FileNotFoundException ex) {
+        InputStream in = new FileInputStream(filepath);
+        
+        Gson g = GsonHelper.getInstance();
+        
+        JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+        reader.beginArray();
+            
+        MasterData md = g.fromJson(reader, MasterData.class);
+        reader.endArray();
+        reader.close();
+        
+        return md.getAsMap();
+        } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             ex.printStackTrace(System.err);
-        } catch (IOException | ClassNotFoundException ex) {
-            ex.printStackTrace(System.err);
-        } finally {
-            try {
-                fis.close();
-                ois.close();
-            } catch (IOException ex) {
-                ex.printStackTrace(System.err);
-            }
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
         }
-
         return null;
     }
+
 
     /**
      * Check all the entities in the map for conflicts with the local database.
