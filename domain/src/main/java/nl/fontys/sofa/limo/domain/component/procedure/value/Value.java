@@ -14,5 +14,4 @@ public interface Value extends Serializable {
     double getMin();
 
     double getMax();
-
 }

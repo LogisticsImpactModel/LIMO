@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component.type;
 
+import com.google.gson.annotations.Expose;
 import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.Icon;
@@ -14,7 +15,7 @@ public abstract class Type extends Component {
     private static final long serialVersionUID = -2076965995663779924L;
     
     @Embedded
-    protected Icon icon;
+    @Expose protected Icon icon;
     
     public Type() {
         super();

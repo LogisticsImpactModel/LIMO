@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component.procedure.value;
 
+import com.google.gson.annotations.Expose;
 import java.util.Random;
 
 /**
@@ -12,10 +13,10 @@ public class RangeValue implements Value {
     /**
      * Random Number Generator.
      */
-    private static Random rng;
+    @Expose private static Random rng;
 
-    private double min;
-    private double max;
+    @Expose private double min;
+    @Expose private double max;
 
     public RangeValue() {
         this(0, 1);

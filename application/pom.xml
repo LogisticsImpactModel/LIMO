@@ -4,7 +4,7 @@
     <parent>
         <groupId>nl.fontys.sofa.limo</groupId>
         <artifactId>LIMO-parent</artifactId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.6-RC</version>
     </parent>
 
     <artifactId>LIMO-app</artifactId>
@@ -94,6 +94,16 @@
             <artifactId>LIMO-view</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-modules-updatecenters</artifactId>
+            <version>RELEASE802</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-modules-autoupdate-ui</artifactId>
+            <version>RELEASE69</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -150,5 +160,5 @@
             </build>
         </profile>
     </profiles>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6-RC</version>
 </project>

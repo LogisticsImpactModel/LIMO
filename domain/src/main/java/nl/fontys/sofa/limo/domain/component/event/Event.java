@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component.event;
 
+import com.google.gson.annotations.Expose;
 import javax.persistence.Embedded;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
@@ -15,11 +16,15 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
  */
 public class Event extends Component {
 
+    @Expose
     private static final long serialVersionUID = 4328629634718075652L;
 
+    @Expose
     private ExecutionState dependency;
     @Embedded
+    @Expose
     private Distribution probability;
+    @Expose
     private ExecutionState executionState;
 
     public Event() {

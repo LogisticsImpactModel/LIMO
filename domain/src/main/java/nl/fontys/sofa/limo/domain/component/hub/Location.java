@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component.hub;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import javax.persistence.Embedded;
 
@@ -11,15 +12,15 @@ import javax.persistence.Embedded;
 public class Location implements Serializable {
     private static final long serialVersionUID = -5547100874889198466L;
 
-    private Continent continent;
-    private SerializableCountry country;
-    private String state;
-    private String town;
-    private String postcode;
-    private String street;
-    private String housenumber;
+    @Expose private Continent continent;
+    @Expose private SerializableCountry country;
+    @Expose private String state;
+    @Expose private String town;
+    @Expose private String postcode;
+    @Expose private String street;
+    @Expose private String housenumber;
     @Embedded
-    private Coordinate position;
+    @Expose private Coordinate position;
 
     public Location() {
     }
@@ -118,9 +119,9 @@ public class Location implements Serializable {
      */
     public static class Coordinate implements Serializable {
 
-        private double latitude;
-        private double longitude;
-        private double elevation;
+        @Expose private double latitude;
+        @Expose private double longitude;
+        @Expose private double elevation;
 
         public Coordinate() {
             this(0, 0, 0);

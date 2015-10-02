@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.fontys.sofa.limo</groupId>
     <artifactId>LIMO-parent</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6-RC</version>
     <packaging>pom</packaging>
 
     <name>LIMO-parent</name>
@@ -102,18 +102,44 @@
             </plugins>
         </pluginManagement>
     </build>
+    
+    
+    <profiles>
+        <profile>
+            <id>all</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>branding</module>
+                <module>application</module>
+                <module>api</module>
+                <module>orientDB</module>
+                <module>view</module>
+                <module>dependecyWrapper</module>
+                <module>domain</module>
+                <module>service</module>
+                <module>simulation</module>
+                <module>externalTraider</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>nbm</id>
+            <modules>
+                <module>branding</module>
+                <module>api</module>
+                <module>orientDB</module>
+                <module>view</module>
+                <module>dependecyWrapper</module>
+                <module>domain</module>
+                <module>service</module>
+                <module>simulation</module>
+                <module>externalTraider</module>
+            </modules>
+        </profile>
+    </profiles>
+    
+    
 
-    <modules>
-        <module>branding</module>
-        <module>application</module>
-        <module>api</module>
-        <module>orientDB</module>
-        <module>view</module>
-        <module>dependecyWrapper</module>
-        <module>domain</module>
-        <module>service</module>
-        <module>simulation</module>
-        <module>externalTraider</module>
-    </modules>
 </project>
 
