@@ -12,3 +12,4 @@
 /orientDB/LIMO_DB/
 *.pdf
 *~
+/target/
