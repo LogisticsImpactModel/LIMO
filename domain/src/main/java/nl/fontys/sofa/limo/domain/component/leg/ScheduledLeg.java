@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component.leg;
 
+import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +14,7 @@ import javax.persistence.Embedded;
  */
 public class ScheduledLeg extends Leg {
 
-    private static final long serialVersionUID = -836462388111897335L;
+    @Expose private static final long serialVersionUID = -836462388111897335L;
 
     public static final String WAIT_CATEGORY = "Waiting Time";
 
@@ -21,31 +22,31 @@ public class ScheduledLeg extends Leg {
      * Expected time of consignment to arrive. Any delay from the hub before is
      * added to this. Normally (and for ease of use) 0. [?]
      */
-    private long expectedTime;
+    @Expose private long expectedTime;
 
     /**
      * Delay from the hub before this leg.
      */
-    private transient long delay;
+    @Expose private transient long delay;
 
     /**
      * Times after expected time, when the consigment can be send over this
      * route.
      */
-    private List<Long> acceptanceTimes;
+    @Expose private List<Long> acceptanceTimes;
 
     /**
      * Maximum time between arrival (expectedTime + delay) and acceptance,
      * before alternative is used.
      */
-    private long waitingTimeLimit;
+   @Expose private long waitingTimeLimit;
 
     /**
      * Alternative leg, used when no acceptance times are possible (because of
      * delay) or the waiting time for acceptance is too long.
      */
     @Embedded
-    private Leg alternative;
+    @Expose private Leg alternative;
 
     public ScheduledLeg() {
         this.acceptanceTimes = new ArrayList<>();

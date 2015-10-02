@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component.event.distribution;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +18,8 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.input.InputValue;
 public abstract class Distribution implements Serializable {
 
     @Embedded
-    protected Map<String, InputValue> inputValues;
-    protected transient String description;
+    @Expose protected Map<String, InputValue> inputValues;
+    @Expose protected transient String description;
 
     /**
      * FOR CACHING ONLY!

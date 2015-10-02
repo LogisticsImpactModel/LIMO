@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component.hub;
 
+import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public enum Continent implements Comparable<Continent> {
     SouthAmerica("South America"),
     Oceania("Oceania");
 
-    private final String name;
+    @Expose private final String name;
     private final List<SerializableCountry> countries;
 
     private Continent(String name) {

@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.domain.component.procedure.value;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * Single value for a process object.
  *
@@ -7,7 +9,7 @@ package nl.fontys.sofa.limo.domain.component.procedure.value;
  */
 public class SingleValue implements Value {
 
-    private double value;
+    @Expose private double value;
 
     public SingleValue() {
         this(0);

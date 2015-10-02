@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component.hub;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -610,8 +611,8 @@ public class SerializableCountry implements Comparable<SerializableCountry>, Ser
     }
 
     private final Continent continent;
-    private final int isoNumber3;
-    private final String name, isoAlpha2, isoAlpha3;
+    @Expose private final int isoNumber3;
+    @Expose private final String name, isoAlpha2, isoAlpha3;
 
     protected SerializableCountry(String name, int number, String iso2, String iso3, Continent continent) {
         this.name = name;

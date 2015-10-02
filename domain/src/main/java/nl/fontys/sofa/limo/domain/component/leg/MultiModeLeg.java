@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component.leg;
 
+import com.google.gson.annotations.Expose;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.Embedded;
@@ -15,7 +16,7 @@ public class MultiModeLeg extends Leg {
     private static final long serialVersionUID = -777586449163630406L;
 
     @Embedded
-    private Map<Leg, Double> legs;
+    @Expose private Map<Leg, Double> legs;
 
     public MultiModeLeg() {
         legs = new HashMap<>();

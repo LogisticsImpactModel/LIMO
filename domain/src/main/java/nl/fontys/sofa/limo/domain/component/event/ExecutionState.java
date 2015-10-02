@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.domain.component.event;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 
 /**
@@ -27,12 +28,12 @@ public enum ExecutionState implements Serializable {
     /**
      * Name of the execution state.
      */
-    private final String name;
+    @Expose private final String name;
 
     /**
      * Description for the execution state.
      */
-    private final String description;
+    @Expose private final String description;
 
     /**
      * Create execution state.
