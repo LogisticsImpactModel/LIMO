@@ -82,12 +82,12 @@
     </folder>
     <folder name="Services">
         <folder name="AutoupdateType">
-            <file name="nl_fontys_sofa_limo_LIMO_view_update_center.instance">
-                <attr name="displayName" bundlevalue="nl.fontys.sofa.limo.view.Bundle#Services/AutoupdateType/nl_fontys_sofa_limo_LIMO_view_update_center.instance"/>
+            <file name="nl_fontys_sofa_limo_LIMO_view_update_center_1.instance">
+                <attr name="displayName" bundlevalue="nl.fontys.sofa.limo.view.Bundle#Services/AutoupdateType/nl_fontys_sofa_limo_LIMO_view_update_center_1.instance"/>
                 <attr name="enabled" boolvalue="true"/>
                 <attr name="instanceCreate" methodvalue="org.netbeans.modules.autoupdate.updateprovider.AutoupdateCatalogFactory.createUpdateProvider"/>
                 <attr name="instanceOf" stringvalue="org.netbeans.spi.autoupdate.UpdateProvider"/>
-                <attr name="url" bundlevalue="nl.fontys.sofa.limo.view.Bundle#nl_fontys_sofa_limo_LIMO_view_update_center"/>
+                <attr name="url" bundlevalue="nl.fontys.sofa.limo.view.Bundle#nl_fontys_sofa_limo_LIMO_view_update_center_1"/>
             </file>
         </folder>
     </folder>
