@@ -49,7 +49,7 @@ public final class JSONExporter {
         md.setHubs(allEntitites.get("hubs"));
         md.setHubtypes(allEntitites.get("hubtypes"));
         md.setEvents(allEntitites.get("events"));
-        
+
         writeToFile(md, filepath);
     }
 

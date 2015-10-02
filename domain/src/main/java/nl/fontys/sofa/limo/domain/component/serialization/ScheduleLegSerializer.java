@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.domain.component.serialization;
 
 import com.google.gson.Gson;
@@ -18,7 +13,8 @@ import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 
 /**
- *
+ * Serializes a ScheduleLeg from a Java Object to JSON.
+ * 
  * @author Convict42
  */
 public class ScheduleLegSerializer implements JsonSerializer<ScheduledLeg> {

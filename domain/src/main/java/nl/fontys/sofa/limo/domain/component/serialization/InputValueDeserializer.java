@@ -5,13 +5,10 @@
  */
 package nl.fontys.sofa.limo.domain.component.serialization;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import nl.fontys.sofa.limo.domain.component.event.distribution.input.DoubleInputValue;
 import nl.fontys.sofa.limo.domain.component.event.distribution.input.InputValue;
@@ -19,10 +16,12 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.input.IntegerInpu
 import org.openide.util.Exceptions;
 
 /**
+ * Deserializes an InputValue from JSON to a Java Object.
  *
  * @author Convict42
  */
 public class InputValueDeserializer implements JsonDeserializer<InputValue> {
+
     @Override
     public InputValue deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
 
@@ -32,18 +31,16 @@ public class InputValueDeserializer implements JsonDeserializer<InputValue> {
             Class c = Class.forName(propType);
             InputValue input = (InputValue) c.newInstance();
             input.setName(obj.get("Name").getAsString());
-            if(input instanceof DoubleInputValue)
-            {
+            if (input instanceof DoubleInputValue) {
                 input.setValue(obj.get("Value").getAsDouble());
             }
-            if(input instanceof IntegerInputValue)
-            {
+            if (input instanceof IntegerInputValue) {
                 input.setValue(obj.get("Value").getAsInt());
             }
             return input;
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                Exceptions.printStackTrace(ex);
-            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            Exceptions.printStackTrace(ex);
+        }
 
         return null;
     }

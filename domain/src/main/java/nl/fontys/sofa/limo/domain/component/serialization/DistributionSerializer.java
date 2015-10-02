@@ -12,28 +12,29 @@ import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.input.InputValue;
 
 /**
+ * Serializes a Distribution from a Java Object to JSON.
  *
  * @author Convict42
  */
 public class DistributionSerializer implements JsonSerializer<Distribution> {
+
     @Override
     public JsonElement serialize(Distribution src, Type typeOfSrc, JsonSerializationContext context) {
-            Gson g = GsonHelper.getInstance();
-            JsonObject toReturn = new JsonObject();
+        Gson g = GsonHelper.getInstance();
+        JsonObject toReturn = new JsonObject();
 
-            JsonArray jArray = new JsonArray();
-            Map<String, InputValue> map = src.getInputValues();
-            for (Map.Entry<String, InputValue> entrySet : map.entrySet()) 
-            {   
-                JsonObject obj = new JsonObject();
-                obj.addProperty("Name", entrySet.getKey());
-                JsonElement ele = g.toJsonTree(entrySet.getValue());
-                obj.add("Value", ele);
-                jArray.add(obj);
-            }
-            
-            toReturn.add("inputValues", jArray);
-            toReturn.addProperty("propType", src.getClass().getName());
+        JsonArray jArray = new JsonArray();
+        Map<String, InputValue> map = src.getInputValues();
+        for (Map.Entry<String, InputValue> entrySet : map.entrySet()) {
+            JsonObject obj = new JsonObject();
+            obj.addProperty("Name", entrySet.getKey());
+            JsonElement ele = g.toJsonTree(entrySet.getValue());
+            obj.add("Value", ele);
+            jArray.add(obj);
+        }
+
+        toReturn.add("inputValues", jArray);
+        toReturn.addProperty("propType", src.getClass().getName());
 
         return toReturn;
     }

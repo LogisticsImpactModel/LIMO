@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 import nl.fontys.sofa.limo.domain.component.event.distribution.input.InputValue;
 
 /**
+ *  Serializes an InputValue from a Java Object to JSON.
  *
  * @author Convict42
  */

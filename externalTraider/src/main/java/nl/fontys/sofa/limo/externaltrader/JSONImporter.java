@@ -100,7 +100,7 @@ public final class JSONImporter {
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             ex.printStackTrace(System.err);
         } catch (IOException ex) {
-            Exceptions.printStackTrace(ex);
+            ex.printStackTrace(System.err);
         }
         return null;
     }

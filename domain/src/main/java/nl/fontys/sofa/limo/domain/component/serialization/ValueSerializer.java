@@ -9,18 +9,20 @@ import java.lang.reflect.Type;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 
 /**
+ * Serializes a Value from a Java Object to JSON.
  *
  * @author Convict42
  */
 public class ValueSerializer implements JsonSerializer<Value> {
-        @Override
-        public JsonElement serialize(Value src, Type typeOfSrc, JsonSerializationContext context) {
-            JsonObject obj = new JsonObject();
-            JsonPrimitive prim1 = new JsonPrimitive(src.getMin());
-            JsonPrimitive prim2 = new JsonPrimitive(src.getMax());
-            
-            obj.add("Min", prim1);
-            obj.add("Max", prim2);
-            return obj;
-        }
+
+    @Override
+    public JsonElement serialize(Value src, Type typeOfSrc, JsonSerializationContext context) {
+        JsonObject obj = new JsonObject();
+        JsonPrimitive prim1 = new JsonPrimitive(src.getMin());
+        JsonPrimitive prim2 = new JsonPrimitive(src.getMax());
+
+        obj.add("Min", prim1);
+        obj.add("Max", prim2);
+        return obj;
     }
+}

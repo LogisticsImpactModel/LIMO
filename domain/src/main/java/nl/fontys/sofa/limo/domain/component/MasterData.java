@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.domain.component;
 
 import com.google.gson.annotations.Expose;
@@ -12,28 +7,39 @@ import java.util.Map;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 
 /**
+ * Global Class containing the different catalogs of the master data.
  *
  * @author Convict42
  */
 public class MasterData {
-    
-    @Expose private List<BaseEntity> legtypes;
-    @Expose private List<BaseEntity> categories;
-    @Expose private List<BaseEntity> events;
-    @Expose private List<BaseEntity> hubtypes;
-    @Expose private List<BaseEntity> hubs;
-    
-    public MasterData(){}
-    
-    public Map<String, List<BaseEntity>> getAsMap()
-    {
+
+    @Expose
+    private List<BaseEntity> legtypes;
+    @Expose
+    private List<BaseEntity> categories;
+    @Expose
+    private List<BaseEntity> events;
+    @Expose
+    private List<BaseEntity> hubtypes;
+    @Expose
+    private List<BaseEntity> hubs;
+
+    public MasterData() {
+    }
+
+    /**
+     * For serializing convenience creates a Map with all catalog data.
+     *
+     * @return Map containing all catalog entries.
+     */
+    public Map<String, List<BaseEntity>> getAsMap() {
         Map map = new HashMap<>();
         map.put("legtypes", legtypes);
         map.put("categories", categories);
         map.put("events", events);
         map.put("hubtypes", hubtypes);
-        map.put("", hubs);
-        
+        map.put("hubs", hubs);
+
         return map;
     }
 
@@ -76,6 +82,4 @@ public class MasterData {
     public void setHubs(List<BaseEntity> hubs) {
         this.hubs = hubs;
     }
-
-        
 }
