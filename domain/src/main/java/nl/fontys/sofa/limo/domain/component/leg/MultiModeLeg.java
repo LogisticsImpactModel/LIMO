@@ -12,7 +12,7 @@ import javax.persistence.Embedded;
  * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
 public class MultiModeLeg extends Leg {
-    
+
     private static final long serialVersionUID = -777586449163630406L;
 
     @Embedded
