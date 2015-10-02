@@ -77,7 +77,18 @@
         </folder>
         <folder name="Help">
             <attr name="position" intvalue="50"/>
-            <file name="org-netbeans-modules-autoupdate-ui-actions-CheckForUpdatesAction.shadow_hidden"/>
+            <file name="org-netbeans-modules-autoupdate-ui-actions-CheckForUpdatesAction.shadow"/>
+        </folder>
+    </folder>
+    <folder name="Services">
+        <folder name="AutoupdateType">
+            <file name="nl_fontys_sofa_limo_LIMO_view_update_center.instance">
+                <attr name="displayName" bundlevalue="nl.fontys.sofa.limo.view.Bundle#Services/AutoupdateType/nl_fontys_sofa_limo_LIMO_view_update_center.instance"/>
+                <attr name="enabled" boolvalue="true"/>
+                <attr name="instanceCreate" methodvalue="org.netbeans.modules.autoupdate.updateprovider.AutoupdateCatalogFactory.createUpdateProvider"/>
+                <attr name="instanceOf" stringvalue="org.netbeans.spi.autoupdate.UpdateProvider"/>
+                <attr name="url" bundlevalue="nl.fontys.sofa.limo.view.Bundle#nl_fontys_sofa_limo_LIMO_view_update_center"/>
+            </file>
         </folder>
     </folder>
     <folder name="Shortcuts">

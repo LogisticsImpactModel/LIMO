@@ -19,3 +19,6 @@ notifications:
     on_failure: always
   slack:
     secure: gfhbtlBAa0wAXpJyybz17QoVn3LAG8aR4TIEYIVoIOEr4eFSe0yyD/A6XRq4+BlVX34MQTqRURg1zxkE6A6llAC/lKeo0adXQyORnO06yY511DbPpKft43Bo/V8RWPtvbuHkkbNJ6srzsJqNCqOTbW/ko0wDQeCZYjBtPqovveo=
+env:
+  global:
+    secure: CmFSnKFrRLuzaC3pxc+z7m2dr0c/oG/Qh5S4cIJCg4SuUHVHVM2LuXnGCE9lNdXQZtQeSLvkte2L9Yoluob4zDYTpMoMrWwMc2n5gbJLam0NLCjEZWkhl3AOSrYePBV1dZVmgPdta4301vhvM+4fDC/oTvPvsGvLqJdAMUazMxA=
