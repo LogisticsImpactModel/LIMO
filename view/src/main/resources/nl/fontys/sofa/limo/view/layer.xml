@@ -77,7 +77,7 @@
         </folder>
         <folder name="Help">
             <attr name="position" intvalue="50"/>
-            <file name="org-netbeans-modules-autoupdate-ui-actions-CheckForUpdatesAction.shadow_hidden"/>
+            <file name="org-netbeans-modules-autoupdate-ui-actions-CheckForUpdatesAction.shadow"/>
         </folder>
     </folder>
     <folder name="Services">
