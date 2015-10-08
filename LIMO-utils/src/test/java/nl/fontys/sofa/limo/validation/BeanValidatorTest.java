@@ -1,31 +1,36 @@
 package nl.fontys.sofa.limo.validation;
 
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class BeanValidatorTest {
     
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-    
     @Test
-    public void testAssertFalse() {
-    
-    }
-    
-    @Test
-    public void testAssertTrue() {
-    
+    public void testAssertTrueFalse() {
+        BooleanBean bean = new BooleanBean();
+        bean.trueValue = true;
+        bean.falseValue = false;
+         try {
+            BeanValidator.validate(bean);
+        } catch (ValidationException ex) {
+            fail("BooleanBean should be valid.");
+        }
+        bean.trueValue = false;
+        bean.falseValue = false;
+        try {
+            BeanValidator.validate(bean);
+            fail("BooleanBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.trueValue = true;
+        bean.falseValue = true;
+        try {
+            BeanValidator.validate(bean);
+            fail("BooleanBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
     }
     
     @Test
@@ -58,59 +63,21 @@ public class BeanValidatorTest {
     
     @Test
     public void testDigits() {
-        BooleanBean bean = new BooleanBean();
-        bean.trueValue = true;
-        bean.falseValue = false;
-         try {
-            BeanValidator.validate(bean);
-        } catch (ValidationException ex) {
-            fail("BooleanBean should be valid.");
-        }
-        bean.trueValue = false;
-        bean.falseValue = false;
-        try {
-            BeanValidator.validate(bean);
-            fail("BooleanBean should be invalid.");
-        } catch (ValidationException ex) {
-            // good
-        }
-        bean.trueValue = true;
-        bean.falseValue = true;
-        try {
-            BeanValidator.validate(bean);
-            fail("BooleanBean should be invalid.");
-        } catch (ValidationException ex) {
-            // good
-        }
+        
     }
     
     @Test
-    public void testPast() {
+    public void testPastFuture() {
     
     }
     
     @Test
-    public void testFuture() {
+    public void testMinMax() {
     
     }
     
     @Test
-    public void testMin() {
-    
-    }
-    
-    @Test
-    public void testMax() {
-    
-    }
-    
-    @Test
-    public void testNotNull() {
-    
-    }
-    
-    @Test
-    public void testNull() {
+    public void testNullNotNull() {
     
     }
     
