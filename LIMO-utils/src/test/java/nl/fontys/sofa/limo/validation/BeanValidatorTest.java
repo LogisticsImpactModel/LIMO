@@ -164,7 +164,42 @@ public class BeanValidatorTest {
     
     @Test
     public void testPattern() {
-    
+        EmailBean bean = new EmailBean();
+        bean.email = "test@web.de";
+        try {
+            BeanValidator.validate(bean);
+        } catch (ValidationException ex) {
+            fail("EmailBean should be valid.");
+        }
+        bean.email = "abcdefg";
+        try {
+            BeanValidator.validate(bean);
+            fail("EmailBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.email = "";
+        try {
+            BeanValidator.validate(bean);
+            fail("EmailBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.email = null;
+        try {
+            BeanValidator.validate(bean);
+            fail("EmailBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.email = "hello@world";
+        try {
+            BeanValidator.validate(bean);
+            fail("EmailBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        
     }
     
     @Test
