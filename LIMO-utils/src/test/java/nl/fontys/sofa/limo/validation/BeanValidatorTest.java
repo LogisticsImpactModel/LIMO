@@ -108,12 +108,58 @@ public class BeanValidatorTest {
     
     @Test
     public void testMinMax() {
-    
+        IntegerBean bean = new IntegerBean();
+        bean.minValue = 1;
+        bean.maxValue = 9;
+        try {
+            BeanValidator.validate(bean);
+        } catch (ValidationException ex) {
+            fail("IntegerBean should be valid.");
+        }
+        bean.minValue = -1;
+        bean.maxValue = 5;
+        try {
+            BeanValidator.validate(bean);
+            fail("IntegerBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.minValue = 1;
+        bean.maxValue = 11;
+        try {
+            BeanValidator.validate(bean);
+            fail("IntegerBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
     }
     
     @Test
     public void testNullNotNull() {
-    
+        ObjectBean bean = new ObjectBean();
+        bean.notNullObject = new Object();
+        bean.nullObject = null;
+        try {
+            BeanValidator.validate(bean);
+        } catch (ValidationException ex) {
+            fail("ObjectBean should be valid.");
+        }
+        bean.notNullObject = null;
+        bean.nullObject = null;
+        try {
+            BeanValidator.validate(bean);
+            fail("ObjectBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.notNullObject = new Object();
+        bean.nullObject = new Object();
+        try {
+            BeanValidator.validate(bean);
+            fail("ObjectBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
     }
     
     @Test
