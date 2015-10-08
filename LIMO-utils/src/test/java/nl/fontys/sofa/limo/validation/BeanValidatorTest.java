@@ -107,11 +107,6 @@ public class BeanValidatorTest {
     }
     
     @Test
-    public void testDigits() {
-        
-    }
-    
-    @Test
     public void testMinMax() {
     
     }
