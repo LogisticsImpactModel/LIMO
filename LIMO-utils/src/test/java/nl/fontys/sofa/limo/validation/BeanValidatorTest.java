@@ -58,7 +58,30 @@ public class BeanValidatorTest {
     
     @Test
     public void testDigits() {
-    
+        BooleanBean bean = new BooleanBean();
+        bean.trueValue = true;
+        bean.falseValue = false;
+         try {
+            BeanValidator.validate(bean);
+        } catch (ValidationException ex) {
+            fail("BooleanBean should be valid.");
+        }
+        bean.trueValue = false;
+        bean.falseValue = false;
+        try {
+            BeanValidator.validate(bean);
+            fail("BooleanBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.trueValue = true;
+        bean.falseValue = true;
+        try {
+            BeanValidator.validate(bean);
+            fail("BooleanBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
     }
     
     @Test
