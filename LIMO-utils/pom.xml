@@ -17,6 +17,7 @@
                 <configuration>
                     <publicPackages>
                         <publicPackage>nl.fontys.sofa.limo.validation</publicPackage>
+                        <publicPackage>nl.fontys.sofa.limo.validation.annotations</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
