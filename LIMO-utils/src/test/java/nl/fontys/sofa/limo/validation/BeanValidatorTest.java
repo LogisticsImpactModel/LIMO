@@ -203,7 +203,143 @@ public class BeanValidatorTest {
     }
     
     @Test
-    public void testSize() {
+    public void testSizeString() {
+        SizeBean bean = new SizeBean();
+        try {
+            BeanValidator.validate(bean);
+        } catch (ValidationException ex) {
+            fail("SizeBean should be valid.");
+        }
+        bean.text = "h";
+         try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+         bean.text = null;
+         try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+         bean.text = "";
+         try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+         bean.text = "hello world";
+         try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+    }
     
+    @Test
+    public void testSizeCollection() {
+        SizeBean bean = new SizeBean();
+        bean.list.add("b");
+        try {
+            BeanValidator.validate(bean);
+        } catch (ValidationException ex) {
+            fail("SizeBean should be valid.");
+        }
+        bean.list.add("b");
+        try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.list.clear();
+        try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.list = null;
+        try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+    }
+    
+    @Test
+    public void testSizeArray() {
+        SizeBean bean = new SizeBean();
+        try {
+            BeanValidator.validate(bean);
+        } catch (ValidationException ex) {
+            fail("SizeBean should be valid.");
+        }
+        bean.array = new String[]{};
+        try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.array = new String[]{"a"};
+        try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.array = new String[]{"a", "b", "c", "d", "e"};
+        try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.array = null;
+        try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+    }
+    
+    @Test
+    public void testSizeMap() {
+        SizeBean bean = new SizeBean();
+        try {
+            BeanValidator.validate(bean);
+        } catch (ValidationException ex) {
+            fail("SizeBean should be valid.");
+        }
+        bean.map.put("r", "b");
+        bean.map.put("t", "b");
+        bean.map.put("x", "b");
+        try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.map.clear();
+        try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.map = null;
+        try {
+            BeanValidator.validate(bean);
+            fail("SizeBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
     }
 }
