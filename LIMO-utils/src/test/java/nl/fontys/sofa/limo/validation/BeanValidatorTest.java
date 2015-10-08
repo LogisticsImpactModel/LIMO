@@ -1,6 +1,8 @@
 package nl.fontys.sofa.limo.validation;
 
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,13 +29,31 @@ public class BeanValidatorTest {
     }
     
     @Test
-    public void testDecimalMin() {
-    
-    }
-    
-    @Test
-    public void testDecimalMax() {
-    
+    public void testDecimalMinMax() {
+        DecimalBean bean = new DecimalBean();
+        bean.minValue = 2;
+        bean.maxValue = 5;
+        try {
+            BeanValidator.validate(bean);
+        } catch (ValidationException ex) {
+            fail("DecimalBean should be valid.");
+        }
+        bean.minValue = 0;
+        bean.maxValue = 5;
+        try {
+            BeanValidator.validate(bean);
+            fail("DecimalBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
+        bean.minValue = 1;
+        bean.maxValue = 11;
+        try {
+            BeanValidator.validate(bean);
+            fail("DecimalBean should be invalid.");
+        } catch (ValidationException ex) {
+            // good
+        }
     }
     
     @Test
