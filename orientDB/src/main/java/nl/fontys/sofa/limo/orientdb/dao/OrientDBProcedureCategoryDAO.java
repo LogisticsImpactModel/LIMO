@@ -13,6 +13,17 @@ public class OrientDBProcedureCategoryDAO extends OrientDBAbstractDAO<ProcedureC
 
     public OrientDBProcedureCategoryDAO() {
         super(ProcedureCategory.class);
+
+        if(this.findByUniqueIdentifier("-1") == null)
+        {        
+            ProcedureCategory defaultProcedure = new ProcedureCategory();
+            defaultProcedure.setName("Costs not accounted");
+            defaultProcedure.setDescription("Default procedure");
+            defaultProcedure.setUniqueIdentifier("-1");
+            //this.insert(defaultProcedure);  
+        }
+        
+        
     }
     
 }
