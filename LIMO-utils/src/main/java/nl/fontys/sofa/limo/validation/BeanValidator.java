@@ -7,7 +7,7 @@ package nl.fontys.sofa.limo.validation;
  */
 public class BeanValidator {
     
-    public static <T> void validate(T bean) {
+    public static <T> void validate(T bean) throws ValidationException {
         
     }
 }
