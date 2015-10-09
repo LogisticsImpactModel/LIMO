@@ -11,15 +11,15 @@ public class MinValidator implements FieldValidator<Min> {
         
         if (value instanceof Long) {
             if ((Long)value < min.value()) {
-                throw new ValidationException(field.getName() + " should not be smaller as " + min.value());
+                throw new ValidationException(field.getName() + " should not be at least " + min.value());
             }
         } else if (value instanceof Short) {
             if ((Short)value < min.value()) {
-                throw new ValidationException(field.getName() + " should not be smaller as " + min.value());
+                throw new ValidationException(field.getName() + " should not be at least " + min.value());
             }
         } if (value instanceof Integer) {
             if ((Integer)value < min.value()) {
-                throw new ValidationException(field.getName() + " should not be smaller as " + min.value());
+                throw new ValidationException(field.getName() + " should not be at least " + min.value());
             }
         }
     }

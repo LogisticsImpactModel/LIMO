@@ -12,15 +12,15 @@ public class MaxValidator implements FieldValidator<Max> {
         
         if (value instanceof Long) {
             if ((Long)value > max.value()) {
-                throw new ValidationException(field.getName() + " should not be larger as " + max.value());
+                throw new ValidationException(field.getName() + " should at maximum " + max.value());
             }
         } else if (value instanceof Short) {
             if ((Short)value > max.value()) {
-                throw new ValidationException(field.getName() + " should not be larger as " + max.value());
+                throw new ValidationException(field.getName() + " should at maximum " + max.value());
             }
         } if (value instanceof Integer) {
             if ((Integer)value > max.value()) {
-                throw new ValidationException(field.getName() + " should not be larger as " + max.value());
+                throw new ValidationException(field.getName() + " should at maximum " + max.value());
             }
         }
     }

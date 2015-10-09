@@ -6,10 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 import nl.fontys.sofa.limo.validation.annotations.AssertFalse;
 import nl.fontys.sofa.limo.validation.annotations.AssertTrue;
+import nl.fontys.sofa.limo.validation.annotations.DecimalMax;
+import nl.fontys.sofa.limo.validation.annotations.DecimalMin;
 import nl.fontys.sofa.limo.validation.annotations.Max;
 import nl.fontys.sofa.limo.validation.annotations.Min;
 import nl.fontys.sofa.limo.validation.utils.AssertFalseValidator;
 import nl.fontys.sofa.limo.validation.utils.AssertTrueValidator;
+import nl.fontys.sofa.limo.validation.utils.DecimalMaxValidator;
+import nl.fontys.sofa.limo.validation.utils.DecimalMinValidator;
 import nl.fontys.sofa.limo.validation.utils.FieldValidator;
 import nl.fontys.sofa.limo.validation.utils.MaxValidator;
 import nl.fontys.sofa.limo.validation.utils.MinValidator;
@@ -30,6 +34,8 @@ public class BeanValidator {
         validators.put(Max.class, new MaxValidator());
         validators.put(AssertTrue.class, new AssertTrueValidator());
         validators.put(AssertFalse.class, new AssertFalseValidator());
+        validators.put(DecimalMin.class, new DecimalMinValidator());
+        validators.put(DecimalMax.class, new DecimalMaxValidator());
     }
     
     private BeanValidator() { }
