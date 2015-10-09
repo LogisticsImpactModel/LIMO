@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import nl.fontys.sofa.limo.domain.component.hub.Continent;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
 import nl.fontys.sofa.limo.domain.component.hub.SerializableCountry;
+import nl.fontys.sofa.limo.validation.annotations.NotNull;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
@@ -36,6 +37,7 @@ public final class LocationHubPanel extends JPanel {
     private JTextField tfState;
     private JTextField tfStreet;
     private JTextField tfZip;
+    @NotNull
     private Location location;
 
     public LocationHubPanel() {
