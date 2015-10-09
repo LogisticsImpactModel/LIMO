@@ -37,7 +37,6 @@ public final class LocationHubPanel extends JPanel {
     private JTextField tfState;
     private JTextField tfStreet;
     private JTextField tfZip;
-    @NotNull
     private Location location;
 
     public LocationHubPanel() {

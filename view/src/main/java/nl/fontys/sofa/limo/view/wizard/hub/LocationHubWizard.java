@@ -64,8 +64,10 @@ public class LocationHubWizard implements WizardDescriptor.Panel<WizardDescripto
 
     @Override
     public void validate() throws WizardValidationException {
+        Hub hub = new Hub(this.hub);
+        hub.setLocation(component.getHubLocation());
         try {
-            validator.validate(component);
+            validator.validate(hub);
         } catch (ValidationException ex) {
             throw new WizardValidationException(null, MessageFormat.format(LIMOResourceBundle.getString("VALUE_NOT_SET"), LIMOResourceBundle.getString("CONTINENT")), null);
         }
