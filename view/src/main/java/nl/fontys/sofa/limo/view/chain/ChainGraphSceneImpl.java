@@ -5,6 +5,7 @@ import java.awt.datatransfer.Transferable;
 import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.undo.UndoManager;
@@ -281,8 +282,13 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     @Override
     public void addHubWidget(HubWidget hubWidget) {
         Lookup.getDefault().lookup(StatusBarService.class).setMessage(hubWidget.getHub().getName(), StatusBarService.ACTION_ADD, StatusBarService.STATE_SUCCESS, null);
+        if(hubWidget.getHub().getPrevious() == null)
+        {
+            hubWidget.setStartFlag(true);
+        }
         mainLayer.addChild(hubWidget);
         chainBuilder.addHub(hubWidget.getHub());
+        checkChainHubs();
         getScene().repaint();
 
     }
@@ -305,8 +311,38 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 hubSource,
                 leg,
                 hubTarget);
+        target.setStartFlag(false);
+        this.checkChainHubs();
     }
-
+    
+    /**
+     * Checks the hubs and hubWidgets if the previous Node is null and sets the 
+     * starthub.
+     */
+    public void checkChainHubs()
+    {
+        int checkIfMoreThanOne = 0;
+        Hub startHub = new Hub();
+        List<Hub> hubList = chainBuilder.getHubList();
+        for (Hub hub : hubList) {
+            if(hub.getPrevious() == null)
+            {
+                checkIfMoreThanOne++;
+                startHub = hub;
+            }
+        }
+        if(checkIfMoreThanOne == 1)
+        {
+            chainBuilder.setStartHub(startHub);
+        }
+        
+        List<Widget> hubWidgetList = mainLayer.getChildren();
+        for (Widget hubWidget : hubWidgetList) {
+            HubWidget hw = (HubWidget) hubWidget;
+            hw.setStartFlag(hw.getHub().getPrevious() == null);
+        }
+    }
+    
     @Override
     public void removeHubWidget(HubWidget hubWidget) {
         Hub hub = hubWidget.getHub();
@@ -323,6 +359,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         Lookup.getDefault().lookup(StatusBarService.class).setMessage(legWidget.getLeg().getName(),
                 StatusBarService.ACTION_DELETE, StatusBarService.STATE_SUCCESS, null);
         chainBuilder.disconnectLeg(legWidget.getLeg());
+        this.checkChainHubs();
     }
 
     @Override
