@@ -6,8 +6,8 @@ import nl.fontys.sofa.limo.validation.annotations.Min;
 public class IntegerBean {
     
     @Min(0)
-    public int minValue;
+    int minValue;
     
     @Max(10)
-    public int maxValue;
+    int maxValue;
 }

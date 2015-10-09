@@ -6,8 +6,8 @@ import nl.fontys.sofa.limo.validation.annotations.DecimalMin;
 public class DecimalBean {
     
     @DecimalMin("1.0")
-    public float minValue;
+    float minValue;
     
     @DecimalMax("10.0")
-    public float maxValue;
+    float maxValue;
 }

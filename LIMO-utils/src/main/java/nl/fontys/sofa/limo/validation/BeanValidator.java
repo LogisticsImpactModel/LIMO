@@ -15,6 +15,7 @@ import nl.fontys.sofa.limo.validation.annotations.NotNull;
 import nl.fontys.sofa.limo.validation.annotations.Null;
 import nl.fontys.sofa.limo.validation.annotations.Past;
 import nl.fontys.sofa.limo.validation.annotations.Pattern;
+import nl.fontys.sofa.limo.validation.annotations.Size;
 import nl.fontys.sofa.limo.validation.utils.AssertFalseValidator;
 import nl.fontys.sofa.limo.validation.utils.AssertTrueValidator;
 import nl.fontys.sofa.limo.validation.utils.DecimalMaxValidator;
@@ -27,6 +28,7 @@ import nl.fontys.sofa.limo.validation.utils.NotNullValidator;
 import nl.fontys.sofa.limo.validation.utils.NullValidator;
 import nl.fontys.sofa.limo.validation.utils.PastValidator;
 import nl.fontys.sofa.limo.validation.utils.PatternValidator;
+import nl.fontys.sofa.limo.validation.utils.SizeValidator;
 
 /**
  * Validates beans according to their annotations and state.
@@ -51,6 +53,7 @@ public class BeanValidator {
         validators.put(NotNull.class, new NotNullValidator());
         validators.put(Past.class, new PastValidator());
         validators.put(Future.class, new FutureValidator());
+        validators.put(Size.class, new SizeValidator());
     }
     
     private BeanValidator() { }
@@ -67,8 +70,10 @@ public class BeanValidator {
      */
     public <T> void validate(T bean) throws ValidationException {
         Class<?> clazz = bean.getClass();
-        Field[] fields = clazz.getFields();
+        Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
+            boolean accessible = field.isAccessible();
+            field.setAccessible(true);
             for (Annotation annotation : field.getAnnotations()) {
                 try {
                     FieldValidator validator = validators.get(annotation.annotationType());
@@ -81,6 +86,7 @@ public class BeanValidator {
                     
                 }
             }
+            field.setAccessible(accessible);
         }
     }
 }

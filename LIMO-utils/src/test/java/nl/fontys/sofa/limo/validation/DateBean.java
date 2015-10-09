@@ -8,8 +8,8 @@ import nl.fontys.sofa.limo.validation.annotations.Past;
 public class DateBean {
     
     @Past
-    public Date pastDate;
+    Date pastDate;
     
     @Future
-    public Date futureDate;
+    Date futureDate;
 }

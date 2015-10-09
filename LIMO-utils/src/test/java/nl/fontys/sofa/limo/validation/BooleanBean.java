@@ -6,8 +6,8 @@ import nl.fontys.sofa.limo.validation.annotations.AssertTrue;
 public class BooleanBean {
     
     @AssertTrue
-    public boolean trueValue;
+    boolean trueValue;
     
     @AssertFalse
-    public boolean falseValue;
+    boolean falseValue;
 }

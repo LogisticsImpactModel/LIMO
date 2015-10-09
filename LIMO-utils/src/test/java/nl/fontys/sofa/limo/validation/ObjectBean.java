@@ -7,8 +7,8 @@ import nl.fontys.sofa.limo.validation.annotations.Null;
 public class ObjectBean {
     
     @Null
-    public Object nullObject;
+    Object nullObject;
     
     @NotNull
-    public Object notNullObject;
+    Object notNullObject;
 }
