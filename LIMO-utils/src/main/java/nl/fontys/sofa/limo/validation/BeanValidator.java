@@ -8,20 +8,24 @@ import nl.fontys.sofa.limo.validation.annotations.AssertFalse;
 import nl.fontys.sofa.limo.validation.annotations.AssertTrue;
 import nl.fontys.sofa.limo.validation.annotations.DecimalMax;
 import nl.fontys.sofa.limo.validation.annotations.DecimalMin;
+import nl.fontys.sofa.limo.validation.annotations.Future;
 import nl.fontys.sofa.limo.validation.annotations.Max;
 import nl.fontys.sofa.limo.validation.annotations.Min;
 import nl.fontys.sofa.limo.validation.annotations.NotNull;
 import nl.fontys.sofa.limo.validation.annotations.Null;
+import nl.fontys.sofa.limo.validation.annotations.Past;
 import nl.fontys.sofa.limo.validation.annotations.Pattern;
 import nl.fontys.sofa.limo.validation.utils.AssertFalseValidator;
 import nl.fontys.sofa.limo.validation.utils.AssertTrueValidator;
 import nl.fontys.sofa.limo.validation.utils.DecimalMaxValidator;
 import nl.fontys.sofa.limo.validation.utils.DecimalMinValidator;
 import nl.fontys.sofa.limo.validation.utils.FieldValidator;
+import nl.fontys.sofa.limo.validation.utils.FutureValidator;
 import nl.fontys.sofa.limo.validation.utils.MaxValidator;
 import nl.fontys.sofa.limo.validation.utils.MinValidator;
 import nl.fontys.sofa.limo.validation.utils.NotNullValidator;
 import nl.fontys.sofa.limo.validation.utils.NullValidator;
+import nl.fontys.sofa.limo.validation.utils.PastValidator;
 import nl.fontys.sofa.limo.validation.utils.PatternValidator;
 
 /**
@@ -33,7 +37,7 @@ public class BeanValidator {
     
     private static final BeanValidator instance = new BeanValidator();
     
-    private static Map<Class<? extends Annotation>, FieldValidator<?>> validators = new HashMap<>();
+    private static final Map<Class<? extends Annotation>, FieldValidator<?>> validators = new HashMap<>();
 
     static {
         validators.put(Min.class, new MinValidator());
@@ -45,6 +49,8 @@ public class BeanValidator {
         validators.put(Pattern.class, new PatternValidator());
         validators.put(Null.class, new NullValidator());
         validators.put(NotNull.class, new NotNullValidator());
+        validators.put(Past.class, new PastValidator());
+        validators.put(Future.class, new FutureValidator());
     }
     
     private BeanValidator() { }
