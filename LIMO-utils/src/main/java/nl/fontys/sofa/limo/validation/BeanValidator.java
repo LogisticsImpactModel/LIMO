@@ -70,23 +70,26 @@ public class BeanValidator {
      */
     public <T> void validate(T bean) throws ValidationException {
         Class<?> clazz = bean.getClass();
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            boolean accessible = field.isAccessible();
-            field.setAccessible(true);
-            for (Annotation annotation : field.getAnnotations()) {
-                try {
-                    FieldValidator validator = validators.get(annotation.annotationType());
-                    if (validator != null) {
-                        validator.validate(annotation, field, field.get(bean));
+        do {
+            Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields) {
+                boolean accessible = field.isAccessible();
+                field.setAccessible(true);
+                for (Annotation annotation : field.getAnnotations()) {
+                    try {
+                        FieldValidator validator = validators.get(annotation.annotationType());
+                        if (validator != null) {
+                            validator.validate(annotation, field, field.get(bean));
+                        }
+                    } catch (IllegalArgumentException ex) {
+
+                    } catch (IllegalAccessException ex) {
+
                     }
-                } catch (IllegalArgumentException ex) {
-                    
-                } catch (IllegalAccessException ex) {
-                    
                 }
+                field.setAccessible(accessible);
             }
-            field.setAccessible(accessible);
-        }
+            clazz = clazz.getSuperclass();
+        } while (clazz != null);
     }
 }
