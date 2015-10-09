@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,15 +12,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import nl.fontys.sofa.limo.domain.component.Node;
+import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.externaltrader.CSVExporter;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel;
+import nl.fontys.sofa.limo.view.graphs.AbstractLimoTableModel;
+import nl.fontys.sofa.limo.view.graphs.BarChartComponent;
+import nl.fontys.sofa.limo.view.graphs.SampleLimoTableModel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.util.NbBundle.Messages;
@@ -166,8 +183,8 @@ public final class ResultTopComponent extends TopComponent {
         if (value1 <= 0 && value2 > 0) {
             return 100;
         }
-        
-        if(value1<=0){
+
+        if (value1 <= 0) {
             return 0;
         }
         return diff * 100 / value1;
@@ -180,7 +197,7 @@ public final class ResultTopComponent extends TopComponent {
         categorySet.addAll(result.getLeadTimesByCategory().keySet());
         categorySet.addAll(result.getExtraCostsByCategory().keySet());
         categorySet.addAll(result.getDelaysByCategory().keySet());
-        List<String> categories = new ArrayList<>(categorySet);
+        final List<String> categories = new ArrayList<>(categorySet);
         Collections.sort(categories);
 
         List<DataEntry> costs = new ArrayList<>();
@@ -207,9 +224,30 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.LEAD_TIMES_ID, leadTimes);
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
-        DataEntryTableModel detm = new DataEntryTableModel(categories, map);
+        final DataEntryTableModel detm = new DataEntryTableModel(categories, map);
+
+        final JPanel panel = new JPanel(new BorderLayout());
+
         categoryTable = new JTable(detm);
-        return new JScrollPane(categoryTable);
+        JScrollPane catJScrollPane = new JScrollPane(categoryTable);
+        panel.add(catJScrollPane, BorderLayout.SOUTH);
+        final BarChartComponent<DataEntryTableModel> chart = new BarChartComponent<>(detm, 300, 300);
+        Platform.setImplicitExit(false);
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                CategoryAxis xAxis = new CategoryAxis();
+                xAxis.setCategories(FXCollections.<String>observableArrayList(categories));
+                xAxis.setLabel("Categories");
+
+                NumberAxis yAxis = new NumberAxis();
+                yAxis.setTickUnit(50);
+                yAxis.setLabel("");
+                chart.init(panel, BorderLayout.CENTER, xAxis, yAxis);
+            }
+        });
+        return new JScrollPane(panel);
     }
 
     private JScrollPane createNodePane() {
@@ -246,7 +284,39 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         DataEntryTableModel detm = new DataEntryTableModel(names, map);
         nodesTable = new JTable(detm);
-        return new JScrollPane(nodesTable);
+        final JPanel panel = new JPanel(new BorderLayout());
+
+        categoryTable = new JTable(detm);
+        JScrollPane catJScrollPane = new JScrollPane(categoryTable);
+        panel.add(catJScrollPane, BorderLayout.SOUTH);
+        final BarChartComponent<DataEntryTableModel> chart = new BarChartComponent<>(detm, 300, 300);
+        Platform.setImplicitExit(false);
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                CategoryAxis xAxis = new CategoryAxis();
+                SupplyChain chain = results.get(0).getSupplyChain();
+                ArrayList<String> names = new ArrayList<>();
+                Node node = chain.getStartHub();
+                while (node != null) {
+                    if (node instanceof Hub) {
+                        Hub hub = (Hub) node;
+                        names.add(hub.getName());
+                    }
+                    node = node.getNext();
+                }
+
+                xAxis.setCategories(FXCollections.<String>observableArrayList(names));
+                xAxis.setLabel("Categories");
+
+                NumberAxis yAxis = new NumberAxis();
+                yAxis.setTickUnit(50);
+                yAxis.setLabel("");
+                chart.init(panel, BorderLayout.CENTER, xAxis, yAxis);
+            }
+        });
+        return new JScrollPane(panel);
     }
 
     /**
@@ -272,6 +342,10 @@ public final class ResultTopComponent extends TopComponent {
         jToolBar1.add(jButton1);
 
         add(jToolBar1, java.awt.BorderLayout.PAGE_START);
+
+        jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(500, 500));
+        jTabbedPane1.setRequestFocusEnabled(false);
         add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
