@@ -10,6 +10,7 @@ import nl.fontys.sofa.limo.validation.annotations.DecimalMax;
 import nl.fontys.sofa.limo.validation.annotations.DecimalMin;
 import nl.fontys.sofa.limo.validation.annotations.Max;
 import nl.fontys.sofa.limo.validation.annotations.Min;
+import nl.fontys.sofa.limo.validation.annotations.Pattern;
 import nl.fontys.sofa.limo.validation.utils.AssertFalseValidator;
 import nl.fontys.sofa.limo.validation.utils.AssertTrueValidator;
 import nl.fontys.sofa.limo.validation.utils.DecimalMaxValidator;
@@ -17,6 +18,7 @@ import nl.fontys.sofa.limo.validation.utils.DecimalMinValidator;
 import nl.fontys.sofa.limo.validation.utils.FieldValidator;
 import nl.fontys.sofa.limo.validation.utils.MaxValidator;
 import nl.fontys.sofa.limo.validation.utils.MinValidator;
+import nl.fontys.sofa.limo.validation.utils.PatternValidator;
 
 /**
  * Validates beans according to their annotations and state.
@@ -36,6 +38,7 @@ public class BeanValidator {
         validators.put(AssertFalse.class, new AssertFalseValidator());
         validators.put(DecimalMin.class, new DecimalMinValidator());
         validators.put(DecimalMax.class, new DecimalMaxValidator());
+        validators.put(Pattern.class, new PatternValidator());
     }
     
     private BeanValidator() { }
