@@ -1,6 +1,6 @@
 language: java
 jdk:
-- openjdk7
+- oraclejdk8
 install: mvn --settings settings.xml  -DskipTests=true clean install -q
 script: mvn --settings settings.xml   test
 before_deploy: "./deploy.sh"
