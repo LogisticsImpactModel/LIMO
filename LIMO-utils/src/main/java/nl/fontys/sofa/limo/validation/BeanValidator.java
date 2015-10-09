@@ -4,8 +4,12 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import nl.fontys.sofa.limo.validation.annotations.AssertFalse;
+import nl.fontys.sofa.limo.validation.annotations.AssertTrue;
 import nl.fontys.sofa.limo.validation.annotations.Max;
 import nl.fontys.sofa.limo.validation.annotations.Min;
+import nl.fontys.sofa.limo.validation.utils.AssertFalseValidator;
+import nl.fontys.sofa.limo.validation.utils.AssertTrueValidator;
 import nl.fontys.sofa.limo.validation.utils.FieldValidator;
 import nl.fontys.sofa.limo.validation.utils.MaxValidator;
 import nl.fontys.sofa.limo.validation.utils.MinValidator;
@@ -24,6 +28,8 @@ public class BeanValidator {
     static {
         validators.put(Min.class, new MinValidator());
         validators.put(Max.class, new MaxValidator());
+        validators.put(AssertTrue.class, new AssertTrueValidator());
+        validators.put(AssertFalse.class, new AssertFalseValidator());
     }
     
     private BeanValidator() { }
