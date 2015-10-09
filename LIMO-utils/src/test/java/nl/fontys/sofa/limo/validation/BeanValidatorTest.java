@@ -12,7 +12,7 @@ public class BeanValidatorTest {
     
     @Test
     public void testAssertTrueFalse() {
-        BooleanBean bean = new BooleanBean();
+        BooleanBeanChild bean = new BooleanBeanChild();
         bean.trueValue = true;
         bean.falseValue = false;
          try {
