@@ -138,8 +138,8 @@
             </modules>
         </profile>
     </profiles>
-    
-    
-
+    <modules>
+        <module>LIMO-utils</module>
+    </modules>
 </project>
 

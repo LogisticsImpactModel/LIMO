@@ -4,10 +4,13 @@ import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
+import nl.fontys.sofa.limo.validation.BeanValidator;
+import nl.fontys.sofa.limo.validation.ValidationException;
 import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
+import org.openide.util.Exceptions;
 import org.openide.util.HelpCtx;
 
 /**
@@ -19,6 +22,7 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Valida
 
     private NameDescriptionIconPanel component;
     private MultiModeLeg leg;
+    private BeanValidator validator = BeanValidator.getInstance();
 
     @Override
     public NameDescriptionIconPanel getComponent() {
@@ -54,8 +58,12 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Valida
     //Validate
     @Override
     public void validate() throws WizardValidationException {
-        ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
-        if (component.getNameInput().isEmpty()) {
+        MultiModeLeg tmp = new MultiModeLeg(leg);
+        tmp.setName(component.getNameInput());
+        try {
+            validator.validate(tmp);
+        } catch (ValidationException ex) {
+            ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
             throw new WizardValidationException(null, LIMOResourceBundle.getString("VALUE_NOT_SET", bundle.getString("NAME")), null);
         }
     }

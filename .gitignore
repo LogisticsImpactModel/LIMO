@@ -13,3 +13,4 @@
 *.pdf
 *~
 /target/
+/LIMO-utils/target/
