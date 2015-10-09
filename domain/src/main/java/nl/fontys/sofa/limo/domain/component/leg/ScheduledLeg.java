@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.Embedded;
+import nl.fontys.sofa.limo.validation.annotations.Min;
+import nl.fontys.sofa.limo.validation.annotations.NotNull;
+import nl.fontys.sofa.limo.validation.annotations.Size;
 
 /**
  * Leg with a schedule and an alternative, if the schedule can't be uphold. Time
@@ -22,6 +25,7 @@ public class ScheduledLeg extends Leg {
      * Expected time of consignment to arrive. Any delay from the hub before is
      * added to this. Normally (and for ease of use) 0. [?]
      */
+    @Min(1)
     @Expose private long expectedTime;
 
     /**
@@ -33,18 +37,21 @@ public class ScheduledLeg extends Leg {
      * Times after expected time, when the consigment can be send over this
      * route.
      */
+    @Size(min=1)
     @Expose private List<Long> acceptanceTimes;
 
     /**
      * Maximum time between arrival (expectedTime + delay) and acceptance,
      * before alternative is used.
      */
+   @Min(1)
    @Expose private long waitingTimeLimit;
 
     /**
      * Alternative leg, used when no acceptance times are possible (because of
      * delay) or the waiting time for acceptance is too long.
      */
+    @NotNull
     @Embedded
     @Expose private Leg alternative;
 
