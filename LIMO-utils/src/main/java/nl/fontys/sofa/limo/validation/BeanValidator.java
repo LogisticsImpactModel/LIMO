@@ -1,6 +1,14 @@
 package nl.fontys.sofa.limo.validation;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import nl.fontys.sofa.limo.validation.annotations.Min;
+import nl.fontys.sofa.limo.validation.utils.FieldValidator;
+import nl.fontys.sofa.limo.validation.utils.MinValidator;
 
 /**
  * Validates beans according to their annotations and state.
@@ -10,6 +18,12 @@ import java.lang.reflect.Field;
 public class BeanValidator {
     
     private static final BeanValidator instance = new BeanValidator();
+    
+    private static Map<Class<? extends Annotation>, FieldValidator<?>> validators = new HashMap<>();
+
+    static {
+        validators.put(Min.class, new MinValidator());
+    }
     
     private BeanValidator() { }
     
@@ -27,10 +41,18 @@ public class BeanValidator {
         Class<?> clazz = bean.getClass();
         Field[] fields = clazz.getFields();
         for (Field field : fields) {
-            System.out.println(field.getName());
+            for (Annotation annotation : field.getAnnotations()) {
+                try {
+                    FieldValidator validator = validators.get(annotation.annotationType());
+                    if (validator != null) {
+                        validator.validate(annotation, field, field.get(bean));
+                    }
+                } catch (IllegalArgumentException ex) {
+                    
+                } catch (IllegalAccessException ex) {
+                    
+                }
+            }
         }
-        // for each field
-        // -> check annotation type (if type is not fitting show logger warning)
-        // -> check current value and throw exception if necessary
     }
 }
