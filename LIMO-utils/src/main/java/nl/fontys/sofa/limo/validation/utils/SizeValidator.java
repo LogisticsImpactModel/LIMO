@@ -12,7 +12,9 @@ public class SizeValidator implements FieldValidator<Size> {
     public void validate(Size size, Field field, Object value) throws ValidationException {
         int min = size.min();
         int max = size.max();
-        if (value instanceof String) {
+        if (value == null) {
+            throw new ValidationException(field.getName() + " should not be empty.");
+        } if (value instanceof String) {
             validateSize(min, max, ((String)value).length());
         } else if (value instanceof Map) {
             validateSize(min, max, ((Map)value).size());
