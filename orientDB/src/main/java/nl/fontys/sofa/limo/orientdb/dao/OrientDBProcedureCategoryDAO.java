@@ -20,7 +20,7 @@ public class OrientDBProcedureCategoryDAO extends OrientDBAbstractDAO<ProcedureC
             defaultProcedure.setName("Costs not accounted");
             defaultProcedure.setDescription("Default procedure");
             defaultProcedure.setUniqueIdentifier("-1");
-            //this.insert(defaultProcedure);  
+            this.insert(defaultProcedure);  
         }
         
         
