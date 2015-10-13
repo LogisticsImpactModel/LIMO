@@ -113,8 +113,8 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         this.add(new JLabel(LIMOResourceBundle.getString("CO2")), cc.xy(2, 12));
         this.add(cotwoTextField, cc.xyw(4, 12, 2));
         this.add(addCotwoButton, cc.xy(7, 12));
-        this.add(saveButton, cc.xy(2, 16));
-        this.add(cancelButton, cc.xy(4, 16));
+        this.add(saveButton, cc.xy(2, 14));
+        this.add(cancelButton, cc.xy(4, 14));
     }
 
     @Override
