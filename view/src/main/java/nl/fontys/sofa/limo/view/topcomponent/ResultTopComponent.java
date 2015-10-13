@@ -1,7 +1,6 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -12,15 +11,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.embed.swing.JFXPanel;
+import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,14 +25,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.externaltrader.CSVExporter;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel;
-import nl.fontys.sofa.limo.view.graphs.AbstractLimoTableModel;
-import nl.fontys.sofa.limo.view.graphs.BarChartComponent;
-import nl.fontys.sofa.limo.view.graphs.SampleLimoTableModel;
+import nl.fontys.sofa.limo.view.graphs.XYChartComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.util.NbBundle.Messages;
@@ -231,7 +225,7 @@ public final class ResultTopComponent extends TopComponent {
         categoryTable = new JTable(detm);
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
         panel.add(catJScrollPane, BorderLayout.SOUTH);
-        final BarChartComponent<DataEntryTableModel> chart = new BarChartComponent<>(detm, 300, 300);
+        final XYChartComponent<DataEntryTableModel, BarChart> chart = new XYChartComponent<>(detm, BarChart.class, 300, 300);
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
 
@@ -289,7 +283,7 @@ public final class ResultTopComponent extends TopComponent {
         categoryTable = new JTable(detm);
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
         panel.add(catJScrollPane, BorderLayout.SOUTH);
-        final BarChartComponent<DataEntryTableModel> chart = new BarChartComponent<>(detm, 300, 300);
+        final XYChartComponent<DataEntryTableModel, AreaChart> chart = new XYChartComponent(detm, AreaChart.class, 300, 300);
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
 
@@ -300,10 +294,7 @@ public final class ResultTopComponent extends TopComponent {
                 ArrayList<String> names = new ArrayList<>();
                 Node node = chain.getStartHub();
                 while (node != null) {
-                    if (node instanceof Hub) {
-                        Hub hub = (Hub) node;
-                        names.add(hub.getName());
-                    }
+                    names.add(node.getName());
                     node = node.getNext();
                 }
 

@@ -6,58 +6,84 @@
 package nl.fontys.sofa.limo.view.graphs;
 
 import java.awt.Component;
-import java.awt.Dimension;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.chart.Axis;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.Chart;
+import javafx.scene.chart.XYChart;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import org.openide.util.Exceptions;
 
 /**
  *
  * @author nilsh
  */
-public class BarChartComponent<T extends AbstractLimoTableModel> {
+public class XYChartComponent<T extends AbstractLimoTableModel, R extends XYChart> {
 
+    Class<R> cl;
     private final T tableModel;
-    private JFXPanel chartFxPanel; 
+    private final JFXPanel chartFxPanel;
     private int panel_width = 675;
     private int panel_height = 400;
     private static final int TABLE_PANEL_HEIGHT_INT = 100;
     private Chart chart;
+    private JPanel parent;
 
-    public BarChartComponent(T tableModel) {
+    public XYChartComponent(T tableModel, Class<R> cl) {
         this.tableModel = tableModel;
-        chartFxPanel= new JFXPanel();
+        chartFxPanel = new JFXPanel();
+        this.cl = cl;
     }
 
-    public BarChartComponent(T tableModel, int panel_width, int panel_height) {
+    public XYChartComponent(T tableModel, Class<R> cl, int panel_width, int panel_height) {
         this.tableModel = tableModel;
         this.panel_height = panel_height;
         this.panel_width = panel_width;
         chartFxPanel = new JFXPanel();
+        this.cl = cl;
     }
 
     public void init(JPanel parent, Object constrain, final Axis xAxis, final Axis yAxis) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                createBarChart(xAxis, yAxis);
+                createChart(xAxis, yAxis);
             }
         });
         parent.add(chartFxPanel, constrain);
+        this.parent = parent;
     }
 
-    private void createBarChart(Axis xAxis, Axis yAxis) {
-       //chartFxPanel.setPreferredSize(new Dimension(panel_width, panel_height));
-        chart = new BarChart(xAxis, yAxis, tableModel.getXYChartData());
+    public void remove() {
+        parent.remove(chartFxPanel);
+    }
+
+    private void createChart(Axis xAxis, Axis yAxis) {
+        //chartFxPanel.setPreferredSize(new Dimension(panel_width, panel_height));
+        Constructor<?>[] constructors = cl.getConstructors();
+        for (Constructor<?> constructor : constructors) {
+            if (constructor.getParameterCount() == 3) {
+                Class<?>[] parameterTypes = constructor.getParameterTypes();
+
+                if (parameterTypes[0] != Axis.class || parameterTypes[1] != Axis.class || parameterTypes[2] != ObservableList.class) {
+                    continue;
+                } else {
+                    try {
+                        chart = (Chart) constructor.newInstance(xAxis, yAxis, tableModel.getXYChartData(cl));
+                        break;
+                    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                        Exceptions.printStackTrace(ex);
+                    }
+                }
+            }
+        }
         chartFxPanel.setScene(new Scene(chart));
     }
 
