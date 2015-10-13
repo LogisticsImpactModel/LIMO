@@ -18,17 +18,22 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.externaltrader.CSVExporter;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel;
+import nl.fontys.sofa.limo.view.custom.table.DataEntryTableRenderer;
+import nl.fontys.sofa.limo.view.custom.table.LimoTable;
+import nl.fontys.sofa.limo.view.graphs.PieChartComponent;
 import nl.fontys.sofa.limo.view.graphs.XYChartComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -219,26 +224,22 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         final DataEntryTableModel detm = new DataEntryTableModel(categories, map);
-
         final JPanel panel = new JPanel(new BorderLayout());
 
-        categoryTable = new JTable(detm);
+        categoryTable = new LimoTable(detm);
+        TableCellRenderer renderer = new DataEntryTableRenderer();
+        //categoryTable.setDefaultRenderer(Object.class, renderer);
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
         panel.add(catJScrollPane, BorderLayout.SOUTH);
-        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class, 300, 300);
+        //  final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class, 300, 300);
+        final PieChartComponent<DataEntryTableModel> chart = new PieChartComponent<>(detm, 300, 300);
+
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
 
             @Override
             public void run() {
-                CategoryAxis xAxis = new CategoryAxis();
-                xAxis.setCategories(FXCollections.<String>observableArrayList(categories));
-                xAxis.setLabel("Categories");
-
-                NumberAxis yAxis = new NumberAxis();
-                yAxis.setTickUnit(50);
-                yAxis.setLabel("");
-                chart.init(panel, BorderLayout.CENTER, xAxis, yAxis);
+                chart.init(panel, BorderLayout.CENTER);
             }
         });
         return new JScrollPane(panel);

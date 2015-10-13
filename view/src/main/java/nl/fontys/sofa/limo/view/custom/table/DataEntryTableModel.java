@@ -1,12 +1,19 @@
 package nl.fontys.sofa.limo.view.custom.table;
 
+import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javax.swing.table.AbstractTableModel;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.view.graphs.AbstractLimoTableModel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -28,17 +35,23 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     private final List<DataEntry> extraCosts;
     private final List<DataEntry> delays;
 
+    private final List<Boolean> enabled;
+
     public DataEntryTableModel(List<String> names, Map<String, List<DataEntry>> dataEntries) {
         this.names = names;
         this.costs = dataEntries.get(COSTS_ID);
         this.leadTimes = dataEntries.get(LEAD_TIMES_ID);
         this.extraCosts = dataEntries.get(EXTRA_COSTS_ID);
         this.delays = dataEntries.get(DELAYS_ID);
+        this.enabled = new ArrayList();
+        for (int i = 0; i < 13; i++) {
+            enabled.add(true);
+        }
     }
 
     @Override
     public int getRowCount() {
-        return this.names.size();
+        return this.names.size() + 1;
     }
 
     @Override
@@ -47,7 +60,22 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     }
 
     @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        if (isCellEditable(rowIndex, columnIndex) && rowIndex == 0) {
+            enabled.set(columnIndex, Boolean.valueOf(aValue.toString()));
+        }
+
+    }
+
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        if (rowIndex == 0) {
+            if (columnIndex == 0) {
+                return "Enabled:";
+            }
+            return enabled.get(columnIndex);
+        }
+        rowIndex = rowIndex - 1;
         switch (columnIndex) {
             case 0:
                 return names.get(rowIndex);
@@ -81,7 +109,19 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     }
 
     @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        if (columnIndex == 14) {
+            return Boolean.class;
+        }
+        return super.getColumnClass(columnIndex); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
+        if (rowIndex == 0 && columnIndex != 0) {
+
+            return true;
+        }
         return false;
     }
 
@@ -126,11 +166,12 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
         for (int i = 1; i < getColumnCount(); i++) {
             XYChart.Series serie = new XYChart.Series();
             ObservableList<XYChart.Data> dataSet = FXCollections.<BarChart.Data>observableArrayList();
-            for (int j = 0; j < getRowCount(); j++) {
+            for (int j = 1; j < getRowCount(); j++) {
                 XYChart.Data data = new XYChart.Data();
-                data.setXValue(names.get(j));
+                data.setXValue(names.get(j - 1));
                 data.setYValue(getValueAt(j, i));
                 dataSet.add(data);
+
             }
             serie.setData(dataSet);
             serie.setName(getColumnName(i));
@@ -148,9 +189,9 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
             XYChart.Series serie = new XYChart.Series();
             ObservableList<XYChart.Data> dataSet = FXCollections.<BarChart.Data>observableArrayList();
             Double val = 0.0;
-            for (int j = 0; j < getRowCount(); j++) {
+            for (int j = 1; j < getRowCount(); j++) {
                 XYChart.Data data = new XYChart.Data();
-                data.setXValue(names.get(j));
+                data.setXValue(names.get(j - 1));
                 Object valTemp = getValueAt(j, i);
                 if (valTemp instanceof Number) {
                     Number n = (Number) valTemp;
@@ -173,6 +214,20 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     @Override
     protected ObservableList<XYChart.Series> getAreaChartData() {
         return getLineChartData();
+    }
+
+    @Override
+    public ObservableList<PieChart.Data> getPieChartData() {
+        ObservableList<PieChart.Data> result = FXCollections.<PieChart.Data>observableArrayList();
+
+        for (int i = 0; i < names.size(); i++) {
+            Object val = getValueAt(i + 1, 2);
+            if (val instanceof Double) {
+                PieChart.Data data = new PieChart.Data(names.get(i), (Double) val);
+                result.add(data);
+            }
+        }
+        return result;
     }
 
 }
