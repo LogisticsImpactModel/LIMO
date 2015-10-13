@@ -226,8 +226,6 @@ public final class ResultTopComponent extends TopComponent {
         final JPanel panel = new JPanel(new BorderLayout());
 
         categoryTable = new LimoTable(detm);
-        TableCellRenderer renderer = new DataEntryTableRenderer();
-        //categoryTable.setDefaultRenderer(Object.class, renderer);
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
         panel.add(catJScrollPane, BorderLayout.SOUTH);
         //  final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class, 300, 300);
