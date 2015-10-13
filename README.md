@@ -1,5 +1,5 @@
 # LIMO
-![build-icon](https://travis-ci.org/LogisticsImpactModel/LIMO.svg?branch=develop) ![version-icon](https://img.shields.io/badge/version-1.6.0-blue.svg)
+![build-icon](https://travis-ci.org/LogisticsImpactModel/LIMO.svg?branch=develop) [![version-icon](https://img.shields.io/badge/version-1.6.0-blue.svg)](https://github.com/LogisticsImpactModel/LIMO/releases/tag/version-1.6-RC)
 
 The Logistics Impact Model (LIMO) provides involved companies in logistics chains with a central point of information on which costs they make on the regulatory bases and how the costs can be reduced or eliminated
 ## Features
