@@ -25,9 +25,9 @@ import org.openide.util.Exceptions;
  *
  * @author nilsh
  */
-public class XYChartComponent<T extends AbstractLimoTableModel, R extends XYChart> {
+public class XYChartComponent<T extends AbstractLimoTableModel> {
 
-    Class<R> cl;
+    Class<? extends XYChart> cl;
     private final T tableModel;
     private final JFXPanel chartFxPanel;
     private int panel_width = 675;
@@ -36,13 +36,13 @@ public class XYChartComponent<T extends AbstractLimoTableModel, R extends XYChar
     private Chart chart;
     private JPanel parent;
 
-    public XYChartComponent(T tableModel, Class<R> cl) {
+    public XYChartComponent(T tableModel, Class<? extends XYChart> cl) {
         this.tableModel = tableModel;
         chartFxPanel = new JFXPanel();
         this.cl = cl;
     }
 
-    public XYChartComponent(T tableModel, Class<R> cl, int panel_width, int panel_height) {
+    public XYChartComponent(T tableModel, Class<? extends XYChart> cl, int panel_width, int panel_height) {
         this.tableModel = tableModel;
         this.panel_height = panel_height;
         this.panel_width = panel_width;

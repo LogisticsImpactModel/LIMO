@@ -140,4 +140,39 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
         return bcData;
     }
 
+    @Override
+    protected ObservableList<XYChart.Series> getLineChartData() {
+        ObservableList<XYChart.Series> bcData = FXCollections.<BarChart.Series>observableArrayList();
+
+        for (int i = 1; i < getColumnCount(); i++) {
+            XYChart.Series serie = new XYChart.Series();
+            ObservableList<XYChart.Data> dataSet = FXCollections.<BarChart.Data>observableArrayList();
+            Double val = 0.0;
+            for (int j = 0; j < getRowCount(); j++) {
+                XYChart.Data data = new XYChart.Data();
+                data.setXValue(names.get(j));
+                Object valTemp = getValueAt(j, i);
+                if (valTemp instanceof Number) {
+                    Number n = (Number) valTemp;
+                    val += n.doubleValue();
+                    data.setYValue(val);
+
+                } else {
+                    data.setYValue(getValueAt(j, i));
+                }
+                dataSet.add(data);
+            }
+            serie.setData(dataSet);
+            serie.setName(getColumnName(i));
+            bcData.add(serie);
+        }
+
+        return bcData;
+    }
+
+    @Override
+    protected ObservableList<XYChart.Series> getAreaChartData() {
+        return getLineChartData();
+    }
+
 }

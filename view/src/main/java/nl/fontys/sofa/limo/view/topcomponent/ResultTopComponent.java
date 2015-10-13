@@ -225,7 +225,7 @@ public final class ResultTopComponent extends TopComponent {
         categoryTable = new JTable(detm);
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
         panel.add(catJScrollPane, BorderLayout.SOUTH);
-        final XYChartComponent<DataEntryTableModel, BarChart> chart = new XYChartComponent<>(detm, BarChart.class, 300, 300);
+        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class, 300, 300);
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
 
@@ -283,7 +283,7 @@ public final class ResultTopComponent extends TopComponent {
         categoryTable = new JTable(detm);
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
         panel.add(catJScrollPane, BorderLayout.SOUTH);
-        final XYChartComponent<DataEntryTableModel, AreaChart> chart = new XYChartComponent(detm, AreaChart.class, 300, 300);
+        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, LineChart.class, 300, 300);
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
 
