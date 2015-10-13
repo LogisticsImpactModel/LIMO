@@ -24,7 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.externaltrader.CSVExporter;
@@ -230,7 +231,21 @@ public final class ResultTopComponent extends TopComponent {
         panel.add(catJScrollPane, BorderLayout.SOUTH);
         //  final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class, 300, 300);
         final PieChartComponent<DataEntryTableModel> chart = new PieChartComponent<>(detm, 300, 300);
+        detm.setOnlyOneEnabled(true);
+        detm.addTableModelListener(new TableModelListener() {
 
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        
+                        chart.updateData();
+                    }
+                });
+            }
+        });
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
 
@@ -276,12 +291,15 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         DataEntryTableModel detm = new DataEntryTableModel(names, map);
         nodesTable = new JTable(detm);
+
         final JPanel panel = new JPanel(new BorderLayout());
 
         categoryTable = new JTable(detm);
+
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
         panel.add(catJScrollPane, BorderLayout.SOUTH);
         final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, LineChart.class, 300, 300);
+
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
 

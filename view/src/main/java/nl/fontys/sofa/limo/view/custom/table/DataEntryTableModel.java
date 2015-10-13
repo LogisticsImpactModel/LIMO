@@ -36,6 +36,7 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     private final List<DataEntry> delays;
 
     private final List<Boolean> enabled;
+    private boolean onlyOneEnabled = false;
 
     public DataEntryTableModel(List<String> names, Map<String, List<DataEntry>> dataEntries) {
         this.names = names;
@@ -44,9 +45,14 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
         this.extraCosts = dataEntries.get(EXTRA_COSTS_ID);
         this.delays = dataEntries.get(DELAYS_ID);
         this.enabled = new ArrayList();
-        for (int i = 0; i < 13; i++) {
+        enabled.add(Boolean.FALSE);
+        for (int i = 0; i < 12; i++) {
             enabled.add(true);
         }
+    }
+
+    public void setOnlyOneEnabled(boolean onlyOneEnabled) {
+        this.onlyOneEnabled = onlyOneEnabled;
     }
 
     @Override
@@ -62,7 +68,14 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         if (isCellEditable(rowIndex, columnIndex) && rowIndex == 0) {
+            if ((Boolean) aValue == true || onlyOneEnabled) {
+                for (int i = 0; i < enabled.size(); i++) {
+                    enabled.set(i, Boolean.FALSE);
+                }
+            }
             enabled.set(columnIndex, Boolean.valueOf(aValue.toString()));
+
+            fireTableDataChanged();
         }
 
     }
@@ -215,13 +228,23 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     protected ObservableList<XYChart.Series> getAreaChartData() {
         return getLineChartData();
     }
+    
 
     @Override
     public ObservableList<PieChart.Data> getPieChartData() {
         ObservableList<PieChart.Data> result = FXCollections.<PieChart.Data>observableArrayList();
+        int activeIndex = -1;
+        for (int i = 1; i < enabled.size(); i++) {
+            if (enabled.get(i) == true && activeIndex < 0) {
+                activeIndex = i;
+            } else {
+                enabled.set(i, Boolean.FALSE);
+
+            }
+        }
 
         for (int i = 0; i < names.size(); i++) {
-            Object val = getValueAt(i + 1, 2);
+            Object val = getValueAt(i + 1, activeIndex);
             if (val instanceof Double) {
                 PieChart.Data data = new PieChart.Data(names.get(i), (Double) val);
                 result.add(data);
