@@ -20,8 +20,8 @@ public class ProcedureComponentTest {
         JFrame frame = new JFrame("TEST");
         frame.setSize(650, 250);
         ArrayList<Procedure> procedures = new ArrayList<>();
-        procedures.add(new Procedure("TEST", "TESTA", new SingleValue(2), new RangeValue(3, 5), TimeType.MINUTES));
-        procedures.add(new Procedure("ABCDEF", "GHIJKL", new SingleValue(10), new RangeValue(2, 19), TimeType.MINUTES));
+        procedures.add(new Procedure("TEST", "TESTA", new SingleValue(2), new RangeValue(3, 5), TimeType.MINUTES, new SingleValue(2)));
+        procedures.add(new Procedure("ABCDEF", "GHIJKL", new SingleValue(10), new RangeValue(2, 19), TimeType.MINUTES, new SingleValue(2)));
         frame.add(new ProcedureComponent(procedures));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
