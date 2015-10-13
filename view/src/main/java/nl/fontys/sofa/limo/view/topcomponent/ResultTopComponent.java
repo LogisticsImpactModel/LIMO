@@ -31,7 +31,6 @@ import nl.fontys.sofa.limo.externaltrader.CSVExporter;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel;
-import nl.fontys.sofa.limo.view.custom.table.DataEntryTableRenderer;
 import nl.fontys.sofa.limo.view.custom.table.LimoTable;
 import nl.fontys.sofa.limo.view.graphs.PieChartComponent;
 import nl.fontys.sofa.limo.view.graphs.XYChartComponent;
