@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.view.custom.table;
 
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,11 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.view.graphs.AbstractLimoTableModel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;

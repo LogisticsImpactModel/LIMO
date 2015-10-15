@@ -9,7 +9,6 @@ import java.awt.Component;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -19,10 +18,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.Axis;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.util.Duration;
 import javax.swing.JPanel;
@@ -123,7 +119,7 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
                 }
             }
         }
-        Scene scene = new Scene(chart);;
+        Scene scene = new Scene(chart);
         chartFxPanel.setScene(scene);
     }
 
