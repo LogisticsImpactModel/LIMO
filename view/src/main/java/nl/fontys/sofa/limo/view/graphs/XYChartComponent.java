@@ -17,7 +17,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.XYChart;
@@ -37,22 +36,11 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
     Class<? extends XYChart> cl;
     private final T tableModel;
     private final JFXPanel chartFxPanel;
-    private int panel_width = 675;
-    private int panel_height = 400;
-    private static final int TABLE_PANEL_HEIGHT_INT = 100;
     private XYChart chart;
     private JPanel parent;
 
     public XYChartComponent(T tableModel, Class<? extends XYChart> cl) {
         this.tableModel = tableModel;
-        chartFxPanel = new JFXPanel();
-        this.cl = cl;
-    }
-
-    public XYChartComponent(T tableModel, Class<? extends XYChart> cl, int panel_width, int panel_height) {
-        this.tableModel = tableModel;
-        this.panel_height = panel_height;
-        this.panel_width = panel_width;
         chartFxPanel = new JFXPanel();
         this.cl = cl;
     }
@@ -97,7 +85,6 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
     }
 
     private void createChart(Axis xAxis, Axis yAxis) {
-        chartFxPanel.setPreferredSize(new Dimension(panel_width, panel_height));
         Constructor<?>[] constructors = cl.getConstructors();
         for (Constructor<?> constructor : constructors) {
             if (constructor.getParameterCount() == 3) {

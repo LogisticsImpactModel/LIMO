@@ -19,21 +19,11 @@ public class PieChartComponent<T extends AbstractLimoTableModel> {
 
     private final T tableModel;
     private final JFXPanel chartFxPanel;
-    private int panel_width = 675;
-    private int panel_height = 400;
-    private static final int TABLE_PANEL_HEIGHT_INT = 100;
     private PieChart chart;
     private JPanel parent;
 
     public PieChartComponent(T tableModel) {
         this.tableModel = tableModel;
-        chartFxPanel = new JFXPanel();
-    }
-
-    public PieChartComponent(T tableModel, int panel_width, int panel_height) {
-        this.tableModel = tableModel;
-        this.panel_height = panel_height;
-        this.panel_width = panel_width;
         chartFxPanel = new JFXPanel();
     }
 
@@ -54,7 +44,6 @@ public class PieChartComponent<T extends AbstractLimoTableModel> {
     }
 
     private void createChart() {
-        //chartFxPanel.setPreferredSize(new Dimension(panel_width, panel_height));
         chart = new PieChart(tableModel.getPieChartData());
         chartFxPanel.setScene(new Scene(chart));
     }
