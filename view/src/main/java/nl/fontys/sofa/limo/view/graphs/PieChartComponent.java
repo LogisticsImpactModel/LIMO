@@ -38,18 +38,15 @@ public class PieChartComponent<T extends AbstractLimoTableModel> {
     }
 
     public void init(JPanel parent, Object constrain) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                createChart();
-            }
+        Platform.runLater(() -> {
+            createChart();
         });
         parent.add(chartFxPanel, constrain);
         this.parent = parent;
     }
 
     public void updateData() {
-       chart.setData(tableModel.getPieChartData());
+        chart.setData(tableModel.getPieChartData());
     }
 
     public void remove() {
