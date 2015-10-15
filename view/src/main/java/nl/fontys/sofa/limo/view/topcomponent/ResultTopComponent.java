@@ -15,6 +15,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -124,7 +125,7 @@ public final class ResultTopComponent extends TopComponent {
         List<DataEntry> leadTimes = new ArrayList<>();
         List<DataEntry> extraCosts = new ArrayList<>();
         List<DataEntry> delay = new ArrayList<>();
-        List<String> name = new ArrayList<>();
+        final List<String> name = new ArrayList<>();
 
         for (SimulationResult result : results) {
             cost.add(result.getTotalCosts());
@@ -153,8 +154,50 @@ public final class ResultTopComponent extends TopComponent {
         totalMap.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         totalMap.put(DataEntryTableModel.DELAYS_ID, delay);
         DataEntryTableModel detm = new DataEntryTableModel(name, totalMap);
-        totalsTable = new JTable(detm);
-        return new JScrollPane(totalsTable);
+
+        final JPanel panel = new JPanel(new BorderLayout());
+
+        totalsTable = new LimoTable(detm);
+        JScrollPane totalJScrollPane = new JScrollPane(totalsTable);
+        panel.add(totalJScrollPane, BorderLayout.SOUTH);
+        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class, 300, 300);
+        detm.setOnlyOneEnabled(false);
+        detm.addTableModelListener(new TableModelListener() {
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        chart.updateData();
+                    }
+                });
+            }
+        });
+        Platform.setImplicitExit(false);
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                CategoryAxis xAxis = new CategoryAxis();
+                ArrayList<String> names = new ArrayList<>();
+                for( String n : name){
+                    names.add(n);
+                }
+
+                xAxis.setCategories(FXCollections.<String>observableArrayList(names));
+                xAxis.setLabel("Categories");
+
+                NumberAxis yAxis = new NumberAxis();
+                yAxis.setTickUnit(50);
+                yAxis.setLabel("");
+                chart.init(panel, BorderLayout.CENTER, xAxis, yAxis);
+            }
+        });
+        return new JScrollPane(panel);
+
     }
 
     private DataEntry getDifference(DataEntry one, DataEntry two) {
@@ -296,7 +339,7 @@ public final class ResultTopComponent extends TopComponent {
 
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
         panel.add(catJScrollPane, BorderLayout.SOUTH);
-        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, BarChart.class, 300, 300);
+        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, LineChart.class, 300, 300);
         detm.addTableModelListener(new TableModelListener() {
 
             @Override
@@ -305,7 +348,7 @@ public final class ResultTopComponent extends TopComponent {
 
                     @Override
                     public void run() {
-                        chart.update();
+                        chart.updateData();
                     }
                 });
             }

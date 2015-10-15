@@ -55,7 +55,7 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
         this.cl = cl;
     }
 
-    public void update() {
+    public void updateData() {
         chart.setData(tableModel.getXYChartData(cl));
         animateChart();
     }
