@@ -8,7 +8,6 @@ package nl.fontys.sofa.limo.view.graphs;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import javafx.scene.chart.Chart;
 import javafx.scene.chart.PieChart;
 import javax.swing.JPanel;
 

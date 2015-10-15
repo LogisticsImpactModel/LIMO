@@ -68,7 +68,7 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         if (isCellEditable(rowIndex, columnIndex) && rowIndex == 0) {
-            if ((Boolean) aValue == true || onlyOneEnabled) {
+            if ((Boolean) aValue == true && onlyOneEnabled) {
                 for (int i = 0; i < enabled.size(); i++) {
                     enabled.set(i, Boolean.FALSE);
                 }
@@ -175,19 +175,25 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     @Override
     protected ObservableList<XYChart.Series> getBarChartData() {
         ObservableList<XYChart.Series> bcData = FXCollections.<BarChart.Series>observableArrayList();
+        List<Integer> activeIndexes = new ArrayList<>();
+        for (int i = 1; i < enabled.size(); i++) {
+            if (enabled.get(i) == true) {
+                activeIndexes.add(i);
+            }
+        }
 
-        for (int i = 1; i < getColumnCount(); i++) {
+        for (int i = 0; i < activeIndexes.size(); i++) {
             XYChart.Series serie = new XYChart.Series();
             ObservableList<XYChart.Data> dataSet = FXCollections.<BarChart.Data>observableArrayList();
             for (int j = 1; j < getRowCount(); j++) {
                 XYChart.Data data = new XYChart.Data();
                 data.setXValue(names.get(j - 1));
-                data.setYValue(getValueAt(j, i));
+                data.setYValue(getValueAt(j, activeIndexes.get(i)));
                 dataSet.add(data);
 
             }
             serie.setData(dataSet);
-            serie.setName(getColumnName(i));
+            serie.setName(getColumnName(activeIndexes.get(i)));
             bcData.add(serie);
         }
 
@@ -197,15 +203,21 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     @Override
     protected ObservableList<XYChart.Series> getLineChartData() {
         ObservableList<XYChart.Series> bcData = FXCollections.<BarChart.Series>observableArrayList();
+        List<Integer> activeIndexes = new ArrayList<>();
+        for (int i = 1; i < enabled.size(); i++) {
+            if (enabled.get(i) == true) {
+                activeIndexes.add(i);
+            }
+        }
 
-        for (int i = 1; i < getColumnCount(); i++) {
+        for (int i = 0; i < activeIndexes.size(); i++) {
             XYChart.Series serie = new XYChart.Series();
             ObservableList<XYChart.Data> dataSet = FXCollections.<BarChart.Data>observableArrayList();
             Double val = 0.0;
             for (int j = 1; j < getRowCount(); j++) {
                 XYChart.Data data = new XYChart.Data();
                 data.setXValue(names.get(j - 1));
-                Object valTemp = getValueAt(j, i);
+                Object valTemp = getValueAt(j, activeIndexes.get(i));
                 if (valTemp instanceof Number) {
                     Number n = (Number) valTemp;
                     val += n.doubleValue();
@@ -217,7 +229,7 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
                 dataSet.add(data);
             }
             serie.setData(dataSet);
-            serie.setName(getColumnName(i));
+            serie.setName(getColumnName(activeIndexes.get(i)));
             bcData.add(serie);
         }
 
@@ -228,7 +240,6 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     protected ObservableList<XYChart.Series> getAreaChartData() {
         return getLineChartData();
     }
-    
 
     @Override
     public ObservableList<PieChart.Data> getPieChartData() {

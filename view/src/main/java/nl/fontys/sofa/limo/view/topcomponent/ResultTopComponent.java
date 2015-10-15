@@ -240,7 +240,7 @@ public final class ResultTopComponent extends TopComponent {
 
                     @Override
                     public void run() {
-                        
+
                         chart.updateData();
                     }
                 });
@@ -290,16 +290,29 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         DataEntryTableModel detm = new DataEntryTableModel(names, map);
+        detm.setOnlyOneEnabled(false);
         nodesTable = new JTable(detm);
 
         final JPanel panel = new JPanel(new BorderLayout());
 
-        categoryTable = new JTable(detm);
+        categoryTable = new LimoTable(detm);
 
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
         panel.add(catJScrollPane, BorderLayout.SOUTH);
-        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, LineChart.class, 300, 300);
+        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, BarChart.class, 300, 300);
+        detm.addTableModelListener(new TableModelListener() {
 
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        chart.update();
+                    }
+                });
+            }
+        });
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
 

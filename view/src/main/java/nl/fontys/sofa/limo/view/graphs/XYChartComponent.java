@@ -9,13 +9,22 @@ import java.awt.Component;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.Axis;
-import javafx.scene.chart.Chart;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.util.Duration;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -33,7 +42,7 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
     private int panel_width = 675;
     private int panel_height = 400;
     private static final int TABLE_PANEL_HEIGHT_INT = 100;
-    private Chart chart;
+    private XYChart chart;
     private JPanel parent;
 
     public XYChartComponent(T tableModel, Class<? extends XYChart> cl) {
@@ -50,6 +59,11 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
         this.cl = cl;
     }
 
+    public void update() {
+        chart.setData(tableModel.getXYChartData(cl));
+        animateChart();
+    }
+
     public void init(JPanel parent, Object constrain, final Axis xAxis, final Axis yAxis) {
         Platform.runLater(new Runnable() {
             @Override
@@ -64,6 +78,30 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
     public void remove() {
         parent.remove(chartFxPanel);
     }
+    Timeline tl = new Timeline();
+
+    private void animateChart() {
+
+        chart.setData(null);
+        chart.setAnimated(false);
+        final ObservableList<XYChart.Series> tempSet = FXCollections.<XYChart.Series>observableArrayList();
+        int frameTime = 1000 / (tableModel.getXYChartData(cl).size());
+        tl.stop();
+        tl.getKeyFrames().clear();
+        tl.getKeyFrames().add(
+                new KeyFrame(Duration.millis(frameTime),
+                        new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                tempSet.add(tableModel.getXYChartData(cl).get(tempSet.size()));
+                                chart.setData(tempSet);
+                            }
+                        }
+                ));
+        tl.setCycleCount(tableModel.getXYChartData(cl).size());
+        tl.play();
+
+    }
 
     private void createChart(Axis xAxis, Axis yAxis) {
         //chartFxPanel.setPreferredSize(new Dimension(panel_width, panel_height));
@@ -76,7 +114,8 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
                     continue;
                 } else {
                     try {
-                        chart = (Chart) constructor.newInstance(xAxis, yAxis, tableModel.getXYChartData(cl));
+                        chart = (XYChart) constructor.newInstance(xAxis, yAxis, tableModel.getXYChartData(cl));
+                        animateChart();
                         break;
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                         Exceptions.printStackTrace(ex);
@@ -84,7 +123,8 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
                 }
             }
         }
-        chartFxPanel.setScene(new Scene(chart));
+        Scene scene = new Scene(chart);;
+        chartFxPanel.setScene(scene);
     }
 
     private static class DecimalFormatRenderer extends DefaultTableCellRenderer {
