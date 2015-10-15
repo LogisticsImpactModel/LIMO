@@ -16,7 +16,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -64,24 +63,18 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
     }
 
     public void init(final JPanel parent, final Object constrain, final Axis xAxis, final Axis yAxis) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                createChart(xAxis, yAxis);
-            }
-        });
-        this.parent = parent;
-        SwingUtilities.invokeLater(new Runnable() {
+        Platform.runLater(() -> createChart(xAxis, yAxis));
 
-            @Override
-            public void run() {
-                parent.add(chartFxPanel, constrain);
-            }
+        this.parent = parent;
+        SwingUtilities.invokeLater(() -> {
+            parent.add(chartFxPanel, constrain);
         });
     }
 
     public void remove() {
-        parent.remove(chartFxPanel);
+        SwingUtilities.invokeLater(() -> {
+            parent.remove(chartFxPanel);
+        });
     }
     Timeline tl = new Timeline();
 
@@ -94,15 +87,10 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
         tl.stop();
         tl.getKeyFrames().clear();
         tl.getKeyFrames().add(
-                new KeyFrame(Duration.millis(frameTime),
-                        new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                                tempSet.add(tableModel.getXYChartData(cl).get(tempSet.size()));
-                                chart.setData(tempSet);
-                            }
-                        }
-                ));
+                new KeyFrame(Duration.millis(frameTime), (ActionEvent actionEvent) -> {
+                    tempSet.add(tableModel.getXYChartData(cl).get(tempSet.size()));
+                    chart.setData(tempSet);
+                }));
         tl.setCycleCount(tableModel.getXYChartData(cl).size());
         tl.play();
 
