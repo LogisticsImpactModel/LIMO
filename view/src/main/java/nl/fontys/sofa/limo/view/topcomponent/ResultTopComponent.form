@@ -42,7 +42,7 @@
     </Container>
     <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
       <Properties>
-        <Property name="tabLayoutPolicy" type="int" value="1"/>
+        <Property name="debugGraphicsOptions" type="int" value="-1"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[500, 500]"/>
         </Property>

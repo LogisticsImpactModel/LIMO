@@ -6,6 +6,7 @@
 package nl.fontys.sofa.limo.view.graphs;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
@@ -15,6 +16,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -23,6 +25,7 @@ import javafx.scene.chart.XYChart;
 import javafx.util.Duration;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import org.openide.util.Exceptions;
 
@@ -60,15 +63,21 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
         animateChart();
     }
 
-    public void init(JPanel parent, Object constrain, final Axis xAxis, final Axis yAxis) {
+    public void init(final JPanel parent, final Object constrain, final Axis xAxis, final Axis yAxis) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 createChart(xAxis, yAxis);
             }
         });
-        parent.add(chartFxPanel, constrain);
         this.parent = parent;
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                parent.add(chartFxPanel, constrain);
+            }
+        });
     }
 
     public void remove() {
@@ -100,7 +109,7 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
     }
 
     private void createChart(Axis xAxis, Axis yAxis) {
-        //chartFxPanel.setPreferredSize(new Dimension(panel_width, panel_height));
+        chartFxPanel.setPreferredSize(new Dimension(panel_width, panel_height));
         Constructor<?>[] constructors = cl.getConstructors();
         for (Constructor<?> constructor : constructors) {
             if (constructor.getParameterCount() == 3) {

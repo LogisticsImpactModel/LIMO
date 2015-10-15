@@ -1,6 +1,9 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -17,6 +20,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -97,6 +101,8 @@ public final class ResultTopComponent extends TopComponent {
             jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("CATEGORY")), createCategoryPane());
             jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("NODE")), createNodePane());
         }
+        jTabbedPane1.setBackground(Color.GREEN);
+
         jButton1.addActionListener(new ActionListener() {
 
             @Override
@@ -119,7 +125,7 @@ public final class ResultTopComponent extends TopComponent {
         });
     }
 
-    private JScrollPane createTotalsPane() {
+    private Component createTotalsPane() {
         Map<String, List<DataEntry>> totalMap = new HashMap<>();
         List<DataEntry> cost = new ArrayList<>();
         List<DataEntry> leadTimes = new ArrayList<>();
@@ -155,11 +161,12 @@ public final class ResultTopComponent extends TopComponent {
         totalMap.put(DataEntryTableModel.DELAYS_ID, delay);
         DataEntryTableModel detm = new DataEntryTableModel(name, totalMap);
 
-        final JPanel panel = new JPanel(new BorderLayout());
+        final JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         totalsTable = new LimoTable(detm);
         JScrollPane totalJScrollPane = new JScrollPane(totalsTable);
-        panel.add(totalJScrollPane, BorderLayout.SOUTH);
+        totalJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
         final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class, 300, 300);
         detm.setOnlyOneEnabled(false);
         detm.addTableModelListener(new TableModelListener() {
@@ -176,6 +183,10 @@ public final class ResultTopComponent extends TopComponent {
                 });
             }
         });
+        final JPanel chartPanel = new JPanel(new BorderLayout());
+        panel.add(chartPanel);
+        panel.add(totalJScrollPane);
+        chartPanel.setPreferredSize(new Dimension(500, 700));
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
 
@@ -183,7 +194,7 @@ public final class ResultTopComponent extends TopComponent {
             public void run() {
                 CategoryAxis xAxis = new CategoryAxis();
                 ArrayList<String> names = new ArrayList<>();
-                for( String n : name){
+                for (String n : name) {
                     names.add(n);
                 }
 
@@ -193,10 +204,10 @@ public final class ResultTopComponent extends TopComponent {
                 NumberAxis yAxis = new NumberAxis();
                 yAxis.setTickUnit(50);
                 yAxis.setLabel("");
-                chart.init(panel, BorderLayout.CENTER, xAxis, yAxis);
+                chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
             }
         });
-        return new JScrollPane(panel);
+        return panel;
 
     }
 
@@ -229,7 +240,7 @@ public final class ResultTopComponent extends TopComponent {
         return diff * 100 / value1;
     }
 
-    private JScrollPane createCategoryPane() {
+    private Component createCategoryPane() {
         SimulationResult result = results.get(0);
         Set<String> categorySet = new HashSet<>();
         categorySet.addAll(result.getCostsByCategory().keySet());
@@ -264,12 +275,12 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         final DataEntryTableModel detm = new DataEntryTableModel(categories, map);
-        final JPanel panel = new JPanel(new BorderLayout());
+        final JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         categoryTable = new LimoTable(detm);
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
-        panel.add(catJScrollPane, BorderLayout.SOUTH);
-        //  final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class, 300, 300);
+        final JPanel chartPanel = new JPanel(new BorderLayout());
         final PieChartComponent<DataEntryTableModel> chart = new PieChartComponent<>(detm, 300, 300);
         detm.setOnlyOneEnabled(true);
         detm.addTableModelListener(new TableModelListener() {
@@ -291,13 +302,18 @@ public final class ResultTopComponent extends TopComponent {
 
             @Override
             public void run() {
-                chart.init(panel, BorderLayout.CENTER);
+                chart.init(chartPanel, BorderLayout.CENTER);
             }
         });
-        return new JScrollPane(panel);
+        panel.add(chartPanel);
+        panel.add(catJScrollPane);
+        catJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
+        chartPanel.setPreferredSize(new Dimension(500, 700));
+
+        return panel;
     }
 
-    private JScrollPane createNodePane() {
+    private Component createNodePane() {
         List<String> names = new ArrayList<>();
         List<DataEntry> costs = new ArrayList<>();
         List<DataEntry> leadTimes = new ArrayList<>();
@@ -333,12 +349,11 @@ public final class ResultTopComponent extends TopComponent {
         detm.setOnlyOneEnabled(false);
         nodesTable = new JTable(detm);
 
-        final JPanel panel = new JPanel(new BorderLayout());
-
+        final JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         categoryTable = new LimoTable(detm);
-
+        final JPanel chartPanel = new JPanel(new BorderLayout());
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
-        panel.add(catJScrollPane, BorderLayout.SOUTH);
         final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, LineChart.class, 300, 300);
         detm.addTableModelListener(new TableModelListener() {
 
@@ -373,10 +388,15 @@ public final class ResultTopComponent extends TopComponent {
                 NumberAxis yAxis = new NumberAxis();
                 yAxis.setTickUnit(50);
                 yAxis.setLabel("");
-                chart.init(panel, BorderLayout.CENTER, xAxis, yAxis);
+                chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
             }
         });
-        return new JScrollPane(panel);
+        panel.add(chartPanel);
+        panel.add(catJScrollPane);
+        catJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
+        chartPanel.setPreferredSize(new Dimension(500, 700));
+
+        return panel;
     }
 
     /**
@@ -403,7 +423,7 @@ public final class ResultTopComponent extends TopComponent {
 
         add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
-        jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        jTabbedPane1.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(500, 500));
         jTabbedPane1.setRequestFocusEnabled(false);
         add(jTabbedPane1, java.awt.BorderLayout.CENTER);
