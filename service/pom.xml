@@ -4,7 +4,7 @@
     <parent>
         <groupId>nl.fontys.sofa.limo</groupId>
         <artifactId>LIMO-parent</artifactId>
-        <version>1.6-RC</version>
+        <version>1.6.1</version>
     </parent>
     <name>LIMO-service</name>
     <artifactId>LIMO-service</artifactId>
