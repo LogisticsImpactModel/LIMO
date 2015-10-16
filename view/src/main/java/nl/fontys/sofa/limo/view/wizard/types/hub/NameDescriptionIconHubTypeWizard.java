@@ -4,12 +4,15 @@ import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.validation.BeanValidator;
+import nl.fontys.sofa.limo.validation.ValidationException;
 import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import nl.fontys.sofa.limo.view.util.BaseEntityUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
+import org.openide.util.Exceptions;
 import org.openide.util.HelpCtx;
 
 /**
@@ -23,6 +26,7 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
     private boolean update;
     private HubType hubType;
     private HubType originalHubType;
+    private BeanValidator validator = BeanValidator.getInstance();
 
     @Override
     public NameDescriptionIconPanel getComponent() {
@@ -80,16 +84,19 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
     //Validate
     @Override
     public void validate() throws WizardValidationException {
+        HubType type = new HubType(this.hubType);
+        type.setName(component.getNameInput());
         ResourceBundle bundle = ResourceBundle.getBundle("nl/fontys/sofa/limo/view/Bundle");
-        if (component.getNameInput().isEmpty()) {
-            throw new WizardValidationException(null, LIMOResourceBundle.getString("VALUE_NOT_SET", bundle.getString("NAME")), null);
-        }
-        
-        if (!update || !originalHubType.getName().equals(getComponent().getNameInput())) {//If the hub name did not change (while editing) the name should not be uniques
-            if (BaseEntityUtil.containsBaseEntityWithName(BaseEntityUtil.getAllEntities(HubTypeService.class), component.getNameInput())) { //Check if name is unique
-                getComponent().update(BaseEntityUtil.getUniqueName(HubTypeService.class, getComponent().getNameInput())); //Update hub name
-                throw new WizardValidationException(null, "Hub type name is not unique, a new name is generated.", null);
+        try {
+            validator.validate(type);
+            if (!update || !originalHubType.getName().equals(getComponent().getNameInput())) {//If the hub name did not change (while editing) the name should not be uniques
+                if (BaseEntityUtil.containsBaseEntityWithName(BaseEntityUtil.getAllEntities(HubTypeService.class), component.getNameInput())) { //Check if name is unique
+                    getComponent().update(BaseEntityUtil.getUniqueName(HubTypeService.class, getComponent().getNameInput())); //Update hub name
+                    throw new WizardValidationException(null, "Hub type name is not unique, a new name is generated.", null);
+                }
             }
+        } catch (ValidationException ex) {
+            throw new WizardValidationException(null, LIMOResourceBundle.getString("VALUE_NOT_SET", bundle.getString("NAME")), null);
         }
     }
 

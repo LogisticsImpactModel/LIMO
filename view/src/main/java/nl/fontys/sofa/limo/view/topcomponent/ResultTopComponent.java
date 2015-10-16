@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.externaltrader.CSVExporter;
@@ -96,24 +98,61 @@ public final class ResultTopComponent extends TopComponent {
             jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("CATEGORY")), createCategoryPane());
             jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("NODE")), createNodePane());
         }
-        jTabbedPane1.setBackground(Color.GREEN);
 
         jButton1.addActionListener((ActionEvent e) -> {
-            JFileChooser fc = new JFileChooser();
+
+            JFileChooser fc = new JFileChooser() {
+                @Override
+                public void approveSelection() {
+                    File f = getSelectedFile();
+                    File extended = new File(f.getAbsolutePath().concat(".csv"));
+
+                    if ((f.exists() || extended.exists()) && getDialogType() == SAVE_DIALOG) {
+                        int result = JOptionPane.showConfirmDialog(this, LIMOResourceBundle.getString("FILENAME_IN_USE"), LIMOResourceBundle.getString("EXISTING_FILE"), JOptionPane.YES_NO_CANCEL_OPTION);
+                        switch (result) {
+                            case JOptionPane.YES_OPTION:
+                                super.approveSelection();
+                                f.delete();
+                                return;
+                            case JOptionPane.NO_OPTION:
+                                return;
+                            case JOptionPane.CLOSED_OPTION:
+                                return;
+                            case JOptionPane.CANCEL_OPTION:
+                                cancelSelection();
+                                return;
+                        }
+                    }
+                    super.approveSelection();
+                }
+            };
+
             String currentPath = fc.getFileSystemView().getDefaultDirectory().toString();
             fc.setCurrentDirectory(new File(currentPath));
             fc.setMultiSelectionEnabled(false);
-            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            if (fc.showOpenDialog(jTabbedPane1) == JFileChooser.APPROVE_OPTION) {
-                String path = fc.getSelectedFile().getPath();
-                String filename = (String) JOptionPane.showInputDialog(jTabbedPane1, LIMOResourceBundle.getString("CHOOSE_FILE"), LIMOResourceBundle.getString("CHOOSE_FILE"), JOptionPane.PLAIN_MESSAGE);
-                if (filename != null) {
-                    if (!filename.isEmpty()) {
-                        CSVExporter.exportTables(path + "\\" + filename + ".csv", new JTable[]{totalsTable, categoryTable, nodesTable}, new String[]{"Totals", "By Categories", "By Nodes"});
-                    }
+            fc.setDialogTitle(LIMOResourceBundle.getString("FILE_SAVE_LOCATION"));
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(LIMOResourceBundle.getString("SIMULATION_RESULTS"), "csv");
+            fc.setFileFilter(filter);
+            int selection = fc.showSaveDialog(fc);
+
+            if (selection == JFileChooser.APPROVE_OPTION) {
+                File saveLocation = fc.getSelectedFile();
+                String absolute = saveLocation.getAbsolutePath();
+
+                String ext = "";
+                int i = absolute.lastIndexOf('.');
+                if (i > 0) {
+                    ext = absolute.substring(i);
                 }
+
+                if (!ext.equals(".csv")) {
+                    absolute = absolute.concat(".csv");
+                }
+
+                CSVExporter.exportTables(absolute, new JTable[]{totalsTable, categoryTable, nodesTable}, new String[]{"Totals", "By Categories", "By Nodes"});
             }
         });
+
     }
 
     private Component createTotalsPane() {
@@ -166,33 +205,44 @@ public final class ResultTopComponent extends TopComponent {
         totalsTable = new LimoTable(detm);
         JScrollPane totalJScrollPane = new JScrollPane(totalsTable);
         totalJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
-        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class);
-        detm.setOnlyOneEnabled(false);
-        detm.addTableModelListener((TableModelEvent e) -> {
-            Platform.runLater(() -> {
-                chart.updateData();
-            });
-        });
+        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class
+        );
+        detm.setOnlyOneEnabled(
+                false);
+        detm.addTableModelListener(
+                (TableModelEvent e) -> {
+                    Platform.runLater(() -> {
+                        chart.updateData();
+                    });
+                }
+        );
         final JPanel chartPanel = new JPanel(new BorderLayout());
+
         panel.add(chartPanel);
+
         panel.add(totalJScrollPane);
-        chartPanel.setPreferredSize(new Dimension(500, 700));
-        Platform.setImplicitExit(false);
-        Platform.runLater(() -> {
-            CategoryAxis xAxis = new CategoryAxis();
-            ArrayList<String> names = new ArrayList<>();
-            name.stream().forEach((n) -> {
-                names.add(n);
-            });
 
-            xAxis.setCategories(FXCollections.<String>observableArrayList(names));
-            xAxis.setLabel("Categories");
+        chartPanel.setPreferredSize(
+                new Dimension(500, 700));
+        Platform.setImplicitExit(
+                false);
+        Platform.runLater(
+                () -> {
+                    CategoryAxis xAxis = new CategoryAxis();
+                    ArrayList<String> names = new ArrayList<>();
+                    name.stream().forEach((n) -> {
+                        names.add(n);
+                    });
 
-            NumberAxis yAxis = new NumberAxis();
-            yAxis.setTickUnit(50);
-            yAxis.setLabel("");
-            chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
-        });
+                    xAxis.setCategories(FXCollections.<String>observableArrayList(names));
+                    xAxis.setLabel("Categories");
+
+                    NumberAxis yAxis = new NumberAxis();
+                    yAxis.setTickUnit(50);
+                    yAxis.setLabel("");
+                    chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
+                }
+        );
         return panel;
 
     }
@@ -326,33 +376,43 @@ public final class ResultTopComponent extends TopComponent {
         categoryTable = new LimoTable(detm);
         final JPanel chartPanel = new JPanel(new BorderLayout());
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
-        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, LineChart.class);
-        detm.addTableModelListener((TableModelEvent e) -> {
-            Platform.runLater(() -> {
-                chart.updateData();
-            });
-        });
-        Platform.setImplicitExit(false);
-        Platform.runLater(() -> {
-            CategoryAxis xAxis = new CategoryAxis();
-            SupplyChain chain = results.get(0).getSupplyChain();
-            ArrayList<String> names1 = new ArrayList<>();
-            Node node = chain.getStartHub();
-            while (node != null) {
-                names1.add(node.getName());
-                node = node.getNext();
-            }
-            xAxis.setCategories(FXCollections.<String>observableArrayList(names1));
-            xAxis.setLabel("Categories");
-            NumberAxis yAxis = new NumberAxis();
-            yAxis.setTickUnit(50);
-            yAxis.setLabel("");
-            chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
-        });
+        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, LineChart.class
+        );
+        detm.addTableModelListener(
+                (TableModelEvent e) -> {
+                    Platform.runLater(() -> {
+                        chart.updateData();
+                    });
+                }
+        );
+        Platform.setImplicitExit(
+                false);
+        Platform.runLater(
+                () -> {
+                    CategoryAxis xAxis = new CategoryAxis();
+                    SupplyChain chain = results.get(0).getSupplyChain();
+                    ArrayList<String> names1 = new ArrayList<>();
+                    Node node = chain.getStartHub();
+                    while (node != null) {
+                        names1.add(node.getName());
+                        node = node.getNext();
+                    }
+                    xAxis.setCategories(FXCollections.<String>observableArrayList(names1));
+                    xAxis.setLabel("Categories");
+                    NumberAxis yAxis = new NumberAxis();
+                    yAxis.setTickUnit(50);
+                    yAxis.setLabel("");
+                    chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
+                }
+        );
         panel.add(chartPanel);
+
         panel.add(catJScrollPane);
-        catJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
-        chartPanel.setPreferredSize(new Dimension(500, 700));
+
+        catJScrollPane.setPreferredSize(
+                new Dimension(Integer.MAX_VALUE, 150));
+        chartPanel.setPreferredSize(
+                new Dimension(500, 700));
 
         return panel;
     }

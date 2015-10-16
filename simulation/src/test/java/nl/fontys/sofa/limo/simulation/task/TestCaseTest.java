@@ -121,7 +121,7 @@ public class TestCaseTest extends SupplyChainTester {
 
         Leg leg2 = new Leg();
         leg2.setName("Leg 2");
-        leg2.getProcedures().add(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS));
+        leg2.getProcedures().add(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, new SingleValue(0)));
         leg2.setNext(end);
         start.setNext(leg2);
 
@@ -170,11 +170,11 @@ public class TestCaseTest extends SupplyChainTester {
 
         Hub middleHub = new Hub();
         middleHub.setName("Amsterdam");
-        middleHub.getProcedures().add(new Procedure("customs control", MANDATORY, new SingleValue(100), new RangeValue(3, 4), TimeType.HOURS));
+        middleHub.getProcedures().add(new Procedure("customs control", MANDATORY, new SingleValue(100), new RangeValue(3, 4), TimeType.HOURS, new SingleValue(0)));
 
         Leg leg2 = new Leg();
         leg2.setName("Rotterdam--Amsterdam");
-        leg2.getProcedures().add(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS));
+        leg2.getProcedures().add(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, new SingleValue(0)));
         leg2.setNext(middleHub);
 
         supplyChain.setStartHub(start);
@@ -188,7 +188,7 @@ public class TestCaseTest extends SupplyChainTester {
 
         Leg leg3 = new Leg();
         leg3.setName("Leg 3");
-        leg3.getProcedures().add(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS));
+        leg3.getProcedures().add(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, new SingleValue(0)));
         leg3.setNext(middleHub);
 
         ScheduledLeg scheduledLeg2 = new ScheduledLeg();

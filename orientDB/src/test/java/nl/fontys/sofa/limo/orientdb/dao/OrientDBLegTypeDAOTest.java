@@ -73,8 +73,8 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
         legType2.setName("12345678");
         legType2.setIcon(new Icon());
         List<Procedure> procedures = new ArrayList<>();
-        procedures.add(new Procedure("Costs1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES));
-        procedures.add(new Procedure("Costs2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES));
+        procedures.add(new Procedure("Costs1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES, new SingleValue(0)));
+        procedures.add(new Procedure("Costs2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES, new SingleValue(0)));
         legType2.setProcedures(procedures);
         legType2 = dao.insert(legType2);
         legType = dao.findById(legType2.getId());
@@ -86,7 +86,7 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
         LegType t1 = new LegType();
         LegType t2 = new LegType();
         ArrayList<Procedure> procedures = new ArrayList<>();
-        Procedure p = new Procedure("T", "C", new SingleValue(1), new SingleValue(2), TimeType.MINUTES);
+        Procedure p = new Procedure("T", "C", new SingleValue(1), new SingleValue(2), TimeType.MINUTES, new SingleValue(0));
         procedures.add(p);
         t1.setProcedures(procedures);
         t1 = dao.insert(t1);

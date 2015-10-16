@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.chain;
 
+import java.util.List;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
@@ -23,6 +24,11 @@ public interface ChainBuilder {
      * @param hub the hub to be added.
      */
     void addHub(Hub hub);
+    
+    /**
+     * Returns the hublist.
+     */
+    List<Hub> getHubList();
 
     /**
      * Remove the hub from the chain.

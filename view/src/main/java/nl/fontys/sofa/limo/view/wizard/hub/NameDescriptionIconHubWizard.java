@@ -4,6 +4,9 @@ import java.text.MessageFormat;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.hub.Location;
+import nl.fontys.sofa.limo.validation.BeanValidator;
+import nl.fontys.sofa.limo.validation.ValidationException;
 import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import nl.fontys.sofa.limo.view.util.BaseEntityUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -21,6 +24,7 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Validating
     private NameDescriptionIconPanel component;
     private Hub hub, originalHub;
     private boolean update;
+    private BeanValidator validator = BeanValidator.getInstance();
 
     @Override
     public NameDescriptionIconPanel getComponent() {
@@ -77,12 +81,18 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Validating
     //Validate that name is set.
     @Override
     public void validate() throws WizardValidationException {
-        if (component.getNameInput().isEmpty()) {
+        Hub tmp = new Hub(this.hub);
+        tmp.setDescription(getComponent().getDescriptionInput());
+        tmp.setName(getComponent().getNameInput());
+        tmp.setIcon(getComponent().getIcon());
+        if(tmp.getLocation() == null){tmp.setLocation(new Location());}
+        try {
+            validator.validate(tmp);
+        } catch (ValidationException ex) {
             throw new WizardValidationException(null, MessageFormat.format(LIMOResourceBundle.getString("VALUE_NOT_SET"), LIMOResourceBundle.getString("NAME")), null);
         }
-
         if (!update || !originalHub.getName().equals(getComponent().getNameInput())) {//If the hub name did not change (while editing) the name should not be uniques
-            if (BaseEntityUtil.containsBaseEntityWithName(BaseEntityUtil.getAllEntities(HubService.class), component.getNameInput())) { //Check if name is unique
+            if (BaseEntityUtil.containsBaseEntityWithName(BaseEntityUtil.getAllEntities(HubService.class), getComponent().getNameInput())) { //Check if name is unique
                 getComponent().update(BaseEntityUtil.getUniqueName(HubService.class, getComponent().getNameInput())); //Update hub name
                 throw new WizardValidationException(null, "Hub name is not unique, a new hub name is generated.", null);
             }

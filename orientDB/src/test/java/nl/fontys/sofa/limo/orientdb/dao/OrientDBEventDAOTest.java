@@ -169,9 +169,9 @@ public class OrientDBEventDAOTest extends NbTestCase {
         event.setName(EVENT_NAME);
         event.setProbability(new PoissonDistribution());
         ArrayList<Procedure> procedures = new ArrayList<>();
-        Procedure shipping = new Procedure("Shipping", "Transport", new SingleValue(1000), new SingleValue(9000), TimeType.MINUTES);
+        Procedure shipping = new Procedure("Shipping", "Transport", new SingleValue(1000), new SingleValue(9000), TimeType.MINUTES, new SingleValue(0));
         procedures.add(shipping);
-        Procedure attack = new Procedure("Pirate Attack", "Unforeseeable", new SingleValue(10000), new SingleValue(5000), TimeType.MINUTES);
+        Procedure attack = new Procedure("Pirate Attack", "Unforeseeable", new SingleValue(10000), new SingleValue(5000), TimeType.MINUTES, new SingleValue(0));
         procedures.add(attack);
         event.setProcedures(procedures);
 
@@ -179,7 +179,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
         Event subEvent = new Event();
         subEvent.setName("Repair cannonball damage");
         ArrayList<Procedure> subEventProcedures = new ArrayList<>();
-        Procedure rapairingProcess = new Procedure("Repairing cannonball damage", "Repairing", new RangeValue(5000, 10000), new SingleValue(7500), TimeType.MINUTES);
+        Procedure rapairingProcess = new Procedure("Repairing cannonball damage", "Repairing", new RangeValue(5000, 10000), new SingleValue(7500), TimeType.MINUTES, new SingleValue(0));
         subEventProcedures.add(rapairingProcess);
         subEvent.setProcedures(subEventProcedures);
         event.getEvents().add(subEvent);

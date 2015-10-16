@@ -2,6 +2,8 @@ package nl.fontys.sofa.limo.view.wizard.event;
 
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.validation.BeanValidator;
+import nl.fontys.sofa.limo.validation.ValidationException;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
@@ -17,6 +19,7 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
 
     private NameDescriptionProbabilityPanel component;
     private Event event;
+    private final BeanValidator validator = BeanValidator.getInstance();
 
     @Override
     public NameDescriptionProbabilityPanel getComponent() {
@@ -69,7 +72,11 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
 
     @Override
     public void validate() throws WizardValidationException {
-        if (component.getNameInput().isEmpty()) {
+        Event event = new Event(this.event);
+        event.setName(component.getNameInput());
+        try {
+            validator.validate(event);
+        } catch (ValidationException ex) {
             throw new WizardValidationException(null, LIMOResourceBundle.getString("VALUE_NOT_SET", LIMOResourceBundle.getString("NAME")), null);
         }
     }

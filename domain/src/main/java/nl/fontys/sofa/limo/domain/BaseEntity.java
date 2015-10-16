@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.UUID;
 import javax.persistence.Id;
+import nl.fontys.sofa.limo.validation.annotations.Size;
 
 /**
  * This class is the superclass of all entities that will be saved to their own
@@ -15,6 +16,7 @@ public class BaseEntity implements Serializable {
 
     @Id
     @Expose protected String id;
+    @Size(min=1)
     @Expose protected String name;
     @Expose protected long lastUpdate;
     @Expose protected String uniqueIdentifier;

@@ -31,7 +31,7 @@
                 <version>1.0-m4.3</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <pushFeatures>true</pushFeatures>  
+                    <pushFeatures>true</pushFeatures>
                     <pushReleases>true</pushReleases>
                     <pushHotfixes>true</pushHotfixes>
                     <noDeploy>true</noDeploy>
@@ -56,7 +56,7 @@
                 </configuration>
             </plugin>
         </plugins>
-    
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -72,10 +72,10 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.5.1</version>
+                    <version>3.1</version>
                     <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -111,8 +111,8 @@
             </plugins>
         </pluginManagement>
     </build>
-    
-    
+
+
     <profiles>
         <profile>
             <id>all</id>
@@ -147,8 +147,7 @@
             </modules>
         </profile>
     </profiles>
-    
-    
-
+    <modules>
+        <module>LIMO-utils</module>
+    </modules>
 </project>
-
