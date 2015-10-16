@@ -116,6 +116,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             p.setTime((Value) value.get(2));
             p.setTimeType((TimeType) value.get(3));
             p.setCost((Value) value.get(4));
+            p.setCotwo((Value) value.get(5));
             procedures.add(p);
         }
         return procedures;
@@ -157,7 +158,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      * Handles the editing of the specified row.
      */
     protected void editProcedure() {
-        if (table.getSelectedColumn() == 2 || table.getSelectedColumn() == 4) {
+        if (table.getSelectedColumn() == 2 || table.getSelectedColumn() == 4 || table.getSelectedColumn() == 5) {
             changedValue = (Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
             Object valueAt = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
             EditValueDialog editValueDialog = new EditValueDialog((Value) valueAt, new AddProcedureDialog.EditValueDialogListener() {
@@ -209,16 +210,18 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
                 procedure.add(p.getTime());
                 procedure.add(p.getTimeType());
                 procedure.add(p.getCost());
+                procedure.add(p.getCotwo());
                 valueList.add(procedure);
             }
         }
-        model = new DragNDropTableModel(new String[]{LIMOResourceBundle.getString("PROCEDURE"), LIMOResourceBundle.getString("CATEGORY"), LIMOResourceBundle.getString("TIME_COST"), LIMOResourceBundle.getString("TIME_TYPE"), LIMOResourceBundle.getString("MONEY_COST")},
-                valueList, new Class[]{String.class, String.class, Value.class, TimeType.class, Value.class});
+        model = new DragNDropTableModel(new String[]{LIMOResourceBundle.getString("PROCEDURE"), LIMOResourceBundle.getString("CATEGORY"), LIMOResourceBundle.getString("TIME_COST"), LIMOResourceBundle.getString("TIME_TYPE"), LIMOResourceBundle.getString("MONEY_COST"), LIMOResourceBundle.getString("CO2")},
+                valueList, new Class[]{String.class, String.class, Value.class, TimeType.class, Value.class, Value.class});
         table.setModel(model);
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
         table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
         table.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+        table.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
         DefaultTableCellRenderer middleRenderer = new DefaultTableCellRenderer();
         middleRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         table.getColumnModel().getColumn(3).setCellRenderer(middleRenderer);

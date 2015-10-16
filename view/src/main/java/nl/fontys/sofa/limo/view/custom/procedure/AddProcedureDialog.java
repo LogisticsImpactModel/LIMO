@@ -31,10 +31,10 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
  */
 public class AddProcedureDialog extends JDialog implements ActionListener {
 
-    private JButton saveButton, cancelButton, addTimeButton, addCostButton;
-    private JTextField nameTextField, costTextField, timeTextField;
+    private JButton saveButton, cancelButton, addTimeButton, addCostButton, addCotwoButton;
+    private JTextField nameTextField, costTextField, timeTextField, cotwoTextField;
     private JComboBox timeTypeCombobox, categoryCombobox;
-    private Value timeValue, costValue;
+    private Value timeValue, costValue, cotwoValue;
     private Procedure newProcedure;
     private final DragNDropTable table;
     private final CellConstraints cc;
@@ -55,6 +55,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         saveButton.addActionListener(this);
         addCostButton.addActionListener(this);
         addTimeButton.addActionListener(this);
+        addCotwoButton.addActionListener(this);
         //DIALOG OPTIONS
         this.setSize(250, 300);
         this.setModal(true);
@@ -86,6 +87,10 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         costTextField = new JTextField(costValue.toString());
         costTextField.setEditable(false);
         addCostButton = new JButton("...");
+        cotwoValue = new SingleValue(0.0);
+        cotwoTextField = new JTextField(costValue.toString());
+        cotwoTextField.setEditable(false);
+        addCotwoButton = new JButton("...");
         saveButton = new JButton(LIMOResourceBundle.getString("SAVE"));
         cancelButton = new JButton(LIMOResourceBundle.getString("CANCEL"));
     }
@@ -106,6 +111,9 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         this.add(new JLabel(LIMOResourceBundle.getString("MONEY_COST")), cc.xy(2, 10));
         this.add(costTextField, cc.xyw(4, 10, 2));
         this.add(addCostButton, cc.xy(7, 10));
+        this.add(new JLabel(LIMOResourceBundle.getString("CO2")), cc.xy(2, 12));
+        this.add(cotwoTextField, cc.xyw(4, 12, 2));
+        this.add(addCotwoButton, cc.xy(7, 12));
         this.add(saveButton, cc.xy(2, 14));
         this.add(cancelButton, cc.xy(4, 14));
     }
@@ -144,6 +152,22 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             editValueDialog.setVisible(true);
         }
+        if (e.getSource().equals(addCotwoButton)) {
+            EditValueDialog editValueDialog = new EditValueDialog(cotwoValue, new EditValueDialogListener() {
+
+                @Override
+                public void newValue(Value changedValue) {
+                    if (cotwoValue != null) {
+                        cotwoValue = changedValue;
+                        cotwoTextField.setText(cotwoValue.toString());
+                        AddProcedureDialog.this.revalidate();
+                        AddProcedureDialog.this.repaint();
+                    }
+                }
+            });
+            editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            editValueDialog.setVisible(true);
+        }
         if (e.getSource().equals(cancelButton)) {
             this.dispose();
         }
@@ -167,13 +191,14 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
                 System.out.println(Arrays.toString(ex.getStackTrace()));
             }
             TimeType timeType = (TimeType) timeTypeCombobox.getSelectedItem();
-            newProcedure = new Procedure(name, category, costValue, timeValue, timeType);
+            newProcedure = new Procedure(name, category, costValue, timeValue, timeType, cotwoValue);
             List<Object> newRow = new ArrayList<>();
             newRow.add(newProcedure.getName());
             newRow.add(newProcedure.getCategory());
             newRow.add(newProcedure.getTime());
             newRow.add(newProcedure.getTimeType());
             newRow.add(newProcedure.getCost());
+            newRow.add(newProcedure.getCotwo());
             ((DragNDropTableModel) table.getModel()).addRow(newRow);
             ((DragNDropTableModel) table.getModel()).fireTableDataChanged();
             table.revalidate();

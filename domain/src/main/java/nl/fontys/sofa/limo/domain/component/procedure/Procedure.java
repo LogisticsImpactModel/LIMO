@@ -3,9 +3,7 @@ package nl.fontys.sofa.limo.domain.component.procedure;
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import javax.persistence.Embedded;
-import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
-import org.json.simple.JSONArray;
 
 /**
  * A procedure always happens at a component and implies certain additional
@@ -26,26 +24,18 @@ public class Procedure implements Serializable {
     @Expose private Value cost;
     @Embedded
     @Expose private Value time;
-    @Expose private Value cotwo;
-
-    public Value getCotwo() {
-        return cotwo;
-    }
-
-    public void setCotwo(Value cotwo) {
-        this.cotwo = cotwo;
-    }
     @Expose private TimeType timeType;
+    @Expose private Value cotwo;
 
     public Procedure() {
     }
 
-    public Procedure(String name, String category, Value cost, Value time,  TimeType timeType) {
+    public Procedure(String name, String category, Value cost, Value time,  TimeType timeType, Value cotwo) {
         this.name = name;
         this.category = category;
         this.cost = cost;
         this.time = time;
-        this.cotwo = new SingleValue(0);
+        this.cotwo = cotwo;
         this.timeType = timeType;
     }
 
@@ -87,5 +77,13 @@ public class Procedure implements Serializable {
 
     public void setTimeType(TimeType timeType) {
         this.timeType = timeType;
+    }
+    
+    public Value getCotwo() {
+        return cotwo;
+    }
+
+    public void setCotwo(Value cotwo) {
+        this.cotwo = cotwo;
     }
 }
