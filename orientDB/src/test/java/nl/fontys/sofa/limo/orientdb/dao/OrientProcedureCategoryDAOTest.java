@@ -47,13 +47,13 @@ public class OrientProcedureCategoryDAOTest extends NbTestCase{
 
     @Test
     public void testFindAll() {
-        assertEquals("No entities yet", 0, dao.findAll().size());
+        assertEquals("Only default item should be in", 1, dao.findAll().size());
         dao.insert(getEntityInstance("Test 1"));
-        assertEquals("1 entity", 1, dao.findAll().size());
+        assertEquals("1 entity + default", 2, dao.findAll().size());
         dao.insert(getEntityInstance("Test 2"));
-        assertEquals("2 entity", 2, dao.findAll().size());
+        assertEquals("2 entities + default", 3, dao.findAll().size());
         dao.insert(getEntityInstance("Test 3"));
-        assertEquals("3 entity", 3, dao.findAll().size());
+        assertEquals("3 entities + default", 4, dao.findAll().size());
     }
 
     @Test
