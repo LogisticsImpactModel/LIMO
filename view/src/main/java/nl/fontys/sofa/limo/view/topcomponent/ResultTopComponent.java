@@ -92,7 +92,9 @@ public final class ResultTopComponent extends TopComponent {
                     @Override
                     public void approveSelection(){
                         File f = getSelectedFile();
-                        if(f.exists() && getDialogType() == SAVE_DIALOG){
+                        File extended = new File(f.getAbsolutePath().concat(".csv"));
+                        
+                        if((f.exists() || extended.exists()) && getDialogType() == SAVE_DIALOG){
                             int result = JOptionPane.showConfirmDialog(this,LIMOResourceBundle.getString("FILENAME_IN_USE"),LIMOResourceBundle.getString("EXISTING_FILE"),JOptionPane.YES_NO_CANCEL_OPTION);
                             switch(result){
                                 case JOptionPane.YES_OPTION:
@@ -115,7 +117,7 @@ public final class ResultTopComponent extends TopComponent {
                 String currentPath = fc.getFileSystemView().getDefaultDirectory().toString();
                 fc.setCurrentDirectory(new File(currentPath));
                 fc.setMultiSelectionEnabled(false);
-                   fc.setDialogTitle("Choose a location and filename to save");
+                   fc.setDialogTitle(LIMOResourceBundle.getString("FILE_SAVE_LOCATION"));
                     FileNameExtensionFilter filter = new FileNameExtensionFilter(LIMOResourceBundle.getString("SIMULATION_RESULTS"), "csv");
                     fc.setFileFilter(filter);
                     int selection = fc.showSaveDialog(fc);
