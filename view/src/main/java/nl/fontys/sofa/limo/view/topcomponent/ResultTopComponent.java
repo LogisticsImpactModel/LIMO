@@ -1,5 +1,9 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,15 +14,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import nl.fontys.sofa.limo.domain.component.Node;
+import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.externaltrader.CSVExporter;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel;
+import nl.fontys.sofa.limo.view.custom.table.LimoTable;
+import nl.fontys.sofa.limo.view.graphs.PieChartComponent;
+import nl.fontys.sofa.limo.view.graphs.XYChartComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.util.NbBundle.Messages;
@@ -73,53 +91,93 @@ public final class ResultTopComponent extends TopComponent {
             name = LIMOResourceBundle.getString("COMPARISION_RESULT_WINDOW_NAME");
         }
 
-        for (SimulationResult result : results) {
-            name += " " + result.getSupplyChain().getName().replace(".lsc", "");
-        }
+        name = results.stream().map((result) -> " " + result.getSupplyChain().getName().replace(".lsc", "")).reduce(name, String::concat);
         setName(name);
-
         jTabbedPane1.addTab(LIMOResourceBundle.getString("TOTALS"), createTotalsPane());
         if (results.size() == 1) {
             jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("CATEGORY")), createCategoryPane());
             jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("NODE")), createNodePane());
         }
-        jButton1.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                String currentPath = fc.getFileSystemView().getDefaultDirectory().toString();
-                fc.setCurrentDirectory(new File(currentPath));
-                fc.setMultiSelectionEnabled(false);
-                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                if (fc.showOpenDialog(jTabbedPane1) == JFileChooser.APPROVE_OPTION) {
-                    String path = fc.getSelectedFile().getPath();
-                    String filename = (String) JOptionPane.showInputDialog(jTabbedPane1, LIMOResourceBundle.getString("CHOOSE_FILE"), LIMOResourceBundle.getString("CHOOSE_FILE"), JOptionPane.PLAIN_MESSAGE);
-                    if (filename != null) {
-                        if (!filename.isEmpty()) {
-                            CSVExporter.exportTables(path + "\\" + filename + ".csv", new JTable[]{totalsTable, categoryTable, nodesTable}, new String[]{"Totals", "By Categories", "By Nodes"});
+        jButton1.addActionListener((ActionEvent e) -> {
+
+            JFileChooser fc = new JFileChooser() {
+                @Override
+                public void approveSelection() {
+                    File f = getSelectedFile();
+                    File extended = new File(f.getAbsolutePath().concat(".csv"));
+
+                    if ((f.exists() || extended.exists()) && getDialogType() == SAVE_DIALOG) {
+                        int result = JOptionPane.showConfirmDialog(this, LIMOResourceBundle.getString("FILENAME_IN_USE"), LIMOResourceBundle.getString("EXISTING_FILE"), JOptionPane.YES_NO_CANCEL_OPTION);
+                        switch (result) {
+                            case JOptionPane.YES_OPTION:
+                                super.approveSelection();
+                                f.delete();
+                                return;
+                            case JOptionPane.NO_OPTION:
+                                return;
+                            case JOptionPane.CLOSED_OPTION:
+                                return;
+                            case JOptionPane.CANCEL_OPTION:
+                                cancelSelection();
+                                return;
                         }
                     }
+                    super.approveSelection();
                 }
+            };
+
+            String currentPath = fc.getFileSystemView().getDefaultDirectory().toString();
+            fc.setCurrentDirectory(new File(currentPath));
+            fc.setMultiSelectionEnabled(false);
+            fc.setDialogTitle(LIMOResourceBundle.getString("FILE_SAVE_LOCATION"));
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(LIMOResourceBundle.getString("SIMULATION_RESULTS"), "csv");
+            fc.setFileFilter(filter);
+            int selection = fc.showSaveDialog(fc);
+
+            if (selection == JFileChooser.APPROVE_OPTION) {
+                File saveLocation = fc.getSelectedFile();
+                String absolute = saveLocation.getAbsolutePath();
+
+                String ext = "";
+                int i = absolute.lastIndexOf('.');
+                if (i > 0) {
+                    ext = absolute.substring(i);
+                }
+
+                if (!ext.equals(".csv")) {
+                    absolute = absolute.concat(".csv");
+                }
+
+                CSVExporter.exportTables(absolute, new JTable[]{totalsTable, categoryTable, nodesTable}, new String[]{"Totals", "By Categories", "By Nodes"});
             }
         });
+
     }
 
-    private JScrollPane createTotalsPane() {
+    private Component createTotalsPane() {
         Map<String, List<DataEntry>> totalMap = new HashMap<>();
         List<DataEntry> cost = new ArrayList<>();
         List<DataEntry> leadTimes = new ArrayList<>();
         List<DataEntry> extraCosts = new ArrayList<>();
         List<DataEntry> delay = new ArrayList<>();
-        List<String> name = new ArrayList<>();
+        final List<String> name = new ArrayList<>();
 
-        for (SimulationResult result : results) {
+        results.stream().map((result) -> {
             cost.add(result.getTotalCosts());
+            return result;
+        }).map((result) -> {
             leadTimes.add(result.getTotalLeadTimes());
+            return result;
+        }).map((result) -> {
             extraCosts.add(result.getTotalExtraCosts());
+            return result;
+        }).map((result) -> {
             delay.add(result.getTotalDelays());
+            return result;
+        }).forEach((result) -> {
             name.add(result.getSupplyChain().getName().replace(".lsc", ""));
-        }
+        });
         if (results.size() > 1) {
             cost.add(getDifference(cost.get(0), cost.get(1)));
             leadTimes.add(getDifference(leadTimes.get(0), leadTimes.get(1)));
@@ -140,8 +198,53 @@ public final class ResultTopComponent extends TopComponent {
         totalMap.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         totalMap.put(DataEntryTableModel.DELAYS_ID, delay);
         DataEntryTableModel detm = new DataEntryTableModel(name, totalMap);
-        totalsTable = new JTable(detm);
-        return new JScrollPane(totalsTable);
+
+        final JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        totalsTable = new LimoTable(detm);
+        JScrollPane totalJScrollPane = new JScrollPane(totalsTable);
+        totalJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
+        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class
+        );
+        detm.setOnlyOneEnabled(
+                false);
+        detm.addTableModelListener(
+                (TableModelEvent e) -> {
+                    Platform.runLater(() -> {
+                        chart.updateData();
+                    });
+                }
+        );
+        final JPanel chartPanel = new JPanel(new BorderLayout());
+
+        panel.add(chartPanel);
+
+        panel.add(totalJScrollPane);
+
+        chartPanel.setPreferredSize(
+                new Dimension(500, 700));
+        Platform.setImplicitExit(
+                false);
+        Platform.runLater(
+                () -> {
+                    CategoryAxis xAxis = new CategoryAxis();
+                    ArrayList<String> names = new ArrayList<>();
+                    name.stream().forEach((n) -> {
+                        names.add(n);
+                    });
+
+                    xAxis.setCategories(FXCollections.<String>observableArrayList(names));
+                    xAxis.setLabel("Categories");
+
+                    NumberAxis yAxis = new NumberAxis();
+                    yAxis.setTickUnit(50);
+                    yAxis.setLabel("");
+                    chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
+                }
+        );
+        return panel;
+
     }
 
     private DataEntry getDifference(DataEntry one, DataEntry two) {
@@ -166,21 +269,21 @@ public final class ResultTopComponent extends TopComponent {
         if (value1 <= 0 && value2 > 0) {
             return 100;
         }
-        
-        if(value1<=0){
+
+        if (value1 <= 0) {
             return 0;
         }
         return diff * 100 / value1;
     }
 
-    private JScrollPane createCategoryPane() {
+    private Component createCategoryPane() {
         SimulationResult result = results.get(0);
         Set<String> categorySet = new HashSet<>();
         categorySet.addAll(result.getCostsByCategory().keySet());
         categorySet.addAll(result.getLeadTimesByCategory().keySet());
         categorySet.addAll(result.getExtraCostsByCategory().keySet());
         categorySet.addAll(result.getDelaysByCategory().keySet());
-        List<String> categories = new ArrayList<>(categorySet);
+        final List<String> categories = new ArrayList<>(categorySet);
         Collections.sort(categories);
 
         List<DataEntry> costs = new ArrayList<>();
@@ -188,37 +291,57 @@ public final class ResultTopComponent extends TopComponent {
         List<DataEntry> extraCosts = new ArrayList<>();
         List<DataEntry> delays = new ArrayList<>();
 
-        for (String category : categories) {
+        categories.stream().map((category) -> {
             DataEntry cost = result.getCostsByCategory().get(category);
             costs.add(cost == null ? new DataEntry(0, 0, 0) : cost);
-
             DataEntry leadTime = result.getLeadTimesByCategory().get(category);
             leadTimes.add(leadTime == null ? new DataEntry(0, 0, 0) : leadTime);
-
             DataEntry extraCost = result.getExtraCostsByCategory().get(category);
             extraCosts.add(extraCost == null ? new DataEntry(0, 0, 0) : extraCost);
-
             DataEntry delay = result.getDelaysByCategory().get(category);
+            return delay;
+        }).forEach((delay) -> {
             delays.add(delay == null ? new DataEntry(0, 0, 0) : delay);
-        }
+        });
 
         Map<String, List<DataEntry>> map = new HashMap<>();
         map.put(DataEntryTableModel.COSTS_ID, costs);
         map.put(DataEntryTableModel.LEAD_TIMES_ID, leadTimes);
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
-        DataEntryTableModel detm = new DataEntryTableModel(categories, map);
-        categoryTable = new JTable(detm);
-        return new JScrollPane(categoryTable);
+        final DataEntryTableModel detm = new DataEntryTableModel(categories, map);
+        final JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        categoryTable = new LimoTable(detm);
+        JScrollPane catJScrollPane = new JScrollPane(categoryTable);
+        final JPanel chartPanel = new JPanel(new BorderLayout());
+        final PieChartComponent<DataEntryTableModel> chart = new PieChartComponent<>(detm);
+        detm.setOnlyOneEnabled(true);
+        detm.addTableModelListener((TableModelEvent e) -> {
+            Platform.runLater(() -> {
+                chart.updateData();
+            });
+        });
+        Platform.setImplicitExit(false);
+        Platform.runLater(() -> {
+            chart.init(chartPanel, BorderLayout.CENTER);
+        });
+        panel.add(chartPanel);
+        panel.add(catJScrollPane);
+        catJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
+        chartPanel.setPreferredSize(new Dimension(500, 700));
+
+        return panel;
     }
 
-    private JScrollPane createNodePane() {
+    private Component createNodePane() {
         List<String> names = new ArrayList<>();
         List<DataEntry> costs = new ArrayList<>();
         List<DataEntry> leadTimes = new ArrayList<>();
         List<DataEntry> extraCosts = new ArrayList<>();
         List<DataEntry> delays = new ArrayList<>();
-        for (SimulationResult result : results) {
+        results.stream().forEach((result) -> {
             Node currentNode = result.getSupplyChain().getStartHub();
             while (currentNode != null) {
                 String name = currentNode.getName();
@@ -238,15 +361,60 @@ public final class ResultTopComponent extends TopComponent {
 
                 currentNode = currentNode.getNext();
             }
-        }
+        });
         Map<String, List<DataEntry>> map = new HashMap<>();
         map.put(DataEntryTableModel.COSTS_ID, costs);
         map.put(DataEntryTableModel.LEAD_TIMES_ID, leadTimes);
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         DataEntryTableModel detm = new DataEntryTableModel(names, map);
+        detm.setOnlyOneEnabled(false);
         nodesTable = new JTable(detm);
-        return new JScrollPane(nodesTable);
+
+        final JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        categoryTable = new LimoTable(detm);
+        final JPanel chartPanel = new JPanel(new BorderLayout());
+        JScrollPane catJScrollPane = new JScrollPane(categoryTable);
+        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, LineChart.class
+        );
+        detm.addTableModelListener(
+                (TableModelEvent e) -> {
+                    Platform.runLater(() -> {
+                        chart.updateData();
+                    });
+                }
+        );
+        Platform.setImplicitExit(
+                false);
+        Platform.runLater(
+                () -> {
+                    CategoryAxis xAxis = new CategoryAxis();
+                    SupplyChain chain = results.get(0).getSupplyChain();
+                    ArrayList<String> names1 = new ArrayList<>();
+                    Node node = chain.getStartHub();
+                    while (node != null) {
+                        names1.add(node.getName());
+                        node = node.getNext();
+                    }
+                    xAxis.setCategories(FXCollections.<String>observableArrayList(names1));
+                    xAxis.setLabel("Categories");
+                    NumberAxis yAxis = new NumberAxis();
+                    yAxis.setTickUnit(50);
+                    yAxis.setLabel("");
+                    chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
+                }
+        );
+        panel.add(chartPanel);
+
+        panel.add(catJScrollPane);
+
+        catJScrollPane.setPreferredSize(
+                new Dimension(Integer.MAX_VALUE, 150));
+        chartPanel.setPreferredSize(
+                new Dimension(500, 700));
+
+        return panel;
     }
 
     /**
@@ -272,6 +440,10 @@ public final class ResultTopComponent extends TopComponent {
         jToolBar1.add(jButton1);
 
         add(jToolBar1, java.awt.BorderLayout.PAGE_START);
+
+        jTabbedPane1.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(500, 500));
+        jTabbedPane1.setRequestFocusEnabled(false);
         add(jTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 

@@ -4,7 +4,7 @@
     <parent>
         <groupId>nl.fontys.sofa.limo</groupId>
         <artifactId>LIMO-parent</artifactId>
-        <version>1.6-RC</version>
+        <version>1.6.1</version>
     </parent>
     <name>LIMO-view</name>
     <artifactId>LIMO-view</artifactId>
@@ -21,6 +21,15 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <useDefaultManifestFile>true</useDefaultManifestFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -160,13 +169,18 @@
         <dependency>
             <groupId>nl.fontys.sofa.limo</groupId>
             <artifactId>LIMO-service</artifactId>
-            <version>1.6-RC</version>
+            <version>1.6.1</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-autoupdate-services</artifactId>
             <version>${netbeans.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LIMO-utils</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <properties>

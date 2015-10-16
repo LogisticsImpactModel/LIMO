@@ -13,3 +13,5 @@
 *.pdf
 *~
 /target/
+/LIMO-utils/target/
+*.versionsBackup

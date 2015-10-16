@@ -6,6 +6,7 @@ import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
+import nl.fontys.sofa.limo.validation.annotations.NotNull;
 import org.json.simple.JSONArray;
 
 /**
@@ -18,6 +19,7 @@ public class Hub extends Node<Leg> {
     private static final long serialVersionUID = 1418480568142870997L;
 
     @Embedded
+    @NotNull
     @Expose private Location location;
     @Embedded
     @Expose private Icon icon;

@@ -29,6 +29,11 @@ public class ChainBuilderImpl implements ChainBuilder {
     }
 
     @Override
+    public List<Hub> getHubList() {
+        return hubList;
+    }
+
+    @Override
     public void addHub(Hub hub) {
         hubList.add(hub);
     }
@@ -36,7 +41,6 @@ public class ChainBuilderImpl implements ChainBuilder {
     @Override
     public void removeHub(Hub hub) {
         hubList.remove(hub);
-        
         if (hub.getNext() != null) {
             disconnectLeg(hub.getNext());
         }

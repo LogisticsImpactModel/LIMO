@@ -73,8 +73,8 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
         hubType2.setName("12345678");
         hubType2.setIcon(new Icon());
         List<Procedure> procedures = new ArrayList<>();
-        procedures.add(new Procedure("Costs1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES));
-        procedures.add(new Procedure("Costs2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES));
+        procedures.add(new Procedure("Costs1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES, new SingleValue(0)));
+        procedures.add(new Procedure("Costs2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES, new SingleValue(0)));
         hubType2.setProcedures(procedures);
         hubType2 = dao.insert(hubType2);
         hubType = dao.findById(hubType2.getId());
