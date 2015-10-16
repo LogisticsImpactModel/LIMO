@@ -41,7 +41,6 @@ public class ChainBuilderImpl implements ChainBuilder {
     @Override
     public void removeHub(Hub hub) {
         hubList.remove(hub);
-
         if (hub.getNext() != null) {
             disconnectLeg(hub.getNext());
         }
