@@ -55,6 +55,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         saveButton.addActionListener(this);
         addCostButton.addActionListener(this);
         addTimeButton.addActionListener(this);
+        addCotwoButton.addActionListener(this);
         //DIALOG OPTIONS
         this.setSize(250, 300);
         this.setModal(true);
