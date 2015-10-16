@@ -14,6 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.externaltrader.CSVExporter;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
@@ -87,19 +88,55 @@ public final class ResultTopComponent extends TopComponent {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
+                JFileChooser fc = new JFileChooser() {
+                    @Override
+                    public void approveSelection() {
+                        File f = getSelectedFile();
+                        File extended = new File(f.getAbsolutePath().concat(".csv"));
+
+                        if ((f.exists() || extended.exists()) && getDialogType() == SAVE_DIALOG) {
+                            int result = JOptionPane.showConfirmDialog(this, LIMOResourceBundle.getString("FILENAME_IN_USE"), LIMOResourceBundle.getString("EXISTING_FILE"), JOptionPane.YES_NO_CANCEL_OPTION);
+                            switch (result) {
+                                case JOptionPane.YES_OPTION:
+                                    super.approveSelection();
+                                    f.delete();
+                                    return;
+                                case JOptionPane.NO_OPTION:
+                                    return;
+                                case JOptionPane.CLOSED_OPTION:
+                                    return;
+                                case JOptionPane.CANCEL_OPTION:
+                                    cancelSelection();
+                                    return;
+                            }
+                        }
+                        super.approveSelection();
+                    }
+                };
+
                 String currentPath = fc.getFileSystemView().getDefaultDirectory().toString();
                 fc.setCurrentDirectory(new File(currentPath));
                 fc.setMultiSelectionEnabled(false);
-                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                if (fc.showOpenDialog(jTabbedPane1) == JFileChooser.APPROVE_OPTION) {
-                    String path = fc.getSelectedFile().getPath();
-                    String filename = (String) JOptionPane.showInputDialog(jTabbedPane1, LIMOResourceBundle.getString("CHOOSE_FILE"), LIMOResourceBundle.getString("CHOOSE_FILE"), JOptionPane.PLAIN_MESSAGE);
-                    if (filename != null) {
-                        if (!filename.isEmpty()) {
-                            CSVExporter.exportTables(path + "\\" + filename + ".csv", new JTable[]{totalsTable, categoryTable, nodesTable}, new String[]{"Totals", "By Categories", "By Nodes"});
-                        }
+                fc.setDialogTitle(LIMOResourceBundle.getString("FILE_SAVE_LOCATION"));
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(LIMOResourceBundle.getString("SIMULATION_RESULTS"), "csv");
+                fc.setFileFilter(filter);
+                int selection = fc.showSaveDialog(fc);
+
+                if (selection == JFileChooser.APPROVE_OPTION) {
+                    File saveLocation = fc.getSelectedFile();
+                    String absolute = saveLocation.getAbsolutePath();
+
+                    String ext = "";
+                    int i = absolute.lastIndexOf('.');
+                    if (i > 0) {
+                        ext = absolute.substring(i);
                     }
+
+                    if (!ext.equals(".csv")) {
+                        absolute = absolute.concat(".csv");
+                    }
+
+                    CSVExporter.exportTables(absolute, new JTable[]{totalsTable, categoryTable, nodesTable}, new String[]{"Totals", "By Categories", "By Nodes"});
                 }
             }
         });
@@ -166,8 +203,8 @@ public final class ResultTopComponent extends TopComponent {
         if (value1 <= 0 && value2 > 0) {
             return 100;
         }
-        
-        if(value1<=0){
+
+        if (value1 <= 0) {
             return 0;
         }
         return diff * 100 / value1;
