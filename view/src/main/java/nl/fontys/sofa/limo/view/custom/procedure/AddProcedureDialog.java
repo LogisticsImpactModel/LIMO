@@ -75,7 +75,6 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
     private void initComponents(Object[] categories) {
         nameTextField = new JTextField();
         categoryCombobox = new JComboBox(categories);
-        //categoryCombobox.insertItemAt("costs not accounted", 0);
         categoryCombobox.setSelectedIndex(0);
         timeTypeCombobox = new JComboBox(TimeType.values());
         timeValue = new SingleValue(0.0);
