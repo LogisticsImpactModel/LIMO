@@ -88,13 +88,12 @@ public final class ResultTopComponent extends TopComponent {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
                 JFileChooser fc = new JFileChooser(){
                     @Override
                     public void approveSelection(){
                         File f = getSelectedFile();
                         if(f.exists() && getDialogType() == SAVE_DIALOG){
-                            int result = JOptionPane.showConfirmDialog(this,"Filename already in use, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
+                            int result = JOptionPane.showConfirmDialog(this,LIMOResourceBundle.getString("FILENAME_IN_USE"),LIMOResourceBundle.getString("EXISTING_FILE"),JOptionPane.YES_NO_CANCEL_OPTION);
                             switch(result){
                                 case JOptionPane.YES_OPTION:
                                     super.approveSelection();
@@ -113,12 +112,11 @@ public final class ResultTopComponent extends TopComponent {
                     }        
                 };
                 
-                
                 String currentPath = fc.getFileSystemView().getDefaultDirectory().toString();
                 fc.setCurrentDirectory(new File(currentPath));
                 fc.setMultiSelectionEnabled(false);
                    fc.setDialogTitle("Choose a location and filename to save");
-                    FileNameExtensionFilter filter = new FileNameExtensionFilter("Simulation results", "csv");
+                    FileNameExtensionFilter filter = new FileNameExtensionFilter(LIMOResourceBundle.getString("SIMULATION_RESULTS"), "csv");
                     fc.setFileFilter(filter);
                     int selection = fc.showSaveDialog(fc);
                     
