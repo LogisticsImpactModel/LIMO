@@ -79,7 +79,11 @@ public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<
 
     @Override
     public void validate() throws WizardValidationException {
-        LegType type = new LegType(legType);
+        LegType type = new LegType();
+        type.setName(getComponent().getNameInput());
+        type.setDescription(getComponent().getDescriptionInput());
+        type.setIcon(getComponent().getIcon());
+        
         try {
             validator.validate(type);
             if (!update || !originalLegType.getName().equals(getComponent().getNameInput())) {//If the leg type name did not change (while editing) the name should not be uniques
@@ -89,6 +93,7 @@ public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<
                 }
             }
         } catch (ValidationException ex) {
+            System.out.println(ex.getMessage());
             throw new WizardValidationException(null, LIMOResourceBundle.getString("VALUE_NOT_SET", LIMOResourceBundle.getString("NAME")), null);
         }
     }
