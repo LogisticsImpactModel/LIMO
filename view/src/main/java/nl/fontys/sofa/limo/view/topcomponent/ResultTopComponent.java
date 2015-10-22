@@ -1,11 +1,9 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +16,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.Chart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javax.swing.BoxLayout;
@@ -26,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import nl.fontys.sofa.limo.domain.component.Node;
@@ -35,12 +35,14 @@ import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel;
 import nl.fontys.sofa.limo.view.custom.table.LimoTable;
+import nl.fontys.sofa.limo.view.graphs.GraphSwitchTopComponent;
 import nl.fontys.sofa.limo.view.graphs.PieChartComponent;
 import nl.fontys.sofa.limo.view.graphs.XYChartComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.util.NbBundle.Messages;
 import org.openide.windows.TopComponent;
+import org.openide.windows.WindowManager;
 
 /**
  * Top component which displays something.
@@ -68,6 +70,8 @@ public final class ResultTopComponent extends TopComponent {
 
     private List<SimulationResult> results;
     private JTable totalsTable, categoryTable, nodesTable;
+
+    private JPanel nodeGraphPanel, totalGraphPanel, categoryGraphPanel;
 
     public ResultTopComponent() {
         initComponents();
@@ -216,13 +220,13 @@ public final class ResultTopComponent extends TopComponent {
                     });
                 }
         );
-        final JPanel chartPanel = new JPanel(new BorderLayout());
+        totalGraphPanel = new JPanel(new BorderLayout());
 
-        panel.add(chartPanel);
+        panel.add(totalGraphPanel);
 
         panel.add(totalJScrollPane);
 
-        chartPanel.setPreferredSize(
+        totalGraphPanel.setPreferredSize(
                 new Dimension(500, 700));
         Platform.setImplicitExit(
                 false);
@@ -240,7 +244,7 @@ public final class ResultTopComponent extends TopComponent {
                     NumberAxis yAxis = new NumberAxis();
                     yAxis.setTickUnit(50);
                     yAxis.setLabel("");
-                    chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
+                    chart.init(totalGraphPanel, BorderLayout.CENTER, xAxis, yAxis);
                 }
         );
         return panel;
@@ -315,7 +319,7 @@ public final class ResultTopComponent extends TopComponent {
 
         categoryTable = new LimoTable(detm);
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
-        final JPanel chartPanel = new JPanel(new BorderLayout());
+        categoryGraphPanel = new JPanel(new BorderLayout());
         final PieChartComponent<DataEntryTableModel> chart = new PieChartComponent<>(detm);
         detm.setOnlyOneEnabled(true);
         detm.addTableModelListener((TableModelEvent e) -> {
@@ -325,12 +329,12 @@ public final class ResultTopComponent extends TopComponent {
         });
         Platform.setImplicitExit(false);
         Platform.runLater(() -> {
-            chart.init(chartPanel, BorderLayout.CENTER);
+            chart.init(categoryGraphPanel, BorderLayout.CENTER);
         });
-        panel.add(chartPanel);
+        panel.add(categoryGraphPanel);
         panel.add(catJScrollPane);
         catJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
-        chartPanel.setPreferredSize(new Dimension(500, 700));
+        categoryGraphPanel.setPreferredSize(new Dimension(500, 700));
 
         return panel;
     }
@@ -374,7 +378,7 @@ public final class ResultTopComponent extends TopComponent {
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         categoryTable = new LimoTable(detm);
-        final JPanel chartPanel = new JPanel(new BorderLayout());
+        nodeGraphPanel = new JPanel(new BorderLayout());
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
         final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, LineChart.class
         );
@@ -402,16 +406,16 @@ public final class ResultTopComponent extends TopComponent {
                     NumberAxis yAxis = new NumberAxis();
                     yAxis.setTickUnit(50);
                     yAxis.setLabel("");
-                    chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
+                    chart.init(nodeGraphPanel, BorderLayout.CENTER, xAxis, yAxis);
                 }
         );
-        panel.add(chartPanel);
+        panel.add(nodeGraphPanel);
 
         panel.add(catJScrollPane);
 
         catJScrollPane.setPreferredSize(
                 new Dimension(Integer.MAX_VALUE, 150));
-        chartPanel.setPreferredSize(
+        nodeGraphPanel.setPreferredSize(
                 new Dimension(500, 700));
 
         return panel;
@@ -453,24 +457,43 @@ public final class ResultTopComponent extends TopComponent {
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 
+    GraphSwitchTopComponent graphSwitch = (GraphSwitchTopComponent) WindowManager.getDefault().findTopComponent("GraphSwitchTopComponent");
+
     @Override
     public void componentOpened() {
-        // TODO add custom code on component opening
+        graphSwitch.addGraphTypeChangeListener((ActionEvent e) -> {
+            if (e.getSource() instanceof Class) {
+                Class<? extends Chart> graphClass = (Class<? extends Chart>) e.getSource();
+                Component selectedComponent = jTabbedPane1.getSelectedComponent();
+                if (SwingUtilities.isDescendingFrom(nodeGraphPanel, selectedComponent)) {
+                    System.out.println("Node");
+                } else if (SwingUtilities.isDescendingFrom(totalGraphPanel, selectedComponent)) {
+                    System.out.println("Total");
+                } else if (SwingUtilities.isDescendingFrom(categoryGraphPanel, selectedComponent)) {
+
+                }
+            }
+        });
+        graphSwitch.open();
+        graphSwitch.requestActive();
+
     }
 
     @Override
     public void componentClosed() {
-        // TODO add custom code on component closing
+        graphSwitch.close();
     }
 
-    void writeProperties(java.util.Properties p) {
+    void writeProperties(java.util.Properties p
+    ) {
         // better to version settings since initial version as advocated at
         // http://wiki.apidesign.org/wiki/PropertyFiles
         p.setProperty("version", "1.0");
         // TODO store your settings
     }
 
-    void readProperties(java.util.Properties p) {
+    void readProperties(java.util.Properties p
+    ) {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
     }
