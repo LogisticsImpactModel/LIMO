@@ -6,22 +6,18 @@
 package nl.fontys.sofa.limo.view.graphs;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Consumer;
+import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
-import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 import javafx.scene.chart.Chart;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import nl.fontys.sofa.limo.view.topcomponent.ResultTopComponent;
 import org.openide.util.Lookup;
@@ -79,11 +75,14 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
     private void initComponents() {
 
         pieSelect = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        barSelect = new javax.swing.JButton();
+        lineSelect = new javax.swing.JButton();
+        areaSelect = new javax.swing.JButton();
 
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
 
         org.openide.awt.Mnemonics.setLocalizedText(pieSelect, org.openide.util.NbBundle.getMessage(GraphSwitchTopComponent.class, "GraphSwitchTopComponent.text")); // NOI18N
+        pieSelect.setMaximumSize(new java.awt.Dimension(500, 23));
         pieSelect.setName(""); // NOI18N
         pieSelect.setOpaque(false);
         pieSelect.addActionListener(new java.awt.event.ActionListener() {
@@ -93,21 +92,41 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
         });
         add(pieSelect);
 
-        org.openide.awt.Mnemonics.setLocalizedText(jButton2, org.openide.util.NbBundle.getMessage(GraphSwitchTopComponent.class, "GraphSwitchTopComponent.jButton2.text")); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        org.openide.awt.Mnemonics.setLocalizedText(barSelect, org.openide.util.NbBundle.getMessage(GraphSwitchTopComponent.class, "GraphSwitchTopComponent.barSelect.text")); // NOI18N
+        barSelect.setAutoscrolls(true);
+        barSelect.setMaximumSize(new java.awt.Dimension(500, 23));
+        barSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                barSelectActionPerformed(evt);
             }
         });
-        add(jButton2);
+        add(barSelect);
+
+        org.openide.awt.Mnemonics.setLocalizedText(lineSelect, org.openide.util.NbBundle.getMessage(GraphSwitchTopComponent.class, "GraphSwitchTopComponent.lineSelect.text")); // NOI18N
+        lineSelect.setMaximumSize(new java.awt.Dimension(500, 23));
+        lineSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lineSelectActionPerformed(evt);
+            }
+        });
+        add(lineSelect);
+
+        org.openide.awt.Mnemonics.setLocalizedText(areaSelect, org.openide.util.NbBundle.getMessage(GraphSwitchTopComponent.class, "GraphSwitchTopComponent.areaSelect.text")); // NOI18N
+        areaSelect.setMaximumSize(new java.awt.Dimension(500, 23));
+        areaSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                areaSelectActionPerformed(evt);
+            }
+        });
+        add(areaSelect);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void barSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barSelectActionPerformed
         if (chartClass != BarChart.class) {
             chartClass = BarChart.class;
             notifyGraphTypeChangeListener();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_barSelectActionPerformed
 
     private void pieSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pieSelectActionPerformed
         if (chartClass != PieChart.class) {
@@ -116,8 +135,24 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
         }
     }//GEN-LAST:event_pieSelectActionPerformed
 
+    private void lineSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lineSelectActionPerformed
+        if (chartClass != LineChart.class) {
+            chartClass = LineChart.class;
+            notifyGraphTypeChangeListener();
+        }
+    }//GEN-LAST:event_lineSelectActionPerformed
+
+    private void areaSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_areaSelectActionPerformed
+       if (chartClass != AreaChart.class) {
+            chartClass = AreaChart.class;
+            notifyGraphTypeChangeListener();
+        }
+    }//GEN-LAST:event_areaSelectActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton areaSelect;
+    private javax.swing.JButton barSelect;
+    private javax.swing.JButton lineSelect;
     private javax.swing.JButton pieSelect;
     // End of variables declaration//GEN-END:variables
     @Override

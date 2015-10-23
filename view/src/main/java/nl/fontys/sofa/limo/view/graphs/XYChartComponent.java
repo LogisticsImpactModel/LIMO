@@ -49,8 +49,6 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
         chart.setData(tableModel.getXYChartData(cl));
         animateChart();
     }
-    
-    
 
     public void init(final JPanel parent, final Object constrain, final Axis xAxis, final Axis yAxis) {
         Platform.runLater(() -> createChart(xAxis, yAxis));
@@ -70,20 +68,20 @@ public class XYChartComponent<T extends AbstractLimoTableModel> {
 
     private void animateChart() {
 
-        /*  chart.setData(null);
-         chart.setAnimated(false);
-         final ObservableList<XYChart.Series> tempSet = FXCollections.<XYChart.Series>observableArrayList();
-         int frameTime = 1000 / (tableModel.getXYChartData(cl).size());
-         tl.stop();
-         tl.getKeyFrames().clear();
-         tl.getKeyFrames().add(
-         new KeyFrame(Duration.millis(frameTime), (ActionEvent actionEvent) -> {
-         tempSet.add(tableModel.getXYChartData(cl).get(tempSet.size()));
-         chart.setData(tempSet);
-         }));
-         tl.setCycleCount(tableModel.getXYChartData(cl).size());
-         tl.play();
-         */
+        chart.setData(null);
+        chart.setAnimated(false);
+        final ObservableList<XYChart.Series> tempSet = FXCollections.<XYChart.Series>observableArrayList();
+        int frameTime = 1000 / (tableModel.getXYChartData(cl).size());
+        tl.stop();
+        tl.getKeyFrames().clear();
+        tl.getKeyFrames().add(
+                new KeyFrame(Duration.millis(frameTime), (ActionEvent actionEvent) -> {
+                    tempSet.add(tableModel.getXYChartData(cl).get(tempSet.size()));
+                    chart.setData(tempSet);
+                }));
+        tl.setCycleCount(tableModel.getXYChartData(cl).size());
+        tl.play();
+
     }
 
     private void createChart(Axis xAxis, Axis yAxis) {
