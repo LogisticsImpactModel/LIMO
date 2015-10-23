@@ -19,6 +19,7 @@ import org.openide.util.NbBundle.Messages;
 import javafx.scene.chart.Chart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javax.swing.ImageIcon;
 import nl.fontys.sofa.limo.view.topcomponent.ResultTopComponent;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
@@ -81,7 +82,11 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
 
+        pieSelect.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/gui/Pie_Chart.png")));
         org.openide.awt.Mnemonics.setLocalizedText(pieSelect, org.openide.util.NbBundle.getMessage(GraphSwitchTopComponent.class, "GraphSwitchTopComponent.text")); // NOI18N
+        pieSelect.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        pieSelect.setIconTextGap(25);
+        pieSelect.setMargin(new java.awt.Insets(25, 25, 25, 25));
         pieSelect.setMaximumSize(new java.awt.Dimension(500, 23));
         pieSelect.setName(""); // NOI18N
         pieSelect.setOpaque(false);
@@ -92,8 +97,12 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
         });
         add(pieSelect);
 
+        barSelect.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/gui/Bar_Chart.png")));
         org.openide.awt.Mnemonics.setLocalizedText(barSelect, org.openide.util.NbBundle.getMessage(GraphSwitchTopComponent.class, "GraphSwitchTopComponent.barSelect.text")); // NOI18N
         barSelect.setAutoscrolls(true);
+        barSelect.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        barSelect.setIconTextGap(25);
+        barSelect.setMargin(new java.awt.Insets(25, 25, 25, 25));
         barSelect.setMaximumSize(new java.awt.Dimension(500, 23));
         barSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,7 +111,11 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
         });
         add(barSelect);
 
+        lineSelect.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/gui/Line_Chart.png")));
         org.openide.awt.Mnemonics.setLocalizedText(lineSelect, org.openide.util.NbBundle.getMessage(GraphSwitchTopComponent.class, "GraphSwitchTopComponent.lineSelect.text")); // NOI18N
+        lineSelect.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lineSelect.setIconTextGap(25);
+        lineSelect.setMargin(new java.awt.Insets(25, 25, 25, 25));
         lineSelect.setMaximumSize(new java.awt.Dimension(500, 23));
         lineSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,7 +124,11 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
         });
         add(lineSelect);
 
+        areaSelect.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/gui/Area_Chart.png")));
         org.openide.awt.Mnemonics.setLocalizedText(areaSelect, org.openide.util.NbBundle.getMessage(GraphSwitchTopComponent.class, "GraphSwitchTopComponent.areaSelect.text")); // NOI18N
+        areaSelect.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        areaSelect.setIconTextGap(25);
+        areaSelect.setMargin(new java.awt.Insets(25, 25, 25, 25));
         areaSelect.setMaximumSize(new java.awt.Dimension(500, 23));
         areaSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
