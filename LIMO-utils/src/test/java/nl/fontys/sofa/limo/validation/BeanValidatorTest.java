@@ -3,12 +3,71 @@ package nl.fontys.sofa.limo.validation;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class BeanValidatorTest {
     
     BeanValidator validator = BeanValidator.getInstance();
+    
+    @Test
+    public void testValidateOnly() {
+        IntegerBean bean = new IntegerBean();
+        bean.minValue = 1;
+        bean.maxValue = 9;
+        try {
+            validator.validateOnly(bean, "minValue", "maxValue");
+        } catch (ValidationException ex) {
+            fail("Validate only should work here.");
+        }
+        bean.maxValue = 11;
+        try {
+            validator.validateOnly(bean, "minValue", "maxValue");
+            fail("Validate only should fail here.");
+        } catch (ValidationException ex) {
+           
+        }
+         try {
+            validator.validateOnly(bean, "minValue");   
+        } catch (ValidationException ex) {                     
+            fail("Validate only should not fail here.");
+        }
+        
+    }
+    
+    @Test
+    public void testValidateWithout() {
+        IntegerBean bean = new IntegerBean();
+        bean.minValue = 1;
+        bean.maxValue = 11;
+        try {
+            validator.validateWithout(bean, "maxValue");
+        } catch (ValidationException ex) {
+            fail("Validate only should work here.");
+        }
+        try {
+            validator.validateWithout(bean, "minValue");
+            fail("Validate only should fail here.");
+        } catch (ValidationException ex) {
+           
+        }
+        bean.minValue = -1;
+        bean.maxValue = 11;
+        try {
+            validator.validateWithout(bean, "maxValue");
+            fail("Validate only should fail here.");
+        } catch (ValidationException ex) {                     
+            
+        }
+        try {
+            validator.validateWithout(bean, "minValue", "maxValue");   
+        } catch (ValidationException ex) {                     
+            fail("Validate only should not fail here.");
+        }
+        
+    }
     
     @Test
     public void testAssertTrueFalse() {
