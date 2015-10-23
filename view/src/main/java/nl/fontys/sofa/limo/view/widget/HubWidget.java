@@ -7,15 +7,23 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.undo.UndoManager;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
+import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
+import nl.fontys.sofa.limo.domain.component.event.distribution.DiscreteDistribution;
+import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
+import nl.fontys.sofa.limo.view.node.factory.EventChildFactory;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.util.undoable.events.EventUndoableEdit;
 import nl.fontys.sofa.limo.view.util.undoable.widget.hub.DeleteHubWidgetUndoableEdit;
@@ -28,6 +36,7 @@ import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.SeparatorWidget;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.api.visual.widget.general.IconNodeWidget;
+import org.openide.util.Lookup;
 
 /**
  * HubWidget which represents a Hub in the GraphScene. It holds HubNode which
@@ -241,6 +250,32 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     propertyChange(null);
                 }
             });
+            
+            JMenu eventMenu = new JMenu("Events");
+            
+            EventService service = Lookup.getDefault().lookup(EventService.class);
+            List<Event> eventList = service.findAll();
+            for (Event event : eventList) {
+            
+                eventMenu.add(new AbstractAction(event.getName()){
+
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        List<Event> eventListOfHub = HubWidget.this.getHub().getEvents();
+                        
+                        Event selected = service.findById(event.getId());
+                        selected.setId(null);
+                        
+                        //eventListOfHub.add(new Event(event.getName(), event.getDescription(), event.getDependency(), event.getProbability(), event.getExecutionState()));
+                        eventListOfHub.add(selected);
+                        HubWidget.this.getHub().setEvents(eventListOfHub);
+                        updateLabels();
+                        
+                    }
+                });
+                
+            }
+            popup.add(eventMenu);
             return popup;
         }
     }

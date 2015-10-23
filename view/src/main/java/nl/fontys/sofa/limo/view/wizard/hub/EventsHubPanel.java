@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.TableColumn;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.openide.util.Lookup;
 
 /**
  * Shows the Panel to select the events. Events can't created out of this.
@@ -54,8 +56,10 @@ public final class EventsHubPanel extends EventsPanel {
     @Override
     protected void setTableModel() {
         List<String> events = new ArrayList<>();
-        addButton.setEnabled(!allEvents.isEmpty());
-        for (Event e : allEvents) {
+        service = Lookup.getDefault().lookup(EventService.class);
+        List<Event> allEventsList = service.findAll();
+        addButton.setEnabled(!allEventsList.isEmpty());
+        for (Event e : allEventsList) {
             events.add(e.getName());
         }
         eventsComboBox.setModel(new DefaultComboBoxModel(events.toArray()));
