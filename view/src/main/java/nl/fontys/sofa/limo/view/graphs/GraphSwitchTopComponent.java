@@ -7,8 +7,14 @@ package nl.fontys.sofa.limo.view.graphs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Consumer;
 import javafx.scene.chart.BarChart;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
@@ -17,14 +23,17 @@ import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 import javafx.scene.chart.Chart;
 import javafx.scene.chart.PieChart;
+import nl.fontys.sofa.limo.view.topcomponent.ResultTopComponent;
+import org.openide.util.Lookup;
+import org.openide.util.LookupEvent;
+import org.openide.util.LookupListener;
+import org.openide.util.Utilities;
+import org.openide.windows.Mode;
+import org.openide.windows.WindowManager;
 
 /**
  * Top component which displays something.
  */
-@ConvertAsProperties(
-        dtd = "-//nl.fontys.sofa.limo.view.graphs//GraphSwitch//EN",
-        autostore = false
-)
 @TopComponent.Description(
         preferredID = "GraphSwitchTopComponent",
         //iconBase="SET/PATH/TO/ICON/HERE", 
@@ -34,21 +43,28 @@ import javafx.scene.chart.PieChart;
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.graphs.GraphSwitchTopComponent")
 @ActionReference(path = "Menu/Window" /*, position = 333 */)
 @TopComponent.OpenActionRegistration(
-        displayName = "#CTL_GraphSwitchAction",
-        preferredID = "GraphSwitchTopComponent"
+        displayName = "#CTL_GraphSwitchAction"//,
+//        preferredID = "GraphSwitchTopComponent"
 )
 @Messages({
     "CTL_GraphSwitchAction=GraphSwitch",
     "CTL_GraphSwitchTopComponent=GraphSwitch Window",
     "HINT_GraphSwitchTopComponent=This is a GraphSwitch window"
 })
-public final class GraphSwitchTopComponent extends TopComponent {
+public final class GraphSwitchTopComponent extends TopComponent implements LookupListener {
+
+    private Lookup.Result<ResultTopComponent.GraphChangeListener> result = null;
 
     public GraphSwitchTopComponent() {
         initComponents();
         setName(Bundle.CTL_GraphSwitchTopComponent());
         setToolTipText(Bundle.HINT_GraphSwitchTopComponent());
         putClientProperty(TopComponent.PROP_CLOSING_DISABLED, Boolean.TRUE);
+        putClientProperty(TopComponent.PROP_MAXIMIZATION_DISABLED, Boolean.TRUE);
+
+        result = Utilities.actionsGlobalContext().lookupResult(ResultTopComponent.GraphChangeListener.class);
+        result.addLookupListener(this);
+        Mode findMode = WindowManager.getDefault().findMode("editor");
 
     }
 
@@ -87,13 +103,17 @@ public final class GraphSwitchTopComponent extends TopComponent {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        chartClass = BarChart.class;
-        notifyGraphTypeChangeListener();
+        if (chartClass != BarChart.class) {
+            chartClass = BarChart.class;
+            notifyGraphTypeChangeListener();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void pieSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pieSelectActionPerformed
-        chartClass = PieChart.class;
-        notifyGraphTypeChangeListener();
+        if (chartClass != PieChart.class) {
+            chartClass = PieChart.class;
+            notifyGraphTypeChangeListener();
+        }
     }//GEN-LAST:event_pieSelectActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -105,22 +125,12 @@ public final class GraphSwitchTopComponent extends TopComponent {
         // TODO add custom code on component opening
     }
 
-    List<ActionListener> graphTypeChangeListeners = new ArrayList();
-
-    public void addGraphTypeChangeListener(ActionListener listener) {
-        graphTypeChangeListeners.add(listener);
-    }
-
-    public void removeGraphTypeChangeListener(ActionListener listener) {
-        graphTypeChangeListeners.remove(listener);
-    }
+    ResultTopComponent.GraphChangeListener graphTypeChangeListener = null;
 
     private void notifyGraphTypeChangeListener() {
 
         ActionEvent event = new ActionEvent(chartClass, ActionEvent.ACTION_FIRST, "Chart class changed");
-        graphTypeChangeListeners.parallelStream().forEach((graphTypeChangeListener) -> {
-            graphTypeChangeListener.actionPerformed(event);
-        });
+        graphTypeChangeListener.actionPerformed(event);
     }
 
     @Override
@@ -128,15 +138,28 @@ public final class GraphSwitchTopComponent extends TopComponent {
         // TODO add custom code on component closing
     }
 
-    void writeProperties(java.util.Properties p) {
-        // better to version settings since initial version as advocated at
-        // http://wiki.apidesign.org/wiki/PropertyFiles
-        p.setProperty("version", "1.0");
-        // TODO store your settings
+    @Override
+    public void resultChanged(LookupEvent le) {
+
+        Collection<? extends ResultTopComponent.GraphChangeListener> allInstances = result.allInstances();
+        if (!allInstances.isEmpty()) {
+            WindowManager.getDefault().findMode("properties").dockInto(this);
+            this.open();
+            this.requestVisible();
+            graphTypeChangeListener = allInstances.iterator().next();
+        } else {
+            WindowManager winMan = WindowManager.getDefault();
+            List<TopComponent> openComponents = new ArrayList();
+            winMan.getModes().parallelStream().forEach(n -> {
+                List<TopComponent> open = new ArrayList<>();
+                Collections.addAll(open, winMan.getOpenedTopComponents(n));
+                open.parallelStream().filter(t -> t instanceof ResultTopComponent).forEach(o -> openComponents.add(o));
+            });
+            if (openComponents.isEmpty()) {
+                this.close();
+            }
+        }
+
     }
 
-    void readProperties(java.util.Properties p) {
-        String version = p.getProperty("version");
-        // TODO read your settings according to their version
-    }
 }

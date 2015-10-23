@@ -1,9 +1,14 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
+import com.oracle.jrockit.jfr.ContentType;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +25,8 @@ import javafx.scene.chart.Chart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
+import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -42,6 +49,7 @@ import nl.fontys.sofa.limo.view.graphs.XYChartComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.util.NbBundle.Messages;
+import org.openide.util.lookup.Lookups;
 import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
 
@@ -211,34 +219,39 @@ public final class ResultTopComponent extends TopComponent {
         totalsTable = new LimoTable(totalDetm);
         JScrollPane totalJScrollPane = new JScrollPane(totalsTable);
         totalJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
-        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(totalDetm, BarChart.class
-        );
-        totalDetm.setOnlyOneEnabled(
-                false);
-        totalDetm.addTableModelListener(
+        totalGraphPanel = new JPanel(new BorderLayout());
+
+        createXYChart(totalGraphPanel, totalDetm, BarChart.class);
+
+        panel.add(totalGraphPanel);
+
+        panel.add(totalJScrollPane);
+        return panel;
+
+    }
+
+    private void createXYChart(JPanel parent, DataEntryTableModel model, Class<? extends XYChart> chartClass) {
+        parent.removeAll();
+        XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(model, chartClass);
+        model.setOnlyOneEnabled(false);
+        model.removeAllListeners();
+        model.addTableModelListener(
                 (TableModelEvent e) -> {
                     Platform.runLater(() -> {
                         chart.updateData();
                     });
                 }
         );
-        totalGraphPanel = new JPanel(new BorderLayout());
 
-        panel.add(totalGraphPanel);
-
-        panel.add(totalJScrollPane);
-
-        totalGraphPanel.setPreferredSize(
-                new Dimension(500, 700));
-        Platform.setImplicitExit(
-                false);
+        parent.setPreferredSize(new Dimension(500, 700));
+        Platform.setImplicitExit(false);
         Platform.runLater(
                 () -> {
                     CategoryAxis xAxis = new CategoryAxis();
                     ArrayList<String> names = new ArrayList<>();
-                    name.stream().forEach((n) -> {
-                        names.add(n);
-                    });
+                    for (int i = 1; i < model.getRowCount(); i++) {
+                        names.add(model.getValueAt(i, 0).toString());
+                    }
 
                     xAxis.setCategories(FXCollections.<String>observableArrayList(names));
                     xAxis.setLabel("Categories");
@@ -246,11 +259,8 @@ public final class ResultTopComponent extends TopComponent {
                     NumberAxis yAxis = new NumberAxis();
                     yAxis.setTickUnit(50);
                     yAxis.setLabel("");
-                    chart.init(totalGraphPanel, BorderLayout.CENTER, xAxis, yAxis);
-                }
-        );
-        return panel;
-
+                    chart.init(parent, BorderLayout.CENTER, xAxis, yAxis);
+                });
     }
 
     private DataEntry getDifference(DataEntry one, DataEntry two) {
@@ -335,6 +345,7 @@ public final class ResultTopComponent extends TopComponent {
         parent.removeAll();
         final PieChartComponent<DataEntryTableModel> chart = new PieChartComponent<>(model);
         model.setOnlyOneEnabled(true);
+        model.removeAllListeners();
         model.addTableModelListener((TableModelEvent e) -> {
             Platform.runLater(() -> {
                 chart.updateData();
@@ -387,35 +398,8 @@ public final class ResultTopComponent extends TopComponent {
         categoryTable = new LimoTable(nodeDetm);
         nodeGraphPanel = new JPanel(new BorderLayout());
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
-        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(nodeDetm, LineChart.class
-        );
-        nodeDetm.addTableModelListener(
-                (TableModelEvent e) -> {
-                    Platform.runLater(() -> {
-                        chart.updateData();
-                    });
-                }
-        );
-        Platform.setImplicitExit(
-                false);
-        Platform.runLater(
-                () -> {
-                    CategoryAxis xAxis = new CategoryAxis();
-                    SupplyChain chain = results.get(0).getSupplyChain();
-                    ArrayList<String> names1 = new ArrayList<>();
-                    Node node = chain.getStartHub();
-                    while (node != null) {
-                        names1.add(node.getName());
-                        node = node.getNext();
-                    }
-                    xAxis.setCategories(FXCollections.<String>observableArrayList(names1));
-                    xAxis.setLabel("Categories");
-                    NumberAxis yAxis = new NumberAxis();
-                    yAxis.setTickUnit(50);
-                    yAxis.setLabel("");
-                    chart.init(nodeGraphPanel, BorderLayout.CENTER, xAxis, yAxis);
-                }
-        );
+        createXYChart(nodeGraphPanel, nodeDetm, LineChart.class);
+
         panel.add(nodeGraphPanel);
 
         panel.add(catJScrollPane);
@@ -468,7 +452,39 @@ public final class ResultTopComponent extends TopComponent {
 
     @Override
     public void componentOpened() {
-        graphSwitch.addGraphTypeChangeListener((ActionEvent e) -> {
+        GraphChangeListener listener = new GraphChangeListener();
+        associateLookup(Lookups.singleton(listener));
+    }
+
+    @Override
+    public void componentClosed() {
+
+    }
+
+    void writeProperties(java.util.Properties p
+    ) {
+        // better to version settings since initial version as advocated at
+        // http://wiki.apidesign.org/wiki/PropertyFiles
+        p.setProperty("version", "1.0");
+        // TODO store your settings
+    }
+
+    void readProperties(java.util.Properties p
+    ) {
+        String version = p.getProperty("version");
+        // TODO read your settings according to their version
+    }
+
+    @Override
+    public int getPersistenceType() {
+        return TopComponent.PERSISTENCE_NEVER;
+    }
+
+    public class GraphChangeListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
             if (e.getSource() instanceof Class) {
                 Class<? extends Chart> graphClass = (Class<? extends Chart>) e.getSource();
                 Component selectedComponent = jTabbedPane1.getSelectedComponent();
@@ -492,36 +508,13 @@ public final class ResultTopComponent extends TopComponent {
 
                 if (graphClass == PieChart.class) {
                     createPieChart(detm, componet);
+                } else {
+                    createXYChart(componet, detm, (Class<? extends XYChart>) graphClass);
                 }
-
             }
-        });
-        graphSwitch.open();
-        graphSwitch.requestActive();
+
+        }
 
     }
 
-    @Override
-    public void componentClosed() {
-        graphSwitch.close();
-    }
-
-    void writeProperties(java.util.Properties p
-    ) {
-        // better to version settings since initial version as advocated at
-        // http://wiki.apidesign.org/wiki/PropertyFiles
-        p.setProperty("version", "1.0");
-        // TODO store your settings
-    }
-
-    void readProperties(java.util.Properties p
-    ) {
-        String version = p.getProperty("version");
-        // TODO read your settings according to their version
-    }
-
-    @Override
-    public int getPersistenceType() {
-        return TopComponent.PERSISTENCE_NEVER;
-    }
 }
