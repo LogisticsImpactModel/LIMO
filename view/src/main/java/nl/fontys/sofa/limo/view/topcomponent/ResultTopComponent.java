@@ -347,9 +347,18 @@ public final class ResultTopComponent extends TopComponent {
         model.setOnlyOneEnabled(true);
         model.removeAllListeners();
         model.addTableModelListener((TableModelEvent e) -> {
-            Platform.runLater(() -> {
-                chart.updateData();
-            });
+            if (e.getLastRow() != e.getFirstRow()) {
+                Platform.runLater(() -> {
+                    chart.updateData();
+                });
+            }
+            if (parent == nodeGraphPanel) {
+                nodesTable.tableChanged(e);
+            } else if (parent == totalGraphPanel) {
+                totalsTable.tableChanged(e);
+            } else if (parent == categoryGraphPanel) {
+                categoryTable.tableChanged(e);
+            }
         });
         Platform.setImplicitExit(false);
         Platform.runLater(() -> {
@@ -391,13 +400,12 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         nodeDetm = new DataEntryTableModel(names, map);
         nodeDetm.setOnlyOneEnabled(false);
-        nodesTable = new JTable(nodeDetm);
 
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        categoryTable = new LimoTable(nodeDetm);
+        nodesTable = new LimoTable(nodeDetm);
         nodeGraphPanel = new JPanel(new BorderLayout());
-        JScrollPane catJScrollPane = new JScrollPane(categoryTable);
+        JScrollPane catJScrollPane = new JScrollPane(nodesTable);
         createXYChart(nodeGraphPanel, nodeDetm, LineChart.class);
 
         panel.add(nodeGraphPanel);
