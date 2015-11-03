@@ -439,53 +439,61 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             AbstractBeanNode node = (AbstractBeanNode) NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
 
             if (node instanceof EventNode) {
-                Event event = node.getLookup().lookup(Event.class);
-                System.out.println("Test");
-                List<Widget> hitlist = new ArrayList<>();
-                mainLayer.getChildren().forEach((w) -> {
-                    Point p = w.convertSceneToLocal(point);
-                    if (w.isHitAt(p)) {
-                        hitlist.add(w);
-                    }
-                });
-                connectionLayer.getChildren().forEach((c) -> {
-                    Point p = c.convertSceneToLocal(point);
-                    Rectangle r = new Rectangle(p);
-                    r.width = 25;
-                    r.height = 25;
-                    r.x -= r.width / 2;
-                    r.y -= r.height / 2;
-
-                    if (c.getBounds().contains(r)) {
-                        hitlist.add(c);
-                    }
-                });
-
-                hitlist.forEach((w) -> {
-                    if (w instanceof HubWidget) {
-                        HubWidget hubWidget = (HubWidget) w;
-                        System.out.println(hubWidget.getHub().getName());
-                        hubWidget.getHub().getEvents().add(event);
-                    } else if (w instanceof LegWidget) {
-                        LegWidget legWidget = (LegWidget) w;
-                        legWidget.getLeg().getEvents().add(event);
-                    }
-                });
-                mainLayer.revalidate();
-                connectionLayer.revalidate();
+                acceptEvent(node, point);
             } else {
-                AbstractBeanNode detachedNode = node.getDetachedNodeCopy();
-                BasicWidget w = (BasicWidget) scene.addNode(detachedNode);
-                detachedNode.addPropertyChangeListener(w);
-                w.drop(scene, widget, point);
-
-                if (undoManager != null) {
-                    UndoableEditEvent event = new UndoableEditEvent(w, new AddHubWidgetUndoableEdit(scene, (HubWidget) w));
-                    undoManager.undoableEditHappened(event);
-                }
-                TopComponent comp = (TopComponent) parent;
-                comp.requestActive();
+                acceptHub(node, widget, point);
             }
+        }
+
+        private void acceptHub(AbstractBeanNode node, Widget widget, Point point) {
+            AbstractBeanNode detachedNode = node.getDetachedNodeCopy();
+            BasicWidget w = (BasicWidget) scene.addNode(detachedNode);
+            detachedNode.addPropertyChangeListener(w);
+            w.drop(scene, widget, point);
+            
+            if (undoManager != null) {
+                UndoableEditEvent event = new UndoableEditEvent(w, new AddHubWidgetUndoableEdit(scene, (HubWidget) w));
+                undoManager.undoableEditHappened(event);
+            }
+            TopComponent comp = (TopComponent) parent;
+            comp.requestActive();
+        }
+
+        private void acceptEvent(AbstractBeanNode node, Point point) {
+            Event event = node.getLookup().lookup(Event.class);
+            System.out.println("Test");
+            List<Widget> hitlist = new ArrayList<>();
+            mainLayer.getChildren().forEach((w) -> {
+                Point p = w.convertSceneToLocal(point);
+                if (w.isHitAt(p)) {
+                    hitlist.add(w);
+                }
+            });
+            connectionLayer.getChildren().forEach((c) -> {
+                Point p = c.convertSceneToLocal(point);
+                Rectangle r = new Rectangle(p);
+                r.width = 25;
+                r.height = 25;
+                r.x -= r.width / 2;
+                r.y -= r.height / 2;
+                
+                if (c.getBounds().contains(r)) {
+                    hitlist.add(c);
+                }
+            });
+            
+            hitlist.forEach((w) -> {
+                if (w instanceof HubWidget) {
+                    HubWidget hubWidget = (HubWidget) w;
+                    System.out.println(hubWidget.getHub().getName());
+                    hubWidget.getHub().getEvents().add(event);
+                } else if (w instanceof LegWidget) {
+                    LegWidget legWidget = (LegWidget) w;
+                    legWidget.getLeg().getEvents().add(event);
+                }
+            });
+            mainLayer.revalidate();
+            connectionLayer.revalidate();
         }
     }
 
