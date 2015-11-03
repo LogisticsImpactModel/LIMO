@@ -15,6 +15,7 @@ import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.netbeans.spi.palette.PaletteController;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -39,7 +40,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     private ExplorerManager em = new ExplorerManager();
     private ChainGraphScene graphScene;
     private SavableComponent savable;
-
+    private PaletteController paletteController;
     private UndoRedo.Manager undoManager = new UndoRedo.Manager();
 
     /**
@@ -59,8 +60,8 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         try {
             savable = new SavableComponent(graphScene.getChainBuilder());
             
-            
-            Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
+            paletteController = ChainPaletteFactory.createPalette();
+            Lookup paletteLookup = Lookups.singleton(paletteController);
             Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
             Lookup graphLookup = Lookups.singleton(graphScene);
             Lookup savableLookup = Lookups.singleton(savable);
@@ -85,7 +86,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
 
-            graphScene = new ChainGraphSceneImpl(this, supplyChain, undoManager);
+            graphScene = new ChainGraphSceneImpl(this, supplyChain, undoManager,paletteController);
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);

@@ -14,6 +14,7 @@ import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.netbeans.spi.palette.PaletteController;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -59,12 +60,19 @@ public final class ChainBuilderTopComponent extends TopComponent
     private InstanceContent ic = new InstanceContent();
     SavableComponent savable;
     private UndoRedo.Manager undoManager = new UndoRedo.Manager();
+    private PaletteController paletteController;
 
     /**
      * Constructor creates a new ChainBuilderTopComponent.
      *
      */
     public ChainBuilderTopComponent(String name) {
+        try {
+            paletteController = ChainPaletteFactory.createPalette();
+        } catch (ServiceNotFoundException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+
         initComponents();
         initCustomComponents();
 
@@ -74,22 +82,13 @@ public final class ChainBuilderTopComponent extends TopComponent
 
         savable = new SavableComponent(graphScene.getChainBuilder());
 
-        try {
-            Lookup paletteLookup = Lookups.singleton(ChainPaletteFactory.createPalette());
-            Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
-            Lookup graphLookup = Lookups.singleton(graphScene);
-            Lookup savableLookup = Lookups.singleton(savable);
-            Lookup instanceContent = new AbstractLookup(ic);
-
-            ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup, instanceContent);
-
-            associateLookup(pl);
-        } catch (ServiceNotFoundException ex) {
-            Exceptions.printStackTrace(ex);
-            NotifyDescriptor d = new NotifyDescriptor.Message(LIMOResourceBundle.getString("LIMO_ERROR"),
-                    NotifyDescriptor.ERROR_MESSAGE);
-            DialogDisplayer.getDefault().notify(d);
-        }
+        Lookup paletteLookup = Lookups.singleton(paletteController);
+        Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
+        Lookup graphLookup = Lookups.singleton(graphScene);
+        Lookup savableLookup = Lookups.singleton(savable);
+        Lookup instanceContent = new AbstractLookup(ic);
+        ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup, instanceContent);
+        associateLookup(pl);
     }
 
     /**
@@ -102,7 +101,7 @@ public final class ChainBuilderTopComponent extends TopComponent
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
 
-            graphScene = new ChainGraphSceneImpl(this, chain, undoManager);
+            graphScene = new ChainGraphSceneImpl(this, chain, undoManager, paletteController);
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);
@@ -189,8 +188,9 @@ public final class ChainBuilderTopComponent extends TopComponent
                 Exceptions.printStackTrace(ex);
                 return false; //The supply chain window cannot be closed because an exception is trown while saving
             }
-        } else return retval.equals("Discard changes"); //Cancel is clicked or the dialog is closed
-        
+        } else {
+            return retval.equals("Discard changes"); //Cancel is clicked or the dialog is closed
+        }
         return true; //The supply chain window can now be closed
     }
 
