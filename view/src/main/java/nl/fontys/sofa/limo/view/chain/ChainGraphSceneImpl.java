@@ -443,6 +443,8 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             } else {
                 acceptHub(node, widget, point);
             }
+            TopComponent comp = (TopComponent) parent;
+            comp.requestActive();
         }
 
         private void acceptHub(AbstractBeanNode node, Widget widget, Point point) {
@@ -450,18 +452,18 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             BasicWidget w = (BasicWidget) scene.addNode(detachedNode);
             detachedNode.addPropertyChangeListener(w);
             w.drop(scene, widget, point);
-            
+
             if (undoManager != null) {
                 UndoableEditEvent event = new UndoableEditEvent(w, new AddHubWidgetUndoableEdit(scene, (HubWidget) w));
                 undoManager.undoableEditHappened(event);
             }
             TopComponent comp = (TopComponent) parent;
             comp.requestActive();
+
         }
 
         private void acceptEvent(AbstractBeanNode node, Point point) {
             Event event = node.getLookup().lookup(Event.class);
-            System.out.println("Test");
             List<Widget> hitlist = new ArrayList<>();
             mainLayer.getChildren().forEach((w) -> {
                 Point p = w.convertSceneToLocal(point);
@@ -476,16 +478,15 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 r.height = 25;
                 r.x -= r.width / 2;
                 r.y -= r.height / 2;
-                
+
                 if (c.getBounds().contains(r)) {
                     hitlist.add(c);
                 }
             });
-            
+
             hitlist.forEach((w) -> {
                 if (w instanceof HubWidget) {
                     HubWidget hubWidget = (HubWidget) w;
-                    System.out.println(hubWidget.getHub().getName());
                     hubWidget.getHub().getEvents().add(event);
                 } else if (w instanceof LegWidget) {
                     LegWidget legWidget = (LegWidget) w;
