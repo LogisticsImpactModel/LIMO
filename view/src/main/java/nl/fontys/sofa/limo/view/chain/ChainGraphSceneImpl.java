@@ -488,9 +488,11 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 if (w instanceof HubWidget) {
                     HubWidget hubWidget = (HubWidget) w;
                     hubWidget.getHub().getEvents().add(event);
+                    hubWidget.updateLabels();
                 } else if (w instanceof LegWidget) {
                     LegWidget legWidget = (LegWidget) w;
                     legWidget.getLeg().getEvents().add(event);
+                    legWidget.updateLabels();
                 }
             });
             mainLayer.revalidate();
