@@ -42,6 +42,10 @@ public class TestCase implements Runnable {
     private TObjectDoubleMap<String> extraCostsByNode;
     private List<Event> executedEvents;
 
+    private double totalCO2;
+    private TObjectDoubleMap<String> co2ByCategory;
+    private TObjectDoubleMap<String> co2ByNode;
+
     private long lastDelay;
 
     private TestCaseResult result;
@@ -60,6 +64,7 @@ public class TestCase implements Runnable {
         totalLeadTimes = 0;
         totalDelays = 0;
         totalExtraCosts = 0;
+        totalCO2 = 0;
         costsByCategory = new TObjectDoubleHashMap<>(12);
         leadTimesByCategory = new TObjectDoubleHashMap<>(12);
         delaysByCategory = new TObjectDoubleHashMap<>(12);
@@ -68,6 +73,8 @@ public class TestCase implements Runnable {
         leadTimesByNode = new TObjectDoubleHashMap<>(12);
         delaysByNode = new TObjectDoubleHashMap<>(12);
         extraCostsByNode = new TObjectDoubleHashMap<>(12);
+        co2ByCategory = new TObjectDoubleHashMap<>(12);
+        co2ByNode = new TObjectDoubleHashMap<>(12);
         executedEvents = new ArrayList<>();
 
         lastDelay = 0;
@@ -91,7 +98,7 @@ public class TestCase implements Runnable {
             currentNode = currentNode.getNext();
         }
 
-        result = new TestCaseResult(supplyChain, totalCosts, totalLeadTimes, totalDelays, totalExtraCosts, costsByCategory, leadTimesByCategory, delaysByCategory, extraCostsByCategory, costsByNode, leadTimesByNode, delaysByNode, extraCostsByNode, executedEvents);
+        result = new TestCaseResult(supplyChain, totalCosts, totalLeadTimes, totalDelays, totalExtraCosts, totalCO2, costsByCategory, leadTimesByCategory, delaysByCategory, extraCostsByCategory, co2ByCategory, costsByNode, leadTimesByNode, delaysByNode, extraCostsByNode, co2ByNode, executedEvents);
     }
 
     private Node calculateScheduledLeg(Node currentNode, Node calcNode) {
@@ -149,9 +156,23 @@ public class TestCase implements Runnable {
         for (Procedure procedure : calcNode.getProcedures()) {
             double pCost = procedure.getCost().getValue();
             double pLeadTime = procedure.getTimeType().getMinutes(procedure.getTime().getValue());
+            double pCO2 = procedure.getCotwo().getValue();
 
             totalCosts += pCost;
             totalLeadTimes += pLeadTime;
+            totalCO2 += pCO2;
+
+            if (!co2ByCategory.containsKey(procedure.getCategory())) {
+                co2ByCategory.put(procedure.getCategory(), 0d);
+            }
+            double newCategoryCO2 = co2ByCategory.get(procedure.getCategory()) + pCO2;
+            co2ByCategory.put(procedure.getCategory(), newCategoryCO2);
+
+            if (!co2ByNode.containsKey(procedure.getCategory())) {
+                co2ByNode.put(procedure.getCategory(), 0d);
+            }
+            double newNodeCO2 = co2ByNode.get(procedure.getCategory()) + pCO2;
+            co2ByNode.put(procedure.getCategory(), newNodeCO2);
 
             if (!costsByCategory.containsKey(procedure.getCategory())) {
                 costsByCategory.put(procedure.getCategory(), 0d);
@@ -197,10 +218,23 @@ public class TestCase implements Runnable {
                     for (Procedure procedure : event.getProcedures()) {
                         double pExtraCost = procedure.getCost().getValue();
                         double pDelay = procedure.getTimeType().getMinutes(procedure.getTime().getValue());
-
+                        double pCO2 = procedure.getCotwo().getValue();
                         totalExtraCosts += pExtraCost;
                         totalDelays += pDelay;
                         lastDelay += pDelay;
+                        totalCO2 += pCO2;
+
+                        if (!co2ByCategory.containsKey(procedure.getCategory())) {
+                            co2ByCategory.put(procedure.getCategory(), 0d);
+                        }
+                        double newCategoryCO2 = co2ByCategory.get(procedure.getCategory()) + pCO2;
+                        co2ByCategory.put(procedure.getCategory(), newCategoryCO2);
+
+                        if (!co2ByNode.containsKey(procedure.getCategory())) {
+                            co2ByNode.put(procedure.getCategory(), 0d);
+                        }
+                        double newNodeCO2 = co2ByNode.get(procedure.getCategory()) + pCO2;
+                        co2ByNode.put(procedure.getCategory(), newNodeCO2);
 
                         if (!extraCostsByCategory.containsKey(procedure.getCategory())) {
                             extraCostsByCategory.put(procedure.getCategory(), 0d);
