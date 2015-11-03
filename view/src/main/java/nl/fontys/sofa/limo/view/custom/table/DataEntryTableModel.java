@@ -22,12 +22,14 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     public static final String LEAD_TIMES_ID = "LEAD_TIMES";
     public static final String EXTRA_COSTS_ID = "EXTRA_COSTS";
     public static final String DELAYS_ID = "DELAYS";
+    public static String CO2_ID = "CO2";
 
     private final List<String> names;
     private final List<DataEntry> costs;
     private final List<DataEntry> leadTimes;
     private final List<DataEntry> extraCosts;
     private final List<DataEntry> delays;
+    private final List<DataEntry> co2Values;
 
     private final List<Boolean> enabled;
     private boolean onlyOneEnabled = false;
@@ -38,9 +40,10 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
         this.leadTimes = dataEntries.get(LEAD_TIMES_ID);
         this.extraCosts = dataEntries.get(EXTRA_COSTS_ID);
         this.delays = dataEntries.get(DELAYS_ID);
+        this.co2Values = dataEntries.get(CO2_ID);
         this.enabled = new ArrayList();
         enabled.add(Boolean.FALSE);
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 15; i++) {
             enabled.add(true);
         }
     }
@@ -56,7 +59,7 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
 
     @Override
     public int getColumnCount() {
-        return 13;
+        return 16;
     }
 
     @Override
@@ -110,6 +113,12 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
                 return delays.get(rowIndex).getAvg();
             case 12:
                 return delays.get(rowIndex).getMax();
+            case 13:
+                return co2Values.get(rowIndex).getMin();
+            case 14:
+                return co2Values.get(rowIndex).getAvg();
+            case 15:
+                return co2Values.get(rowIndex).getMax();
             default:
                 return "";
         }
@@ -161,6 +170,12 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
                 return LIMOResourceBundle.getString("DELAYS AVG");
             case 12:
                 return LIMOResourceBundle.getString("DELAYS MAX");
+            case 13:
+                return LIMOResourceBundle.getString("CO2 MIN");
+            case 14:
+                return LIMOResourceBundle.getString("CO2 AVG");
+            case 15:
+                return LIMOResourceBundle.getString("CO2 MAX");
             default:
                 return "";
         }

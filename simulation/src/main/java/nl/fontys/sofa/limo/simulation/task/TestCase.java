@@ -168,11 +168,11 @@ public class TestCase implements Runnable {
             double newCategoryCO2 = co2ByCategory.get(procedure.getCategory()) + pCO2;
             co2ByCategory.put(procedure.getCategory(), newCategoryCO2);
 
-            if (!co2ByNode.containsKey(procedure.getCategory())) {
-                co2ByNode.put(procedure.getCategory(), 0d);
+            if (!co2ByNode.containsKey(calcNode.getName())) {
+                co2ByNode.put(calcNode.getName(), 0d);
             }
-            double newNodeCO2 = co2ByNode.get(procedure.getCategory()) + pCO2;
-            co2ByNode.put(procedure.getCategory(), newNodeCO2);
+            double newNodeCO2 = co2ByNode.get(calcNode.getName()) + pCO2;
+            co2ByNode.put(calcNode.getName(), newNodeCO2);
 
             if (!costsByCategory.containsKey(procedure.getCategory())) {
                 costsByCategory.put(procedure.getCategory(), 0d);
@@ -230,11 +230,11 @@ public class TestCase implements Runnable {
                         double newCategoryCO2 = co2ByCategory.get(procedure.getCategory()) + pCO2;
                         co2ByCategory.put(procedure.getCategory(), newCategoryCO2);
 
-                        if (!co2ByNode.containsKey(procedure.getCategory())) {
-                            co2ByNode.put(procedure.getCategory(), 0d);
+                        if (!co2ByNode.containsKey(nodeKey)) {
+                            co2ByNode.put(nodeKey, 0d);
                         }
-                        double newNodeCO2 = co2ByNode.get(procedure.getCategory()) + pCO2;
-                        co2ByNode.put(procedure.getCategory(), newNodeCO2);
+                        double newNodeCO2 = co2ByNode.get(nodeKey) + pCO2;
+                        co2ByNode.put(nodeKey, newNodeCO2);
 
                         if (!extraCostsByCategory.containsKey(procedure.getCategory())) {
                             extraCostsByCategory.put(procedure.getCategory(), 0d);
