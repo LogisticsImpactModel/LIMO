@@ -69,27 +69,78 @@ public class BeanValidator {
      * @throws ValidationException is thrown on bad validation
      */
     public <T> void validate(T bean) throws ValidationException {
+        validateOnly(bean);
+    }
+    
+    /**
+     * Validates beans depending on the given fields and throws exception on bad result.
+     * 
+     * @param bean bean to validate
+     * @param fieldNames field names to consider only
+     * @throws ValidationException is thrown on bad validation
+     */
+    public <T> void validateOnly(T bean, String ... fieldNames) throws ValidationException {
+        validateInternally(bean, false, fieldNames);
+    }
+
+    /**
+     * Validates beans by ignoring the given fields and throws exception on bad result.
+     * 
+     * @param bean bean to validate
+     * @param fieldNames field names to ignore
+     * @throws ValidationException is thrown on bad validation
+     */
+    public <T> void validateWithout(T bean, String ... fieldNames) throws ValidationException {
+        validateInternally(bean, true, fieldNames);
+    }
+    
+    private <T> void validateInternally(T bean, boolean exclude, String ... fieldNames) throws ValidationException{
         Class<?> clazz = bean.getClass();
         do {
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
                 boolean accessible = field.isAccessible();
                 field.setAccessible(true);
-                for (Annotation annotation : field.getAnnotations()) {
-                    try {
-                        FieldValidator validator = validators.get(annotation.annotationType());
-                        if (validator != null) {
-                            validator.validate(annotation, field, field.get(bean));
+                boolean valid = exclude ? isFieldExcluded(field, fieldNames) : isFieldValid(field, fieldNames);
+                if (valid) {
+                    for (Annotation annotation : field.getAnnotations()) {
+                        try {
+                            FieldValidator validator = validators.get(annotation.annotationType());
+                            if (validator != null) {
+                                validator.validate(annotation, field, field.get(bean));
+                            }
+                        } catch (IllegalAccessException ex) {
+
                         }
-                    } catch (IllegalArgumentException ex) {
-
-                    } catch (IllegalAccessException ex) {
-
                     }
                 }
                 field.setAccessible(accessible);
             }
             clazz = clazz.getSuperclass();
         } while (clazz != null);
+    }
+    
+    private boolean isFieldValid(Field field, String ... fieldNames) {
+        if (fieldNames.length == 0) {
+            return true;
+        }
+        for (String name : fieldNames) {
+            if (name.equals(field.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean isFieldExcluded(Field field, String ... fieldNames) {
+        if (fieldNames.length == 0) {
+            return false;
+        }
+        for (String name : fieldNames) {
+            if (name.equals(field.getName())) {
+                return false;
+            }
+        }
+        return true;
     }
 }
