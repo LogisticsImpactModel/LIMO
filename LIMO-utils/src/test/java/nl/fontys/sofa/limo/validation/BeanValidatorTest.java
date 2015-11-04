@@ -45,11 +45,11 @@ public class BeanValidatorTest {
         try {
             validator.validateWithout(bean, "maxValue");
         } catch (ValidationException ex) {
-            fail("Validate only should work here.");
+            fail("Validate without should work here.");
         }
         try {
             validator.validateWithout(bean, "minValue");
-            fail("Validate only should fail here.");
+            fail("Validate without should fail here.");
         } catch (ValidationException ex) {
            
         }
@@ -57,14 +57,14 @@ public class BeanValidatorTest {
         bean.maxValue = 11;
         try {
             validator.validateWithout(bean, "maxValue");
-            fail("Validate only should fail here.");
+            fail("Validate without should fail here.");
         } catch (ValidationException ex) {                     
             
         }
         try {
             validator.validateWithout(bean, "minValue", "maxValue");   
         } catch (ValidationException ex) {                     
-            fail("Validate only should not fail here.");
+            fail("Validate without should not fail here.");
         }
         
     }
