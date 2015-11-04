@@ -125,7 +125,6 @@ public class BeanValidator {
             return true;
         }
         for (String name : fieldNames) {
-            System.out.println(name + " " + field.getName() + " " + name.equals(field.getName()));
             if (name.equals(field.getName())) {
                 return true;
             }
