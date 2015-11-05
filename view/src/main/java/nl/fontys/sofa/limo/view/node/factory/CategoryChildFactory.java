@@ -35,7 +35,7 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
 
     private HubChildFactory hubFactory;
     private LegTypeChildFactory legFactory;
-    private ProcedureCategoryChildFactory procedureFactory;
+    private ProcedureChildFactory procedureFactory;
     private EventChildFactory eventFactory;
     private Result<Hub> lookupResult;
 
@@ -73,7 +73,7 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
             list.add(legRootNode);
             
             //Procedure
-            procedureFactory = new ProcedureCategoryChildFactory();
+            procedureFactory = new ProcedureChildFactory();
             Children procedureChildren = Children.create(procedureFactory, false);
             AbstractRootNode procedureRootNode = new ProcedureCategoryRootNode(procedureChildren);
             procedureRootNode.setDisplayName("Procedures");
