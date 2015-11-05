@@ -3,9 +3,11 @@ package nl.fontys.sofa.limo.simulation.result;
 import gnu.trove.procedure.TObjectDoubleProcedure;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.event.Event;
@@ -56,7 +58,7 @@ public class SimulationResult {
         this.eventExecutionRate = new ConcurrentHashMap<>();
         this.executedEvents = new ConcurrentHashMap<>();
         this.testCaseCount = new AtomicInteger();
-        this.results = new ArrayList<>();
+        this.results = new CopyOnWriteArrayList<>();
     }
 
     public List<TestCaseResult> getResults() {
@@ -233,8 +235,34 @@ public class SimulationResult {
                 this.eventExecutionRate.put(event.getUniqueIdentifier(), newAvg);
             }
         }
-        if (testCaseCount.intValue() % 100 == 0) {
-            this.results.add(tcr);
+        double mean = 0;
+        if (results.size() < 1000 || tcr.getExecutedEvents().size() > mean) {
+
+            if (results.size() < 1000) {
+                this.results.add(tcr);
+            } else {
+                this.results.remove(results.size()/2);
+                results.add(tcr);
+            }
+            Collections.sort(results, (TestCaseResult o1, TestCaseResult o2) -> {
+                if (o1 == null) {
+                    return 1;
+                }
+                if (o2 == null) {
+                    return -1;
+                }
+
+                if (o1.getExecutedEvents().size() <= o2.getExecutedEvents().size()) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            });
+
+            int value = 0;
+            value = results.stream().map((d) -> d.getExecutedEvents().size()).reduce(value, Integer::sum);
+            mean = value / results.size();
+
         }
         this.testCaseCount.incrementAndGet();
     }

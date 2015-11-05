@@ -167,6 +167,7 @@ public final class ResultTopComponent extends TopComponent {
             List<Double> leadTimes = new ArrayList<>();
             List<Double> extraCosts = new ArrayList<>();
             List<Double> delay = new ArrayList<>();
+            List<Double> eventCount = new ArrayList<>();
             final List<String> name = new ArrayList<>();
             for (int i = 0; i < testCaseResults.size(); i++) {
                 TestCaseResult result = testCaseResults.get(i);
@@ -174,12 +175,14 @@ public final class ResultTopComponent extends TopComponent {
                 leadTimes.add(result.getTotalLeadTimes());
                 extraCosts.add(result.getTotalExtraCosts());
                 delay.add(result.getTotalDelays());
+                eventCount.add(new Double(result.getExecutedEvents().size()));
                 name.add("Single Run:" + i);
             }
-            singleMap.put(DataEntryTableModel.COSTS_ID, cost);
-            singleMap.put(DataEntryTableModel.LEAD_TIMES_ID, leadTimes);
-            singleMap.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
-            singleMap.put(DataEntryTableModel.DELAYS_ID, delay);
+            singleMap.put(SingleCaseTableModel.COSTS_ID, cost);
+            singleMap.put(SingleCaseTableModel.LEAD_TIMES_ID, leadTimes);
+            singleMap.put(SingleCaseTableModel.EXTRA_COSTS_ID, extraCosts);
+            singleMap.put(SingleCaseTableModel.DELAYS_ID, delay);
+            singleMap.put(SingleCaseTableModel.EVENT_ID,eventCount);
             SingleCaseTableModel detm = new SingleCaseTableModel(name, singleMap);
             totalsTable = new JTable(detm);
             return new JScrollPane(totalsTable);
