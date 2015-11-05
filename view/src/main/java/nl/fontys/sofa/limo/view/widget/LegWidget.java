@@ -44,6 +44,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
 
     private Map<Leg, Double> legs;
     private LegNode legNode;
+    private LabelWidget eventLabelWidget, procedureLabelWidget;
 
     /**
      * Constructor creates a new LegWidget.
@@ -95,20 +96,34 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
 
         if (!(leg instanceof MultiModeLeg)) {
             if (getLeg().getProcedures() != null && !getLeg().getProcedures().isEmpty()) {
-                LabelWidget procedureLabelWidget = new LabelWidget(getScene(), "Procedures: " + getLeg().getProcedures().size());
+                procedureLabelWidget = new LabelWidget(getScene(), "Procedures: " + getLeg().getProcedures().size());
                 procedureLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
 
                 this.setConstraint(procedureLabelWidget, LayoutFactory.ConnectionWidgetLayoutAlignment.BOTTOM_RIGHT, 40);
                 this.addChild(procedureLabelWidget);
             }
 
-            if (getLeg().getEvents() != null && !getLeg().getEvents().isEmpty()) {
-                LabelWidget eventLabelWidget = new LabelWidget(getScene(), "Events: " + getLeg().getEvents().size());
+            if (getLeg().getEvents() != null) {
+                if(getLeg().getEvents().isEmpty()){
+                eventLabelWidget = new LabelWidget(getScene(), "");
+                    
+                }else{
+                eventLabelWidget = new LabelWidget(getScene(), "Events: " + getLeg().getEvents().size());
+                }
                 eventLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
 
                 this.setConstraint(eventLabelWidget, LayoutFactory.ConnectionWidgetLayoutAlignment.BOTTOM_RIGHT, 40);
                 this.addChild(eventLabelWidget);
             }
+        }
+    }
+
+    public void updateLabels() {
+        procedureLabelWidget.setLabel("Procedures: " + getLeg().getProcedures().size());
+        if (getLeg().getEvents().isEmpty()) {
+            eventLabelWidget.setLabel("");
+        } else {
+            eventLabelWidget.setLabel("Events: " + getLeg().getEvents().size());
         }
     }
 

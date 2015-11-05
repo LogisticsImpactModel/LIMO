@@ -16,14 +16,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.undo.UndoManager;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
-import nl.fontys.sofa.limo.domain.component.event.distribution.DiscreteDistribution;
-import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
-import nl.fontys.sofa.limo.view.node.factory.EventChildFactory;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.util.undoable.events.EventUndoableEdit;
 import nl.fontys.sofa.limo.view.util.undoable.widget.hub.DeleteHubWidgetUndoableEdit;
@@ -251,10 +249,32 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                 }
             });
             
-            JMenu eventMenu = new JMenu("Events");
+            JMenu procedureMenu = new JMenu("Proceduren");
+            ProcedureService procedureService = Lookup.getDefault().lookup(ProcedureService.class);
+            List<Procedure> procedureList = procedureService.findAll();
+            procedureList.stream().forEach((procedure) -> {
+                procedureMenu.add(new AbstractAction(procedure.getName()){
+
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        List<Procedure> procedureListOfHub = HubWidget.this.getHub().getProcedures();
+                        
+                        Procedure selected = procedureService.findById(procedure.getId());
+                        selected.setId(null);
+                        
+                        //eventListOfHub.add(new Event(event.getName(), event.getDescription(), event.getDependency(), event.getProbability(), event.getExecutionState()));
+                        procedureListOfHub.add(selected);
+                        HubWidget.this.getHub().setProcedures(procedureListOfHub);
+                        updateLabels();
+                        
+                    }
+                });
+            });
             
-            EventService service = Lookup.getDefault().lookup(EventService.class);
-            List<Event> eventList = service.findAll();
+            
+            JMenu eventMenu = new JMenu("Events");
+            EventService eventService = Lookup.getDefault().lookup(EventService.class);
+            List<Event> eventList = eventService.findAll();
             for (Event event : eventList) {
             
                 eventMenu.add(new AbstractAction(event.getName()){
@@ -263,7 +283,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     public void actionPerformed(ActionEvent ae) {
                         List<Event> eventListOfHub = HubWidget.this.getHub().getEvents();
                         
-                        Event selected = service.findById(event.getId());
+                        Event selected = eventService.findById(event.getId());
                         selected.setId(null);
                         
                         //eventListOfHub.add(new Event(event.getName(), event.getDescription(), event.getDependency(), event.getProbability(), event.getExecutionState()));
