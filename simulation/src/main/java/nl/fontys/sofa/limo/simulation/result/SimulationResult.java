@@ -1,7 +1,9 @@
 package nl.fontys.sofa.limo.simulation.result;
 
 import gnu.trove.procedure.TObjectDoubleProcedure;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,6 +37,8 @@ public class SimulationResult {
     private final Map<String, Event> executedEvents;
     private final AtomicInteger testCaseCount;
 
+    private final List<TestCaseResult> results;
+
     public SimulationResult(SupplyChain supplyChain) {
         this.supplyChain = supplyChain;
         this.totalCosts = new DataEntry();
@@ -52,6 +56,11 @@ public class SimulationResult {
         this.eventExecutionRate = new ConcurrentHashMap<>();
         this.executedEvents = new ConcurrentHashMap<>();
         this.testCaseCount = new AtomicInteger();
+        this.results = new ArrayList<>();
+    }
+
+    public List<TestCaseResult> getResults() {
+        return results;
     }
 
     public SupplyChain getSupplyChain() {
@@ -224,7 +233,9 @@ public class SimulationResult {
                 this.eventExecutionRate.put(event.getUniqueIdentifier(), newAvg);
             }
         }
-
+        if (testCaseCount.intValue() % 100 == 0) {
+            this.results.add(tcr);
+        }
         this.testCaseCount.incrementAndGet();
     }
 

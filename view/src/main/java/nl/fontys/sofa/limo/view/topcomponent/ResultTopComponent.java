@@ -33,8 +33,10 @@ import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.externaltrader.CSVExporter;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
+import nl.fontys.sofa.limo.simulation.result.TestCaseResult;
 import nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel;
 import nl.fontys.sofa.limo.view.custom.table.LimoTable;
+import nl.fontys.sofa.limo.view.custom.table.SingleCaseTableModel;
 import nl.fontys.sofa.limo.view.graphs.PieChartComponent;
 import nl.fontys.sofa.limo.view.graphs.XYChartComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -97,6 +99,7 @@ public final class ResultTopComponent extends TopComponent {
         if (results.size() == 1) {
             jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("CATEGORY")), createCategoryPane());
             jTabbedPane1.addTab(LIMOResourceBundle.getString("BY", LIMOResourceBundle.getString("NODE")), createNodePane());
+            jTabbedPane1.addTab("Single Results", createSinglePane());
         }
 
         jButton1.addActionListener((ActionEvent e) -> {
@@ -152,6 +155,38 @@ public final class ResultTopComponent extends TopComponent {
                 CSVExporter.exportTables(absolute, new JTable[]{totalsTable, categoryTable, nodesTable}, new String[]{"Totals", "By Categories", "By Nodes"});
             }
         });
+
+    }
+
+    private Component createSinglePane() {
+
+        if (results.size() == 1) {
+            Map<String, List<Double>> singleMap = new HashMap<>();
+            List<TestCaseResult> testCaseResults = results.get(0).getResults();
+            List<Double> cost = new ArrayList<>();
+            List<Double> leadTimes = new ArrayList<>();
+            List<Double> extraCosts = new ArrayList<>();
+            List<Double> delay = new ArrayList<>();
+            final List<String> name = new ArrayList<>();
+            for (int i = 0; i < testCaseResults.size(); i++) {
+                TestCaseResult result = testCaseResults.get(i);
+                cost.add(result.getTotalCosts());
+                leadTimes.add(result.getTotalLeadTimes());
+                extraCosts.add(result.getTotalExtraCosts());
+                delay.add(result.getTotalDelays());
+                name.add("Single Run:" + i);
+            }
+            singleMap.put(DataEntryTableModel.COSTS_ID, cost);
+            singleMap.put(DataEntryTableModel.LEAD_TIMES_ID, leadTimes);
+            singleMap.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
+            singleMap.put(DataEntryTableModel.DELAYS_ID, delay);
+            SingleCaseTableModel detm = new SingleCaseTableModel(name, singleMap);
+            totalsTable = new JTable(detm);
+            return new JScrollPane(totalsTable);
+
+        } else {
+            return null;
+        }
 
     }
 
