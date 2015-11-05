@@ -129,6 +129,8 @@ public class SimulationResult {
         return testCaseCount.get();
     }
 
+    private double mean = 0;
+
     /**
      * Adds a test case result to this simulation result.
      *
@@ -235,13 +237,13 @@ public class SimulationResult {
                 this.eventExecutionRate.put(event.getUniqueIdentifier(), newAvg);
             }
         }
-        double mean = 0;
+
         if (results.size() < 1000 || tcr.getExecutedEvents().size() > mean) {
 
             if (results.size() < 1000) {
                 this.results.add(tcr);
             } else {
-                this.results.remove(results.size()/2);
+                this.results.remove(results.size() / 2);
                 results.add(tcr);
             }
             Collections.sort(results, (TestCaseResult o1, TestCaseResult o2) -> {
@@ -252,11 +254,20 @@ public class SimulationResult {
                     return -1;
                 }
 
-                if (o1.getExecutedEvents().size() <= o2.getExecutedEvents().size()) {
+                if (o1.getExecutedEvents().size() == o2.getExecutedEvents().size()) {
+                    if (o1.getTotalDelays() <= o2.getTotalDelays()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+
+                if (o1.getExecutedEvents().size() < o2.getExecutedEvents().size()) {
                     return 1;
                 } else {
                     return -1;
                 }
+
             });
 
             int value = 0;
