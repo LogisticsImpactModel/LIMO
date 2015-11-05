@@ -49,6 +49,12 @@ public final class ChainLoaderTopComponent extends TopComponent implements
      * @param chainFile the file where the supplychain is located.
      */
     public ChainLoaderTopComponent(File chainFile) {
+        try {
+            paletteController = ChainPaletteFactory.createPalette();
+        } catch (ServiceNotFoundException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+
         initComponents();
         SupplyChain supplyChain = SupplyChain.createFromFile(chainFile);
         supplyChain.setName(chainFile.getName());
@@ -57,22 +63,13 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         setName(supplyChain.getName().replace(".lsc", ""));
         initCustomComponents(supplyChain);
 
-        try {
-            savable = new SavableComponent(graphScene.getChainBuilder());
-            
-            paletteController = ChainPaletteFactory.createPalette();
-            Lookup paletteLookup = Lookups.singleton(paletteController);
-            Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
-            Lookup graphLookup = Lookups.singleton(graphScene);
-            Lookup savableLookup = Lookups.singleton(savable);
-            ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup);
-            associateLookup(pl);
-        } catch (ServiceNotFoundException ex) {
-            Exceptions.printStackTrace(ex);
-            NotifyDescriptor d = new NotifyDescriptor.Message(LIMOResourceBundle.getString("LIMO_ERROR"),
-                    NotifyDescriptor.ERROR_MESSAGE);
-            DialogDisplayer.getDefault().notify(d);
-        }
+        savable = new SavableComponent(graphScene.getChainBuilder());
+        Lookup paletteLookup = Lookups.singleton(paletteController);
+        Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
+        Lookup graphLookup = Lookups.singleton(graphScene);
+        Lookup savableLookup = Lookups.singleton(savable);
+        ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup);
+        associateLookup(pl);
     }
 
     /**
@@ -86,7 +83,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
 
-            graphScene = new ChainGraphSceneImpl(this, supplyChain, undoManager,paletteController);
+            graphScene = new ChainGraphSceneImpl(this, supplyChain, undoManager, paletteController);
             JScrollPane shapePane = new JScrollPane();
             JComponent createView = graphScene.createView();
             createView.putClientProperty("print.printable", Boolean.TRUE);
@@ -99,9 +96,6 @@ public final class ChainLoaderTopComponent extends TopComponent implements
             Exceptions.printStackTrace(ex);
         }
     }
-    
-    
-
 
     /**
      * Check if the TopComponent is ready to close. In this case, the user is
@@ -124,11 +118,11 @@ public final class ChainLoaderTopComponent extends TopComponent implements
                 Exceptions.printStackTrace(ex);
                 return false; //The supply chain window cannot be closed because an exception is trown while saving
             }
-        } else if (retval.equals("Cancel")){
+        } else if (retval.equals("Cancel")) {
             return false;
+        } else {
+            return retval.equals("Discard changes"); //Cancel is clicked or the dialog is closed
         }
-        else return retval.equals("Discard changes"); //Cancel is clicked or the dialog is closed
-        
         return true; //The supply chain window can now be closed
     }
 
@@ -194,7 +188,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     void readProperties(java.util.Properties p) {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
-        
+
     }
 
 }

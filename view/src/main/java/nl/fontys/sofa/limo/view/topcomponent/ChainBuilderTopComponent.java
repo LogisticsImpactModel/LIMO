@@ -17,7 +17,6 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.spi.palette.PaletteController;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;

@@ -3,7 +3,11 @@ package nl.fontys.sofa.limo.view.chain;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.IntrospectionException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +30,7 @@ import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.bean.EventNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
+import nl.fontys.sofa.limo.view.node.bean.LegTypeNode;
 import nl.fontys.sofa.limo.view.node.bean.MultiModeLegNode;
 import nl.fontys.sofa.limo.view.node.bean.ScheduledLegNode;
 import nl.fontys.sofa.limo.view.node.factory.LegTypeChildFactory;
@@ -53,6 +58,9 @@ import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.spi.palette.PaletteController;
+import org.openide.DialogDescriptor;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.nodes.NodeTransfer;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
@@ -426,10 +434,11 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             this.scene = scene;
         }
 
+        private boolean showLegNotification = false;
+
         @Override
         public ConnectorState isAcceptable(Widget widget, Point point, Transferable transferable) {
             org.openide.nodes.Node node = NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
-
             if (node instanceof WidgetableNode) {
                 WidgetableNode widgetNode = (WidgetableNode) node;
                 if (widgetNode.isAcceptable(widget, point)) {
@@ -438,6 +447,27 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             } else if (node instanceof EventNode) {
                 return ConnectorState.ACCEPT;
             }
+
+            if (node instanceof LegTypeNode) {
+
+                if (!showLegNotification) {
+                    showLegNotification = true;
+
+                    DialogDescriptor nd = new DialogDescriptor("Just select the leg type from the palette and draw the line with ctrl key between the two hubs.", "Information", false, new String[]{"OK"}, null, DialogDescriptor.DEFAULT_ALIGN, null, null);
+                    nd.setButtonListener((ActionEvent e) -> {
+                        showLegNotification = false;
+                    });
+                    nd.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+                        if (evt.getNewValue() == DialogDescriptor.CANCEL_OPTION || evt.getNewValue() == DialogDescriptor.CLOSED_OPTION) {
+                            showLegNotification = false;
+                        }
+                    });
+                    DialogDisplayer.getDefault().notifyLater(nd);
+                }
+
+                return ConnectorState.REJECT_AND_STOP;
+            }
+
             return ConnectorState.REJECT;
         }
 
