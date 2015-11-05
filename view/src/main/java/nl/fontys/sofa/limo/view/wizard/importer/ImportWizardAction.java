@@ -8,18 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
 import nl.fontys.sofa.limo.api.dao.DAO;
-import nl.fontys.sofa.limo.api.dao.EventDAO;
-import nl.fontys.sofa.limo.api.dao.HubDAO;
-import nl.fontys.sofa.limo.api.dao.HubTypeDAO;
-import nl.fontys.sofa.limo.api.dao.LegTypeDAO;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
@@ -98,6 +96,9 @@ public final class ImportWizardAction implements ActionListener {
             }
             if (entity instanceof Event) {
                 ImportWizardAction.<Event>updateItem((Event) entity, EventService.class);
+            }
+            if (entity instanceof Procedure) {
+                ImportWizardAction.<Procedure>updateItem((Procedure) entity, ProcedureService.class);
             }
         }
     }

@@ -12,6 +12,7 @@ import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.MasterData;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
@@ -39,6 +40,8 @@ public class MasterDataDeserializer implements JsonDeserializer<MasterData> {
         }.getType();
         Type tHub = new TypeToken<ArrayList<Hub>>() {
         }.getType();
+        Type tProcedures = new TypeToken<ArrayList<Procedure>>() {
+        }.getType();
 
         ArrayList<LegType> legTypeList = g.fromJson(obj.get("legtypes"), tLegtypes);
         ArrayList<BaseEntity> beLegTypeList = new ArrayList<>();
@@ -59,13 +62,18 @@ public class MasterDataDeserializer implements JsonDeserializer<MasterData> {
         ArrayList<Hub> hubList = g.fromJson(obj.get("hubs"), tHub);
         ArrayList<BaseEntity> beHubList = new ArrayList<>();
         beHubList.addAll(hubList);
-
+        
+        if(obj.get("basicProcedures") == null) {
+            ArrayList<Procedure> procedureList = g.fromJson(obj.get("basicProcedures"), tProcedures);
+            ArrayList<BaseEntity> beProcedureList = new ArrayList<>();
+            beProcedureList.addAll(procedureList);
+            md.setBasicProcedures(beProcedureList);
+        }
         md.setLegtypes(beLegTypeList);
         md.setEvents(beEventList);
         md.setCategories(beCatList);
         md.setHubtypes(beHubTypeList);
         md.setHubs(beHubList);
-
         return md;
     }
 
