@@ -19,6 +19,7 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
@@ -26,6 +27,7 @@ import nl.fontys.sofa.limo.view.node.bean.EventNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
 import nl.fontys.sofa.limo.view.node.bean.MultiModeLegNode;
+import nl.fontys.sofa.limo.view.node.bean.ProcedureNode;
 import nl.fontys.sofa.limo.view.node.bean.ScheduledLegNode;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -430,6 +432,8 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 }
             } else if (node instanceof EventNode) {
                 return ConnectorState.ACCEPT;
+            } else if (node instanceof ProcedureNode) {
+                return ConnectorState.ACCEPT;
             }
             return ConnectorState.REJECT;
         }
@@ -440,6 +444,8 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
             if (node instanceof EventNode) {
                 acceptEvent(node, point);
+            } else if (node instanceof ProcedureNode) {
+                acceptProcedure(node, point);
             } else {
                 acceptHub(node, widget, point);
             }
@@ -492,6 +498,43 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 } else if (w instanceof LegWidget) {
                     LegWidget legWidget = (LegWidget) w;
                     legWidget.getLeg().getEvents().add(event);
+                    legWidget.updateLabels();
+                }
+            });
+            mainLayer.revalidate();
+            connectionLayer.revalidate();
+        }
+        
+        private void acceptProcedure(AbstractBeanNode node, Point point) {
+            Procedure procedure = node.getLookup().lookup(Procedure.class);
+            List<Widget> hitlist = new ArrayList<>();
+            mainLayer.getChildren().forEach((w) -> {
+                Point p = w.convertSceneToLocal(point);
+                if (w.isHitAt(p)) {
+                    hitlist.add(w);
+                }
+            });
+            connectionLayer.getChildren().forEach((c) -> {
+                Point p = c.convertSceneToLocal(point);
+                Rectangle r = new Rectangle(p);
+                r.width = 25;
+                r.height = 25;
+                r.x -= r.width / 2;
+                r.y -= r.height / 2;
+
+                if (c.getBounds().contains(r)) {
+                    hitlist.add(c);
+                }
+            });
+
+            hitlist.forEach((w) -> {
+                if (w instanceof HubWidget) {
+                    HubWidget hubWidget = (HubWidget) w;
+                    hubWidget.getHub().getProcedures().add(procedure);
+                    hubWidget.updateLabels();
+                } else if (w instanceof LegWidget) {
+                    LegWidget legWidget = (LegWidget) w;
+                    legWidget.getLeg().getProcedures().add(procedure);
                     legWidget.updateLabels();
                 }
             });
