@@ -1,11 +1,12 @@
 package nl.fontys.sofa.limo.view.custom.panel;
 
 import java.awt.BorderLayout;
-import java.util.List;
 import javax.swing.JPanel;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
-import nl.fontys.sofa.limo.view.custom.procedure.StandartProcedureComponent;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import nl.fontys.sofa.limo.api.dao.ProcedureDAO;
+import nl.fontys.sofa.limo.view.custom.procedure.AddStandartProcedureDialog;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.openide.util.Lookup;
 
 /**
  * This panel can be used by the wizards which uses procedures.
@@ -14,8 +15,9 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
  */
 public final class StandartProceduresPanel extends JPanel {
 
-    private StandartProcedureComponent procedureComponent;
-
+    private AddStandartProcedureDialog addProcedureDialog;
+    protected ProcedureDAO procedureDao;
+    
     public StandartProceduresPanel() {
         initComponents();
     }
@@ -27,16 +29,11 @@ public final class StandartProceduresPanel extends JPanel {
 
     private void initComponents() {
         setLayout(new BorderLayout());
-        procedureComponent = new StandartProcedureComponent();
-        add(procedureComponent, BorderLayout.CENTER);
+        
+        procedureDao = Lookup.getDefault().lookup(ProcedureDAO.class);
+        addProcedureDialog = new AddStandartProcedureDialog(procedureDao, null);
+        addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        addProcedureDialog.setVisible(true);
+        add(addProcedureDialog, BorderLayout.CENTER);
     }
-
-    public void update(List<Procedure> list) {
-        procedureComponent.setProcedureTable(list);
-    }
-
-    public List<Procedure> getProcedures() {
-        return procedureComponent.getActiveTableState();
-    }
-
 }
