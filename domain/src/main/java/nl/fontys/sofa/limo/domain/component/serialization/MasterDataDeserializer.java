@@ -63,7 +63,7 @@ public class MasterDataDeserializer implements JsonDeserializer<MasterData> {
         ArrayList<BaseEntity> beHubList = new ArrayList<>();
         beHubList.addAll(hubList);
         
-        if(obj.get("basicProcedures") == null) {
+        if(!(obj.get("basicProcedures") == null)) {
             ArrayList<Procedure> procedureList = g.fromJson(obj.get("basicProcedures"), tProcedures);
             ArrayList<BaseEntity> beProcedureList = new ArrayList<>();
             beProcedureList.addAll(procedureList);

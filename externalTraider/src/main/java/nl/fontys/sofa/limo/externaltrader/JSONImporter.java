@@ -12,8 +12,10 @@ import java.io.UnsupportedEncodingException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
@@ -70,7 +72,18 @@ public final class JSONImporter {
         lastOlderEntityCount = 0;
 
         Map<String, List<BaseEntity>> allEntities = (Map<String, List<BaseEntity>>) loadFromFile(filepath);
-        return checkForConflicts(allEntities);
+        Map<String, List<BaseEntity>> checkedEntities = new HashMap<String, List<BaseEntity>>(allEntities);
+        Set<String> keys = allEntities.keySet();
+        for (Iterator<String> iterator = keys.iterator(); iterator.hasNext();) {
+            String next = iterator.next();
+            List<BaseEntity> baseList = allEntities.get(next);
+            if(baseList == null)
+            {
+                checkedEntities.remove(next);
+            }
+        }
+             
+        return checkForConflicts(checkedEntities);
     }
 
     /**
