@@ -2,7 +2,7 @@ package nl.fontys.sofa.limo.view.wizard.types.leg;
 
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_OLDTYPE;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_NEWTYPE;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -51,7 +51,7 @@ public class NewOrDuplicatedLegTypeWizard implements WizardDescriptor.Panel<Wiza
     public void storeSettings(WizardDescriptor wiz) {
         LegType legType = getComponent().getLegType(); 
         if (legType != null) { //If a leg type is selected (copy from existing leg type)
-            wiz.putProperty(TYPE_OLDTYPE, new LegType(legType));
+            wiz.putProperty(TYPE_NEWTYPE, new LegType(legType));
         }
     }
 

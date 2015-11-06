@@ -49,7 +49,7 @@ public class EventHubTypeWizard implements WizardDescriptor.Panel<WizardDescript
     //Update Events if HubType is copied
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        hubType = (HubType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
+        hubType = (HubType) wiz.getProperty(LegTypeWizardAction.TYPE_NEWTYPE);
         if (hubType != null) {
             if (hubType != lastType) {
                 getComponent().update(hubType.getEvents());

@@ -2,7 +2,7 @@ package nl.fontys.sofa.limo.view.wizard.types.hub;
 
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
-import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_OLDTYPE;
+import static nl.fontys.sofa.limo.view.wizard.types.TypeWizardAction.TYPE_NEWTYPE;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
@@ -51,7 +51,7 @@ public class NewOrDuplicatedHubTypeWizard implements WizardDescriptor.Panel<Wiza
     public void storeSettings(WizardDescriptor wiz) {
         HubType hubType = getComponent().getHubType(); //Selected existing hub type
         if (hubType != null) { //If some hub type is selected (copy from existing hub type)
-            wiz.putProperty(TYPE_OLDTYPE, new HubType(hubType));
+            wiz.putProperty(TYPE_NEWTYPE, new HubType(hubType));
         }
     }
 
