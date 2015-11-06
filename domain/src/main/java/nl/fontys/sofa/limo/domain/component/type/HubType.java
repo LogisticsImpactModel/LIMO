@@ -14,6 +14,7 @@ public class HubType extends Type {
 
     public HubType(HubType type) {
         super(type);
+        setId(type.getId());
     }
 
     

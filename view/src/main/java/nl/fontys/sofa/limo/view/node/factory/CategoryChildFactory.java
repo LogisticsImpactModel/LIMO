@@ -2,9 +2,13 @@ package nl.fontys.sofa.limo.view.node.factory;
 
 import java.util.List;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.node.root.AbstractRootNode;
+import nl.fontys.sofa.limo.view.node.root.EventRootNode;
 import nl.fontys.sofa.limo.view.node.root.HubRootNode;
+import nl.fontys.sofa.limo.view.node.root.LegTypeRootNode;
+import nl.fontys.sofa.limo.view.node.root.ProcedureCategoryRootNode;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
 import org.openide.util.Exceptions;
@@ -30,6 +34,9 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
         implements LookupListener {
 
     private HubChildFactory hubFactory;
+    private LegTypeChildFactory legFactory;
+    private ProcedureChildFactory procedureFactory;
+    private EventChildFactory eventFactory;
     private Result<Hub> lookupResult;
 
     /**
@@ -46,13 +53,34 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
     @Override
     protected boolean createKeys(List<AbstractRootNode> list) {
         try {
+            //Hub
             hubFactory = new HubChildFactory();
-
             Children hubChildren = Children.create(hubFactory, false);
-
             AbstractRootNode hubRootNode = new HubRootNode(hubChildren);
             hubRootNode.setDisplayName("Hub templates");
             list.add(hubRootNode);
+            
+            //Leg
+            legFactory = new LegTypeChildFactory();
+            Children legChildren = Children.create(legFactory, false);
+            AbstractRootNode legRootNode = new LegTypeRootNode(legChildren);
+            legRootNode.setDisplayName("Leg templates");
+            list.add(legRootNode);
+            
+            //Procedure
+            procedureFactory = new ProcedureChildFactory();
+            Children procedureChildren = Children.create(procedureFactory, false);
+            AbstractRootNode procedureRootNode = new ProcedureCategoryRootNode(procedureChildren);
+            procedureRootNode.setDisplayName("Procedures");
+            list.add(procedureRootNode);
+            
+            //Event
+            eventFactory = new EventChildFactory();
+            Children eventChildren = Children.create(eventFactory, false);
+            AbstractRootNode eventRootNode = new EventRootNode(eventChildren);
+            eventRootNode.setDisplayName("Events");
+            list.add(eventRootNode);
+            
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
         }

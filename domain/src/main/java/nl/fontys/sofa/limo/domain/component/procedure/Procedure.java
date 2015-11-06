@@ -1,8 +1,8 @@
 package nl.fontys.sofa.limo.domain.component.procedure;
 
 import com.google.gson.annotations.Expose;
-import java.io.Serializable;
 import javax.persistence.Embedded;
+import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 
 /**
@@ -12,25 +12,32 @@ import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
  *
  * @author Dominik Kaisers {@literal <d.kaisers@student.fontys.nl>}
  */
-public class Procedure implements Serializable {
+public class Procedure extends BaseEntity {
 
-    @Expose private String name;
     /**
      * category was chosen to be a String rather than a ProcedureCategory, so no
      * actual relations exist. This is easier w/ exporting and importing data.
      */
-    @Expose private String category;
+    @Expose protected String category;
     @Embedded
-    @Expose private Value cost;
+    @Expose protected Value cost;
     @Embedded
-    @Expose private Value time;
-    @Expose private TimeType timeType;
-    @Expose private Value cotwo;
+    @Expose protected Value time;
+    @Expose protected TimeType timeType;
+    @Expose protected Value cotwo;
 
     public Procedure() {
+        super();
     }
-
+    
+    public Procedure(Procedure procedure)
+    {
+        super();
+        deepOverwrite(procedure);
+    }
+    
     public Procedure(String name, String category, Value cost, Value time,  TimeType timeType, Value cotwo) {
+        super();
         this.name = name;
         this.category = category;
         this.cost = cost;
@@ -38,15 +45,16 @@ public class Procedure implements Serializable {
         this.cotwo = cotwo;
         this.timeType = timeType;
     }
-
-    public String getName() {
-        return name;
+    
+    public void deepOverwrite(Procedure procedure) {
+        setName(procedure.getName());
+        setCategory(procedure.getCategory());
+        setCost(procedure.getCost());
+        setTime(procedure.getTime());
+        setCotwo(procedure.getCotwo());
+        setTimeType(procedure.getTimeType());
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    
     public String getCategory() {
         return category;
     }
@@ -85,5 +93,10 @@ public class Procedure implements Serializable {
 
     public void setCotwo(Value cotwo) {
         this.cotwo = cotwo;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
     }
 }

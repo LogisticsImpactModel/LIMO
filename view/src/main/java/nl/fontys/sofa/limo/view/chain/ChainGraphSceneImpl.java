@@ -1,9 +1,13 @@
 package nl.fontys.sofa.limo.view.chain;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
 import java.beans.IntrospectionException;
+import java.beans.PropertyChangeEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.JComponent;
@@ -12,17 +16,24 @@ import javax.swing.undo.UndoManager;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.node.bean.EventNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
+import nl.fontys.sofa.limo.view.node.bean.LegTypeNode;
 import nl.fontys.sofa.limo.view.node.bean.MultiModeLegNode;
+import nl.fontys.sofa.limo.view.node.bean.ProcedureNode;
 import nl.fontys.sofa.limo.view.node.bean.ScheduledLegNode;
+import nl.fontys.sofa.limo.view.node.factory.LegTypeChildFactory;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.util.undoable.widget.hub.AddHubWidgetUndoableEdit;
@@ -31,6 +42,8 @@ import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
 import nl.fontys.sofa.limo.view.widget.StartWidget;
+import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegWizardAction;
+import nl.fontys.sofa.limo.view.wizard.leg.scheduled.ScheduledLegWizardAction;
 import org.netbeans.api.visual.action.AcceptProvider;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectProvider;
@@ -43,6 +56,9 @@ import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
+import org.netbeans.spi.palette.PaletteController;
+import org.openide.DialogDescriptor;
+import org.openide.DialogDisplayer;
 import org.openide.nodes.NodeTransfer;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
@@ -99,6 +115,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
     private UndoManager undoManager;
     private ProxyLookup lookup;
+    private PaletteController paletteController;
 
     /**
      * Constructor which sets the parent and creates the chain builder, the
@@ -109,8 +126,8 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
      * @throws IOException can occur when certain resources like images cannot
      * @throws IntrospectionException be found.
      */
-    public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain) throws IOException, IntrospectionException {
-        this(parent, chain, null);
+    public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain, PaletteController paletteController) throws IOException, IntrospectionException {
+        this(parent, chain, null, paletteController);
     }
 
     /**
@@ -123,7 +140,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
      * @throws IOException can occur when certain resources like images cannot
      * @throws IntrospectionException be found.
      */
-    public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain, UndoManager undoManager) throws IOException, IntrospectionException {
+    public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain, UndoManager undoManager, PaletteController paletteController) throws IOException, IntrospectionException {
         this.parent = parent;
         chainBuilder = new ChainBuilderImpl();
         chainBuilder.getSupplyChain().setName(chain.getName()); //sets the name of 
@@ -135,7 +152,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         this.mainLayer = new LayerWidget(this);
         this.connectionLayer = new LayerWidget(this);
         this.interactionLayer = new LayerWidget(this);
-
+        this.paletteController = paletteController;
         addChild(mainLayer);
         addChild(connectionLayer);
         addChild(interactionLayer);
@@ -164,7 +181,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             lookup = new ProxyLookup(undoRedo, super.getLookup());
         } else {
             lookup = (ProxyLookup) super.getLookup();
-            
+
         }
 
     }
@@ -282,8 +299,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     @Override
     public void addHubWidget(HubWidget hubWidget) {
         Lookup.getDefault().lookup(StatusBarService.class).setMessage(hubWidget.getHub().getName(), StatusBarService.ACTION_ADD, StatusBarService.STATE_SUCCESS, null);
-        if(hubWidget.getHub().getPrevious() == null)
-        {
+        if (hubWidget.getHub().getPrevious() == null) {
             hubWidget.setStartFlag(true);
         }
         mainLayer.addChild(hubWidget);
@@ -314,35 +330,31 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         target.setStartFlag(false);
         this.checkChainHubs();
     }
-    
+
     /**
-     * Checks the hubs and hubWidgets if the previous Node is null and sets the 
+     * Checks the hubs and hubWidgets if the previous Node is null and sets the
      * starthub.
      */
-    public void checkChainHubs()
-    {
+    public void checkChainHubs() {
         int checkIfMoreThanOne = 0;
         Hub startHub = new Hub();
         List<Hub> hubList = chainBuilder.getHubList();
         for (Hub hub : hubList) {
-            if(hub.getPrevious() == null)
-            {
+            if (hub.getPrevious() == null) {
                 checkIfMoreThanOne++;
                 startHub = hub;
             }
         }
-        if(checkIfMoreThanOne == 1)
-        {
+        if (checkIfMoreThanOne == 1) {
             chainBuilder.setStartHub(startHub);
         }
-        
+
         List<Widget> hubWidgetList = mainLayer.getChildren();
-        for (Widget hubWidget : hubWidgetList) {
-            HubWidget hw = (HubWidget) hubWidget;
+        hubWidgetList.stream().map((hubWidget) -> (HubWidget) hubWidget).forEach((hw) -> {
             hw.setStartFlag(hw.getHub().getPrevious() == null);
-        }
+        });
     }
-    
+
     @Override
     public void removeHubWidget(HubWidget hubWidget) {
         Hub hub = hubWidget.getHub();
@@ -419,18 +431,61 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             this.scene = scene;
         }
 
+        private boolean showLegNotification = false;
+
         @Override
         public ConnectorState isAcceptable(Widget widget, Point point, Transferable transferable) {
-            WidgetableNode node = (WidgetableNode) NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
-            if (node.isAcceptable(widget, point)) {
+            org.openide.nodes.Node node = NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
+            if (node instanceof WidgetableNode) {
+                WidgetableNode widgetNode = (WidgetableNode) node;
+                if (widgetNode.isAcceptable(widget, point)) {
+                    return ConnectorState.ACCEPT;
+                }
+            } else if (node instanceof EventNode) {
+                return ConnectorState.ACCEPT;
+            } else if (node instanceof ProcedureNode) {
                 return ConnectorState.ACCEPT;
             }
+
+            if (node instanceof LegTypeNode) {
+
+                if (!showLegNotification) {
+                    showLegNotification = true;
+
+                    DialogDescriptor nd = new DialogDescriptor("Just select the leg type from the palette and draw the line with ctrl key between the two hubs.", "Information", false, new String[]{"OK"}, null, DialogDescriptor.DEFAULT_ALIGN, null, null);
+                    nd.setButtonListener((ActionEvent e) -> {
+                        showLegNotification = false;
+                    });
+                    nd.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+                        if (evt.getNewValue() == DialogDescriptor.CANCEL_OPTION || evt.getNewValue() == DialogDescriptor.CLOSED_OPTION) {
+                            showLegNotification = false;
+                        }
+                    });
+                    DialogDisplayer.getDefault().notifyLater(nd);
+                }
+
+                return ConnectorState.REJECT_AND_STOP;
+            }
+
             return ConnectorState.REJECT;
         }
 
         @Override
         public void accept(Widget widget, Point point, Transferable transferable) {
             AbstractBeanNode node = (AbstractBeanNode) NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
+
+            if (node instanceof EventNode) {
+                acceptEvent(node, point);
+            } else if (node instanceof ProcedureNode) {
+                acceptProcedure(node, point);
+            } else {
+                acceptHub(node, widget, point);
+            }
+            TopComponent comp = (TopComponent) parent;
+            comp.requestActive();
+        }
+
+        private void acceptHub(AbstractBeanNode node, Widget widget, Point point) {
             AbstractBeanNode detachedNode = node.getDetachedNodeCopy();
             BasicWidget w = (BasicWidget) scene.addNode(detachedNode);
             detachedNode.addPropertyChangeListener(w);
@@ -443,6 +498,80 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             TopComponent comp = (TopComponent) parent;
             comp.requestActive();
 
+        }
+
+        private void acceptEvent(AbstractBeanNode node, Point point) {
+            Event event = node.getLookup().lookup(Event.class);
+            List<Widget> hitlist = new ArrayList<>();
+            mainLayer.getChildren().forEach((w) -> {
+                Point p = w.convertSceneToLocal(point);
+                if (w.isHitAt(p)) {
+                    hitlist.add(w);
+                }
+            });
+            connectionLayer.getChildren().forEach((Widget c) -> {
+                Point p = c.convertSceneToLocal(point);
+                Rectangle r = new Rectangle(p);
+                r.width = 25;
+                r.height = 25;
+                r.x -= r.width / 2;
+                r.y -= r.height / 2;
+
+                if (c.getBounds().contains(r)) {
+                    hitlist.add(c);
+                }
+            });
+
+            hitlist.forEach((w) -> {
+                if (w instanceof HubWidget) {
+                    HubWidget hubWidget = (HubWidget) w;
+                    hubWidget.getHub().getEvents().add(event);
+                    hubWidget.updateLabels();
+                } else if (w instanceof LegWidget) {
+                    LegWidget legWidget = (LegWidget) w;
+                    legWidget.getLeg().getEvents().add(event);
+                    legWidget.updateLabels();
+                }
+            });
+            mainLayer.revalidate();
+            connectionLayer.revalidate();
+        }
+        
+        private void acceptProcedure(AbstractBeanNode node, Point point) {
+            Procedure procedure = node.getLookup().lookup(Procedure.class);
+            List<Widget> hitlist = new ArrayList<>();
+            mainLayer.getChildren().forEach((w) -> {
+                Point p = w.convertSceneToLocal(point);
+                if (w.isHitAt(p)) {
+                    hitlist.add(w);
+                }
+            });
+            connectionLayer.getChildren().forEach((c) -> {
+                Point p = c.convertSceneToLocal(point);
+                Rectangle r = new Rectangle(p);
+                r.width = 25;
+                r.height = 25;
+                r.x -= r.width / 2;
+                r.y -= r.height / 2;
+
+                if (c.getBounds().contains(r)) {
+                    hitlist.add(c);
+                }
+            });
+
+            hitlist.forEach((w) -> {
+                if (w instanceof HubWidget) {
+                    HubWidget hubWidget = (HubWidget) w;
+                    hubWidget.getHub().getProcedures().add(procedure);
+                    hubWidget.updateLabels();
+                } else if (w instanceof LegWidget) {
+                    LegWidget legWidget = (LegWidget) w;
+                    legWidget.getLeg().getProcedures().add(procedure);
+                    legWidget.updateLabels();
+                }
+            });
+            mainLayer.revalidate();
+            connectionLayer.revalidate();
         }
     }
 
@@ -516,13 +645,35 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             return null;
         }
 
+        private Leg leg;
+
         @Override
         public void createConnection(Widget sourceWidget, Widget targetWidget) {
+            leg = null;
             if (validateConnection(sourceWidget, targetWidget)) {
 
-                SelectLegTypePanel inputPane = new SelectLegTypePanel();
-                Leg leg = inputPane.getLeg();
+                LegType legType = paletteController.getSelectedItem().lookup(LegType.class);
+                if (legType == null) {
+                    SelectLegTypePanel inputPane = new SelectLegTypePanel();
+                    leg = inputPane.getLeg();
+                } else {
+                    if (legType == LegTypeChildFactory.MULTIMODE_LEGTYPE) {
+                        MultimodeLegWizardAction multimodeLegWizardAction;
+                        multimodeLegWizardAction = new MultimodeLegWizardAction((MultiModeLeg newLeg) -> {
+                            leg = newLeg;
+                        });
+                        multimodeLegWizardAction.actionPerformed(null);
+                    } else if (legType == LegTypeChildFactory.SCHEDULED_LEGTYPE) {
+                        ScheduledLegWizardAction scheduledLegWizardAction;
+                        scheduledLegWizardAction = new ScheduledLegWizardAction((ScheduledLeg newLeg) -> {
+                            leg = newLeg;
+                        });
+                        scheduledLegWizardAction.actionPerformed(null);
 
+                    } else {
+                        leg = new Leg(legType);
+                    }
+                }
                 if (leg != null) {
                     try {
 
@@ -571,11 +722,8 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             AbstractBeanNode targetNode
                     = (AbstractBeanNode) findObject(targetWidget);
 
-            if (findNodeEdges(sourceNode, true, false).isEmpty()
-                    && findNodeEdges(targetNode, false, true).isEmpty()) {
-                return true;
-            }
-            return false;
+            return findNodeEdges(sourceNode, true, false).isEmpty()
+                    && findNodeEdges(targetNode, false, true).isEmpty();
         }
     }
 }

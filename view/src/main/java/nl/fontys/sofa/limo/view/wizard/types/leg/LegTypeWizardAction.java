@@ -67,11 +67,15 @@ public final class LegTypeWizardAction extends TypeWizardAction {
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("ADD_LEG_TYPE"));
         wiz.putProperty("update", update);
-        wiz.putProperty("orignal_type", new LegType(legType));
-        wiz.putProperty(TYPE_OLDTYPE, legType);
+        wiz.putProperty(TYPE_NEWTYPE, new LegType(legType));
+        wiz.putProperty("original_type", legType);
 
-        if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            finishWizard(wiz);
+        Object answer = DialogDisplayer.getDefault().notify(wiz);
+
+        if (answer == WizardDescriptor.FINISH_OPTION) {
+            finishWizard(wiz, true);
+        } else if (answer == WizardDescriptor.CANCEL_OPTION) {
+            finishWizard(wiz, false);
         }
     }
 
@@ -81,18 +85,25 @@ public final class LegTypeWizardAction extends TypeWizardAction {
         this.update = true;
     }
 
-    private void finishWizard(WizardDescriptor wiz) {
+    private void finishWizard(WizardDescriptor wiz, boolean succes) {
         LegTypeService service = Lookup.getDefault().lookup(LegTypeService.class);
 
-        legType = (LegType) wiz.getProperty(TYPE_OLDTYPE); //Overwrite object (is used when copying a legtype from an existing leg type)
+        if (succes) {
+            legType = (LegType) wiz.getProperty(TYPE_NEWTYPE); //Overwrite object (is used when copying a legtype from an existing leg type)
 
-        if (update) {
-            service.update(legType);
-        } else {
-            legType.setId(null);
-            legType.setUniqueIdentifier(UUID.randomUUID().toString());
-            legType = service.insert(legType);
+            if (update) {
+                service.update(legType);
+            } else {
+                legType.setId(null);
+                legType.setUniqueIdentifier(UUID.randomUUID().toString());
+                legType = service.insert(legType);
+            }
+        } else { // leaving this part in in case a cancel part is needed
+            legType = (LegType) wiz.getProperty("original_type"); //Rewrite the old object to the savedata
+
+            if (update) {
+                service.update(legType);
+            }
         }
     }
-
 }
