@@ -71,6 +71,8 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
             }
         } else { //When a hub type is edited, the name should not be automatically changed
             name = hubType.getName();
+            description = hubType.getDescription();
+            icon = hubType.getIcon();
         }
         
         getComponent().update(name, description, icon);

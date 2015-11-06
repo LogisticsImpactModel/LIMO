@@ -67,8 +67,8 @@ public final class LegTypeWizardAction extends TypeWizardAction {
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("ADD_LEG_TYPE"));
         wiz.putProperty("update", update);
-        wiz.putProperty(TYPE_NEWTYPE, new LegType(legType)); // TYPE_NEWTYPE
-        wiz.putProperty("original_type", legType);       // original_type
+        wiz.putProperty(TYPE_NEWTYPE, new LegType(legType));
+        wiz.putProperty("original_type", legType);
 
         Object answer = DialogDisplayer.getDefault().notify(wiz);
 

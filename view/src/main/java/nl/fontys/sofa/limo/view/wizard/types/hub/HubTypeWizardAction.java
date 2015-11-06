@@ -66,12 +66,16 @@ public final class HubTypeWizardAction extends TypeWizardAction {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("ADD_HUB_TYPE"));
-        wiz.putProperty(TYPE_NEWTYPE, hubType);
         wiz.putProperty("update", update);
-        wiz.putProperty("original_type", new HubType(hubType));
-        
-        if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            finishWizard(wiz);
+        wiz.putProperty(TYPE_NEWTYPE, new HubType(hubType));
+        wiz.putProperty("original_type", hubType);
+
+        Object answer = DialogDisplayer.getDefault().notify(wiz);
+
+        if (answer == WizardDescriptor.FINISH_OPTION) {
+            finishWizard(wiz, true);
+        } else if (answer == WizardDescriptor.CANCEL_OPTION) {
+            finishWizard(wiz, false);
         }
     }
 
@@ -80,17 +84,26 @@ public final class HubTypeWizardAction extends TypeWizardAction {
         this.update = true;
     }
 
-    private void finishWizard(WizardDescriptor wiz) {
+    private void finishWizard(WizardDescriptor wiz, boolean succes) {
         HubTypeService service = Lookup.getDefault().lookup(HubTypeService.class);
-        
-        hubType = (HubType) wiz.getProperty(TYPE_NEWTYPE); //Overwrite object (is used when copying a hub type from an existing hub type)
 
-        if (update) {
-            service.update(hubType);
+        if (succes) {
+            hubType = (HubType) wiz.getProperty(TYPE_NEWTYPE); //Overwrite object (is used when copying a hub type from an existing hub type)
+
+            if (update) {
+                service.update(hubType);
+            } else {
+                hubType.setId(null);
+                hubType.setUniqueIdentifier(UUID.randomUUID().toString());
+                hubType = service.insert(hubType);
+            }
         } else {
-            hubType.setId(null);
-            hubType.setUniqueIdentifier(UUID.randomUUID().toString());
-            hubType = service.insert(hubType);
+            hubType = (HubType) wiz.getProperty("original_type");
+            
+            if (update) {
+                service.update(hubType);
+            }
         }
+
     }
 }
