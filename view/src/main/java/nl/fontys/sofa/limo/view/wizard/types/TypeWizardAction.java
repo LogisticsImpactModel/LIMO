@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  */
 public abstract class TypeWizardAction implements ActionListener {
 
-    public static final String TYPE_OLDTYPE = "oldEvent";
+    public static final String TYPE_NEWTYPE = "oldEvent";
 
     protected boolean update = false;
 

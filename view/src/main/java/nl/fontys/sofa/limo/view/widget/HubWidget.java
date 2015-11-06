@@ -7,13 +7,19 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.undo.UndoManager;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -28,6 +34,7 @@ import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.SeparatorWidget;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.api.visual.widget.general.IconNodeWidget;
+import org.openide.util.Lookup;
 
 /**
  * HubWidget which represents a Hub in the GraphScene. It holds HubNode which
@@ -40,13 +47,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     private final int widgetWidth = 140;
     private final int widgetHeight = 170;
     private final Color backgroundColor = new Color(0, 0, 0, 0);
-
     private final HubNode hubNode;
-
     private Widget containerWidget;
-//    private EventsWidget eventWidget;
-//    private ProcedureWidget procedureWidget;
-
     private LabelWidget eventLabelWidget;
     private LabelWidget procedureLabelWidget;
     private final Widget startFlagWidget;
@@ -60,19 +62,14 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     public HubWidget(Scene scene, HubNode beanNode) throws IOException {
         super(scene);
         this.hubNode = beanNode;
-        // hubNode.addPropertyChangeListener(this);
-
         setPreferredBounds(new Rectangle(widgetWidth, widgetHeight));
         setPreferredSize(new Dimension(widgetWidth, widgetHeight));
         setToolTipText(hubNode.getName());
         setOpaque(false);
-
         startFlagWidget = new StartWidget(scene);
         startFlagWidget.setVisible(false);
-
         setImage(getHub().getIcon().getImage());
         setLabel(beanNode.getName());
-//        createBorder();
         addSeparator();
         addChildren();
     }
@@ -105,7 +102,6 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
             eventLabelWidget = new LabelWidget(getScene(), "Events: " + getHub().getEvents().size());
         }
         this.addChild(eventLabelWidget);
-
         addChild(startFlagWidget);
     }
 
@@ -241,6 +237,41 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     propertyChange(null);
                 }
             });
+            JMenu procedureMenu = new JMenu("Proceduren");
+            ProcedureService procedureService = Lookup.getDefault().lookup(ProcedureService.class);
+            List<Procedure> procedureList = procedureService.findAll();
+            procedureList.stream().forEach((procedure) -> {
+                procedureMenu.add(new AbstractAction(procedure.getName()){
+
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        List<Procedure> procedureListOfHub = HubWidget.this.getHub().getProcedures();
+                        Procedure selected = procedureService.findById(procedure.getId());
+                        selected.setId(null);
+                        procedureListOfHub.add(selected);
+                        HubWidget.this.getHub().setProcedures(procedureListOfHub);
+                        updateLabels();
+                    }
+                });
+            });
+            JMenu eventMenu = new JMenu("Events");
+            EventService eventService = Lookup.getDefault().lookup(EventService.class);
+            List<Event> eventList = eventService.findAll();
+            eventList.stream().forEach((event) -> {
+                eventMenu.add(new AbstractAction(event.getName()){
+
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        List<Event> eventListOfHub = HubWidget.this.getHub().getEvents();
+                        Event selected = eventService.findById(event.getId());
+                        selected.setId(null);
+                        eventListOfHub.add(selected);
+                        HubWidget.this.getHub().setEvents(eventListOfHub);
+                        updateLabels();
+                    }
+                });
+            });
+            popup.add(eventMenu);
             return popup;
         }
     }
