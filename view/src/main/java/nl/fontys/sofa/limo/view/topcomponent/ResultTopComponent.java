@@ -1,14 +1,10 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
-import com.oracle.jrockit.jfr.ContentType;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +22,6 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -37,7 +32,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import nl.fontys.sofa.limo.domain.component.Node;
-import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.externaltrader.CSVExporter;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
@@ -520,9 +514,6 @@ public final class ResultTopComponent extends TopComponent {
                     createXYChart(componet, detm, (Class<? extends XYChart>) graphClass);
                 }
             }
-
         }
-
     }
-
 }
