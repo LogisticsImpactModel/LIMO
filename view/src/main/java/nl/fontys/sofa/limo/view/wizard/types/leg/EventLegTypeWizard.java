@@ -48,7 +48,7 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
     //Update Events
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        legType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
+        legType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_NEWTYPE);
         if (legType != null) {
             if (legType != lastType) {
                 getComponent().update(legType.getEvents());

@@ -66,9 +66,9 @@ public final class HubTypeWizardAction extends TypeWizardAction {
         wiz.setTitleFormat(new MessageFormat("{0}"));
         wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
         wiz.setTitle(LIMOResourceBundle.getString("ADD_HUB_TYPE"));
-        wiz.putProperty(TYPE_OLDTYPE, hubType);
+        wiz.putProperty(TYPE_NEWTYPE, hubType);
         wiz.putProperty("update", update);
-        wiz.putProperty("orignal_type", new HubType(hubType));
+        wiz.putProperty("original_type", new HubType(hubType));
         
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             finishWizard(wiz);
@@ -83,7 +83,7 @@ public final class HubTypeWizardAction extends TypeWizardAction {
     private void finishWizard(WizardDescriptor wiz) {
         HubTypeService service = Lookup.getDefault().lookup(HubTypeService.class);
         
-        hubType = (HubType) wiz.getProperty(TYPE_OLDTYPE); //Overwrite object (is used when copying a hub type from an existing hub type)
+        hubType = (HubType) wiz.getProperty(TYPE_NEWTYPE); //Overwrite object (is used when copying a hub type from an existing hub type)
 
         if (update) {
             service.update(hubType);

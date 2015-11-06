@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.wizard.types.hub;
 import java.util.ResourceBundle;
 import javax.swing.event.ChangeListener;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
+import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.validation.BeanValidator;
 import nl.fontys.sofa.limo.validation.ValidationException;
@@ -57,11 +58,13 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
     //Update Labels
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        hubType = (HubType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
-        originalHubType = (HubType) wiz.getProperty("orignal_type");
+        hubType = (HubType) wiz.getProperty(LegTypeWizardAction.TYPE_NEWTYPE);
+        originalHubType = (HubType) wiz.getProperty("original_type");
         update = (boolean) wiz.getProperty("update");
         
         String name = "";
+        String description = "";
+        Icon icon = null;
         if (!update) { //When a new hub type is generated, the name should be unique
             if (hubType.getName() != null) { //This prevents 'null' as name
                 name = BaseEntityUtil.getUniqueName(HubTypeService.class, hubType.getName());
@@ -70,7 +73,7 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
             name = hubType.getName();
         }
         
-        getComponent().update(name);
+        getComponent().update(name, description, icon);
     }
 
     //Store Name, Description and Icon

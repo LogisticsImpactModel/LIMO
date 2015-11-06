@@ -54,7 +54,7 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
     //Update Procedures
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        legType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
+        legType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_NEWTYPE);
         if (legType != null) {
             if (legType != lastType) {
                 getComponent().update(legType.getProcedures());

@@ -59,6 +59,6 @@ public abstract class Component extends BaseEntity {
     }
 
     public void setEvents(List<Event> events) {
-        this.events = events;
+        this.events = new ArrayList<>(events);
     }
 }
