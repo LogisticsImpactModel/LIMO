@@ -187,20 +187,21 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
             }
         }
 
-        for (int i = 0; i < activeIndexes.size(); i++) {
+        activeIndexes.stream().map((activeIndexe) -> {
             XYChart.Series serie = new XYChart.Series();
             ObservableList<XYChart.Data> dataSet = FXCollections.<BarChart.Data>observableArrayList();
             for (int j = 1; j < getRowCount(); j++) {
                 XYChart.Data data = new XYChart.Data();
                 data.setXValue(names.get(j - 1));
-                data.setYValue(getValueAt(j, activeIndexes.get(i)));
+                data.setYValue(getValueAt(j, activeIndexe));
                 dataSet.add(data);
-
             }
             serie.setData(dataSet);
-            serie.setName(getColumnName(activeIndexes.get(i)));
+            serie.setName(getColumnName(activeIndexe));
+            return serie;
+        }).forEach((serie) -> {
             bcData.add(serie);
-        }
+        });
 
         return bcData;
     }
