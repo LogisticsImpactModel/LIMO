@@ -23,13 +23,16 @@ public class SimulationResult {
     private DataEntry totalLeadTimes;
     private DataEntry totalDelays;
     private DataEntry totalExtraCosts;
+    private DataEntry totalCO2;
     private final Map<String, DataEntry> costsByCategory;
     private final Map<String, DataEntry> leadTimesByCategory;
     private final Map<String, DataEntry> delaysByCategory;
     private final Map<String, DataEntry> extraCostsByCategory;
+    private final Map<String, DataEntry> co2ByCategory;
     private final Map<String, DataEntry> costsByNode;
     private final Map<String, DataEntry> leadTimesByNode;
     private final Map<String, DataEntry> delaysByNode;
+    private final Map<String, DataEntry> co2ByNode;
     private final Map<String, DataEntry> extraCostsByNode;
     private final Map<String, Double> eventExecutionRate;
     private final Map<String, Event> executedEvents;
@@ -41,6 +44,7 @@ public class SimulationResult {
         this.totalLeadTimes = new DataEntry();
         this.totalDelays = new DataEntry();
         this.totalExtraCosts = new DataEntry();
+        this.totalCO2 = new DataEntry();
         this.costsByCategory = new ConcurrentHashMap<>();
         this.leadTimesByCategory = new ConcurrentHashMap<>();
         this.delaysByCategory = new ConcurrentHashMap<>();
@@ -49,6 +53,8 @@ public class SimulationResult {
         this.leadTimesByNode = new ConcurrentHashMap<>();
         this.delaysByNode = new ConcurrentHashMap<>();
         this.extraCostsByNode = new ConcurrentHashMap<>();
+        this.co2ByCategory = new ConcurrentHashMap<>();
+        this.co2ByNode = new ConcurrentHashMap<>();
         this.eventExecutionRate = new ConcurrentHashMap<>();
         this.executedEvents = new ConcurrentHashMap<>();
         this.testCaseCount = new AtomicInteger();
@@ -62,6 +68,10 @@ public class SimulationResult {
         return totalCosts;
     }
 
+    public DataEntry getTotalCO2() {
+        return totalCO2;
+    }
+
     public DataEntry getTotalLeadTimes() {
         return totalLeadTimes;
     }
@@ -72,6 +82,14 @@ public class SimulationResult {
 
     public DataEntry getTotalExtraCosts() {
         return totalExtraCosts;
+    }
+
+    public Map<String, DataEntry> getCo2ByCategory() {
+        return co2ByCategory;
+    }
+
+    public Map<String, DataEntry> getCo2ByNode() {
+        return co2ByNode;
     }
 
     public Map<String, Event> getExecutedEvents() {
@@ -131,7 +149,7 @@ public class SimulationResult {
         this.totalLeadTimes = recalculateDataEntry(totalLeadTimes, size, tcr.getTotalLeadTimes());
         this.totalDelays = recalculateDataEntry(totalDelays, size, tcr.getTotalDelays());
         this.totalExtraCosts = recalculateDataEntry(totalExtraCosts, size, tcr.getTotalExtraCosts());
-
+        this.totalCO2 = recalculateDataEntry(totalCO2, size, tcr.getTotalCO2());
         // BY CATEGORY
         tcr.getCostsByCategory().forEachEntry(new TObjectDoubleProcedure<String>() {
 
@@ -169,6 +187,16 @@ public class SimulationResult {
             public boolean execute(String key, double value) {
                 DataEntry old = extraCostsByCategory.get(key);
                 extraCostsByCategory.put(key, recalculateDataEntry(old, size, value));
+                return true;
+            }
+        });
+
+        tcr.getCo2ByCategory().forEachEntry(new TObjectDoubleProcedure<String>() {
+
+            @Override
+            public boolean execute(String key, double value) {
+                DataEntry old = co2ByCategory.get(key);
+                co2ByCategory.put(key, recalculateDataEntry(old, size, value));
                 return true;
             }
         });
@@ -214,8 +242,20 @@ public class SimulationResult {
             }
         });
 
+        tcr.getCo2ByNode().forEachEntry(new TObjectDoubleProcedure<String>() {
+
+            @Override
+            public boolean execute(String key, double value) {
+                DataEntry old = co2ByNode.get(key);
+                co2ByNode.put(key, recalculateDataEntry(old, size, value));
+                return true;
+            }
+
+        });
+
         // ADD Events
-        for (Event event : tcr.getExecutedEvents()) {
+        for (Event event
+                : tcr.getExecutedEvents()) {
             if (!eventExecutionRate.containsKey(event.getUniqueIdentifier())) {
                 this.eventExecutionRate.put(event.getUniqueIdentifier(), 1.0 / (size + 1));
                 this.executedEvents.put(event.getUniqueIdentifier(), event);
