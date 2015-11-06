@@ -169,6 +169,7 @@ public final class ResultTopComponent extends TopComponent {
         List<DataEntry> leadTimes = new ArrayList<>();
         List<DataEntry> extraCosts = new ArrayList<>();
         List<DataEntry> delay = new ArrayList<>();
+        List<DataEntry> co2 = new ArrayList<>();
         final List<String> name = new ArrayList<>();
 
         results.stream().map((result) -> {
@@ -183,6 +184,9 @@ public final class ResultTopComponent extends TopComponent {
         }).map((result) -> {
             delay.add(result.getTotalDelays());
             return result;
+        }).map((result) -> {
+            co2.add(result.getTotalCO2());
+            return result;
         }).forEach((result) -> {
             name.add(result.getSupplyChain().getName().replace(".lsc", ""));
         });
@@ -191,12 +195,14 @@ public final class ResultTopComponent extends TopComponent {
             leadTimes.add(getDifference(leadTimes.get(0), leadTimes.get(1)));
             extraCosts.add(getDifference(extraCosts.get(0), extraCosts.get(1)));
             delay.add(getDifference(delay.get(0), delay.get(1)));
+            co2.add(getDifference(co2.get(0), co2.get(1)));
             name.add(LIMOResourceBundle.getString("RESULT_ABSOULTE_DIFFERENCE_ROW_NAME"));
 
             cost.add(getDifferenceAsPercentage(cost.get(0), cost.get(1)));
             leadTimes.add(getDifferenceAsPercentage(leadTimes.get(0), leadTimes.get(1)));
             extraCosts.add(getDifferenceAsPercentage(extraCosts.get(0), extraCosts.get(1)));
             delay.add(getDifferenceAsPercentage(delay.get(0), delay.get(1)));
+            co2.add(getDifferenceAsPercentage(co2.get(0), co2.get(1)));
             name.add(LIMOResourceBundle.getString("RESULT_REALTIVE_DIFFERENCE_ROW_NAME"));
         } else {
             name.set(0, LIMOResourceBundle.getString("DEFAULT_RESULT_ROW_NAME"));
@@ -205,8 +211,8 @@ public final class ResultTopComponent extends TopComponent {
         totalMap.put(DataEntryTableModel.LEAD_TIMES_ID, leadTimes);
         totalMap.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         totalMap.put(DataEntryTableModel.DELAYS_ID, delay);
+        totalMap.put(DataEntryTableModel.CO2_ID, co2);
         totalDetm = new DataEntryTableModel(name, totalMap);
-
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -293,6 +299,7 @@ public final class ResultTopComponent extends TopComponent {
         categorySet.addAll(result.getLeadTimesByCategory().keySet());
         categorySet.addAll(result.getExtraCostsByCategory().keySet());
         categorySet.addAll(result.getDelaysByCategory().keySet());
+        categorySet.addAll(result.getCo2ByCategory().keySet());
         final List<String> categories = new ArrayList<>(categorySet);
         Collections.sort(categories);
 
@@ -300,7 +307,7 @@ public final class ResultTopComponent extends TopComponent {
         List<DataEntry> leadTimes = new ArrayList<>();
         List<DataEntry> extraCosts = new ArrayList<>();
         List<DataEntry> delays = new ArrayList<>();
-
+        List<DataEntry> co2Values = new ArrayList<>();
         categories.stream().map((category) -> {
             DataEntry cost = result.getCostsByCategory().get(category);
             costs.add(cost == null ? new DataEntry(0, 0, 0) : cost);
@@ -308,6 +315,8 @@ public final class ResultTopComponent extends TopComponent {
             leadTimes.add(leadTime == null ? new DataEntry(0, 0, 0) : leadTime);
             DataEntry extraCost = result.getExtraCostsByCategory().get(category);
             extraCosts.add(extraCost == null ? new DataEntry(0, 0, 0) : extraCost);
+            DataEntry co2Value = result.getCo2ByCategory().get(category);
+            co2Values.add(co2Value == null ? new DataEntry(0, 0, 0) : co2Value);
             DataEntry delay = result.getDelaysByCategory().get(category);
             return delay;
         }).forEach((delay) -> {
@@ -319,6 +328,7 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.LEAD_TIMES_ID, leadTimes);
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
+        map.put(DataEntryTableModel.CO2_ID, co2Values);
         categoryDetm = new DataEntryTableModel(categories, map);
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -366,6 +376,7 @@ public final class ResultTopComponent extends TopComponent {
         List<DataEntry> leadTimes = new ArrayList<>();
         List<DataEntry> extraCosts = new ArrayList<>();
         List<DataEntry> delays = new ArrayList<>();
+        List<DataEntry> co2Values = new ArrayList<>();
         results.stream().forEach((result) -> {
             Node currentNode = result.getSupplyChain().getStartHub();
             while (currentNode != null) {
@@ -384,6 +395,9 @@ public final class ResultTopComponent extends TopComponent {
                 DataEntry delay = result.getDelaysByNode().get(name);
                 delays.add(delay == null ? new DataEntry(0, 0, 0) : delay);
 
+                DataEntry co2Value = result.getCo2ByNode().get(name);
+                co2Values.add(co2Value == null ? new DataEntry(0, 0, 0) : co2Value);
+
                 currentNode = currentNode.getNext();
             }
         });
@@ -392,9 +406,9 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.LEAD_TIMES_ID, leadTimes);
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
+        map.put(DataEntryTableModel.CO2_ID, co2Values);
         nodeDetm = new DataEntryTableModel(names, map);
         nodeDetm.setOnlyOneEnabled(false);
-
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         nodesTable = new LimoTable(nodeDetm);
