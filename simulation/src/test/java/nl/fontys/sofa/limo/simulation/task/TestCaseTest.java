@@ -203,8 +203,8 @@ public class TestCaseTest extends SupplyChainTester {
         TestCaseResult result = testCase.getResult();
         assertNotNull(result);
 
-        assertTrue("Min 5000 based on procedures.", 5000 <= result.getTotalCosts());
-        assertTrue("Max 7000 based on procedures.", 7000 >= result.getTotalCosts());
+        assertTrue("Min 5000 based on procedures.", 6100 <= result.getTotalCosts());
+        assertTrue("Max 7000 based on procedures.", 8100 >= result.getTotalCosts());
 
         assertTrue("Min 3000 based on events.", 3000 <= result.getTotalExtraCosts());
         assertTrue("Max 4000 based on events.", 4000 >= result.getTotalExtraCosts());
