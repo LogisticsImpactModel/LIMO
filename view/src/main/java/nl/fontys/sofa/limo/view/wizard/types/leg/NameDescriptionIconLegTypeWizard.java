@@ -12,6 +12,7 @@ import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.Exceptions;
 import org.openide.util.HelpCtx;
+import nl.fontys.sofa.limo.domain.component.Icon;
 
 /**
  * Name, Description Icon for LegType.
@@ -54,20 +55,25 @@ public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<
 
     @Override
     public void readSettings(WizardDescriptor wiz) {
-        legType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_OLDTYPE);
-        originalLegType = (LegType) wiz.getProperty("orignal_type");
+        legType = (LegType) wiz.getProperty(LegTypeWizardAction.TYPE_NEWTYPE); // NEWTYPE is the one being changed
+        originalLegType = (LegType) wiz.getProperty("original_type");
         update = (boolean) wiz.getProperty("update");
         
         String name = "";
+        String description = "";
+        Icon icon = null;
         if (!update) { //When a new leg type is generated, the name should be unique
             if (legType.getName() != null) { //This prevents 'null' as name
                 name = BaseEntityUtil.getUniqueName(LegTypeService.class, legType.getName());
+                
             }
         } else { //When a leg type is edited, the name should not be automatically changed
             name = legType.getName();
+            description = legType.getDescription();
+            icon = legType.getIcon();
         }
         
-        getComponent().update(name);
+        getComponent().update(name, description, icon);
     }
 
     @Override

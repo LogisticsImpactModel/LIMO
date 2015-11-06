@@ -14,6 +14,7 @@ public class LegType extends Type {
 
     public LegType(LegType type) {
         super(type);
+        setId(type.getId());
     }
 
     
