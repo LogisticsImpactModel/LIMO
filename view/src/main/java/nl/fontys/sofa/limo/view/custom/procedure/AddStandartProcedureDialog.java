@@ -13,7 +13,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
-import nl.fontys.sofa.limo.api.dao.ProcedureDAO;
+import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
@@ -38,7 +38,7 @@ public class AddStandartProcedureDialog extends JDialog implements ActionListene
     private final DragNDropTable table;
     private final CellConstraints cc;
 
-    public AddStandartProcedureDialog(ProcedureDAO procedureDao, DragNDropTable dragNDropTable) {
+    public AddStandartProcedureDialog(ProcedureCategoryDAO procedureCatDao, DragNDropTable dragNDropTable) {
         this.table = dragNDropTable;
         cc = new CellConstraints();
         //LAYOUT
@@ -46,7 +46,7 @@ public class AddStandartProcedureDialog extends JDialog implements ActionListene
                 "5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px");
         this.setLayout(layout);
         //COMPONENTS
-        initComponents(procedureDao.findAll().toArray());
+        initComponents(procedureCatDao.findAll().toArray());
         //ADD COMPONENTS
         addComponents();
         //ADD COMPONENTS TO LISTENER
@@ -75,7 +75,9 @@ public class AddStandartProcedureDialog extends JDialog implements ActionListene
     private void initComponents(Object[] categories) {
         nameTextField = new JTextField();
         categoryCombobox = new JComboBox(categories);
-        categoryCombobox.setSelectedIndex(0);
+        if(categories.length > 0){
+            categoryCombobox.setSelectedIndex(0);
+        }
         timeTypeCombobox = new JComboBox(TimeType.values());
         timeValue = new SingleValue(0.0);
         timeTextField = new JTextField(timeValue.toString());

@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableCellRenderer;
+import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
 import nl.fontys.sofa.limo.api.dao.ProcedureDAO;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
@@ -39,6 +40,7 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
     protected DragNDropTable table;
     protected DragNDropTableModel model;
     protected JButton addButton, deleteButton;
+    protected ProcedureCategoryDAO procedureCatDao;
     protected ProcedureDAO procedureDao;
     protected Value changedValue;
     protected JComboBox procedureCheckbox, timeTypesCheckbox;
@@ -56,7 +58,7 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
      * @param procedures The procedures that have to be displayed in the table.
      */
     public StandartProcedureComponent(List<Procedure> procedures) {
-        procedureDao = Lookup.getDefault().lookup(ProcedureDAO.class);
+        procedureCatDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
         CellConstraints cc = new CellConstraints();
         setLayout(new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px"));
         DragNDropTableModel tableModel = new DragNDropTableModel(
@@ -139,7 +141,7 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
      * Handles the adding of a procedure via a dialog.
      */
     protected void addProcedure() {
-        AddStandartProcedureDialog addProcedureDialog = new AddStandartProcedureDialog(procedureDao, table);
+        AddStandartProcedureDialog addProcedureDialog = new AddStandartProcedureDialog(procedureCatDao, table);
         addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addProcedureDialog.setVisible(true);
     }
