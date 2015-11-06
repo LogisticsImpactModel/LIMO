@@ -15,6 +15,7 @@ import nl.fontys.sofa.limo.simulation.SimulatorTask;
 import nl.fontys.sofa.limo.simulation.SimulatorTaskListener;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
+import nl.fontys.sofa.limo.view.graphs.GraphSwitchTopComponent;
 import nl.fontys.sofa.limo.view.topcomponent.ResultTopComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.DialogDisplayer;
@@ -86,10 +87,10 @@ public final class SimulateAction extends AbstractAction
             scenes = new ArrayList<>();
             Lookup global = Utilities.actionsGlobalContext();
             ChainGraphScene scene = global.lookup(ChainGraphScene.class);
-            if(scene == null){
+            if (scene == null) {
                 return;
             }
-            
+
             scenes.add(scene);
         }
 
@@ -124,6 +125,7 @@ public final class SimulateAction extends AbstractAction
             public void run() {
                 try {
                     ResultTopComponent rtc = new ResultTopComponent(task.getResults());
+
                     rtc.open();
                     rtc.requestActive();
                 } catch (InstantiationException ex) {
@@ -172,8 +174,8 @@ public final class SimulateAction extends AbstractAction
                 return;
             }
         }
-        SupplyChain [] c = chain.toArray(new SupplyChain[chain.size()]);
-        SimulatorTask task = Simulator.simulate(numberOfRuns,c);
+        SupplyChain[] c = chain.toArray(new SupplyChain[chain.size()]);
+        SimulatorTask task = Simulator.simulate(numberOfRuns, c);
         task.addTaskListener(this);
     }
 

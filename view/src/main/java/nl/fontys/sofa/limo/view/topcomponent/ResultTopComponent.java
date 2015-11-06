@@ -1,7 +1,6 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -18,29 +17,35 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.Chart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import nl.fontys.sofa.limo.domain.component.Node;
-import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.externaltrader.CSVExporter;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.simulation.result.SimulationResult;
 import nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel;
 import nl.fontys.sofa.limo.view.custom.table.LimoTable;
+import nl.fontys.sofa.limo.view.graphs.GraphSwitchTopComponent;
 import nl.fontys.sofa.limo.view.graphs.PieChartComponent;
 import nl.fontys.sofa.limo.view.graphs.XYChartComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.util.NbBundle.Messages;
+import org.openide.util.lookup.Lookups;
 import org.openide.windows.TopComponent;
+import org.openide.windows.WindowManager;
 
 /**
  * Top component which displays something.
@@ -68,6 +73,9 @@ public final class ResultTopComponent extends TopComponent {
 
     private List<SimulationResult> results;
     private JTable totalsTable, categoryTable, nodesTable;
+
+    private JPanel nodeGraphPanel, totalGraphPanel, categoryGraphPanel;
+    private DataEntryTableModel totalDetm, categoryDetm, nodeDetm;
 
     public ResultTopComponent() {
         initComponents();
@@ -204,42 +212,46 @@ public final class ResultTopComponent extends TopComponent {
         totalMap.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         totalMap.put(DataEntryTableModel.DELAYS_ID, delay);
         totalMap.put(DataEntryTableModel.CO2_ID, co2);
-        DataEntryTableModel detm = new DataEntryTableModel(name, totalMap);
-
+        totalDetm = new DataEntryTableModel(name, totalMap);
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        totalsTable = new LimoTable(detm);
+        totalsTable = new LimoTable(totalDetm);
         JScrollPane totalJScrollPane = new JScrollPane(totalsTable);
         totalJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
-        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(detm, BarChart.class
-        );
-        detm.setOnlyOneEnabled(
-                false);
-        detm.addTableModelListener(
+        totalGraphPanel = new JPanel(new BorderLayout());
+
+        createXYChart(totalGraphPanel, totalDetm, BarChart.class);
+
+        panel.add(totalGraphPanel);
+
+        panel.add(totalJScrollPane);
+        return panel;
+
+    }
+
+    private void createXYChart(JPanel parent, DataEntryTableModel model, Class<? extends XYChart> chartClass) {
+        parent.removeAll();
+        XYChartComponent<DataEntryTableModel> chart = new XYChartComponent<>(model, chartClass);
+        model.setOnlyOneEnabled(false);
+        model.removeAllListeners();
+        model.addTableModelListener(
                 (TableModelEvent e) -> {
                     Platform.runLater(() -> {
                         chart.updateData();
                     });
                 }
         );
-        final JPanel chartPanel = new JPanel(new BorderLayout());
 
-        panel.add(chartPanel);
-
-        panel.add(totalJScrollPane);
-
-        chartPanel.setPreferredSize(
-                new Dimension(500, 700));
-        Platform.setImplicitExit(
-                false);
+        parent.setPreferredSize(new Dimension(500, 700));
+        Platform.setImplicitExit(false);
         Platform.runLater(
                 () -> {
                     CategoryAxis xAxis = new CategoryAxis();
                     ArrayList<String> names = new ArrayList<>();
-                    name.stream().forEach((n) -> {
-                        names.add(n);
-                    });
+                    for (int i = 1; i < model.getRowCount(); i++) {
+                        names.add(model.getValueAt(i, 0).toString());
+                    }
 
                     xAxis.setCategories(FXCollections.<String>observableArrayList(names));
                     xAxis.setLabel("Categories");
@@ -247,11 +259,8 @@ public final class ResultTopComponent extends TopComponent {
                     NumberAxis yAxis = new NumberAxis();
                     yAxis.setTickUnit(50);
                     yAxis.setLabel("");
-                    chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
-                }
-        );
-        return panel;
-
+                    chart.init(parent, BorderLayout.CENTER, xAxis, yAxis);
+                });
     }
 
     private DataEntry getDifference(DataEntry one, DataEntry two) {
@@ -320,30 +329,45 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         map.put(DataEntryTableModel.CO2_ID, co2Values);
-        final DataEntryTableModel detm = new DataEntryTableModel(categories, map);
+        categoryDetm = new DataEntryTableModel(categories, map);
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        categoryTable = new LimoTable(detm);
+        categoryTable = new LimoTable(categoryDetm);
         JScrollPane catJScrollPane = new JScrollPane(categoryTable);
-        final JPanel chartPanel = new JPanel(new BorderLayout());
-        final PieChartComponent<DataEntryTableModel> chart = new PieChartComponent<>(detm);
-        detm.setOnlyOneEnabled(true);
-        detm.addTableModelListener((TableModelEvent e) -> {
-            Platform.runLater(() -> {
-                chart.updateData();
-            });
+        categoryGraphPanel = new JPanel(new BorderLayout());
+        createPieChart(categoryDetm, categoryGraphPanel);
+        panel.add(categoryGraphPanel);
+        panel.add(catJScrollPane);
+        catJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
+        categoryGraphPanel.setPreferredSize(new Dimension(500, 700));
+
+        return panel;
+    }
+
+    private void createPieChart(DataEntryTableModel model, JPanel parent) {
+        parent.removeAll();
+        final PieChartComponent<DataEntryTableModel> chart = new PieChartComponent<>(model);
+        model.setOnlyOneEnabled(true);
+        model.removeAllListeners();
+        model.addTableModelListener((TableModelEvent e) -> {
+            if (e.getLastRow() != e.getFirstRow()) {
+                Platform.runLater(() -> {
+                    chart.updateData();
+                });
+            }
+            if (parent == nodeGraphPanel) {
+                nodesTable.tableChanged(e);
+            } else if (parent == totalGraphPanel) {
+                totalsTable.tableChanged(e);
+            } else if (parent == categoryGraphPanel) {
+                categoryTable.tableChanged(e);
+            }
         });
         Platform.setImplicitExit(false);
         Platform.runLater(() -> {
-            chart.init(chartPanel, BorderLayout.CENTER);
+            chart.init(parent, BorderLayout.CENTER);
         });
-        panel.add(chartPanel);
-        panel.add(catJScrollPane);
-        catJScrollPane.setPreferredSize(new Dimension(Integer.MAX_VALUE, 150));
-        chartPanel.setPreferredSize(new Dimension(500, 700));
-
-        return panel;
     }
 
     private Component createNodePane() {
@@ -383,51 +407,22 @@ public final class ResultTopComponent extends TopComponent {
         map.put(DataEntryTableModel.EXTRA_COSTS_ID, extraCosts);
         map.put(DataEntryTableModel.DELAYS_ID, delays);
         map.put(DataEntryTableModel.CO2_ID, co2Values);
-        DataEntryTableModel detm = new DataEntryTableModel(names, map);
-        detm.setOnlyOneEnabled(false);
-        nodesTable = new JTable(detm);
-
+        nodeDetm = new DataEntryTableModel(names, map);
+        nodeDetm.setOnlyOneEnabled(false);
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        categoryTable = new LimoTable(detm);
-        final JPanel chartPanel = new JPanel(new BorderLayout());
-        JScrollPane catJScrollPane = new JScrollPane(categoryTable);
-        final XYChartComponent<DataEntryTableModel> chart = new XYChartComponent(detm, LineChart.class
-        );
-        detm.addTableModelListener(
-                (TableModelEvent e) -> {
-                    Platform.runLater(() -> {
-                        chart.updateData();
-                    });
-                }
-        );
-        Platform.setImplicitExit(
-                false);
-        Platform.runLater(
-                () -> {
-                    CategoryAxis xAxis = new CategoryAxis();
-                    SupplyChain chain = results.get(0).getSupplyChain();
-                    ArrayList<String> names1 = new ArrayList<>();
-                    Node node = chain.getStartHub();
-                    while (node != null) {
-                        names1.add(node.getName());
-                        node = node.getNext();
-                    }
-                    xAxis.setCategories(FXCollections.<String>observableArrayList(names1));
-                    xAxis.setLabel("Categories");
-                    NumberAxis yAxis = new NumberAxis();
-                    yAxis.setTickUnit(50);
-                    yAxis.setLabel("");
-                    chart.init(chartPanel, BorderLayout.CENTER, xAxis, yAxis);
-                }
-        );
-        panel.add(chartPanel);
+        nodesTable = new LimoTable(nodeDetm);
+        nodeGraphPanel = new JPanel(new BorderLayout());
+        JScrollPane catJScrollPane = new JScrollPane(nodesTable);
+        createXYChart(nodeGraphPanel, nodeDetm, LineChart.class);
+
+        panel.add(nodeGraphPanel);
 
         panel.add(catJScrollPane);
 
         catJScrollPane.setPreferredSize(
                 new Dimension(Integer.MAX_VALUE, 150));
-        chartPanel.setPreferredSize(
+        nodeGraphPanel.setPreferredSize(
                 new Dimension(500, 700));
 
         return panel;
@@ -469,24 +464,29 @@ public final class ResultTopComponent extends TopComponent {
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 
+    GraphSwitchTopComponent graphSwitch = (GraphSwitchTopComponent) WindowManager.getDefault().findTopComponent("GraphSwitchTopComponent");
+
     @Override
     public void componentOpened() {
-        // TODO add custom code on component opening
+        GraphChangeListener listener = new GraphChangeListener();
+        associateLookup(Lookups.singleton(listener));
     }
 
     @Override
     public void componentClosed() {
-        // TODO add custom code on component closing
+
     }
 
-    void writeProperties(java.util.Properties p) {
+    void writeProperties(java.util.Properties p
+    ) {
         // better to version settings since initial version as advocated at
         // http://wiki.apidesign.org/wiki/PropertyFiles
         p.setProperty("version", "1.0");
         // TODO store your settings
     }
 
-    void readProperties(java.util.Properties p) {
+    void readProperties(java.util.Properties p
+    ) {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
     }
@@ -494,5 +494,40 @@ public final class ResultTopComponent extends TopComponent {
     @Override
     public int getPersistenceType() {
         return TopComponent.PERSISTENCE_NEVER;
+    }
+
+    public class GraphChangeListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            if (e.getSource() instanceof Class) {
+                Class<? extends Chart> graphClass = (Class<? extends Chart>) e.getSource();
+                Component selectedComponent = jTabbedPane1.getSelectedComponent();
+                DataEntryTableModel detm;
+                JPanel componet;
+                if (SwingUtilities.isDescendingFrom(nodeGraphPanel, selectedComponent)) {
+                    System.out.println("Node");
+                    detm = nodeDetm;
+                    componet = nodeGraphPanel;
+                } else if (SwingUtilities.isDescendingFrom(totalGraphPanel, selectedComponent)) {
+                    System.out.println("Total");
+                    detm = totalDetm;
+                    componet = totalGraphPanel;
+                } else if (SwingUtilities.isDescendingFrom(categoryGraphPanel, selectedComponent)) {
+                    System.out.println("Category");
+                    detm = categoryDetm;
+                    componet = categoryGraphPanel;
+                } else {
+                    return;
+                }
+
+                if (graphClass == PieChart.class) {
+                    createPieChart(detm, componet);
+                } else {
+                    createXYChart(componet, detm, (Class<? extends XYChart>) graphClass);
+                }
+            }
+        }
     }
 }

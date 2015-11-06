@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javax.swing.event.TableModelListener;
 import nl.fontys.sofa.limo.simulation.result.DataEntry;
 import nl.fontys.sofa.limo.view.graphs.AbstractLimoTableModel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -65,13 +66,12 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         if (isCellEditable(rowIndex, columnIndex) && rowIndex == 0) {
-            if ((Boolean) aValue == true && onlyOneEnabled) {
+            if ((Boolean) aValue == true && this.onlyOneEnabled) {
                 for (int i = 0; i < enabled.size(); i++) {
                     enabled.set(i, Boolean.FALSE);
                 }
             }
             enabled.set(columnIndex, Boolean.valueOf(aValue.toString()));
-
             fireTableDataChanged();
         }
 
@@ -134,11 +134,7 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (rowIndex == 0 && columnIndex != 0) {
-
-            return true;
-        }
-        return false;
+        return rowIndex == 0 && columnIndex != 0;
     }
 
     @Override
@@ -250,6 +246,12 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
         return getLineChartData();
     }
 
+    public void removeAllListeners() {
+        for (TableModelListener tableModelListener : this.getTableModelListeners()) {
+            this.removeTableModelListener(tableModelListener);
+        }
+    }
+
     @Override
     public ObservableList<PieChart.Data> getPieChartData() {
         ObservableList<PieChart.Data> result = FXCollections.<PieChart.Data>observableArrayList();
@@ -262,6 +264,7 @@ public class DataEntryTableModel extends AbstractLimoTableModel {
 
             }
         }
+        fireTableRowsUpdated(0, 0);
 
         for (int i = 0; i < names.size(); i++) {
             Object val = getValueAt(i + 1, activeIndex);
