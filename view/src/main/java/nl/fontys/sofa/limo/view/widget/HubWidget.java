@@ -47,13 +47,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     private final int widgetWidth = 140;
     private final int widgetHeight = 170;
     private final Color backgroundColor = new Color(0, 0, 0, 0);
-
     private final HubNode hubNode;
-
     private Widget containerWidget;
-//    private EventsWidget eventWidget;
-//    private ProcedureWidget procedureWidget;
-
     private LabelWidget eventLabelWidget;
     private LabelWidget procedureLabelWidget;
     private final Widget startFlagWidget;
@@ -67,19 +62,14 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     public HubWidget(Scene scene, HubNode beanNode) throws IOException {
         super(scene);
         this.hubNode = beanNode;
-        // hubNode.addPropertyChangeListener(this);
-
         setPreferredBounds(new Rectangle(widgetWidth, widgetHeight));
         setPreferredSize(new Dimension(widgetWidth, widgetHeight));
         setToolTipText(hubNode.getName());
         setOpaque(false);
-
         startFlagWidget = new StartWidget(scene);
         startFlagWidget.setVisible(false);
-
         setImage(getHub().getIcon().getImage());
         setLabel(beanNode.getName());
-//        createBorder();
         addSeparator();
         addChildren();
     }
@@ -112,7 +102,6 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
             eventLabelWidget = new LabelWidget(getScene(), "Events: " + getHub().getEvents().size());
         }
         this.addChild(eventLabelWidget);
-
         addChild(startFlagWidget);
     }
 
@@ -248,7 +237,6 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     propertyChange(null);
                 }
             });
-            
             JMenu procedureMenu = new JMenu("Proceduren");
             ProcedureService procedureService = Lookup.getDefault().lookup(ProcedureService.class);
             List<Procedure> procedureList = procedureService.findAll();
@@ -258,43 +246,31 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     @Override
                     public void actionPerformed(ActionEvent ae) {
                         List<Procedure> procedureListOfHub = HubWidget.this.getHub().getProcedures();
-                        
                         Procedure selected = procedureService.findById(procedure.getId());
                         selected.setId(null);
-                        
-                        //eventListOfHub.add(new Event(event.getName(), event.getDescription(), event.getDependency(), event.getProbability(), event.getExecutionState()));
                         procedureListOfHub.add(selected);
                         HubWidget.this.getHub().setProcedures(procedureListOfHub);
                         updateLabels();
-                        
                     }
                 });
             });
-            
-            
             JMenu eventMenu = new JMenu("Events");
             EventService eventService = Lookup.getDefault().lookup(EventService.class);
             List<Event> eventList = eventService.findAll();
-            for (Event event : eventList) {
-            
+            eventList.stream().forEach((event) -> {
                 eventMenu.add(new AbstractAction(event.getName()){
 
                     @Override
                     public void actionPerformed(ActionEvent ae) {
                         List<Event> eventListOfHub = HubWidget.this.getHub().getEvents();
-                        
                         Event selected = eventService.findById(event.getId());
                         selected.setId(null);
-                        
-                        //eventListOfHub.add(new Event(event.getName(), event.getDescription(), event.getDependency(), event.getProbability(), event.getExecutionState()));
                         eventListOfHub.add(selected);
                         HubWidget.this.getHub().setEvents(eventListOfHub);
                         updateLabels();
-                        
                     }
                 });
-                
-            }
+            });
             popup.add(eventMenu);
             return popup;
         }

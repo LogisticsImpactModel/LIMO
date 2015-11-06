@@ -14,7 +14,8 @@ import org.netbeans.validation.api.Problem;
 import org.netbeans.validation.api.builtin.stringvalidation.StringValidators;
 import org.netbeans.validation.api.ui.ValidationUI;
 import org.netbeans.validation.api.ui.swing.SwingValidationGroup;
-
+import org.openide.awt.Mnemonics;
+import org.openide.util.NbBundle;
 /**
  * Reusable {@link JPanel} for inputting name and description.
  *
@@ -51,7 +52,6 @@ public class AddNewProcedurePanel extends JPanel
      */
     @SuppressWarnings("unchecked")
     private void initComponents() {
-
         contentPane = new JPanel();
         nameLB = new JLabel();
         descriptionLB = new JLabel();
@@ -70,10 +70,9 @@ public class AddNewProcedurePanel extends JPanel
         contentPane.setPreferredSize(new java.awt.Dimension(450, 100));
 
         nameLB.setHorizontalAlignment(SwingConstants.RIGHT);
-        org.openide.awt.Mnemonics.setLocalizedText(nameLB, org.openide.util.NbBundle.getMessage(AddNewProcedurePanel.class, "NameDescriptionDialogInputPanel.nameLB.text")); // NOI18N
-
+        Mnemonics.setLocalizedText(nameLB, NbBundle.getMessage(AddNewProcedurePanel.class, "NameDescriptionDialogInputPanel.nameLB.text")); // NOI18N
         descriptionLB.setHorizontalAlignment(SwingConstants.RIGHT);
-        org.openide.awt.Mnemonics.setLocalizedText(descriptionLB, org.openide.util.NbBundle.getMessage(AddNewProcedurePanel.class, "NameDescriptionDialogInputPanel.descriptionLB.text")); // NOI18N
+        Mnemonics.setLocalizedText(descriptionLB, NbBundle.getMessage(AddNewProcedurePanel.class, "NameDescriptionDialogInputPanel.descriptionLB.text")); // NOI18N
 
         descriptionTF.setColumns(20);
         descriptionTF.setRows(5);
@@ -107,7 +106,6 @@ public class AddNewProcedurePanel extends JPanel
                                         .addContainerGap(54, Short.MAX_VALUE))
                                 .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
-
         add(contentPane);
     }
 

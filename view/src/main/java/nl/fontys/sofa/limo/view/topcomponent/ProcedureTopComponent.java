@@ -48,7 +48,7 @@ import org.openide.windows.TopComponent;
     "CTL_ProcedureAction=Procedure catalog",
     "CTL_ProcedureTopComponent=Procedure catalog"
 })
-public final class ProcedureTopComponent extends BaseEntityTopComponent {
+public final class ProcedureTopComponent extends BaseEntityTopComponentWithoutDescription {
 
     public ProcedureTopComponent() {
         super();

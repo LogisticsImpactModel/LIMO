@@ -18,6 +18,7 @@ import nl.fontys.sofa.limo.view.wizard.export.data.panel.HubSelectionPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.HubTypeSelectionPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.LegTypeSelectionPanel;
 import nl.fontys.sofa.limo.view.wizard.export.data.panel.ProcedureCategorySelectionPanel;
+import nl.fontys.sofa.limo.view.wizard.export.data.panel.ProcedureSelectionPanel;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
@@ -49,6 +50,7 @@ public final class ExportWizardAction implements ActionListener {
     public static final String HUB_TYPES = "hubtypes";
     public static final String HUBS = "hubs";
     public static final String EVENTS = "events";
+    public static final String PROCEDURES = "basicProcedures";
     public static final String PATH = "path";
 
     private Map<String, List<BaseEntity>> objectsToExport;
@@ -57,6 +59,7 @@ public final class ExportWizardAction implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
         panels.add(new ProcedureCategorySelectionPanel());
+        panels.add(new ProcedureSelectionPanel());
         panels.add(new LegTypeSelectionPanel());
         panels.add(new HubTypeSelectionPanel());
         panels.add(new HubSelectionPanel());
@@ -97,6 +100,7 @@ public final class ExportWizardAction implements ActionListener {
         objectsToExport.put(HUB_TYPES, (List<BaseEntity>) wizardDescriptor.getProperty(HUB_TYPES));
         objectsToExport.put(HUBS, (List<BaseEntity>) wizardDescriptor.getProperty(HUBS));
         objectsToExport.put(EVENTS, (List<BaseEntity>) wizardDescriptor.getProperty(EVENTS));
+        objectsToExport.put(PROCEDURES, (List<BaseEntity>) wizardDescriptor.getProperty(PROCEDURES));
         String filepath = (String) wizardDescriptor.getProperty(PATH);
         JSONExporter.export(objectsToExport, filepath);
     }

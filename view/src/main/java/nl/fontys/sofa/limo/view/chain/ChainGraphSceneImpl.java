@@ -4,10 +4,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +22,7 @@ import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
@@ -32,6 +31,7 @@ import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
 import nl.fontys.sofa.limo.view.node.bean.LegTypeNode;
 import nl.fontys.sofa.limo.view.node.bean.MultiModeLegNode;
+import nl.fontys.sofa.limo.view.node.bean.ProcedureNode;
 import nl.fontys.sofa.limo.view.node.bean.ScheduledLegNode;
 import nl.fontys.sofa.limo.view.node.factory.LegTypeChildFactory;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
@@ -42,7 +42,6 @@ import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.HubWidget;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
 import nl.fontys.sofa.limo.view.widget.StartWidget;
-import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegWizardAction;
 import nl.fontys.sofa.limo.view.wizard.leg.scheduled.ScheduledLegWizardAction;
 import org.netbeans.api.visual.action.AcceptProvider;
@@ -60,7 +59,6 @@ import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.spi.palette.PaletteController;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
 import org.openide.nodes.NodeTransfer;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
@@ -352,10 +350,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         }
 
         List<Widget> hubWidgetList = mainLayer.getChildren();
-        for (Widget hubWidget : hubWidgetList) {
-            HubWidget hw = (HubWidget) hubWidget;
+        hubWidgetList.stream().map((hubWidget) -> (HubWidget) hubWidget).forEach((hw) -> {
             hw.setStartFlag(hw.getHub().getPrevious() == null);
-        }
+        });
     }
 
     @Override
@@ -446,6 +443,8 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 }
             } else if (node instanceof EventNode) {
                 return ConnectorState.ACCEPT;
+            } else if (node instanceof ProcedureNode) {
+                return ConnectorState.ACCEPT;
             }
 
             if (node instanceof LegTypeNode) {
@@ -477,6 +476,8 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
             if (node instanceof EventNode) {
                 acceptEvent(node, point);
+            } else if (node instanceof ProcedureNode) {
+                acceptProcedure(node, point);
             } else {
                 acceptHub(node, widget, point);
             }
@@ -508,7 +509,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                     hitlist.add(w);
                 }
             });
-            connectionLayer.getChildren().forEach((c) -> {
+            connectionLayer.getChildren().forEach((Widget c) -> {
                 Point p = c.convertSceneToLocal(point);
                 Rectangle r = new Rectangle(p);
                 r.width = 25;
@@ -529,6 +530,43 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 } else if (w instanceof LegWidget) {
                     LegWidget legWidget = (LegWidget) w;
                     legWidget.getLeg().getEvents().add(event);
+                    legWidget.updateLabels();
+                }
+            });
+            mainLayer.revalidate();
+            connectionLayer.revalidate();
+        }
+        
+        private void acceptProcedure(AbstractBeanNode node, Point point) {
+            Procedure procedure = node.getLookup().lookup(Procedure.class);
+            List<Widget> hitlist = new ArrayList<>();
+            mainLayer.getChildren().forEach((w) -> {
+                Point p = w.convertSceneToLocal(point);
+                if (w.isHitAt(p)) {
+                    hitlist.add(w);
+                }
+            });
+            connectionLayer.getChildren().forEach((c) -> {
+                Point p = c.convertSceneToLocal(point);
+                Rectangle r = new Rectangle(p);
+                r.width = 25;
+                r.height = 25;
+                r.x -= r.width / 2;
+                r.y -= r.height / 2;
+
+                if (c.getBounds().contains(r)) {
+                    hitlist.add(c);
+                }
+            });
+
+            hitlist.forEach((w) -> {
+                if (w instanceof HubWidget) {
+                    HubWidget hubWidget = (HubWidget) w;
+                    hubWidget.getHub().getProcedures().add(procedure);
+                    hubWidget.updateLabels();
+                } else if (w instanceof LegWidget) {
+                    LegWidget legWidget = (LegWidget) w;
+                    legWidget.getLeg().getProcedures().add(procedure);
                     legWidget.updateLabels();
                 }
             });
@@ -684,11 +722,8 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             AbstractBeanNode targetNode
                     = (AbstractBeanNode) findObject(targetWidget);
 
-            if (findNodeEdges(sourceNode, true, false).isEmpty()
-                    && findNodeEdges(targetNode, false, true).isEmpty()) {
-                return true;
-            }
-            return false;
+            return findNodeEdges(sourceNode, true, false).isEmpty()
+                    && findNodeEdges(targetNode, false, true).isEmpty();
         }
     }
 }

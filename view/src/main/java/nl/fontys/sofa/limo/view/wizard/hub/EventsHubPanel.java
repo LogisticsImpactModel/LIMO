@@ -59,9 +59,9 @@ public final class EventsHubPanel extends EventsPanel {
         service = Lookup.getDefault().lookup(EventService.class);
         List<Event> allEventsList = service.findAll();
         addButton.setEnabled(!allEventsList.isEmpty());
-        for (Event e : allEventsList) {
+        allEventsList.stream().forEach((e) -> {
             events.add(e.getName());
-        }
+        });
         eventsComboBox.setModel(new DefaultComboBoxModel(events.toArray()));
     }
 }

@@ -35,10 +35,9 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
 
     private HubChildFactory hubFactory;
     private LegTypeChildFactory legFactory;
-    private ProcedureCategoryChildFactory procedureFactory;
+    private ProcedureChildFactory procedureFactory;
     private EventChildFactory eventFactory;
     private Result<Hub> lookupResult;
-
 
     /**
      * Constructor creates a new CategoryChildFactory and attaches
@@ -49,10 +48,6 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
         hubFactory = new HubChildFactory();
         lookupResult = hubFactory.getLookup().lookupResult(Hub.class);
         lookupResult.addLookupListener(this);
-        
-        //eventFactory = new EventChildFactory();
-        //lookupEventResult = eventFactory.getLookup().lookupResult(Event.class);
-        //lookupEventResult.addLookupListener(this);
     }
 
     @Override
@@ -73,7 +68,7 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
             list.add(legRootNode);
             
             //Procedure
-            procedureFactory = new ProcedureCategoryChildFactory();
+            procedureFactory = new ProcedureChildFactory();
             Children procedureChildren = Children.create(procedureFactory, false);
             AbstractRootNode procedureRootNode = new ProcedureCategoryRootNode(procedureChildren);
             procedureRootNode.setDisplayName("Procedures");

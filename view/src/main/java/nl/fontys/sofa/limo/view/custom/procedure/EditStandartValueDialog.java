@@ -151,7 +151,7 @@ public class EditStandartValueDialog extends JDialog implements ActionListener {
                 try {
                     activeValue = Double.parseDouble(textfieldValue.getText());
                 } catch (NumberFormatException ex) {
-                    System.out.println(Arrays.toString(ex.getStackTrace()));
+                    labelError.setText(Arrays.toString(ex.getStackTrace()));
                 }
                 this.remove(singlePanel);
                 this.add(rangePanel, cc.xyw(2, 4, 5));
@@ -160,7 +160,7 @@ public class EditStandartValueDialog extends JDialog implements ActionListener {
                 try {
                     activeValue = Double.parseDouble(textfieldMin.getText());
                 } catch (NumberFormatException ex) {
-                    System.out.println(Arrays.toString(ex.getStackTrace()));
+                    labelError.setText(Arrays.toString(ex.getStackTrace()));
                 }
                 this.remove(rangePanel);
                 this.add(singlePanel, cc.xyw(2, 4, 5));
