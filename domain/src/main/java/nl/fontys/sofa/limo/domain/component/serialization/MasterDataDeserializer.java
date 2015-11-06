@@ -20,7 +20,7 @@ import nl.fontys.sofa.limo.domain.component.type.LegType;
 /**
  * Deserializes the MasterData from JSON to a Java Object.
  *
- * @author Convict42
+ * @author Christian Neumann
  */
 public class MasterDataDeserializer implements JsonDeserializer<MasterData> {
 
