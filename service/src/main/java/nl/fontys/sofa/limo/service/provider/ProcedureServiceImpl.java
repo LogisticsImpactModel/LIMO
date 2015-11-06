@@ -17,5 +17,4 @@ public class ProcedureServiceImpl extends AbstractService<Procedure> implements 
     public ProcedureServiceImpl() throws DAONotFoundException {
         super(ProcedureDAO.class);
     }
-
 }

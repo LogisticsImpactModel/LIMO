@@ -72,16 +72,14 @@ public final class JSONImporter {
         lastOlderEntityCount = 0;
 
         Map<String, List<BaseEntity>> allEntities = (Map<String, List<BaseEntity>>) loadFromFile(filepath);
-        Map<String, List<BaseEntity>> checkedEntities = new HashMap<String, List<BaseEntity>>(allEntities);
+        Map<String, List<BaseEntity>> checkedEntities = new HashMap<>(allEntities);
         Set<String> keys = allEntities.keySet();
-        for (Iterator<String> iterator = keys.iterator(); iterator.hasNext();) {
-            String next = iterator.next();
+        keys.stream().forEach((next) -> {
             List<BaseEntity> baseList = allEntities.get(next);
-            if(baseList == null)
-            {
+            if (baseList == null) {
                 checkedEntities.remove(next);
             }
-        }
+        });
              
         return checkForConflicts(checkedEntities);
     }

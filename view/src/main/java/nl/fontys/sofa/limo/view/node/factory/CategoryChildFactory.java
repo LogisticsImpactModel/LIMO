@@ -39,7 +39,6 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
     private EventChildFactory eventFactory;
     private Result<Hub> lookupResult;
 
-
     /**
      * Constructor creates a new CategoryChildFactory and attaches
      * {@link org.openide.util.LookupListener} on the child factories to listen
@@ -49,10 +48,6 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
         hubFactory = new HubChildFactory();
         lookupResult = hubFactory.getLookup().lookupResult(Hub.class);
         lookupResult.addLookupListener(this);
-        
-        //eventFactory = new EventChildFactory();
-        //lookupEventResult = eventFactory.getLookup().lookupResult(Event.class);
-        //lookupEventResult.addLookupListener(this);
     }
 
     @Override

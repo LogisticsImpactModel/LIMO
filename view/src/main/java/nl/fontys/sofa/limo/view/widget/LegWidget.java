@@ -98,7 +98,6 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
             if (getLeg().getProcedures() != null && !getLeg().getProcedures().isEmpty()) {
                 procedureLabelWidget = new LabelWidget(getScene(), "Procedures: " + getLeg().getProcedures().size());
                 procedureLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
-
                 this.setConstraint(procedureLabelWidget, LayoutFactory.ConnectionWidgetLayoutAlignment.BOTTOM_RIGHT, 40);
                 this.addChild(procedureLabelWidget);
             }
@@ -106,7 +105,6 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
             if (getLeg().getEvents() != null) {
                 if(getLeg().getEvents().isEmpty()){
                 eventLabelWidget = new LabelWidget(getScene(), "");
-                    
                 }else{
                 eventLabelWidget = new LabelWidget(getScene(), "Events: " + getLeg().getEvents().size());
                 }

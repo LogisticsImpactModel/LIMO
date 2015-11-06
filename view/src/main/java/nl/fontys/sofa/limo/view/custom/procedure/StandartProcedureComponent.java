@@ -104,7 +104,7 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
     public List<Procedure> getActiveTableState() {
         List<List<Object>> values = ((DragNDropTableModel) table.getModel()).getValues();
         ArrayList<Procedure> procedures = new ArrayList<>();
-        for (List<Object> value : values) {
+        values.stream().map((value) -> {
             Procedure p = new Procedure();
             p.setName((String) value.get(0));
             if (value.get(1) instanceof Procedure) {
@@ -116,8 +116,10 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
             p.setTimeType((TimeType) value.get(3));
             p.setCost((Value) value.get(4));
             p.setCotwo((Value) value.get(5));
+            return p;
+        }).forEach((p) -> {
             procedures.add(p);
-        }
+        });
         return procedures;
     }
 
@@ -160,15 +162,11 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
         if (table.getSelectedColumn() == 2 || table.getSelectedColumn() == 4 || table.getSelectedColumn() == 5) {
             changedValue = (Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
             Object valueAt = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
-            EditValueDialog editValueDialog = new EditValueDialog((Value) valueAt, new AddProcedureDialog.EditValueDialogListener() {
-
-                @Override
-                public void newValue(Value value) {
-                    changedValue = value;
-                    table.setValueAt(value, table.getSelectedRow(), table.getSelectedColumn());
-                    StandartProcedureComponent.this.revalidate();
-                    StandartProcedureComponent.this.repaint();
-                }
+            EditValueDialog editValueDialog = new EditValueDialog((Value) valueAt, (Value value) -> {
+                changedValue = value;
+                table.setValueAt(value, table.getSelectedRow(), table.getSelectedColumn());
+                StandartProcedureComponent.this.revalidate();
+                StandartProcedureComponent.this.repaint();
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             editValueDialog.setVisible(true);
@@ -202,7 +200,7 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
     private void initProceduresTable(List<Procedure> procedures) {
         List<List<Object>> valueList = new ArrayList<>();
         if (procedures != null) {
-            for (Procedure p : procedures) {
+            procedures.stream().map((p) -> {
                 ArrayList<Object> procedure = new ArrayList<>();
                 procedure.add(p.getName());
                 procedure.add(p.getCategory());
@@ -210,8 +208,10 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
                 procedure.add(p.getTimeType());
                 procedure.add(p.getCost());
                 procedure.add(p.getCotwo());
+                return procedure;
+            }).forEach((procedure) -> {
                 valueList.add(procedure);
-            }
+            });
         }
         model = new DragNDropTableModel(new String[]{LIMOResourceBundle.getString("PROCEDURE"), LIMOResourceBundle.getString("CATEGORY"), LIMOResourceBundle.getString("TIME_COST"), LIMOResourceBundle.getString("TIME_TYPE"), LIMOResourceBundle.getString("MONEY_COST"), LIMOResourceBundle.getString("CO2")},
                 valueList, new Class[]{String.class, String.class, Value.class, TimeType.class, Value.class, Value.class});

@@ -6,9 +6,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -22,7 +20,6 @@ import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
-import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
@@ -122,48 +119,36 @@ public class AddStandartProcedureDialog extends JDialog implements ActionListene
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(addCostButton)) {
-            EditStandartValueDialog editValueDialog = new EditStandartValueDialog(costValue, new EditStandartValueDialogListener() {
-
-                @Override
-                public void newValue(Value changedValue) {
-                    if (costValue != null) {
-                        costValue = changedValue;
-                        costTextField.setText(costValue.toString());
-                        AddStandartProcedureDialog.this.revalidate();
-                        AddStandartProcedureDialog.this.repaint();
-                    }
+            EditStandartValueDialog editValueDialog = new EditStandartValueDialog(costValue, (Value changedValue) -> {
+                if (costValue != null) {
+                    costValue = changedValue;
+                    costTextField.setText(costValue.toString());
+                    AddStandartProcedureDialog.this.revalidate();
+                    AddStandartProcedureDialog.this.repaint();
                 }
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             editValueDialog.setVisible(true);
         }
         if (e.getSource().equals(addTimeButton)) {
-            EditStandartValueDialog editValueDialog = new EditStandartValueDialog(timeValue, new EditStandartValueDialogListener() {
-
-                @Override
-                public void newValue(Value changedValue) {
-                    if (timeValue != null) {
-                        timeValue = changedValue;
-                        timeTextField.setText(timeValue.toString());
-                        AddStandartProcedureDialog.this.revalidate();
-                        AddStandartProcedureDialog.this.repaint();
-                    }
+            EditStandartValueDialog editValueDialog = new EditStandartValueDialog(timeValue, (Value changedValue) -> {
+                if (timeValue != null) {
+                    timeValue = changedValue;
+                    timeTextField.setText(timeValue.toString());
+                    AddStandartProcedureDialog.this.revalidate();
+                    AddStandartProcedureDialog.this.repaint();
                 }
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             editValueDialog.setVisible(true);
         }
         if (e.getSource().equals(addCotwoButton)) {
-            EditStandartValueDialog editValueDialog = new EditStandartValueDialog(cotwoValue, new EditStandartValueDialogListener() {
-
-                @Override
-                public void newValue(Value changedValue) {
-                    if (cotwoValue != null) {
-                        cotwoValue = changedValue;
-                        cotwoTextField.setText(cotwoValue.toString());
-                        AddStandartProcedureDialog.this.revalidate();
-                        AddStandartProcedureDialog.this.repaint();
-                    }
+            EditStandartValueDialog editValueDialog = new EditStandartValueDialog(cotwoValue, (Value changedValue) -> {
+                if (cotwoValue != null) {
+                    cotwoValue = changedValue;
+                    cotwoTextField.setText(cotwoValue.toString());
+                    AddStandartProcedureDialog.this.revalidate();
+                    AddStandartProcedureDialog.this.repaint();
                 }
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -195,21 +180,7 @@ public class AddStandartProcedureDialog extends JDialog implements ActionListene
             newProcedure = new Procedure(name, category, costValue, timeValue, timeType, cotwoValue);
             
             ProcedureService procedureService = Lookup.getDefault().lookup(ProcedureService.class);
-            procedureService.insert(newProcedure);
-            
-            /*
-            List<Object> newRow = new ArrayList<>();
-            newRow.add(newProcedure.getName());
-            newRow.add(newProcedure.getCategory());
-            newRow.add(newProcedure.getTime());
-            newRow.add(newProcedure.getTimeType());
-            newRow.add(newProcedure.getCost());
-            newRow.add(newProcedure.getCotwo());
-            ((DragNDropTableModel) table.getModel()).addRow(newRow);
-            ((DragNDropTableModel) table.getModel()).fireTableDataChanged();
-            table.revalidate();
-            table.repaint();
-            */
+            procedureService.insert(newProcedure);   
             this.dispose();
         }
     }

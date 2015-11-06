@@ -92,7 +92,6 @@ public class TimeTypePropertyEditor extends PropertyEditorSupport {
             setModal(true);
             setPreferredSize(new Dimension(480, 240));
             setTitle("Edit of TimeType");
-
             initComponents();
             setLocationRelativeTo(null);
         }
@@ -137,23 +136,6 @@ public class TimeTypePropertyEditor extends PropertyEditorSupport {
 
             cmbTimeType = new JComboBox(TimeType.values());
             cmbTimeType.setSelectedItem(procedureTimeType);
-            /*cmbTimeType.addItemListener(new ItemListener() {
-
-                private TimeType oldTimeType = null;
-
-                @Override
-                public void itemStateChanged(ItemEvent e) {
-                    if (e.getStateChange() == ItemEvent.DESELECTED) {
-                        oldTimeType = (TimeType) e.getItem();
-                    } else {
-                        if (!oldTimeType.equals(e.getItem())) {
-                            cmbTimeType.setModel(new DefaultComboBoxModel(getTimeTypes()));
-                            cmbTimeType.setSelectedIndex(0);
-                        }
-                        oldTimeType = null;
-                    }
-                }
-            });*/
 
             //<editor-fold defaultstate="collapsed" desc="Layout">
             container.setLayout(new GridBagLayout());

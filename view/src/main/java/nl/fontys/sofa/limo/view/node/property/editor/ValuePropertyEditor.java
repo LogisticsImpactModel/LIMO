@@ -41,10 +41,6 @@ public class ValuePropertyEditor extends PropertyEditorSupport {
     }
 
     @Override
-    public void setAsText(String s) {
-    }
-
-    @Override
     public Component getCustomEditor() {
         final ValueEditor val = new ValueEditor((Value) getValue());
         val.addWindowListener(new WindowAdapter() {
@@ -103,7 +99,6 @@ public class ValuePropertyEditor extends PropertyEditorSupport {
             initComponents();
             setLocationRelativeTo(null);
         }
-
         /**
          * Get updated location.
          *
