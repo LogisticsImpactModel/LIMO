@@ -23,6 +23,8 @@ public class MasterData {
     private List<BaseEntity> hubtypes;
     @Expose
     private List<BaseEntity> hubs;
+    @Expose
+    private List<BaseEntity> basicProcedures;
 
     public MasterData() {
     }
@@ -39,6 +41,7 @@ public class MasterData {
         map.put("events", events);
         map.put("hubtypes", hubtypes);
         map.put("hubs", hubs);
+        map.put("basicProcedures", basicProcedures);
 
         return map;
     }
@@ -81,5 +84,13 @@ public class MasterData {
 
     public void setHubs(List<BaseEntity> hubs) {
         this.hubs = hubs;
+    }
+
+    public List<BaseEntity> getBasicProcedures() {
+        return basicProcedures;
+    }
+
+    public void setBasicProcedures(List<BaseEntity> basicProcedures) {
+        this.basicProcedures = basicProcedures;
     }
 }

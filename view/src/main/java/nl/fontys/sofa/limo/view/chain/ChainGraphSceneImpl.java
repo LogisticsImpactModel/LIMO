@@ -1,9 +1,11 @@
 package nl.fontys.sofa.limo.view.chain;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.datatransfer.Transferable;
 import java.beans.IntrospectionException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.JComponent;
@@ -12,16 +14,20 @@ import javax.swing.undo.UndoManager;
 import nl.fontys.sofa.limo.api.service.status.StatusBarService;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
+import nl.fontys.sofa.limo.view.node.bean.EventNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
 import nl.fontys.sofa.limo.view.node.bean.MultiModeLegNode;
+import nl.fontys.sofa.limo.view.node.bean.ProcedureNode;
 import nl.fontys.sofa.limo.view.node.bean.ScheduledLegNode;
 import nl.fontys.sofa.limo.view.topcomponent.DynamicExplorerManagerProvider;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -164,7 +170,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             lookup = new ProxyLookup(undoRedo, super.getLookup());
         } else {
             lookup = (ProxyLookup) super.getLookup();
-            
+
         }
 
     }
@@ -282,8 +288,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
     @Override
     public void addHubWidget(HubWidget hubWidget) {
         Lookup.getDefault().lookup(StatusBarService.class).setMessage(hubWidget.getHub().getName(), StatusBarService.ACTION_ADD, StatusBarService.STATE_SUCCESS, null);
-        if(hubWidget.getHub().getPrevious() == null)
-        {
+        if (hubWidget.getHub().getPrevious() == null) {
             hubWidget.setStartFlag(true);
         }
         mainLayer.addChild(hubWidget);
@@ -314,35 +319,32 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         target.setStartFlag(false);
         this.checkChainHubs();
     }
-    
+
     /**
-     * Checks the hubs and hubWidgets if the previous Node is null and sets the 
+     * Checks the hubs and hubWidgets if the previous Node is null and sets the
      * starthub.
      */
-    public void checkChainHubs()
-    {
+    public void checkChainHubs() {
         int checkIfMoreThanOne = 0;
         Hub startHub = new Hub();
         List<Hub> hubList = chainBuilder.getHubList();
         for (Hub hub : hubList) {
-            if(hub.getPrevious() == null)
-            {
+            if (hub.getPrevious() == null) {
                 checkIfMoreThanOne++;
                 startHub = hub;
             }
         }
-        if(checkIfMoreThanOne == 1)
-        {
+        if (checkIfMoreThanOne == 1) {
             chainBuilder.setStartHub(startHub);
         }
-        
+
         List<Widget> hubWidgetList = mainLayer.getChildren();
         for (Widget hubWidget : hubWidgetList) {
             HubWidget hw = (HubWidget) hubWidget;
             hw.setStartFlag(hw.getHub().getPrevious() == null);
         }
     }
-    
+
     @Override
     public void removeHubWidget(HubWidget hubWidget) {
         Hub hub = hubWidget.getHub();
@@ -421,8 +423,16 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
         @Override
         public ConnectorState isAcceptable(Widget widget, Point point, Transferable transferable) {
-            WidgetableNode node = (WidgetableNode) NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
-            if (node.isAcceptable(widget, point)) {
+            org.openide.nodes.Node node = NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
+
+            if (node instanceof WidgetableNode) {
+                WidgetableNode widgetNode = (WidgetableNode) node;
+                if (widgetNode.isAcceptable(widget, point)) {
+                    return ConnectorState.ACCEPT;
+                }
+            } else if (node instanceof EventNode) {
+                return ConnectorState.ACCEPT;
+            } else if (node instanceof ProcedureNode) {
                 return ConnectorState.ACCEPT;
             }
             return ConnectorState.REJECT;
@@ -431,6 +441,19 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         @Override
         public void accept(Widget widget, Point point, Transferable transferable) {
             AbstractBeanNode node = (AbstractBeanNode) NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
+
+            if (node instanceof EventNode) {
+                acceptEvent(node, point);
+            } else if (node instanceof ProcedureNode) {
+                acceptProcedure(node, point);
+            } else {
+                acceptHub(node, widget, point);
+            }
+            TopComponent comp = (TopComponent) parent;
+            comp.requestActive();
+        }
+
+        private void acceptHub(AbstractBeanNode node, Widget widget, Point point) {
             AbstractBeanNode detachedNode = node.getDetachedNodeCopy();
             BasicWidget w = (BasicWidget) scene.addNode(detachedNode);
             detachedNode.addPropertyChangeListener(w);
@@ -443,6 +466,80 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             TopComponent comp = (TopComponent) parent;
             comp.requestActive();
 
+        }
+
+        private void acceptEvent(AbstractBeanNode node, Point point) {
+            Event event = node.getLookup().lookup(Event.class);
+            List<Widget> hitlist = new ArrayList<>();
+            mainLayer.getChildren().forEach((w) -> {
+                Point p = w.convertSceneToLocal(point);
+                if (w.isHitAt(p)) {
+                    hitlist.add(w);
+                }
+            });
+            connectionLayer.getChildren().forEach((c) -> {
+                Point p = c.convertSceneToLocal(point);
+                Rectangle r = new Rectangle(p);
+                r.width = 25;
+                r.height = 25;
+                r.x -= r.width / 2;
+                r.y -= r.height / 2;
+
+                if (c.getBounds().contains(r)) {
+                    hitlist.add(c);
+                }
+            });
+
+            hitlist.forEach((w) -> {
+                if (w instanceof HubWidget) {
+                    HubWidget hubWidget = (HubWidget) w;
+                    hubWidget.getHub().getEvents().add(event);
+                    hubWidget.updateLabels();
+                } else if (w instanceof LegWidget) {
+                    LegWidget legWidget = (LegWidget) w;
+                    legWidget.getLeg().getEvents().add(event);
+                    legWidget.updateLabels();
+                }
+            });
+            mainLayer.revalidate();
+            connectionLayer.revalidate();
+        }
+        
+        private void acceptProcedure(AbstractBeanNode node, Point point) {
+            Procedure procedure = node.getLookup().lookup(Procedure.class);
+            List<Widget> hitlist = new ArrayList<>();
+            mainLayer.getChildren().forEach((w) -> {
+                Point p = w.convertSceneToLocal(point);
+                if (w.isHitAt(p)) {
+                    hitlist.add(w);
+                }
+            });
+            connectionLayer.getChildren().forEach((c) -> {
+                Point p = c.convertSceneToLocal(point);
+                Rectangle r = new Rectangle(p);
+                r.width = 25;
+                r.height = 25;
+                r.x -= r.width / 2;
+                r.y -= r.height / 2;
+
+                if (c.getBounds().contains(r)) {
+                    hitlist.add(c);
+                }
+            });
+
+            hitlist.forEach((w) -> {
+                if (w instanceof HubWidget) {
+                    HubWidget hubWidget = (HubWidget) w;
+                    hubWidget.getHub().getProcedures().add(procedure);
+                    hubWidget.updateLabels();
+                } else if (w instanceof LegWidget) {
+                    LegWidget legWidget = (LegWidget) w;
+                    legWidget.getLeg().getProcedures().add(procedure);
+                    legWidget.updateLabels();
+                }
+            });
+            mainLayer.revalidate();
+            connectionLayer.revalidate();
         }
     }
 

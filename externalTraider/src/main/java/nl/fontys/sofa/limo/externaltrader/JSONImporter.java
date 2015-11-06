@@ -3,30 +3,28 @@ package nl.fontys.sofa.limo.externaltrader;
 import nl.fontys.sofa.limo.domain.component.MasterData;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.api.service.provider.HubTypeService;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.serialization.GsonHelper;
-import nl.fontys.sofa.limo.domain.component.type.LegType;
-import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 
 /**
@@ -74,7 +72,16 @@ public final class JSONImporter {
         lastOlderEntityCount = 0;
 
         Map<String, List<BaseEntity>> allEntities = (Map<String, List<BaseEntity>>) loadFromFile(filepath);
-        return checkForConflicts(allEntities);
+        Map<String, List<BaseEntity>> checkedEntities = new HashMap<>(allEntities);
+        Set<String> keys = allEntities.keySet();
+        keys.stream().forEach((next) -> {
+            List<BaseEntity> baseList = allEntities.get(next);
+            if (baseList == null) {
+                checkedEntities.remove(next);
+            }
+        });
+             
+        return checkForConflicts(checkedEntities);
     }
 
     /**
@@ -138,6 +145,8 @@ public final class JSONImporter {
                 return HubService.class;
             case "events":
                 return EventService.class;
+            case "basicProcedures":
+                return ProcedureService.class;
             default:
                 return null;
         }
