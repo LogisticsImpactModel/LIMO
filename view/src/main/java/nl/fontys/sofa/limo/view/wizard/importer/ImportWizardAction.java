@@ -3,6 +3,7 @@ package nl.fontys.sofa.limo.view.wizard.importer;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,9 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
+import nl.fontys.sofa.limo.view.StartupOptionProcessor;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.wizard.export.ExportWizardAction;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
@@ -49,7 +52,9 @@ public final class ImportWizardAction implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> wizardDescritorPanels = new ArrayList<>();
 
-        wizardDescritorPanels.add(new ImportFileChooser());
+        if (!e.getSource().getClass().equals(StartupOptionProcessor.class)) {
+            wizardDescritorPanels.add(new ImportFileChooser());
+        }
         wizardDescritorPanels.add(new ImportPanel());
 
         String[] steps = new String[wizardDescritorPanels.size()];
@@ -67,6 +72,9 @@ public final class ImportWizardAction implements ActionListener {
             }
         }
         WizardDescriptor wizardDescriptor = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(wizardDescritorPanels));
+        if(e.getSource().getClass().equals(StartupOptionProcessor.class)){
+            wizardDescriptor.putProperty(ExportWizardAction.PATH,e.getActionCommand());
+        }
         wizardDescriptor.setTitleFormat(new MessageFormat("{0}"));
         wizardDescriptor.setTitle(LIMOResourceBundle.getString("IMPORT_MASTERDATA"));
         if (DialogDisplayer.getDefault().notify(wizardDescriptor) == WizardDescriptor.FINISH_OPTION) {
@@ -109,7 +117,8 @@ public final class ImportWizardAction implements ActionListener {
      * @param <T> The Class of the entitiy. Needs to extend BaseEntity
      * @param item The item with the new information that has to overwrite the
      * old one.
-     * @param serviceClass The Class of the service that communicates with the database.
+     * @param serviceClass The Class of the service that communicates with the
+     * database.
      */
     private static <T extends BaseEntity> void updateItem(T item, Class serviceClass) {
         DAO service = (DAO) Lookup.getDefault().lookup(serviceClass);
