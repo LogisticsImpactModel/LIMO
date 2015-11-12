@@ -332,20 +332,20 @@ public class ConfigurationLogic extends ProductConfigurationLogic {
             } finally {
                 LogManager.unindent();
             }
-        }
-        
-        String database = product.getInstallationLocation().getAbsoluteFile() + "\\LIMO_DB";
-        File db_dir = new File(database);
-        
-        try {
-            FileUtils.deleteFile(db_dir, true, progress);
-        } catch (IOException ex) {
-            LogManager.log(ex);
-        }
+        } else {
+            try {
+                File userDir = NetBeansRCPUtils.getApplicationUserDirFile(installLocation);
+                String database = userDir.getAbsoluteFile() + "\\LIMO_DB";
+                File db_dir = new File(database);
+                FileUtils.deleteFile(db_dir, true, progress);
+            } catch (IOException ex) {
+                LogManager.log(ex);
 
+            }
+        }
         /////////////////////////////////////////////////////////////////////////////
         //remove cluster/update files
-        /*
+                /*
          try {
          progress.setDetail(getString("CL.uninstall.update.files")); // NOI18N
          for(String cluster : CLUSTERS) {
@@ -359,9 +359,9 @@ public class ConfigurationLogic extends ProductConfigurationLogic {
          getString("CL.uninstall.error.update.files"), // NOI18N
          e);
          }
-         */
-        /////////////////////////////////////////////////////////////////////////////
-        progress.setPercentage(Progress.COMPLETE);
+         */ /////////////////////////////////////////////////////////////////////////////
+        progress
+                .setPercentage(Progress.COMPLETE);
     }
 
     @Override
