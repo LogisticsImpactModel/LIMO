@@ -31,11 +31,11 @@ import org.openide.util.lookup.ServiceProvider;
  */
 @ServiceProvider(service = OptionProcessor.class)
 public class StartupOptionProcessor extends OptionProcessor {
-    
+
     private static final Logger logger = Logger.getLogger(StartupOptionProcessor.class.getName());
     private Option openOption = Option.defaultArguments();
     private Option openOption2 = Option.additionalArguments('o', "open");
-    
+
     @Override
     protected Set<Option> getOptions() {
         HashSet set = new HashSet();
@@ -43,10 +43,10 @@ public class StartupOptionProcessor extends OptionProcessor {
         set.add(openOption2);
         return set;
     }
-    
+
     @Override
     protected void process(Env env, Map<Option, String[]> values) throws CommandException {
-        
+
         List<String> filenameList = new ArrayList<>();
         Object obj = values.get(openOption);
         if (obj != null) {
@@ -56,7 +56,7 @@ public class StartupOptionProcessor extends OptionProcessor {
         if (obj != null) {
             filenameList.addAll(Arrays.asList((String[]) obj));
         }
-        
+
         for (int i = 0; i < filenameList.size(); i++) {
             File file = new File(filenameList.get(i));
             if (!file.isAbsolute()) {
@@ -64,17 +64,26 @@ public class StartupOptionProcessor extends OptionProcessor {
                         filenameList.get(i));
             }
             logger.log(Level.INFO, "Open file: {0}", file.getPath());
-            
+
             String path = file.getAbsolutePath();
-            
+
             if (path.endsWith(".lef")) {
                 ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_FIRST, path);
-               
                 Action action = Actions.forID("Master Data", "nl.fontys.sofa.limo.view.wizard.importer.ImportWizardAction");
                 action.actionPerformed(e);
+                continue;
             }
             
+            if(path.endsWith(".lsc")){
+                ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_FIRST, path);
+                Action action =  Actions.forID("Window", "nl.fontys.sofa.limo.view.action.OpenChainAction");
+               
+                action.actionPerformed(e);
+                continue;
+            }
+            
+
         }
     }
-    
+
 }

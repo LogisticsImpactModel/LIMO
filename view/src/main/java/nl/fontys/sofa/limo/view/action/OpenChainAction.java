@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JFileChooser;
+import nl.fontys.sofa.limo.view.StartupOptionProcessor;
 import nl.fontys.sofa.limo.view.topcomponent.ChainLoaderTopComponent;
 import nl.fontys.sofa.limo.view.util.ChainFileChooser;
 import org.openide.awt.ActionID;
@@ -39,7 +40,12 @@ public final class OpenChainAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        File chainFile = openSupplyChain();
+        File chainFile = null;
+        if(e.getSource().getClass().equals(StartupOptionProcessor.class)){
+               chainFile = new File(e.getActionCommand());
+        }else{
+         chainFile = openSupplyChain();
+        }
         if (chainFile != null) {
             ChainLoaderTopComponent chainLoaderTopComponent = new ChainLoaderTopComponent(chainFile);
             chainLoaderTopComponent.open();
