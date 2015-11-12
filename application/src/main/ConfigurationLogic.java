@@ -333,6 +333,15 @@ public class ConfigurationLogic extends ProductConfigurationLogic {
                 LogManager.unindent();
             }
         }
+        
+        String database = product.getInstallationLocation().getAbsoluteFile() + "\\LIMO_DB";
+        File db_dir = new File(database);
+        
+        try {
+            FileUtils.deleteFile(db_dir, true, progress);
+        } catch (IOException ex) {
+            LogManager.log(ex);
+        }
 
         /////////////////////////////////////////////////////////////////////////////
         //remove cluster/update files
