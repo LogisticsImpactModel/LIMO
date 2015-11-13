@@ -34,7 +34,7 @@ import org.openide.util.Lookup;
  * @author Matthias Brück
  */
 @ActionID(category = "Master Data", id = "nl.fontys.sofa.limo.view.wizard.importer.ImportWizardAction")
-@ActionRegistration(displayName = "Import Master Data...", iconBase = "icons/gui/database.png")
+@ActionRegistration(displayName = "Import Master Data...", iconBase = "icons/gui/Database.png")
 @ActionReferences({
     @ActionReference(path = "Menu/Master Data", position = 70),
     @ActionReference(path = "Shortcuts", name = "DOS-I")
