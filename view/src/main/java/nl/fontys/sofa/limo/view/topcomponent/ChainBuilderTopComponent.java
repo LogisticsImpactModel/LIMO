@@ -36,7 +36,7 @@ import org.openide.windows.TopComponent;
  */
 @TopComponent.Description(
         preferredID = "ChainBuilderTopComponent",
-        iconBase = "icons/gui/link.gif",
+        iconBase = "icons/gui/Link.png",
         persistenceType = TopComponent.PERSISTENCE_NEVER
 )
 @TopComponent.Registration(

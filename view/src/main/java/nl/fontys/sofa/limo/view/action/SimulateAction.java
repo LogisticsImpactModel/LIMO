@@ -147,7 +147,7 @@ public final class SimulateAction extends AbstractAction
     @Override
     public Component getToolbarPresenter() {
         JButton button = new JButton(this);
-        button.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/gui/simulate.png")));
+        button.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/gui/Process.png")));
         button.setText(LIMOResourceBundle.getString("SIMULATE"));
         button.setOpaque(false);
         button.setBorder(null);

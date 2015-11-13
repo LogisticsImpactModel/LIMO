@@ -8,6 +8,7 @@ import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
@@ -81,7 +82,7 @@ public final class IconUtil {
         typeIcons.put(Hub.class, new IconHolder("HubType"));
         typeIcons.put(HubType.class, new IconHolder("HubType"));
         typeIcons.put(Event.class, new IconHolder("Event"));
-
+        typeIcons.put(Procedure.class, new IconHolder("Procedure"));
         uiIcons = new HashMap<>();
 
         isSetUp = true;

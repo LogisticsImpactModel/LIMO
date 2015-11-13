@@ -35,7 +35,7 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Description(
         preferredID = "StartpageTopComponent",
-        iconBase = "icons/gui/start.gif",
+        iconBase = "icons/gui/Home.png",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(

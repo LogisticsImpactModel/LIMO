@@ -4,6 +4,10 @@
     <folder name="Menu">
         <folder name="File">
             <attr name="position" intvalue="10"/>
+            <file name="Separator4.instance_hidden"/>
+            <file name="org-netbeans-modules-editor-ExportHtmlAction.shadow_hidden"/>
+            <file name="org-netbeans-modules-print-action-PageSetupAction.shadow_hidden"/>
+            <file name="org-netbeans-modules-print-action-PrintAction.shadow_hidden"/>
             <file name="org-openide-actions-SaveAsAction.shadow_hidden"/>
         </folder>
         <attr name="OpenIDE-Folder-SortMode" stringvalue="O"/>
