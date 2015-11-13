@@ -37,7 +37,7 @@ import org.openide.awt.ActionRegistration;
 )
 @ActionRegistration(
         displayName = "Export Master Data...",
-        iconBase = "icons/gui/database.png"
+        iconBase = "icons/gui/Database.png"
 )
 @ActionReferences({
     @ActionReference(path = "Menu/Master Data", position = 60, separatorBefore = 55),
