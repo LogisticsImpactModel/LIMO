@@ -74,4 +74,5 @@ public class Leg extends Node<Hub> {
     public void setIcon(Icon icon) {
         this.icon = icon;
     }
+
 }

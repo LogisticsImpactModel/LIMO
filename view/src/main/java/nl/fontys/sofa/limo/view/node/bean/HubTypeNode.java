@@ -107,4 +107,10 @@ public class HubTypeNode extends AbstractBeanNode<HubType> {
     protected Icon getBeanIcon() {
         return getBean().getIcon();
     }
+
+    @Override
+    public void delete() {
+        HubTypeService service = Lookup.getDefault().lookup(HubTypeService.class);
+        service.delete(bean);
+    }
 }

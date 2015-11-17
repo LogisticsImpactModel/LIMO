@@ -112,5 +112,10 @@ public class LegNode extends AbstractBeanNode<Leg> {
         }
         sets.put(set);
     }
+
+    @Override
+    public void delete() {
+        //TODO
+    }
     
 }

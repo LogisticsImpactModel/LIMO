@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.view.action.DeleteAction;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
@@ -19,6 +20,7 @@ import org.netbeans.spi.palette.PaletteController;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
+import org.openide.awt.Actions;
 import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
@@ -51,6 +53,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     public ChainLoaderTopComponent(File chainFile) {
         try {
             paletteController = ChainPaletteFactory.createPalette();
+            DeleteAction.setPallete(paletteController);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
         }

@@ -107,4 +107,10 @@ public class LegTypeNode extends AbstractBeanNode<LegType> {
     protected Icon getBeanIcon() {
         return getBean().getIcon();
     }
+
+    @Override
+    public void delete() {
+        LegTypeService service = Lookup.getDefault().lookup(LegTypeService.class);
+        service.delete(bean);
+    }
 }
