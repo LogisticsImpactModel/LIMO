@@ -152,6 +152,11 @@ public class SimulationResult {
      * @param tcr Test case result to add.
      */
     public void addTestCaseResult(TestCaseResult tcr) {
+
+        if (tcr == null) {
+            return;
+        }
+
         final int size = testCaseCount.get();
 
         // Recalculate totals by adding the new value to the existing data entry.
@@ -162,30 +167,45 @@ public class SimulationResult {
         this.totalCO2 = recalculateDataEntry(totalCO2, size, tcr.getTotalCO2());
         // BY CATEGORY
         tcr.getCostsByCategory().forEachEntry((String key, double value) -> {
+            if (key == null) {
+                return true;
+            }
             DataEntry old = costsByCategory.get(key);
             costsByCategory.put(key, recalculateDataEntry(old, size, value));
             return true;
         });
 
         tcr.getLeadTimesByCategory().forEachEntry((String key, double value) -> {
+            if (key == null) {
+                return true;
+            }
             DataEntry old = leadTimesByCategory.get(key);
             leadTimesByCategory.put(key, recalculateDataEntry(old, size, value));
             return true;
         });
 
         tcr.getDelaysByCategory().forEachEntry((String key, double value) -> {
+            if (key == null) {
+                return true;
+            }
             DataEntry old = delaysByCategory.get(key);
             delaysByCategory.put(key, recalculateDataEntry(old, size, value));
             return true;
         });
 
         tcr.getExtraCostsByCategory().forEachEntry((String key, double value) -> {
+            if (key == null) {
+                return true;
+            }
             DataEntry old = extraCostsByCategory.get(key);
             extraCostsByCategory.put(key, recalculateDataEntry(old, size, value));
             return true;
         });
 
         tcr.getCo2ByCategory().forEachEntry((String key, double value) -> {
+            if (key == null) {
+                return true;
+            }
             DataEntry old = co2ByCategory.get(key);
             co2ByCategory.put(key, recalculateDataEntry(old, size, value));
             return true;
@@ -193,30 +213,46 @@ public class SimulationResult {
 
         // BY NODE
         tcr.getCostsByNode().forEachEntry((String key, double value) -> {
+            if (key == null) {
+                return true;
+            }
             DataEntry old = costsByNode.get(key);
             costsByNode.put(key, recalculateDataEntry(old, size, value));
             return true;
         });
 
         tcr.getLeadTimesByNode().forEachEntry((String key, double value) -> {
+            if (key == null) {
+                return true;
+            }
+
             DataEntry old = leadTimesByNode.get(key);
             leadTimesByNode.put(key, recalculateDataEntry(old, size, value));
             return true;
         });
 
         tcr.getDelaysByNode().forEachEntry((String key, double value) -> {
+            if (key == null) {
+                return true;
+            }
             DataEntry old = delaysByNode.get(key);
             delaysByNode.put(key, recalculateDataEntry(old, size, value));
             return true;
         });
 
         tcr.getExtraCostsByNode().forEachEntry((String key, double value) -> {
+            if (key == null) {
+                return true;
+            }
             DataEntry old = extraCostsByNode.get(key);
             extraCostsByNode.put(key, recalculateDataEntry(old, size, value));
             return true;
         });
 
         tcr.getCo2ByNode().forEachEntry((String key, double value) -> {
+            if (key == null) {
+                return true;
+            }
             DataEntry old = co2ByNode.get(key);
             co2ByNode.put(key, recalculateDataEntry(old, size, value));
             return true;
@@ -224,6 +260,10 @@ public class SimulationResult {
 
         // ADD Events
         tcr.getExecutedEvents().stream().forEach((event) -> {
+            if (event == null) {
+                return;
+            }
+
             if (!eventExecutionRate.containsKey(event.getUniqueIdentifier())) {
                 this.eventExecutionRate.put(event.getUniqueIdentifier(), 1.0 / (size + 1));
                 this.executedEvents.put(event.getUniqueIdentifier(), event);

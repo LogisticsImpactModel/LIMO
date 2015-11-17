@@ -154,10 +154,25 @@ public class TestCase implements Runnable {
 
     private void calculateProcedures(Node calcNode) {
         for (Procedure procedure : calcNode.getProcedures()) {
-            double pCost = procedure.getCost().getValue();
-            double pLeadTime = procedure.getTimeType().getMinutes(procedure.getTime().getValue());
-            double pCO2 = procedure.getCotwo().getValue();
 
+            double pCost;
+            if (procedure.getCost() == null) {
+                pCost = 0;
+            } else {
+                pCost = procedure.getCost().getValue();
+            }
+            double pLeadTime;
+            if (procedure.getTimeType() == null || procedure.getTime() == null) {
+                pLeadTime = 0;
+            } else {
+                pLeadTime = procedure.getTimeType().getMinutes(procedure.getTime().getValue());
+            }
+            double pCO2;
+            if (procedure.getCotwo() == null) {
+                pCO2 = 0;
+            } else {
+                pCO2 = procedure.getCotwo().getValue();
+            }
             totalCosts += pCost;
             totalLeadTimes += pLeadTime;
             totalCO2 += pCO2;
@@ -216,9 +231,25 @@ public class TestCase implements Runnable {
                 // If executed, add costs and times to extra costs and delays from procedures of event
                 if (executed) {
                     for (Procedure procedure : event.getProcedures()) {
-                        double pExtraCost = procedure.getCost().getValue();
-                        double pDelay = procedure.getTimeType().getMinutes(procedure.getTime().getValue());
-                        double pCO2 = procedure.getCotwo().getValue();
+
+                        double pExtraCost;
+                        if (procedure.getCost() == null) {
+                            pExtraCost = 0;
+                        } else {
+                            pExtraCost = procedure.getCost().getValue();
+                        }
+                        double pDelay;
+                        if (procedure.getTimeType() == null || procedure.getTime() == null) {
+                            pDelay = 0;
+                        } else {
+                            pDelay = procedure.getTimeType().getMinutes(procedure.getTime().getValue());
+                        }
+                        double pCO2;
+                        if (procedure.getCotwo() == null) {
+                            pCO2 = 0;
+                        } else {
+                            pCO2 = procedure.getCotwo().getValue();
+                        }
                         totalExtraCosts += pExtraCost;
                         totalDelays += pDelay;
                         lastDelay += pDelay;
