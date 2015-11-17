@@ -38,9 +38,11 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
     private Procedure newProcedure;
     private final DragNDropTable table;
     private final CellConstraints cc;
+    private JButton deleteButton;
 
-    public AddProcedureDialog(ProcedureCategoryDAO procedureCategoryDao, DragNDropTable dragNDropTable) {
+    public AddProcedureDialog(ProcedureCategoryDAO procedureCategoryDao, DragNDropTable dragNDropTable, JButton deleteButton) {
         this.table = dragNDropTable;
+        this.deleteButton = deleteButton;
         cc = new CellConstraints();
         //LAYOUT
         FormLayout layout = new FormLayout("5px, pref, 5px, pref, pref:grow, 5px, pref, 5px",
@@ -202,6 +204,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
             ((DragNDropTableModel) table.getModel()).fireTableDataChanged();
             table.revalidate();
             table.repaint();
+            deleteButton.setEnabled(true);
             this.dispose();
         }
     }

@@ -138,7 +138,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      * Handles the adding of a procedure via a dialog.
      */
     protected void addProcedure() {
-        AddProcedureDialog addProcedureDialog = new AddProcedureDialog(procedureCategoryDao, table);
+        AddProcedureDialog addProcedureDialog = new AddProcedureDialog(procedureCategoryDao, table, deleteButton);
         addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addProcedureDialog.setVisible(true);
     }
@@ -149,9 +149,12 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      * @param row The row that has to be deleted.
      */
     protected void deleteProcedure(int row) {
-        ((DragNDropTableModel) table.getModel()).removeRow(row);
-        revalidate();
-        repaint();
+        if (table.getRowCount() > 1) {
+            ((DragNDropTableModel) table.getModel()).removeRow(row);
+            revalidate();
+            repaint();
+            deleteButton.setEnabled(table.getRowCount() > 1);
+        }
     }
 
     /**
