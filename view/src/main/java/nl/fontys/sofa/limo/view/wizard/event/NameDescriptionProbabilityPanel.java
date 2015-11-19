@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -221,6 +220,16 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                 distributionTypeComboBox.getModel().setSelectedItem(nameForDistributionType);
                 tableModel.setProperty(probability);
                 tableModel.fireTableDataChanged();
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    String bla = String.valueOf(tableModel.getValueAt(i, 0));
+                    if (bla.equals("Upper Bound")) {
+                        Double div = (Double) tableModel.getValueAt(i, 1);
+                        if(div == 1000000000)
+                        {
+                            noUpperCheckbox.setSelected(true);
+                        }
+                    }
+                }
                 distributionDescription.setText(probability.getDescription());
             } else {
                 distributionTypeComboBox.setSelectedItem(distributionFactory.getNameForDistributionType(PoissonDistribution.class));
