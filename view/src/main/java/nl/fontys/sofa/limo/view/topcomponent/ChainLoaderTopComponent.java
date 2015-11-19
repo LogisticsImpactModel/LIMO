@@ -81,8 +81,9 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         Lookup paletteLookup = Lookups.singleton(paletteController);
         Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
         Lookup graphLookup = Lookups.singleton(graphScene);
+        Lookup graphContentLookup = graphScene.getLookup();
         Lookup savableLookup = Lookups.singleton(savable);
-        ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup);
+        ProxyLookup pl = new ProxyLookup(graphContentLookup,paletteLookup, nodeLookup, graphLookup, savableLookup);
         associateLookup(pl);
     }
 
