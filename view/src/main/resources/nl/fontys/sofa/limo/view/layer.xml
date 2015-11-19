@@ -109,7 +109,7 @@
             <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-RedoAction.instance"/>
         </file>
         <file name="D-S.shadow">
-            <attr name="originalFile" stringvalue="Actions/File/org-openide-actions-SaveAllAction.shadow"/>
+            <attr name="originalFile" stringvalue="Actions/System/org-openide-actions-SaveAllAction.instance"/>
         </file>
     </folder>
     <folder name="Toolbars">

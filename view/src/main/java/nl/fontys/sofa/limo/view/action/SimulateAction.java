@@ -20,8 +20,6 @@ import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.topcomponent.ResultTopComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.widget.BasicWidget;
-import nl.fontys.sofa.limo.view.widget.HubWidget;
-import nl.fontys.sofa.limo.view.widget.LegWidget;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;

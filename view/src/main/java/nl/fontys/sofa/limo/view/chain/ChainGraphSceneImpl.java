@@ -539,8 +539,11 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                     legWidget.updateLabels();
                 }
             });
-            mainLayer.revalidate();
-            connectionLayer.revalidate();
+            if (hitlist.size() > 0) {
+                mainLayer.revalidate();
+                connectionLayer.revalidate();
+                chainBuilder.modify();
+            }
         }
 
         private void acceptProcedure(AbstractBeanNode node, Point point) {
@@ -576,8 +579,11 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                     legWidget.updateLabels();
                 }
             });
-            mainLayer.revalidate();
-            connectionLayer.revalidate();
+            if (hitlist.size() > 0) {
+                mainLayer.revalidate();
+                connectionLayer.revalidate();
+                chainBuilder.modify();
+            }
         }
     }
 
@@ -601,7 +607,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             Object object = findObject(widget);
             AbstractBeanNode container = (AbstractBeanNode) object;
             parent.setRootContext(container);
-            
+
             setFocusedObject(object);
             if (object != null) {
                 if (!invertSelection && getSelectedObjects().contains(object)) {
