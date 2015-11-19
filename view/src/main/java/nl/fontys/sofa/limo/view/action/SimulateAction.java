@@ -65,6 +65,7 @@ public final class SimulateAction extends AbstractAction
     private final Lookup lkp;
     private final Lookup.Result<ChainGraphScene> result;
     private final Lookup.Result<BasicWidget> widgets;
+    private final JButton button = new JButton(this);
 
     /**
      * Constructor sets the input text field from where to get the number of
@@ -78,7 +79,7 @@ public final class SimulateAction extends AbstractAction
         this.result = lkp.lookupResult(ChainGraphScene.class);
         this.result.addLookupListener(WeakListeners.create(LookupListener.class, this, result));
         this.widgets = lkp.lookupResult(BasicWidget.class);
-        this.widgets.addLookupListener(this);
+        this.widgets.addLookupListener(WeakListeners.create(LookupListener.class, this, widgets));
     }
 
     public SimulateAction() {
@@ -87,7 +88,7 @@ public final class SimulateAction extends AbstractAction
         this.result = lkp.lookupResult(ChainGraphScene.class);
         this.result.addLookupListener(WeakListeners.create(LookupListener.class, this, result));
         this.widgets = lkp.lookupResult(BasicWidget.class);
-        this.widgets.addLookupListener(this);
+        this.widgets.addLookupListener(WeakListeners.create(LookupListener.class, this, widgets));
     }
 
     public SimulateAction(Lookup lkp) {
@@ -96,7 +97,7 @@ public final class SimulateAction extends AbstractAction
         this.result = lkp.lookupResult(ChainGraphScene.class);
         this.result.addLookupListener(WeakListeners.create(LookupListener.class, this, result));
         this.widgets = lkp.lookupResult(BasicWidget.class);
-        this.widgets.addLookupListener(this);
+        this.widgets.addLookupListener(WeakListeners.create(LookupListener.class, this, widgets));
     }
 
     /**
@@ -121,36 +122,30 @@ public final class SimulateAction extends AbstractAction
 
     @Override
     public void taskFinished(final SimulatorTask task) {
-        for (ChainGraphScene scene : result.allInstances()) {
+        result.allInstances().stream().map((scene) -> {
             TopComponent tc = (TopComponent) scene.getParent();
             tc.makeBusy(false);
             scene.setEnabled(true);
+            return scene;
+        }).forEach((scene) -> {
             scene.setBackground(Color.WHITE);
-        }
+        });
         if (task.getCancelled().get()) {
             return;
         }
 
         //for (final SimulationResult simResult : task.getResults()) {
-        WindowManager.getDefault().invokeWhenUIReady(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    ResultTopComponent rtc = new ResultTopComponent(task.getResults());
-
-                    rtc.open();
-                    rtc.requestActive();
-                } catch (InstantiationException ex) {
-                    Exceptions.printStackTrace(ex);
-                }
+        WindowManager.getDefault().invokeWhenUIReady(() -> {
+            try {
+                ResultTopComponent rtc = new ResultTopComponent(task.getResults());
+                rtc.open();
+                rtc.requestActive();
+            } catch (InstantiationException ex) {
+                Exceptions.printStackTrace(ex);
             }
-
         });
         //}
     }
-
-    private JButton button = new JButton(this);
 
     /**
      * {@inheritDoc}

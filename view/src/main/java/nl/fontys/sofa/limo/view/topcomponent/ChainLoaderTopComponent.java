@@ -16,8 +16,6 @@ import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.spi.palette.PaletteController;
-import org.openide.DialogDescriptor;
-import org.openide.DialogDisplayer;
 import org.openide.awt.ActionID;
 import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;
@@ -51,10 +49,10 @@ import org.openide.windows.TopComponent;
 public final class ChainLoaderTopComponent extends TopComponent implements
         DynamicExplorerManagerProvider {
 
-    private InstanceContent ic;
+    private final InstanceContent ic;
     private ExplorerManager em = new ExplorerManager();
     private ChainGraphScene graphScene;
-    private SavableComponent savable;
+    private final SavableComponent savable;
     private PaletteController paletteController;
     private UndoRedo.Manager undoManager = new UndoRedo.Manager();
 

@@ -1,13 +1,10 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.HeadlessException;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.rmi.activation.ActivateFailedException;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
