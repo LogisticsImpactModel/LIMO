@@ -32,8 +32,11 @@ import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
+import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.actions.Presenter;
+import org.openide.util.lookup.AbstractLookup;
+import org.openide.util.lookup.InstanceContent;
 import org.openide.windows.TopComponent;
 
 /**
@@ -81,7 +84,13 @@ public class CompareSupplyChainsAction extends AbstractAction
         dd.setValid(false);
 
         if (DialogDisplayer.getDefault().notify(dd) == NotifyDescriptor.OK_OPTION) {
-            SimulateAction action = new SimulateAction(panel.getSelectedScenes());
+
+            InstanceContent ic = new InstanceContent();
+            panel.getSelectedScenes().stream().forEach((s) -> {
+                ic.add(s);
+            });
+            Lookup lkp = new AbstractLookup(ic);
+            SimulateAction action = new SimulateAction(lkp);
             action.actionPerformed(e);
         }
 

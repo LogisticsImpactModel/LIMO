@@ -19,8 +19,7 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.spi.palette.PaletteController;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
-import org.openide.awt.Actions;
+import org.openide.awt.ActionID;
 import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
@@ -36,6 +35,20 @@ import org.openide.windows.TopComponent;
  * {@link nl.fontys.sofa.limo.domain.component.SupplyChain} and displays a
  * GraphScene and Palette to build a chain with.
  */
+
+@TopComponent.Description(
+        preferredID = "ChainLoaderTopComponent",
+        iconBase = "icons/gui/Link.png",
+        persistenceType = TopComponent.PERSISTENCE_NEVER
+)
+@TopComponent.Registration(
+        mode = "editor",
+        openAtStartup = false
+)
+@ActionID(
+        category = "Window",
+        id = "nl.fontys.sofa.limo.view.topcomponent.ChainLoaderTopComponent"
+)
 public final class ChainLoaderTopComponent extends TopComponent implements
         DynamicExplorerManagerProvider {
 
@@ -70,8 +83,9 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         Lookup paletteLookup = Lookups.singleton(paletteController);
         Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
         Lookup graphLookup = Lookups.singleton(graphScene);
+        Lookup graphContentLookup = graphScene.getLookup();
         Lookup savableLookup = Lookups.singleton(savable);
-        ProxyLookup pl = new ProxyLookup(paletteLookup, nodeLookup, graphLookup, savableLookup);
+        ProxyLookup pl = new ProxyLookup(graphContentLookup,paletteLookup, nodeLookup, graphLookup, savableLookup);
         associateLookup(pl);
     }
 

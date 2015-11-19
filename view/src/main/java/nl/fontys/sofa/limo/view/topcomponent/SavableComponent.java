@@ -21,6 +21,7 @@ import org.openide.NotifyDescriptor;
  */
 public class SavableComponent implements Savable {
 
+    
     private final ChainBuilder chainBuilder;
     private final SupplyChain supplyChain;
 
@@ -40,7 +41,7 @@ public class SavableComponent implements Savable {
     }
 
     @Override
-    public void save() throws IOException{
+    public void save() throws IOException {
         if (chainBuilder.validate()) {
             if (supplyChain.getFilepath() != null) {
                 NotifyDescriptor dd = new NotifyDescriptor.Confirmation("Would you like to overwrite the '" + supplyChain.getName().replace(".lsc", "") + "' supply chain file?");
@@ -107,12 +108,10 @@ public class SavableComponent implements Savable {
     public String toString() {
         return supplyChain.getName().replace(".lsc", "");
     }
-    
+
     @Override
     public int hashCode() {
         return supplyChain.hashCode();
     }
-
-    
 
 }
