@@ -33,15 +33,15 @@ import org.openide.windows.WindowManager;
  */
 @TopComponent.Description(
         preferredID = "GraphSwitchTopComponent",
-        //iconBase="SET/PATH/TO/ICON/HERE", 
+        iconBase = "icons/gui/system_task.png",
         persistenceType = TopComponent.PERSISTENCE_NEVER
 )
 @TopComponent.Registration(mode = "properties", openAtStartup = false)
 @ActionID(category = "Window", id = "nl.fontys.sofa.limo.view.graphs.GraphSwitchTopComponent")
 @ActionReference(path = "Menu/Window" /*, position = 333 */)
 @TopComponent.OpenActionRegistration(
-        displayName = "#CTL_GraphSwitchAction"//,
-//        preferredID = "GraphSwitchTopComponent"
+        displayName = "#CTL_GraphSwitchAction",
+        preferredID = "GraphSwitchTopComponent"
 )
 @Messages({
     "CTL_GraphSwitchAction=GraphSwitch",

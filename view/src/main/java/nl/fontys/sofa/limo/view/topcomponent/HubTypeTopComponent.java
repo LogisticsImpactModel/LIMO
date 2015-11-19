@@ -25,7 +25,7 @@ import org.openide.windows.TopComponent;
 )
 @TopComponent.Description(
         preferredID = "HubTypeTopComponent",
-        iconBase = "icons/gui/list.gif",
+        iconBase = "icons/gui/list.png",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(

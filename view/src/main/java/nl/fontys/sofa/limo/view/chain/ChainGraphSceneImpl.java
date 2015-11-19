@@ -62,6 +62,8 @@ import org.openide.DialogDisplayer;
 import org.openide.nodes.NodeTransfer;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
+import org.openide.util.lookup.AbstractLookup;
+import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
@@ -90,6 +92,8 @@ import org.openide.windows.TopComponent;
  * @author Sebastiaan Heijmann
  */
 public class ChainGraphSceneImpl extends ChainGraphScene {
+
+    private final InstanceContent ic;
 
     private final DynamicExplorerManagerProvider parent;
     private final ChainBuilder chainBuilder;
@@ -141,6 +145,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
      * @throws IntrospectionException be found.
      */
     public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain, UndoManager undoManager, PaletteController paletteController) throws IOException, IntrospectionException {
+        this.ic = new InstanceContent();
         this.parent = parent;
         chainBuilder = new ChainBuilderImpl();
         chainBuilder.getSupplyChain().setName(chain.getName()); //sets the name of 
@@ -175,15 +180,13 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         startFlagWidget = new StartWidget(this);
 
         this.undoManager = undoManager;
-
+        Lookup dL = new AbstractLookup(ic);
         if (undoManager != null) {
             Lookup undoRedo = Lookups.singleton(undoManager);
-            lookup = new ProxyLookup(undoRedo, super.getLookup());
+            lookup = new ProxyLookup(dL, undoRedo, super.getLookup());
         } else {
-            lookup = (ProxyLookup) super.getLookup();
-
+            lookup = new ProxyLookup(dL, super.getLookup());
         }
-
     }
 
     @Override
@@ -306,6 +309,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         chainBuilder.addHub(hubWidget.getHub());
         checkChainHubs();
         getScene().repaint();
+        ic.add((BasicWidget) hubWidget);
 
     }
 
@@ -329,6 +333,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 hubTarget);
         target.setStartFlag(false);
         this.checkChainHubs();
+        ic.add((BasicWidget) legWidget);
     }
 
     /**
@@ -363,7 +368,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         if (chainBuilder.getStartHub() == hub) {
             chainBuilder.setStartHub(null);
         }
-
+        ic.remove((BasicWidget) hubWidget);
     }
 
     @Override
@@ -372,6 +377,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 StatusBarService.ACTION_DELETE, StatusBarService.STATE_SUCCESS, null);
         chainBuilder.disconnectLeg(legWidget.getLeg());
         this.checkChainHubs();
+        ic.remove((BasicWidget) legWidget);
     }
 
     @Override
@@ -393,6 +399,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         connectionWidget.addActions(this);
         connectionLayer.addChild((Widget) connectionWidget);
         return (Widget) connectionWidget;
+
     }
 
     @Override
@@ -466,7 +473,6 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
                 return ConnectorState.REJECT_AND_STOP;
             }
-
             return ConnectorState.REJECT;
         }
 
@@ -536,7 +542,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             mainLayer.revalidate();
             connectionLayer.revalidate();
         }
-        
+
         private void acceptProcedure(AbstractBeanNode node, Point point) {
             Procedure procedure = node.getLookup().lookup(Procedure.class);
             List<Widget> hitlist = new ArrayList<>();
@@ -595,7 +601,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             Object object = findObject(widget);
             AbstractBeanNode container = (AbstractBeanNode) object;
             parent.setRootContext(container);
-
+            
             setFocusedObject(object);
             if (object != null) {
                 if (!invertSelection && getSelectedObjects().contains(object)) {
@@ -605,9 +611,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             } else {
                 userSelectionSuggested(Collections.emptySet(), invertSelection);
             }
-
         }
-
     }
 
     /**

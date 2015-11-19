@@ -34,7 +34,7 @@ import org.openide.util.Lookup;
 )
 @ActionRegistration(
         displayName = "New procedure template...",
-        iconBase = "icons/gui/add.gif"
+        iconBase = "icons/gui/add.png"
 )
 @ActionReferences({
     @ActionReference(path = "Menu/Master Data/Procedures", position = 20),
