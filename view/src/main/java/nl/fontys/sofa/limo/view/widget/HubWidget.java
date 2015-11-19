@@ -165,7 +165,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         setLabel(hub.getName());
         setToolTipText(hub.getName());
 
-        if (pce.getPropertyName().equals("events")) {
+        if (pce != null && pce.getPropertyName().equals("events")) {
             ChainGraphScene scene = (ChainGraphScene) getScene();
             UndoManager manager = scene.getLookup().lookup(UndoManager.class);
             manager.undoableEditHappened(new UndoableEditEvent(this, new EventUndoableEdit(hubNode, scene, eventLabelWidget)));
