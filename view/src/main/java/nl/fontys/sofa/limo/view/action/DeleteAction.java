@@ -1,7 +1,7 @@
 package nl.fontys.sofa.limo.view.action;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.AbstractAction;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
@@ -9,7 +9,10 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
-import nl.fontys.sofa.limo.view.node.DeletableNode;
+import nl.fontys.sofa.limo.view.node.Deletable;
+import nl.fontys.sofa.limo.view.node.WidgetableNode;
+import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import org.netbeans.spi.palette.PaletteController;
 
 @ActionID(
@@ -26,27 +29,28 @@ import org.netbeans.spi.palette.PaletteController;
     @ActionReference(path = "Shortcuts", name = "DELETE")
 })
 @Messages("CTL_DeleteAction=Delete")
-public final class DeleteAction implements ActionListener {
+public final class DeleteAction extends AbstractAction {
 
     private static PaletteController PALETTE;
 
+    public DeleteAction() {
+        putValue(NAME, LIMOResourceBundle.getString("DELETE"));
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO implement action body
 
         Lookup lkp = Utilities.actionsGlobalContext();
-        DeletableNode del = lkp.lookup(DeletableNode.class);
 
-        if (del != null) {
-            del.delete();
+        BasicWidget b = lkp.lookup(BasicWidget.class);
+        System.out.println(b);
+        if (b != null) {
+            
         }
 
-        if (PALETTE != null) {
-            DeletableNode paletteDel = PALETTE.getSelectedItem().lookup(DeletableNode.class); //DeletableNode.class
-
-            if (paletteDel != null) {
-                System.out.println("Entered the if");
-                paletteDel.delete();
+        for (Deletable del : lkp.lookupAll(Deletable.class)) {
+            if (del != null) {
+                del.delete();
             }
         }
     }
@@ -54,5 +58,4 @@ public final class DeleteAction implements ActionListener {
     public static void setPallete(PaletteController pallete) {
         PALETTE = pallete;
     }
-
 }

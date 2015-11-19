@@ -9,7 +9,7 @@ package nl.fontys.sofa.limo.view.node;
  *
  * @author prive
  */
-public interface DeletableNode {
+public interface Deletable {
     
     void delete();
     

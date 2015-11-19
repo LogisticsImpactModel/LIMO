@@ -13,6 +13,7 @@ import javax.swing.undo.UndoManager;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
+import nl.fontys.sofa.limo.view.action.DeleteAction;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
@@ -103,10 +104,10 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
             }
 
             if (getLeg().getEvents() != null) {
-                if(getLeg().getEvents().isEmpty()){
-                eventLabelWidget = new LabelWidget(getScene(), "");
-                }else{
-                eventLabelWidget = new LabelWidget(getScene(), "Events: " + getLeg().getEvents().size());
+                if (getLeg().getEvents().isEmpty()) {
+                    eventLabelWidget = new LabelWidget(getScene(), "");
+                } else {
+                    eventLabelWidget = new LabelWidget(getScene(), "Events: " + getLeg().getEvents().size());
                 }
                 eventLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
 
@@ -186,6 +187,20 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         return this;
     }
 
+    @Override
+    public void delete() {
+        ChainGraphScene scene = (ChainGraphScene) getScene();
+        UndoManager undoManager = scene.getLookup().lookup(UndoManager.class);
+        // add a new UndoableEditEvent to the undoManager of the ChainGraphScene when the undoManager exists
+        if (undoManager != null) {
+            HubNode source = (HubNode) scene.getEdgeSource(legNode);
+            HubNode target = (HubNode) scene.getEdgeTarget(legNode);
+            undoManager.undoableEditHappened(new UndoableEditEvent(getLegWidget(), new DeleteLegWidgetUndoableEdit(getLegWidget(), source, target, scene)));
+        }
+        scene.removeEdge(legNode);
+        scene.disconnectLegWidget(getLegWidget());
+    }
+
     /**
      * The popup menu when right clicked on this widget.
      */
@@ -194,22 +209,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         @Override
         public JPopupMenu getPopupMenu(Widget widget, Point localLocation) {
             JPopupMenu popup = new JPopupMenu();
-            popup.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
-
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    ChainGraphScene scene = (ChainGraphScene) getScene();
-                    UndoManager undoManager = scene.getLookup().lookup(UndoManager.class);
-                    // add a new UndoableEditEvent to the undoManager of the ChainGraphScene when the undoManager exists
-                    if (undoManager != null) {
-                        HubNode source = (HubNode) scene.getEdgeSource(legNode);
-                        HubNode target = (HubNode) scene.getEdgeTarget(legNode);
-                        undoManager.undoableEditHappened(new UndoableEditEvent(getLegWidget(), new DeleteLegWidgetUndoableEdit(getLegWidget(), source, target, scene)));
-                    }
-                    scene.removeEdge(legNode);
-                    scene.disconnectLegWidget(getLegWidget());
-                }
-            });
+            popup.add(new DeleteAction());
 
             popup.add(new AbstractAction(LIMOResourceBundle.getString("EDIT")) {
 

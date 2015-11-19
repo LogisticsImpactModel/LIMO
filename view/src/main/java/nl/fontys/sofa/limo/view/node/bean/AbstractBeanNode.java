@@ -10,7 +10,7 @@ import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.view.node.DetachableNode;
-import nl.fontys.sofa.limo.view.node.DeletableNode;
+import nl.fontys.sofa.limo.view.node.Deletable;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import nl.fontys.sofa.limo.view.util.IconUtil;
@@ -30,7 +30,7 @@ import org.openide.util.lookup.InstanceContent;
  * @author Sebastiaan Heijmann
  */
 public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
-        implements DetachableNode, DeletableNode {
+        implements DetachableNode, Deletable {
 
     private Class entityClass;
     private PropertyChangeListener listener;
