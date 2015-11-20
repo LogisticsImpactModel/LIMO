@@ -40,7 +40,7 @@ public final class OpenChainAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        File chainFile = null;
+        File chainFile;
         if(e.getSource().getClass().equals(StartupOptionProcessor.class)){
                chainFile = new File(e.getActionCommand());
         }else{
