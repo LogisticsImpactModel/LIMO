@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +13,8 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
@@ -51,12 +48,12 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
     public HubNode(Hub bean) throws IntrospectionException {
         super(bean, Hub.class);
         this.bean = bean;
-        for (Event e : bean.getEvents()) {
+        bean.getEvents().stream().forEach((e) -> {
             ic.add(e);
-        }
-        for (Procedure p : bean.getProcedures()) {
+        });
+        bean.getProcedures().stream().forEach((p) -> {
             ic.add(p);
-        }
+        });
     }
 
     @Override
@@ -73,10 +70,7 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
 
     @Override
     public boolean isAcceptable(Widget widget, Point point) {
-        if (widget instanceof ChainGraphScene) {
-            return true;
-        }
-        return false;
+        return widget instanceof ChainGraphScene;
     }
 
     @Override
@@ -121,9 +115,7 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             locProp.addPropertyChangeListener(getListener());
             locProp.setDisplayName(LIMOResourceBundle.getString("LOCATION"));
             locProp.setShortDescription(LIMOResourceBundle.getString("LOCATION_OF", LIMOResourceBundle.getString("HUB")));
-            locProp.setValue(
-                    "canEditAsText", false);
-            
+            locProp.setValue("canEditAsText", false);
 
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
 
@@ -132,8 +124,7 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             );
             eventProp.setDisplayName(LIMOResourceBundle.getString("EVENTS"));
             eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", LIMOResourceBundle.getString("HUB")));
-            eventProp.setValue(
-                    "canEditAsText", false);
+            eventProp.setValue("canEditAsText", false);
 
             StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
 
@@ -142,8 +133,7 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             );
             procedureProp.setDisplayName(LIMOResourceBundle.getString("PROCEDURES"));
             procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", LIMOResourceBundle.getString("HUB")));
-            procedureProp.setValue(
-                    "canEditAsText", false);
+            procedureProp.setValue("canEditAsText", false);
 
             set.put(locProp);
 
@@ -154,15 +144,9 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             ErrorManager.getDefault();
         }
 
-        set.addPropertyChangeListener(
-                new PropertyChangeListener() {
-
-                    @Override
-                    public void propertyChange(PropertyChangeEvent evt
-                    ) {
-                           getListener().propertyChange(evt);
-                    }
-                });
+        set.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            getListener().propertyChange(evt);
+        });
         sets.put(set);
     }
 
