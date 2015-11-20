@@ -172,4 +172,10 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
     protected Icon getBeanIcon() {
         return getBean().getIcon();
     }
+
+    @Override
+    public void delete() {
+        HubService service = Lookup.getDefault().lookup(HubService.class);
+        service.delete(bean);
+    }
 }

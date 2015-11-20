@@ -118,4 +118,11 @@ public class LegNode extends AbstractBeanNode<Leg> {
         sets.put(set);
     }
 
+    @Override
+    public void delete() {
+        /**
+         * Delete is empty because the LegNodes aren't saved in the database and therefore didn't need to be deleted.
+         */
+    }
+
 }

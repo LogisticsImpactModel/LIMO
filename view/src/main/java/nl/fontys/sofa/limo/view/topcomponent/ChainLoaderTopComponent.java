@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.view.action.DeleteAction;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
@@ -64,6 +65,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     public ChainLoaderTopComponent(File chainFile) {
         try {
             paletteController = ChainPaletteFactory.createPalette();
+            DeleteAction.setPallete(paletteController);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
         }
