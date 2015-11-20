@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.rmi.activation.ActivateFailedException;
+import java.util.Collection;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
@@ -16,6 +17,8 @@ import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.util.ImageUtilities;
+import org.openide.util.Lookup;
+import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.windows.TopComponent;
 
@@ -30,6 +33,7 @@ public class SavableComponent extends AbstractSavable {
     private final SupplyChain supplyChain;
     private final InstanceContent ic;
     private final TopComponent parent;
+    private boolean isAdded = false;
 
     /**
      * Constructor creates a new SavableComponent.
@@ -42,11 +46,15 @@ public class SavableComponent extends AbstractSavable {
         this.ic = ic;
         this.parent = parent;
         chainBuilder.addListener((ActionEvent e) -> {
+            if (isAdded) {
+                return;
+            }
             ImageIcon saveIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/gui/save.png"));
             parent.setIcon(ImageUtilities.icon2Image(saveIcon));
             parent.getParent().revalidate();
             ic.add(this);
             register();
+            isAdded = true;
         });
 
     }
@@ -62,6 +70,7 @@ public class SavableComponent extends AbstractSavable {
         ImageIcon link = new ImageIcon(getClass().getClassLoader().getResource("icons/gui/Link.png"));
         parent.setIcon(ImageUtilities.icon2Image(link));
         parent.getParent().revalidate();
+        isAdded = false;
 
     }
 

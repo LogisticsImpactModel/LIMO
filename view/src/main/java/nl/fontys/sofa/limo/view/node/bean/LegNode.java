@@ -110,6 +110,9 @@ public class LegNode extends AbstractBeanNode<Leg> {
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();
         }
+        set.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            getListener().propertyChange(evt);
+        });
         sets.put(set);
     }
     

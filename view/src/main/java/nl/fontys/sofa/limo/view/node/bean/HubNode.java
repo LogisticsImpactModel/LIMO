@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +63,7 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
     public Widget getWidget(Scene scene) {
         try {
             HubWidget hw = new HubWidget(scene, this);
-            
+
             return hw;
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
@@ -98,8 +100,10 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             public void actionPerformed(ActionEvent e) {
                 int reply = JOptionPane.showConfirmDialog(null, LIMOResourceBundle.getString("DELETE_QUESTION", bean.getName()), LIMOResourceBundle.getString("ARE_YOU_SURE"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE
                 );
+
                 if (reply == JOptionPane.YES_OPTION) {
-                    HubService service = Lookup.getDefault().lookup(HubService.class);
+                    HubService service = Lookup.getDefault().lookup(HubService.class
+                    );
                     service.delete(bean);
                 }
             }
@@ -117,29 +121,48 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             locProp.addPropertyChangeListener(getListener());
             locProp.setDisplayName(LIMOResourceBundle.getString("LOCATION"));
             locProp.setShortDescription(LIMOResourceBundle.getString("LOCATION_OF", LIMOResourceBundle.getString("HUB")));
-            locProp.setValue("canEditAsText", false);
+            locProp.setValue(
+                    "canEditAsText", false);
+            
 
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
+
             eventProp.addPropertyChangeListener(getListener());
-            eventProp.setPropertyEditorClass(EventPropertyEditor.class);
+            eventProp.setPropertyEditorClass(EventPropertyEditor.class
+            );
             eventProp.setDisplayName(LIMOResourceBundle.getString("EVENTS"));
             eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", LIMOResourceBundle.getString("HUB")));
-            eventProp.setValue("canEditAsText", false);
+            eventProp.setValue(
+                    "canEditAsText", false);
 
             StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
+
             procedureProp.addPropertyChangeListener(getListener());
-            procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
+            procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class
+            );
             procedureProp.setDisplayName(LIMOResourceBundle.getString("PROCEDURES"));
             procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", LIMOResourceBundle.getString("HUB")));
-            procedureProp.setValue("canEditAsText", false);
+            procedureProp.setValue(
+                    "canEditAsText", false);
 
             set.put(locProp);
+
             set.put(procedureProp);
+
             set.put(eventProp);
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();
         }
 
+        set.addPropertyChangeListener(
+                new PropertyChangeListener() {
+
+                    @Override
+                    public void propertyChange(PropertyChangeEvent evt
+                    ) {
+                           getListener().propertyChange(evt);
+                    }
+                });
         sets.put(set);
     }
 
