@@ -1,7 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.leg.normal;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -40,16 +39,13 @@ public final class EventsLegTypePanel extends EventsPanel {
     //add Listener
     @Override
     protected void setAddButtonListener() {
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
-                selected.setId(null);
-                selected.setDependency(ExecutionState.INDEPENDENT);
-                eventsTableModel.getEvents().add(selected);
-                eventsTableModel.fireTableDataChanged();
-                deleteButton.setEnabled(true);
-            }
+        addButton.addActionListener((ActionEvent e) -> {
+            Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
+            selected.setId(null);
+            selected.setDependency(ExecutionState.INDEPENDENT);
+            eventsTableModel.getEvents().add(selected);
+            eventsTableModel.fireTableDataChanged();
+            deleteButton.setEnabled(true);
         });
     }
 
@@ -57,9 +53,9 @@ public final class EventsLegTypePanel extends EventsPanel {
     protected void setTableModel() {
         List<String> events = new ArrayList<>();
         addButton.setEnabled(!allEvents.isEmpty());
-        for (Event e : allEvents) {
+        allEvents.stream().forEach((e) -> {
             events.add(e.getName());
-        }
+        });
         eventsComboBox.setModel(new DefaultComboBoxModel(events.toArray()));
     }
 }

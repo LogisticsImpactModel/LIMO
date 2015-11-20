@@ -4,6 +4,9 @@ import java.awt.BasicStroke;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -13,6 +16,7 @@ import javax.swing.undo.UndoManager;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
+import nl.fontys.sofa.limo.view.action.DeleteAction;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
@@ -43,7 +47,7 @@ import org.netbeans.api.visual.widget.Widget;
 public class LegWidget extends ConnectionWidget implements BasicWidget {
 
     private Map<Leg, Double> legs;
-    private LegNode legNode;
+    private final LegNode legNode;
     private LabelWidget eventLabelWidget, procedureLabelWidget;
 
     /**
@@ -59,6 +63,22 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
         setStroke(new BasicStroke(3.0f));
         setEndPointShape(PointShape.SQUARE_FILLED_BIG);
+        legNode.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            listeners.forEach((PropertyChangeListener t) -> {
+                t.propertyChange(evt);
+                updateLabels();
+            });
+        });
+    }
+
+    private List<PropertyChangeListener> listeners = new ArrayList<>();
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        listeners.remove(listener);
     }
 
     @Override
@@ -103,10 +123,10 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
             }
 
             if (getLeg().getEvents() != null) {
-                if(getLeg().getEvents().isEmpty()){
-                eventLabelWidget = new LabelWidget(getScene(), "");
-                }else{
-                eventLabelWidget = new LabelWidget(getScene(), "Events: " + getLeg().getEvents().size());
+                if (getLeg().getEvents().isEmpty()) {
+                    eventLabelWidget = new LabelWidget(getScene(), "");
+                } else {
+                    eventLabelWidget = new LabelWidget(getScene(), "Events: " + getLeg().getEvents().size());
                 }
                 eventLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
 
@@ -157,9 +177,9 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
     private void setMultiModeLegWidgets(Leg leg) {
         MultiModeLeg mml = (MultiModeLeg) leg;
         legs = mml.getLegs();
-        for (Map.Entry<Leg, Double> entry : legs.entrySet()) {
+        legs.entrySet().stream().forEach((entry) -> {
             setNormalLegWidgets(entry.getKey());
-        }
+        });
     }
 
     @Override
@@ -186,6 +206,20 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         return this;
     }
 
+    @Override
+    public void delete() {
+        ChainGraphScene scene = (ChainGraphScene) getScene();
+        UndoManager undoManager = scene.getLookup().lookup(UndoManager.class);
+        // add a new UndoableEditEvent to the undoManager of the ChainGraphScene when the undoManager exists
+        if (undoManager != null) {
+            HubNode source = (HubNode) scene.getEdgeSource(legNode);
+            HubNode target = (HubNode) scene.getEdgeTarget(legNode);
+            undoManager.undoableEditHappened(new UndoableEditEvent(getLegWidget(), new DeleteLegWidgetUndoableEdit(getLegWidget(), source, target, scene)));
+        }
+        scene.removeEdge(legNode);
+        scene.disconnectLegWidget(getLegWidget());
+    }
+
     /**
      * The popup menu when right clicked on this widget.
      */
@@ -194,22 +228,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         @Override
         public JPopupMenu getPopupMenu(Widget widget, Point localLocation) {
             JPopupMenu popup = new JPopupMenu();
-            popup.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
-
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    ChainGraphScene scene = (ChainGraphScene) getScene();
-                    UndoManager undoManager = scene.getLookup().lookup(UndoManager.class);
-                    // add a new UndoableEditEvent to the undoManager of the ChainGraphScene when the undoManager exists
-                    if (undoManager != null) {
-                        HubNode source = (HubNode) scene.getEdgeSource(legNode);
-                        HubNode target = (HubNode) scene.getEdgeTarget(legNode);
-                        undoManager.undoableEditHappened(new UndoableEditEvent(getLegWidget(), new DeleteLegWidgetUndoableEdit(getLegWidget(), source, target, scene)));
-                    }
-                    scene.removeEdge(legNode);
-                    scene.disconnectLegWidget(getLegWidget());
-                }
-            });
+            popup.add(new DeleteAction());
 
             popup.add(new AbstractAction(LIMOResourceBundle.getString("EDIT")) {
 

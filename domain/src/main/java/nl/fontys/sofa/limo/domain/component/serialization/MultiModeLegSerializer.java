@@ -29,14 +29,16 @@ public class MultiModeLegSerializer implements JsonSerializer<MultiModeLeg> {
 
         Map<Leg, Double> mapToSeri = src.getLegs();
 
-        for (Map.Entry<Leg, Double> entrySet : mapToSeri.entrySet()) {
+        mapToSeri.entrySet().stream().map((entrySet) -> {
             Leg key = entrySet.getKey();
             Double value = entrySet.getValue();
             JsonObject ele2 = new JsonObject();
             ele2.add("Leg", g.toJsonTree(key));
             ele2.addProperty("Value", value);
+            return ele2;
+        }).forEach((ele2) -> {
             array.add(ele2);
-        }
+        });
         ele1.add("Legs", array);
         return ele1;
     }

@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.view.chain;
 
+import java.awt.event.ActionListener;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
@@ -24,11 +25,17 @@ public interface ChainBuilder {
      * @param hub the hub to be added.
      */
     void addHub(Hub hub);
-    
+
     /**
      * Returns the hublist.
      */
     List<Hub> getHubList();
+
+    void addListener(ActionListener listener);
+
+    void removeListener(ActionListener listener);
+    
+    void modify();
 
     /**
      * Remove the hub from the chain.

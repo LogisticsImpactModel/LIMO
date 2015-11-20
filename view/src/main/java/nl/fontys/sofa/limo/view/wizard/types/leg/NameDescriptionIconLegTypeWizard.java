@@ -10,7 +10,6 @@ import nl.fontys.sofa.limo.view.util.BaseEntityUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
-import org.openide.util.Exceptions;
 import org.openide.util.HelpCtx;
 import nl.fontys.sofa.limo.domain.component.Icon;
 
@@ -25,7 +24,7 @@ public class NameDescriptionIconLegTypeWizard implements WizardDescriptor.Panel<
     private LegType legType;
     private LegType originalLegType;
     private boolean update;
-    private BeanValidator validator = BeanValidator.getInstance();
+    private final BeanValidator validator = BeanValidator.getInstance();
     
     @Override
     public NameDescriptionIconPanel getComponent() {

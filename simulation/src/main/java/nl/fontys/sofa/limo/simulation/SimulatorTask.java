@@ -27,7 +27,7 @@ public class SimulatorTask implements TaskListener, Cancellable {
     private Set<SimulatorTaskListener> list;
     private final AggregateProgressHandle processHandle;
 
-    private AtomicBoolean cancelled;
+    private final AtomicBoolean cancelled;
 
     public SimulatorTask() {
         simulations = new HashMap<>();
@@ -63,9 +63,9 @@ public class SimulatorTask implements TaskListener, Cancellable {
         if (isDone()) {
             processHandle.finish();
             if (list != null) {
-                for (SimulatorTaskListener stl : list) {
+                list.stream().forEach((stl) -> {
                     stl.taskFinished(this);
-                }
+                });
             }
         }
     }
@@ -105,12 +105,8 @@ public class SimulatorTask implements TaskListener, Cancellable {
 
     @Override
     public boolean cancel() {
-        for (Simulation s : simulations.values()) {
-            boolean canceled = s.cancel();
-
-            if (!canceled) {
-                return false;
-            }
+        if (!simulations.values().stream().map((s) -> s.cancel()).noneMatch((canceled) -> (!canceled))) {
+            return false;
         }
 
         cancelled.set(true);

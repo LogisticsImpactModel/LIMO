@@ -16,7 +16,6 @@ import org.openide.util.Exceptions;
 public final class FileUtil {
 
     private FileUtil() {
-
     }
 
     /**

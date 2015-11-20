@@ -13,7 +13,6 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
-import org.openide.util.Exceptions;
 import org.openide.util.HelpCtx;
 
 /**
@@ -27,7 +26,7 @@ public class NameDescriptionIconHubTypeWizard implements WizardDescriptor.Panel<
     private boolean update;
     private HubType hubType;
     private HubType originalHubType;
-    private BeanValidator validator = BeanValidator.getInstance();
+    private final BeanValidator validator = BeanValidator.getInstance();
 
     @Override
     public NameDescriptionIconPanel getComponent() {

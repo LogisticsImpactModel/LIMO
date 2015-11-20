@@ -10,6 +10,7 @@ import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.view.node.DetachableNode;
+import nl.fontys.sofa.limo.view.node.Deletable;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import nl.fontys.sofa.limo.view.util.IconUtil;
@@ -29,7 +30,7 @@ import org.openide.util.lookup.InstanceContent;
  * @author Sebastiaan Heijmann
  */
 public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
-        implements DetachableNode {
+        implements DetachableNode, Deletable {
 
     private Class entityClass;
     private PropertyChangeListener listener;
@@ -83,22 +84,21 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
      */
     protected PropertyChangeListener getListener() {
         if (this.listener == null) {
-            this.listener = new PropertyChangeListener() {
-
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    
-                    DAO service = (DAO) Lookup.getDefault().lookup(getServiceClass());
-                    service.update(getBean());
-                    firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-                    if (evt.getPropertyName().equals("name")) {
+            this.listener = (PropertyChangeEvent evt) -> {
+                DAO service = (DAO) Lookup.getDefault().lookup(getServiceClass());
+                service.update(getBean());
+                firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                switch (evt.getPropertyName()) {
+                    case "name":
                         setDisplayName((String) evt.getNewValue());
-                    } else if (evt.getPropertyName().equals("description")) {
+                        break;
+                    case "description":
                         setShortDescription((String) evt.getNewValue());
-                    } else if (evt.getPropertyName().equals("icon")) {
+                        break;
+                    case "icon":
                         createProperties(getBean(), null);
                         setSheet(getSheet());
-                    }
+                        break;
                 }
             };
         }

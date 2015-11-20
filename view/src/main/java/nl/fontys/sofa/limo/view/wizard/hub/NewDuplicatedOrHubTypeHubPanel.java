@@ -71,9 +71,9 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
         HubService hubService = Lookup.getDefault().lookup(HubService.class);
         hubs = hubService.findAll();
         List<String> hubNameList = new ArrayList<>();
-        for (Hub hub : hubs) {
+        hubs.stream().forEach((hub) -> {
             hubNameList.add(hub.getName());
-        }
+        });
 
         hubCb.setModel(new DefaultComboBoxModel(hubNameList.toArray()));
         c.weightx = 1;
@@ -92,9 +92,9 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
         HubTypeService hubTypeService = Lookup.getDefault().lookup(HubTypeService.class);
         hubTypes = hubTypeService.findAll();
         ArrayList<String> hubTypeList = new ArrayList<>();
-        for (HubType hubType : hubTypes) {
+        hubTypes.stream().forEach((hubType) -> {
             hubTypeList.add(hubType.getName());
-        }
+        });
 
         hubTypeCb.setModel(new DefaultComboBoxModel(hubTypeList.toArray()));
         c.weightx = 1;
@@ -116,32 +116,23 @@ public final class NewDuplicatedOrHubTypeHubPanel extends JPanel {
     }
 
     private void setActionsListener() {
-        hubFromTypeSelection.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (hubFromTypeSelection.isSelected()) {
-                    hubTypeCb.setEnabled(true);
-                    hubCb.setEnabled(false);
-                }
+        hubFromTypeSelection.addActionListener((ActionEvent e) -> {
+            if (hubFromTypeSelection.isSelected()) {
+                hubTypeCb.setEnabled(true);
+                hubCb.setEnabled(false);
             }
         });
-        hubFromScratchSelection.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (hubFromScratchSelection.isSelected()) {
-                    hubTypeCb.setEnabled(false);
-                    hubCb.setEnabled(false);
-                }
+        hubFromScratchSelection.addActionListener((ActionEvent e) -> {
+            if (hubFromScratchSelection.isSelected()) {
+                hubTypeCb.setEnabled(false);
+                hubCb.setEnabled(false);
             }
         });
-        hubCopySelection.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (hubCopySelection.isSelected()) {
-                    hubTypeCb.setEnabled(false);
-                    hubCb.setEnabled(true);
-
-                }
+        hubCopySelection.addActionListener((ActionEvent e) -> {
+            if (hubCopySelection.isSelected()) {
+                hubTypeCb.setEnabled(false);
+                hubCb.setEnabled(true);
+                
             }
         });
     }

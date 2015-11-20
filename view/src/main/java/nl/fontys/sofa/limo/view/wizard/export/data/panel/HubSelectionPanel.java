@@ -40,9 +40,9 @@ public class HubSelectionPanel extends BaseEntitySelectionPanel<Hub> {
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        for (Hub selectedEntity : selectedEntities) {
+        selectedEntities.stream().forEach((selectedEntity) -> {
             selectedEntity.setId(null);
-        }
+        });
         wiz.putProperty(ExportWizardAction.HUBS, selectedEntities);
     }
 }

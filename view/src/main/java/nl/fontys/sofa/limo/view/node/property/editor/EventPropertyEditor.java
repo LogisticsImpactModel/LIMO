@@ -29,13 +29,13 @@ public class EventPropertyEditor extends PropertyEditorSupport {
         }
 
         StringBuilder name = new StringBuilder();
-        for (Event event : events) {
+        events.stream().forEach((event) -> {
             if (name.toString().length() == 0) {
                 name.append(event.getName());
             } else {
-                name.append(" - " + event.getName());
+                name.append(" - ").append(event.getName());
             }
-        }
+        });
         return name.toString();
     }
 
@@ -86,7 +86,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
          */
         private void setTableAndCheckbox() {
             ArrayList<String> allEventsName = new ArrayList<>();
-            List<Event> usedEvents = null;
+            List<Event> usedEvents;
             if (eventsTableModel.getEvents() != null) {
                 usedEvents = new ArrayList<>(eventsTableModel.getEvents());
             } else {
@@ -133,9 +133,9 @@ public class EventPropertyEditor extends PropertyEditorSupport {
          */
         private void addClicked() {
             Event selected = null;
-            for (int i = 0; i < allEvents.size(); i++) {
-                if (((String) eventsComboBox.getSelectedItem()).equals(allEvents.get(i).getName())) {
-                    selected = service.findById(allEvents.get(i).getId());
+            for (Event allEvent : allEvents) {
+                if (((String) eventsComboBox.getSelectedItem()).equals(allEvent.getName())) {
+                    selected = service.findById(allEvent.getId());
                     break;
                 }
             }

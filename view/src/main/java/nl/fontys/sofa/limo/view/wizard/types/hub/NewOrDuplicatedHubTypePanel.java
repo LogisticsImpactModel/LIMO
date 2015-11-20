@@ -61,9 +61,9 @@ public final class NewOrDuplicatedHubTypePanel extends JPanel {
         HubTypeService hubTypeService = Lookup.getDefault().lookup(HubTypeService.class);
         ht = hubTypeService.findAll();
         List<String> hubTypeList = new ArrayList<>();
-        for (HubType ht2 : ht) {
+        ht.stream().forEach((ht2) -> {
             hubTypeList.add(ht2.getName());
-        }
+        });
 
         cmbHubType.setModel(new DefaultComboBoxModel(hubTypeList.toArray()));
         c.weightx = 1;
@@ -88,20 +88,14 @@ public final class NewOrDuplicatedHubTypePanel extends JPanel {
 
     //AddActionListener
     public void setActionListener() {
-        rbFromScratch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbFromScratch.isSelected()) {
-                    cmbHubType.setEnabled(false);
-                }
+        rbFromScratch.addActionListener((ActionEvent e) -> {
+            if (rbFromScratch.isSelected()) {
+                cmbHubType.setEnabled(false);
             }
         });
-        rbCopyFrom.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbCopyFrom.isSelected()) {
-                    cmbHubType.setEnabled(true);
-                }
+        rbCopyFrom.addActionListener((ActionEvent e) -> {
+            if (rbCopyFrom.isSelected()) {
+                cmbHubType.setEnabled(true);
             }
         });
     }

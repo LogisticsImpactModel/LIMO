@@ -87,9 +87,9 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
         service = l.lookup(EventService.class);
         eventList = service.findAll();
         List<String> events = new ArrayList<>();
-        for (Event event : eventList) {
+        eventList.stream().forEach((event) -> {
             events.add(event.getName());
-        }
+        });
         eventsCb.setModel(new DefaultComboBoxModel(events.toArray(new String[events.size()])));
 
         eventsCb.setEnabled(false);
@@ -108,20 +108,14 @@ public final class NewOrDuplicatedEventPanel extends JPanel {
     }
 
     private void initActionsListener() {
-        eventFromScratchSelection.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (eventFromScratchSelection.isSelected()) {
-                    eventsCb.setEnabled(false);
-                }
+        eventFromScratchSelection.addActionListener((ActionEvent e) -> {
+            if (eventFromScratchSelection.isSelected()) {
+                eventsCb.setEnabled(false);
             }
         });
-        eventCopySelection.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (eventCopySelection.isSelected()) {
-                    eventsCb.setEnabled(true);
-                }
+        eventCopySelection.addActionListener((ActionEvent e) -> {
+            if (eventCopySelection.isSelected()) {
+                eventsCb.setEnabled(true);
             }
         });
     }

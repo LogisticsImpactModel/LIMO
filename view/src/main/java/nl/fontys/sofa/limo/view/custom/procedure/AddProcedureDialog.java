@@ -120,48 +120,36 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(addCostButton)) {
-            EditValueDialog editValueDialog = new EditValueDialog(costValue, new EditValueDialogListener() {
-
-                @Override
-                public void newValue(Value changedValue) {
-                    if (costValue != null) {
-                        costValue = changedValue;
-                        costTextField.setText(costValue.toString());
-                        AddProcedureDialog.this.revalidate();
-                        AddProcedureDialog.this.repaint();
-                    }
+            EditValueDialog editValueDialog = new EditValueDialog(costValue, (Value changedValue) -> {
+                if (costValue != null) {
+                    costValue = changedValue;
+                    costTextField.setText(costValue.toString());
+                    AddProcedureDialog.this.revalidate();
+                    AddProcedureDialog.this.repaint();
                 }
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             editValueDialog.setVisible(true);
         }
         if (e.getSource().equals(addTimeButton)) {
-            EditValueDialog editValueDialog = new EditValueDialog(timeValue, new EditValueDialogListener() {
-
-                @Override
-                public void newValue(Value changedValue) {
-                    if (timeValue != null) {
-                        timeValue = changedValue;
-                        timeTextField.setText(timeValue.toString());
-                        AddProcedureDialog.this.revalidate();
-                        AddProcedureDialog.this.repaint();
-                    }
+            EditValueDialog editValueDialog = new EditValueDialog(timeValue, (Value changedValue) -> {
+                if (timeValue != null) {
+                    timeValue = changedValue;
+                    timeTextField.setText(timeValue.toString());
+                    AddProcedureDialog.this.revalidate();
+                    AddProcedureDialog.this.repaint();
                 }
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             editValueDialog.setVisible(true);
         }
         if (e.getSource().equals(addCotwoButton)) {
-            EditValueDialog editValueDialog = new EditValueDialog(cotwoValue, new EditValueDialogListener() {
-
-                @Override
-                public void newValue(Value changedValue) {
-                    if (cotwoValue != null) {
-                        cotwoValue = changedValue;
-                        cotwoTextField.setText(cotwoValue.toString());
-                        AddProcedureDialog.this.revalidate();
-                        AddProcedureDialog.this.repaint();
-                    }
+            EditValueDialog editValueDialog = new EditValueDialog(cotwoValue, (Value changedValue) -> {
+                if (cotwoValue != null) {
+                    cotwoValue = changedValue;
+                    cotwoTextField.setText(cotwoValue.toString());
+                    AddProcedureDialog.this.revalidate();
+                    AddProcedureDialog.this.repaint();
                 }
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

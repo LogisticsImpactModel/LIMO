@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
-import nl.fontys.sofa.limo.api.dao.ProcedureDAO;
 import nl.fontys.sofa.limo.view.custom.procedure.AddStandartProcedureDialog;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;

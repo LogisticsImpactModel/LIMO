@@ -84,7 +84,9 @@ public class StupidProperty<T> extends PropertySupport.Reflection<T> {
      * @param listener Listener.
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        listeners.add(listener);
+        if (listener != null) {
+            listeners.add(listener);
+        }
     }
 
     /**
@@ -103,13 +105,10 @@ public class StupidProperty<T> extends PropertySupport.Reflection<T> {
      * @param newValue New value.
      */
     protected void firePropertyChange(T oldValue, T newValue) {
-        // Remove all faulty listeners (threading...)
-        while (listeners.remove(null)) {
-        }
 
-        for (PropertyChangeListener listener : listeners) {
+        listeners.stream().forEach((listener) -> {
             listener.propertyChange(new PropertyChangeEvent(this, getName(), oldValue, newValue));
-        }
+        });
     }
 
 }
