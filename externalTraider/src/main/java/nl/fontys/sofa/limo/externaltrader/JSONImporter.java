@@ -12,7 +12,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -96,12 +95,12 @@ public final class JSONImporter {
         
         Gson g = GsonHelper.getInstance();
         
-        JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
-        reader.beginArray();
-            
-        MasterData md = g.fromJson(reader, MasterData.class);
-        reader.endArray();
-        reader.close();
+        MasterData md;
+            try (JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"))) {
+                reader.beginArray();
+                md = g.fromJson(reader, MasterData.class);
+                reader.endArray();
+            }
         
         return md.getAsMap();
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
@@ -121,9 +120,9 @@ public final class JSONImporter {
      */
     private static Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> checkForConflicts(Map<String, List<BaseEntity>> allEntities) {
         Map<String, List<Map.Entry<BaseEntity, BaseEntity>>> conflictMap = new HashMap<>();
-        for (Map.Entry<String, List<BaseEntity>> entry : allEntities.entrySet()) {
+        allEntities.entrySet().stream().forEach((entry) -> {
             conflictMap.put(entry.getKey(), checkItems(entry.getValue(), getServiceClassForKey(entry.getKey())));
-        }
+        });
         return conflictMap;
     }
 
@@ -161,12 +160,9 @@ public final class JSONImporter {
      */
     private static List<Map.Entry<BaseEntity, BaseEntity>> checkItems(List<BaseEntity> entities, Class serviceClass) {
         List<Map.Entry<BaseEntity, BaseEntity>> list = new ArrayList<>();
-        for (BaseEntity entity : entities) {
-            Map.Entry<BaseEntity, BaseEntity> item = checkItem(entity, serviceClass);
-            if (item != null) {
-                list.add(item);
-            }
-        }
+        entities.stream().map((entity) -> checkItem(entity, serviceClass)).filter((item) -> (item != null)).forEach((item) -> {
+            list.add(item);
+        });
         return list;
     }
 

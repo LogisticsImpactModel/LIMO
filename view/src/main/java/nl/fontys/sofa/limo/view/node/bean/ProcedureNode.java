@@ -148,4 +148,10 @@ public class ProcedureNode extends AbstractBeanNode<Procedure> {
     protected Icon getBeanIcon() {
         throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_SUPPORTED"));
     }
+
+    @Override
+    public void delete() {
+        ProcedureService service = Lookup.getDefault().lookup(ProcedureService.class);
+        service.delete(bean);
+    }
 }

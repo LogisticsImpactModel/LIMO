@@ -8,11 +8,15 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import com.orientechnologies.orient.object.serialization.OObjectSerializerContext;
 import com.orientechnologies.orient.object.serialization.OObjectSerializerHelper;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.UserPrincipal;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.Component;
 import nl.fontys.sofa.limo.domain.component.Icon;
@@ -50,6 +54,7 @@ import nl.fontys.sofa.limo.orientdb.serialization.ContinentSerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.CountrySerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.ExecutionStateSerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.TimeTypeSerializer;
+import org.openide.modules.Places;
 
 /**
  * Singleton connection to OrientDB file database. Maintaines schema and allows
@@ -116,8 +121,26 @@ public class OrientDBConnector {
 
         // Create database if it does not exist
         if (!this.connection.exists()) {
-            this.connection.create();
-            this.createSchema();
+            try {
+                this.connection.create();
+                this.createSchema();
+
+                Path path = FileSystems.getDefault().getPath(Places.getUserDirectory() + File.separator + "LIMO_DB");
+                String username = System.getProperty("user.name");
+                UserPrincipal user = FileSystems.getDefault().getUserPrincipalLookupService().lookupPrincipalByName(username);
+                Files.walk(path).forEach((Path filePath) -> {
+                    if (Files.isRegularFile(filePath)) {
+                        try {
+                            Files.setOwner(filePath, user);
+                        } catch (IOException ex) {
+                            Logger.getGlobal().log(Level.WARNING, "", ex);
+                        }
+                    }
+                });
+            } catch (IOException ex) {
+                Logger.getLogger(OrientDBConnector.class.getName()).log(Level.WARNING, "", ex);
+            }
+
         }
 
         // Open connection if it is closed
@@ -218,15 +241,21 @@ public class OrientDBConnector {
         if (databaseURL != null) {
             return databaseURL;
         }
-
-       // Path path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "/LIMO");
-        Path path = FileSystems.getDefault().getPath(System.getProperty("user.dir")+File.separator +"LIMO_DB");
+        // Path path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "/LIMO");
+        Path path = FileSystems.getDefault().getPath(Places.getUserDirectory() + File.separator + "LIMO_DB");
         if (!Files.exists(path)) {
             try {
                 Files.createDirectory(path);
                 Files.setAttribute(path, "dos:hidden", true);
+                String username = System.getProperty("user.name");
+
+                UserPrincipal user = FileSystems.getDefault().getUserPrincipalLookupService().lookupPrincipalByName(username);
+                Files.setOwner(path, user);
+
             } catch (IOException | UnsupportedOperationException ex) {
                 // Not on windows, whateverever
+                Logger.getLogger(OrientDBConnector.class.getName()).log(Level.WARNING, "Error in creating database", ex);
+
             }
         }
 

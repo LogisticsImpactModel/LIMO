@@ -6,6 +6,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,9 +60,12 @@ import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.spi.palette.PaletteController;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.nodes.NodeTransfer;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
+import org.openide.util.lookup.AbstractLookup;
+import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
@@ -89,7 +93,9 @@ import org.openide.windows.TopComponent;
  *
  * @author Sebastiaan Heijmann
  */
-public class ChainGraphSceneImpl extends ChainGraphScene {
+public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChangeListener {
+
+    private final InstanceContent ic;
 
     private final DynamicExplorerManagerProvider parent;
     private final ChainBuilder chainBuilder;
@@ -141,6 +147,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
      * @throws IntrospectionException be found.
      */
     public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain, UndoManager undoManager, PaletteController paletteController) throws IOException, IntrospectionException {
+        this.ic = new InstanceContent();
         this.parent = parent;
         chainBuilder = new ChainBuilderImpl();
         chainBuilder.getSupplyChain().setName(chain.getName()); //sets the name of 
@@ -150,6 +157,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         loadedChain = chain;
 
         this.mainLayer = new LayerWidget(this);
+
         this.connectionLayer = new LayerWidget(this);
         this.interactionLayer = new LayerWidget(this);
         this.paletteController = paletteController;
@@ -175,15 +183,13 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         startFlagWidget = new StartWidget(this);
 
         this.undoManager = undoManager;
-
+        Lookup dL = new AbstractLookup(ic);
         if (undoManager != null) {
             Lookup undoRedo = Lookups.singleton(undoManager);
-            lookup = new ProxyLookup(undoRedo, super.getLookup());
+            lookup = new ProxyLookup(dL, undoRedo, super.getLookup());
         } else {
-            lookup = (ProxyLookup) super.getLookup();
-
+            lookup = new ProxyLookup(dL, super.getLookup());
         }
-
     }
 
     @Override
@@ -306,11 +312,27 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         chainBuilder.addHub(hubWidget.getHub());
         checkChainHubs();
         getScene().repaint();
+        ic.add((BasicWidget) hubWidget);
+        hubWidget.addPropertyChangeListener(this);
 
     }
 
     @Override
     public void connectHubWidgets(HubWidget source, ConnectionWidget legWidget, HubWidget target) {
+
+        Node node = target.getHub();
+        while (node != null) {
+            node = node.getNext();
+            if (node != null) {
+                if (node.equals(source.getHub())) {
+                    NotifyDescriptor d
+                            = new NotifyDescriptor.Message("Circles in supply chain aren't allowed!", NotifyDescriptor.WARNING_MESSAGE);
+                    DialogDisplayer.getDefault().notify(d);
+                    return;
+                }
+            }
+        }
+
         Lookup.getDefault().lookup(StatusBarService.class).setMessage(source.getHub().getName() + " " + LIMOResourceBundle.getString("AND") + " " + target.getHub().getName(), StatusBarService.ACTION_CONNECT, StatusBarService.STATE_SUCCESS, null);
         AbstractBeanNode sourceNode = (AbstractBeanNode) findObject(source);
         AbstractBeanNode legNode = (AbstractBeanNode) findObject(legWidget);
@@ -329,6 +351,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 hubTarget);
         target.setStartFlag(false);
         this.checkChainHubs();
+        ic.add((BasicWidget) legWidget);
+        ((LegWidget) legWidget).addPropertyChangeListener(this);
+
     }
 
     /**
@@ -363,7 +388,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         if (chainBuilder.getStartHub() == hub) {
             chainBuilder.setStartHub(null);
         }
-
+        ic.remove((BasicWidget) hubWidget);
     }
 
     @Override
@@ -372,6 +397,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                 StatusBarService.ACTION_DELETE, StatusBarService.STATE_SUCCESS, null);
         chainBuilder.disconnectLeg(legWidget.getLeg());
         this.checkChainHubs();
+        ic.remove((BasicWidget) legWidget);
     }
 
     @Override
@@ -393,6 +419,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         connectionWidget.addActions(this);
         connectionLayer.addChild((Widget) connectionWidget);
         return (Widget) connectionWidget;
+
     }
 
     @Override
@@ -413,6 +440,13 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
         }
         ConnectionWidget connectionWidget = (ConnectionWidget) findWidget(edge);
         connectionWidget.setTargetAnchor(AnchorFactory.createRectangularAnchor(targetWidget, false));
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        chainBuilder.modify();
+        revalidate();
+
     }
 
     /**
@@ -466,7 +500,6 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
 
                 return ConnectorState.REJECT_AND_STOP;
             }
-
             return ConnectorState.REJECT;
         }
 
@@ -533,10 +566,13 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                     legWidget.updateLabels();
                 }
             });
-            mainLayer.revalidate();
-            connectionLayer.revalidate();
+            if (hitlist.size() > 0) {
+                mainLayer.revalidate();
+                connectionLayer.revalidate();
+                chainBuilder.modify();
+            }
         }
-        
+
         private void acceptProcedure(AbstractBeanNode node, Point point) {
             Procedure procedure = node.getLookup().lookup(Procedure.class);
             List<Widget> hitlist = new ArrayList<>();
@@ -570,8 +606,11 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                     legWidget.updateLabels();
                 }
             });
-            mainLayer.revalidate();
-            connectionLayer.revalidate();
+            if (hitlist.size() > 0) {
+                mainLayer.revalidate();
+                connectionLayer.revalidate();
+                chainBuilder.modify();
+            }
         }
     }
 
@@ -605,9 +644,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
             } else {
                 userSelectionSuggested(Collections.emptySet(), invertSelection);
             }
-
         }
-
     }
 
     /**
@@ -726,4 +763,5 @@ public class ChainGraphSceneImpl extends ChainGraphScene {
                     && findNodeEdges(targetNode, false, true).isEmpty();
         }
     }
+
 }

@@ -21,7 +21,7 @@ public class EventTableModel extends AbstractTableModel {
      * Create a new empty table model.
      */
     public EventTableModel() {
-        this(new ArrayList<Event>());
+        this(new ArrayList<>());
     }
 
     /**
@@ -73,7 +73,7 @@ public class EventTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Event e = this.events.get(rowIndex);
-        if (e == null && e.getDependency() == null) {
+        if (e == null || e.getDependency() == null) {
             return null;
         }
 

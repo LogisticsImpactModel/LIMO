@@ -34,7 +34,7 @@ import org.openide.util.Lookup;
 )
 @ActionRegistration(
         displayName = "New hub template...",
-        iconBase = "icons/gui/add.gif"
+        iconBase = "icons/gui/add.png"
 )
 @ActionReferences({
     @ActionReference(path = "Menu/Master Data/Hub templates", position = 20),

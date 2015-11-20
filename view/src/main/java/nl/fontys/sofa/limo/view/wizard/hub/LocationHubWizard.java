@@ -8,7 +8,6 @@ import nl.fontys.sofa.limo.validation.ValidationException;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
-import org.openide.util.Exceptions;
 import org.openide.util.HelpCtx;
 
 /**
@@ -20,7 +19,7 @@ public class LocationHubWizard implements WizardDescriptor.Panel<WizardDescripto
 
     private LocationHubPanel component;
     private Hub hub;
-    private BeanValidator validator = BeanValidator.getInstance();
+    private final BeanValidator validator = BeanValidator.getInstance();
 
     @Override
     public LocationHubPanel getComponent() {
@@ -64,10 +63,10 @@ public class LocationHubWizard implements WizardDescriptor.Panel<WizardDescripto
 
     @Override
     public void validate() throws WizardValidationException {
-        Hub hub = new Hub(this.hub);
-        hub.setLocation(component.getHubLocation());
+        Hub localHub = new Hub(this.hub);
+        localHub.setLocation(component.getHubLocation());
         try {
-            validator.validate(hub);
+            validator.validate(localHub);
         } catch (ValidationException ex) {
             throw new WizardValidationException(null, MessageFormat.format(LIMOResourceBundle.getString("VALUE_NOT_SET"), LIMOResourceBundle.getString("CONTINENT")), null);
         }

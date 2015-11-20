@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -15,18 +17,22 @@ import nl.fontys.sofa.limo.simulation.SimulatorTask;
 import nl.fontys.sofa.limo.simulation.SimulatorTaskListener;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
-import nl.fontys.sofa.limo.view.graphs.GraphSwitchTopComponent;
 import nl.fontys.sofa.limo.view.topcomponent.ResultTopComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
+import org.openide.util.ContextAwareAction;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
+import org.openide.util.LookupEvent;
+import org.openide.util.LookupListener;
 import org.openide.util.Utilities;
+import org.openide.util.WeakListeners;
 import org.openide.util.actions.Presenter;
 import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
@@ -50,12 +56,16 @@ import org.openide.windows.WindowManager;
 @ActionReferences({
     @ActionReference(path = "Shortcuts", name = "D-F5")})
 public final class SimulateAction extends AbstractAction
-        implements Presenter.Toolbar, SimulatorTaskListener {
+        implements Presenter.Toolbar, ContextAwareAction, LookupListener, SimulatorTaskListener {
 
     public static final int DEFAULT_NUM_RUNS = 100000;
 
     private final JFormattedTextField inputRunsTF;
-    private List<ChainGraphScene> scenes;
+
+    private final Lookup lkp;
+    private final Lookup.Result<ChainGraphScene> result;
+    private final Lookup.Result<BasicWidget> widgets;
+    private final JButton button = new JButton(this);
 
     /**
      * Constructor sets the input text field from where to get the number of
@@ -65,15 +75,29 @@ public final class SimulateAction extends AbstractAction
      */
     public SimulateAction(JFormattedTextField inputRunsTF) {
         this.inputRunsTF = inputRunsTF;
+        this.lkp = Utilities.actionsGlobalContext();
+        this.result = lkp.lookupResult(ChainGraphScene.class);
+        this.result.addLookupListener(WeakListeners.create(LookupListener.class, this, result));
+        this.widgets = lkp.lookupResult(BasicWidget.class);
+        this.widgets.addLookupListener(WeakListeners.create(LookupListener.class, this, widgets));
     }
 
     public SimulateAction() {
         this.inputRunsTF = null;
+        this.lkp = Utilities.actionsGlobalContext();
+        this.result = lkp.lookupResult(ChainGraphScene.class);
+        this.result.addLookupListener(WeakListeners.create(LookupListener.class, this, result));
+        this.widgets = lkp.lookupResult(BasicWidget.class);
+        this.widgets.addLookupListener(WeakListeners.create(LookupListener.class, this, widgets));
     }
 
-    public SimulateAction(List<ChainGraphScene> scene) {
-        this();
-        this.scenes = scene;
+    public SimulateAction(Lookup lkp) {
+        this.inputRunsTF = null;
+        this.lkp = lkp;
+        this.result = lkp.lookupResult(ChainGraphScene.class);
+        this.result.addLookupListener(WeakListeners.create(LookupListener.class, this, result));
+        this.widgets = lkp.lookupResult(BasicWidget.class);
+        this.widgets.addLookupListener(WeakListeners.create(LookupListener.class, this, widgets));
     }
 
     /**
@@ -83,16 +107,6 @@ public final class SimulateAction extends AbstractAction
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (scenes == null) {
-            scenes = new ArrayList<>();
-            Lookup global = Utilities.actionsGlobalContext();
-            ChainGraphScene scene = global.lookup(ChainGraphScene.class);
-            if (scene == null) {
-                return;
-            }
-
-            scenes.add(scene);
-        }
 
         int numberOfRuns = DEFAULT_NUM_RUNS;
         Object input = null;
@@ -103,36 +117,32 @@ public final class SimulateAction extends AbstractAction
         if (input != null) {
             numberOfRuns = (int) input;
         }
-        performSimulation(scenes, numberOfRuns);
+        performSimulation(result.allInstances(), numberOfRuns);
     }
 
     @Override
     public void taskFinished(final SimulatorTask task) {
-        for (ChainGraphScene scene : scenes) {
+        result.allInstances().stream().map((scene) -> {
             TopComponent tc = (TopComponent) scene.getParent();
             tc.makeBusy(false);
             scene.setEnabled(true);
+            return scene;
+        }).forEach((scene) -> {
             scene.setBackground(Color.WHITE);
-        }
+        });
         if (task.getCancelled().get()) {
             return;
         }
 
         //for (final SimulationResult simResult : task.getResults()) {
-        WindowManager.getDefault().invokeWhenUIReady(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    ResultTopComponent rtc = new ResultTopComponent(task.getResults());
-
-                    rtc.open();
-                    rtc.requestActive();
-                } catch (InstantiationException ex) {
-                    Exceptions.printStackTrace(ex);
-                }
+        WindowManager.getDefault().invokeWhenUIReady(() -> {
+            try {
+                ResultTopComponent rtc = new ResultTopComponent(task.getResults());
+                rtc.open();
+                rtc.requestActive();
+            } catch (InstantiationException ex) {
+                Exceptions.printStackTrace(ex);
             }
-
         });
         //}
     }
@@ -146,15 +156,14 @@ public final class SimulateAction extends AbstractAction
      */
     @Override
     public Component getToolbarPresenter() {
-        JButton button = new JButton(this);
-        button.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/gui/simulate.png")));
+        button.setIcon(new ImageIcon(getClass().getClassLoader().getResource("icons/gui/Process.png")));
         button.setText(LIMOResourceBundle.getString("SIMULATE"));
         button.setOpaque(false);
         button.setBorder(null);
         return button;
     }
 
-    private void performSimulation(List<ChainGraphScene> scenes, int numberOfRuns) {
+    private void performSimulation(Collection<? extends ChainGraphScene> scenes, int numberOfRuns) {
         List<SupplyChain> chain = new ArrayList<>();
         for (ChainGraphScene scene : scenes) {
             ChainBuilder chainBuilder = scene.getChainBuilder();
@@ -177,6 +186,26 @@ public final class SimulateAction extends AbstractAction
         SupplyChain[] c = chain.toArray(new SupplyChain[chain.size()]);
         SimulatorTask task = Simulator.simulate(numberOfRuns, c);
         task.addTaskListener(this);
+    }
+
+    @Override
+    public Action createContextAwareInstance(Lookup lkp) {
+        return new SimulateAction(lkp);
+    }
+
+    @Override
+    public void resultChanged(LookupEvent le) {
+        for (ChainGraphScene scene : result.allInstances()) {
+
+            if (scene.getChainBuilder().validate()) {
+                button.setEnabled(true);
+                return;
+            }
+        }
+
+        if (result.allInstances().size() > 0) {
+            button.setEnabled(false);
+        }
     }
 
 }

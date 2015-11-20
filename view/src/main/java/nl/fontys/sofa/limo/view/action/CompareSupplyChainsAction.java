@@ -32,8 +32,11 @@ import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
+import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.actions.Presenter;
+import org.openide.util.lookup.AbstractLookup;
+import org.openide.util.lookup.InstanceContent;
 import org.openide.windows.TopComponent;
 
 /**
@@ -63,12 +66,9 @@ public class CompareSupplyChainsAction extends AbstractAction
     @Override
     public void actionPerformed(ActionEvent e) {
         scenes = new ArrayList<>();
-        for (TopComponent tc : TopComponent.getRegistry().getOpened()) {
-            ChainGraphScene scene = tc.getLookup().lookup(ChainGraphScene.class);
-            if (scene != null) {
-                scenes.add(scene);
-            }
-        }
+        TopComponent.getRegistry().getOpened().stream().map((tc) -> tc.getLookup().lookup(ChainGraphScene.class)).filter((scene) -> (scene != null)).forEach((scene) -> {
+            scenes.add(scene);
+        });
 
         if (scenes.size() < 2) {
             DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(LIMOResourceBundle.getString("NOT_ENOUGH_SUPPLY_CHAIN_OPEN"), 2));
@@ -81,7 +81,13 @@ public class CompareSupplyChainsAction extends AbstractAction
         dd.setValid(false);
 
         if (DialogDisplayer.getDefault().notify(dd) == NotifyDescriptor.OK_OPTION) {
-            SimulateAction action = new SimulateAction(panel.getSelectedScenes());
+
+            InstanceContent ic = new InstanceContent();
+            panel.getSelectedScenes().stream().forEach((s) -> {
+                ic.add(s);
+            });
+            Lookup lkp = new AbstractLookup(ic);
+            SimulateAction action = new SimulateAction(lkp);
             action.actionPerformed(e);
         }
 
@@ -106,8 +112,8 @@ public class CompareSupplyChainsAction extends AbstractAction
 
     private class CompareSupplyChainPanel extends JPanel implements ItemListener {
 
-        private Map<JCheckBox, ChainGraphScene> scenes;
-        private List<ChainGraphScene> selectedScenes;
+        private final Map<JCheckBox, ChainGraphScene> scenes;
+        private final List<ChainGraphScene> selectedScenes;
         private DialogDescriptor descriptor;
 
         public CompareSupplyChainPanel(List<ChainGraphScene> scenes) {
@@ -124,14 +130,14 @@ public class CompareSupplyChainsAction extends AbstractAction
 
             checkboxesPanel.setLayout(new GridLayout(0, 3));
 
-            for (ChainGraphScene scene : scenes) {
+            scenes.stream().forEach((scene) -> {
                 String name = scene.getSupplyChain().getName();
                 JCheckBox box = new JCheckBox(name);
                 box.addItemListener(this);
                 checkboxesPanel.add(box);
 
                 this.scenes.put(box, scene);
-            }
+            });
             JScrollPane scrollPanel = new JScrollPane(checkboxesPanel);
             this.add(scrollPanel, BorderLayout.CENTER);
         }
@@ -160,11 +166,9 @@ public class CompareSupplyChainsAction extends AbstractAction
         }
 
         private void setEnabledForAllNotSelectedCheckBoxes(boolean enable) {
-            for (JCheckBox box : scenes.keySet()) {
-                if (!box.isSelected()) {
-                    box.setEnabled(enable);
-                }
-            }
+            scenes.keySet().stream().filter((box) -> (!box.isSelected())).forEach((box) -> {
+                box.setEnabled(enable);
+            });
         }
 
         public List<ChainGraphScene> getSelectedScenes() {

@@ -33,7 +33,7 @@ import org.openide.util.Lookup;
 )
 @ActionRegistration(
         displayName = "New Event template...",
-        iconBase = "icons/gui/add.gif"
+        iconBase = "icons/gui/add.png"
 )
 @ActionReferences({
     @ActionReference(path = "Menu/Master Data/Event templates", position = 20),

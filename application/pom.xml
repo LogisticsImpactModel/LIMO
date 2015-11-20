@@ -4,7 +4,7 @@
     <parent>
         <groupId>nl.fontys.sofa.limo</groupId>
         <artifactId>LIMO-parent</artifactId>
-        <version>1.6.2.1</version>
+        <version>1.7.0</version>
     </parent>
 
     <artifactId>LIMO-app</artifactId>
@@ -115,9 +115,11 @@
                     <installerOsSolaris>false</installerOsSolaris>
                     <installerOsMacosx>false</installerOsMacosx>
                     <installerOsLinux>false</installerOsLinux>
+                    <templateFile>${basedir}/src/main/template.xml</templateFile>
                     <userSettings>
                         <nbi.icon.file>${basedir}/src/main/resources/icon.gif</nbi.icon.file>
                         <nbi.instleftcorner.file>${basedir}/src/main/resources/icon.gif</nbi.instleftcorner.file>
+                        <configuration.logic.file>${basedir}/src/main/ConfigurationLogic.java</configuration.logic.file>
                     </userSettings>
                     <installerPack200Enable>false</installerPack200Enable>
                 </configuration>
@@ -160,5 +162,5 @@
             </build>
         </profile>
     </profiles>
-    <version>1.6.2.1</version>
+    <version>1.7.0</version>
 </project>

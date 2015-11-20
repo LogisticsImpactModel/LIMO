@@ -35,9 +35,9 @@ public class ProcedureSelectionPanel extends BaseEntitySelectionPanel<Procedure>
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        for (Procedure selectedEntity : selectedEntities) {
+        selectedEntities.stream().forEach((selectedEntity) -> {
             selectedEntity.setId(null);
-        }
+        });
         wiz.putProperty(ExportWizardAction.PROCEDURES, selectedEntities);
     }
 }

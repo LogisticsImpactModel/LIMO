@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.wizard.types.leg;
 
 import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
@@ -55,7 +54,7 @@ public class EventLegTypeWizard implements WizardDescriptor.Panel<WizardDescript
             }
         } else {
             if (lastType != null) {
-                getComponent().update(new ArrayList<Event>());
+                getComponent().update(new ArrayList<>());
             }
         }
         lastType = legType;

@@ -11,10 +11,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.Map;
-import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.domain.component.serialization.GsonHelper;
-import nl.fontys.sofa.limo.domain.component.type.LegType;
 
 /**
  * JSON Exporter takes care of converting a list w/ BaseEntities to a JSON
@@ -36,9 +34,9 @@ public final class JSONExporter {
      */
     public static void export(Map<String, List<BaseEntity>> allEntitites, String filepath) {
         // Remove local database IDs
-        for (List<BaseEntity> entityList : allEntitites.values()) {
+        allEntitites.values().stream().forEach((entityList) -> {
             nullifyIds(entityList);
-        }
+        });
 
         // Serialize to file
         File file = new File(filepath);
@@ -59,9 +57,9 @@ public final class JSONExporter {
      * @param entities Entitites to nullify.
      */
     private static void nullifyIds(List<BaseEntity> entities) {
-        for (BaseEntity entity : entities) {
+        entities.stream().forEach((entity) -> {
             entity.setId(null);
-        }
+        });
     }
 
     /**
@@ -78,12 +76,12 @@ public final class JSONExporter {
                 return;
             }
             out = new FileOutputStream(filepath, true);
-            JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
-            writer.setIndent("  ");
-            writer.beginArray();
-            g.toJson(md, MasterData.class, writer);
-            writer.endArray();
-            writer.close();
+            try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"))) {
+                writer.setIndent("  ");
+                writer.beginArray();
+                g.toJson(md, MasterData.class, writer);
+                writer.endArray();
+            }
 
         } catch (FileNotFoundException ex) {
             ex.printStackTrace(System.err);

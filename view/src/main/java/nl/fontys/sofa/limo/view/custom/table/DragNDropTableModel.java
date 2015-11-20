@@ -73,10 +73,13 @@ public class DragNDropTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+
         if (getRowCount() > 0) {
             if (rowIndex < getRowCount() && rowIndex >= 0) {
                 if (columnIndex < getColumnCount() && columnIndex >= 0) {
-                    values.get(rowIndex).set(columnIndex, aValue);
+                    if (aValue instanceof String && !((String)aValue).isEmpty()) {
+                        values.get(rowIndex).set(columnIndex, aValue);
+                    }
                 }
             }
         }

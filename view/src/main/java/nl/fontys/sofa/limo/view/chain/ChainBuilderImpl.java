@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.view.chain;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.Node;
@@ -17,6 +19,7 @@ public class ChainBuilderImpl implements ChainBuilder {
 
     private final SupplyChain chain;
     private final List<Hub> hubList;
+    private final List<ActionListener> listener;
 
     /**
      * Constructor for the ChainBuilderImpl. It creates a new
@@ -26,6 +29,25 @@ public class ChainBuilderImpl implements ChainBuilder {
     public ChainBuilderImpl() {
         chain = new SupplyChain();
         hubList = new ArrayList<>();
+        listener = new ArrayList<>();
+    }
+
+    @Override
+    public void addListener(ActionListener listener) {
+        this.listener.add(listener);
+    }
+
+    @Override
+    public void removeListener(ActionListener listener) {
+        this.listener.remove(listener);
+    }
+
+    @Override
+    public void modify() {
+        ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_FIRST, "modify");
+        listener.parallelStream().forEach((l) -> {
+            l.actionPerformed(e);
+        });
     }
 
     @Override
@@ -36,6 +58,8 @@ public class ChainBuilderImpl implements ChainBuilder {
     @Override
     public void addHub(Hub hub) {
         hubList.add(hub);
+        modify();
+
     }
 
     @Override
@@ -47,6 +71,7 @@ public class ChainBuilderImpl implements ChainBuilder {
         if (hub.getPrevious() != null) {
             disconnectLeg(hub.getPrevious());
         }
+        modify();
     }
 
     @Override
@@ -70,13 +95,14 @@ public class ChainBuilderImpl implements ChainBuilder {
         connection.setPrevious(source);
         connection.setNext(target);
         target.setPrevious(connection);
+        modify();
     }
 
     @Override
     public void disconnectLeg(Leg leg) {
         leg.removeNext();
         leg.removePrevious();
-        leg = null;
+        modify();
     }
 
     /**

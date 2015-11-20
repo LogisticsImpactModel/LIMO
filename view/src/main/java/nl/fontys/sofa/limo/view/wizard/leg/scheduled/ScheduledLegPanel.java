@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,7 +14,6 @@ import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.custom.panel.AcceptanceTimePanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegTablePanel;
 import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
 
 /**
@@ -111,23 +109,16 @@ public final class ScheduledLegPanel extends JPanel {
     }
 
     public void setActionListener() {
-        btnAddAlt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                NormalLegWizardAction wiz = new NormalLegWizardAction(new MultimodeLegTablePanel.FinishedLegListener() {
-
-                    @Override
-                    public void finishedLeg(Leg leg) {
-                        altLeg = leg;
-                        lblAltName.setText(leg.getName());
-                        btnAddAlt.setText(LIMOResourceBundle.getString("EDIT"));
-                    }
-                });
-                if (altLeg != null) {
-                    wiz.setUpdate(altLeg);
-                }
-                wiz.actionPerformed(e);
+        btnAddAlt.addActionListener((ActionEvent e) -> {
+            NormalLegWizardAction wiz = new NormalLegWizardAction((Leg leg) -> {
+                altLeg = leg;
+                lblAltName.setText(leg.getName());
+                btnAddAlt.setText(LIMOResourceBundle.getString("EDIT"));
+            });
+            if (altLeg != null) {
+                wiz.setUpdate(altLeg);
             }
+            wiz.actionPerformed(e);
         });
 
     }

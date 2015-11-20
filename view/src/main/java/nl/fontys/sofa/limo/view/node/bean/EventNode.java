@@ -125,4 +125,11 @@ public class EventNode extends AbstractBeanNode<Event> {
         throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_SUPPORTED"));
     }
 
+    @Override
+    public void delete() {
+        
+        EventService service = Lookup.getDefault().lookup(EventService.class);
+        service.delete(bean);
+    }
+
 }

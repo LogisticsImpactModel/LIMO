@@ -6,7 +6,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -20,6 +22,7 @@ import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.view.action.DeleteAction;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -72,6 +75,12 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         setLabel(beanNode.getName());
         addSeparator();
         addChildren();
+        beanNode.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            listeners.forEach((PropertyChangeListener t) -> {
+                t.propertyChange(evt);
+                updateLabels();
+            });
+        });
     }
 
     @Override
@@ -81,6 +90,16 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         getActions().addAction(scene.getConnectAction());
         getActions().addAction(scene.getMoveAlignAction());
         getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
+    }
+
+    private List<PropertyChangeListener> listeners = new ArrayList<>();
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        listeners.remove(listener);
     }
 
     /**
@@ -163,8 +182,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         setImage(hub.getIcon().getImage());
         setLabel(hub.getName());
         setToolTipText(hub.getName());
-        
-        if (pce.getPropertyName().equals("events")) {
+
+        if (pce != null && pce.getPropertyName().equals("events")) {
             ChainGraphScene scene = (ChainGraphScene) getScene();
             UndoManager manager = scene.getLookup().lookup(UndoManager.class);
             manager.undoableEditHappened(new UndoableEditEvent(this, new EventUndoableEdit(hubNode, scene, eventLabelWidget)));
@@ -175,7 +194,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
     public void updateLabels() {
 
-        procedureLabelWidget.setLabel("Procedure: " + getHub().getProcedures().size());
+        procedureLabelWidget.setLabel("Procedures: " + getHub().getProcedures().size());
 
         if (getHub().getEvents().isEmpty()) {
             eventLabelWidget.setLabel("");
@@ -191,6 +210,19 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
      */
     public void setStartFlag(boolean startFlag) {
         startFlagWidget.setVisible(startFlag);
+    }
+
+    @Override
+    public void delete() {
+        ChainGraphScene scene = (ChainGraphScene) getScene();
+        UndoManager manager = scene.getLookup().lookup(UndoManager.class);
+        // add a new UndoableEditEvent to the undoManager of the ChainGraphScene when the undoManager exists
+        if (manager != null) {
+            manager.undoableEditHappened(new UndoableEditEvent(HubWidget.this, new DeleteHubWidgetUndoableEdit(scene, HubWidget.this)));
+        }
+        scene.removeHubWidget(HubWidget.this);
+        scene.removeNodeWithEdges(hubNode);
+        propertyChange(null);
     }
 
     /**
@@ -222,26 +254,14 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     propertyChange(null);
                 }
             });
-            popup.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
 
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    ChainGraphScene scene = (ChainGraphScene) getScene();
-                    UndoManager manager = scene.getLookup().lookup(UndoManager.class);
-                    // add a new UndoableEditEvent to the undoManager of the ChainGraphScene when the undoManager exists
-                    if (manager != null) {
-                        manager.undoableEditHappened(new UndoableEditEvent(HubWidget.this, new DeleteHubWidgetUndoableEdit(scene, HubWidget.this)));
-                    }
-                    scene.removeHubWidget(HubWidget.this);
-                    scene.removeNodeWithEdges(hubNode);
-                    propertyChange(null);
-                }
-            });
+            popup.add(new DeleteAction());
+
             JMenu procedureMenu = new JMenu("Proceduren");
             ProcedureService procedureService = Lookup.getDefault().lookup(ProcedureService.class);
             List<Procedure> procedureList = procedureService.findAll();
             procedureList.stream().forEach((procedure) -> {
-                procedureMenu.add(new AbstractAction(procedure.getName()){
+                procedureMenu.add(new AbstractAction(procedure.getName()) {
 
                     @Override
                     public void actionPerformed(ActionEvent ae) {
@@ -258,7 +278,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
             EventService eventService = Lookup.getDefault().lookup(EventService.class);
             List<Event> eventList = eventService.findAll();
             eventList.stream().forEach((event) -> {
-                eventMenu.add(new AbstractAction(event.getName()){
+                eventMenu.add(new AbstractAction(event.getName()) {
 
                     @Override
                     public void actionPerformed(ActionEvent ae) {

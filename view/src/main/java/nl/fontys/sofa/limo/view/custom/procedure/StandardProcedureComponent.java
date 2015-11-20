@@ -35,7 +35,7 @@ import org.openide.util.Lookup;
  *
  * @author Matthias Brück
  */
-public class StandartProcedureComponent extends JPanel implements ActionListener, MouseListener {
+public class StandardProcedureComponent extends JPanel implements ActionListener, MouseListener {
 
     protected DragNDropTable table;
     protected DragNDropTableModel model;
@@ -48,8 +48,8 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
     /**
      * Creates a new ProcedureComponent with an empty table.
      */
-    public StandartProcedureComponent() {
-        this(new ArrayList<Procedure>());
+    public StandardProcedureComponent() {
+        this(new ArrayList<>());
     }
 
     /**
@@ -57,12 +57,13 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
      *
      * @param procedures The procedures that have to be displayed in the table.
      */
-    public StandartProcedureComponent(List<Procedure> procedures) {
+    public StandardProcedureComponent(List<Procedure> procedures) {
         procedureCatDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
         CellConstraints cc = new CellConstraints();
         setLayout(new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px"));
-        DragNDropTableModel tableModel = new DragNDropTableModel(
-                new String[]{}, new ArrayList<List<Object>>(), new Class[]{});
+        DragNDropTableModel tableModel;
+        tableModel = new DragNDropTableModel(
+                new String[]{}, new ArrayList<>(), new Class[]{});
         table = new DragNDropTable(tableModel);
         initProceduresTable(procedures);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -141,7 +142,7 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
      * Handles the adding of a procedure via a dialog.
      */
     protected void addProcedure() {
-        AddStandartProcedureDialog addProcedureDialog = new AddStandartProcedureDialog(procedureCatDao, table);
+        AddStandardProcedureDialog addProcedureDialog = new AddStandardProcedureDialog(procedureCatDao, table);
         addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addProcedureDialog.setVisible(true);
     }
@@ -167,8 +168,8 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
             EditValueDialog editValueDialog = new EditValueDialog((Value) valueAt, (Value value) -> {
                 changedValue = value;
                 table.setValueAt(value, table.getSelectedRow(), table.getSelectedColumn());
-                StandartProcedureComponent.this.revalidate();
-                StandartProcedureComponent.this.repaint();
+                StandardProcedureComponent.this.revalidate();
+                StandardProcedureComponent.this.repaint();
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             editValueDialog.setVisible(true);

@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.wizard.types.hub;
 
 import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.wizard.types.leg.LegTypeWizardAction;
 import org.openide.WizardDescriptor;
@@ -56,7 +55,7 @@ public class EventHubTypeWizard implements WizardDescriptor.Panel<WizardDescript
             }
         } else {
             if (lastType != null) {
-                getComponent().update(new ArrayList<Event>());
+                getComponent().update(new ArrayList<>());
             }
         }
         lastType = hubType;

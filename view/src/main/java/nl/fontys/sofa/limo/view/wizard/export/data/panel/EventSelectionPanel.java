@@ -36,9 +36,9 @@ public class EventSelectionPanel extends BaseEntitySelectionPanel<Event> {
 
     @Override
     public void storeSettings(WizardDescriptor wiz) {
-        for (Event selectedEntity : selectedEntities) {
+        selectedEntities.stream().forEach((selectedEntity) -> {
             selectedEntity.setId(null);
-        }
+        });
         wiz.putProperty(ExportWizardAction.EVENTS, selectedEntities);
     }
 }

@@ -53,6 +53,10 @@ public class DistributionParameterTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
+        if(columnIndex == 1 && rowIndex == getRowCount()-1 && prop.getValue("Upper Bound").doubleValue() == 1000000000)
+        {
+            return false;
+        }
         return columnIndex == 1;
     }
 
