@@ -83,7 +83,7 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
      */
     protected PropertyChangeListener getListener() {
         if (this.listener == null) {
-            this.listener = new PropertyChangeListener() {
+            this.listener = new PropertyChangeListener() {  
 
                 @Override
                 public void propertyChange(PropertyChangeEvent evt) {

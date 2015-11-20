@@ -1,15 +1,10 @@
 package nl.fontys.sofa.limo.domain.component.leg;
 
 import com.google.gson.annotations.Expose;
-import java.util.ArrayList;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.Node;
-import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 /**
  * Leg of supply chain.

@@ -4,7 +4,11 @@ import java.awt.BasicStroke;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
@@ -59,6 +63,22 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
         setStroke(new BasicStroke(3.0f));
         setEndPointShape(PointShape.SQUARE_FILLED_BIG);
+        legNode.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            listeners.forEach((PropertyChangeListener t) -> {
+                t.propertyChange(evt);
+                updateLabels();
+            });
+        });
+    }
+
+    private List<PropertyChangeListener> listeners = new ArrayList<>();
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        listeners.remove(listener);
     }
 
     @Override
@@ -103,10 +123,10 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
             }
 
             if (getLeg().getEvents() != null) {
-                if(getLeg().getEvents().isEmpty()){
-                eventLabelWidget = new LabelWidget(getScene(), "");
-                }else{
-                eventLabelWidget = new LabelWidget(getScene(), "Events: " + getLeg().getEvents().size());
+                if (getLeg().getEvents().isEmpty()) {
+                    eventLabelWidget = new LabelWidget(getScene(), "");
+                } else {
+                    eventLabelWidget = new LabelWidget(getScene(), "Events: " + getLeg().getEvents().size());
                 }
                 eventLabelWidget.getActions().addAction(ActionFactory.createPopupMenuAction(new LegWidget.WidgetPopupMenu()));
 
