@@ -16,8 +16,6 @@ import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.spi.palette.PaletteController;
-import org.openide.DialogDescriptor;
-import org.openide.DialogDisplayer;
 import org.openide.awt.ActionID;
 import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;
@@ -81,15 +79,14 @@ public final class ChainBuilderTopComponent extends TopComponent
         chain.setName(name);
         setName(name);
 
-        savable = new SavableComponent(graphScene.getChainBuilder());
+        savable = new SavableComponent(graphScene.getChainBuilder(),ic,this);
 
         Lookup paletteLookup = Lookups.singleton(paletteController);
         Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
         Lookup graphLookup = Lookups.singleton(graphScene);
         Lookup graphContentLookup = graphScene.getLookup();
-        Lookup savableLookup = Lookups.singleton(savable);
         Lookup instanceContent = new AbstractLookup(ic);
-        ProxyLookup pl = new ProxyLookup(graphContentLookup,paletteLookup, nodeLookup, graphLookup, savableLookup, instanceContent);
+        ProxyLookup pl = new ProxyLookup(graphContentLookup, paletteLookup, nodeLookup, graphLookup, instanceContent);
         associateLookup(pl);
     }
 
@@ -169,33 +166,7 @@ public final class ChainBuilderTopComponent extends TopComponent
         return undoManager;
     }
 
-    /**
-     * Check if the TopComponent is ready to close. In this case, the user is
-     * prompted with a question to save the supply chain or discard it.
-     *
-     * @return true if the TopComponent should close.
-     */
-    @Override
-    public boolean canClose() {
-        DialogDescriptor dialogDescriptor = new DialogDescriptor("Do you want to save the " + graphScene.getSupplyChain().getName()
-                + " supply chain?", "Save the supply chain");
-
-        dialogDescriptor.setMessageType(DialogDescriptor.QUESTION_MESSAGE);
-        dialogDescriptor.setOptions(new Object[]{"Save changes", "Discard changes", "Cancel"});
-        Object retval = DialogDisplayer.getDefault().notify(dialogDescriptor);
-        if (retval.equals("Save changes")) {
-            try {
-                savable.save(); //Try to save the supply chain
-            } catch (IOException ex) {
-                Exceptions.printStackTrace(ex);
-                return false; //The supply chain window cannot be closed because an exception is trown while saving
-            }
-        } else {
-            return retval.equals("Discard changes"); //Cancel is clicked or the dialog is closed
-        }
-        return true; //The supply chain window can now be closed
-    }
-
+    
     void writeProperties(java.util.Properties p) {
         // better to version settings since initial version as advocated at
         // http://wiki.apidesign.org/wiki/PropertyFiles

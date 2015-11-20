@@ -45,19 +45,21 @@ public class LegNode extends AbstractBeanNode<Leg> {
         super(bean, entityClass);
     }
 
+    @Override
     protected PropertyChangeListener getListener() {
-        return new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-                if (evt.getPropertyName().equals("name")) {
+        return (PropertyChangeEvent evt) -> {
+            firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            switch (evt.getPropertyName()) {
+                case "name":
                     setDisplayName((String) evt.getNewValue());
-                } else if (evt.getPropertyName().equals("description")) {
+                    break;
+                case "description":
                     setShortDescription((String) evt.getNewValue());
-                } else if (evt.getPropertyName().equals("icon")) {
+                    break;
+                case "icon":
                     createProperties(getBean(), null);
                     setSheet(getSheet());
-                }
+                    break;
             }
         };
     }
@@ -110,6 +112,9 @@ public class LegNode extends AbstractBeanNode<Leg> {
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();
         }
+        set.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            getListener().propertyChange(evt);
+        });
         sets.put(set);
     }
 

@@ -59,15 +59,15 @@ public class NameDescriptionDialogInputPanel extends JPanel
         scrollPane = new JScrollPane();
         descriptionTF = new JTextArea();
 
-        setMaximumSize(new java.awt.Dimension(450, 125));
-        setMinimumSize(new java.awt.Dimension(450, 125));
-        setPreferredSize(new java.awt.Dimension(450, 125));
+        setMaximumSize(new java.awt.Dimension(600, 125));
+        setMinimumSize(new java.awt.Dimension(600, 125));
+        setPreferredSize(new java.awt.Dimension(600, 125));
         setRequestFocusEnabled(false);
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
-        contentPane.setMaximumSize(new java.awt.Dimension(450, 100));
-        contentPane.setMinimumSize(new java.awt.Dimension(450, 100));
-        contentPane.setPreferredSize(new java.awt.Dimension(450, 100));
+        contentPane.setMaximumSize(new java.awt.Dimension(600, 100));
+        contentPane.setMinimumSize(new java.awt.Dimension(600, 100));
+        contentPane.setPreferredSize(new java.awt.Dimension(600, 100));
 
         nameLB.setHorizontalAlignment(SwingConstants.RIGHT);
         org.openide.awt.Mnemonics.setLocalizedText(nameLB, org.openide.util.NbBundle.getMessage(NameDescriptionDialogInputPanel.class, "NameDescriptionDialogInputPanel.nameLB.text")); // NOI18N

@@ -1,13 +1,17 @@
 package nl.fontys.sofa.limo.view.widget;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
@@ -73,6 +77,17 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         setLabel(beanNode.getName());
         addSeparator();
         addChildren();
+        beanNode.addPropertyChangeListener(new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+
+                listeners.forEach((PropertyChangeListener t) -> {
+                    t.propertyChange(evt);
+                    updateLabels();
+                });
+            }
+        });
     }
 
     @Override
@@ -82,6 +97,16 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         getActions().addAction(scene.getConnectAction());
         getActions().addAction(scene.getMoveAlignAction());
         getActions().addAction(ActionFactory.createPopupMenuAction(new WidgetPopupMenu()));
+    }
+
+    private List<PropertyChangeListener> listeners = new ArrayList<>();
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        listeners.remove(listener);
     }
 
     /**
@@ -176,7 +201,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
     public void updateLabels() {
 
-        procedureLabelWidget.setLabel("Procedure: " + getHub().getProcedures().size());
+        procedureLabelWidget.setLabel("Procedures: " + getHub().getProcedures().size());
 
         if (getHub().getEvents().isEmpty()) {
             eventLabelWidget.setLabel("");
@@ -236,9 +261,9 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     propertyChange(null);
                 }
             });
-            
+
             popup.add(new DeleteAction());
-            
+
             JMenu procedureMenu = new JMenu("Proceduren");
             ProcedureService procedureService = Lookup.getDefault().lookup(ProcedureService.class);
             List<Procedure> procedureList = procedureService.findAll();
