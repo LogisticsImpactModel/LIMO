@@ -5,10 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.rmi.activation.ActivateFailedException;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.InvalidSupplyChainException;
 import nl.fontys.sofa.limo.view.chain.ChainBuilder;
 import nl.fontys.sofa.limo.view.util.ChainSaveFileChooser;
+import org.apache.commons.io.FilenameUtils;
 import org.netbeans.api.actions.Savable;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
@@ -20,7 +22,6 @@ import org.openide.NotifyDescriptor;
  * @author Sebastiaan Heijmann
  */
 public class SavableComponent implements Savable {
-
     
     private final ChainBuilder chainBuilder;
     private final SupplyChain supplyChain;
@@ -33,7 +34,6 @@ public class SavableComponent implements Savable {
     public SavableComponent(ChainBuilder chainBuilder) {
         this.chainBuilder = chainBuilder;
         this.supplyChain = chainBuilder.getSupplyChain();
-
     }
 
     protected String findDisplayName() {
@@ -70,22 +70,26 @@ public class SavableComponent implements Savable {
                 throw new InvalidSupplyChainException("The supply chain " + supplyChain.getName().replace(".lsc", "") + " is invalid.");
             }
         }
-
-    }
+    }    
 
     private void openFileChooser() throws HeadlessException, IOException {
         JFileChooser fc = new ChainSaveFileChooser();
+        FileNameExtensionFilter chainFilter = new FileNameExtensionFilter(
+        "Supply chains (*.lsc)", "lsc");
+        
         if (supplyChain.getFilepath() != null) { //This happens if a supply chain is loaded. 
             fc.setCurrentDirectory(new File(supplyChain.getFilepath()));
         }
+        
+        fc.setFileFilter(chainFilter);
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setSelectedFile(new File(supplyChain.getName()));
+        fc.setSelectedFile(new File(FilenameUtils.removeExtension(supplyChain.getName()))); // This sets the name without the extension
         int result = fc.showOpenDialog(null);
-        String fileName = fc.getSelectedFile().getName();
+        String fileName = fc.getSelectedFile().getName(); //name with extension
         if (result == JFileChooser.APPROVE_OPTION) { //If folder is selected than save the supply chain.
             supplyChain.setName(fileName);
             File file = fc.getSelectedFile();
-            if (supplyChain.getName().contains(".lsc")) {
+            if (supplyChain.getName().endsWith(".lsc")) {
                 supplyChain.setFilepath(file.getParent() + File.separator + supplyChain.getName());
             } else {
                 supplyChain.setFilepath(file.getParent() + File.separator + supplyChain.getName() + ".lsc");
