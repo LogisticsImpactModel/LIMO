@@ -22,9 +22,9 @@ import org.netbeans.api.visual.widget.LabelWidget;
 public class EventUndoableEdit extends AbstractUndoableEdit {
 
     private List<Event> oldEvents;
-    private ChainGraphScene scene;
-    private AbstractBeanNode bean;
-    private LabelWidget updateLabelWigdet;
+    private final ChainGraphScene scene;
+    private final AbstractBeanNode bean;
+    private final LabelWidget updateLabelWigdet;
 
     public EventUndoableEdit(AbstractBeanNode bean, ChainGraphScene scene, LabelWidget updateLabelWidget) {
         this.oldEvents = (List<Event>) bean.getValue("events");

@@ -22,7 +22,7 @@ public abstract class HubWidgetUndoableEdit extends AbstractUndoableEdit {
     protected ChainGraphScene scene;
     HubNode node;
     private HubWidget widget;
-    private boolean isStartHub;
+    private final boolean isStartHub;
 
     public HubWidgetUndoableEdit(ChainGraphScene scene, HubWidget widget) {
         this.scene = scene;

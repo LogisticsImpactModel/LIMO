@@ -18,13 +18,13 @@ import nl.fontys.sofa.limo.view.widget.LegWidget;
 import org.openide.util.Pair;
 
 /**
- * The {@link nl.fontys.sofa.limo.view.util.undoable.widget.hub.DeleteHubWidgetUndoableEdit}
+ * The
+ * {@link nl.fontys.sofa.limo.view.util.undoable.widget.hub.DeleteHubWidgetUndoableEdit}
  * provides undo and redo functionaltiy for when a HubWidget is delete.
- * 
+ *
  * @author Christina Zenzes
  */
 public class DeleteHubWidgetUndoableEdit extends HubWidgetUndoableEdit {
-
 
     private HashMap<AbstractBeanNode, Pair<HubNode, HubNode>> legs;
 
@@ -32,9 +32,7 @@ public class DeleteHubWidgetUndoableEdit extends HubWidgetUndoableEdit {
         super(scene, widget);
         initChildUndoableEdit();
     }
-   
 
- 
 // The methods stores all needed information for recreating a LegWidget.
     private void initChildUndoableEdit() {
         legs = new HashMap<>();
@@ -53,14 +51,14 @@ public class DeleteHubWidgetUndoableEdit extends HubWidgetUndoableEdit {
 
     @Override
     public void undo() throws CannotRedoException {
-      this.addHub();
+        this.addHub();
 
-        for (Map.Entry<AbstractBeanNode, Pair<HubNode, HubNode>> leg : legs.entrySet()) {
+        legs.entrySet().stream().forEach((leg) -> {
             HubWidget source = (HubWidget) scene.findWidget(leg.getValue().first());
             HubWidget target = (HubWidget) scene.findWidget(leg.getValue().second());
             LegWidget legWidget = (LegWidget) scene.addEdge(leg.getKey());
             scene.connectHubWidgets(source, legWidget, target);
-        }
+        });
         scene.validate();
     }
 
@@ -68,6 +66,5 @@ public class DeleteHubWidgetUndoableEdit extends HubWidgetUndoableEdit {
     public void redo() throws CannotUndoException {
         this.removeHub();
     }
-
 
 }
