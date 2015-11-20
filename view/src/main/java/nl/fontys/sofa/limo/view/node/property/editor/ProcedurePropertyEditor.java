@@ -31,13 +31,13 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
         }
 
         StringBuilder name = new StringBuilder();
-        for (Procedure prod : procedures) {
+        procedures.stream().forEach((prod) -> {
             if (name.toString().length() == 0) {
                 name.append(prod.getName());
             } else {
-                name.append(" - " + prod.getName());
+                name.append(" - ").append(prod.getName());
             }
-        }
+        });
         return name.toString();
     }
 
@@ -60,7 +60,7 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
      */
     private class CustomEditor extends ProcedureComponent implements ItemListener, CellEditorListener {
 
-        private JTextField name;
+        private final JTextField name;
 
         /**
          * Creates a new instance of this custom editor.
@@ -133,7 +133,9 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
 
         @Override
         public void editingCanceled(ChangeEvent e) {
-            /** not used**/
+            /**
+             * not used*
+             */
         }
     }
 }

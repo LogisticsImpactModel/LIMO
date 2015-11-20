@@ -1,6 +1,5 @@
 package nl.fontys.sofa.limo.view.widget;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -11,7 +10,6 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
@@ -77,16 +75,11 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         setLabel(beanNode.getName());
         addSeparator();
         addChildren();
-        beanNode.addPropertyChangeListener(new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-
-                listeners.forEach((PropertyChangeListener t) -> {
-                    t.propertyChange(evt);
-                    updateLabels();
-                });
-            }
+        beanNode.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            listeners.forEach((PropertyChangeListener t) -> {
+                t.propertyChange(evt);
+                updateLabels();
+            });
         });
     }
 

@@ -8,7 +8,6 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
@@ -48,7 +47,7 @@ import org.netbeans.api.visual.widget.Widget;
 public class LegWidget extends ConnectionWidget implements BasicWidget {
 
     private Map<Leg, Double> legs;
-    private LegNode legNode;
+    private final LegNode legNode;
     private LabelWidget eventLabelWidget, procedureLabelWidget;
 
     /**
@@ -178,9 +177,9 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
     private void setMultiModeLegWidgets(Leg leg) {
         MultiModeLeg mml = (MultiModeLeg) leg;
         legs = mml.getLegs();
-        for (Map.Entry<Leg, Double> entry : legs.entrySet()) {
+        legs.entrySet().stream().forEach((entry) -> {
             setNormalLegWidgets(entry.getKey());
-        }
+        });
     }
 
     @Override

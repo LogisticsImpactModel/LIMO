@@ -1,7 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.event;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -24,11 +23,9 @@ public class SubEventsPanel extends EventsPanel {
         super();
         List<String> events = new ArrayList<>();
         addButton.setEnabled(!allEvents.isEmpty());
-        for (Event e : allEvents) {
-            if (event == null || (event != null && !e.getId().equals(event.getId()))) {
-                events.add(e.getName());
-            }
-        }
+        allEvents.stream().filter((e) -> (event == null || (event != null && !e.getId().equals(event.getId())))).forEach((e) -> {
+            events.add(e.getName());
+        });
         eventsComboBoxModel = new DefaultComboBoxModel(events.toArray());
         eventsComboBox.setModel(eventsComboBoxModel);
     }
@@ -38,16 +35,13 @@ public class SubEventsPanel extends EventsPanel {
      */
     @Override
     protected void setAddButtonListener() {
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
-                selected.setId(null);
-                selected.setDependency(ExecutionState.INDEPENDENT);
-                eventsTableModel.getEvents().add(selected);
-                eventsTableModel.fireTableDataChanged();
-                checkButtonsState();
-            }
+        addButton.addActionListener((ActionEvent e) -> {
+            Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
+            selected.setId(null);
+            selected.setDependency(ExecutionState.INDEPENDENT);
+            eventsTableModel.getEvents().add(selected);
+            eventsTableModel.fireTableDataChanged();
+            checkButtonsState();
         });
     }
     

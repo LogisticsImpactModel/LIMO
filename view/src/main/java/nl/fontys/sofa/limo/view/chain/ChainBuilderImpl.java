@@ -102,7 +102,6 @@ public class ChainBuilderImpl implements ChainBuilder {
     public void disconnectLeg(Leg leg) {
         leg.removeNext();
         leg.removePrevious();
-        leg = null;
         modify();
     }
 

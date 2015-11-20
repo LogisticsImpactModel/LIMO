@@ -49,7 +49,7 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
      * Creates a new ProcedureComponent with an empty table.
      */
     public StandartProcedureComponent() {
-        this(new ArrayList<Procedure>());
+        this(new ArrayList<>());
     }
 
     /**
@@ -61,8 +61,9 @@ public class StandartProcedureComponent extends JPanel implements ActionListener
         procedureCatDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
         CellConstraints cc = new CellConstraints();
         setLayout(new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px"));
-        DragNDropTableModel tableModel = new DragNDropTableModel(
-                new String[]{}, new ArrayList<List<Object>>(), new Class[]{});
+        DragNDropTableModel tableModel;
+        tableModel = new DragNDropTableModel(
+                new String[]{}, new ArrayList<>(), new Class[]{});
         table = new DragNDropTable(tableModel);
         initProceduresTable(procedures);
         JScrollPane scrollPane = new JScrollPane(table);

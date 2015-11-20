@@ -72,10 +72,10 @@ public class NameDescriptionProbabilityWizard implements WizardDescriptor.Panel<
 
     @Override
     public void validate() throws WizardValidationException {
-        Event event = new Event(this.event);
-        event.setName(component.getNameInput());
+        Event eventCopy = new Event(this.event);
+        eventCopy.setName(component.getNameInput());
         try {
-            validator.validate(event);
+            validator.validate(eventCopy);
         } catch (ValidationException ex) {
             throw new WizardValidationException(null, LIMOResourceBundle.getString("VALUE_NOT_SET", LIMOResourceBundle.getString("NAME")), null);
         }

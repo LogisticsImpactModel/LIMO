@@ -61,7 +61,7 @@ public class ProceduresLegTypeWizard implements WizardDescriptor.Panel<WizardDes
             }
         } else {
             if (lastType != null) {
-                getComponent().update(new ArrayList<Procedure>());
+                getComponent().update(new ArrayList<>());
             }
         }
         lastType = legType;

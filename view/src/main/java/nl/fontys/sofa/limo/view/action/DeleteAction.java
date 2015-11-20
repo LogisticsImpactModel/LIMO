@@ -3,7 +3,6 @@ package nl.fontys.sofa.limo.view.action;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import javax.swing.AbstractAction;
@@ -16,11 +15,8 @@ import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
 import nl.fontys.sofa.limo.view.node.Deletable;
-import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
-import nl.fontys.sofa.limo.view.widget.BasicWidget;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
-import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.spi.palette.PaletteController;
 
 @ActionID(
@@ -56,45 +52,35 @@ public final class DeleteAction extends AbstractAction {
             Set<?> objectSet = scene.getSelectedObjects();
             List<Deletable> deletableItems = new ArrayList<>();
 
-            for (Object object : objectSet) {
-                Widget w = scene.findWidget(object);
-                if (w != null && w instanceof Deletable) {
-                    Deletable del = (Deletable) w;
-                    deletableItems.add(del);
-                }
-            }
-
-            Collections.sort(deletableItems, new Comparator() {
-
-                @Override
-                public int compare(Object o1, Object o2) {
-                    if (o1.getClass().equals(o2.getClass())) {
-                        return 0;
-                    }
-
-                    if (o1 instanceof LegWidget) {
-                        return -1;
-                    }
-
-                    if (o2 instanceof LegWidget) {
-                        return 1;
-                    }
-                    return 0;
-                }
+            objectSet.stream().map((object) -> scene.findWidget(object)).filter((w) -> (w != null && w instanceof Deletable)).map((w) -> (Deletable) w).forEach((del) -> {
+                deletableItems.add(del);
             });
 
-            for (Deletable del : deletableItems) {
+            Collections.sort(deletableItems, (Object o1, Object o2) -> {
+                if (o1.getClass().equals(o2.getClass())) {
+                    return 0;
+                }
+                
+                if (o1 instanceof LegWidget) {
+                    return -1;
+                }
+                
+                if (o2 instanceof LegWidget) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            deletableItems.stream().forEach((del) -> {
                 del.delete();
-            }
+            });
             scene.getScene().repaint();
             return;
         }
 
-        for (Deletable del : lkp.lookupAll(Deletable.class)) {
-            if (del != null) {
-                del.delete();
-            }
-        }
+        lkp.lookupAll(Deletable.class).stream().filter((del) -> (del != null)).forEach((del) -> {
+            del.delete();
+        });
     }
 
     public static void setPallete(PaletteController pallete) {

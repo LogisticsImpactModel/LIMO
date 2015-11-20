@@ -3,7 +3,6 @@ package nl.fontys.sofa.limo.view.wizard.importer;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +71,8 @@ public final class ImportWizardAction implements ActionListener {
             }
         }
         WizardDescriptor wizardDescriptor = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(wizardDescritorPanels));
-        if(e.getSource().getClass().equals(StartupOptionProcessor.class)){
-            wizardDescriptor.putProperty(ExportWizardAction.PATH,e.getActionCommand());
+        if (e.getSource().getClass().equals(StartupOptionProcessor.class)) {
+            wizardDescriptor.putProperty(ExportWizardAction.PATH, e.getActionCommand());
         }
         wizardDescriptor.setTitleFormat(new MessageFormat("{0}"));
         wizardDescriptor.setTitle(LIMOResourceBundle.getString("IMPORT_MASTERDATA"));
@@ -89,26 +88,34 @@ public final class ImportWizardAction implements ActionListener {
      */
     private void handleWizardFinishClick(final WizardDescriptor wizardDescriptor) {
         objectsToOvewrite = (List<BaseEntity>) wizardDescriptor.getProperty(LIST);
-        for (BaseEntity entity : objectsToOvewrite) {
+        objectsToOvewrite.stream().map((entity) -> {
             if (entity instanceof ProcedureCategory) {
                 ImportWizardAction.<ProcedureCategory>updateItem((ProcedureCategory) entity, ProcedureCategoryDAO.class);
             }
+            return entity;
+        }).map((entity) -> {
             if (entity instanceof LegType) {
                 ImportWizardAction.<LegType>updateItem((LegType) entity, LegTypeService.class);
             }
+            return entity;
+        }).map((entity) -> {
             if (entity instanceof HubType) {
                 ImportWizardAction.<HubType>updateItem((HubType) entity, HubTypeService.class);
             }
+            return entity;
+        }).map((entity) -> {
             if (entity instanceof Hub) {
                 ImportWizardAction.<Hub>updateItem((Hub) entity, HubService.class);
             }
+            return entity;
+        }).map((entity) -> {
             if (entity instanceof Event) {
                 ImportWizardAction.<Event>updateItem((Event) entity, EventService.class);
             }
-            if (entity instanceof Procedure) {
-                ImportWizardAction.<Procedure>updateItem((Procedure) entity, ProcedureService.class);
-            }
-        }
+            return entity;
+        }).filter((entity) -> (entity instanceof Procedure)).forEach((entity) -> {
+            ImportWizardAction.<Procedure>updateItem((Procedure) entity, ProcedureService.class);
+        });
     }
 
     /**

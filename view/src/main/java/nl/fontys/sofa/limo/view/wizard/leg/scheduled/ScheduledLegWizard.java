@@ -7,7 +7,6 @@ import nl.fontys.sofa.limo.validation.BeanValidator;
 import nl.fontys.sofa.limo.validation.ValidationException;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
-import org.openide.util.Exceptions;
 import org.openide.util.HelpCtx;
 
 /**
@@ -19,7 +18,7 @@ public class ScheduledLegWizard implements WizardDescriptor.ValidatingPanel<Wiza
 
     private ScheduledLegPanel component;
     private ScheduledLeg leg;
-    private BeanValidator validator = BeanValidator.getInstance();
+    private final BeanValidator validator = BeanValidator.getInstance();
 
     @Override
     public ScheduledLegPanel getComponent() {

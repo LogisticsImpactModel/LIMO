@@ -25,13 +25,15 @@ public class DistributionSerializer implements JsonSerializer<Distribution> {
 
         JsonArray jArray = new JsonArray();
         Map<String, InputValue> map = src.getInputValues();
-        for (Map.Entry<String, InputValue> entrySet : map.entrySet()) {
+        map.entrySet().stream().map((entrySet) -> {
             JsonObject obj = new JsonObject();
             obj.addProperty("Name", entrySet.getKey());
             JsonElement ele = g.toJsonTree(entrySet.getValue());
             obj.add("Value", ele);
+            return obj;
+        }).forEach((obj) -> {
             jArray.add(obj);
-        }
+        });
 
         toReturn.add("inputValues", jArray);
         toReturn.addProperty("propType", src.getClass().getName());
