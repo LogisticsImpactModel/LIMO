@@ -44,7 +44,7 @@ public class LegNode extends AbstractBeanNode<Leg> {
     public LegNode(Leg bean, Class entityClass) throws IntrospectionException {
         super(bean, entityClass);
     }
-    
+
     protected PropertyChangeListener getListener() {
         return new PropertyChangeListener() {
             @Override
@@ -61,36 +61,36 @@ public class LegNode extends AbstractBeanNode<Leg> {
             }
         };
     }
-    
+
     @Override
     public boolean canDestroy() {
         throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_SUPPORTED"));
     }
-    
+
     @Override
     public AbstractBeanNode getDetachedNodeCopy() {
         throw new UnsupportedOperationException(LIMOResourceBundle.getString("COPY_NOT_SUPPORTED"));
     }
-    
+
     @Override
     Class getServiceClass() {
         return null;
     }
-    
+
     @Override
     protected Icon getBeanIcon() {
         return getBean().getIcon();
     }
-    
+
     public void refresh() {
         createProperties(bean, null);
     }
-    
+
     @Override
     protected void createProperties(Leg bean, BeanInfo info) {
         Sheet sets = getSheet();
         Sheet.Set set = super.getBaseEntityPropertySheet();
-        
+
         try {
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
             eventProp.addPropertyChangeListener(getListener());
@@ -98,7 +98,7 @@ public class LegNode extends AbstractBeanNode<Leg> {
             eventProp.setDisplayName(LIMOResourceBundle.getString("EVENTS"));
             eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", LIMOResourceBundle.getString("HUB")));
             eventProp.setValue("canEditAsText", false);
-            
+
             StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
             procedureProp.addPropertyChangeListener(getListener());
             procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
@@ -115,7 +115,9 @@ public class LegNode extends AbstractBeanNode<Leg> {
 
     @Override
     public void delete() {
-        //TODO
+        /**
+         * Delete is empty because the LegNodes aren't saved in the database and therefore didn't need to be deleted.
+         */
     }
-    
+
 }
