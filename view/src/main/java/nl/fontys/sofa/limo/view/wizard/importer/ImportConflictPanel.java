@@ -102,12 +102,14 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
      * Initializes the table.
      */
     private void initTable() {
-        for (List<Map.Entry<BaseEntity, BaseEntity>> list : duplicatedElements.values()) {
-            for (Map.Entry<BaseEntity, BaseEntity> entity : list) {
+        duplicatedElements.values().stream().forEach((list) -> {
+            list.stream().map((entity) -> {
                 allEntitiesOld.add(entity.getKey());
+                return entity;
+            }).forEach((entity) -> {
                 allEntitiesNew.add(entity.getValue());
-            }
-        }
+            });
+        });
         resetTableModel();
         tblEntities = new JTable(tblmdlEntities);
         tblEntities.addMouseListener(this);
@@ -159,13 +161,11 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         if (e.getSource().equals(btnSelectAll)) {
             entitiesToOverride.clear();
             entitiesToOverride.addAll(allEntitiesNew);
-            for (BaseEntity newent : entitiesToOverride) {
-                for (BaseEntity oldent : allEntitiesOld) {
-                    if (newent.getUniqueIdentifier().equals(oldent.getUniqueIdentifier())) {
-                        newent.setId(oldent.getId());
-                    }
-                }
-            }
+            entitiesToOverride.stream().forEach((newent) -> {
+                allEntitiesOld.stream().filter((oldent) -> (newent.getUniqueIdentifier().equals(oldent.getUniqueIdentifier()))).forEach((oldent) -> {
+                    newent.setId(oldent.getId());
+                });
+            });
             for (int i = 0; i < tblmdlEntities.getRowCount(); i++) {
                 tblmdlEntities.setValueAt(true, i, 4);
             }
@@ -186,19 +186,15 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
             if (tblEntities.getSelectedRow() >= 0 && tblEntities.getSelectedRow() < allEntitiesNew.size()) {
                 if ((boolean) (((DefaultTableModel) e.getSource()).getValueAt(tblEntities.getSelectedRow(), 4))) {
                     BaseEntity newent = allEntitiesNew.get(tblEntities.getSelectedRow());
-                    for (BaseEntity oldent : allEntitiesOld) {
-                        if (newent.getUniqueIdentifier().equals(oldent.getUniqueIdentifier())) {
-                            newent.setId(oldent.getId());
-                        }
-                    }
+                    allEntitiesOld.stream().filter((oldent) -> (newent.getUniqueIdentifier().equals(oldent.getUniqueIdentifier()))).forEach((oldent) -> {
+                        newent.setId(oldent.getId());
+                    });
                     entitiesToOverride.add(newent);
                 } else {
                     BaseEntity newent = allEntitiesNew.get(tblEntities.getSelectedRow());
-                    for (BaseEntity oldent : allEntitiesOld) {
-                        if (newent.getUniqueIdentifier().equals(oldent.getUniqueIdentifier())) {
-                            newent.setId(oldent.getId());
-                        }
-                    }
+                    allEntitiesOld.stream().filter((oldent) -> (newent.getUniqueIdentifier().equals(oldent.getUniqueIdentifier()))).forEach((oldent) -> {
+                        newent.setId(oldent.getId());
+                    });
                     entitiesToOverride.remove(newent);
                 }
             }
@@ -277,12 +273,14 @@ public class ImportConflictPanel extends JPanel implements MouseListener, Action
         entitiesToOverride = new ArrayList<>();
         allEntitiesNew = new ArrayList<>();
         allEntitiesOld = new ArrayList<>();
-        for (List<Map.Entry<BaseEntity, BaseEntity>> list : duplicatedElements.values()) {
-            for (Map.Entry<BaseEntity, BaseEntity> entity : list) {
+        duplicatedElements.values().stream().forEach((list) -> {
+            list.stream().map((entity) -> {
                 allEntitiesOld.add(entity.getKey());
+                return entity;
+            }).forEach((entity) -> {
                 allEntitiesNew.add(entity.getValue());
-            }
-        }
+            });
+        });
         resetTableModel();
         tblEntities.setModel(tblmdlEntities);
         tblmdlEntities.fireTableDataChanged();

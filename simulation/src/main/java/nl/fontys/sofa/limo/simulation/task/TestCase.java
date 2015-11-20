@@ -15,7 +15,6 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.simulation.result.TestCaseResult;
 
 /**
@@ -153,8 +152,7 @@ public class TestCase implements Runnable {
     }
 
     private void calculateProcedures(Node calcNode) {
-        for (Procedure procedure : calcNode.getProcedures()) {
-
+        calcNode.getProcedures().stream().map((procedure) -> {
             double pCost;
             if (procedure.getCost() == null) {
                 pCost = 0;
@@ -176,62 +174,56 @@ public class TestCase implements Runnable {
             totalCosts += pCost;
             totalLeadTimes += pLeadTime;
             totalCO2 += pCO2;
-
             if (!co2ByCategory.containsKey(procedure.getCategory())) {
                 co2ByCategory.put(procedure.getCategory(), 0d);
             }
             double newCategoryCO2 = co2ByCategory.get(procedure.getCategory()) + pCO2;
             co2ByCategory.put(procedure.getCategory(), newCategoryCO2);
-
             if (!co2ByNode.containsKey(calcNode.getName())) {
                 co2ByNode.put(calcNode.getName(), 0d);
             }
             double newNodeCO2 = co2ByNode.get(calcNode.getName()) + pCO2;
             co2ByNode.put(calcNode.getName(), newNodeCO2);
-
             if (!costsByCategory.containsKey(procedure.getCategory())) {
                 costsByCategory.put(procedure.getCategory(), 0d);
             }
             double newCategoryCost = costsByCategory.get(procedure.getCategory()) + pCost;
             costsByCategory.put(procedure.getCategory(), newCategoryCost);
-
             if (!costsByNode.containsKey(calcNode.getName())) {
                 costsByNode.put(calcNode.getName(), 0d);
             }
             double newNodeCost = costsByNode.get(calcNode.getName()) + pCost;
             costsByNode.put(calcNode.getName(), newNodeCost);
-
             if (!leadTimesByCategory.containsKey(procedure.getCategory())) {
                 leadTimesByCategory.put(procedure.getCategory(), 0d);
             }
             double newCategoryLeadTime = leadTimesByCategory.get(procedure.getCategory()) + pLeadTime;
             leadTimesByCategory.put(procedure.getCategory(), newCategoryLeadTime);
-
             if (!leadTimesByNode.containsKey(calcNode.getName())) {
                 leadTimesByNode.put(calcNode.getName(), 0d);
             }
             double newNodeLeadTime = leadTimesByCategory.get(calcNode.getName()) + pLeadTime;
+            return newNodeLeadTime;
+        }).forEach((newNodeLeadTime) -> {
             leadTimesByNode.put(calcNode.getName(), newNodeLeadTime);
-        }
+        });
     }
 
     private void calculateEvents(String nodeKey, Component parent, List<Event> events) {
-        for (Event event : events) {
+        events.stream().forEach((Event event) -> {
             Event parentEvent = parent instanceof Event ? (Event) parent : null;
             // See if should be executed
             if (event.getDependency() == ExecutionState.INDEPENDENT
                     || parent instanceof Hub
                     || parent instanceof Leg
                     || (parentEvent != null && parentEvent.getExecutionState() == event.getDependency())) {
-
                 // Check if event should be executed and set state
                 boolean executed = randomDouble() <= event.getProbability().getProbability();
                 event.setExecutionState(ExecutionState.stateFromBool(executed));
 
                 // If executed, add costs and times to extra costs and delays from procedures of event
                 if (executed) {
-                    for (Procedure procedure : event.getProcedures()) {
-
+                    event.getProcedures().stream().map((procedure) -> {
                         double pExtraCost;
                         if (procedure.getCost() == null) {
                             pExtraCost = 0;
@@ -254,19 +246,16 @@ public class TestCase implements Runnable {
                         totalDelays += pDelay;
                         lastDelay += pDelay;
                         totalCO2 += pCO2;
-
                         if (!co2ByCategory.containsKey(procedure.getCategory())) {
                             co2ByCategory.put(procedure.getCategory(), 0d);
                         }
                         double newCategoryCO2 = co2ByCategory.get(procedure.getCategory()) + pCO2;
                         co2ByCategory.put(procedure.getCategory(), newCategoryCO2);
-
                         if (!co2ByNode.containsKey(nodeKey)) {
                             co2ByNode.put(nodeKey, 0d);
                         }
                         double newNodeCO2 = co2ByNode.get(nodeKey) + pCO2;
                         co2ByNode.put(nodeKey, newNodeCO2);
-
                         if (!extraCostsByCategory.containsKey(procedure.getCategory())) {
                             extraCostsByCategory.put(procedure.getCategory(), 0d);
                         }
@@ -276,27 +265,28 @@ public class TestCase implements Runnable {
                         double newCost = extraCostsByCategory.get(procedure.getCategory()) + pExtraCost;
                         extraCostsByCategory.put(procedure.getCategory(), newCost);
                         extraCostsByNode.put(nodeKey, newCost);
-
                         if (!delaysByCategory.containsKey(procedure.getCategory())) {
                             delaysByCategory.put(procedure.getCategory(), 0d);
                         }
                         double newCategoryDelay = delaysByCategory.get(procedure.getCategory()) + pDelay;
                         delaysByCategory.put(procedure.getCategory(), newCategoryDelay);
-
                         if (!delaysByNode.containsKey(nodeKey)) {
                             delaysByNode.put(nodeKey, 0d);
                         }
                         double newNodeDelay = delaysByCategory.get(nodeKey) + pDelay;
+                        return newNodeDelay;
+                    }).map((newNodeDelay) -> {
                         delaysByNode.put(nodeKey, newNodeDelay);
-
+                        return newNodeDelay;
+                    }).forEach((_item) -> {
                         executedEvents.add(event);
-                    }
+                    });
                 }
 
                 // Recursive call to all subevents
                 calculateEvents(nodeKey, event, event.getEvents());
             }
-        }
+        });
     }
 
     /**

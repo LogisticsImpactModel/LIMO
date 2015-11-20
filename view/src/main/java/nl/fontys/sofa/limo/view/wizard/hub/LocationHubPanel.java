@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import nl.fontys.sofa.limo.domain.component.hub.Continent;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
 import nl.fontys.sofa.limo.domain.component.hub.SerializableCountry;
-import nl.fontys.sofa.limo.validation.annotations.NotNull;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
@@ -170,44 +169,38 @@ public final class LocationHubPanel extends JPanel {
 
     //Set Listener
     public void setListener() {
-        cmbContinent.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selected = (String) cmbContinent.getSelectedItem();
+        cmbContinent.addActionListener((ActionEvent e) -> {
+            String selected = (String) cmbContinent.getSelectedItem();
 
-                if (!selected.equals(LIMOResourceBundle.getString("NONE"))) {
-                    ArrayList<String> continents = new ArrayList<>();
-                    for (Continent continent : Continent.values()) {
-                        continents.add(continent.getName());
-                    }
-                    cmbContinent.setModel(new DefaultComboBoxModel(continents.toArray()));
-                    cmbContinent.setSelectedItem(selected);
-
-                    String selectedCountry = (String) cmbCountry.getSelectedItem();
-                    ArrayList<String> countries = new ArrayList<>();
-                    countries.add(LIMOResourceBundle.getString("NONE"));
-                    for (SerializableCountry country : Continent.values()[continents.indexOf(selected)].getCountries()) {
-                        countries.add(country.getName());
-                    }
-                    cmbCountry.setModel(new DefaultComboBoxModel(countries.toArray()));
-                    if (countries.contains(selectedCountry)) {
-                        cmbCountry.setSelectedItem(selectedCountry);
-                    }
-                    cmbCountry.setEnabled(true);
+            if (!selected.equals(LIMOResourceBundle.getString("NONE"))) {
+                ArrayList<String> continents = new ArrayList<>();
+                for (Continent continent : Continent.values()) {
+                    continents.add(continent.getName());
                 }
+                cmbContinent.setModel(new DefaultComboBoxModel(continents.toArray()));
+                cmbContinent.setSelectedItem(selected);
+
+                String selectedCountry = (String) cmbCountry.getSelectedItem();
+                ArrayList<String> countries = new ArrayList<>();
+                countries.add(LIMOResourceBundle.getString("NONE"));
+                Continent.values()[continents.indexOf(selected)].getCountries().stream().forEach((country) -> {
+                    countries.add(country.getName());
+                });
+                cmbCountry.setModel(new DefaultComboBoxModel(countries.toArray()));
+                if (countries.contains(selectedCountry)) {
+                    cmbCountry.setSelectedItem(selectedCountry);
+                }
+                cmbCountry.setEnabled(true);
             }
         });
-        cmbCountry.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selected = (String) cmbCountry.getSelectedItem();
-                boolean enable = !selected.equals(LIMOResourceBundle.getString("NONE"));
-                tfStreet.setEnabled(enable);
-                tfNumber.setEnabled(enable);
-                tfCity.setEnabled(enable);
-                tfZip.setEnabled(enable);
-                tfState.setEnabled(enable);
-            }
+        cmbCountry.addActionListener((ActionEvent e) -> {
+            String selected = (String) cmbCountry.getSelectedItem();
+            boolean enable = !selected.equals(LIMOResourceBundle.getString("NONE"));
+            tfStreet.setEnabled(enable);
+            tfNumber.setEnabled(enable);
+            tfCity.setEnabled(enable);
+            tfZip.setEnabled(enable);
+            tfState.setEnabled(enable);
         });
 
     }

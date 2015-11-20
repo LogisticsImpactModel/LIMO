@@ -74,7 +74,7 @@ public class StatusBarEntry implements StatusBarService, ActionListener {
     public void setMessage(String msg, int action, int statusState, final Exception e) {
         if (e != null) {
             number++;
-            errorMessageBuilder.append("\n \n" + LIMOResourceBundle.getString("ERROR"))
+            errorMessageBuilder.append("\n \n").append(LIMOResourceBundle.getString("ERROR"))
                     .append(e.getMessage())
                     .append("\n");
             for (StackTraceElement ste : e.getStackTrace()) {

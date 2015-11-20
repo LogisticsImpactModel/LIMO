@@ -24,7 +24,7 @@ public class NameDescriptionIconHubWizard implements WizardDescriptor.Validating
     private NameDescriptionIconPanel component;
     private Hub hub, originalHub;
     private boolean update;
-    private BeanValidator validator = BeanValidator.getInstance();
+    private final BeanValidator validator = BeanValidator.getInstance();
 
     @Override
     public NameDescriptionIconPanel getComponent() {

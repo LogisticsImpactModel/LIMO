@@ -111,7 +111,6 @@ public abstract class EventsPanel extends JPanel {
                 wiz.setEvent(editEvent);
                 wiz.actionPerformed(null);
                 
-                editEvent = wiz.getEvent();
                 eventsTableModel.fireTableDataChanged();
             }
         });

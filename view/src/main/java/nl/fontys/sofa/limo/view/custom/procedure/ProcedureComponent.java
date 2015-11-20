@@ -48,7 +48,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      * Creates a new ProcedureComponent with an empty table.
      */
     public ProcedureComponent() {
-        this(new ArrayList<Procedure>());
+        this(new ArrayList<>());
     }
 
     /**
@@ -60,8 +60,9 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
         CellConstraints cc = new CellConstraints();
         setLayout(new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px"));
-        DragNDropTableModel tableModel = new DragNDropTableModel(
-                new String[]{}, new ArrayList<List<Object>>(), new Class[]{});
+        DragNDropTableModel tableModel;
+        tableModel = new DragNDropTableModel(
+                new String[]{}, new ArrayList<>(), new Class[]{});
         table = new DragNDropTable(tableModel);
         initProceduresTable(procedures);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -105,7 +106,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     public List<Procedure> getActiveTableState() {
         List<List<Object>> values = ((DragNDropTableModel) table.getModel()).getValues();
         ArrayList<Procedure> procedures = new ArrayList<>();
-        for (List<Object> value : values) {
+        values.stream().map((value) -> {
             Procedure p = new Procedure();
             p.setName((String) value.get(0));
             if (value.get(1) instanceof ProcedureCategory) {
@@ -117,8 +118,10 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             p.setTimeType((TimeType) value.get(3));
             p.setCost((Value) value.get(4));
             p.setCotwo((Value) value.get(5));
+            return p;
+        }).forEach((p) -> {
             procedures.add(p);
-        }
+        });
         return procedures;
     }
 
@@ -164,15 +167,11 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         if (table.getSelectedColumn() == 2 || table.getSelectedColumn() == 4 || table.getSelectedColumn() == 5) {
             changedValue = (Value) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
             Object valueAt = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
-            EditValueDialog editValueDialog = new EditValueDialog((Value) valueAt, new AddProcedureDialog.EditValueDialogListener() {
-
-                @Override
-                public void newValue(Value value) {
-                    changedValue = value;
-                    table.setValueAt(value, table.getSelectedRow(), table.getSelectedColumn());
-                    ProcedureComponent.this.revalidate();
-                    ProcedureComponent.this.repaint();
-                }
+            EditValueDialog editValueDialog = new EditValueDialog((Value) valueAt, (Value value) -> {
+                changedValue = value;
+                table.setValueAt(value, table.getSelectedRow(), table.getSelectedColumn());
+                ProcedureComponent.this.revalidate();
+                ProcedureComponent.this.repaint();
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             editValueDialog.setVisible(true);
@@ -206,7 +205,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     private void initProceduresTable(List<Procedure> procedures) {
         List<List<Object>> valueList = new ArrayList<>();
         if (procedures != null) {
-            for (Procedure p : procedures) {
+            procedures.stream().map((p) -> {
                 ArrayList<Object> procedure = new ArrayList<>();
                 procedure.add(p.getName());
                 procedure.add(p.getCategory());
@@ -214,8 +213,10 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
                 procedure.add(p.getTimeType());
                 procedure.add(p.getCost());
                 procedure.add(p.getCotwo());
+                return procedure;
+            }).forEach((procedure) -> {
                 valueList.add(procedure);
-            }
+            });
         }
         model = new DragNDropTableModel(new String[]{LIMOResourceBundle.getString("PROCEDURE"), LIMOResourceBundle.getString("CATEGORY"), LIMOResourceBundle.getString("TIME_COST"), LIMOResourceBundle.getString("TIME_TYPE"), LIMOResourceBundle.getString("MONEY_COST"), LIMOResourceBundle.getString("CO2")},
                 valueList, new Class[]{String.class, String.class, Value.class, TimeType.class, Value.class, Value.class});

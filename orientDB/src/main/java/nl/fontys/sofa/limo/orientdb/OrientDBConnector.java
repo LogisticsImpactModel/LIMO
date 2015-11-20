@@ -55,7 +55,6 @@ import nl.fontys.sofa.limo.orientdb.serialization.CountrySerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.ExecutionStateSerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.TimeTypeSerializer;
 import org.openide.modules.Places;
-import org.openide.util.Exceptions;
 
 /**
  * Singleton connection to OrientDB file database. Maintaines schema and allows

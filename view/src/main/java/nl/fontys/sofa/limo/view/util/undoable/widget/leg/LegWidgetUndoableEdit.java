@@ -22,10 +22,10 @@ import nl.fontys.sofa.limo.view.widget.LegWidget;
  */
 public abstract class LegWidgetUndoableEdit extends AbstractUndoableEdit {
 
-    private LegNode legNode;
-    private HubNode source;
-    private HubNode target;
-    private ChainGraphScene scene;
+    private final LegNode legNode;
+    private final HubNode source;
+    private final HubNode target;
+    private final ChainGraphScene scene;
 
     public LegWidgetUndoableEdit(LegWidget legWidget, HubNode source, HubNode target, ChainGraphScene scene) {
         this.scene = scene;

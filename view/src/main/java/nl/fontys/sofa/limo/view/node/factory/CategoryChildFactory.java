@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.node.factory;
 
 import java.util.List;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
-import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.node.root.AbstractRootNode;
 import nl.fontys.sofa.limo.view.node.root.EventRootNode;
@@ -37,7 +36,7 @@ public class CategoryChildFactory extends ChildFactory<AbstractRootNode>
     private LegTypeChildFactory legFactory;
     private ProcedureChildFactory procedureFactory;
     private EventChildFactory eventFactory;
-    private Result<Hub> lookupResult;
+    private final Result<Hub> lookupResult;
 
     /**
      * Constructor creates a new CategoryChildFactory and attaches

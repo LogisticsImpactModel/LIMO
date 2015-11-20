@@ -76,15 +76,14 @@ public class SupplyChain implements Serializable {
         
         Gson g = GsonHelper.getInstance();
         
-        JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
-        reader.beginArray();
-        SupplyChain supplyChain = g.fromJson(reader, SupplyChain.class);
-        reader.endArray();
-        reader.close();
+        SupplyChain supplyChain;
+            try (JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"))) {
+                reader.beginArray();
+                supplyChain = g.fromJson(reader, SupplyChain.class);
+                reader.endArray();
+            }
         return supplyChain;
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace(System.err);
-        } catch (UnsupportedEncodingException ex) {
+        } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             ex.printStackTrace(System.err);
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
@@ -94,15 +93,16 @@ public class SupplyChain implements Serializable {
 
     /**
      * Saves the supply chain to a file specified at filepath.
+     * @throws java.io.IOException
      */
     public void saveToFile() throws IOException {
         OutputStream out = new FileOutputStream(filepath);
         Gson g = GsonHelper.getInstance();
-        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
-        writer.setIndent("  ");
-        writer.beginArray();
-        g.toJson(this, SupplyChain.class, writer);
-        writer.endArray();
-        writer.close();
+        try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"))) {
+            writer.setIndent("  ");
+            writer.beginArray();
+            g.toJson(this, SupplyChain.class, writer);
+            writer.endArray();
+        }
     }
 }

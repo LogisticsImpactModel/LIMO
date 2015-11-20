@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyEditorSupport;
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,7 +64,7 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
      */
     private class CustomEditor extends JPanel {
 
-        private JLabel distributionTypeLabel;
+        private final JLabel distributionTypeLabel;
         private JComboBox<String> distributionTypeComboBox;
 
         private JPanel parametersLabel;
@@ -128,12 +127,9 @@ public class DistributionPropertyEditor extends PropertyEditorSupport {
             distributionTypeComboBox = new javax.swing.JComboBox<>(cbModel);
             String nameForDistributionType = distributionFactory.getNameForDistributionType(getDistribution().getClass());
             distributionTypeComboBox.getModel().setSelectedItem(nameForDistributionType);
-            distributionTypeComboBox.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    setValue(distributionFactory.getDistributionTypeByName((String) distributionTypeComboBox.getSelectedItem()));
-                    ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
-                }
+            distributionTypeComboBox.addActionListener((ActionEvent e) -> {
+                setValue(distributionFactory.getDistributionTypeByName((String) distributionTypeComboBox.getSelectedItem()));
+                ((AbstractTableModel) parametersTable.getModel()).fireTableDataChanged();
             });
 
             c.weightx = 0.3;

@@ -62,9 +62,9 @@ public final class NewOrDuplicatedLegTypePanel extends JPanel {
         LegTypeService legTypeService = Lookup.getDefault().lookup(LegTypeService.class);
         lt = legTypeService.findAll();
         List<String> legTypeList = new ArrayList<>();
-        for (LegType lt2 : lt) {
+        lt.stream().forEach((lt2) -> {
             legTypeList.add(lt2.getName());
-        }
+        });
 
         cmbLegType.setModel(new javax.swing.DefaultComboBoxModel(legTypeList.toArray()));
         c.weightx = 1;
@@ -82,21 +82,15 @@ public final class NewOrDuplicatedLegTypePanel extends JPanel {
 
     //Set Action Listener
     public void addActionListener() {
-        rbFromScratch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbFromScratch.isSelected()) {
-                    cmbLegType.setEnabled(false);
-                }
+        rbFromScratch.addActionListener((ActionEvent e) -> {
+            if (rbFromScratch.isSelected()) {
+                cmbLegType.setEnabled(false);
             }
         });
 
-        rbCopyFrom.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbCopyFrom.isSelected()) {
-                    cmbLegType.setEnabled(true);
-                }
+        rbCopyFrom.addActionListener((ActionEvent e) -> {
+            if (rbCopyFrom.isSelected()) {
+                cmbLegType.setEnabled(true);
             }
         });
 

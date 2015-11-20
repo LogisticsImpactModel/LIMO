@@ -6,7 +6,6 @@
 package nl.fontys.sofa.limo.view.graphs;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;

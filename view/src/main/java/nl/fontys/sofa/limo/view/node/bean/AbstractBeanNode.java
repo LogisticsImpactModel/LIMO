@@ -84,22 +84,21 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
      */
     protected PropertyChangeListener getListener() {
         if (this.listener == null) {
-            this.listener = new PropertyChangeListener() {  
-
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    
-                    DAO service = (DAO) Lookup.getDefault().lookup(getServiceClass());
-                    service.update(getBean());
-                    firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-                    if (evt.getPropertyName().equals("name")) {
+            this.listener = (PropertyChangeEvent evt) -> {
+                DAO service = (DAO) Lookup.getDefault().lookup(getServiceClass());
+                service.update(getBean());
+                firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                switch (evt.getPropertyName()) {
+                    case "name":
                         setDisplayName((String) evt.getNewValue());
-                    } else if (evt.getPropertyName().equals("description")) {
+                        break;
+                    case "description":
                         setShortDescription((String) evt.getNewValue());
-                    } else if (evt.getPropertyName().equals("icon")) {
+                        break;
+                    case "icon":
                         createProperties(getBean(), null);
                         setSheet(getSheet());
-                    }
+                        break;
                 }
             };
         }

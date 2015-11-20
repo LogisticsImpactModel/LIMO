@@ -52,12 +52,9 @@ public enum Continent implements Comparable<Continent> {
     public List<SerializableCountry> getCountries() {
 
         if (countries.isEmpty()) {
-            for (SerializableCountry country : SerializableCountry.getAll()) {
-
-                if (country.getContinent() == this) {
-                    countries.add(country);
-                }
-            }
+            SerializableCountry.getAll().stream().filter((country) -> (country.getContinent() == this)).forEach((country) -> {
+                countries.add(country);
+            });
         }
         return countries;
     }

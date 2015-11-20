@@ -170,17 +170,13 @@ public class LocationPropertyEditor extends PropertyEditorSupport {
             } else {
                 cmbCountry.setSelectedIndex(0);
             }
-            cmbCountry.addActionListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    boolean enable = cmbCountry.getSelectedIndex() > 0;
-                    tfStreet.setEnabled(enable);
-                    tfNumber.setEnabled(enable);
-                    tfCity.setEnabled(enable);
-                    tfZip.setEnabled(enable);
-                    tfState.setEnabled(enable);
-                }
+            cmbCountry.addActionListener((ActionEvent e) -> {
+                boolean enable = cmbCountry.getSelectedIndex() > 0;
+                tfStreet.setEnabled(enable);
+                tfNumber.setEnabled(enable);
+                tfCity.setEnabled(enable);
+                tfZip.setEnabled(enable);
+                tfState.setEnabled(enable);
             });
 
             tfStreet = new JTextField(hubLocation.getStreet());
