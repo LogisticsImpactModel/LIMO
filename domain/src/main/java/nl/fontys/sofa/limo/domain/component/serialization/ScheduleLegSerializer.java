@@ -32,10 +32,9 @@ public class ScheduleLegSerializer implements JsonSerializer<ScheduledLeg> {
                 
                 JsonArray array = new JsonArray();
                 ArrayList<Long> list = (ArrayList) src.getAcceptanceTimes();
-                for (Long acceptedTime : list) 
-                {
+                list.stream().forEach((acceptedTime) -> {
                     array.add(new JsonPrimitive(acceptedTime));
-                }
+            });
                 ele1.add("acceptanceTimes", array);
                 
                 ele1.add("alternative", g.toJsonTree(src.getAlternative()));
