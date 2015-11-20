@@ -6,12 +6,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,8 +43,11 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
     private JTextArea descriptionTextArea;
     private JComboBox<String> distributionTypeComboBox;
     private JPanel parametersLabel;
+    private JLabel noUpperLabel;
     private JTable parametersTable;
     private JTextArea distributionDescription;
+    private JCheckBox noUpperCheckbox;
+    private GridBagConstraints c;
 
     private DistributionFactory distributionFactory;
     private DistributionParameterTableModel tableModel;
@@ -59,7 +63,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
     private void initComponents() {
         assignComponents();
-        GridBagConstraints c = initLayout();
+        c = initLayout();
         setComponentProperties();
         initDistribution();
 
@@ -107,7 +111,6 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         c.gridy = 4;
         c.gridwidth = 4;
         add(parametersLabel, c);
-
     }
 
     /**
@@ -138,8 +141,24 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         descriptionTextArea = new JTextArea();
         distributionDescription = new JTextArea();
         parametersLabel = new JPanel();
+        noUpperLabel = new JLabel("No Upper Bound:");
+        noUpperCheckbox = new JCheckBox();
+        noUpperCheckbox.addActionListener((ActionEvent ae) -> {
+            int rowCount = tableModel.getRowCount();
+            for (int i = 0; i < rowCount; i++) {
+                String bla = String.valueOf(tableModel.getValueAt(i, 0));
+                if(bla.equals("Upper Bound") && noUpperCheckbox.isSelected())
+                {
+                    tableModel.setValueAt(LIMOResourceBundle.getString("NOUPPERBOUND"), i, 1);
+                }
+                
+                if(bla.equals("Upper Bound") && !noUpperCheckbox.isSelected())
+                {
+                    tableModel.setValueAt("0", i, 1);
+                }
+            }
+        });
         parametersTable = new JTable() {
-
             @Override
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
                 Component c = super.prepareRenderer(renderer, row, column);
@@ -158,7 +177,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
 
     private GridBagConstraints initLayout() {
         setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTH;
         c.insets = new Insets(3, 3, 3, 3);
@@ -175,14 +194,12 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         Collections.sort(distTypes);
         String[] cbModel = distTypes.toArray(new String[distTypes.size()]);
         distributionTypeComboBox = new JComboBox<>(cbModel);
-        distributionTypeComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Distribution prop = distributionFactory.getDistributionTypeByName((String) distributionTypeComboBox.getSelectedItem());
-                tableModel.setProperty(prop);
-                tableModel.fireTableDataChanged();
-                distributionDescription.setText(prop.getDescription());
-            }
+        distributionTypeComboBox.addActionListener((ActionEvent e) -> {
+            Distribution prop = distributionFactory.getDistributionTypeByName((String) distributionTypeComboBox.getSelectedItem());
+            tableModel.setProperty(prop);
+            tableModel.fireTableDataChanged();
+            distributionDescription.setText(prop.getDescription());
+            checkVisibility();
         });
         distributionTypeComboBox.setSelectedItem(distributionFactory.getNameForDistributionType(DiscreteDistribution.class));
         distributionDescription.setText(distributionFactory.getDistributionTypeByName(distributionTypeComboBox.getModel().getElementAt(0)).getDescription());
@@ -204,6 +221,16 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                 distributionTypeComboBox.getModel().setSelectedItem(nameForDistributionType);
                 tableModel.setProperty(probability);
                 tableModel.fireTableDataChanged();
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    String bla = String.valueOf(tableModel.getValueAt(i, 0));
+                    if (bla.equals("Upper Bound")) {
+                        Double div = (Double) tableModel.getValueAt(i, 1);
+                        if(Objects.equals(div, Double.valueOf(LIMOResourceBundle.getString("NOUPPERBOUND"))))
+                        {
+                            noUpperCheckbox.setSelected(true);
+                        }
+                    }
+                }
                 distributionDescription.setText(probability.getDescription());
             } else {
                 distributionTypeComboBox.setSelectedItem(distributionFactory.getNameForDistributionType(PoissonDistribution.class));
@@ -217,6 +244,31 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
         }
     }
 
+    void checkVisibility() {
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            String bla = String.valueOf(tableModel.getValueAt(i, 0));
+            if(bla.equals("Upper Bound") )
+            {
+                c.weightx = 0.3;
+                c.gridx = 0;
+                c.gridy = 5;
+                c.gridwidth = 1;
+                add(noUpperLabel, c);
+
+                c.weightx = 1;
+                c.gridx = 1;
+                c.gridy = 5;
+                c.gridwidth = 3;
+                add(noUpperCheckbox, c);
+            }
+            else
+            {
+                remove(noUpperLabel);
+                remove(noUpperCheckbox);
+            }
+        }
+    }
+    
     String getNameInput() {
         return nameTextField.getText();
     }

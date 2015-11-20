@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
+import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,8 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
 import nl.fontys.sofa.limo.domain.component.Icon;
-import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.hub.Location;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
@@ -49,19 +48,19 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
     public HubNode(Hub bean) throws IntrospectionException {
         super(bean, Hub.class);
         this.bean = bean;
-        for (Event e : bean.getEvents()) {
+        bean.getEvents().stream().forEach((e) -> {
             ic.add(e);
-        }
-        for (Procedure p : bean.getProcedures()) {
+        });
+        bean.getProcedures().stream().forEach((p) -> {
             ic.add(p);
-        }
+        });
     }
 
     @Override
     public Widget getWidget(Scene scene) {
         try {
             HubWidget hw = new HubWidget(scene, this);
-            
+
             return hw;
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
@@ -71,10 +70,7 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
 
     @Override
     public boolean isAcceptable(Widget widget, Point point) {
-        if (widget instanceof ChainGraphScene) {
-            return true;
-        }
-        return false;
+        return widget instanceof ChainGraphScene;
     }
 
     @Override
@@ -98,8 +94,10 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             public void actionPerformed(ActionEvent e) {
                 int reply = JOptionPane.showConfirmDialog(null, LIMOResourceBundle.getString("DELETE_QUESTION", bean.getName()), LIMOResourceBundle.getString("ARE_YOU_SURE"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE
                 );
+
                 if (reply == JOptionPane.YES_OPTION) {
-                    HubService service = Lookup.getDefault().lookup(HubService.class);
+                    HubService service = Lookup.getDefault().lookup(HubService.class
+                    );
                     service.delete(bean);
                 }
             }
@@ -120,26 +118,35 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
             locProp.setValue("canEditAsText", false);
 
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
+
             eventProp.addPropertyChangeListener(getListener());
-            eventProp.setPropertyEditorClass(EventPropertyEditor.class);
+            eventProp.setPropertyEditorClass(EventPropertyEditor.class
+            );
             eventProp.setDisplayName(LIMOResourceBundle.getString("EVENTS"));
             eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", LIMOResourceBundle.getString("HUB")));
             eventProp.setValue("canEditAsText", false);
 
             StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
+
             procedureProp.addPropertyChangeListener(getListener());
-            procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
+            procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class
+            );
             procedureProp.setDisplayName(LIMOResourceBundle.getString("PROCEDURES"));
             procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", LIMOResourceBundle.getString("HUB")));
             procedureProp.setValue("canEditAsText", false);
 
             set.put(locProp);
+
             set.put(procedureProp);
+
             set.put(eventProp);
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();
         }
 
+        set.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            getListener().propertyChange(evt);
+        });
         sets.put(set);
     }
 
@@ -164,5 +171,11 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
     @Override
     protected Icon getBeanIcon() {
         return getBean().getIcon();
+    }
+
+    @Override
+    public void delete() {
+        HubService service = Lookup.getDefault().lookup(HubService.class);
+        service.delete(bean);
     }
 }

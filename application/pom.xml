@@ -115,9 +115,11 @@
                     <installerOsSolaris>false</installerOsSolaris>
                     <installerOsMacosx>false</installerOsMacosx>
                     <installerOsLinux>false</installerOsLinux>
+                    <templateFile>${basedir}/src/main/template.xml</templateFile>
                     <userSettings>
                         <nbi.icon.file>${basedir}/src/main/resources/icon.gif</nbi.icon.file>
                         <nbi.instleftcorner.file>${basedir}/src/main/resources/icon.gif</nbi.instleftcorner.file>
+                        <configuration.logic.file>${basedir}/src/main/ConfigurationLogic.java</configuration.logic.file>
                     </userSettings>
                     <installerPack200Enable>false</installerPack200Enable>
                 </configuration>

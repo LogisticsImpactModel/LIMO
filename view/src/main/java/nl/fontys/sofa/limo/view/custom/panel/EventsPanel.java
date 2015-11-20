@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
@@ -103,21 +102,17 @@ public abstract class EventsPanel extends JPanel {
      * adapt the view status.
      */
     protected void setEditButtonListener() {
-        editButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (eventsTable.getSelectedRow() >= 0) {
-
-                    Event editEvent = eventsTableModel.getEvents().get(eventsTable.getSelectedRow());
-
-                    EventWizardAction wiz = new EventWizardAction(true);
-                    wiz.setEvent(editEvent);
-                    wiz.actionPerformed(null);
-
-                    editEvent = wiz.getEvent();
-                    eventsTableModel.fireTableDataChanged();
-                }
+        editButton.addActionListener((ActionEvent e) -> {
+            if (eventsTable.getSelectedRow() >= 0) {
+                
+                Event editEvent = eventsTableModel.getEvents().get(eventsTable.getSelectedRow());
+                
+                EventWizardAction wiz = new EventWizardAction(true);
+                wiz.setEvent(editEvent);
+                wiz.actionPerformed(null);
+                
+                editEvent = wiz.getEvent();
+                eventsTableModel.fireTableDataChanged();
             }
         });
     }
@@ -137,14 +132,11 @@ public abstract class EventsPanel extends JPanel {
      * Delete an event from the table model and adapt the view status.
      */
     private void setDeleteButtonListener() {
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (eventsTable.getSelectedRow() >= 0) {
-                    eventsTableModel.getEvents().remove(eventsTable.getSelectedRow());
-                    eventsTableModel.fireTableDataChanged();
-                    checkButtonsState();
-                }
+        deleteButton.addActionListener((ActionEvent e) -> {
+            if (eventsTable.getSelectedRow() >= 0) {
+                eventsTableModel.getEvents().remove(eventsTable.getSelectedRow());
+                eventsTableModel.fireTableDataChanged();
+                checkButtonsState();
             }
         });
     }

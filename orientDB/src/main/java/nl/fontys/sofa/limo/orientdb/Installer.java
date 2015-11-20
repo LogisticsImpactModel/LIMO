@@ -7,6 +7,7 @@ public class Installer extends ModuleInstall {
     @Override
     public void restored() {
         // Load database
+      
         OrientDBConnector.connection();
     }
 

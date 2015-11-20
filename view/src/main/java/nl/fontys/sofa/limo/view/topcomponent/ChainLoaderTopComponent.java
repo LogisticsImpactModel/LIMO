@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
+import nl.fontys.sofa.limo.view.action.DeleteAction;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
@@ -16,8 +17,6 @@ import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.spi.palette.PaletteController;
-import org.openide.DialogDescriptor;
-import org.openide.DialogDisplayer;
 import org.openide.awt.ActionID;
 import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;
@@ -25,6 +24,7 @@ import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
+import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
@@ -34,7 +34,6 @@ import org.openide.windows.TopComponent;
  * {@link nl.fontys.sofa.limo.domain.component.SupplyChain} and displays a
  * GraphScene and Palette to build a chain with.
  */
-
 @TopComponent.Description(
         preferredID = "ChainLoaderTopComponent",
         iconBase = "icons/gui/Link.png",
@@ -51,9 +50,10 @@ import org.openide.windows.TopComponent;
 public final class ChainLoaderTopComponent extends TopComponent implements
         DynamicExplorerManagerProvider {
 
+    private final InstanceContent ic;
     private ExplorerManager em = new ExplorerManager();
     private ChainGraphScene graphScene;
-    private SavableComponent savable;
+    private final SavableComponent savable;
     private PaletteController paletteController;
     private UndoRedo.Manager undoManager = new UndoRedo.Manager();
 
@@ -65,6 +65,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     public ChainLoaderTopComponent(File chainFile) {
         try {
             paletteController = ChainPaletteFactory.createPalette();
+            DeleteAction.setPallete(paletteController);
         } catch (ServiceNotFoundException ex) {
             Exceptions.printStackTrace(ex);
         }
@@ -76,14 +77,13 @@ public final class ChainLoaderTopComponent extends TopComponent implements
 
         setName(supplyChain.getName().replace(".lsc", ""));
         initCustomComponents(supplyChain);
-
-        savable = new SavableComponent(graphScene.getChainBuilder());
+        ic = new InstanceContent();
+        savable = new SavableComponent(graphScene.getChainBuilder(), ic, this);
         Lookup paletteLookup = Lookups.singleton(paletteController);
         Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
         Lookup graphLookup = Lookups.singleton(graphScene);
         Lookup graphContentLookup = graphScene.getLookup();
-        Lookup savableLookup = Lookups.singleton(savable);
-        ProxyLookup pl = new ProxyLookup(graphContentLookup,paletteLookup, nodeLookup, graphLookup, savableLookup);
+        ProxyLookup pl = new ProxyLookup(graphContentLookup, paletteLookup, nodeLookup, graphLookup);
         associateLookup(pl);
     }
 
@@ -112,35 +112,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         }
     }
 
-    /**
-     * Check if the TopComponent is ready to close. In this case, the user is
-     * prompted with a question to save the supply chain or discard it.
-     *
-     * @return true if the TopComponent should close.
-     */
-    @Override
-    public boolean canClose() {
-        DialogDescriptor dialogDescriptor = new DialogDescriptor("Do you want to save the " + graphScene.getSupplyChain().getName()
-                + " supply chain?", "Save the supply chain");
-
-        dialogDescriptor.setMessageType(DialogDescriptor.QUESTION_MESSAGE);
-        dialogDescriptor.setOptions(new Object[]{"Save changes", "Discard changes", "Cancel"});
-        Object retval = DialogDisplayer.getDefault().notify(dialogDescriptor);
-        if (retval.equals("Save changes")) {
-            try {
-                savable.save(); //Try to save the supply chain
-            } catch (IOException ex) {
-                Exceptions.printStackTrace(ex);
-                return false; //The supply chain window cannot be closed because an exception is trown while saving
-            }
-        } else if (retval.equals("Cancel")) {
-            return false;
-        } else {
-            return retval.equals("Discard changes"); //Cancel is clicked or the dialog is closed
-        }
-        return true; //The supply chain window can now be closed
-    }
-
+    
     @Override
     public UndoRedo getUndoRedo() {
         return undoManager;
