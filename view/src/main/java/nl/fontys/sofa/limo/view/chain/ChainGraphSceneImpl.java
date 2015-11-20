@@ -430,6 +430,8 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         chainBuilder.modify();
+        revalidate();
+        
     }
 
     /**

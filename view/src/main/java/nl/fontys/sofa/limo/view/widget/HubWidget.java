@@ -83,6 +83,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
                 listeners.forEach((PropertyChangeListener t) -> {
                     t.propertyChange(evt);
+                    updateLabels();
                 });
             }
         });
@@ -199,7 +200,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
 
     public void updateLabels() {
 
-        procedureLabelWidget.setLabel("Procedure: " + getHub().getProcedures().size());
+        procedureLabelWidget.setLabel("Procedures: " + getHub().getProcedures().size());
 
         if (getHub().getEvents().isEmpty()) {
             eventLabelWidget.setLabel("");

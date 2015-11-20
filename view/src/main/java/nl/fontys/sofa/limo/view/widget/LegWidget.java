@@ -66,6 +66,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         legNode.addPropertyChangeListener((PropertyChangeEvent evt) -> {
             listeners.forEach((PropertyChangeListener t) -> {
                 t.propertyChange(evt);
+                updateLabels();
             });
         });
     }
