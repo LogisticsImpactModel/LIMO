@@ -59,7 +59,9 @@ public class ProcedureChildFactory extends ChildFactory<Procedure>
         } catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
         }
-        node.addNodeListener(this);
+        if (node != null) {
+            node.addNodeListener(this);
+        }
         return node;
     }
 

@@ -8,7 +8,6 @@ import java.util.List;
 import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.type.LegType;
-import nl.fontys.sofa.limo.view.custom.panel.NameDescriptionIconPanel;
 import nl.fontys.sofa.limo.view.node.bean.LegTypeNode;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import org.openide.nodes.BeanNode;
