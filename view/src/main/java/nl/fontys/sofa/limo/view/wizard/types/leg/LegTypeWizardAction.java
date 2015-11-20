@@ -27,7 +27,7 @@ import org.openide.util.Lookup;
  * @author Pascal Lindner
  */
 @ActionID(category = "LegType", id = "nl.fontys.sofa.limo.view.wizard.legtype.LegTypeWizardAction")
-@ActionRegistration(displayName = "New leg template..", iconBase = "icons/gui/add.gif")
+@ActionRegistration(displayName = "New leg template..", iconBase = "icons/gui/add.png")
 @ActionReferences({
     @ActionReference(path = "Menu/Master Data/Leg templates", position = 20),
     @ActionReference(path = "Shortcuts", name = "DOS-L")

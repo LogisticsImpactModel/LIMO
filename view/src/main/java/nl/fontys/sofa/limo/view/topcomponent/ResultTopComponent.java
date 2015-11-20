@@ -58,7 +58,7 @@ import org.openide.windows.WindowManager;
 )
 @TopComponent.Description(
         preferredID = "ResultTopComponent",
-        iconBase = "icons/gui/result.png",
+        iconBase = "icons/gui/test_tube.png",
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
