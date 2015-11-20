@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.wizard.types.hub;
 
 import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.type.HubType;
 import nl.fontys.sofa.limo.view.custom.panel.ProceduresPanel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -62,7 +61,7 @@ public class ProceduresHubTypeWizard implements WizardDescriptor.Panel<WizardDes
             }
         } else {
             if (lastType != null) {
-                getComponent().update(new ArrayList<Procedure>());
+                getComponent().update(new ArrayList<>());
             }
         }
         lastType = hubType;
