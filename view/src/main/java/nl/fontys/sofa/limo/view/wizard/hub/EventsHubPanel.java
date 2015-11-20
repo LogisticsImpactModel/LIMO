@@ -1,7 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.hub;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -39,17 +38,14 @@ public final class EventsHubPanel extends EventsPanel {
 
     @Override
     protected void setAddButtonListener() {
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
-                selected.setId(null);
-                selected.setDependency(ExecutionState.INDEPENDENT);
-                eventsTableModel.getEvents().add(selected);
-                eventsTableModel.fireTableDataChanged();
-                deleteButton.setEnabled(true);
-                checkButtonsState();
-            }
+        addButton.addActionListener((ActionEvent e) -> {
+            Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
+            selected.setId(null);
+            selected.setDependency(ExecutionState.INDEPENDENT);
+            eventsTableModel.getEvents().add(selected);
+            eventsTableModel.fireTableDataChanged();
+            deleteButton.setEnabled(true);
+            checkButtonsState();
         });
     }
 
