@@ -60,6 +60,7 @@ import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.spi.palette.PaletteController;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.nodes.NodeTransfer;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
@@ -93,9 +94,9 @@ import org.openide.windows.TopComponent;
  * @author Sebastiaan Heijmann
  */
 public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChangeListener {
-    
+
     private final InstanceContent ic;
-    
+
     private final DynamicExplorerManagerProvider parent;
     private final ChainBuilder chainBuilder;
     private final SupplyChain loadedChain;
@@ -114,10 +115,10 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
     private final WidgetAction connectAction;
     //@TODO implement reconnect action
     private final WidgetAction reconnectAction;
-    
+
     private HubWidget startHubWidget;
     private final StartWidget startFlagWidget;
-    
+
     private UndoManager undoManager;
     private ProxyLookup lookup;
     private PaletteController paletteController;
@@ -154,16 +155,16 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         //then save it at another location dont get a file named null.lsc
         chainBuilder.getSupplyChain().setFilepath(chain.getFilepath());
         loadedChain = chain;
-        
+
         this.mainLayer = new LayerWidget(this);
-       
+
         this.connectionLayer = new LayerWidget(this);
         this.interactionLayer = new LayerWidget(this);
         this.paletteController = paletteController;
         addChild(mainLayer);
         addChild(connectionLayer);
         addChild(interactionLayer);
-        
+
         moveAlignAction = ActionFactory.createAlignWithMoveAction(
                 mainLayer,
                 interactionLayer,
@@ -174,13 +175,13 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         selectAction = ActionFactory.createSelectAction(new SceneSelectProvider());
         connectAction = ActionFactory.createExtendedConnectAction(interactionLayer, new SceneConnectProvider());
         reconnectAction = null;
-        
+
         getActions().addAction(acceptAction);
         getActions().addAction(zoomAction);
         getActions().addAction(panAction);
-        
+
         startFlagWidget = new StartWidget(this);
-        
+
         this.undoManager = undoManager;
         Lookup dL = new AbstractLookup(ic);
         if (undoManager != null) {
@@ -190,12 +191,12 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
             lookup = new ProxyLookup(dL, super.getLookup());
         }
     }
-    
+
     @Override
     public Lookup getLookup() {
         return lookup;
     }
-    
+
     @Override
     public JComponent createView() {
         JComponent component = super.createView();
@@ -219,11 +220,11 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         Point point = new Point(100, 100);
         mainLayer.setLayout(LayoutFactory.createAbsoluteLayout());
         Node currentNode = supplyChain.getStartHub();
-        
+
         HubWidget previousWidget = null;
         ConnectionWidget connectionWidget = null;
         HubWidget nextWidget = null;
-        
+
         while (currentNode != null) {
             if (currentNode instanceof Hub) {
                 HubWidget w = (HubWidget) addNode(new HubNode((Hub) currentNode));
@@ -234,7 +235,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
                 w.setPreferredLocation(point);
                 nextWidget = w;
                 point = new Point(((int) point.getX() + 300), (int) point.getY());
-                
+
                 if (connectionWidget != null) {
                     connectHubWidgets(previousWidget, connectionWidget, nextWidget);
                 }
@@ -251,56 +252,56 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
             currentNode = currentNode.getNext();
         }
     }
-    
+
     @Override
     public ChainBuilder getChainBuilder() {
         return chainBuilder;
     }
-    
+
     @Override
     public WidgetAction getSelectAction() {
         return selectAction;
     }
-    
+
     @Override
     public WidgetAction getConnectAction() {
         return connectAction;
     }
-    
+
     @Override
     public WidgetAction getMoveAlignAction() {
         return moveAlignAction;
     }
-    
+
     @Override
     public SupplyChain getSupplyChain() {
         return chainBuilder.getSupplyChain();
     }
-    
+
     @Override
     public DynamicExplorerManagerProvider getParent() {
         return parent;
     }
-    
+
     @Override
     public Widget getStartWidget() {
         return startHubWidget;
     }
-    
+
     @Override
     public void setStartWidget(Widget widget) {
         if (startHubWidget != null) {
             startHubWidget.setStartFlag(false);
         }
-        
+
         HubWidget hubWidget = (HubWidget) widget;
         startHubWidget = hubWidget;
         startHubWidget.setStartFlag(true);
-        
+
         chainBuilder.setStartHub(hubWidget.getHub());
         this.validate();
     }
-    
+
     @Override
     public void addHubWidget(HubWidget hubWidget) {
         Lookup.getDefault().lookup(StatusBarService.class).setMessage(hubWidget.getHub().getName(), StatusBarService.ACTION_ADD, StatusBarService.STATE_SUCCESS, null);
@@ -313,23 +314,37 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         getScene().repaint();
         ic.add((BasicWidget) hubWidget);
         hubWidget.addPropertyChangeListener(this);
-        
+
     }
-    
+
     @Override
     public void connectHubWidgets(HubWidget source, ConnectionWidget legWidget, HubWidget target) {
+
+        Node node = target.getHub();
+        while (node != null) {
+            node = node.getNext();
+            if (node != null) {
+                if (node.equals(source.getHub())) {
+                    NotifyDescriptor d
+                            = new NotifyDescriptor.Message("Circles in supply chain aren't allowed!", NotifyDescriptor.WARNING_MESSAGE);
+                    DialogDisplayer.getDefault().notify(d);
+                    return;
+                }
+            }
+        }
+
         Lookup.getDefault().lookup(StatusBarService.class).setMessage(source.getHub().getName() + " " + LIMOResourceBundle.getString("AND") + " " + target.getHub().getName(), StatusBarService.ACTION_CONNECT, StatusBarService.STATE_SUCCESS, null);
         AbstractBeanNode sourceNode = (AbstractBeanNode) findObject(source);
         AbstractBeanNode legNode = (AbstractBeanNode) findObject(legWidget);
         AbstractBeanNode targetNode = (AbstractBeanNode) findObject(target);
-        
+
         setEdgeSource(legNode, sourceNode);
         setEdgeTarget(legNode, targetNode);
-        
+
         Hub hubSource = sourceNode.getLookup().lookup(Hub.class);
         Leg leg = legNode.getLookup().lookup(Leg.class);
         Hub hubTarget = targetNode.getLookup().lookup(Hub.class);
-        
+
         chainBuilder.connectHubsByLeg(
                 hubSource,
                 leg,
@@ -338,7 +353,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         this.checkChainHubs();
         ic.add((BasicWidget) legWidget);
         ((LegWidget) legWidget).addPropertyChangeListener(this);
-        
+
     }
 
     /**
@@ -358,24 +373,24 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         if (checkIfMoreThanOne == 1) {
             chainBuilder.setStartHub(startHub);
         }
-        
+
         List<Widget> hubWidgetList = mainLayer.getChildren();
         hubWidgetList.stream().map((hubWidget) -> (HubWidget) hubWidget).forEach((hw) -> {
             hw.setStartFlag(hw.getHub().getPrevious() == null);
         });
     }
-    
+
     @Override
     public void removeHubWidget(HubWidget hubWidget) {
         Hub hub = hubWidget.getHub();
         chainBuilder.removeHub(hubWidget.getHub());
-        
+
         if (chainBuilder.getStartHub() == hub) {
             chainBuilder.setStartHub(null);
         }
         ic.remove((BasicWidget) hubWidget);
     }
-    
+
     @Override
     public void disconnectLegWidget(LegWidget legWidget) {
         Lookup.getDefault().lookup(StatusBarService.class).setMessage(legWidget.getLeg().getName(),
@@ -384,12 +399,12 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         this.checkChainHubs();
         ic.remove((BasicWidget) legWidget);
     }
-    
+
     @Override
     public int getNumberOfHubs() {
         return chainBuilder.getNumberOfHubs();
     }
-    
+
     @Override
     protected Widget attachNodeWidget(AbstractBeanNode node) {
         WidgetableNode wn = (WidgetableNode) node;
@@ -397,16 +412,16 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         widget.addActions(this);
         return (Widget) widget;
     }
-    
+
     @Override
     protected Widget attachEdgeWidget(AbstractBeanNode edge) {
         BasicWidget connectionWidget = new LegWidget(this, edge);
         connectionWidget.addActions(this);
         connectionLayer.addChild((Widget) connectionWidget);
         return (Widget) connectionWidget;
-        
+
     }
-    
+
     @Override
     protected void attachEdgeSourceAnchor(AbstractBeanNode edge, AbstractBeanNode oldSourceNode, AbstractBeanNode sourceNode) {
         Widget sourceWidget = findWidget(sourceNode);
@@ -416,7 +431,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         ConnectionWidget connectionWidget = (ConnectionWidget) findWidget(edge);
         connectionWidget.setSourceAnchor(AnchorFactory.createRectangularAnchor(sourceWidget, false));
     }
-    
+
     @Override
     protected void attachEdgeTargetAnchor(AbstractBeanNode edge, AbstractBeanNode oldTargetNode, AbstractBeanNode targetNode) {
         Widget targetWidget = findWidget(targetNode);
@@ -426,19 +441,19 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         ConnectionWidget connectionWidget = (ConnectionWidget) findWidget(edge);
         connectionWidget.setTargetAnchor(AnchorFactory.createRectangularAnchor(targetWidget, false));
     }
-    
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         chainBuilder.modify();
         revalidate();
-        
+
     }
 
     /**
      * This provider is responsible for accepting objects into the scene.
      */
     private class SceneAcceptProvider implements AcceptProvider {
-        
+
         private final ChainGraphScene scene;
 
         /**
@@ -449,9 +464,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         public SceneAcceptProvider(ChainGraphScene scene) {
             this.scene = scene;
         }
-        
+
         private boolean showLegNotification = false;
-        
+
         @Override
         public ConnectorState isAcceptable(Widget widget, Point point, Transferable transferable) {
             org.openide.nodes.Node node = NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
@@ -465,12 +480,12 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
             } else if (node instanceof ProcedureNode) {
                 return ConnectorState.ACCEPT;
             }
-            
+
             if (node instanceof LegTypeNode) {
-                
+
                 if (!showLegNotification) {
                     showLegNotification = true;
-                    
+
                     DialogDescriptor nd = new DialogDescriptor("Just select the leg type from the palette and draw the line with ctrl key between the two hubs.", "Information", false, new String[]{"OK"}, null, DialogDescriptor.DEFAULT_ALIGN, null, null);
                     nd.setButtonListener((ActionEvent e) -> {
                         showLegNotification = false;
@@ -482,16 +497,16 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
                     });
                     DialogDisplayer.getDefault().notifyLater(nd);
                 }
-                
+
                 return ConnectorState.REJECT_AND_STOP;
             }
             return ConnectorState.REJECT;
         }
-        
+
         @Override
         public void accept(Widget widget, Point point, Transferable transferable) {
             AbstractBeanNode node = (AbstractBeanNode) NodeTransfer.node(transferable, NodeTransfer.DND_COPY_OR_MOVE);
-            
+
             if (node instanceof EventNode) {
                 acceptEvent(node, point);
             } else if (node instanceof ProcedureNode) {
@@ -502,22 +517,22 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
             TopComponent comp = (TopComponent) parent;
             comp.requestActive();
         }
-        
+
         private void acceptHub(AbstractBeanNode node, Widget widget, Point point) {
             AbstractBeanNode detachedNode = node.getDetachedNodeCopy();
             BasicWidget w = (BasicWidget) scene.addNode(detachedNode);
             detachedNode.addPropertyChangeListener(w);
             w.drop(scene, widget, point);
-            
+
             if (undoManager != null) {
                 UndoableEditEvent event = new UndoableEditEvent(w, new AddHubWidgetUndoableEdit(scene, (HubWidget) w));
                 undoManager.undoableEditHappened(event);
             }
             TopComponent comp = (TopComponent) parent;
             comp.requestActive();
-            
+
         }
-        
+
         private void acceptEvent(AbstractBeanNode node, Point point) {
             Event event = node.getLookup().lookup(Event.class);
             List<Widget> hitlist = new ArrayList<>();
@@ -534,12 +549,12 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
                 r.height = 25;
                 r.x -= r.width / 2;
                 r.y -= r.height / 2;
-                
+
                 if (c.getBounds().contains(r)) {
                     hitlist.add(c);
                 }
             });
-            
+
             hitlist.forEach((w) -> {
                 if (w instanceof HubWidget) {
                     HubWidget hubWidget = (HubWidget) w;
@@ -557,7 +572,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
                 chainBuilder.modify();
             }
         }
-        
+
         private void acceptProcedure(AbstractBeanNode node, Point point) {
             Procedure procedure = node.getLookup().lookup(Procedure.class);
             List<Widget> hitlist = new ArrayList<>();
@@ -574,12 +589,12 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
                 r.height = 25;
                 r.x -= r.width / 2;
                 r.y -= r.height / 2;
-                
+
                 if (c.getBounds().contains(r)) {
                     hitlist.add(c);
                 }
             });
-            
+
             hitlist.forEach((w) -> {
                 if (w instanceof HubWidget) {
                     HubWidget hubWidget = (HubWidget) w;
@@ -603,23 +618,23 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
      * This provider is responsible for selecting objects in a scene.
      */
     private class SceneSelectProvider implements SelectProvider {
-        
+
         @Override
         public boolean isAimingAllowed(Widget widget, Point localLocation, boolean invertSelection) {
             return false;
         }
-        
+
         @Override
         public boolean isSelectionAllowed(Widget widget, Point localLocation, boolean invertSelection) {
             return findObject(widget) != null;
         }
-        
+
         @Override
         public void select(Widget widget, Point localLocation, boolean invertSelection) {
             Object object = findObject(widget);
             AbstractBeanNode container = (AbstractBeanNode) object;
             parent.setRootContext(container);
-            
+
             setFocusedObject(object);
             if (object != null) {
                 if (!invertSelection && getSelectedObjects().contains(object)) {
@@ -636,17 +651,17 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
      * This provider is responsible for connecting objects in a scene.
      */
     private class SceneConnectProvider implements ConnectProvider {
-        
+
         private AbstractBeanNode source = null;
         private AbstractBeanNode target = null;
-        
+
         @Override
         public boolean isSourceWidget(Widget sourceWidget) {
             AbstractBeanNode container = (AbstractBeanNode) findObject(sourceWidget);
             source = isNode(container) ? container : null;
             return source != null;
         }
-        
+
         @Override
         public ConnectorState isTargetWidget(Widget sourceWidget, Widget targetWidget) {
             AbstractBeanNode container = (AbstractBeanNode) findObject(targetWidget);
@@ -656,24 +671,24 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
             }
             return container != null ? ConnectorState.REJECT_AND_STOP : ConnectorState.REJECT;
         }
-        
+
         @Override
         public boolean hasCustomTargetWidgetResolver(Scene scene) {
             return false;
         }
-        
+
         @Override
         public Widget resolveTargetWidget(Scene scene, Point sceneLocation) {
             return null;
         }
-        
+
         private Leg leg;
-        
+
         @Override
         public void createConnection(Widget sourceWidget, Widget targetWidget) {
             leg = null;
             if (validateConnection(sourceWidget, targetWidget)) {
-                
+
                 LegType legType = paletteController.getSelectedItem().lookup(LegType.class);
                 if (legType == null) {
                     SelectLegTypePanel inputPane = new SelectLegTypePanel();
@@ -691,17 +706,17 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
                             leg = newLeg;
                         });
                         scheduledLegWizardAction.actionPerformed(null);
-                        
+
                     } else {
                         leg = new Leg(legType);
                     }
                 }
                 if (leg != null) {
                     try {
-                        
+
                         HubWidget hubSourceWidget = (HubWidget) findWidget(source);
                         HubWidget hubTargetWidget = (HubWidget) findWidget(target);
-                        
+
                         ConnectionWidget connectionWidget;
                         if (leg instanceof ScheduledLeg) {
                             connectionWidget
@@ -713,7 +728,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
                             connectionWidget
                                     = (ConnectionWidget) addEdge(new LegNode((Leg) leg));
                         }
-                        
+
                         connectHubWidgets(
                                 hubSourceWidget,
                                 connectionWidget,
@@ -738,15 +753,15 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
         private boolean validateConnection(
                 Widget sourceWidget,
                 Widget targetWidget) {
-            
+
             AbstractBeanNode sourceNode
                     = (AbstractBeanNode) findObject(sourceWidget);
             AbstractBeanNode targetNode
                     = (AbstractBeanNode) findObject(targetWidget);
-            
+
             return findNodeEdges(sourceNode, true, false).isEmpty()
                     && findNodeEdges(targetNode, false, true).isEmpty();
         }
     }
-    
+
 }
