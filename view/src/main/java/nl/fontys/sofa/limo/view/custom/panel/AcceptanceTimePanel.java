@@ -44,9 +44,9 @@ public class AcceptanceTimePanel extends JPanel {
 
     public AcceptanceTimePanel(List<Long> acceptanceTime) {
         this();
-        for (Long time : acceptanceTime) {
+        acceptanceTime.stream().forEach((time) -> {
             model.addRow(new Long[]{time});
-        }
+        });
     }
 
     public AcceptanceTimePanel() {
@@ -69,7 +69,7 @@ public class AcceptanceTimePanel extends JPanel {
         model.addColumn(LIMOResourceBundle.getString("ACCEPTANCE_TIME"));
         Box bv = Box.createVerticalBox();
         table = new JTable(model);
-        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+        RowSorter<TableModel> sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
         JScrollPane sc = new JScrollPane(table);
         sc.setPreferredSize(new Dimension(160, 0));
@@ -82,18 +82,36 @@ public class AcceptanceTimePanel extends JPanel {
     }
 
     public void setActionListener() {
-        btnAdd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                long aTime = 0;
-
+        btnAdd.addActionListener((ActionEvent e) -> {
+            long aTime;
+            
+            String time = JOptionPane.showInputDialog(AcceptanceTimePanel.this,
+                    LIMOResourceBundle.getString("ACCEPTANCE_TIME"), null);
+            if (time != null) {
+                if (!time.isEmpty()) {
+                    try {
+                        aTime = Long.parseLong(time.replace(",", "."));
+                        model.addRow(new Long[]{aTime});
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(AcceptanceTimePanel.this,
+                                LIMOResourceBundle.getString("NOT_A_NUMBER"),
+                                LIMOResourceBundle.getString("NUMBER_ERROR"),
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                
+            }
+        });
+        btnEdit.addActionListener((ActionEvent e) -> {
+            if (table.getSelectedRow() >= 0) {
+                long aTime;
                 String time = JOptionPane.showInputDialog(AcceptanceTimePanel.this,
-                        LIMOResourceBundle.getString("ACCEPTANCE_TIME"), null);
+                        LIMOResourceBundle.getString("ACCEPTANCE_TIME"), model.getValueAt(table.getSelectedRow(), 0));
                 if (time != null) {
                     if (!time.isEmpty()) {
                         try {
                             aTime = Long.parseLong(time.replace(",", "."));
-                            model.addRow(new Long[]{aTime});
+                            model.setValueAt(aTime, table.getSelectedRow(), 0);
                         } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(AcceptanceTimePanel.this,
                                     LIMOResourceBundle.getString("NOT_A_NUMBER"),
@@ -101,41 +119,13 @@ public class AcceptanceTimePanel extends JPanel {
                                     JOptionPane.ERROR_MESSAGE);
                         }
                     }
-
+                    
                 }
             }
         });
-        btnEdit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() >= 0) {
-                    long aTime = 0;
-                    String time = JOptionPane.showInputDialog(AcceptanceTimePanel.this,
-                            LIMOResourceBundle.getString("ACCEPTANCE_TIME"), model.getValueAt(table.getSelectedRow(), 0));
-                    if (time != null) {
-                        if (!time.isEmpty()) {
-                            try {
-                                aTime = Long.parseLong(time.replace(",", "."));
-                                model.setValueAt(aTime, table.getSelectedRow(), 0);
-                            } catch (NumberFormatException ex) {
-                                JOptionPane.showMessageDialog(AcceptanceTimePanel.this,
-                                        LIMOResourceBundle.getString("NOT_A_NUMBER"),
-                                        LIMOResourceBundle.getString("NUMBER_ERROR"),
-                                        JOptionPane.ERROR_MESSAGE);
-                            }
-                        }
-
-                    }
-                }
-            }
-        });
-        btnDelete.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() >= 0) {
-                    model.removeRow(table.getSelectedRow());
-                }
+        btnDelete.addActionListener((ActionEvent e) -> {
+            if (table.getSelectedRow() >= 0) {
+                model.removeRow(table.getSelectedRow());
             }
         });
     }
