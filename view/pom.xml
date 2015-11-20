@@ -183,6 +183,12 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>commons-io-1.4</artifactId>
+            <version>RELEASE701</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>  
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-sendopts</artifactId>
             <version>RELEASE802</version>
