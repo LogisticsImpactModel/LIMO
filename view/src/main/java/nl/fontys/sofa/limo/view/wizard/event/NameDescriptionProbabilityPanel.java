@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
@@ -148,7 +149,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                 String bla = String.valueOf(tableModel.getValueAt(i, 0));
                 if(bla.equals("Upper Bound") && noUpperCheckbox.isSelected())
                 {
-                    tableModel.setValueAt("1000000000", i, 1);
+                    tableModel.setValueAt(LIMOResourceBundle.getString("NOUPPERBOUND"), i, 1);
                 }
                 
                 if(bla.equals("Upper Bound") && !noUpperCheckbox.isSelected())
@@ -224,7 +225,7 @@ public final class NameDescriptionProbabilityPanel extends JPanel {
                     String bla = String.valueOf(tableModel.getValueAt(i, 0));
                     if (bla.equals("Upper Bound")) {
                         Double div = (Double) tableModel.getValueAt(i, 1);
-                        if(div == 1000000000)
+                        if(Objects.equals(div, Double.valueOf(LIMOResourceBundle.getString("NOUPPERBOUND"))))
                         {
                             noUpperCheckbox.setSelected(true);
                         }
