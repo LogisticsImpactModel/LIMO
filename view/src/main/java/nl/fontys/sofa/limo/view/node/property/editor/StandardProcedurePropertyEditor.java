@@ -13,7 +13,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
-import nl.fontys.sofa.limo.view.custom.procedure.StandartProcedureComponent;
+import nl.fontys.sofa.limo.view.custom.procedure.StandardProcedureComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
@@ -21,7 +21,7 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
  *
  * @author Matthias Brück
  */
-public class StandartProcedurePropertyEditor extends PropertyEditorSupport {
+public class StandardProcedurePropertyEditor extends PropertyEditorSupport {
 
     @Override
     public String getAsText() {
@@ -58,7 +58,7 @@ public class StandartProcedurePropertyEditor extends PropertyEditorSupport {
     /**
      * This is the custom editor for editing the procedure property.
      */
-    private class CustomEditor extends StandartProcedureComponent implements ItemListener, CellEditorListener {
+    private class CustomEditor extends StandardProcedureComponent implements ItemListener, CellEditorListener {
 
         private JTextField name;
 

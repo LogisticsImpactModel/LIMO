@@ -28,7 +28,7 @@ import org.openide.util.Lookup;
  *
  * @author Matthias Brück
  */
-public class AddStandartProcedureDialog extends JDialog implements ActionListener {
+public class AddStandardProcedureDialog extends JDialog implements ActionListener {
 
     private JButton saveButton, cancelButton, addTimeButton, addCostButton, addCotwoButton;
     private JTextField nameTextField, costTextField, timeTextField, cotwoTextField;
@@ -38,7 +38,7 @@ public class AddStandartProcedureDialog extends JDialog implements ActionListene
     private final DragNDropTable table;
     private final CellConstraints cc;
 
-    public AddStandartProcedureDialog(ProcedureCategoryDAO procedureCatDao, DragNDropTable dragNDropTable) {
+    public AddStandardProcedureDialog(ProcedureCategoryDAO procedureCatDao, DragNDropTable dragNDropTable) {
         this.table = dragNDropTable;
         cc = new CellConstraints();
         //LAYOUT
@@ -121,36 +121,36 @@ public class AddStandartProcedureDialog extends JDialog implements ActionListene
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(addCostButton)) {
-            EditStandartValueDialog editValueDialog = new EditStandartValueDialog(costValue, (Value changedValue) -> {
+            EditStandardValueDialog editValueDialog = new EditStandardValueDialog(costValue, (Value changedValue) -> {
                 if (costValue != null) {
                     costValue = changedValue;
                     costTextField.setText(costValue.toString());
-                    AddStandartProcedureDialog.this.revalidate();
-                    AddStandartProcedureDialog.this.repaint();
+                    AddStandardProcedureDialog.this.revalidate();
+                    AddStandardProcedureDialog.this.repaint();
                 }
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             editValueDialog.setVisible(true);
         }
         if (e.getSource().equals(addTimeButton)) {
-            EditStandartValueDialog editValueDialog = new EditStandartValueDialog(timeValue, (Value changedValue) -> {
+            EditStandardValueDialog editValueDialog = new EditStandardValueDialog(timeValue, (Value changedValue) -> {
                 if (timeValue != null) {
                     timeValue = changedValue;
                     timeTextField.setText(timeValue.toString());
-                    AddStandartProcedureDialog.this.revalidate();
-                    AddStandartProcedureDialog.this.repaint();
+                    AddStandardProcedureDialog.this.revalidate();
+                    AddStandardProcedureDialog.this.repaint();
                 }
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             editValueDialog.setVisible(true);
         }
         if (e.getSource().equals(addCotwoButton)) {
-            EditStandartValueDialog editValueDialog = new EditStandartValueDialog(cotwoValue, (Value changedValue) -> {
+            EditStandardValueDialog editValueDialog = new EditStandardValueDialog(cotwoValue, (Value changedValue) -> {
                 if (cotwoValue != null) {
                     cotwoValue = changedValue;
                     cotwoTextField.setText(cotwoValue.toString());
-                    AddStandartProcedureDialog.this.revalidate();
-                    AddStandartProcedureDialog.this.repaint();
+                    AddStandardProcedureDialog.this.revalidate();
+                    AddStandardProcedureDialog.this.repaint();
                 }
             });
             editValueDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

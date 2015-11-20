@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
 import nl.fontys.sofa.limo.api.dao.ProcedureDAO;
-import nl.fontys.sofa.limo.view.custom.procedure.AddStandartProcedureDialog;
+import nl.fontys.sofa.limo.view.custom.procedure.AddStandardProcedureDialog;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
 
@@ -14,12 +14,12 @@ import org.openide.util.Lookup;
  *
  * @author Sven Mäurer
  */
-public final class StandartProceduresPanel extends JPanel {
+public final class StandardProceduresPanel extends JPanel {
 
-    private AddStandartProcedureDialog addProcedureDialog;
+    private AddStandardProcedureDialog addProcedureDialog;
     protected ProcedureCategoryDAO procedureCatDao;
     
-    public StandartProceduresPanel() {
+    public StandardProceduresPanel() {
         initComponents();
     }
 
@@ -32,7 +32,7 @@ public final class StandartProceduresPanel extends JPanel {
         setLayout(new BorderLayout());
         
         procedureCatDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
-        addProcedureDialog = new AddStandartProcedureDialog(procedureCatDao, null);
+        addProcedureDialog = new AddStandardProcedureDialog(procedureCatDao, null);
         addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addProcedureDialog.setVisible(true);
         add(addProcedureDialog, BorderLayout.CENTER);

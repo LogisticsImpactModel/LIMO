@@ -25,7 +25,7 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
  *
  * @author Matthias Brück
  */
-public class EditStandartValueDialog extends JDialog implements ActionListener {
+public class EditStandardValueDialog extends JDialog implements ActionListener {
 
     private JButton buttonSave, buttonCancel;
     private JComboBox<String> comboboxValueTypes;
@@ -34,9 +34,9 @@ public class EditStandartValueDialog extends JDialog implements ActionListener {
     private JLabel labelType, labelValue, labelMin, lableMax, labelError;
     private int activeType = 0;
     private final CellConstraints cc;
-    private final AddStandartProcedureDialog.EditStandartValueDialogListener editValueDialogListener;
+    private final AddStandardProcedureDialog.EditStandartValueDialogListener editValueDialogListener;
 
-    public EditStandartValueDialog(Value value, AddStandartProcedureDialog.EditStandartValueDialogListener editValueDialogListener) {
+    public EditStandardValueDialog(Value value, AddStandardProcedureDialog.EditStandartValueDialogListener editValueDialogListener) {
         //LAYOUT
         this.editValueDialogListener = editValueDialogListener;
         cc = new CellConstraints();
