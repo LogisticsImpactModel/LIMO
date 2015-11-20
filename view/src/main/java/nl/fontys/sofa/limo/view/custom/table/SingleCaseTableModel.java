@@ -5,14 +5,8 @@
  */
 package nl.fontys.sofa.limo.view.custom.table;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import nl.fontys.sofa.limo.simulation.result.DataEntry;
-import static nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel.COSTS_ID;
-import static nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel.DELAYS_ID;
-import static nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel.EXTRA_COSTS_ID;
-import static nl.fontys.sofa.limo.view.custom.table.DataEntryTableModel.LEAD_TIMES_ID;
 import nl.fontys.sofa.limo.view.graphs.AbstractLimoTableModel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
