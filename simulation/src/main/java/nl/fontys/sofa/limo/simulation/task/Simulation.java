@@ -27,7 +27,7 @@ import org.openide.util.TaskListener;
  */
 public class Simulation implements Runnable, TaskListener, Cancellable {
 
-    private AtomicBoolean running;
+    private final AtomicBoolean running;
 
     private final SupplyChain supplyChain;
     private final Map<org.openide.util.Task, TestCase> testCaseTasks;
@@ -114,7 +114,7 @@ public class Simulation implements Runnable, TaskListener, Cancellable {
 
         int i = 0;
         while (i < testCaseCount && running.get()) {
-            SupplyChain sc = null;
+            SupplyChain sc;
 
             synchronized (scPool) {
                 while (scPool.isEmpty()) {
