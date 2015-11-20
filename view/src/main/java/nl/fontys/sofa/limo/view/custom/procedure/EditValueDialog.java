@@ -182,6 +182,10 @@ public class EditValueDialog extends JDialog implements ActionListener {
         if (activeType == 0) {
             try {
                 SingleValue changedValue = new SingleValue(Double.parseDouble(textfieldValue.getText()));
+                if (changedValue.getValue() < 0f) {
+                    labelError.setText(LIMOResourceBundle.getString("NOT_POSITIVE"));
+                    return;
+                }
                 editValueDialogListener.newValue(changedValue);
                 this.dispose();
             } catch (NumberFormatException ex) {
@@ -192,6 +196,10 @@ public class EditValueDialog extends JDialog implements ActionListener {
                 double min = Double.parseDouble(textfieldMin.getText());
                 double max = Double.parseDouble(textfieldMax.getText());
                 if (max > min) {
+                    if (min < 0f) {
+                        labelError.setText(LIMOResourceBundle.getString("NOT_POSITIVE"));
+                        return;
+                    }
                     RangeValue changedValue = new RangeValue(min, max);
                     editValueDialogListener.newValue(changedValue);
                     this.dispose();

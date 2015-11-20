@@ -216,7 +216,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
      * @return True if the model is valid, false if not.
      */
     private boolean isValidProcedure() {
-        return !(nameTextField.getText().equals("") || nameTextField.getText().equals("") || costTextField.getText().equals(""));
+        return !nameTextField.getText().isEmpty() && !costTextField.getText().isEmpty();
     }
 
     /**
