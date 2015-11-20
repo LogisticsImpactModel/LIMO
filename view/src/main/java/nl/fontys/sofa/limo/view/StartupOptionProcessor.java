@@ -16,13 +16,11 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Action;
-import nl.fontys.sofa.limo.view.wizard.importer.ImportWizardAction;
 import org.netbeans.api.sendopts.CommandException;
 import org.netbeans.spi.sendopts.Env;
 import org.netbeans.spi.sendopts.Option;
 import org.netbeans.spi.sendopts.OptionProcessor;
 import org.openide.awt.Actions;
-import org.openide.util.actions.SystemAction;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
@@ -33,8 +31,8 @@ import org.openide.util.lookup.ServiceProvider;
 public class StartupOptionProcessor extends OptionProcessor {
 
     private static final Logger logger = Logger.getLogger(StartupOptionProcessor.class.getName());
-    private Option openOption = Option.defaultArguments();
-    private Option openOption2 = Option.additionalArguments('o', "open");
+    private final Option openOption = Option.defaultArguments();
+    private final Option openOption2 = Option.additionalArguments('o', "open");
 
     @Override
     protected Set<Option> getOptions() {
@@ -57,32 +55,25 @@ public class StartupOptionProcessor extends OptionProcessor {
             filenameList.addAll(Arrays.asList((String[]) obj));
         }
 
-        for (int i = 0; i < filenameList.size(); i++) {
-            File file = new File(filenameList.get(i));
+        for (String filenameList1 : filenameList) {
+            File file = new File(filenameList1);
             if (!file.isAbsolute()) {
-                file = new File(env.getCurrentDirectory(),
-                        filenameList.get(i));
+                file = new File(env.getCurrentDirectory(), filenameList1);
             }
             logger.log(Level.INFO, "Open file: {0}", file.getPath());
-
             String path = file.getAbsolutePath();
-
             if (path.endsWith(".lef")) {
                 ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_FIRST, path);
                 Action action = Actions.forID("Master Data", "nl.fontys.sofa.limo.view.wizard.importer.ImportWizardAction");
                 action.actionPerformed(e);
                 continue;
             }
-            
-            if(path.endsWith(".lsc")){
+            if (path.endsWith(".lsc")) {
                 ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_FIRST, path);
-                Action action =  Actions.forID("Window", "nl.fontys.sofa.limo.view.action.OpenChainAction");
-               
-                action.actionPerformed(e);
-                continue;
-            }
-            
+                Action action = Actions.forID("Window", "nl.fontys.sofa.limo.view.action.OpenChainAction");
 
+                action.actionPerformed(e);
+            }
         }
     }
 
