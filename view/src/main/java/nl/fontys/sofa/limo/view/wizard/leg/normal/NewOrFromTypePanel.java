@@ -65,9 +65,9 @@ public final class NewOrFromTypePanel extends JPanel {
         LegTypeService legTypeService = Lookup.getDefault().lookup(LegTypeService.class);
         htl = legTypeService.findAll();
         ArrayList<String> legTypeList = new ArrayList<>();
-        for (LegType legType : htl) {
+        htl.stream().forEach((legType) -> {
             legTypeList.add(legType.getName());
-        }
+        });
 
         cmbLegType.setModel(new DefaultComboBoxModel(legTypeList.toArray()));
         c.weightx = 1;
@@ -82,20 +82,14 @@ public final class NewOrFromTypePanel extends JPanel {
     }
 
     public void setActionListener() {
-        rbFromScratch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbFromScratch.isSelected()) {
-                    cmbLegType.setEnabled(false);
-                }
+        rbFromScratch.addActionListener((ActionEvent e) -> {
+            if (rbFromScratch.isSelected()) {
+                cmbLegType.setEnabled(false);
             }
         });
-        rbFromLegType.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rbFromLegType.isSelected()) {
-                    cmbLegType.setEnabled(true);
-                }
+        rbFromLegType.addActionListener((ActionEvent e) -> {
+            if (rbFromLegType.isSelected()) {
+                cmbLegType.setEnabled(true);
             }
         });
     }

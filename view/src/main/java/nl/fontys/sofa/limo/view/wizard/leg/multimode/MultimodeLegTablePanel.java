@@ -2,7 +2,6 @@ package nl.fontys.sofa.limo.view.wizard.leg.multimode;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,92 +64,70 @@ public class MultimodeLegTablePanel extends JPanel {
     }
 
     public void setActionListener() {
-        btnAdd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                NormalLegWizardAction wiz = new NormalLegWizardAction(new FinishedLegListener() {
+        btnAdd.addActionListener((ActionEvent e) -> {
+            NormalLegWizardAction wiz = new NormalLegWizardAction((Leg leg) -> {
+                String prop = JOptionPane.showInputDialog(MultimodeLegTablePanel.this,
+                        LIMOResourceBundle.getString(WEIGHT), null);
+                double propability = 0.0;
+                if (prop != null) {
+                    try {
+                        propability = Double.parseDouble(prop.replace(",", "."));
+                    } catch (NumberFormatException e1) {
+                        JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
+                                LIMOResourceBundle.getString(NOT_A_NUMBER),
+                                LIMOResourceBundle.getString(NUMBER_ERROR),
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }                    
+                try {
+                    model.addLeg(leg, propability);
+                    firePropertyChange(LEG, null, leg);
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
+                            LIMOResourceBundle.getString(NOT_POSITIVE),
+                            LIMOResourceBundle.getString(NUMBER_ERROR),
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            });
+            wiz.actionPerformed(e);
+        });
 
-                    @Override
-                    public void finishedLeg(Leg leg) {
-                        String prop = JOptionPane.showInputDialog(MultimodeLegTablePanel.this,
-                                LIMOResourceBundle.getString(WEIGHT), null);
-                        double propability = 0.0;
-                        if (prop != null) {
-                            try {
-                                propability = Double.parseDouble(prop.replace(",", "."));
-                            } catch (NumberFormatException e) {
-                                JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
-                                        LIMOResourceBundle.getString(NOT_A_NUMBER),
-                                        LIMOResourceBundle.getString(NUMBER_ERROR),
-                                        JOptionPane.ERROR_MESSAGE);
-                            }
-                        }
+        btnEdit.addActionListener((ActionEvent e) -> {
+            NormalLegWizardAction wiz = new NormalLegWizardAction((Leg leg) -> {
+                if (table.getSelectedRow() >= 0) {
+                    String prop = JOptionPane.showInputDialog(MultimodeLegTablePanel.this,
+                            LIMOResourceBundle.getString(WEIGHT), model.getPropability(table.getSelectedRow()));
+                    double propability = 0.0;
+                    if (prop != null) {
                         try {
-                            model.addLeg(leg, propability);
-                            firePropertyChange(LEG, null, leg);
-                        } catch (IllegalArgumentException ex) {
+                            propability = Double.parseDouble(prop.replace(",", "."));
+                        } catch (NumberFormatException e1) {
                             JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
                                     LIMOResourceBundle.getString(NOT_POSITIVE),
                                     LIMOResourceBundle.getString(NUMBER_ERROR),
                                     JOptionPane.ERROR_MESSAGE);
                         }
-
+                    } else {                        
+                        propability = model.getPropability(table.getSelectedRow());
                     }
-                });
-                wiz.actionPerformed(e);
-            }
-        });
-
-        btnEdit.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                NormalLegWizardAction wiz = new NormalLegWizardAction(new FinishedLegListener() {
-
-                    @Override
-                    public void finishedLeg(Leg leg) {
-                        if (table.getSelectedRow() >= 0) {
-                            String prop = JOptionPane.showInputDialog(MultimodeLegTablePanel.this,
-                                    LIMOResourceBundle.getString(WEIGHT), model.getPropability(table.getSelectedRow()));
-                            double propability = 0.0;
-
-                            if (prop != null) {
-                                try {
-                                    propability = Double.parseDouble(prop.replace(",", "."));
-                                } catch (NumberFormatException e) {
-                                    JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
-                                            LIMOResourceBundle.getString(NOT_POSITIVE),
-                                            LIMOResourceBundle.getString(NUMBER_ERROR),
-                                            JOptionPane.ERROR_MESSAGE);
-                                }
-                            } else {
-                                propability = model.getPropability(table.getSelectedRow());
-                            }
-                            try {
-                                model.updateLeg(leg, propability, table.getSelectedRow());
-                                firePropertyChange(LEG, null, leg);
-                            } catch (IllegalArgumentException ex) {
-                                JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
-                                        LIMOResourceBundle.getString(NOT_A_NUMBER),
-                                        LIMOResourceBundle.getString(NUMBER_ERROR),
-                                        JOptionPane.ERROR_MESSAGE);
-                            }
-
-                        }
+                    try {
+                        model.updateLeg(leg, propability, table.getSelectedRow());
+                        firePropertyChange(LEG, null, leg);
+                    } catch (IllegalArgumentException ex) {
+                        JOptionPane.showMessageDialog(MultimodeLegTablePanel.this,
+                                LIMOResourceBundle.getString(NOT_A_NUMBER),
+                                LIMOResourceBundle.getString(NUMBER_ERROR),
+                                JOptionPane.ERROR_MESSAGE);
                     }
-                });
-                wiz.setUpdate(model.getLeg(table.getSelectedRow()));
-                wiz.actionPerformed(e);
-            }
-        });
-        btnDelete.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() >= 0) {
-                    model.removeLeg(table.getSelectedRow());
-                    firePropertyChange(LEG, null, null);
                 }
+            });
+            wiz.setUpdate(model.getLeg(table.getSelectedRow()));
+            wiz.actionPerformed(e);
+        });
+        btnDelete.addActionListener((ActionEvent e) -> {
+            if (table.getSelectedRow() >= 0) {
+                model.removeLeg(table.getSelectedRow());
+                firePropertyChange(LEG, null, null);
             }
         });
     }
@@ -265,7 +242,7 @@ public class MultimodeLegTablePanel extends JPanel {
 
         @Override
         public void setValueAt(Object value, int row, int col) {
-            double propability = 0.0;
+            double propability;
             try {
                 if (value.toString().contains(",")) {
                     propability = Double.parseDouble(value.toString().replace(",", "."));
