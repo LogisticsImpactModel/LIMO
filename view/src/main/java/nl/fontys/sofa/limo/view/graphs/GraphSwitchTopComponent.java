@@ -25,6 +25,10 @@ import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 import org.openide.util.Utilities;
+import org.openide.util.lookup.AbstractLookup;
+import org.openide.util.lookup.InstanceContent;
+import org.openide.util.lookup.Lookups;
+import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.Mode;
 import org.openide.windows.WindowManager;
 
@@ -51,6 +55,8 @@ import org.openide.windows.WindowManager;
 public final class GraphSwitchTopComponent extends TopComponent implements LookupListener {
 
     private Lookup.Result<ResultTopComponent.GraphChangeListener> result = null;
+    private ProxyLookup lkp;
+    private InstanceContent ic = new InstanceContent();
 
     public GraphSwitchTopComponent() {
         initComponents();
@@ -62,6 +68,7 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
         result = Utilities.actionsGlobalContext().lookupResult(ResultTopComponent.GraphChangeListener.class);
         result.addLookupListener(this);
         Mode findMode = WindowManager.getDefault().findMode("editor");
+        lkp = new ProxyLookup(Lookups.singleton(this), new AbstractLookup(ic));
 
     }
 
@@ -101,8 +108,8 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
         barSelect.setIconTextGap(25);
         barSelect.setMargin(new java.awt.Insets(25, 25, 25, 25));
         barSelect.setMaximumSize(new java.awt.Dimension(500, 23));
-        barSelect.addActionListener((evt) 
-            -> {
+        barSelect.addActionListener((evt)
+                -> {
             barSelectActionPerformed(evt);
         });
         add(barSelect);
@@ -183,25 +190,31 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
     }
 
     @Override
+    public Lookup getLookup() {
+        return lkp;
+    }
+
+    @Override
     public void resultChanged(LookupEvent le) {
 
         Collection<? extends ResultTopComponent.GraphChangeListener> allInstances = result.allInstances();
+        GraphSwitchTopComponent lookup = Utilities.actionsGlobalContext().lookup(GraphSwitchTopComponent.class);
+
         if (!allInstances.isEmpty()) {
             WindowManager.getDefault().findMode("properties").dockInto(this);
             this.open();
             this.requestVisible();
-            graphTypeChangeListener = allInstances.iterator().next();
-        } else {
-            WindowManager winMan = WindowManager.getDefault();
-            List<TopComponent> openComponents = new ArrayList();
-            winMan.getModes().parallelStream().forEach(n -> {
-                List<TopComponent> open = new ArrayList<>();
-                Collections.addAll(open, winMan.getOpenedTopComponents(n));
-                open.parallelStream().filter(t -> t instanceof ResultTopComponent).forEach(o -> openComponents.add(o));
-            });
-            if (openComponents.isEmpty()) {
-                this.close();
+            if (graphTypeChangeListener != null) {
+                if (lookup == null) {
+                    graphTypeChangeListener = allInstances.iterator().next();
+                }
+            } else {
+                graphTypeChangeListener = allInstances.iterator().next();
+                ic.add(graphTypeChangeListener);
+
             }
+        } else {
+            this.close();
         }
 
     }

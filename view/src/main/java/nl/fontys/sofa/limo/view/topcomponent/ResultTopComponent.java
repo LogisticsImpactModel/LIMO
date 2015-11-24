@@ -44,6 +44,8 @@ import nl.fontys.sofa.limo.view.graphs.PieChartComponent;
 import nl.fontys.sofa.limo.view.graphs.XYChartComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.util.Lookup;
+import org.openide.util.LookupEvent;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.lookup.Lookups;
 import org.openide.windows.TopComponent;
@@ -190,7 +192,7 @@ public final class ResultTopComponent extends TopComponent {
             singleMap.put(SingleCaseTableModel.LEAD_TIMES_ID, leadTimes);
             singleMap.put(SingleCaseTableModel.EXTRA_COSTS_ID, extraCosts);
             singleMap.put(SingleCaseTableModel.DELAYS_ID, delay);
-            singleMap.put(SingleCaseTableModel.EVENT_ID,eventCount);
+            singleMap.put(SingleCaseTableModel.EVENT_ID, eventCount);
             SingleCaseTableModel detm = new SingleCaseTableModel(name, singleMap);
             totalsTable = new JTable(detm);
             return new JScrollPane(totalsTable);
@@ -512,7 +514,8 @@ public final class ResultTopComponent extends TopComponent {
 
     @Override
     public void componentClosed() {
-
+        LookupEvent le = new LookupEvent(null);
+        graphSwitch.resultChanged(le);
     }
 
     void writeProperties(java.util.Properties p
