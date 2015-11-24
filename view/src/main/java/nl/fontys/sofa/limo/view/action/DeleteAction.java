@@ -74,7 +74,8 @@ public final class DeleteAction extends AbstractAction {
             deletableItems.stream().forEach((del) -> {
                 del.delete();
             });
-            scene.getScene().repaint();
+            
+            scene.validate();
             return;
         }
 
