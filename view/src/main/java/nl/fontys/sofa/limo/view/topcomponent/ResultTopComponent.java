@@ -44,7 +44,6 @@ import nl.fontys.sofa.limo.view.graphs.PieChartComponent;
 import nl.fontys.sofa.limo.view.graphs.XYChartComponent;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.api.settings.ConvertAsProperties;
-import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.lookup.Lookups;
@@ -264,10 +263,9 @@ public final class ResultTopComponent extends TopComponent {
         createXYChart(totalGraphPanel, totalDetm, BarChart.class);
 
         panel.add(totalGraphPanel);
-
         panel.add(totalJScrollPane);
-        return panel;
 
+        return panel;
     }
 
     private void createXYChart(JPanel parent, DataEntryTableModel model, Class<? extends XYChart> chartClass) {
@@ -457,7 +455,6 @@ public final class ResultTopComponent extends TopComponent {
         createXYChart(nodeGraphPanel, nodeDetm, LineChart.class);
 
         panel.add(nodeGraphPanel);
-
         panel.add(catJScrollPane);
 
         catJScrollPane.setPreferredSize(

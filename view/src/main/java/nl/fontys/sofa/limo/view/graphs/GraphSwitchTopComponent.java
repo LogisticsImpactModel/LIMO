@@ -6,10 +6,7 @@
 package nl.fontys.sofa.limo.view.graphs;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import org.openide.awt.ActionID;
@@ -29,7 +26,6 @@ import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
-import org.openide.windows.Mode;
 import org.openide.windows.WindowManager;
 
 /**
@@ -55,8 +51,8 @@ import org.openide.windows.WindowManager;
 public final class GraphSwitchTopComponent extends TopComponent implements LookupListener {
 
     private Lookup.Result<ResultTopComponent.GraphChangeListener> result = null;
-    private ProxyLookup lkp;
-    private InstanceContent ic = new InstanceContent();
+    private final ProxyLookup lkp;
+    private final InstanceContent ic = new InstanceContent();
 
     public GraphSwitchTopComponent() {
         initComponents();
@@ -67,7 +63,6 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
 
         result = Utilities.actionsGlobalContext().lookupResult(ResultTopComponent.GraphChangeListener.class);
         result.addLookupListener(this);
-        Mode findMode = WindowManager.getDefault().findMode("editor");
         lkp = new ProxyLookup(Lookups.singleton(this), new AbstractLookup(ic));
 
     }
@@ -211,12 +206,9 @@ public final class GraphSwitchTopComponent extends TopComponent implements Looku
             } else {
                 graphTypeChangeListener = allInstances.iterator().next();
                 ic.add(graphTypeChangeListener);
-
             }
         } else {
             this.close();
         }
-
     }
-
 }
