@@ -104,6 +104,12 @@
             <artifactId>org-netbeans-modules-autoupdate-ui</artifactId>
             <version>RELEASE69</version>
         </dependency>
+        <dependency> 
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-modules-projectui</artifactId>
+            <version>RELEASE80</version>
+        </dependency>
+    
     </dependencies>
 
     <build>
