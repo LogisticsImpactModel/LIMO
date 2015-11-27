@@ -7,21 +7,22 @@ package nl.fontys.sofa.limo.view.project.node;
 
 import java.awt.Image;
 import org.netbeans.api.annotations.common.StaticResource;
-import org.openide.nodes.FilterNode;
-import org.openide.nodes.Node;
+import org.openide.loaders.DataNode;
+import org.openide.loaders.DataObject;
 import org.openide.util.ImageUtilities;
 
 /**
  *
  * @author nilsh
  */
-public class ChainNode extends FilterNode {
+public class ChainNode extends DataNode {
 
     @StaticResource()
     public static final String CHAIN_ICON = "icons/gui/Link.png";
 
-    public ChainNode(Node original, org.openide.nodes.Children children) {
+    public ChainNode(DataObject original, org.openide.nodes.Children children) {
         super(original, children);
+        setChildren(children);
     }
 
     @Override

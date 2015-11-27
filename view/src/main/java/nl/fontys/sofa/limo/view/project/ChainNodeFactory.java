@@ -107,7 +107,7 @@ public class ChainNodeFactory implements NodeFactory {
 
         private Node createChains(DataObject chainsFolder) {
             Children children = createChainFolder(chainsFolder);
-            return new ChainNode(chainsFolder.getNodeDelegate(), children);
+            return new ChainNode(chainsFolder, children);
         }
 
         private Children createChainFolder(DataObject obj) {
