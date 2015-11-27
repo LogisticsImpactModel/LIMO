@@ -122,7 +122,7 @@ public class ChainNodeFactory implements NodeFactory {
                                 nodes.add(n);
                             } else if (f.getExt().equals("lsc")) {
                                 DataObject o = DataObject.find(f);
-                                Node n = new SupplyChainNode(o.getNodeDelegate(), Children.LEAF);
+                                Node n = new SupplyChainNode(o);
                                 nodes.add(n);
                             }
                         }
@@ -133,7 +133,7 @@ public class ChainNodeFactory implements NodeFactory {
                 } else if (file.getExt().equals("lsc")) {
                     try {
                         DataObject object = DataObject.find(file);
-                        Node n = new SupplyChainNode(object.getNodeDelegate(), Children.LEAF);
+                        Node n = new SupplyChainNode(object);
                         nodes.add(n);
                     } catch (DataObjectNotFoundException ex) {
                         Exceptions.printStackTrace(ex);

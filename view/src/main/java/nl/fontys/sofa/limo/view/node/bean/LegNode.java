@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.view.node.bean;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
@@ -64,11 +66,10 @@ public class LegNode extends AbstractBeanNode<Leg> {
         };
     }
 
-    @Override
+    /* @Override
     public boolean canDestroy() {
-        throw new UnsupportedOperationException(LIMOResourceBundle.getString("NOT_SUPPORTED"));
-    }
-
+        return true;
+    }*/
     @Override
     public AbstractBeanNode getDetachedNodeCopy() {
         throw new UnsupportedOperationException(LIMOResourceBundle.getString("COPY_NOT_SUPPORTED"));
@@ -86,6 +87,11 @@ public class LegNode extends AbstractBeanNode<Leg> {
 
     public void refresh() {
         createProperties(bean, null);
+    }
+
+    @Override
+    public Image getIcon(int type) {
+        return getBean().getIcon().getImage().getScaledInstance(16, 16, BufferedImage.SCALE_SMOOTH);
     }
 
     @Override
@@ -121,7 +127,8 @@ public class LegNode extends AbstractBeanNode<Leg> {
     @Override
     public void delete() {
         /**
-         * Delete is empty because the LegNodes aren't saved in the database and therefore didn't need to be deleted.
+         * Delete is empty because the LegNodes aren't saved in the database and
+         * therefore didn't need to be deleted.
          */
     }
 

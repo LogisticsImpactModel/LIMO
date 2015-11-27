@@ -1,7 +1,9 @@
 package nl.fontys.sofa.limo.view.node.bean;
 
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
@@ -85,7 +87,7 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
                 createProperties(getBean(), null);
                 setSheet(getSheet());
 
-                setDisplayName(getBean().getName()); //Manually update the displayname 
+                setDisplayName(getBean().getName()); //Manually update the displayname
             }
         });
         actionList.add(new AbstractAction(LIMOResourceBundle.getString("DELETE")) {
@@ -171,6 +173,11 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode {
     @Override
     protected Icon getBeanIcon() {
         return getBean().getIcon();
+    }
+
+    @Override
+    public Image getIcon(int type) {
+        return bean.getIcon().getImage().getScaledInstance(16, 16, BufferedImage.SCALE_SMOOTH);
     }
 
     @Override
