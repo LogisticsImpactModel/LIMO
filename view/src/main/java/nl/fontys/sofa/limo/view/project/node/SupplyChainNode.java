@@ -6,10 +6,13 @@
 package nl.fontys.sofa.limo.view.project.node;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.beans.IntrospectionException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
@@ -17,6 +20,7 @@ import nl.fontys.sofa.limo.view.node.bean.EventNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
 import nl.fontys.sofa.limo.view.node.bean.ProcedureNode;
+import nl.fontys.sofa.limo.view.topcomponent.ChainLoaderTopComponent;
 import org.netbeans.api.annotations.common.StaticResource;
 import org.openide.loaders.DataNode;
 import org.openide.loaders.DataObject;
@@ -54,6 +58,18 @@ public class SupplyChainNode extends DataNode {
     public String getDisplayName() {
         String s = super.getDisplayName();
         return s.substring(0, s.length() - 4);
+    }
+
+    @Override
+    public Action getPreferredAction() {
+        return new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChainLoaderTopComponent chainLoaderTopComponent = new ChainLoaderTopComponent(chain);
+                chainLoaderTopComponent.open();
+                chainLoaderTopComponent.requestActive();
+            }
+        };
     }
 
     private Children createChildNodes() {
