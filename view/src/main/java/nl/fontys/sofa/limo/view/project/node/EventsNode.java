@@ -7,33 +7,37 @@ package nl.fontys.sofa.limo.view.project.node;
 
 import java.awt.Image;
 import org.netbeans.api.annotations.common.StaticResource;
-import org.openide.nodes.FilterNode;
-import org.openide.nodes.Node;
+import org.openide.nodes.AbstractNode;
+import org.openide.nodes.Children;
 import org.openide.util.ImageUtilities;
 
 /**
  *
  * @author nilsh
  */
-public class FolderFilterNode extends FilterNode {
+public class EventsNode extends AbstractNode {
 
     @StaticResource()
-    public static final String FOLDER_ICON = "icons/gui/Folder.png";
-    @StaticResource()
-    public static final String FOLDER_ICON_OPEN = "icons/gui/Open_Folder.png";
+    public static final String EVENTS_ICON = "icons/Event_SW_16x16.png";
 
-    public FolderFilterNode(Node original, org.openide.nodes.Children children) {
-        super(original, children);
+    public EventsNode(Children children) {
+        super(children);
+    }
+
+    @Override
+    public String getName() {
+        return "Events";
     }
 
     @Override
     public Image getIcon(int type) {
-        return ImageUtilities.loadImage(FOLDER_ICON);
+        return ImageUtilities.loadImage(EVENTS_ICON);
     }
 
     @Override
     public Image getOpenedIcon(int type) {
-        return ImageUtilities.loadImage(FOLDER_ICON_OPEN);
+        return getIcon(type);
+
     }
 
 }

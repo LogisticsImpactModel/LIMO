@@ -101,7 +101,7 @@ class SupplyProject implements Project {
     private class CustomerProjectLogicalView implements LogicalViewProvider {
 
         @StaticResource()
-        public static final String CUSTOMER_ICON = "icons/container_16x16.png";
+        public static final String CUSTOMER_ICON = "icons/ProcedureCategory_16x16.png";
 
         private final SupplyProject project;
 
@@ -153,6 +153,7 @@ class SupplyProject implements Project {
                     CommonProjectActions.closeProjectAction(),
                     CommonProjectActions.renameProjectAction(),
                     CommonProjectActions.moveProjectAction()
+
                 };
             }
 

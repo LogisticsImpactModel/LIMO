@@ -27,17 +27,21 @@ import org.openide.util.Exceptions;
  */
 public class SupplyChain implements Serializable {
 
-    @Expose private static final long serialVersionUID = 1185813427289144002L;
+    @Expose
+    private static final long serialVersionUID = 1185813427289144002L;
 
-    @Expose private String name;
-    @Expose private String filepath;
+    @Expose
+    private String name;
+    @Expose
+    private String filepath;
     /**
      * The supply chain does only contain the start hub because via the start
      * hub it can get the complete supply chain due the properties of a
      * LinkedList.
      */
-    @Expose private Hub startHub;
-    
+    @Expose
+    private Hub startHub;
+
     private static Gson gson;
 
     public String getName() {
@@ -72,17 +76,26 @@ public class SupplyChain implements Serializable {
      */
     public static SupplyChain createFromFile(File file) {
         try {
-        InputStream in = new FileInputStream(file);
-        
-        Gson g = GsonHelper.getInstance();
-        
-        SupplyChain supplyChain;
+            InputStream in = new FileInputStream(file);
+
+            Gson g = GsonHelper.getInstance();
+
+            SupplyChain supplyChain;
             try (JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"))) {
                 reader.beginArray();
                 supplyChain = g.fromJson(reader, SupplyChain.class);
                 reader.endArray();
             }
-        return supplyChain;
+
+            Node pre = supplyChain.getStartHub();
+            Node act = pre.getNext();
+            while (act != null) {
+                act.setPrevious(pre);
+                pre = act;
+                act = act.getNext();
+            }
+
+            return supplyChain;
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             ex.printStackTrace(System.err);
         } catch (IOException ex) {
@@ -93,6 +106,7 @@ public class SupplyChain implements Serializable {
 
     /**
      * Saves the supply chain to a file specified at filepath.
+     *
      * @throws java.io.IOException
      */
     public void saveToFile() throws IOException {

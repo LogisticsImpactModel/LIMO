@@ -15,25 +15,28 @@ import org.openide.util.ImageUtilities;
  *
  * @author nilsh
  */
-public class FolderFilterNode extends FilterNode {
+public class ReportsNode extends FilterNode {
 
     @StaticResource()
-    public static final String FOLDER_ICON = "icons/gui/Folder.png";
-    @StaticResource()
-    public static final String FOLDER_ICON_OPEN = "icons/gui/Open_Folder.png";
+    public static final String REPORTS_ICON = "icons/gui/Report.png";
 
-    public FolderFilterNode(Node original, org.openide.nodes.Children children) {
+    public ReportsNode(Node original, org.openide.nodes.Children children) {
         super(original, children);
     }
 
     @Override
     public Image getIcon(int type) {
-        return ImageUtilities.loadImage(FOLDER_ICON);
+        return ImageUtilities.loadImage(REPORTS_ICON);
     }
 
     @Override
     public Image getOpenedIcon(int type) {
-        return ImageUtilities.loadImage(FOLDER_ICON_OPEN);
+        return getIcon(type);
+    }
+
+    @Override
+    public String getDisplayName() {
+        return "Reports";
     }
 
 }

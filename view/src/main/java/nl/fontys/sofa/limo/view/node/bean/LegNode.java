@@ -8,6 +8,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.Icon;
+import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
@@ -73,6 +74,23 @@ public class LegNode extends AbstractBeanNode<Leg> {
     @Override
     public AbstractBeanNode getDetachedNodeCopy() {
         throw new UnsupportedOperationException(LIMOResourceBundle.getString("COPY_NOT_SUPPORTED"));
+    }
+
+    @Override
+    public String getHtmlDisplayName() {
+
+        String name = getName();
+        Leg l = getBean();
+
+        Hub preHub = l.getPrevious();
+        Hub nextHub = l.getNext();
+        if (preHub != null && nextHub != null) {
+
+            return "<font color='!textText'>" + name + "</font>"
+                    + " <font color='!controlShadow'><i>" + preHub.getName() + " -> " + nextHub.getName() + "</i></font>"; //To change body of generated methods, choose Tools | Templates.
+        } else {
+            return name;
+        }
     }
 
     @Override

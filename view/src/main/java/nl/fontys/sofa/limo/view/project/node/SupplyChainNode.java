@@ -30,6 +30,7 @@ import org.openide.nodes.Index;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 import org.openide.util.ImageUtilities;
+import org.openide.windows.TopComponent;
 
 /**
  *
@@ -38,20 +39,27 @@ import org.openide.util.ImageUtilities;
 public class SupplyChainNode extends DataNode {
 
     @StaticResource()
-    public static final String CHAIN_ICON = "icons/gui/Link.png";
+    public static final String CHAIN_ICON = "icons/gui/Link_CL.png";
 
     private DataObject dataObject;
-    private SupplyChain chain;
+    private final SupplyChain chain;
+    private TopComponent tc = null;
 
     public SupplyChainNode(DataObject object) {
         super(object, Children.LEAF);
         chain = SupplyChain.createFromFile(new File(object.getPrimaryFile().getPath()));
         setChildren(createChildNodes());
+
     }
 
     @Override
     public Image getIcon(int type) {
         return ImageUtilities.loadImage(CHAIN_ICON);
+    }
+
+    @Override
+    public Image getOpenedIcon(int type) {
+        return getIcon(type);
     }
 
     @Override
@@ -65,9 +73,14 @@ public class SupplyChainNode extends DataNode {
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChainLoaderTopComponent chainLoaderTopComponent = new ChainLoaderTopComponent(chain);
-                chainLoaderTopComponent.open();
-                chainLoaderTopComponent.requestActive();
+                if (tc == null) {
+                    ChainLoaderTopComponent chainLoaderTopComponent = new ChainLoaderTopComponent(chain);
+                    chainLoaderTopComponent.open();
+                    chainLoaderTopComponent.requestActive();
+                    tc = chainLoaderTopComponent;
+                } else {
+                    tc.requestActive();
+                }
             }
         };
     }
@@ -148,7 +161,7 @@ public class SupplyChainNode extends DataNode {
 
         procChildren.add(procedures.toArray(new Node[0]));
         eventChildren.add(events.toArray(new Node[0]));
-        Node[] n = {new FilterNode(this, eventChildren), new FilterNode(this, procChildren)};
+        Node[] n = {new EventsNode(eventChildren), new ProceduresNode(procChildren)};
 
         Children children = new Index.ArrayChildren();
         children.add(n);
