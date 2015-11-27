@@ -13,12 +13,15 @@ import java.util.List;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.view.node.bean.EventNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
+import nl.fontys.sofa.limo.view.node.bean.ProcedureNode;
 import org.netbeans.api.annotations.common.StaticResource;
 import org.openide.loaders.DataNode;
 import org.openide.loaders.DataObject;
 import org.openide.nodes.Children;
+import org.openide.nodes.FilterNode;
 import org.openide.nodes.Index;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
@@ -62,14 +65,16 @@ public class SupplyChainNode extends DataNode {
 
             if (node instanceof Hub) {
                 try {
-                    Node hubNode = new HubNode((Hub) node);
+                    Children children = createNodeChildren(node);
+                    Node hubNode = new FilterNode(new HubNode((Hub) node), children);
                     hubs.add(hubNode);
                 } catch (IntrospectionException ex) {
                     Exceptions.printStackTrace(ex);
                 }
             } else if (node instanceof Leg) {
                 try {
-                    Node legNode = new LegNode((Leg) node);
+                    Children children = createNodeChildren(node);
+                    Node legNode = new FilterNode(new LegNode((Leg) node), children);
                     legs.add(legNode);
                 } catch (IntrospectionException ex) {
                     Exceptions.printStackTrace(ex);
@@ -78,7 +83,8 @@ public class SupplyChainNode extends DataNode {
             node = node.getNext();
         }
         try {
-            Node hubNode = new HubNode((Hub) node);
+            Children children = createNodeChildren(node);
+            Node hubNode = new FilterNode(new HubNode((Hub) node), children);
             hubs.add(hubNode);
         } catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
@@ -97,6 +103,40 @@ public class SupplyChainNode extends DataNode {
         Node[] n = {hubsNode, legsNode};
         c.add(n);
         return c;
+    }
+
+    private Children createNodeChildren(nl.fontys.sofa.limo.domain.component.Node node) {
+        List<Node> procedures = new ArrayList<>();
+        List<Node> events = new ArrayList<>();
+
+        node.getEvents().parallelStream().forEach((event) -> {
+            try {
+                EventNode e = new EventNode(event);
+                events.add(e);
+            } catch (IntrospectionException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        });
+
+        node.getProcedures().parallelStream().forEach(((procedure) -> {
+            try {
+                ProcedureNode p = new ProcedureNode(procedure);
+                procedures.add(p);
+            } catch (IntrospectionException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        }));
+
+        Children procChildren = new Index.ArrayChildren();
+        Children eventChildren = new Index.ArrayChildren();
+
+        procChildren.add(procedures.toArray(new Node[0]));
+        eventChildren.add(events.toArray(new Node[0]));
+        Node[] n = {new FilterNode(this, eventChildren), new FilterNode(this, procChildren)};
+
+        Children children = new Index.ArrayChildren();
+        children.add(n);
+        return children;
     }
 
 }
