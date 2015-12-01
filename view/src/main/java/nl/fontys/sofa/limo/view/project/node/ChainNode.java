@@ -9,6 +9,7 @@ import java.awt.Image;
 import org.netbeans.api.annotations.common.StaticResource;
 import org.openide.loaders.DataNode;
 import org.openide.loaders.DataObject;
+import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 
 /**
@@ -33,6 +34,11 @@ public class ChainNode extends DataNode {
     @Override
     public Image getIcon(int type) {
         return ImageUtilities.loadImage(CHAIN_ICON);
+    }
+
+    public void addChild(Node node) {
+        Node[] nodes = {node};
+        getChildren().add(nodes);
     }
 
 }
