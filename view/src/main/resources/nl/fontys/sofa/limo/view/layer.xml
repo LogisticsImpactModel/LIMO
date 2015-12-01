@@ -112,6 +112,12 @@
             <attr name="originalFile" stringvalue="Actions/System/org-openide-actions-SaveAllAction.instance"/>
         </file>
     </folder>
+    <folder name="Templates">
+        <folder name="Project">
+            <folder name="LIMO"/>
+            <file name="Standard_hidden"/>
+        </folder>
+    </folder>
     <folder name="Toolbars">
         <file name="Clipboard_hidden"/>
         <file name="Build_hidden"/>
