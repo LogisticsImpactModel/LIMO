@@ -38,6 +38,7 @@ public abstract class EventsPanel extends JPanel {
 
     protected JTable eventsTable;
     protected JButton addButton;
+    protected JButton newButton;
     protected JButton deleteButton;
     protected JButton editButton;
     protected JComboBox<Event> eventsComboBox;
@@ -71,7 +72,8 @@ public abstract class EventsPanel extends JPanel {
         eventsTableModel = new EventTableModel();
         eventsTable = new JTable(eventsTableModel);
         executionStateComboBox = new JComboBox<>(ExecutionState.values());
-        addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+        addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.VALID)));
+        newButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
         editButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.EDIT)));
         deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
     }
@@ -113,6 +115,15 @@ public abstract class EventsPanel extends JPanel {
                 
                 eventsTableModel.fireTableDataChanged();
             }
+        });
+    }
+
+    /**
+     * The new action where a new event is created as template and added as well.
+     */
+    private void setNewButtonListener() {
+        newButton.addActionListener((ActionEvent e) -> {
+            // TODO: open new event dialog
         });
     }
 
@@ -205,6 +216,7 @@ public abstract class EventsPanel extends JPanel {
         JPanel panelLeft = new JPanel();
         panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
         panelLeft.add(addButton);
+        panelLeft.add(newButton);
         panelLeft.add(editButton);
         panelLeft.add(deleteButton);
         panel.add(panelLeft, BorderLayout.EAST);
