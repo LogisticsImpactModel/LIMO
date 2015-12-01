@@ -2,17 +2,22 @@ package nl.fontys.sofa.limo.view.custom.procedure;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -62,23 +67,44 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      */
     public ProcedureComponent(List<Procedure> procedures) {
         procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
-        CellConstraints cc = new CellConstraints();
+
         proceduresComboBox = new JComboBox();
-        
-        setLayout(new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px"));
+        setLayout(new GridBagLayout());
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+
+        c.weightx = 0.2;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        add(new JLabel(LIMOResourceBundle.getString("PROCEDURE")), c);
+        c.weightx = 0.7;
+        c.gridx = 1;
+        c.gridy = 0;
+        add(proceduresComboBox, c);
         DragNDropTableModel tableModel;
+        JPanel panel = new JPanel(new BorderLayout());        
         tableModel = new DragNDropTableModel(
                 new String[]{}, new ArrayList<>(), new Class[]{});
         table = new DragNDropTable(tableModel);
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
         initProceduresTable(procedures);
         JScrollPane scrollPane = new JScrollPane(table);
         addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.VALID)));
         newButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
         deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
-        add(scrollPane, cc.xywh(2, 2, 1, 4));
-        add(addButton, cc.xy(4, 1));
-        add(newButton, cc.xy(4, 2));
-        add(deleteButton, cc.xy(4, 4));
+        JPanel panelLeft = new JPanel();
+        panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
+        panelLeft.add(addButton);
+        panelLeft.add(newButton);
+        panelLeft.add(deleteButton);
+        panel.add(panelLeft, BorderLayout.EAST);
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 5;
+        add(panel, c);
         addButton.addActionListener(this);
         newButton.addActionListener(this);
         deleteButton.addActionListener(this);
