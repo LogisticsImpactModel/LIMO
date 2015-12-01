@@ -2,6 +2,7 @@
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
 <filesystem>
     <folder name="Menu">
+        <file name="BuildProject_hidden"/>
         <folder name="File">
             <attr name="position" intvalue="10"/>
             <file name="Separator4.instance_hidden"/>
@@ -13,6 +14,7 @@
         <attr name="OpenIDE-Folder-SortMode" stringvalue="O"/>
         <file name="Edit_hidden"/>
         <file name="GoTo_hidden"/>
+        <file name="RunProject_hidden"/>
         <file name="Source_hidden"/>
         <folder name="Tools">
             <attr name="position" intvalue="40"/>
