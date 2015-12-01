@@ -84,13 +84,13 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         c.gridy = 0;
         add(proceduresComboBox, c);
         DragNDropTableModel tableModel;
-        JPanel panel = new JPanel(new BorderLayout());        
+        JPanel panel = new JPanel(new BorderLayout());
         tableModel = new DragNDropTableModel(
                 new String[]{}, new ArrayList<>(), new Class[]{});
         table = new DragNDropTable(tableModel);
-        panel.add(new JScrollPane(table), BorderLayout.CENTER);
         initProceduresTable(procedures);
         JScrollPane scrollPane = new JScrollPane(table);
+        panel.add(scrollPane, BorderLayout.CENTER);
         addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.VALID)));
         newButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
         deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
