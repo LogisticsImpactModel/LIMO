@@ -13,6 +13,10 @@ import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
+import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
+import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.awt.ActionID;
@@ -57,18 +61,28 @@ public final class ClearDatabaseAction extends AbstractAction {
         list.add(legTypeService);
         list.add(procedureCategoryService);
         list.add(procedureService);
-        
+
         System.out.println("-");
 
         list.stream().filter((service) -> (service != null)).forEach((service) -> {
-            List<BaseEntity> entries = service.findAll();
-            System.out.println("entries.size: "+ entries.size() +"flippo");
-            entries.stream().forEach((entry) -> {
-                service.delete(entry);
-            });
-        }); 
 
-        
+            List<BaseEntity> entries = service.findAll();
+            if (service == legTypeService) {
+                for (BaseEntity entry : entries) {
+                    if (entry instanceof Leg){ //entry instanceof MultiModeLeg || entry instanceof ScheduledLeg
+                        service.delete(entry);
+                        System.out.println("BEEN HERE");
+                    }
+                }
+            } else {
+                System.out.println("entries.size: " + entries.size() + " BreadCrumb");
+
+                entries.stream().forEach((entry) -> {
+                    service.delete(entry);
+                });
+            }
+        });
+
 //Calling all services seperately and removing their contents in the database
         //Events
 //        if (eventService != null) {

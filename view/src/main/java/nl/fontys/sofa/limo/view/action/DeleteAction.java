@@ -47,7 +47,8 @@ public final class DeleteAction extends AbstractAction {
         Lookup lkp = Utilities.actionsGlobalContext();
 
         ChainGraphScene scene = lkp.lookup(ChainGraphScene.class);
-
+        
+        //Remove object from the scene
         if (scene != null) {
             Set<?> objectSet = scene.getSelectedObjects();
             List<Deletable> deletableItems = new ArrayList<>();
@@ -79,6 +80,7 @@ public final class DeleteAction extends AbstractAction {
             return;
         }
 
+        //This part is executed when in deleting from the catalog
         lkp.lookupAll(Deletable.class).stream().filter((del) -> (del != null)).forEach((del) -> {
             del.delete();
         });
