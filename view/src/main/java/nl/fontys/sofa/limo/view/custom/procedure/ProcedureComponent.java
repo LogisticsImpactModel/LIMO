@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,6 +19,7 @@ import javax.swing.SwingConstants;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableCellRenderer;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
@@ -39,10 +41,12 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
 
     protected DragNDropTable table;
     protected DragNDropTableModel model;
-    protected JButton addButton, deleteButton;
+    protected JButton addButton, newButton, deleteButton;
     protected ProcedureCategoryDAO procedureCategoryDao;
     protected Value changedValue;
     protected JComboBox procedureCategoryCheckbox, timeTypesCheckbox;
+    protected DefaultComboBoxModel procedureComboBoxModel;
+    protected JComboBox<Procedure> proceduresComboBox;
 
     /**
      * Creates a new ProcedureComponent with an empty table.
@@ -59,6 +63,8 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     public ProcedureComponent(List<Procedure> procedures) {
         procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
         CellConstraints cc = new CellConstraints();
+        proceduresComboBox = new JComboBox();
+        
         setLayout(new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px"));
         DragNDropTableModel tableModel;
         tableModel = new DragNDropTableModel(
@@ -66,12 +72,15 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         table = new DragNDropTable(tableModel);
         initProceduresTable(procedures);
         JScrollPane scrollPane = new JScrollPane(table);
-        addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+        addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.VALID)));
+        newButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
         deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
         add(scrollPane, cc.xywh(2, 2, 1, 4));
-        add(addButton, cc.xy(4, 2));
+        add(addButton, cc.xy(4, 1));
+        add(newButton, cc.xy(4, 2));
         add(deleteButton, cc.xy(4, 4));
         addButton.addActionListener(this);
+        newButton.addActionListener(this);
         deleteButton.addActionListener(this);
         table.addMouseListener(this);
         setVisible(true);
@@ -84,7 +93,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             if (rowToDelete > -1) {
                 deleteProcedure(rowToDelete);
             }
-        } else if (e.getSource().equals(addButton)) {
+        } else if (e.getSource().equals(newButton)) {
             addProcedure();
         }
     }
@@ -144,6 +153,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         AddProcedureDialog addProcedureDialog = new AddProcedureDialog(procedureCategoryDao, table, deleteButton);
         addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addProcedureDialog.setVisible(true);
+        checkButtonsState();
     }
 
     /**
@@ -158,6 +168,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             repaint();
             deleteButton.setEnabled(table.getRowCount() > 1);
         }
+        checkButtonsState();
     }
 
     /**
@@ -239,5 +250,9 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         }
         timeTypesCheckbox = new JComboBox(TimeType.values());
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(timeTypesCheckbox));
+    }
+    
+    protected void checkButtonsState() {
+        addButton.setEnabled(proceduresComboBox.getModel().getSize() > 0);
     }
 }

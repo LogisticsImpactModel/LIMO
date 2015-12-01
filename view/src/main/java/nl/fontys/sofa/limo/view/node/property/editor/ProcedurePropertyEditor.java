@@ -89,7 +89,7 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                     List<Procedure> procedures = getActiveTableState();
                     setValue(procedures);
                 }
-            } else if (e.getSource().equals(addButton)) {
+            } else if (e.getSource().equals(newButton)) {
                 addProcedure();
                 List<Procedure> procedures = getActiveTableState();
                 setValue(procedures);
