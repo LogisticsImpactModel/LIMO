@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -39,6 +40,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
     private final DragNDropTable table;
     private final CellConstraints cc;
     private JButton deleteButton;
+    private JCheckBox templateCheckbox;
 
     public AddProcedureDialog(ProcedureCategoryDAO procedureCategoryDao, DragNDropTable dragNDropTable, JButton deleteButton) {
         this.table = dragNDropTable;
@@ -46,7 +48,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         cc = new CellConstraints();
         //LAYOUT
         FormLayout layout = new FormLayout("5px, pref, 5px, pref, pref:grow, 5px, pref, 5px",
-                "5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px");
+                "5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref:grow, pref:grow, 5px");
         this.setLayout(layout);
         //COMPONENTS
         initComponents(procedureCategoryDao.findAll().toArray());
@@ -94,6 +96,9 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         addCotwoButton = new JButton("...");
         saveButton = new JButton(LIMOResourceBundle.getString("SAVE"));
         cancelButton = new JButton(LIMOResourceBundle.getString("CANCEL"));
+        templateCheckbox = new JCheckBox("Save as template");
+        // add as template by default
+        templateCheckbox.setSelected(true);
     }
 
     /**
@@ -115,8 +120,9 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         this.add(new JLabel(LIMOResourceBundle.getString("CO2")), cc.xy(2, 12));
         this.add(cotwoTextField, cc.xyw(4, 12, 2));
         this.add(addCotwoButton, cc.xy(7, 12));
-        this.add(saveButton, cc.xy(2, 14));
-        this.add(cancelButton, cc.xy(4, 14));
+        this.add(templateCheckbox, cc.xy(2, 14));
+        this.add(saveButton, cc.xy(2, 16));
+        this.add(cancelButton, cc.xy(4, 16));
     }
 
     @Override
@@ -190,9 +196,13 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
             newRow.add(newProcedure.getCotwo());
             ((DragNDropTableModel) table.getModel()).addRow(newRow);
             ((DragNDropTableModel) table.getModel()).fireTableDataChanged();
+            if (templateCheckbox.isSelected()) {
+                // todo: add as template
+            }
             table.revalidate();
             table.repaint();
             deleteButton.setEnabled(true);
+            templateCheckbox.setSelected(true);
             this.dispose();
         }
     }
