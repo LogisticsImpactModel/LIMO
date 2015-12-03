@@ -26,7 +26,7 @@ import org.openide.util.NbBundle.Messages;
         id = "nl.fontys.sofa.limo.view.action.NewChainAction"
 )
 @ActionRegistration(
-        iconBase = "icons/gui/Link_add.png",
+        iconBase = "icons/gui/Link_Add.png",
         displayName = "#CTL_NewChainAction"
 )
 @ActionReferences({
