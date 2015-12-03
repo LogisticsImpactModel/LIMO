@@ -24,6 +24,7 @@ import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
+import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
@@ -83,7 +84,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
         Lookup graphLookup = Lookups.singleton(graphScene);
         Lookup graphContentLookup = graphScene.getLookup();
-        ProxyLookup pl = new ProxyLookup(graphContentLookup, paletteLookup, nodeLookup, graphLookup);
+        ProxyLookup pl = new ProxyLookup(graphContentLookup, paletteLookup, nodeLookup, graphLookup, new AbstractLookup(ic));
         associateLookup(pl);
     }
 
@@ -106,7 +107,7 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
         Lookup graphLookup = Lookups.singleton(graphScene);
         Lookup graphContentLookup = graphScene.getLookup();
-        ProxyLookup pl = new ProxyLookup(graphContentLookup, paletteLookup, nodeLookup, graphLookup);
+        ProxyLookup pl = new ProxyLookup(graphContentLookup, paletteLookup, nodeLookup, graphLookup, new AbstractLookup(ic));
         associateLookup(pl);
     }
 

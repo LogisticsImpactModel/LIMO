@@ -7,7 +7,6 @@ package nl.fontys.sofa.limo.view.project;
 
 import java.awt.Image;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +16,14 @@ import javax.swing.ImageIcon;
 import nl.fontys.sofa.limo.view.action.NewChainAction;
 import nl.fontys.sofa.limo.view.project.actions.AddMasterDataAction;
 import nl.fontys.sofa.limo.view.project.actions.AddSupplyChainAction;
+import nl.fontys.sofa.limo.view.project.actions.util.SupplyDefaultCopyOperation;
+import nl.fontys.sofa.limo.view.project.actions.util.SupplyDefaultMoveOrRenameOperation;
 import nl.fontys.sofa.limo.view.project.supplychain.ChainNodeList;
 import org.netbeans.api.annotations.common.StaticResource;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.spi.project.ActionProvider;
-import org.netbeans.spi.project.CopyOperationImplementation;
 import org.netbeans.spi.project.DeleteOperationImplementation;
-import org.netbeans.spi.project.MoveOrRenameOperationImplementation;
 import org.netbeans.spi.project.ProjectState;
 import org.netbeans.spi.project.ui.LogicalViewProvider;
 import org.netbeans.spi.project.ui.support.CommonProjectActions;
@@ -77,8 +76,8 @@ public class SupplyProject implements Project {
                 new Info(),
                 new SupplyProjectLogicalView(this),
                 new SupplyActionProvider(),
-                new SupplyProjectMoveOrRenameOperation(),
-                new SupplyProjectCopyOperation(),
+                new SupplyDefaultMoveOrRenameOperation(),
+                new SupplyDefaultCopyOperation(),
                 new SupplyProjectDeleteOperation(this)
             });
         }
@@ -223,8 +222,7 @@ public class SupplyProject implements Project {
                 ActionProvider.COMMAND_RENAME,
                 ActionProvider.COMMAND_MOVE,
                 ActionProvider.COMMAND_COPY,
-                ActionProvider.COMMAND_DELETE,
-                "Open Chain"
+                ActionProvider.COMMAND_DELETE
             };
         }
 
@@ -247,9 +245,6 @@ public class SupplyProject implements Project {
                 DefaultProjectOperations.performDefaultDeleteOperation(
                         SupplyProject.this);
             }
-            if (string.equals("Open Chain")) {
-                System.out.println("Test");
-            }
 
         }
 
@@ -268,56 +263,6 @@ public class SupplyProject implements Project {
                     break;
             }
             return false;
-        }
-    }
-
-    private final class SupplyProjectMoveOrRenameOperation implements MoveOrRenameOperationImplementation {
-
-        @Override
-        public List<FileObject> getMetadataFiles() {
-            return new ArrayList<>();
-        }
-
-        @Override
-        public List<FileObject> getDataFiles() {
-            return new ArrayList<>();
-        }
-
-        @Override
-        public void notifyRenaming() throws IOException {
-        }
-
-        @Override
-        public void notifyRenamed(String nueName) throws IOException {
-        }
-
-        @Override
-        public void notifyMoving() throws IOException {
-        }
-
-        @Override
-        public void notifyMoved(Project original, File originalPath, String nueName) throws IOException {
-        }
-    }
-
-    private final class SupplyProjectCopyOperation implements CopyOperationImplementation {
-
-        @Override
-        public List<FileObject> getMetadataFiles() {
-            return new ArrayList<>();
-        }
-
-        @Override
-        public List<FileObject> getDataFiles() {
-            return new ArrayList<>();
-        }
-
-        @Override
-        public void notifyCopying() throws IOException {
-        }
-
-        @Override
-        public void notifyCopied(Project prjct, File file, String string) throws IOException {
         }
     }
 

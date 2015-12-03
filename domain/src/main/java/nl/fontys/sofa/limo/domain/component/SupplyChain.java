@@ -107,10 +107,11 @@ public class SupplyChain implements Serializable {
     /**
      * Saves the supply chain to a file specified at filepath.
      *
+     * @param path path where to save the chain
      * @throws java.io.IOException
      */
-    public void saveToFile() throws IOException {
-        OutputStream out = new FileOutputStream(filepath);
+    public void saveToFile(String path) throws IOException {
+        OutputStream out = new FileOutputStream(path);
         Gson g = GsonHelper.getInstance();
         try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"))) {
             writer.setIndent("  ");
@@ -118,5 +119,9 @@ public class SupplyChain implements Serializable {
             g.toJson(this, SupplyChain.class, writer);
             writer.endArray();
         }
+    }
+
+    public void saveToFile() throws IOException {
+        saveToFile(filepath);
     }
 }

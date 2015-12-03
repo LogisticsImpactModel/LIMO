@@ -6,7 +6,6 @@
 package nl.fontys.sofa.limo.view.project.node;
 
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.beans.IntrospectionException;
 import java.io.File;
 import java.util.ArrayList;
@@ -20,8 +19,16 @@ import nl.fontys.sofa.limo.view.node.bean.EventNode;
 import nl.fontys.sofa.limo.view.node.bean.HubNode;
 import nl.fontys.sofa.limo.view.node.bean.LegNode;
 import nl.fontys.sofa.limo.view.node.bean.ProcedureNode;
-import nl.fontys.sofa.limo.view.topcomponent.ChainLoaderTopComponent;
+import nl.fontys.sofa.limo.view.project.actions.ExportChainAction;
+import nl.fontys.sofa.limo.view.project.actions.ProjectChainSimulateAction;
+import nl.fontys.sofa.limo.view.project.actions.SaveChainAction;
+import nl.fontys.sofa.limo.view.project.actions.util.CloseChainAction;
+import nl.fontys.sofa.limo.view.project.actions.util.OpenChainAction;
 import org.netbeans.api.annotations.common.StaticResource;
+import org.openide.actions.CopyAction;
+import org.openide.actions.CutAction;
+import org.openide.actions.DeleteAction;
+import org.openide.actions.RenameAction;
 import org.openide.loaders.DataNode;
 import org.openide.loaders.DataObject;
 import org.openide.nodes.Children;
@@ -30,7 +37,7 @@ import org.openide.nodes.Index;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 import org.openide.util.ImageUtilities;
-import org.openide.windows.TopComponent;
+import org.openide.util.actions.SystemAction;
 
 /**
  *
@@ -43,11 +50,16 @@ public class SupplyChainNode extends DataNode {
 
     private DataObject dataObject;
     private final SupplyChain chain;
-    private TopComponent tc = null;
+    private final CloseChainAction closeAction;
+    private final AbstractAction openAction;
+    private final SaveChainAction saveAction;
 
     public SupplyChainNode(DataObject object) {
         super(object, Children.LEAF);
         chain = SupplyChain.createFromFile(new File(object.getPrimaryFile().getPath()));
+        closeAction = new CloseChainAction();
+        saveAction = new SaveChainAction();
+        openAction = new OpenChainAction(chain, closeAction, saveAction);
         setChildren(createChildNodes());
 
     }
@@ -69,20 +81,24 @@ public class SupplyChainNode extends DataNode {
     }
 
     @Override
+
     public Action getPreferredAction() {
-        return new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (tc == null) {
-                    ChainLoaderTopComponent chainLoaderTopComponent = new ChainLoaderTopComponent(chain);
-                    chainLoaderTopComponent.open();
-                    chainLoaderTopComponent.requestActive();
-                    tc = chainLoaderTopComponent;
-                } else {
-                    tc.requestActive();
-                }
-            }
-        };
+        return openAction;
+    }
+
+    @Override
+    public Action[] getActions(boolean context) {
+        return new Action[]{
+            openAction,
+            closeAction,
+            saveAction,
+            new ExportChainAction(chain),
+            new ProjectChainSimulateAction(chain),
+            SystemAction.get(RenameAction.class),
+            SystemAction.get(CopyAction.class),
+            SystemAction.get(DeleteAction.class),
+            SystemAction.get(CutAction.class)};
+
     }
 
     private Children createChildNodes() {
