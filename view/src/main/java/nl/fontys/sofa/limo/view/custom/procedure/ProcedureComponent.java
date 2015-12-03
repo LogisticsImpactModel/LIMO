@@ -55,7 +55,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     protected DefaultComboBoxModel procedureComboBoxModel;
     protected JComboBox<Procedure> proceduresComboBox;
     private ProcedureService service;
-    private List<Procedure> allProcedures;
+    protected List<Procedure> allProcedures;
 
     /**
      * Creates a new ProcedureComponent with an empty table.

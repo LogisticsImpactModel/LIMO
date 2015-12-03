@@ -6,11 +6,14 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyEditorSupport;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
+import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.view.custom.procedure.ProcedureComponent;
@@ -78,6 +81,7 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
             DefaultCellEditor nameEditor = new DefaultCellEditor(name);
             nameEditor.addCellEditorListener(this);
             table.getColumnModel().getColumn(0).setCellEditor(nameEditor);
+            setProcedureComboBox();
         }
 
         @Override
@@ -136,6 +140,35 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
             /**
              * not used*
              */
+        }
+        
+        private void setProcedureComboBox() {
+            ArrayList<String> allProcedureNames = new ArrayList<>();
+            List<String> usedProcedures = new ArrayList<>();
+            for (int row = 0; row < table.getRowCount(); row++) {
+                usedProcedures.add((String)table.getValueAt(row, 0));
+            }
+            if (allProcedures != null) {
+                for (Procedure procedure : allProcedures) {
+                    boolean valid = true;
+                    for (String used : usedProcedures) {
+                        if (procedure.getName() != null && used != null) {
+                            valid = !procedure.getName().equals(used);
+                        }
+                        if (!valid) {
+                            break;
+                        }
+                    }
+                    if (valid) {
+                        allProcedureNames.add(procedure.getName());
+                    }
+                }
+                addButton.setEnabled(!allProcedures.isEmpty());
+                proceduresComboBox.setModel(new DefaultComboBoxModel(allProcedureNames.toArray()));
+            } else {
+                allProcedures = new ArrayList<>();
+                proceduresComboBox.setModel(new DefaultComboBoxModel(new String[]{}));
+            }
         }
     }
 }
