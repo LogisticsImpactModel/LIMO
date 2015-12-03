@@ -16,11 +16,13 @@ import nl.fontys.sofa.limo.view.project.node.ReportsNode;
 import nl.fontys.sofa.limo.view.project.node.SupplyChainNode;
 import org.netbeans.spi.project.ui.support.NodeList;
 import org.openide.filesystems.FileObject;
+import org.openide.loaders.DataNode;
 import org.openide.loaders.DataObject;
 import org.openide.loaders.DataObjectNotFoundException;
 import org.openide.nodes.Children;
 import org.openide.nodes.FilterNode;
 import org.openide.nodes.Index;
+import org.openide.nodes.Index.ArrayChildren;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 
@@ -32,6 +34,11 @@ public class ChainNodeList implements NodeList<Node> {
 
     SupplyProject project;
     private ChainNode chainNode;
+    private MasterDataNode masterDataNode;
+
+    public MasterDataNode getMasterDataNode() {
+        return masterDataNode;
+    }
 
     public ChainNode getChainNode() {
         return chainNode;
@@ -40,6 +47,22 @@ public class ChainNodeList implements NodeList<Node> {
     public ChainNodeList(SupplyProject project) {
         this.project = project;
         project.addChainNodeList(this);
+    }
+
+    public Children findMasterDataFiles(FileObject masterDataFolder) throws DataObjectNotFoundException {
+        Children children = new ArrayChildren();
+        List<Node> nodes = new ArrayList<>();
+        FileObject[] files = masterDataFolder.getChildren();
+
+        for (FileObject file : files) {
+            if (file.getExt().equals("lef")) {
+                DataObject find = DataObject.find(file);
+                nodes.add(new DataNode(find, Children.LEAF));
+            }
+        }
+        children.add(nodes.toArray(new Node[0]));
+        return children;
+
     }
 
     @Override
@@ -54,7 +77,9 @@ public class ChainNodeList implements NodeList<Node> {
         List<Node> result = new ArrayList<>();
         if (masterDataFolder != null) {
             try {
-                result.add(new MasterDataNode(DataObject.find(masterDataFolder).getNodeDelegate(), Children.LEAF));
+                masterDataNode = new MasterDataNode(DataObject.find(masterDataFolder), findMasterDataFiles(masterDataFolder));
+                result.add(masterDataNode);
+
             } catch (DataObjectNotFoundException ex) {
                 Exceptions.printStackTrace(ex);
             }

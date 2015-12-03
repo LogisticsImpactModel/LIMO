@@ -7,7 +7,9 @@ package nl.fontys.sofa.limo.view.project.node;
 
 import java.awt.Image;
 import org.netbeans.api.annotations.common.StaticResource;
-import org.openide.nodes.FilterNode;
+import org.openide.loaders.DataNode;
+import org.openide.loaders.DataObject;
+import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 
@@ -15,13 +17,14 @@ import org.openide.util.ImageUtilities;
  *
  * @author nilsh
  */
-public class MasterDataNode extends FilterNode {
+public class MasterDataNode extends DataNode {
 
     @StaticResource()
     public static final String MASTERDATA_ICON = "icons/gui/Database.png";
 
-    public MasterDataNode(Node original, org.openide.nodes.Children children) {
+    public MasterDataNode(DataObject original, Children children) {
         super(original, children);
+        setChildren(children);
     }
 
     @Override
@@ -37,6 +40,11 @@ public class MasterDataNode extends FilterNode {
     @Override
     public String getDisplayName() {
         return "Master data files";
+    }
+
+    public void addChild(Node node) {
+        Node[] nodes = {node};
+        getChildren().add(nodes);
     }
 
 }

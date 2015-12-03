@@ -26,8 +26,6 @@ import org.openide.windows.TopComponent;
  *
  * @author Sebastiaan Heijmann
  */
-
-
 public class SavableComponent extends AbstractSavable {
 
     private final ChainBuilder chainBuilder;
@@ -90,7 +88,7 @@ public class SavableComponent extends AbstractSavable {
                 } else if (retval.equals(DialogDescriptor.CANCEL_OPTION)) {
                     throw new ActivateFailedException("The chain should not close because of the canClose method in topComponent");
                 }
-            } else { //If a new supply chain needs to be saved.        
+            } else { //If a new supply chain needs to be saved.
                 openFileChooser();
             }
 
@@ -112,7 +110,7 @@ public class SavableComponent extends AbstractSavable {
         FileNameExtensionFilter chainFilter = new FileNameExtensionFilter(
                 "Supply chains (*.lsc)", "lsc");
 
-        if (supplyChain.getFilepath() != null) { //This happens if a supply chain is loaded. 
+        if (supplyChain.getFilepath() != null) { //This happens if a supply chain is loaded.
             fc.setCurrentDirectory(new File(supplyChain.getFilepath()));
         }
 

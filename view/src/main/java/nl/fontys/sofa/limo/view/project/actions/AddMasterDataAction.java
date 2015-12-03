@@ -12,10 +12,14 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import nl.fontys.sofa.limo.view.project.SupplyProject;
+import nl.fontys.sofa.limo.view.project.supplychain.ChainNodeList;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionRegistration;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
+import org.openide.loaders.DataNode;
+import org.openide.loaders.DataObject;
+import org.openide.nodes.Children;
 import org.openide.util.Exceptions;
 import org.openide.util.NbBundle.Messages;
 
@@ -64,8 +68,13 @@ public class AddMasterDataAction extends AbstractAction {
             try {
                 String name = file.getName();
                 name = name.substring(0, name.length() - 4);
+                FileObject masterDataObject = FileUtil.createData(file);
                 FileObject masterData = project.getProjectDirectory().getFileObject("master_data_files");
-                FileUtil.copyFile(FileUtil.createData(file), masterData, name);
+                FileUtil.copyFile(masterDataObject, masterData, name);
+                ChainNodeList lookup = project.getChainNodeList();
+                DataObject find = DataObject.find(masterDataObject);
+                lookup.getMasterDataNode().addChild(new DataNode(find, Children.LEAF));
+
             } catch (IOException ex) {
                 Exceptions.printStackTrace(ex);
             }
