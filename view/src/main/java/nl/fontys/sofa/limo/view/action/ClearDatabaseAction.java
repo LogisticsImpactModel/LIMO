@@ -13,18 +13,17 @@ import nl.fontys.sofa.limo.api.service.provider.LegTypeService;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
-import nl.fontys.sofa.limo.domain.component.leg.Leg;
-import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
-import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
-import nl.fontys.sofa.limo.domain.component.type.LegType;
-import nl.fontys.sofa.limo.view.chain.ChainGraphScene;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
-import org.openide.util.Utilities;
+
+/*
+This action removes all loaded templates (hubs, legs categories etc.) that are loaded
+in the application.
+*/
 
 @ActionID(
         category = "File",
@@ -45,91 +44,29 @@ public final class ClearDatabaseAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        Lookup lkp = Utilities.actionsGlobalContext();
         List<DAO> list = new ArrayList();
 
         EventService eventService = Lookup.getDefault().lookup(EventService.class);
         HubService hubService = Lookup.getDefault().lookup(HubService.class);
         HubTypeService hubTypeService = Lookup.getDefault().lookup(HubTypeService.class);
-        LegTypeService legTypeService = Lookup.getDefault().lookup(LegTypeService.class);
         ProcedureCategoryService procedureCategoryService = Lookup.getDefault().lookup(ProcedureCategoryService.class);
         ProcedureService procedureService = Lookup.getDefault().lookup(ProcedureService.class);
+        LegTypeService legTypeService = Lookup.getDefault().lookup(LegTypeService.class);
 
         list.add(eventService);
         list.add(hubService);
         list.add(hubTypeService);
-        list.add(legTypeService);
         list.add(procedureCategoryService);
         list.add(procedureService);
-
-        System.out.println("-");
+        list.add(legTypeService);
 
         list.stream().filter((service) -> (service != null)).forEach((service) -> {
 
             List<BaseEntity> entries = service.findAll();
-            if (service == legTypeService) {
-                for (BaseEntity entry : entries) {
-                    if (entry instanceof Leg){ //entry instanceof MultiModeLeg || entry instanceof ScheduledLeg
-                        service.delete(entry);
-                        System.out.println("BEEN HERE");
-                    }
-                }
-            } else {
-                System.out.println("entries.size: " + entries.size() + " BreadCrumb");
 
-                entries.stream().forEach((entry) -> {
-                    service.delete(entry);
-                });
-            }
+            entries.stream().filter((entry) -> (entry != null)).forEach((entry) -> {
+                service.delete(entry);
+            });
         });
-
-//Calling all services seperately and removing their contents in the database
-        //Events
-//        if (eventService != null) {
-//            List<Event> eventList = eventService.findAll();
-//            eventList.stream().forEach((event) -> {
-//                eventService.delete(event);
-//            });
-//        }
-//
-//        //Hub templates
-//        if (hubService != null) {
-//            List<Hub> hubList = hubService.findAll();
-//            hubList.stream().forEach((hub) -> {
-//                hubService.delete(hub);
-//            });
-//        }
-//
-//        //HubTypes
-//        if (hubTypeService != null) {
-//            List<HubType> hubTypeList = hubTypeService.findAll();
-//            hubTypeList.stream().forEach((hubType) -> {
-//                hubTypeService.delete(hubType);
-//            });
-//        }
-//
-//        //legTypes
-//        if (legTypeService != null) {
-//            List<LegType> legTypeList = legTypeService.findAll();
-//            legTypeList.stream().forEach((legType) -> {
-//                legTypeService.delete(legType);
-//            });
-//        }
-//
-//        //Procedure category
-//        if (procedureCategoryService != null) {
-//            List<ProcedureCategory> procedureCategoryList = procedureCategoryService.findAll();
-//            procedureCategoryList.stream().forEach((procedureCategory) -> {
-//                procedureCategoryService.delete(procedureCategory);
-//            });
-//        }
-//
-//        //Procedures
-//        if (procedureService != null) {
-//            List<Procedure> procedureList = procedureService.findAll();
-//            procedureList.stream().forEach((procedure) -> {
-//                procedureService.delete(procedure);
-//            });
-//        }
     }
 }
