@@ -94,7 +94,15 @@ public class SavableComponent extends AbstractSavable {
                 openFileChooser();
             }
 
-        } else { //When the supply chain is invalid, display a dialog.
+        } else { 
+            if (supplyChain.getFilepath() != null) {
+            chainBuilder.saveToFile(supplyChain.getFilepath());
+            }
+            else{
+                openInvalidFileChooser();
+            }
+            /*
+            //When the supply chain is invalid, display a dialog.
             DialogDescriptor dialogDescriptor = new DialogDescriptor("The supply chain " + supplyChain.getName().replace(".lsc", "")
                     + " is invalid. An invalid supply chain cannot be saved. Please close the window and make the supply chain valid.", "Error while saving");
 
@@ -104,6 +112,7 @@ public class SavableComponent extends AbstractSavable {
             if (retval.equals(DialogDescriptor.OK_OPTION)) { //Throw an exception when the OK-button is selected so the saving process is cancelled
                 throw new InvalidSupplyChainException("The supply chain " + supplyChain.getName().replace(".lsc", "") + " is invalid.");
             }
+            */
         }
     }
 
@@ -130,6 +139,35 @@ public class SavableComponent extends AbstractSavable {
                 supplyChain.setFilepath(file.getParent() + File.separator + supplyChain.getName() + ".lsc");
             }
             supplyChain.saveToFile();
+            finishSave();
+        } else { //If no folder is selected throw an exception so the saving process is cancelled.
+            throw new IOException("The supply chain " + supplyChain.getName() + " is invalid.");
+        }
+    }
+    
+    private void openInvalidFileChooser() throws HeadlessException, IOException {
+        JFileChooser fc = new ChainSaveFileChooser();
+        FileNameExtensionFilter chainFilter = new FileNameExtensionFilter(
+                "Supply chains (*.lsci)", "lsci");
+
+        if (supplyChain.getFilepath() != null) { //This happens if a supply chain is loaded. 
+            fc.setCurrentDirectory(new File(supplyChain.getFilepath()));
+        }
+
+        fc.setFileFilter(chainFilter);
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setSelectedFile(new File(FilenameUtils.removeExtension(supplyChain.getName()))); // This sets the name without the extension
+        int result = fc.showOpenDialog(null);
+        String fileName = fc.getSelectedFile().getName(); //name with extension
+        if (result == JFileChooser.APPROVE_OPTION) { //If folder is selected than save the supply chain.
+            supplyChain.setName(fileName);
+            File file = fc.getSelectedFile();
+            if (supplyChain.getName().endsWith(".lsci")) {
+                supplyChain.setFilepath(file.getParent() + File.separator + supplyChain.getName());
+            } else {
+                supplyChain.setFilepath(file.getParent() + File.separator + supplyChain.getName() + ".lsci");
+            }
+            chainBuilder.saveToFile(supplyChain.getFilepath());
             finishSave();
         } else { //If no folder is selected throw an exception so the saving process is cancelled.
             throw new IOException("The supply chain " + supplyChain.getName() + " is invalid.");

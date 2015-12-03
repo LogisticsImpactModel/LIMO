@@ -77,11 +77,22 @@ public class SupplyChain implements Serializable {
         Gson g = GsonHelper.getInstance();
         
         SupplyChain supplyChain;
-            try (JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"))) {
+        supplyChain = new SupplyChain();
+        String path = file.getPath();
+        String filetype = path.substring(path.lastIndexOf("."), path.length());
+        
+        try (JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"))) {
+            if(filetype.equals(".lsc"))
+            {
                 reader.beginArray();
                 supplyChain = g.fromJson(reader, SupplyChain.class);
                 reader.endArray();
+            }else if(filetype.equals(".lsci"))
+            {
+                reader.beginArray();
+                reader.endArray();
             }
+        }
         return supplyChain;
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             ex.printStackTrace(System.err);

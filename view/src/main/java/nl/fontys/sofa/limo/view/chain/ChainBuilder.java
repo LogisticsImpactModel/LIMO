@@ -1,6 +1,7 @@
 package nl.fontys.sofa.limo.view.chain;
 
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
@@ -95,4 +96,10 @@ public interface ChainBuilder {
      */
     SupplyChain getSupplyChain();
 
+    /**
+     * Saves invalid chain
+     * 
+     * @param filepath of saved chain
+     */
+    void saveToFile(String filepath) throws IOException;
 }

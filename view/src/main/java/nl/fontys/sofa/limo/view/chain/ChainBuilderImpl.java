@@ -1,13 +1,20 @@
 package nl.fontys.sofa.limo.view.chain;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonWriter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.Node;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.serialization.GsonHelper;
 
 /**
  * Implementation of the {@link nl.fontys.sofa.limo.view.chain.ChainBuilder}
@@ -130,5 +137,35 @@ public class ChainBuilderImpl implements ChainBuilder {
     @Override
     public SupplyChain getSupplyChain() {
         return chain;
+    }
+    
+    /**
+     * Saves the supply chain to a file specified at filepath.
+     * @throws java.io.IOException
+     */
+    @Override
+    public void saveToFile(String filepath) throws IOException {
+        OutputStream out = new FileOutputStream(filepath);
+        Gson g = GsonHelper.getInstance();
+        try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"))) {
+            writer.setIndent("  ");
+            writer.beginArray();
+            
+            ArrayList<Hub> toSaveList = new ArrayList<>((ArrayList<Hub>) hubList);
+            System.out.println(hubList.size());
+            for(Hub hub : hubList) {
+                if(hub.getPrevious() != null)
+                {
+                    System.out.println(hub.getName());
+                    toSaveList.remove(hub);
+                }
+            }
+            System.out.println(hubList.size());
+            for (Hub hub : toSaveList) {
+               System.out.println(hub.getName());
+               g.toJson(hub, Hub.class, writer); 
+            }
+            writer.endArray();
+        }
     }
 }
