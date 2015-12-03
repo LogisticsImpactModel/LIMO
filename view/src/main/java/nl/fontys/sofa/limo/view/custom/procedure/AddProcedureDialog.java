@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
@@ -24,6 +25,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.openide.util.Lookup;
 
 /**
  * This class extends the JDialog and offers the creation of new procedures.
@@ -41,6 +43,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
     private final CellConstraints cc;
     private JButton deleteButton;
     private JCheckBox templateCheckbox;
+    private ProcedureService service;
 
     public AddProcedureDialog(ProcedureCategoryDAO procedureCategoryDao, DragNDropTable dragNDropTable, JButton deleteButton) {
         this.table = dragNDropTable;
@@ -70,6 +73,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         int y = (screenSize.height - this.getHeight()) / 2;
         this.setLocation(x, y);
         this.setTitle(LIMOResourceBundle.getString("PROCEDURES"));
+        service = Lookup.getDefault().lookup(ProcedureService.class);
     }
 
     /**
@@ -197,7 +201,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
             ((DragNDropTableModel) table.getModel()).addRow(newRow);
             ((DragNDropTableModel) table.getModel()).fireTableDataChanged();
             if (templateCheckbox.isSelected()) {
-                // todo: add as template
+                service.insert(newProcedure);
             }
             table.revalidate();
             table.repaint();
