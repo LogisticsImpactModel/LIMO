@@ -197,7 +197,15 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      */
     protected void deleteProcedure(int row) {
         if (table.getRowCount() > 1) {
-            ((DragNDropTableModel) table.getModel()).removeRow(row);
+            DragNDropTableModel model = ((DragNDropTableModel) table.getModel());
+            String name = (String) model.getValueAt(row, 0);
+            for (Procedure procedure : tableProcedures) {
+                if (procedure.getName().equals(name)) {
+                    tableProcedures.remove(procedure);
+                    break;
+                }
+            }
+            model.removeRow(row);
             revalidate();
             repaint();
             deleteButton.setEnabled(table.getRowCount() > 1);
