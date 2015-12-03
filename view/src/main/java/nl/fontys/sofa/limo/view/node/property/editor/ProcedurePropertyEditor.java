@@ -97,6 +97,8 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                 addProcedure();
                 List<Procedure> procedures = getActiveTableState();
                 setValue(procedures);
+            } else if (e.getSource().equals(addButton)) {
+                addClicked();
             }
         }
 
@@ -168,6 +170,29 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
             } else {
                 allProcedures = new ArrayList<>();
                 proceduresComboBox.setModel(new DefaultComboBoxModel(new String[]{}));
+            }
+        }
+        
+        
+    
+        private void addClicked() {
+            Procedure selected = null;
+            for (Procedure procedure : allProcedures) {
+                if (((String) proceduresComboBox.getSelectedItem()).equals(procedure.getName())) {
+                    selected = service.findById(procedure.getId());
+                    break;
+                }
+            }
+            if (selected != null) {
+                List<Procedure> procedures = new ArrayList<>(tableProcedures);
+                selected.setId(null);
+                procedures.add(selected);
+                model.fireTableDataChanged();
+                setProcedureComboBox();
+                setValue(procedures);
+                checkButtonsState();
+                validate();
+                repaint();
             }
         }
     }

@@ -27,6 +27,7 @@ import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
+import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
@@ -54,8 +55,9 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     protected JComboBox procedureCategoryCheckbox, timeTypesCheckbox;
     protected DefaultComboBoxModel procedureComboBoxModel;
     protected JComboBox<Procedure> proceduresComboBox;
-    private ProcedureService service;
+    protected ProcedureService service;
     protected List<Procedure> allProcedures;
+    protected List<Procedure> tableProcedures;
 
     /**
      * Creates a new ProcedureComponent with an empty table.
@@ -71,6 +73,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      */
     public ProcedureComponent(List<Procedure> procedures) {
         procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
+        tableProcedures = procedures;
         initProcedureService();
         proceduresComboBox = new JComboBox();
         setLayout(new GridBagLayout());
@@ -170,6 +173,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      * @param procedures The new list of procedures that has to be used.
      */
     public void setProcedureTable(List<Procedure> procedures) {
+        tableProcedures = procedures;
         initProceduresTable(procedures);
         model.fireTableDataChanged();
         revalidate();
@@ -244,6 +248,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      * table.
      */
     private void initProceduresTable(List<Procedure> procedures) {
+        tableProcedures = procedures;
         List<List<Object>> valueList = new ArrayList<>();
         if (procedures != null) {
             procedures.stream().map((p) -> {
