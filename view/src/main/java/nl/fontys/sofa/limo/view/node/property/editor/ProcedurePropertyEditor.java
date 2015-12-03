@@ -177,9 +177,7 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                 proceduresComboBox.setModel(new DefaultComboBoxModel(new String[]{}));
             }
         }
-        
-        
-    
+
         private void addClicked() {
             Procedure selected = null;
             for (Procedure procedure : allProcedures) {
