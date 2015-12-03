@@ -24,6 +24,8 @@ import javax.swing.SwingConstants;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableCellRenderer;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
+import nl.fontys.sofa.limo.api.service.provider.EventService;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
@@ -52,6 +54,8 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     protected JComboBox procedureCategoryCheckbox, timeTypesCheckbox;
     protected DefaultComboBoxModel procedureComboBoxModel;
     protected JComboBox<Procedure> proceduresComboBox;
+    private ProcedureService service;
+    private List<Procedure> allProcedures;
 
     /**
      * Creates a new ProcedureComponent with an empty table.
@@ -67,7 +71,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      */
     public ProcedureComponent(List<Procedure> procedures) {
         procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
-
+        initProcedureService();
         proceduresComboBox = new JComboBox();
         setLayout(new GridBagLayout());
 
@@ -280,5 +284,10 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     
     protected void checkButtonsState() {
         addButton.setEnabled(proceduresComboBox.getModel().getSize() > 0);
+    }
+    
+    private void initProcedureService() {
+        service = Lookup.getDefault().lookup(ProcedureService.class);
+        allProcedures = service.findAll();
     }
 }
