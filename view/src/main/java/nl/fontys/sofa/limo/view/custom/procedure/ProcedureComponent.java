@@ -187,6 +187,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         AddProcedureDialog addProcedureDialog = new AddProcedureDialog(procedureCategoryDao, table, deleteButton);
         addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addProcedureDialog.setVisible(true);
+        initProcedureService();
         checkButtonsState();
     }
 
