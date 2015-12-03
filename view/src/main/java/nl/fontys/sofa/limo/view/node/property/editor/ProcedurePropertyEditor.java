@@ -189,10 +189,9 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                 procedures.add(selected);
                 model.fireTableDataChanged();
                 setProcedureComboBox();
+                setProcedureTable(procedures);
                 setValue(procedures);
                 checkButtonsState();
-                validate();
-                repaint();
             }
         }
     }
