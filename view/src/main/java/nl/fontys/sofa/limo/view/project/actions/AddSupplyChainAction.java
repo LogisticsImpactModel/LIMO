@@ -31,7 +31,7 @@ import org.openide.util.NbBundle.Messages;
         id = "nl.fontys.sofa.limo.project.actions.AddSupplyChainAction"
 )
 @ActionRegistration(
-        iconBase = "icons/gui/Link_add.png",
+        iconBase = "icons/gui/Link_Add.png",
         displayName = "#CTL_AddSupplyChainAction"
 )
 @Messages({
