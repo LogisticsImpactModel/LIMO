@@ -8,10 +8,7 @@ deploy:
   provider: releases
   api_key:
     secure: BgiJ0rmm1IFbOttfsoXcxisMN8Y5eJiMisMm7eJVlhGYDeRWWpRl2ZAhsm68ESuc3wbrcjQ0kxUdqFSDtzJqaFfo50wm/L0RNpSeuAu1+gaK92S3JH1obrcM1wQrVa+TB7nB4THklR0Jh4YLRNznTiPNgUXDLdhgWo43Q2fQQ3I=
-  file:
--limo.exe
--limo.sh
--limo.tgz
+  file: limo.exe
   on:
     tags: true
 notifications:
