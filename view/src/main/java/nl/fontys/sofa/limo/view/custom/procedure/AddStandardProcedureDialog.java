@@ -75,7 +75,7 @@ public class AddStandardProcedureDialog extends JDialog implements ActionListene
     private void initComponents(Object[] categories) {
         nameTextField = new JTextField();
         categoryCombobox = new JComboBox(categories);
-        if(categories.length > 0){
+        if (categories.length > 0) {
             categoryCombobox.setSelectedIndex(0);
         }
         timeTypeCombobox = new JComboBox(TimeType.values());
@@ -180,9 +180,9 @@ public class AddStandardProcedureDialog extends JDialog implements ActionListene
             }
             TimeType timeType = (TimeType) timeTypeCombobox.getSelectedItem();
             newProcedure = new Procedure(name, category, costValue, timeValue, timeType, cotwoValue);
-            
+
             ProcedureService procedureService = Lookup.getDefault().lookup(ProcedureService.class);
-            procedureService.insert(newProcedure);   
+            procedureService.insert(newProcedure);
             this.dispose();
         }
     }

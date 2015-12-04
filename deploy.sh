@@ -2,8 +2,12 @@ cd application/
 mvn nbm:build-installers -q
 cd target/
 cp *.exe ../../
+cp *.tgz
+cp *.sh
 cd ../../
 mv *.exe limo.exe ||true
+mv *macosx.tgz limo.macosx.tgz ||true
+mv *linux.sh limo.sh ||true
 mvn nbm:autoupdate -P \!all,nbm -q
 
 echo -e "Starting to update modules\n"

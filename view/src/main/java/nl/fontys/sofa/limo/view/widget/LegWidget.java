@@ -49,6 +49,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
     private Map<Leg, Double> legs;
     private final LegNode legNode;
     private LabelWidget eventLabelWidget, procedureLabelWidget;
+    private Scene scene;
 
     /**
      * Constructor creates a new LegWidget.
@@ -59,6 +60,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
     public LegWidget(Scene scene, AbstractBeanNode legNode) {
         super(scene);
         this.legNode = (LegNode) legNode;
+        this.scene = scene;
         setChildLegWidgets();
         setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
         setStroke(new BasicStroke(3.0f));
@@ -68,6 +70,9 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
                 t.propertyChange(evt);
                 updateLabels();
             });
+        });
+        legNode.getLookup().lookup(Leg.class).addPropertyChangeListener((evt) -> {
+            updateLabels();
         });
     }
 
@@ -143,6 +148,7 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         } else {
             eventLabelWidget.setLabel("Events: " + getLeg().getEvents().size());
         }
+        scene.validate();
     }
 
     /**

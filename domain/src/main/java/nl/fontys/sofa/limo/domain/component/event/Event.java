@@ -75,6 +75,7 @@ public class Event extends Component {
 
     public void setDependency(ExecutionState dependency) {
         this.dependency = dependency;
+        firePropertyChangeEvent();
     }
 
     public Distribution getProbability() {
@@ -83,6 +84,7 @@ public class Event extends Component {
 
     public void setProbability(Distribution probability) {
         this.probability = probability;
+        firePropertyChangeEvent();
     }
 
     public ExecutionState getExecutionState() {
@@ -91,5 +93,6 @@ public class Event extends Component {
 
     public void setExecutionState(ExecutionState executionState) {
         this.executionState = executionState;
+        firePropertyChangeEvent();
     }
 }
