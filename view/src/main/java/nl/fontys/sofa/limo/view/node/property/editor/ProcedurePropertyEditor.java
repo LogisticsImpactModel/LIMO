@@ -149,35 +149,6 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
              * not used*
              */
         }
-        
-        private void setProcedureComboBox() {
-            ArrayList<String> allProcedureNames = new ArrayList<>();
-            List<String> usedProcedures = new ArrayList<>();
-            for (int row = 0; row < table.getRowCount(); row++) {
-                usedProcedures.add((String)table.getValueAt(row, 0));
-            }
-            if (allProcedures != null) {
-                for (Procedure procedure : allProcedures) {
-                    boolean valid = true;
-                    for (String used : usedProcedures) {
-                        if (procedure.getName() != null && used != null) {
-                            valid = !procedure.getName().equals(used);
-                        }
-                        if (!valid) {
-                            break;
-                        }
-                    }
-                    if (valid) {
-                        allProcedureNames.add(procedure.getName());
-                    }
-                }
-                addButton.setEnabled(!allProcedures.isEmpty());
-                proceduresComboBox.setModel(new DefaultComboBoxModel(allProcedureNames.toArray()));
-            } else {
-                allProcedures = new ArrayList<>();
-                proceduresComboBox.setModel(new DefaultComboBoxModel(new String[]{}));
-            }
-        }
 
         private void addClicked() {
             Procedure selected = null;
