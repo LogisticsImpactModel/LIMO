@@ -293,12 +293,12 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         timeTypesCheckbox = new JComboBox(TimeType.values());
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(timeTypesCheckbox));
     }
-    
+
     protected void checkButtonsState() {
         addButton.setEnabled(proceduresComboBox.getModel().getSize() > 0);
         deleteButton.setEnabled(tableProcedures.size() > 1);
     }
-    
+
     private void initProcedureService() {
         service = Lookup.getDefault().lookup(ProcedureService.class);
         allProcedures = service.findAll();
@@ -330,6 +330,23 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         } else {
             allProcedures = new ArrayList<>();
             proceduresComboBox.setModel(new DefaultComboBoxModel(new String[]{}));
+        }
+    }
+
+    protected void addClicked() {
+        Procedure selected = null;
+        for (Procedure procedure : allProcedures) {
+            if (((String) proceduresComboBox.getSelectedItem()).equals(procedure.getName())) {
+                selected = service.findById(procedure.getId());
+                break;
+            }
+        }
+        if (selected != null) {
+            List<Procedure> procedures = new ArrayList<>(tableProcedures);
+            selected.setId(null);
+            procedures.add(selected);
+            model.fireTableDataChanged();
+            setProcedureTable(procedures);
         }
     }
 }

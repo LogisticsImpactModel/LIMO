@@ -101,6 +101,7 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                 checkButtonsState();
             } else if (e.getSource().equals(addButton)) {
                 addClicked();
+                setValue(tableProcedures);
                 setProcedureComboBox();
                 checkButtonsState();
             }
@@ -146,24 +147,6 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
             /**
              * not used*
              */
-        }
-
-        private void addClicked() {
-            Procedure selected = null;
-            for (Procedure procedure : allProcedures) {
-                if (((String) proceduresComboBox.getSelectedItem()).equals(procedure.getName())) {
-                    selected = service.findById(procedure.getId());
-                    break;
-                }
-            }
-            if (selected != null) {
-                List<Procedure> procedures = new ArrayList<>(tableProcedures);
-                selected.setId(null);
-                procedures.add(selected);
-                model.fireTableDataChanged();
-                setProcedureTable(procedures);
-                setValue(procedures);
-            }
         }
     }
 }
