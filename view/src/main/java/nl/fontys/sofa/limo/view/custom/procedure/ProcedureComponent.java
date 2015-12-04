@@ -124,6 +124,10 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             }
         } else if (e.getSource().equals(newButton)) {
             addProcedure();
+        } else if (e.getSource().equals(addButton)) {
+            addClicked();
+            setProcedureComboBox();
+            checkButtonsState();
         }
     }
 

@@ -100,10 +100,7 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                 setProcedureComboBox();
                 checkButtonsState();
             } else if (e.getSource().equals(addButton)) {
-                addClicked();
                 setValue(tableProcedures);
-                setProcedureComboBox();
-                checkButtonsState();
             }
         }
 
