@@ -15,6 +15,7 @@ import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 import nl.fontys.sofa.limo.view.util.IconUtil;
+import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
 
 /**
  * This class is the Property Editor for our events. It enables you to change
@@ -195,8 +196,14 @@ public class EventPropertyEditor extends PropertyEditorSupport {
          */
         private void setNewButtonListener() {
             newButton.addActionListener((ActionEvent e) -> {
-                // TODO: open new event dialog
+                getNewEventByWizard();
             });
+        }
+
+        private Event getNewEventByWizard() {
+            EventWizardAction action = new EventWizardAction();
+            action.actionPerformed(new ActionEvent(newButton, 0, ""));
+            return null;
         }
     }
 }
