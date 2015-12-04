@@ -102,6 +102,7 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
             } else if (e.getSource().equals(addButton)) {
                 setValue(tableProcedures);
             }
+            super.actionPerformed(e);
         }
 
         @Override
