@@ -298,6 +298,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
     
     protected void checkButtonsState() {
         addButton.setEnabled(proceduresComboBox.getModel().getSize() > 0);
+        deleteButton.setEnabled(tableProcedures.size() > 1);
     }
     
     private void initProcedureService() {
