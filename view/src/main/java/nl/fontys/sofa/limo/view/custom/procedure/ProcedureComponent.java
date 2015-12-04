@@ -123,8 +123,6 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             if (rowToDelete > -1) {
                 deleteProcedure(rowToDelete);
             }
-        } else if (e.getSource().equals(newButton)) {
-            addProcedure();
         } else if (e.getSource().equals(addButton)) {
             addClicked();
             setProcedureComboBox();

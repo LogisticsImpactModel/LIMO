@@ -86,14 +86,12 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(newButton)) {
                 addProcedure();
-                List<Procedure> procedures = getActiveTableState();
-                setValue(procedures);
-                setProcedureComboBox();
-                checkButtonsState();
-            } else if (e.getSource().equals(addButton)) {
                 setValue(tableProcedures);
             }
             super.actionPerformed(e);
+            if (e.getSource().equals(addButton)) {
+                setValue(tableProcedures);
+            }
         }
 
         @Override
