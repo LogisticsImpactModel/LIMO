@@ -17,7 +17,7 @@ public final class StandardProceduresPanel extends JPanel {
 
     private AddStandardProcedureDialog addProcedureDialog;
     protected ProcedureCategoryDAO procedureCatDao;
-    
+
     public StandardProceduresPanel() {
         initComponents();
     }
@@ -29,7 +29,7 @@ public final class StandardProceduresPanel extends JPanel {
 
     private void initComponents() {
         setLayout(new BorderLayout());
-        
+
         procedureCatDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
         addProcedureDialog = new AddStandardProcedureDialog(procedureCatDao, null);
         addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

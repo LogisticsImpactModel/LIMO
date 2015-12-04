@@ -53,7 +53,7 @@ public final class ProcedureWizardAction implements ActionListener {
             panels.add(new ProcedureWizard());
             procedure = new Procedure();
         } else {
-            procedure = new Procedure(originalProcedure); //Creates a new Procedure with the same attributes. This way the original procedure object keeped ontouched. 
+            procedure = new Procedure(originalProcedure); //Creates a new Procedure with the same attributes. This way the original procedure object keeped ontouched.
         }
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {

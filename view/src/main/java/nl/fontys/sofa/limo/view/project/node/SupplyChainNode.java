@@ -154,7 +154,7 @@ public class SupplyChainNode extends DataNode {
 
         node.getEvents().parallelStream().forEach((event) -> {
             try {
-                EventNode e = new EventNode(event);
+                EventNode e = new EventProjectNode(event);
                 events.add(e);
             } catch (IntrospectionException ex) {
                 Exceptions.printStackTrace(ex);
@@ -163,7 +163,7 @@ public class SupplyChainNode extends DataNode {
 
         node.getProcedures().parallelStream().forEach(((procedure) -> {
             try {
-                ProcedureNode p = new ProcedureNode(procedure);
+                ProcedureNode p = new ProcedureProjectNode(procedure);
                 procedures.add(p);
             } catch (IntrospectionException ex) {
                 Exceptions.printStackTrace(ex);
