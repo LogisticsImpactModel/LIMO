@@ -41,7 +41,6 @@ public class NameDescriptionDialogInputPanel extends JPanel
         descriptionTF.setName(LIMOResourceBundle.getString("DESCRIPTION"));
         group = SwingValidationGroup.create(this);
         group.add(nameTF, StringValidators.REQUIRE_NON_EMPTY_STRING);
-        group.add(descriptionTF, StringValidators.REQUIRE_NON_EMPTY_STRING);
     }
 
     /**
