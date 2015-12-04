@@ -4,7 +4,7 @@
     <parent>
         <groupId>nl.fontys.sofa.limo</groupId>
         <artifactId>LIMO-parent</artifactId>
-        <version>1.7.0</version>
+        <version>1.8-SNAPSHOT</version>
     </parent>
     <artifactId>LIMO-domain</artifactId>
     <name>LIMO-domain</name>
@@ -86,5 +86,5 @@
             <version>RELEASE81</version>
         </dependency>
     </dependencies>
-    <version>1.7.0</version>
+    <version>1.8-SNAPSHOT</version>
 </project>
