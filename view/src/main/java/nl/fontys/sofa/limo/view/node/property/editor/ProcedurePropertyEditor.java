@@ -92,18 +92,19 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                     deleteProcedure(rowToDelete);
                     List<Procedure> procedures = getActiveTableState();
                     setValue(procedures);
-                    checkButtonsState();
                     setProcedureComboBox();
+                    checkButtonsState();
                 }
             } else if (e.getSource().equals(newButton)) {
                 addProcedure();
                 List<Procedure> procedures = getActiveTableState();
                 setValue(procedures);
-                checkButtonsState();
                 setProcedureComboBox();
+                checkButtonsState();
             } else if (e.getSource().equals(addButton)) {
                 addClicked();
                 setProcedureComboBox();
+                checkButtonsState();
             }
         }
 
@@ -193,7 +194,6 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                 model.fireTableDataChanged();
                 setProcedureTable(procedures);
                 setValue(procedures);
-                checkButtonsState();
             }
         }
     }
