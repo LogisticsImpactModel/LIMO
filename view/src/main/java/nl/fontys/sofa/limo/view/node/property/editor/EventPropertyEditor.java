@@ -9,9 +9,12 @@ import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
+import nl.fontys.sofa.limo.view.util.IconUtil;
 
 /**
  * This class is the Property Editor for our events. It enables you to change
@@ -58,6 +61,8 @@ public class EventPropertyEditor extends PropertyEditorSupport {
      */
     private class CustomEditor extends EventsPanel implements ActionListener, ItemListener {
 
+        private JButton newButton;
+
         public CustomEditor() {
             super();
             for (ActionListener listener : deleteButton.getActionListeners()) {
@@ -65,6 +70,9 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             }
             deleteButton.addActionListener(this);
             executionStateComboBox.addItemListener(this);
+            newButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+            panelLeft.add(newButton, 1);
+            setNewButtonListener();
             deleteButton.setEnabled(!eventsTableModel.getEvents().isEmpty());
         }
 
@@ -181,5 +189,14 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                 }
             }
         }
+
+    /**
+     * The new action where a new event is created as template and added as well.
+     */
+    private void setNewButtonListener() {
+        newButton.addActionListener((ActionEvent e) -> {
+            // TODO: open new event dialog
+        });
+    }
     }
 }
