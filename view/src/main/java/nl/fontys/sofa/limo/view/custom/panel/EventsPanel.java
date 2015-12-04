@@ -47,7 +47,7 @@ public abstract class EventsPanel extends JPanel {
     protected List<Event> allEvents;
     protected EventTableModel eventsTableModel;
     protected DefaultComboBoxModel eventsComboBoxModel;
-    protected JPanel panelLeft;
+    protected JPanel sidebarPanel;
 
     public EventsPanel() {
         initComponents();
@@ -203,12 +203,12 @@ public abstract class EventsPanel extends JPanel {
             }
         });
 
-        panelLeft = new JPanel();
-        panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
-        panelLeft.add(addButton);
-        panelLeft.add(editButton);
-        panelLeft.add(deleteButton);
-        panel.add(panelLeft, BorderLayout.EAST);
+        sidebarPanel = new JPanel();
+        sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
+        sidebarPanel.add(addButton);
+        sidebarPanel.add(editButton);
+        sidebarPanel.add(deleteButton);
+        panel.add(sidebarPanel, BorderLayout.EAST);
 
         c.weightx = 1;
         c.gridx = 0;

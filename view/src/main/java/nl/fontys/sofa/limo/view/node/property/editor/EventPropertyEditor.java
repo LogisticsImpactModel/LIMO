@@ -71,7 +71,7 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             deleteButton.addActionListener(this);
             executionStateComboBox.addItemListener(this);
             newButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
-            panelLeft.add(newButton, 1);
+            sidebarPanel.add(newButton, 1);
             setNewButtonListener();
             deleteButton.setEnabled(!eventsTableModel.getEvents().isEmpty());
         }
