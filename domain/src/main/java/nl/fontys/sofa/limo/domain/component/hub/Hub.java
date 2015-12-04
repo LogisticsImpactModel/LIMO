@@ -79,6 +79,7 @@ public class Hub extends Node<Leg> {
 
     public void setLocation(Location location) {
         this.location = location;
+        firePropertyChange();
     }
 
     public Icon getIcon() {
@@ -87,6 +88,7 @@ public class Hub extends Node<Leg> {
 
     public void setIcon(Icon icon) {
         this.icon = icon;
+        firePropertyChange();
     }
 
     /**

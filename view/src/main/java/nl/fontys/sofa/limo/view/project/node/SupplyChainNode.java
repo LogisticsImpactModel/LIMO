@@ -111,7 +111,7 @@ public class SupplyChainNode extends DataNode {
             if (node instanceof Hub) {
                 try {
                     Children children = createNodeChildren(node);
-                    Node hubNode = new FilterNode(new HubNode((Hub) node), children);
+                    Node hubNode = new FilterNode(new HubProjectNode((Hub) node), children);
                     hubs.add(hubNode);
                 } catch (IntrospectionException ex) {
                     Exceptions.printStackTrace(ex);

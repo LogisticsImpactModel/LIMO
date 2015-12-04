@@ -5,17 +5,12 @@
  */
 package nl.fontys.sofa.limo.view.project;
 
-import java.awt.Image;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import nl.fontys.sofa.limo.view.action.NewChainAction;
-import nl.fontys.sofa.limo.view.project.actions.AddMasterDataAction;
-import nl.fontys.sofa.limo.view.project.actions.AddSupplyChainAction;
 import nl.fontys.sofa.limo.view.project.actions.util.SupplyDefaultCopyOperation;
 import nl.fontys.sofa.limo.view.project.actions.util.SupplyDefaultMoveOrRenameOperation;
 import nl.fontys.sofa.limo.view.project.supplychain.ChainNodeList;
@@ -26,21 +21,17 @@ import org.netbeans.spi.project.ActionProvider;
 import org.netbeans.spi.project.DeleteOperationImplementation;
 import org.netbeans.spi.project.ProjectState;
 import org.netbeans.spi.project.ui.LogicalViewProvider;
-import org.netbeans.spi.project.ui.support.CommonProjectActions;
 import org.netbeans.spi.project.ui.support.DefaultProjectOperations;
-import org.netbeans.spi.project.ui.support.NodeFactorySupport;
 import org.openide.filesystems.FileObject;
 import org.openide.loaders.DataFolder;
 import org.openide.loaders.DataObjectNotFoundException;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
-import org.openide.nodes.FilterNode;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.Lookups;
-import org.openide.util.lookup.ProxyLookup;
 
 /**
  *
@@ -154,56 +145,6 @@ public class SupplyProject implements Project {
                 //read-only filesystem or something evil happened
                 return new AbstractNode(Children.LEAF);
             }
-        }
-
-        private final class ProjectNode extends FilterNode {
-
-            final SupplyProject project;
-
-            public ProjectNode(Node node, SupplyProject project)
-                    throws DataObjectNotFoundException {
-                super(node,
-                        NodeFactorySupport.createCompositeChildren(
-                                project,
-                                "Projects/supply-project/Nodes"),
-                        new ProxyLookup(
-                                new Lookup[]{
-                                    Lookups.singleton(project),
-                                    node.getLookup()
-                                }));
-                this.project = project;
-            }
-
-            @Override
-            public Action[] getActions(boolean arg0) {
-                return new Action[]{
-                    CommonProjectActions.newFileAction(),
-                    CommonProjectActions.copyProjectAction(),
-                    CommonProjectActions.deleteProjectAction(),
-                    CommonProjectActions.closeProjectAction(),
-                    CommonProjectActions.renameProjectAction(),
-                    CommonProjectActions.moveProjectAction(),
-                    new NewChainAction(project),
-                    new AddMasterDataAction(project),
-                    new AddSupplyChainAction(project)
-                };
-            }
-
-            @Override
-            public Image getIcon(int type) {
-                return ImageUtilities.loadImage(CUSTOMER_ICON);
-            }
-
-            @Override
-            public Image getOpenedIcon(int type) {
-                return getIcon(type);
-            }
-
-            @Override
-            public String getDisplayName() {
-                return project.getProjectDirectory().getName();
-            }
-
         }
 
         @Override

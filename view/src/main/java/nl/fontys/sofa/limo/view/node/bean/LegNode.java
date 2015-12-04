@@ -1,21 +1,36 @@
 package nl.fontys.sofa.limo.view.node.bean;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
+import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
+import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
 import nl.fontys.sofa.limo.view.node.property.editor.EventPropertyEditor;
 import nl.fontys.sofa.limo.view.node.property.editor.ProcedurePropertyEditor;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import nl.fontys.sofa.limo.view.wizard.leg.multimode.MultimodeLegWizardAction;
+import nl.fontys.sofa.limo.view.wizard.leg.normal.EventLegTypeWizard;
+import nl.fontys.sofa.limo.view.wizard.leg.normal.NormalLegWizardAction;
+import nl.fontys.sofa.limo.view.wizard.leg.normal.ProceduresLegTypeWizard;
+import nl.fontys.sofa.limo.view.wizard.leg.scheduled.ScheduledLegWizardAction;
+import org.openide.DialogDisplayer;
 import org.openide.ErrorManager;
+import org.openide.WizardDescriptor;
 import org.openide.nodes.Sheet;
+import org.openide.util.ImageUtilities;
 
 /**
  * View representation of a Leg. This class is used to display a NormalLeg and
@@ -23,7 +38,7 @@ import org.openide.nodes.Sheet;
  *
  * @author Sebastiaan Heijmann
  */
-public class LegNode extends AbstractBeanNode<Leg> {
+public class LegNode extends AbstractBeanNode<Leg> implements PropertyChangeListener {
 
     /**
      * /**
@@ -37,6 +52,13 @@ public class LegNode extends AbstractBeanNode<Leg> {
         this(bean, Leg.class);
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        String s = getBean().getName();
+        fireNameChange(s, s);
+
+    }
+
     /**
      * constructor for LegNode, adds the bean to the instancecontent.
      *
@@ -46,6 +68,9 @@ public class LegNode extends AbstractBeanNode<Leg> {
      */
     public LegNode(Leg bean, Class entityClass) throws IntrospectionException {
         super(bean, entityClass);
+        this.bean = bean;
+        this.bean.addPropertyChangeListener(this);
+
     }
 
     @Override
@@ -79,7 +104,7 @@ public class LegNode extends AbstractBeanNode<Leg> {
     @Override
     public String getHtmlDisplayName() {
 
-        String name = getName();
+        String name = getBean().getName();
         Leg l = getBean();
 
         Hub preHub = l.getPrevious();
@@ -143,6 +168,46 @@ public class LegNode extends AbstractBeanNode<Leg> {
     }
 
     @Override
+    public Action[] getActions(boolean context) {
+        return new Action[]{new AbstractAction(LIMOResourceBundle.getString("EDIT")) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Leg l = getBean();
+                if (l instanceof ScheduledLeg) {
+                    ScheduledLegWizardAction wiz = new ScheduledLegWizardAction();
+                    wiz.setUpdate((ScheduledLeg) getBean());
+                    wiz.actionPerformed(e);
+                    createProperties(getBean(), null);
+                    setSheet(getSheet());
+                    setDisplayName(getBean().getName()); //Manually update the displayname
+
+                } else if (false) {
+                    MultimodeLegWizardAction wiz = new MultimodeLegWizardAction();
+                    wiz.setUpdate((MultiModeLeg) getBean());
+                    wiz.actionPerformed(e);
+                    createProperties(getBean(), null);
+                    setSheet(getSheet());
+                    setDisplayName(getBean().getName()); //Manually update the displayname
+
+                } else if (l instanceof Leg) {
+
+                    NormalLegWizardAction wiz = new NormalLegWizardAction();
+
+                    wiz.setUpdate(getBean());
+                    wiz.actionPerformed(e);
+                    createProperties(getBean(), null);
+                    setSheet(getSheet());
+                    setDisplayName(getBean().getName()); //Manually update the displayname
+                } else {
+
+                }
+            }
+        },
+            new AddEventAction(), new AddProcedureAction()
+        };
+    }
+
+    @Override
     public void delete() {
         /**
          * Delete is empty because the LegNodes aren't saved in the database and
@@ -150,4 +215,56 @@ public class LegNode extends AbstractBeanNode<Leg> {
          */
     }
 
+    protected class AddEventAction extends AbstractAction {
+
+        public AddEventAction() {
+            putValue(NAME, "Add Event");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
+            panels.add(new EventLegTypeWizard());
+            WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
+            wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
+
+            wiz.putProperty("leg", new Leg(getBean()));
+            wiz.putProperty("original_leg", getBean());
+
+            wiz.setTitleFormat(new MessageFormat("{0}"));
+            wiz.setTitle(LIMOResourceBundle.getString("CREATE_NORMAL_LEG"));
+
+            if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
+                getBean().deepOverwrite((Leg) wiz.getProperty("leg"));
+            }
+        }
+    }
+
+    protected class AddProcedureAction extends AbstractAction {
+
+        public AddProcedureAction() {
+            putValue(NAME, "Add procedure");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<>();
+            panels.add(new ProceduresLegTypeWizard());
+            WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<>(panels));
+            wiz.putProperty(WizardDescriptor.PROP_IMAGE, ImageUtilities.loadImage("icons/limo_wizard.png", true));
+
+            wiz.putProperty("leg", new Leg(getBean()));
+            wiz.putProperty("original_leg", getBean());
+
+            wiz.setTitleFormat(new MessageFormat("{0}"));
+            wiz.setTitle(LIMOResourceBundle.getString("CREATE_NORMAL_LEG"));
+
+            if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
+                getBean().deepOverwrite((Leg) wiz.getProperty("leg"));
+            }
+        }
+
+    }
 }
