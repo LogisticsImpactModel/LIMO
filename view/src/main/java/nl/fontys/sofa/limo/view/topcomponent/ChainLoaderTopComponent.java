@@ -24,6 +24,7 @@ import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
+import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
@@ -83,7 +84,30 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
         Lookup graphLookup = Lookups.singleton(graphScene);
         Lookup graphContentLookup = graphScene.getLookup();
-        ProxyLookup pl = new ProxyLookup(graphContentLookup, paletteLookup, nodeLookup, graphLookup);
+        ProxyLookup pl = new ProxyLookup(graphContentLookup, paletteLookup, nodeLookup, graphLookup, new AbstractLookup(ic));
+        associateLookup(pl);
+    }
+
+    public ChainLoaderTopComponent(SupplyChain chain) {
+        try {
+            paletteController = ChainPaletteFactory.createPalette();
+            DeleteAction.setPallete(paletteController);
+        } catch (ServiceNotFoundException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+
+        initComponents();
+        SupplyChain supplyChain = chain;
+
+        setName(supplyChain.getName().replace(".lsc", ""));
+        initCustomComponents(supplyChain);
+        ic = new InstanceContent();
+        savable = new SavableComponent(graphScene.getChainBuilder(), ic, this);
+        Lookup paletteLookup = Lookups.singleton(paletteController);
+        Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
+        Lookup graphLookup = Lookups.singleton(graphScene);
+        Lookup graphContentLookup = graphScene.getLookup();
+        ProxyLookup pl = new ProxyLookup(graphContentLookup, paletteLookup, nodeLookup, graphLookup, new AbstractLookup(ic));
         associateLookup(pl);
     }
 
@@ -112,7 +136,6 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         }
     }
 
-    
     @Override
     public UndoRedo getUndoRedo() {
         return undoManager;

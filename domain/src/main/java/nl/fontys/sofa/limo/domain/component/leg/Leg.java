@@ -13,9 +13,11 @@ import nl.fontys.sofa.limo.domain.component.type.LegType;
  */
 public class Leg extends Node<Hub> {
 
-    @Expose private static final long serialVersionUID = 4146579601096201593L;
+    @Expose
+    private static final long serialVersionUID = 4146579601096201593L;
 
-    @Expose private Icon icon;
+    @Expose
+    private Icon icon;
 
     public Leg() {
     }
@@ -68,6 +70,7 @@ public class Leg extends Node<Hub> {
 
     public void setIcon(Icon icon) {
         this.icon = icon;
+        firePropertyChange();
     }
 
 }

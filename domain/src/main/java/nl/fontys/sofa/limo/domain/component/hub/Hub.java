@@ -20,15 +20,17 @@ public class Hub extends Node<Leg> {
 
     @Embedded
     @NotNull
-    @Expose private Location location;
+    @Expose
+    private Location location;
     @Embedded
-    @Expose private Icon icon;
+    @Expose
+    private Icon icon;
 
     public Hub() {
         super();
     }
 
-    /**  
+    /**
      * Generates a {@link Hub} object from a {@link HubType} object.
      *
      * @param hubType The hub should be based on this type
@@ -77,6 +79,7 @@ public class Hub extends Node<Leg> {
 
     public void setLocation(Location location) {
         this.location = location;
+        firePropertyChange();
     }
 
     public Icon getIcon() {
@@ -85,14 +88,15 @@ public class Hub extends Node<Leg> {
 
     public void setIcon(Icon icon) {
         this.icon = icon;
+        firePropertyChange();
     }
 
     /**
      * Returns the Hub content in a String array
+     *
      * @return toReturn
      */
-    public JSONArray getJSONArray()
-    {   
+    public JSONArray getJSONArray() {
         JSONArray toReturn = new JSONArray();
         toReturn.add(this.getId());
         toReturn.add(this.getName());
@@ -100,7 +104,7 @@ public class Hub extends Node<Leg> {
         toReturn.add(String.valueOf(this.getUniqueIdentifier()));
         toReturn.add(String.valueOf(this.getDescription()));
         Location loc = this.getLocation();
-        if(loc == null) {
+        if (loc == null) {
             toReturn.add(null);
             toReturn.add(null);
             toReturn.add(null);
@@ -116,7 +120,7 @@ public class Hub extends Node<Leg> {
             toReturn.add(String.valueOf(loc.getContinent().getName()));
         }
         Location.Coordinate coord = loc.getPosition();
-        if(coord == null) {
+        if (coord == null) {
             toReturn.add(null);
             toReturn.add(null);
             toReturn.add(null);
