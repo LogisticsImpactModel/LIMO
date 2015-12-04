@@ -130,8 +130,6 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                     }
                     setProcedureTable(procedures);
                     setValue(procedures);
-                    procedureCategoryCheckbox.addItemListener(this);
-                    timeTypesCheckbox.addItemListener(this);
                 }
             }
         }
