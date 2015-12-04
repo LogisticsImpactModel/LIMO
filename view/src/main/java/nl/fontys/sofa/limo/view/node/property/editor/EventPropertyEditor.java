@@ -190,13 +190,13 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             }
         }
 
-    /**
-     * The new action where a new event is created as template and added as well.
-     */
-    private void setNewButtonListener() {
-        newButton.addActionListener((ActionEvent e) -> {
-            // TODO: open new event dialog
-        });
-    }
+        /**
+         * The new action where a new event is created as template and added as well.
+         */
+        private void setNewButtonListener() {
+            newButton.addActionListener((ActionEvent e) -> {
+                // TODO: open new event dialog
+            });
+        }
     }
 }
