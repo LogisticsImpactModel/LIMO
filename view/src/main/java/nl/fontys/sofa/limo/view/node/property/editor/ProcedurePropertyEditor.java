@@ -84,16 +84,7 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(deleteButton)) {
-                int rowToDelete = table.getSelectedRow();
-                if (rowToDelete > -1 && rowToDelete < getActiveTableState().size()) {
-                    deleteProcedure(rowToDelete);
-                    List<Procedure> procedures = getActiveTableState();
-                    setValue(procedures);
-                    setProcedureComboBox();
-                    checkButtonsState();
-                }
-            } else if (e.getSource().equals(newButton)) {
+            if (e.getSource().equals(newButton)) {
                 addProcedure();
                 List<Procedure> procedures = getActiveTableState();
                 setValue(procedures);
@@ -112,8 +103,10 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                     editProcedure();
                     List<Procedure> procedures = getActiveTableState();
                     setValue(procedures);
+                    checkButtonsState();
                 }
             }
+            super.mouseClicked(e);
         }
 
         @Override
@@ -129,6 +122,7 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                     setProcedureTable(procedures);
                     setValue(procedures);
                 }
+                checkButtonsState();
             }
         }
 

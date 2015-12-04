@@ -113,6 +113,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         table.addMouseListener(this);
         setVisible(true);
         setProcedureComboBox();
+        checkButtonsState();
     }
 
     @Override
@@ -138,6 +139,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
                 editProcedure();
             }
         }
+        checkButtonsState();
     }
 
     /**
@@ -210,7 +212,6 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             model.removeRow(row);
             revalidate();
             repaint();
-            deleteButton.setEnabled(table.getRowCount() > 1);
         }
         setProcedureComboBox();
         checkButtonsState();
@@ -300,7 +301,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
 
     protected void checkButtonsState() {
         addButton.setEnabled(proceduresComboBox.getModel().getSize() > 0);
-        deleteButton.setEnabled(tableProcedures.size() > 1);
+        deleteButton.setEnabled(tableProcedures.size() > 1 && table.getSelectedRow() != -1);
     }
 
     private void initProcedureService() {
