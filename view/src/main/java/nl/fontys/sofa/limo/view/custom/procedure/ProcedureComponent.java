@@ -112,6 +112,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         deleteButton.addActionListener(this);
         table.addMouseListener(this);
         setVisible(true);
+        setProcedureComboBox();
     }
 
     @Override
@@ -183,6 +184,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addProcedureDialog.setVisible(true);
         initProcedureService();
+        setProcedureComboBox();
         checkButtonsState();
     }
 
@@ -206,6 +208,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
             repaint();
             deleteButton.setEnabled(table.getRowCount() > 1);
         }
+        setProcedureComboBox();
         checkButtonsState();
     }
 
