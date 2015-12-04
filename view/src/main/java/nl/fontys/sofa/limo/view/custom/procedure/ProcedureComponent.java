@@ -1,7 +1,5 @@
 package nl.fontys.sofa.limo.view.custom.procedure;
 
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -24,10 +22,7 @@ import javax.swing.SwingConstants;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableCellRenderer;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
-import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
-import nl.fontys.sofa.limo.domain.component.event.Event;
-import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
