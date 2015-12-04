@@ -17,6 +17,9 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.serialization.GsonHelper;
+import org.openide.filesystems.FileLock;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.Exceptions;
 
 /**
@@ -32,7 +35,7 @@ public class SupplyChain implements Serializable {
 
     @Expose
     private String name;
-    @Expose
+
     private String filepath;
     /**
      * The supply chain does only contain the start hub because via the start
@@ -75,8 +78,9 @@ public class SupplyChain implements Serializable {
      * @param file The file to open.
      */
     public static SupplyChain createFromFile(File file) {
+        InputStream in = null;
         try {
-            InputStream in = new FileInputStream(file);
+            in = new FileInputStream(file);
 
             Gson g = GsonHelper.getInstance();
 
@@ -94,12 +98,20 @@ public class SupplyChain implements Serializable {
                 pre = act;
                 act = act.getNext();
             }
-
+            supplyChain.setFilepath(file.getAbsolutePath());
             return supplyChain;
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             ex.printStackTrace(System.err);
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
         }
         return null;
     }
@@ -113,11 +125,22 @@ public class SupplyChain implements Serializable {
     public void saveToFile(String path) throws IOException {
         OutputStream out = new FileOutputStream(path);
         Gson g = GsonHelper.getInstance();
-        try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"))) {
+        FileObject ob = FileUtil.toFileObject(new File(path));
+        FileLock lock = null;
+        try {
+            lock = ob.lock();
+            JsonWriter writer = new JsonWriter(new OutputStreamWriter(ob.getOutputStream(lock)));
             writer.setIndent("  ");
             writer.beginArray();
             g.toJson(this, SupplyChain.class, writer);
             writer.endArray();
+            writer.flush();
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        } finally {
+            if (lock != null) {
+                lock.releaseLock();
+            }
         }
     }
 

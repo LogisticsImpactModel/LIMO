@@ -48,7 +48,6 @@ public class SupplyChainNode extends DataNode {
     @StaticResource()
     public static final String CHAIN_ICON = "icons/gui/Link_CL.png";
 
-    private DataObject dataObject;
     private final SupplyChain chain;
     private final CloseChainAction closeAction;
     private final AbstractAction openAction;
@@ -61,7 +60,6 @@ public class SupplyChainNode extends DataNode {
         saveAction = new SaveChainAction();
         openAction = new OpenChainAction(chain, closeAction, saveAction);
         setChildren(createChildNodes());
-
     }
 
     @Override
