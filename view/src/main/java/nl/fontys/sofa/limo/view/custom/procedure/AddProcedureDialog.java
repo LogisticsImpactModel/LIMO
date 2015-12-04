@@ -33,6 +33,10 @@ import org.openide.util.Lookup;
  * @author Matthias Brück
  */
 public class AddProcedureDialog extends JDialog implements ActionListener {
+    
+    public static interface SaveListener {
+        void onSave(Procedure procedure);
+    }
 
     private JButton saveButton, cancelButton, addTimeButton, addCostButton, addCotwoButton;
     private JTextField nameTextField, costTextField, timeTextField, cotwoTextField;
@@ -41,13 +45,12 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
     private Procedure newProcedure;
     private final DragNDropTable table;
     private final CellConstraints cc;
-    private JButton deleteButton;
     private JCheckBox templateCheckbox;
     private ProcedureService service;
+    private SaveListener listener;
 
-    public AddProcedureDialog(ProcedureCategoryDAO procedureCategoryDao, DragNDropTable dragNDropTable, JButton deleteButton) {
+    public AddProcedureDialog(ProcedureCategoryDAO procedureCategoryDao, DragNDropTable dragNDropTable) {
         this.table = dragNDropTable;
-        this.deleteButton = deleteButton;
         cc = new CellConstraints();
         //LAYOUT
         FormLayout layout = new FormLayout("5px, pref, 5px, pref, pref:grow, 5px, pref, 5px",
@@ -74,6 +77,10 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         this.setLocation(x, y);
         this.setTitle(LIMOResourceBundle.getString("PROCEDURES"));
         service = Lookup.getDefault().lookup(ProcedureService.class);
+    }
+    
+    public void setListener(SaveListener listener) {
+        this.listener = listener;
     }
 
     /**
@@ -203,9 +210,11 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
             if (templateCheckbox.isSelected()) {
                 service.insert(newProcedure);
             }
+            if (listener != null) {
+                listener.onSave(newProcedure);
+            }
             table.revalidate();
             table.repaint();
-            deleteButton.setEnabled(true);
             templateCheckbox.setSelected(true);
             this.dispose();
         }

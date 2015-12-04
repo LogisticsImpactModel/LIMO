@@ -27,6 +27,7 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
+import nl.fontys.sofa.limo.view.custom.procedure.AddProcedureDialog.SaveListener;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
 import nl.fontys.sofa.limo.view.util.IconUtil;
@@ -184,7 +185,14 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      * Handles the adding of a procedure via a dialog.
      */
     protected void addProcedure() {
-        AddProcedureDialog addProcedureDialog = new AddProcedureDialog(procedureCategoryDao, table, deleteButton);
+        AddProcedureDialog addProcedureDialog = new AddProcedureDialog(procedureCategoryDao, table);
+        addProcedureDialog.setListener(new SaveListener() {
+            @Override
+            public void onSave(Procedure procedure) {
+                deleteButton.setEnabled(true);
+                tableProcedures.add(procedure);
+            }
+        });
         addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addProcedureDialog.setVisible(true);
         initProcedureService();
