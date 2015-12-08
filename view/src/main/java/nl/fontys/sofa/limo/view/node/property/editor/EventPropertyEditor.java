@@ -93,40 +93,6 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             setTableAndCheckbox();
         }
 
-        /**
-         * Sets the table, combobox and checkboxes of the used and unused items.
-         */
-        private void setTableAndCheckbox() {
-            ArrayList<String> allEventsName = new ArrayList<>();
-            List<Event> usedEvents;
-            if (eventsTableModel.getEvents() != null) {
-                usedEvents = new ArrayList<>(eventsTableModel.getEvents());
-            } else {
-                usedEvents = new ArrayList<>();
-            }
-            if (allEvents != null) {
-                for (Event event : allEvents) {
-                    boolean valid = true;
-                    for (Event used : usedEvents) {
-                        if (event.getName() != null && used.getName() != null) {
-                            valid = !event.getName().equals(used.getName());
-                        }
-                        if (!valid) {
-                            break;
-                        }
-                    }
-                    if (valid) {
-                        allEventsName.add(event.getName());
-                    }
-                }
-                addButton.setEnabled(!allEvents.isEmpty());
-                eventsComboBox.setModel(new DefaultComboBoxModel(allEventsName.toArray()));
-            } else {
-                allEvents = new ArrayList<>();
-                eventsComboBox.setModel(new DefaultComboBoxModel(new String[]{}));
-            }
-        }
-
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(addButton)) {
