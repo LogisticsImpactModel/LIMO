@@ -16,6 +16,9 @@ import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
+import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.DefaultFinishClickHandler;
+import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.FinishClickHandler;
+import org.openide.WizardDescriptor;
 
 /**
  * This class is the Property Editor for our events. It enables you to change
@@ -202,6 +205,20 @@ public class EventPropertyEditor extends PropertyEditorSupport {
 
         private Event getNewEventByWizard() {
             EventWizardAction action = new EventWizardAction();
+            FinishClickHandler handler = action.new DefaultFinishClickHandler() {
+                @Override
+                public void handle(Event event, WizardDescriptor descriptor) {
+                    super.handle(event, descriptor);
+                    List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
+                    events.add(event);
+                    eventsTableModel.setEvents(events);
+                    eventsTableModel.fireTableDataChanged();
+                    setTableAndCheckbox();
+                    setValue(events);
+                    checkButtonsState();
+                }
+            };
+            action.setFinishClickHandler(handler);
             action.actionPerformed(new ActionEvent(newButton, 0, ""));
             return null;
         }

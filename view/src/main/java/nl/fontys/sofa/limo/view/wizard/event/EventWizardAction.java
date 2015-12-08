@@ -45,7 +45,7 @@ public final class EventWizardAction implements ActionListener {
         void handle(Event event, WizardDescriptor descriptor);
     }
     
-    private class DefaultFinishClickHandler implements FinishClickHandler {
+    public class DefaultFinishClickHandler implements FinishClickHandler {
 
         @Override
         public void handle(Event event, WizardDescriptor descriptor) {
