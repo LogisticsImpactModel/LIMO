@@ -58,7 +58,7 @@ public class ProcedureRootNode extends AbstractRootNode {
                 String name = inputPane.getNameFieldValue();
                 String description = inputPane.getDescriptionFieldValue();
 
-                if (result == JOptionPane.OK_OPTION && !name.isEmpty() && !description.isEmpty()) {
+                if (result == JOptionPane.OK_OPTION && !name.isEmpty()) {
                     Procedure pc = new Procedure();
                     pc.setName(name);
                     pc.setDescription(description);

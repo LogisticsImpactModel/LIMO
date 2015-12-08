@@ -67,7 +67,7 @@ public class ProcedureCategoryNode extends AbstractBeanNode<ProcedureCategory> {
     }
 
     /**
-     * Delete the procedure form database.
+     * Delete the procedure from database.
      */
     private void deleteProcedure() {
         int reply = JOptionPane.showConfirmDialog(null, LIMOResourceBundle.getString("DELETE_QUESTION", bean.getName()), LIMOResourceBundle.getString("ARE_YOU_SURE"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);

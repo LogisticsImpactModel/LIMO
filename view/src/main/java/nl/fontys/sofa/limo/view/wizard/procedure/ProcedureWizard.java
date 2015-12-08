@@ -1,7 +1,6 @@
 package nl.fontys.sofa.limo.view.wizard.procedure;
 
 import javax.swing.event.ChangeListener;
-import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.view.custom.panel.StandardProceduresPanel;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
@@ -15,7 +14,6 @@ import org.openide.util.HelpCtx;
 public class ProcedureWizard implements WizardDescriptor.Panel<WizardDescriptor>, WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     private StandardProceduresPanel component;
-    private Hub hub;
 
     public ProcedureWizard() {
     }

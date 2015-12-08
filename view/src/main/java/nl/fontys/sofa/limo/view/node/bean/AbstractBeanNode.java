@@ -12,6 +12,7 @@ import nl.fontys.sofa.limo.domain.component.Icon;
 import nl.fontys.sofa.limo.view.node.DetachableNode;
 import nl.fontys.sofa.limo.view.node.Deletable;
 import nl.fontys.sofa.limo.view.node.property.StupidProperty;
+import nl.fontys.sofa.limo.view.node.property.StupidProperty.PropertyGuard;
 import nl.fontys.sofa.limo.view.node.property.editor.IconPropertyEditor;
 import nl.fontys.sofa.limo.view.util.IconUtil;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
@@ -118,6 +119,8 @@ public abstract class AbstractBeanNode<T extends BaseEntity> extends BeanNode<T>
 
         try {
             StupidProperty name = new StupidProperty<>(getBean(), String.class, "name");
+            // do not allow empty names
+            name.setPropertyGuard((Object value) -> !((String)value).isEmpty());
             name.addPropertyChangeListener(getListener());
             name.setDisplayName(LIMOResourceBundle.getString("NAME"));
             name.setShortDescription(LIMOResourceBundle.getString("NAME_OF", LIMOResourceBundle.getString("EVENT")));

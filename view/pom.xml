@@ -4,7 +4,7 @@
     <parent>
         <groupId>nl.fontys.sofa.limo</groupId>
         <artifactId>LIMO-parent</artifactId>
-        <version>1.7.0</version>
+        <version>1.8-SNAPSHOT</version>
     </parent>
     <name>LIMO-view</name>
     <artifactId>LIMO-view</artifactId>
@@ -169,7 +169,7 @@
         <dependency>
             <groupId>nl.fontys.sofa.limo</groupId>
             <artifactId>LIMO-service</artifactId>
-            <version>1.7.0</version>
+            <version>1.8-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -193,6 +193,26 @@
             <artifactId>org-netbeans-modules-sendopts</artifactId>
             <version>RELEASE802</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-projectuiapi</artifactId>
+            <version>RELEASE80</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-projectapi</artifactId>
+            <version>RELEASE80</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-filesystems</artifactId>
+            <version>RELEASE80</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-loaders</artifactId>
+            <version>RELEASE80</version>
         </dependency>
     </dependencies>
     <properties>

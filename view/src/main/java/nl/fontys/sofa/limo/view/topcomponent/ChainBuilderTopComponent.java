@@ -98,46 +98,41 @@ public final class ChainBuilderTopComponent extends TopComponent
         associateLookup(pl);
     }
 
-    /**
-     * Kudos to Geertjan Wielenga
-     * Initialize the custom placed components of this TopComponent.
-     */
     private void initCustomComponents() {
-        setLayout(new BorderLayout());
-        SupplyChain chain = new SupplyChain();
-        try {
-            ChainToolbar toolbar = new ChainToolbar();
-            add(toolbar, BorderLayout.NORTH);
-            graphScene = new ChainGraphSceneImpl(this, chain, 
-undoManager, paletteController);
-            JPanel viewPanel = new JPanel(new BorderLayout());
-            JScrollPane scroll = new JScrollPane(
-                    graphScene.createView(),
-                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                    JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-            viewPanel.add(scroll, BorderLayout.CENTER);
-            JPanel satellitePanel = new JPanel();
-            satellitePanel.setLayout(new GridBagLayout());
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.weightx = 1;
-            gbc.weighty = 1;
-            gbc.insets = new Insets(0, 0, 25, 25);
-            gbc.anchor = GridBagConstraints.SOUTHEAST;
-            JComponent view = graphScene.createSatelliteView();
-            JPanel holder = new JPanel(new BorderLayout());
-            holder.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-            holder.add(view);
-            satellitePanel.add(holder, gbc);
-            satellitePanel.setOpaque(false);
-            JLayeredPane panel = new JLayeredPane();
-            panel.setLayout(new OverlayLayout(panel));
-            panel.add(viewPanel, JLayeredPane.DEFAULT_LAYER);
-            panel.add(satellitePanel, JLayeredPane.PALETTE_LAYER);
-            add(panel);
-        } catch (IOException | IntrospectionException ex) {
-            Exceptions.printStackTrace(ex);
-        }
-    }
+         setLayout(new BorderLayout());
+         SupplyChain chain = new SupplyChain();
+         try {
+             ChainToolbar toolbar = new ChainToolbar();
+             add(toolbar, BorderLayout.NORTH);
+             graphScene = new ChainGraphSceneImpl(this, chain, undoManager, paletteController);
+             JPanel viewPanel = new JPanel(new BorderLayout());
+             JScrollPane scroll = new JScrollPane(
+                     graphScene.createView(),
+                     JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                     JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+             viewPanel.add(scroll, BorderLayout.CENTER);
+             JPanel satellitePanel = new JPanel();
+             satellitePanel.setLayout(new GridBagLayout());
+             GridBagConstraints gbc = new GridBagConstraints();
+             gbc.weightx = 1;
+             gbc.weighty = 1;
+             gbc.insets = new Insets(0, 0, 25, 25);
+             gbc.anchor = GridBagConstraints.SOUTHEAST;
+             JComponent view = graphScene.createSatelliteView();
+             JPanel holder = new JPanel(new BorderLayout());
+             holder.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+             holder.add(view);
+             satellitePanel.add(holder, gbc);
+             satellitePanel.setOpaque(false);
+             JLayeredPane panel = new JLayeredPane();
+             panel.setLayout(new OverlayLayout(panel));
+             panel.add(viewPanel, JLayeredPane.DEFAULT_LAYER);
+             panel.add(satellitePanel, JLayeredPane.PALETTE_LAYER);
+             add(panel);
+         } catch (IOException | IntrospectionException ex) {
+             Exceptions.printStackTrace(ex);
+         }
+     }
 
     @Override
     public ExplorerManager getExplorerManager() {

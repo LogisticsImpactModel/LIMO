@@ -17,6 +17,9 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.serialization.GsonHelper;
+import org.openide.filesystems.FileLock;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.Exceptions;
 
 /**
@@ -27,17 +30,21 @@ import org.openide.util.Exceptions;
  */
 public class SupplyChain implements Serializable {
 
-    @Expose private static final long serialVersionUID = 1185813427289144002L;
+    @Expose
+    private static final long serialVersionUID = 1185813427289144002L;
 
-    @Expose private String name;
-    @Expose private String filepath;
+    @Expose
+    private String name;
+
+    private String filepath;
     /**
      * The supply chain does only contain the start hub because via the start
      * hub it can get the complete supply chain due the properties of a
      * LinkedList.
      */
-    @Expose private Hub startHub;
-    
+    @Expose
+    private Hub startHub;
+
     private static Gson gson;
 
     public String getName() {
@@ -71,38 +78,73 @@ public class SupplyChain implements Serializable {
      * @param file The file to open.
      */
     public static SupplyChain createFromFile(File file) {
+        InputStream in = null;
         try {
-        InputStream in = new FileInputStream(file);
-        
-        Gson g = GsonHelper.getInstance();
-        
-        SupplyChain supplyChain;
+            in = new FileInputStream(file);
+
+            Gson g = GsonHelper.getInstance();
+
+            SupplyChain supplyChain;
             try (JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"))) {
                 reader.beginArray();
                 supplyChain = g.fromJson(reader, SupplyChain.class);
                 reader.endArray();
             }
-        return supplyChain;
+
+            Node pre = supplyChain.getStartHub();
+            Node act = pre.getNext();
+            while (act != null) {
+                act.setPrevious(pre);
+                pre = act;
+                act = act.getNext();
+            }
+            supplyChain.setFilepath(file.getAbsolutePath());
+            return supplyChain;
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             ex.printStackTrace(System.err);
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
         }
         return null;
     }
 
     /**
      * Saves the supply chain to a file specified at filepath.
+     *
+     * @param path path where to save the chain
      * @throws java.io.IOException
      */
-    public void saveToFile() throws IOException {
-        OutputStream out = new FileOutputStream(filepath);
+    public void saveToFile(String path) throws IOException {
+        OutputStream out = new FileOutputStream(path);
         Gson g = GsonHelper.getInstance();
-        try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"))) {
+        FileObject ob = FileUtil.toFileObject(new File(path));
+        FileLock lock = null;
+        try {
+            lock = ob.lock();
+            JsonWriter writer = new JsonWriter(new OutputStreamWriter(ob.getOutputStream(lock)));
             writer.setIndent("  ");
             writer.beginArray();
             g.toJson(this, SupplyChain.class, writer);
             writer.endArray();
+            writer.flush();
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        } finally {
+            if (lock != null) {
+                lock.releaseLock();
+            }
         }
+    }
+
+    public void saveToFile() throws IOException {
+        saveToFile(filepath);
     }
 }

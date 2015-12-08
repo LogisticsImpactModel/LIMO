@@ -15,9 +15,18 @@ import org.openide.nodes.PropertySupport;
 public class StupidProperty<T> extends PropertySupport.Reflection<T> {
 
     /**
+     * Property guard to prevent wrong input
+     */
+    public interface PropertyGuard<T> {
+        boolean accept(T value);
+    }
+
+    /**
      * Property Change Listeners for the property.
      */
     private final ArrayList<PropertyChangeListener> listeners;
+
+    private PropertyGuard<T> guard;
 
     /**
      * Create new StupidProperty with reflection methods.
@@ -61,6 +70,15 @@ public class StupidProperty<T> extends PropertySupport.Reflection<T> {
     }
 
     /**
+     * Sets a property guard
+     *
+     * @param guard new property guard
+     */
+    public void setPropertyGuard(PropertyGuard<T> guard) {
+        this.guard = guard;
+    }
+
+    /**
      * Set the value of the property and notify listeners.
      *
      * @param val new value.
@@ -70,9 +88,11 @@ public class StupidProperty<T> extends PropertySupport.Reflection<T> {
     @Override
     public void setValue(T val) throws IllegalAccessException, InvocationTargetException {
         try {
-            T oldValue = getValue();
-            super.setValue(val);
-            firePropertyChange(oldValue, val);
+            if (guard == null || guard.accept(val)) {
+                T oldValue = getValue();
+                super.setValue(val);
+                firePropertyChange(oldValue, val);
+            }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             throw ex;
         }

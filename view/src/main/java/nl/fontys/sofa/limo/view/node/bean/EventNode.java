@@ -3,6 +3,8 @@ package nl.fontys.sofa.limo.view.node.bean;
 import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -26,11 +28,13 @@ import org.openide.util.Lookup;
  *
  * @author Sven Mäurer
  */
-public class EventNode extends AbstractBeanNode<Event> {
+public class EventNode extends AbstractBeanNode<Event> implements PropertyChangeListener {
 
     public EventNode(Event event) throws IntrospectionException {
         super(event, Event.class);
         this.bean = event;
+        bean.addPropertyChangeListener(this);
+
     }
 
     @Override
@@ -127,9 +131,14 @@ public class EventNode extends AbstractBeanNode<Event> {
 
     @Override
     public void delete() {
-        
+
         EventService service = Lookup.getDefault().lookup(EventService.class);
         service.delete(bean);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        setDisplayName(bean.getName());
     }
 
 }
