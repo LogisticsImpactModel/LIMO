@@ -58,7 +58,7 @@ import org.openide.windows.WindowManager;
 public final class SimulateAction extends AbstractAction
         implements Presenter.Toolbar, ContextAwareAction, LookupListener, SimulatorTaskListener {
 
-    public static final int DEFAULT_NUM_RUNS = 100000;
+    public static final int DEFAULT_NUM_RUNS = 10000;
 
     private final JFormattedTextField inputRunsTF;
 
