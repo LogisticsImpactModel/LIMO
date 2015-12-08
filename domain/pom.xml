@@ -4,7 +4,7 @@
     <parent>
         <groupId>nl.fontys.sofa.limo</groupId>
         <artifactId>LIMO-parent</artifactId>
-        <version>1.7.0</version>
+        <version>1.8-SNAPSHOT</version>
     </parent>
     <artifactId>LIMO-domain</artifactId>
     <name>LIMO-domain</name>
@@ -83,8 +83,8 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-filesystems</artifactId>
-            <version>RELEASE81</version>
+            <version>RELEASE80</version>
         </dependency>
     </dependencies>
-    <version>1.7.0</version>
+    <version>1.8-SNAPSHOT</version>
 </project>
