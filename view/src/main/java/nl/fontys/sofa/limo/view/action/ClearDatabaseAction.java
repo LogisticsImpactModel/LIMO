@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
+import javax.swing.JOptionPane;
 import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.api.service.provider.EventService;
 import nl.fontys.sofa.limo.api.service.provider.HubService;
@@ -14,6 +15,8 @@ import nl.fontys.sofa.limo.api.service.provider.ProcedureCategoryService;
 import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.BaseEntity;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
@@ -21,10 +24,9 @@ import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
 
 /*
-This action removes all loaded templates (hubs, legs categories etc.) that are loaded
-in the application.
-*/
-
+ This action removes all loaded templates (hubs, legs categories etc.) that are loaded
+ in the application.
+ */
 @ActionID(
         category = "File",
         id = "nl.fontys.sofa.limo.view.action.ClearDatabaseAction"
@@ -43,6 +45,17 @@ public final class ClearDatabaseAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        //Confirm dialog to prevent accidental removal
+        NotifyDescriptor confirm = new NotifyDescriptor(LIMOResourceBundle.getString("ARE_YOU_SURE_MASTERDATA"),
+                LIMOResourceBundle.getString("CLEAR_MASTERDATA"), NotifyDescriptor.YES_NO_OPTION,
+                NotifyDescriptor.INFORMATION_MESSAGE, null, null);
+
+        Object answer = DialogDisplayer.getDefault().notify(confirm);
+
+        if (answer.equals(NotifyDescriptor.NO_OPTION) || answer.equals(NotifyDescriptor.CLOSED_OPTION)) {
+            return;
+        }
 
         List<DAO> list = new ArrayList();
 
@@ -63,10 +76,14 @@ public final class ClearDatabaseAction extends AbstractAction {
         list.stream().filter((service) -> (service != null)).forEach((service) -> {
 
             List<BaseEntity> entries = service.findAll();
-
             entries.stream().filter((entry) -> (entry != null)).forEach((entry) -> {
                 service.delete(entry);
             });
         });
+
+        NotifyDescriptor end = new NotifyDescriptor(LIMOResourceBundle.getString("MASTERDATA_REMOVED"),
+                LIMOResourceBundle.getString("ACTION_COMPLETED"),
+                NotifyDescriptor.OK_CANCEL_OPTION, NotifyDescriptor.INFORMATION_MESSAGE, null, null);
+        DialogDisplayer.getDefault().notify(end);
     }
 }
