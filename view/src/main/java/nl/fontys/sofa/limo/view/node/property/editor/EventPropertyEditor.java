@@ -210,6 +210,8 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                 public void handle(Event event, WizardDescriptor descriptor) {
                     super.handle(event, descriptor);
                     List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
+                    event.setId(null);
+                    event.setDependency(ExecutionState.INDEPENDENT);
                     events.add(event);
                     eventsTableModel.setEvents(events);
                     eventsTableModel.fireTableDataChanged();
