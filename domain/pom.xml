@@ -83,7 +83,7 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-filesystems</artifactId>
-            <version>RELEASE81</version>
+            <version>RELEASE80</version>
         </dependency>
     </dependencies>
     <version>1.8-SNAPSHOT</version>
