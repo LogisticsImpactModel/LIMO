@@ -123,6 +123,7 @@
     <folder name="Toolbars">
         <file name="Clipboard_hidden"/>
         <file name="Build_hidden"/>
+        <folder name="File"/>
         <file name="Memory_hidden"/>
         <file name="Performance_hidden"/>
         <file name="Standard.xml" url="Standard.xml"/>

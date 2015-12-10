@@ -115,9 +115,13 @@ public class ChainBuilderImpl implements ChainBuilder {
     public boolean validate() {
         int hubCount = 1;
         Node currentNode = getStartHub();
-        if (currentNode == null || getNumberOfHubs() == 1) {
+        if (currentNode == null || getNumberOfHubs() == 0) {
+            return true;
+        }
+        if (getNumberOfHubs() == 1) {
             return false;
         }
+
         while (currentNode != null) {
             currentNode = currentNode.getNext();
             if (currentNode instanceof Hub) {
