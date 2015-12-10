@@ -149,7 +149,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
     public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain, UndoManager undoManager, PaletteController paletteController) throws IOException, IntrospectionException {
         this.ic = new InstanceContent();
         this.parent = parent;
-        chainBuilder = new ChainBuilderImpl();
+        chainBuilder = new ChainBuilderImpl(chain);
         chainBuilder.getSupplyChain().setName(chain.getName()); //sets the name of
         //the supplyChain so that when you load an existing supplychain and
         //then save it at another location dont get a file named null.lsc

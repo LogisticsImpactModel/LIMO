@@ -59,6 +59,10 @@ public class LegNode extends AbstractBeanNode<Leg> implements PropertyChangeList
 
     }
 
+    public Leg getLeg() {
+        return bean;
+    }
+
     /**
      * constructor for LegNode, adds the bean to the instancecontent.
      *

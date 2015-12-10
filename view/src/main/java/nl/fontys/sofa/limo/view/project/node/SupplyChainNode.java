@@ -7,6 +7,8 @@ package nl.fontys.sofa.limo.view.project.node;
 
 import java.awt.Image;
 import java.beans.IntrospectionException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ import nl.fontys.sofa.limo.view.project.actions.ProjectChainSimulateAction;
 import nl.fontys.sofa.limo.view.project.actions.SaveChainAction;
 import nl.fontys.sofa.limo.view.project.actions.util.CloseChainAction;
 import nl.fontys.sofa.limo.view.project.actions.util.OpenChainAction;
+import nl.fontys.sofa.limo.view.project.supplychain.LimoFilterNode;
 import org.netbeans.api.annotations.common.StaticResource;
 import org.openide.actions.CopyAction;
 import org.openide.actions.CutAction;
@@ -32,7 +35,6 @@ import org.openide.actions.RenameAction;
 import org.openide.loaders.DataNode;
 import org.openide.loaders.DataObject;
 import org.openide.nodes.Children;
-import org.openide.nodes.FilterNode;
 import org.openide.nodes.Index;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
@@ -43,7 +45,7 @@ import org.openide.util.actions.SystemAction;
  *
  * @author nilsh
  */
-public class SupplyChainNode extends DataNode {
+public class SupplyChainNode extends DataNode implements PropertyChangeListener {
 
     @StaticResource()
     public static final String CHAIN_ICON = "icons/gui/Link_CL.png";
@@ -52,6 +54,8 @@ public class SupplyChainNode extends DataNode {
     private final CloseChainAction closeAction;
     private final AbstractAction openAction;
     private final SaveChainAction saveAction;
+    private Children hubChildren;
+    private Children legChildren;
 
     public SupplyChainNode(DataObject object) {
         super(object, Children.LEAF);
@@ -60,6 +64,7 @@ public class SupplyChainNode extends DataNode {
         saveAction = new SaveChainAction();
         openAction = new OpenChainAction(chain, closeAction, saveAction);
         setChildren(createChildNodes());
+        chain.addListerner(this);
     }
 
     @Override
@@ -110,7 +115,7 @@ public class SupplyChainNode extends DataNode {
                 if (node instanceof Hub) {
                     try {
                         Children children = createNodeChildren(node);
-                        Node hubNode = new FilterNode(new HubProjectNode((Hub) node), children);
+                        Node hubNode = new LimoFilterNode(new HubProjectNode((Hub) node), children);
                         hubs.add(hubNode);
                     } catch (IntrospectionException ex) {
                         Exceptions.printStackTrace(ex);
@@ -118,7 +123,7 @@ public class SupplyChainNode extends DataNode {
                 } else if (node instanceof Leg) {
                     try {
                         Children children = createNodeChildren(node);
-                        Node legNode = new FilterNode(new LegNode((Leg) node), children);
+                        Node legNode = new LimoFilterNode(new LegNode((Leg) node), children);
                         legs.add(legNode);
                     } catch (IntrospectionException ex) {
                         Exceptions.printStackTrace(ex);
@@ -128,17 +133,17 @@ public class SupplyChainNode extends DataNode {
             }
             try {
                 Children children = createNodeChildren(node);
-                Node hubNode = new FilterNode(new HubNode((Hub) node), children);
+                Node hubNode = new LimoFilterNode(new HubNode((Hub) node), children);
                 hubs.add(hubNode);
             } catch (IntrospectionException ex) {
                 Exceptions.printStackTrace(ex);
             }
         }
 
-        Children hubChildren = new Index.ArrayChildren();
+        hubChildren = new Index.ArrayChildren();
         hubChildren.add(hubs.toArray(new Node[0]));
 
-        Children legChildren = new Index.ArrayChildren();
+        legChildren = new Index.ArrayChildren();
         legChildren.add(legs.toArray(new Node[0]));
 
         HubsNode hubsNode = new HubsNode(hubChildren);
@@ -184,4 +189,79 @@ public class SupplyChainNode extends DataNode {
         return children;
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
+        switch (evt.getPropertyName()) {
+            case ("ADD_HUB"): {
+                try {
+                    Hub hub = (Hub) evt.getNewValue();
+                    for (Node n : hubChildren.getNodes()) {
+                        LimoFilterNode f = (LimoFilterNode) n;
+                        HubNode hn = (HubNode) f.getOriginal();
+                        Hub h = hn.getHub();
+                        if (h.equals(hub)) {
+                            return;
+                        }
+                    }
+                    Children children = createNodeChildren(hub);
+                    Node hubNode = new LimoFilterNode(new HubNode(hub), children);
+                    Node[] n = {hubNode};
+                    hubChildren.add(n);
+                } catch (IntrospectionException ex) {
+                    Exceptions.printStackTrace(ex);
+                }
+                return;
+            }
+
+            case ("REMOVE_HUB"): {
+                Hub hub = (Hub) evt.getOldValue();
+                for (Node n : hubChildren.getNodes()) {
+                    LimoFilterNode f = (LimoFilterNode) n;
+                    HubNode hn = (HubNode) f.getOriginal();
+                    Hub h = hn.getHub();
+                    if (h.equals(hub)) {
+                        Node[] nodes = {n};
+                        hubChildren.remove(nodes);
+                    }
+                }
+                return;
+            }
+
+            case ("ADD_LEG"): {
+                try {
+                    Leg leg = (Leg) evt.getNewValue();
+                    for (Node n : legChildren.getNodes()) {
+                        LimoFilterNode f = (LimoFilterNode) n;
+                        LegNode ln = (LegNode) f.getOriginal();
+                        Leg l = ln.getLeg();
+                        if (l.equals(leg)) {
+                            return;
+                        }
+                    }
+                    Children children = createNodeChildren(leg);
+                    Node legNode = new LimoFilterNode(new LegNode(leg), children);
+                    Node[] n = {legNode};
+                    legChildren.add(n);
+                } catch (IntrospectionException ex) {
+                    Exceptions.printStackTrace(ex);
+                }
+                return;
+            }
+            case ("REMOVE_LEG"): {
+                Leg leg = (Leg) evt.getOldValue();
+                for (Node n : legChildren.getNodes()) {
+                    LimoFilterNode f = (LimoFilterNode) n;
+                    LegNode ln = (LegNode) f.getOriginal();
+                    Leg l = ln.getLeg();
+                    if (l.equals(leg)) {
+                        Node[] nodes = {n};
+                        legChildren.remove(nodes);
+                    }
+                }
+                return;
+            }
+        }
+
+    }
 }

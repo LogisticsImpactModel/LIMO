@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,7 +17,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import nl.fontys.sofa.limo.domain.component.hub.Hub;
+import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.serialization.GsonHelper;
 import org.openide.filesystems.FileLock;
 import org.openide.filesystems.FileObject;
@@ -151,4 +156,41 @@ public class SupplyChain implements Serializable {
     public void saveToFile() throws IOException {
         saveToFile(filepath);
     }
+
+    private transient List<PropertyChangeListener> listeners = new ArrayList<>();
+
+    public void addListerner(PropertyChangeListener listerner) {
+        listeners.add(listerner);
+    }
+
+    public void removeListener(PropertyChangeListener listener) {
+        listeners.remove(listener);
+    }
+
+    public void fireAddHubEvent(Hub node) {
+        PropertyChangeEvent event = new PropertyChangeEvent(this, "ADD_HUB", null, node);
+        fireEvent(event);
+    }
+
+    public void fireRemoveHubEvent(Hub node) {
+        PropertyChangeEvent event = new PropertyChangeEvent(this, "REMOVE_HUB", node, null);
+        fireEvent(event);
+    }
+
+    public void fireAddLegEvent(Leg node) {
+        PropertyChangeEvent event = new PropertyChangeEvent(this, "ADD_LEG", null, node);
+        fireEvent(event);
+    }
+
+    public void fireRemoveLegEvent(Leg node) {
+        PropertyChangeEvent event = new PropertyChangeEvent(this, "REMOVE_LEG", node, null);
+        fireEvent(event);
+    }
+
+    private void fireEvent(PropertyChangeEvent event) {
+        listeners.parallelStream().forEach((listener) -> {
+            listener.propertyChange(event);
+        });
+    }
+
 }
