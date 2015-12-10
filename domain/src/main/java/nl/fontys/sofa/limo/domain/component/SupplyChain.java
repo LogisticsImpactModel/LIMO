@@ -92,11 +92,13 @@ public class SupplyChain implements Serializable {
             }
 
             Node pre = supplyChain.getStartHub();
-            Node act = pre.getNext();
-            while (act != null) {
-                act.setPrevious(pre);
-                pre = act;
-                act = act.getNext();
+            if (pre != null) {
+                Node act = pre.getNext();
+                while (act != null) {
+                    act.setPrevious(pre);
+                    pre = act;
+                    act = act.getNext();
+                }
             }
             supplyChain.setFilepath(file.getAbsolutePath());
             return supplyChain;
