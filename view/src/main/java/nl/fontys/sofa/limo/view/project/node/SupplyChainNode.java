@@ -161,7 +161,7 @@ public class SupplyChainNode extends DataNode {
             }
         });
 
-        node.getProcedures().parallelStream().forEach(((procedure) -> {
+        node.getProcedures().stream().forEach(((procedure) -> {
             try {
                 ProcedureNode p = new ProcedureProjectNode(procedure);
                 procedures.add(p);
