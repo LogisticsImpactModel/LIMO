@@ -31,13 +31,13 @@ public class BaseEntity implements Serializable {
     @Expose
     protected String description;
 
-    protected final transient List<PropertyChangeListener> listeners;
+    protected final transient List<PropertyChangeListener> listeners = new ArrayList<>();
 
     public BaseEntity(String name, String description) {
         this.uniqueIdentifier = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
-        this.listeners = new ArrayList<>();
+        // this.listeners = new ArrayList<>();
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -50,14 +50,16 @@ public class BaseEntity implements Serializable {
 
     protected void firePropertyChange() {
         PropertyChangeEvent event = new PropertyChangeEvent(this, "", this, this);
-        listeners.parallelStream().forEach((listern) -> {
-            listern.propertyChange(event);
-        });
+        if (listeners != null) {
+            listeners.parallelStream().forEach((listern) -> {
+                listern.propertyChange(event);
+            });
+        }
     }
 
     public BaseEntity() {
         this.uniqueIdentifier = UUID.randomUUID().toString();
-        listeners = new ArrayList<>();
+        //listeners = new ArrayList<>();
     }
 
     public String getId() {
