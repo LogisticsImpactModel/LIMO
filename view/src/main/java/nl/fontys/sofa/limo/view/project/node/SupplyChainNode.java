@@ -28,8 +28,6 @@ import nl.fontys.sofa.limo.view.project.actions.util.CloseChainAction;
 import nl.fontys.sofa.limo.view.project.actions.util.OpenChainAction;
 import nl.fontys.sofa.limo.view.project.supplychain.LimoFilterNode;
 import org.netbeans.api.annotations.common.StaticResource;
-import org.openide.actions.CopyAction;
-import org.openide.actions.CutAction;
 import org.openide.actions.DeleteAction;
 import org.openide.actions.RenameAction;
 import org.openide.loaders.DataNode;
@@ -98,10 +96,8 @@ public class SupplyChainNode extends DataNode implements PropertyChangeListener 
             new ExportChainAction(chain),
             new ProjectChainSimulateAction(chain),
             SystemAction.get(RenameAction.class),
-            SystemAction.get(CopyAction.class),
-            SystemAction.get(DeleteAction.class),
-            SystemAction.get(CutAction.class)};
-
+            SystemAction.get(DeleteAction.class)
+        };
     }
 
     private Children createChildNodes() {
