@@ -1,13 +1,17 @@
 package nl.fontys.sofa.limo.orientdb;
 
+import com.orientechnologies.orient.core.config.OGlobalConfiguration;
 import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
 import com.orientechnologies.orient.core.db.record.ODatabaseRecord;
 import com.orientechnologies.orient.core.entity.OEntityManager;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
+import com.orientechnologies.orient.object.metadata.OMetadataObject;
+import com.orientechnologies.orient.object.metadata.schema.OSchemaProxyObject;
 import com.orientechnologies.orient.object.serialization.OObjectSerializerContext;
 import com.orientechnologies.orient.object.serialization.OObjectSerializerHelper;
+import com.sun.jna.platform.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,6 +59,7 @@ import nl.fontys.sofa.limo.orientdb.serialization.CountrySerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.ExecutionStateSerializer;
 import nl.fontys.sofa.limo.orientdb.serialization.TimeTypeSerializer;
 import org.openide.modules.Places;
+import org.openide.util.Exceptions;
 
 /**
  * Singleton connection to OrientDB file database. Maintaines schema and allows
@@ -95,6 +100,7 @@ public class OrientDBConnector {
      * @return Connection to OrientDB database.
      */
     public static OObjectDatabaseTx connection() {
+        OGlobalConfiguration.STORAGE_KEEP_OPEN.setValue(false);
         return getInstance().getConnection();
     }
 
@@ -202,10 +208,15 @@ public class OrientDBConnector {
         entityManager.registerEntityClass(Type.class);
         entityManager.registerEntityClass(HubType.class);
         entityManager.registerEntityClass(LegType.class);
+        
+        
+        
 //        entityManager.registerEntityClasses("nl.fontys.sofa.limo.domain");
-
         // Create indexes for unique identifier
-        OClass clazz = this.connection.getMetadata().getSchema().getClass(BaseEntity.class);
+        OMetadataObject metadata = this.connection.getMetadata();
+        OSchemaProxyObject schema = metadata.getSchema();
+
+        OClass clazz = schema.getClass(BaseEntity.class);
         if (!clazz.areIndexed("uniqueIdentifier")) {
             if (!clazz.existsProperty("uniqueIdentifier")) {
                 clazz.createProperty("uniqueIdentifier", OType.STRING);
@@ -283,4 +294,45 @@ public class OrientDBConnector {
         }
     }
 
+    /**
+     * Method to delete the database files.
+     */
+    protected void deleteDatabase() {
+
+        OrientDBConnector.getInstance().closeConnection();
+//        String url = this.getDatabaseURL();
+        String url = (FileSystems.getDefault().getPath(Places.getUserDirectory() + File.separator + "LIMO_DB")).toString();
+        System.out.println("--");
+
+        try {
+            File dbFile = new File(url);
+
+            if (dbFile.exists()) {
+                File[] files = dbFile.listFiles();
+                for (File f : files) {
+                    System.out.println("Removing file:" + f.toString() + "|" + f.isFile());
+                    f.delete();
+                    System.out.println(f.exists());
+                }
+            }
+            dbFile.delete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Overkill way to clear the database. Since other methods did not work
+     * correctly, we considered deleting the database and adding a new one. This
+     * is called from the ClearDatabaseAction (limo-view -> actions)
+     */
+    public void emptyDatabase() {
+        //this.deleteDatabase();
+        //   this.connection = null;
+        this.connection.drop();
+        this.connection.close();
+        this.connection = new OObjectDatabaseTx(this.getDatabaseURL());
+        checkConnection();
+    }
 }
