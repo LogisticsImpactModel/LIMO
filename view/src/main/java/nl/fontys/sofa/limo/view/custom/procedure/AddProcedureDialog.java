@@ -14,6 +14,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
@@ -22,7 +23,6 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
-import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.openide.util.Lookup;
@@ -33,8 +33,9 @@ import org.openide.util.Lookup;
  * @author Matthias Brück
  */
 public class AddProcedureDialog extends JDialog implements ActionListener {
-    
+
     public static interface SaveListener {
+
         void onSave(Procedure procedure);
     }
 
@@ -43,14 +44,14 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
     private JComboBox timeTypeCombobox, categoryCombobox;
     private Value timeValue, costValue, cotwoValue;
     private Procedure newProcedure;
-    private final DragNDropTable table;
+    private final JTable table;
     private final CellConstraints cc;
     private JCheckBox templateCheckbox;
     private ProcedureService service;
     private SaveListener listener;
 
-    public AddProcedureDialog(ProcedureCategoryDAO procedureCategoryDao, DragNDropTable dragNDropTable) {
-        this.table = dragNDropTable;
+    public AddProcedureDialog(ProcedureCategoryDAO procedureCategoryDao, JTable table) {
+        this.table = table;
         cc = new CellConstraints();
         //LAYOUT
         FormLayout layout = new FormLayout("5px, pref, 5px, pref, pref:grow, 5px, pref, 5px",
@@ -78,7 +79,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         this.setTitle(LIMOResourceBundle.getString("PROCEDURES"));
         service = Lookup.getDefault().lookup(ProcedureService.class);
     }
-    
+
     public void setListener(SaveListener listener) {
         this.listener = listener;
     }

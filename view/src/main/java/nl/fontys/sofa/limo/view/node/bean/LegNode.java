@@ -54,6 +54,7 @@ public class LegNode extends AbstractBeanNode<Leg> implements PropertyChangeList
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+
         String s = getBean().getName();
         fireNameChange(s, s);
 
@@ -149,14 +150,18 @@ public class LegNode extends AbstractBeanNode<Leg> implements PropertyChangeList
         try {
             StupidProperty eventProp = new StupidProperty(getBean(), List.class, "events");
             eventProp.addPropertyChangeListener(getListener());
-            eventProp.setPropertyEditorClass(EventPropertyEditor.class);
+            eventProp
+                    .setPropertyEditorClass(EventPropertyEditor.class
+                    );
             eventProp.setDisplayName(LIMOResourceBundle.getString("EVENTS"));
             eventProp.setShortDescription(LIMOResourceBundle.getString("EVENTS_OF", LIMOResourceBundle.getString("HUB")));
             eventProp.setValue("canEditAsText", false);
 
             StupidProperty procedureProp = new StupidProperty(getBean(), List.class, "procedures");
             procedureProp.addPropertyChangeListener(getListener());
-            procedureProp.setPropertyEditorClass(ProcedurePropertyEditor.class);
+            procedureProp
+                    .setPropertyEditorClass(ProcedurePropertyEditor.class
+                    );
             procedureProp.setDisplayName(LIMOResourceBundle.getString("PROCEDURES"));
             procedureProp.setShortDescription(LIMOResourceBundle.getString("PROCEDURES_OF", LIMOResourceBundle.getString("HUB")));
             procedureProp.setValue("canEditAsText", false);

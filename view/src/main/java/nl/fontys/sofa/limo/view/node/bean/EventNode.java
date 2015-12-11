@@ -37,6 +37,10 @@ public class EventNode extends AbstractBeanNode<Event> implements PropertyChange
 
     }
 
+    public Event getEvent() {
+        return bean;
+    }
+
     @Override
     public Action[] getActions(boolean context) {
         ArrayList<Action> actionList = new ArrayList<>();

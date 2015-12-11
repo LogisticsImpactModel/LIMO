@@ -162,4 +162,8 @@ public class ProcedureNode extends AbstractBeanNode<Procedure> implements Proper
     public void propertyChange(PropertyChangeEvent evt) {
         setDisplayName(bean.getName());
     }
+
+    public Procedure getProcedure() {
+        return bean;
+    }
 }

@@ -108,4 +108,12 @@ public class Procedure extends BaseEntity {
     public String toString() {
         return name;
     }
+
+    public void setCotwo(Object aValue) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setCategory(Object aValue) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
