@@ -182,8 +182,9 @@ public class OrientDBEventDAOTest extends NbTestCase {
         Procedure rapairingProcess = new Procedure("Repairing cannonball damage", "Repairing", new RangeValue(5000, 10000), new SingleValue(7500), TimeType.MINUTES, new SingleValue(0));
         subEventProcedures.add(rapairingProcess);
         subEvent.setProcedures(subEventProcedures);
-        event.getEvents().add(subEvent);
-
+        List<Event> events = event.getEvents();
+        events.add(subEvent);
+        event.setEvents(events);
         return event;
     }
 
