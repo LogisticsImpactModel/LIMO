@@ -36,12 +36,24 @@ public class SubEventsPanel extends EventsPanel {
     @Override
     protected void setAddButtonListener() {
         addButton.addActionListener((ActionEvent e) -> {
-            Event selected = service.findById(allEvents.get(eventsComboBox.getSelectedIndex()).getId());
-            selected.setId(null);
-            selected.setDependency(ExecutionState.INDEPENDENT);
-            eventsTableModel.getEvents().add(selected);
-            eventsTableModel.fireTableDataChanged();
-            checkButtonsState();
+            Event selected = null;
+            for (Event allEvent : allEvents) {
+                if (((String) eventsComboBox.getSelectedItem()).equals(allEvent.getName())) {
+                    selected = service.findById(allEvent.getId());
+                    break;
+                }
+            }
+            if (selected != null) {
+                selected.setId(null);
+                selected.setDependency(ExecutionState.INDEPENDENT);
+                eventsTableModel.getEvents().add(selected);
+                eventsTableModel.fireTableDataChanged();
+                setTableAndCheckbox();
+                checkButtonsState();
+            }
+        });
+        deleteButton.addActionListener((ActionEvent e) -> {
+            setTableAndCheckbox();
         });
     }
     

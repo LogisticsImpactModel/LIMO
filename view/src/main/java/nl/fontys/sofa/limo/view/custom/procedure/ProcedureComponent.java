@@ -1,27 +1,33 @@
 package nl.fontys.sofa.limo.view.custom.procedure;
 
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableCellRenderer;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.ProcedureCategory;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
+import nl.fontys.sofa.limo.view.custom.procedure.AddProcedureDialog.SaveListener;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
 import nl.fontys.sofa.limo.view.util.IconUtil;
@@ -39,10 +45,15 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
 
     protected DragNDropTable table;
     protected DragNDropTableModel model;
-    protected JButton addButton, deleteButton;
+    protected JButton addButton, newButton, deleteButton;
     protected ProcedureCategoryDAO procedureCategoryDao;
     protected Value changedValue;
     protected JComboBox procedureCategoryCheckbox, timeTypesCheckbox;
+    protected DefaultComboBoxModel procedureComboBoxModel;
+    protected JComboBox<Procedure> proceduresComboBox;
+    protected ProcedureService service;
+    protected List<Procedure> allProcedures;
+    protected List<Procedure> tableProcedures;
 
     /**
      * Creates a new ProcedureComponent with an empty table.
@@ -58,23 +69,52 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      */
     public ProcedureComponent(List<Procedure> procedures) {
         procedureCategoryDao = Lookup.getDefault().lookup(ProcedureCategoryDAO.class);
-        CellConstraints cc = new CellConstraints();
-        setLayout(new FormLayout("5px, pref:grow, 5px, pref, 5px", "5px, pref, 10px, pref, pref:grow, 5px"));
+        tableProcedures = procedures;
+        initProcedureService();
+        proceduresComboBox = new JComboBox();
+        setLayout(new GridBagLayout());
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+
+        c.weightx = 0.2;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        add(new JLabel(LIMOResourceBundle.getString("PROCEDURE")), c);
+        c.weightx = 0.7;
+        c.gridx = 1;
+        c.gridy = 0;
+        add(proceduresComboBox, c);
         DragNDropTableModel tableModel;
+        JPanel panel = new JPanel(new BorderLayout());
         tableModel = new DragNDropTableModel(
                 new String[]{}, new ArrayList<>(), new Class[]{});
         table = new DragNDropTable(tableModel);
         initProceduresTable(procedures);
         JScrollPane scrollPane = new JScrollPane(table);
-        addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+        panel.add(scrollPane, BorderLayout.CENTER);
+        addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.VALID)));
+        newButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
         deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
-        add(scrollPane, cc.xywh(2, 2, 1, 4));
-        add(addButton, cc.xy(4, 2));
-        add(deleteButton, cc.xy(4, 4));
+        JPanel panelLeft = new JPanel();
+        panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
+        panelLeft.add(addButton);
+        panelLeft.add(newButton);
+        panelLeft.add(deleteButton);
+        panel.add(panelLeft, BorderLayout.EAST);
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 5;
+        add(panel, c);
         addButton.addActionListener(this);
+        newButton.addActionListener(this);
         deleteButton.addActionListener(this);
         table.addMouseListener(this);
         setVisible(true);
+        setProcedureComboBox();
+        checkButtonsState();
     }
 
     @Override
@@ -85,7 +125,9 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
                 deleteProcedure(rowToDelete);
             }
         } else if (e.getSource().equals(addButton)) {
-            addProcedure();
+            addClicked();
+            setProcedureComboBox();
+            checkButtonsState();
         }
     }
 
@@ -96,6 +138,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
                 editProcedure();
             }
         }
+        checkButtonsState();
     }
 
     /**
@@ -131,6 +174,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      * @param procedures The new list of procedures that has to be used.
      */
     public void setProcedureTable(List<Procedure> procedures) {
+        tableProcedures = procedures;
         initProceduresTable(procedures);
         model.fireTableDataChanged();
         revalidate();
@@ -141,9 +185,19 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      * Handles the adding of a procedure via a dialog.
      */
     protected void addProcedure() {
-        AddProcedureDialog addProcedureDialog = new AddProcedureDialog(procedureCategoryDao, table, deleteButton);
+        AddProcedureDialog addProcedureDialog = new AddProcedureDialog(procedureCategoryDao, table);
+        addProcedureDialog.setListener(new SaveListener() {
+            @Override
+            public void onSave(Procedure procedure) {
+                deleteButton.setEnabled(true);
+                tableProcedures.add(procedure);
+            }
+        });
         addProcedureDialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addProcedureDialog.setVisible(true);
+        initProcedureService();
+        setProcedureComboBox();
+        checkButtonsState();
     }
 
     /**
@@ -153,11 +207,20 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      */
     protected void deleteProcedure(int row) {
         if (table.getRowCount() > 1) {
-            ((DragNDropTableModel) table.getModel()).removeRow(row);
+            DragNDropTableModel model = ((DragNDropTableModel) table.getModel());
+            String name = (String) model.getValueAt(row, 0);
+            for (Procedure procedure : tableProcedures) {
+                if (procedure.getName().equals(name)) {
+                    tableProcedures.remove(procedure);
+                    break;
+                }
+            }
+            model.removeRow(row);
             revalidate();
             repaint();
-            deleteButton.setEnabled(table.getRowCount() > 1);
         }
+        setProcedureComboBox();
+        checkButtonsState();
     }
 
     /**
@@ -203,6 +266,7 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      * table.
      */
     private void initProceduresTable(List<Procedure> procedures) {
+        tableProcedures = procedures;
         List<List<Object>> valueList = new ArrayList<>();
         if (procedures != null) {
             procedures.stream().map((p) -> {
@@ -239,5 +303,61 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
         }
         timeTypesCheckbox = new JComboBox(TimeType.values());
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(timeTypesCheckbox));
+    }
+
+    protected void checkButtonsState() {
+        addButton.setEnabled(proceduresComboBox.getModel().getSize() > 0);
+        deleteButton.setEnabled(tableProcedures.size() > 1 && table.getSelectedRow() != -1);
+    }
+
+    private void initProcedureService() {
+        service = Lookup.getDefault().lookup(ProcedureService.class);
+        allProcedures = service.findAll();
+    }
+
+    protected void setProcedureComboBox() {
+        ArrayList<String> allProcedureNames = new ArrayList<>();
+        List<String> usedProcedures = new ArrayList<>();
+        for (int row = 0; row < table.getRowCount(); row++) {
+            usedProcedures.add((String) table.getValueAt(row, 0));
+        }
+        if (allProcedures != null) {
+            for (Procedure procedure : allProcedures) {
+                boolean valid = true;
+                for (String used : usedProcedures) {
+                    if (procedure.getName() != null && used != null) {
+                        valid = !procedure.getName().equals(used);
+                    }
+                    if (!valid) {
+                        break;
+                    }
+                }
+                if (valid) {
+                    allProcedureNames.add(procedure.getName());
+                }
+            }
+            addButton.setEnabled(!allProcedures.isEmpty());
+            proceduresComboBox.setModel(new DefaultComboBoxModel(allProcedureNames.toArray()));
+        } else {
+            allProcedures = new ArrayList<>();
+            proceduresComboBox.setModel(new DefaultComboBoxModel(new String[]{}));
+        }
+    }
+
+    protected void addClicked() {
+        Procedure selected = null;
+        for (Procedure procedure : allProcedures) {
+            if (((String) proceduresComboBox.getSelectedItem()).equals(procedure.getName())) {
+                selected = service.findById(procedure.getId());
+                break;
+            }
+        }
+        if (selected != null) {
+            List<Procedure> procedures = new ArrayList<>(tableProcedures);
+            selected.setId(null);
+            procedures.add(selected);
+            model.fireTableDataChanged();
+            setProcedureTable(procedures);
+        }
     }
 }
