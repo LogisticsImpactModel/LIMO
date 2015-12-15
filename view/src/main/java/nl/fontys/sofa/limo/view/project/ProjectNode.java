@@ -7,12 +7,12 @@ package nl.fontys.sofa.limo.view.project;
 
 import java.awt.Image;
 import javax.swing.Action;
-import nl.fontys.sofa.limo.view.action.NewChainAction;
 import nl.fontys.sofa.limo.view.project.actions.AddMasterDataAction;
 import nl.fontys.sofa.limo.view.project.actions.AddSupplyChainAction;
 import org.netbeans.api.annotations.common.StaticResource;
 import org.netbeans.spi.project.ui.support.CommonProjectActions;
 import org.netbeans.spi.project.ui.support.NodeFactorySupport;
+import org.openide.awt.Actions;
 import org.openide.loaders.DataObjectNotFoundException;
 import org.openide.nodes.FilterNode;
 import org.openide.nodes.Node;
@@ -58,7 +58,7 @@ public final class ProjectNode extends FilterNode {
             CommonProjectActions.closeProjectAction(),
             CommonProjectActions.renameProjectAction(),
             CommonProjectActions.moveProjectAction(),
-            new NewChainAction(project),
+            Actions.forID("Window", "nl.fontys.sofa.limo.view.action.NewChainAction"),
             new AddMasterDataAction(project),
             new AddSupplyChainAction(project)
         };

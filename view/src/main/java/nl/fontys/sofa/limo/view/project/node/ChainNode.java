@@ -39,6 +39,7 @@ public class ChainNode extends DataNode {
     public void addChild(Node node) {
         Node[] nodes = {node};
         getChildren().add(nodes);
+        fireIconChange();
     }
 
 }

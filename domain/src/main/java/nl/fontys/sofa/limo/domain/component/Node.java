@@ -1,9 +1,6 @@
 package nl.fontys.sofa.limo.domain.component;
 
 import com.google.gson.annotations.Expose;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.List;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
@@ -18,7 +15,6 @@ import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
  */
 public abstract class Node<T extends Node> extends Component {
 
-    protected List<PropertyChangeListener> listeners = new ArrayList<>();
     private static final long serialVersionUID = -7756347619644993900L;
 
     @Expose
@@ -31,21 +27,6 @@ public abstract class Node<T extends Node> extends Component {
 
     public T getNext() {
         return next;
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        listeners.add(listener);
-    }
-
-    protected void firePropertyChange() {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "Change", this, this);
-        listeners.parallelStream().forEach((listener) -> {
-            listener.propertyChange(event);
-        });
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        listeners.remove(listener);
     }
 
     public void setNext(T next) {

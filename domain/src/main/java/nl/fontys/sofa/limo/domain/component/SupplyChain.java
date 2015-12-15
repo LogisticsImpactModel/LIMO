@@ -36,7 +36,7 @@ public class SupplyChain implements Serializable {
     @Expose
     private String name;
 
-    private String filepath;
+    private transient String filepath = null;
     /**
      * The supply chain does only contain the start hub because via the start
      * hub it can get the complete supply chain due the properties of a
@@ -45,7 +45,7 @@ public class SupplyChain implements Serializable {
     @Expose
     private Hub startHub;
 
-    private static Gson gson;
+    private transient static Gson gson;
 
     public String getName() {
         return name;
@@ -92,17 +92,21 @@ public class SupplyChain implements Serializable {
             }
 
             Node pre = supplyChain.getStartHub();
-            Node act = pre.getNext();
-            while (act != null) {
-                act.setPrevious(pre);
-                pre = act;
-                act = act.getNext();
+            if (pre != null) {
+                Node act = pre.getNext();
+                while (act != null) {
+                    act.setPrevious(pre);
+                    pre = act;
+                    act = act.getNext();
+                }
             }
             supplyChain.setFilepath(file.getAbsolutePath());
             return supplyChain;
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             ex.printStackTrace(System.err);
         } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        } catch (Exception ex) {
             Exceptions.printStackTrace(ex);
         } finally {
             try {

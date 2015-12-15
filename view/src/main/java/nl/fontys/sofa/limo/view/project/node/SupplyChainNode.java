@@ -104,33 +104,35 @@ public class SupplyChainNode extends DataNode {
         List<Node> legs = new ArrayList<>();
 
         nl.fontys.sofa.limo.domain.component.Node node = chain.getStartHub();
-        while (node.getNext() != null) {
+        if (node != null) {
+            while (node.getNext() != null) {
 
-            if (node instanceof Hub) {
-                try {
-                    Children children = createNodeChildren(node);
-                    Node hubNode = new FilterNode(new HubProjectNode((Hub) node), children);
-                    hubs.add(hubNode);
-                } catch (IntrospectionException ex) {
-                    Exceptions.printStackTrace(ex);
+                if (node instanceof Hub) {
+                    try {
+                        Children children = createNodeChildren(node);
+                        Node hubNode = new FilterNode(new HubProjectNode((Hub) node), children);
+                        hubs.add(hubNode);
+                    } catch (IntrospectionException ex) {
+                        Exceptions.printStackTrace(ex);
+                    }
+                } else if (node instanceof Leg) {
+                    try {
+                        Children children = createNodeChildren(node);
+                        Node legNode = new FilterNode(new LegNode((Leg) node), children);
+                        legs.add(legNode);
+                    } catch (IntrospectionException ex) {
+                        Exceptions.printStackTrace(ex);
+                    }
                 }
-            } else if (node instanceof Leg) {
-                try {
-                    Children children = createNodeChildren(node);
-                    Node legNode = new FilterNode(new LegNode((Leg) node), children);
-                    legs.add(legNode);
-                } catch (IntrospectionException ex) {
-                    Exceptions.printStackTrace(ex);
-                }
+                node = node.getNext();
             }
-            node = node.getNext();
-        }
-        try {
-            Children children = createNodeChildren(node);
-            Node hubNode = new FilterNode(new HubNode((Hub) node), children);
-            hubs.add(hubNode);
-        } catch (IntrospectionException ex) {
-            Exceptions.printStackTrace(ex);
+            try {
+                Children children = createNodeChildren(node);
+                Node hubNode = new FilterNode(new HubNode((Hub) node), children);
+                hubs.add(hubNode);
+            } catch (IntrospectionException ex) {
+                Exceptions.printStackTrace(ex);
+            }
         }
 
         Children hubChildren = new Index.ArrayChildren();
@@ -161,7 +163,7 @@ public class SupplyChainNode extends DataNode {
             }
         });
 
-        node.getProcedures().parallelStream().forEach(((procedure) -> {
+        node.getProcedures().stream().forEach(((procedure) -> {
             try {
                 ProcedureNode p = new ProcedureProjectNode(procedure);
                 procedures.add(p);
