@@ -51,6 +51,8 @@ import org.openide.windows.WindowManager;
 @Messages("CTL_ClearDatabaseAction=Remove loaded templates")
 public final class ClearDatabaseAction extends AbstractAction {
 
+    public static RequestProcessor.Task task = null;
+
     public ClearDatabaseAction() {
         putValue(NAME, LIMOResourceBundle.getString("CLEAR_DATABASE"));
     }
@@ -63,58 +65,53 @@ public final class ClearDatabaseAction extends AbstractAction {
         }
 
 //        closeCatalogTabs();
-        Runnable r = new Runnable() {
+        Runnable r = () -> {
+            AggregateProgressHandle processHandle = AggregateProgressFactory.createHandle("Remove database", null, null, null);
+            ProgressContributor emptyDatabase = AggregateProgressFactory.createProgressContributor("1");
+            ProgressContributor emptyLookup = AggregateProgressFactory.createProgressContributor("2");
+            processHandle.addContributor(emptyDatabase);
+            processHandle.addContributor(emptyLookup);
+            processHandle.start();
 
-            @Override
-            public void run() {
+            emptyDatabase.start(50);
+            OrientDBConnector dbConnection = OrientDBConnector.getInstance();
+            dbConnection.emptyDatabase();
 
-                AggregateProgressHandle processHandle = AggregateProgressFactory.createHandle("Remove database", null, null, null);
-                ProgressContributor emptyDatabase = AggregateProgressFactory.createProgressContributor("1");
-                ProgressContributor emptyLookup = AggregateProgressFactory.createProgressContributor("2");
-                processHandle.addContributor(emptyDatabase);
-                processHandle.addContributor(emptyLookup);
-                processHandle.start();
+            emptyDatabase.progress(50);
+            emptyDatabase.finish();
+            emptyLookup.start(60);
 
-                emptyDatabase.start(50);
-                OrientDBConnector dbConnection = OrientDBConnector.getInstance();
-                dbConnection.emptyDatabase();
+            Lookup aDefault = Lookup.getDefault();
 
-                emptyDatabase.progress(50);
-                emptyDatabase.finish();
-                emptyLookup.start(60);
+            AbstractService eventService = (AbstractService) aDefault.lookup(EventService.class);
+            AbstractService hubService = (AbstractService) aDefault.lookup(HubService.class);
+            AbstractService hubTypeService = (AbstractService) aDefault.lookup(HubTypeService.class);
+            AbstractService procedureCategoryService = (AbstractService) aDefault.lookup(ProcedureCategoryService.class);
+            AbstractService procedureService = (AbstractService) aDefault.lookup(ProcedureService.class);
+            AbstractService legTypeService = (AbstractService) aDefault.lookup(LegTypeService.class);
 
-                Lookup aDefault = Lookup.getDefault();
+            eventService.emptyLookup(Event.class);
+            emptyLookup.progress(10);
+            hubService.emptyLookup(Hub.class);
+            emptyLookup.progress(10);
+            hubTypeService.emptyLookup(HubType.class);
+            emptyLookup.progress(10);
+            procedureCategoryService.emptyLookup(ProcedureCategory.class);
+            emptyLookup.progress(10);
+            procedureService.emptyLookup(Procedure.class);
+            emptyLookup.progress(10);
+            legTypeService.emptyLookup(LegType.class);
+            emptyLookup.progress(10);
 
-                AbstractService eventService = (AbstractService) aDefault.lookup(EventService.class);
-                AbstractService hubService = (AbstractService) aDefault.lookup(HubService.class);
-                AbstractService hubTypeService = (AbstractService) aDefault.lookup(HubTypeService.class);
-                AbstractService procedureCategoryService = (AbstractService) aDefault.lookup(ProcedureCategoryService.class);
-                AbstractService procedureService = (AbstractService) aDefault.lookup(ProcedureService.class);
-                AbstractService legTypeService = (AbstractService) aDefault.lookup(LegTypeService.class);
+            emptyLookup.finish();
+            processHandle.finish();
 
-                eventService.emptyLookup(Event.class);
-                emptyLookup.progress(10);
-                hubService.emptyLookup(Hub.class);
-                emptyLookup.progress(10);
-                hubTypeService.emptyLookup(HubType.class);
-                emptyLookup.progress(10);
-                procedureCategoryService.emptyLookup(ProcedureCategory.class);
-                emptyLookup.progress(10);
-                procedureService.emptyLookup(Procedure.class);
-                emptyLookup.progress(10);
-                legTypeService.emptyLookup(LegType.class);
-                emptyLookup.progress(10);
-
-                emptyLookup.finish();
-                processHandle.finish();
-
-                NotifyDescriptor end = new NotifyDescriptor(LIMOResourceBundle.getString("MASTERDATA_REMOVED"),
-                        LIMOResourceBundle.getString("ACTION_COMPLETED"),
-                        NotifyDescriptor.OK_CANCEL_OPTION, NotifyDescriptor.INFORMATION_MESSAGE, null, null);
-                DialogDisplayer.getDefault().notify(end);
-            };
+            NotifyDescriptor end = new NotifyDescriptor(LIMOResourceBundle.getString("MASTERDATA_REMOVED"),
+                    LIMOResourceBundle.getString("ACTION_COMPLETED"),
+                    NotifyDescriptor.OK_CANCEL_OPTION, NotifyDescriptor.INFORMATION_MESSAGE, null, null);
+            DialogDisplayer.getDefault().notify(end);
         };
-        RequestProcessor.getDefault().post(r);
+        task = RequestProcessor.getDefault().post(r);
     }
 
     /**
@@ -129,8 +126,8 @@ public final class ClearDatabaseAction extends AbstractAction {
 
         openTopComponents.stream().filter((tc) -> (tc != null && (tc instanceof BaseEntityTopComponent
                 || tc instanceof BaseEntityTopComponentWithoutDescription))).forEach((tc) -> {
-                    tc.close();
-                });
+            tc.close();
+        });
     }
 
     /**
@@ -145,10 +142,6 @@ public final class ClearDatabaseAction extends AbstractAction {
 
         Object answer = DialogDisplayer.getDefault().notify(confirm);
 
-        if (answer.equals(NotifyDescriptor.NO_OPTION) || answer.equals(NotifyDescriptor.CLOSED_OPTION)) {
-            return false;
-        }
-
-        return true;
+        return !(answer.equals(NotifyDescriptor.NO_OPTION) || answer.equals(NotifyDescriptor.CLOSED_OPTION));
     }
 }
