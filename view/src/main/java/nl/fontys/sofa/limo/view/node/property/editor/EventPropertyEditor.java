@@ -9,9 +9,16 @@ import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
 import nl.fontys.sofa.limo.view.custom.panel.EventsPanel;
+import nl.fontys.sofa.limo.view.util.IconUtil;
+import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction;
+import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.DefaultFinishClickHandler;
+import nl.fontys.sofa.limo.view.wizard.event.EventWizardAction.FinishClickHandler;
+import org.openide.WizardDescriptor;
 
 /**
  * This class is the Property Editor for our events. It enables you to change
@@ -58,6 +65,8 @@ public class EventPropertyEditor extends PropertyEditorSupport {
      */
     private class CustomEditor extends EventsPanel implements ActionListener, ItemListener {
 
+        private JButton newButton;
+
         public CustomEditor() {
             super();
             for (ActionListener listener : deleteButton.getActionListeners()) {
@@ -65,6 +74,9 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             }
             deleteButton.addActionListener(this);
             executionStateComboBox.addItemListener(this);
+            newButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+            sidebarPanel.add(newButton, 1);
+            setNewButtonListener();
             deleteButton.setEnabled(!eventsTableModel.getEvents().isEmpty());
         }
 
@@ -79,40 +91,6 @@ public class EventPropertyEditor extends PropertyEditorSupport {
             eventsTableModel.setEvents(usedEvents);
             eventsTableModel.fireTableDataChanged();
             setTableAndCheckbox();
-        }
-
-        /**
-         * Sets the table, combobox and checkboxes of the used and unused items.
-         */
-        private void setTableAndCheckbox() {
-            ArrayList<String> allEventsName = new ArrayList<>();
-            List<Event> usedEvents;
-            if (eventsTableModel.getEvents() != null) {
-                usedEvents = new ArrayList<>(eventsTableModel.getEvents());
-            } else {
-                usedEvents = new ArrayList<>();
-            }
-            if (allEvents != null) {
-                for (Event event : allEvents) {
-                    boolean valid = true;
-                    for (Event used : usedEvents) {
-                        if (event.getName() != null && used.getName() != null) {
-                            valid = !event.getName().equals(used.getName());
-                        }
-                        if (!valid) {
-                            break;
-                        }
-                    }
-                    if (valid) {
-                        allEventsName.add(event.getName());
-                    }
-                }
-                addButton.setEnabled(!allEvents.isEmpty());
-                eventsComboBox.setModel(new DefaultComboBoxModel(allEventsName.toArray()));
-            } else {
-                allEvents = new ArrayList<>();
-                eventsComboBox.setModel(new DefaultComboBoxModel(new String[]{}));
-            }
         }
 
         @Override
@@ -180,6 +158,37 @@ public class EventPropertyEditor extends PropertyEditorSupport {
                     setValue(events);
                 }
             }
+        }
+
+        /**
+         * The new action where a new event is created as template and added as well.
+         */
+        private void setNewButtonListener() {
+            newButton.addActionListener((ActionEvent e) -> {
+                getNewEventByWizard();
+            });
+        }
+
+        private Event getNewEventByWizard() {
+            EventWizardAction action = new EventWizardAction();
+            FinishClickHandler handler = action.new DefaultFinishClickHandler() {
+                @Override
+                public void handle(Event event, WizardDescriptor descriptor) {
+                    super.handle(event, descriptor);
+                    List<Event> events = new ArrayList<>(eventsTableModel.getEvents());
+                    event.setId(null);
+                    event.setDependency(ExecutionState.INDEPENDENT);
+                    events.add(event);
+                    eventsTableModel.setEvents(events);
+                    eventsTableModel.fireTableDataChanged();
+                    setTableAndCheckbox();
+                    setValue(events);
+                    checkButtonsState();
+                }
+            };
+            action.setFinishClickHandler(handler);
+            action.actionPerformed(new ActionEvent(newButton, 0, ""));
+            return null;
         }
     }
 }

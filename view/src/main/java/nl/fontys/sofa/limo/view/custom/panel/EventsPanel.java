@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
@@ -47,6 +48,7 @@ public abstract class EventsPanel extends JPanel {
     protected List<Event> allEvents;
     protected EventTableModel eventsTableModel;
     protected DefaultComboBoxModel eventsComboBoxModel;
+    protected JPanel sidebarPanel;
 
     public EventsPanel() {
         initComponents();
@@ -71,7 +73,7 @@ public abstract class EventsPanel extends JPanel {
         eventsTableModel = new EventTableModel();
         eventsTable = new JTable(eventsTableModel);
         executionStateComboBox = new JComboBox<>(ExecutionState.values());
-        addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.ADD)));
+        addButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.VALID)));
         editButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.EDIT)));
         deleteButton = new JButton(new ImageIcon(IconUtil.getIcon(IconUtil.UI_ICON.TRASH)));
     }
@@ -104,13 +106,13 @@ public abstract class EventsPanel extends JPanel {
     protected void setEditButtonListener() {
         editButton.addActionListener((ActionEvent e) -> {
             if (eventsTable.getSelectedRow() >= 0) {
-                
+
                 Event editEvent = eventsTableModel.getEvents().get(eventsTable.getSelectedRow());
-                
+
                 EventWizardAction wiz = new EventWizardAction(true);
                 wiz.setEvent(editEvent);
                 wiz.actionPerformed(null);
-                
+
                 eventsTableModel.fireTableDataChanged();
             }
         });
@@ -202,18 +204,49 @@ public abstract class EventsPanel extends JPanel {
             }
         });
 
-        JPanel panelLeft = new JPanel();
-        panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
-        panelLeft.add(addButton);
-        panelLeft.add(editButton);
-        panelLeft.add(deleteButton);
-        panel.add(panelLeft, BorderLayout.EAST);
+        sidebarPanel = new JPanel();
+        sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
+        sidebarPanel.add(addButton);
+        sidebarPanel.add(editButton);
+        sidebarPanel.add(deleteButton);
+        panel.add(sidebarPanel, BorderLayout.EAST);
 
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 5;
         add(panel, c);
+    }
+
+    protected void setTableAndCheckbox() {
+        ArrayList<String> allEventsName = new ArrayList<>();
+        List<Event> usedEvents;
+        if (eventsTableModel.getEvents() != null) {
+            usedEvents = new ArrayList<>(eventsTableModel.getEvents());
+        } else {
+            usedEvents = new ArrayList<>();
+        }
+        if (allEvents != null) {
+            for (Event event : allEvents) {
+                boolean valid = true;
+                for (Event used : usedEvents) {
+                    if (event.getName() != null && used.getName() != null) {
+                        valid = !event.getName().equals(used.getName());
+                    }
+                    if (!valid) {
+                        break;
+                    }
+                }
+                if (valid) {
+                    allEventsName.add(event.getName());
+                }
+            }
+            addButton.setEnabled(!allEvents.isEmpty());
+            eventsComboBox.setModel(new DefaultComboBoxModel(allEventsName.toArray()));
+        } else {
+            allEvents = new ArrayList<>();
+            eventsComboBox.setModel(new DefaultComboBoxModel(new String[]{}));
+        }
     }
 
 }
