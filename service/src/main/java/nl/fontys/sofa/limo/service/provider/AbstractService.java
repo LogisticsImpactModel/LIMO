@@ -1,5 +1,6 @@
 package nl.fontys.sofa.limo.service.provider;
 
+import java.util.Collection;
 import java.util.List;
 import nl.fontys.sofa.limo.api.dao.DAO;
 import nl.fontys.sofa.limo.api.exception.DAONotFoundException;
@@ -39,6 +40,18 @@ public class AbstractService<T extends BaseEntity> implements DAO<T>, Lookup.Pro
         }
     }
 
+    /**
+     * Should be called after clearing the database.
+     * This function clears the lookup for the service so it updates the tables in the topcomponents
+     * @param c service class to clear the lookup from
+     */
+    public void emptyLookup(Class c){
+        Collection<? extends BaseEntity> lookupAll = lookup.lookupAll(c);
+        lookupAll.stream().forEach((obj) -> {
+            instanceContent.remove(obj);
+        });
+    }
+    
     @Override
     public List<T> findAll() {
         return dao.findAll();

@@ -328,8 +328,6 @@ public class OrientDBConnector {
      * is called from the ClearDatabaseAction (limo-view -> actions)
      */
     public void emptyDatabase() {
-        //this.deleteDatabase();
-        //   this.connection = null;
         this.connection.drop();
         this.connection.close();
         this.connection = new OObjectDatabaseTx(this.getDatabaseURL());
