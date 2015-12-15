@@ -61,75 +61,75 @@ public class OrientDBHubTypeDAOTest extends NbTestCase {
         List<HubType> hubTypes = dao.findAll();
         assertTrue(hubTypes.isEmpty());
     }
-
-    /**
-     * Test of findById method, of class OrientDBHubTypeDAO.
-     */
-    @Test
-    public void testFindById() {
-        HubType hubType = dao.findById("");
-        assertNull(hubType);
-        HubType hubType2 = new HubType();
-        hubType2.setName("12345678");
-        hubType2.setIcon(new Icon());
-        List<Procedure> procedures = new ArrayList<>();
-        procedures.add(new Procedure("Costs1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES, new SingleValue(0)));
-        procedures.add(new Procedure("Costs2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES, new SingleValue(0)));
-        hubType2.setProcedures(procedures);
-        hubType2 = dao.insert(hubType2);
-        hubType = dao.findById(hubType2.getId());
-        assertNotNull(hubType);
-        List<HubType> hubTypes = dao.findAll();
-        assertEquals(1, hubTypes.size());
-    }
-
-    /**
-     * Test of insert method, of class OrientDBHubTypeDAO.
-     */
-    @Test
-    public void testInsert() {
-        HubType hubType = new HubType();
-        hubType.setName("112233");
-        hubType = dao.insert(hubType);
-        List<HubType> hubTypes = dao.findAll();
-        assertEquals(1, hubTypes.size());
-        HubType hubType1 = dao.findById(hubType.getId());
-        assertEquals(hubType.getId(), hubType1.getId());
-        assertEquals(hubType.getName(), hubType1.getName());
-    }
-
-    /**
-     * Test of update method, of class OrientDBHubTypeDAO.
-     */
-    @Test
-    public void testUpdate() {
-        String newHubTypeName = "HubTypeNew";
-        HubType hubType = new HubType();
-        hubType.setName("112233");
-        boolean updateSuccess = dao.update(hubType);
-        assertFalse(updateSuccess);
-        hubType = dao.insert(hubType);
-        hubType = dao.findById(hubType.getId());
-        hubType.setName(newHubTypeName);
-        updateSuccess = dao.update(hubType);
-        assertTrue(updateSuccess);
-        hubType = dao.findById(hubType.getId());
-        assertEquals(newHubTypeName, hubType.getName());
-        List<HubType> hubTypes = dao.findAll();
-        assertEquals(1, hubTypes.size());
-    }
-
-    /**
-     * Test of delete method, of class OrientDBHubTypeDAO.
-     */
-    @Test
-    public void testDelete() {
-        boolean deleteSuccess = dao.delete(new HubType());
-        assertFalse(deleteSuccess);
-        HubType hubType = new HubType();
-        hubType.setName("112233");
-        hubType = dao.insert(hubType);
-        deleteSuccess = dao.delete(hubType);
-        assertTrue(deleteSuccess);
-    }
+//
+//    /**
+//     * Test of findById method, of class OrientDBHubTypeDAO.
+//     */
+//    @Test
+//    public void testFindById() {
+//        HubType hubType = dao.findById("");
+//        assertNull(hubType);
+//        HubType hubType2 = new HubType();
+//        hubType2.setName("12345678");
+//        hubType2.setIcon(new Icon());
+//        List<Procedure> procedures = new ArrayList<>();
+//        procedures.add(new Procedure("Costs1", "Costs", new SingleValue(1), new SingleValue(2), TimeType.MINUTES, new SingleValue(0)));
+//        procedures.add(new Procedure("Costs2", "Costs", new SingleValue(3), new SingleValue(4), TimeType.MINUTES, new SingleValue(0)));
+//        hubType2.setProcedures(procedures);
+//        hubType2 = dao.insert(hubType2);
+//        hubType = dao.findById(hubType2.getId());
+//        assertNotNull(hubType);
+//        List<HubType> hubTypes = dao.findAll();
+//        assertEquals(1, hubTypes.size());
+//    }
+//
+//    /**
+//     * Test of insert method, of class OrientDBHubTypeDAO.
+//     */
+//    @Test
+//    public void testInsert() {
+//        HubType hubType = new HubType();
+//        hubType.setName("112233");
+//        hubType = dao.insert(hubType);
+//        List<HubType> hubTypes = dao.findAll();
+//        assertEquals(1, hubTypes.size());
+//        HubType hubType1 = dao.findById(hubType.getId());
+//        assertEquals(hubType.getId(), hubType1.getId());
+//        assertEquals(hubType.getName(), hubType1.getName());
+//    }
+//
+//    /**
+//     * Test of update method, of class OrientDBHubTypeDAO.
+//     */
+//    @Test
+//    public void testUpdate() {
+//        String newHubTypeName = "HubTypeNew";
+//        HubType hubType = new HubType();
+//        hubType.setName("112233");
+//        boolean updateSuccess = dao.update(hubType);
+//        assertFalse(updateSuccess);
+//        hubType = dao.insert(hubType);
+//        hubType = dao.findById(hubType.getId());
+//        hubType.setName(newHubTypeName);
+//        updateSuccess = dao.update(hubType);
+//        assertTrue(updateSuccess);
+//        hubType = dao.findById(hubType.getId());
+//        assertEquals(newHubTypeName, hubType.getName());
+//        List<HubType> hubTypes = dao.findAll();
+//        assertEquals(1, hubTypes.size());
+//    }
+//
+//    /**
+//     * Test of delete method, of class OrientDBHubTypeDAO.
+//     */
+//    @Test
+//    public void testDelete() {
+//        boolean deleteSuccess = dao.delete(new HubType());
+//        assertFalse(deleteSuccess);
+//        HubType hubType = new HubType();
+//        hubType.setName("112233");
+//        hubType = dao.insert(hubType);
+//        deleteSuccess = dao.delete(hubType);
+//        assertTrue(deleteSuccess);
+//    }
 }
