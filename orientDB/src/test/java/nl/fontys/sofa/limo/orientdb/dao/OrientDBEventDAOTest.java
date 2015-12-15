@@ -62,6 +62,7 @@ public class OrientDBEventDAOTest extends NbTestCase {
         List<Event> events = dao.findAll();
         assertTrue(events.isEmpty());
     }
+<<<<<<< HEAD
 //
 //    /**
 //     * Test of findById method, of class OrientDBEventDAO.
@@ -186,5 +187,4 @@ public class OrientDBEventDAOTest extends NbTestCase {
 //
 //        return event;
 //    }
-
 }

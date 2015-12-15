@@ -13,6 +13,7 @@ public class OrientDBProcedureCategoryDAO extends OrientDBAbstractDAO<ProcedureC
 
     public OrientDBProcedureCategoryDAO() {
         super(ProcedureCategory.class);
+        //Add the default ProcedureCategory to the database to make sure it is always loaded.
         if (this.findByUniqueIdentifier("-1") == null) {
             ProcedureCategory defaultProcedure = new ProcedureCategory();
             defaultProcedure.setName("Costs not accounted");

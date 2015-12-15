@@ -1,11 +1,19 @@
 package nl.fontys.sofa.limo.view.topcomponent;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.beans.IntrospectionException;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import javax.swing.JComponent;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.OverlayLayout;
+import javax.swing.border.LineBorder;
 import nl.fontys.sofa.limo.api.exception.ServiceNotFoundException;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.view.action.DeleteAction;
@@ -14,7 +22,6 @@ import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
-import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import org.netbeans.spi.palette.PaletteController;
 import org.openide.awt.ActionID;
 import org.openide.awt.UndoRedo;
@@ -60,6 +67,10 @@ public final class ChainBuilderTopComponent extends TopComponent
     private UndoRedo.Manager undoManager = new UndoRedo.Manager();
     private PaletteController paletteController;
 
+    public SupplyChain getChain() {
+        return graphScene.getSupplyChain();
+    }
+
     /**
      * Constructor creates a new ChainBuilderTopComponent.
      *
@@ -79,7 +90,7 @@ public final class ChainBuilderTopComponent extends TopComponent
         chain.setName(name);
         setName(name);
 
-        savable = new SavableComponent(graphScene.getChainBuilder(),ic,this);
+        savable = new SavableComponent(graphScene.getChainBuilder(), ic, this);
 
         Lookup paletteLookup = Lookups.singleton(paletteController);
         Lookup nodeLookup = ExplorerUtils.createLookup(em, getActionMap());
@@ -90,25 +101,37 @@ public final class ChainBuilderTopComponent extends TopComponent
         associateLookup(pl);
     }
 
-    /**
-     * Initialize the custom placed components of this TopComponent.
-     */
     private void initCustomComponents() {
         setLayout(new BorderLayout());
         SupplyChain chain = new SupplyChain();
         try {
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
-
             graphScene = new ChainGraphSceneImpl(this, chain, undoManager, paletteController);
-            JScrollPane shapePane = new JScrollPane();
-            JComponent createView = graphScene.createView();
-            createView.putClientProperty("print.printable", Boolean.TRUE);
-            createView.putClientProperty("print.name", LIMOResourceBundle.getString("SUPPLY_CHAIN") + ": " + chain.getName());
-            shapePane.setViewportView(createView);
-
-            add(shapePane, BorderLayout.CENTER);
-            add(graphScene.createSatelliteView(), BorderLayout.SOUTH);
+            JPanel viewPanel = new JPanel(new BorderLayout());
+            JScrollPane scroll = new JScrollPane(
+                    graphScene.createView(),
+                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+            viewPanel.add(scroll, BorderLayout.CENTER);
+            JPanel satellitePanel = new JPanel();
+            satellitePanel.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.weightx = 1;
+            gbc.weighty = 1;
+            gbc.insets = new Insets(0, 0, 25, 25);
+            gbc.anchor = GridBagConstraints.SOUTHEAST;
+            JComponent view = graphScene.createSatelliteView();
+            JPanel holder = new JPanel(new BorderLayout());
+            holder.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+            holder.add(view);
+            satellitePanel.add(holder, gbc);
+            satellitePanel.setOpaque(false);
+            JLayeredPane panel = new JLayeredPane();
+            panel.setLayout(new OverlayLayout(panel));
+            panel.add(viewPanel, JLayeredPane.DEFAULT_LAYER);
+            panel.add(satellitePanel, JLayeredPane.PALETTE_LAYER);
+            add(panel);
         } catch (IOException | IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
         }
@@ -166,7 +189,6 @@ public final class ChainBuilderTopComponent extends TopComponent
         return undoManager;
     }
 
-    
     void writeProperties(java.util.Properties p) {
         // better to version settings since initial version as advocated at
         // http://wiki.apidesign.org/wiki/PropertyFiles

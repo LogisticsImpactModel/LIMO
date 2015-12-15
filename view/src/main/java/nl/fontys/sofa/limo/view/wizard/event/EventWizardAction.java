@@ -40,11 +40,35 @@ import org.openide.util.Lookup;
     @ActionReference(path = "Shortcuts", name = "DS-E")
 })
 public final class EventWizardAction implements ActionListener {
+    
+    public interface FinishClickHandler {
+        void handle(Event event, WizardDescriptor descriptor);
+    }
+    
+    public class DefaultFinishClickHandler implements FinishClickHandler {
+
+        @Override
+        public void handle(Event event, WizardDescriptor descriptor) {
+            originalEvent.deepOverwrite((Event) descriptor.getProperty("event"));
+
+            if (!subEventEditor) {
+                if (update) {
+                    service.update(originalEvent);
+                } else {
+                    originalEvent.setId(null);
+                    originalEvent.setUniqueIdentifier(UUID.randomUUID().toString());
+                    originalEvent = service.insert(originalEvent);
+                }
+            }
+        }
+        
+    }
 
     private Event event, originalEvent;
     private boolean update = false;
     private final EventService service = Lookup.getDefault().lookup(EventService.class);
     private boolean subEventEditor;
+    private FinishClickHandler finishHandler;
 
     public EventWizardAction() {
         this(false);
@@ -53,6 +77,15 @@ public final class EventWizardAction implements ActionListener {
     public EventWizardAction(boolean subEventEditor) {
         this.subEventEditor = subEventEditor;
         this.originalEvent = new Event();
+        setFinishClickHandler(null);
+    }
+    
+    public void setFinishClickHandler(FinishClickHandler handler) {
+        if (handler != null) {
+            this.finishHandler = handler;
+        } else {
+            this.finishHandler = new DefaultFinishClickHandler();
+        }
     }
 
     @Override
@@ -96,26 +129,7 @@ public final class EventWizardAction implements ActionListener {
             wiz.setTitle(LIMOResourceBundle.getString("ADD_EVENT"));
         }
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-            handleWizardFinishClick(wiz);
-        }
-    }
-
-    /**
-     * Save or update the event based on the inputs.
-     *
-     * @param wiz - the WizardDescriptor which contains the inputs.
-     */
-    private void handleWizardFinishClick(final WizardDescriptor wiz) {
-        originalEvent.deepOverwrite((Event) wiz.getProperty("event"));
-
-        if (!subEventEditor) {
-            if (update) {
-                service.update(originalEvent);
-            } else {
-                originalEvent.setId(null);
-                originalEvent.setUniqueIdentifier(UUID.randomUUID().toString());
-                originalEvent = service.insert(originalEvent);
-            }
+            finishHandler.handle((Event)(wiz.getProperty("event")), wiz);
         }
     }
 

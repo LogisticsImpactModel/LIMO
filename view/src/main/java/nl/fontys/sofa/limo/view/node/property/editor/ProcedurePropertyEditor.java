@@ -6,6 +6,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyEditorSupport;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTextField;
@@ -78,21 +79,18 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
             DefaultCellEditor nameEditor = new DefaultCellEditor(name);
             nameEditor.addCellEditorListener(this);
             table.getColumnModel().getColumn(0).setCellEditor(nameEditor);
+            setProcedureComboBox();
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(deleteButton)) {
-                int rowToDelete = table.getSelectedRow();
-                if (rowToDelete > -1 && rowToDelete < getActiveTableState().size()) {
-                    deleteProcedure(rowToDelete);
-                    List<Procedure> procedures = getActiveTableState();
-                    setValue(procedures);
-                }
-            } else if (e.getSource().equals(addButton)) {
+            if (e.getSource().equals(newButton)) {
                 addProcedure();
-                List<Procedure> procedures = getActiveTableState();
-                setValue(procedures);
+                setValue(tableProcedures);
+            }
+            super.actionPerformed(e);
+            if (e.getSource().equals(addButton)) {
+                setValue(tableProcedures);
             }
         }
 
@@ -103,8 +101,10 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                     editProcedure();
                     List<Procedure> procedures = getActiveTableState();
                     setValue(procedures);
+                    checkButtonsState();
                 }
             }
+            super.mouseClicked(e);
         }
 
         @Override
@@ -119,9 +119,8 @@ public class ProcedurePropertyEditor extends PropertyEditorSupport {
                     }
                     setProcedureTable(procedures);
                     setValue(procedures);
-                    procedureCategoryCheckbox.addItemListener(this);
-                    timeTypesCheckbox.addItemListener(this);
                 }
+                checkButtonsState();
             }
         }
 

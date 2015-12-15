@@ -18,25 +18,29 @@ public class Procedure extends BaseEntity {
      * category was chosen to be a String rather than a ProcedureCategory, so no
      * actual relations exist. This is easier w/ exporting and importing data.
      */
-    @Expose protected String category;
+    @Expose
+    protected String category;
     @Embedded
-    @Expose protected Value cost;
+    @Expose
+    protected Value cost;
     @Embedded
-    @Expose protected Value time;
-    @Expose protected TimeType timeType;
-    @Expose protected Value cotwo;
+    @Expose
+    protected Value time;
+    @Expose
+    protected TimeType timeType;
+    @Expose
+    protected Value cotwo;
 
     public Procedure() {
         super();
     }
-    
-    public Procedure(Procedure procedure)
-    {
+
+    public Procedure(Procedure procedure) {
         super();
         deepOverwrite(procedure);
     }
-    
-    public Procedure(String name, String category, Value cost, Value time,  TimeType timeType, Value cotwo) {
+
+    public Procedure(String name, String category, Value cost, Value time, TimeType timeType, Value cotwo) {
         super();
         this.name = name;
         this.category = category;
@@ -45,7 +49,7 @@ public class Procedure extends BaseEntity {
         this.cotwo = cotwo;
         this.timeType = timeType;
     }
-    
+
     public void deepOverwrite(Procedure procedure) {
         setName(procedure.getName());
         setCategory(procedure.getCategory());
@@ -54,13 +58,14 @@ public class Procedure extends BaseEntity {
         setCotwo(procedure.getCotwo());
         setTimeType(procedure.getTimeType());
     }
-    
+
     public String getCategory() {
         return category;
     }
 
     public void setCategory(String category) {
         this.category = category;
+        firePropertyChange();
     }
 
     public Value getCost() {
@@ -69,6 +74,7 @@ public class Procedure extends BaseEntity {
 
     public void setCost(Value cost) {
         this.cost = cost;
+        firePropertyChange();
     }
 
     public Value getTime() {
@@ -77,6 +83,7 @@ public class Procedure extends BaseEntity {
 
     public void setTime(Value time) {
         this.time = time;
+        firePropertyChange();
     }
 
     public TimeType getTimeType() {
@@ -85,18 +92,28 @@ public class Procedure extends BaseEntity {
 
     public void setTimeType(TimeType timeType) {
         this.timeType = timeType;
+        firePropertyChange();
     }
-    
+
     public Value getCotwo() {
         return cotwo;
     }
 
     public void setCotwo(Value cotwo) {
         this.cotwo = cotwo;
+        firePropertyChange();
     }
-    
+
     @Override
     public String toString() {
         return name;
+    }
+
+    public void setCotwo(Object aValue) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setCategory(Object aValue) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
