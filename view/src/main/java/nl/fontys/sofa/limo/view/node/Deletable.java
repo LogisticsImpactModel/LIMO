@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.fontys.sofa.limo.view.node;
 
 /**
- *
- * @author prive
+ * Interface to define beans deletables.
+ * If a bean is a deletable, it is removed with calling the ClearDatabaseAction or
+ * the DeleteAction when it is selected (in the catalog or in the chain)
+ * @author Ennyo
  */
 public interface Deletable {
     
