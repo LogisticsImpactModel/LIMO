@@ -53,20 +53,15 @@ public class OrientDBEventDAOTest extends NbTestCase {
         dao = null;
         OrientDBConnector.close();
     }
-    
-    @Test
-    public void dummyTest(){
-        assertTrue(true);
-    }
 
     /**
      * Test of findAll method, of class OrientDBEventDAO.
      */
-//    @Test
-//    public void testFindAll() {
-//        List<Event> events = dao.findAll();
-//        assertTrue(events.isEmpty());
-//    }
+    @Test
+    public void testFindAll() {
+        List<Event> events = dao.findAll();
+        assertTrue(events.isEmpty());
+    }
 //
 //    /**
 //     * Test of findById method, of class OrientDBEventDAO.

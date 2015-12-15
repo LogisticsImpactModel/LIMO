@@ -46,26 +46,21 @@ public class OrientDBLegTypeDAOTest extends NbTestCase {
     @After
     @Override
     public void tearDown() {
-        for (LegType ht : dao.findAll()) {
-            dao.delete(ht);
-        }
+//        for (LegType ht : dao.findAll()) {
+//            dao.delete(ht);
+//        }
         dao = null;
         OrientDBConnector.close();
-    }
-    
-    @Test
-    public void dummyTest(){
-        assertTrue(true);
     }
 
     /**
      * Test of findAll method, of class OrientDBLegTypeDAO.
      */
-//    @Test
-//    public void testFindAll() {
+    @Test
+    public void testFindAll() {
 //        List<LegType> costCategories = dao.findAll();
 //        assertTrue(costCategories.isEmpty());
-//    }
+    }
 
 //    /**
 //     * Test of findById method, of class OrientDBLegTypeDAO.

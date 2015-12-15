@@ -39,25 +39,21 @@ public class OrientDBHubDAOTest extends NbTestCase {
     @After
     @Override
     public void tearDown() {
-        for (Hub ht : dao.findAll())
-            dao.delete(ht);
+//        for (Hub ht : dao.findAll())
+//            dao.delete(ht);
         dao = null;
         OrientDBConnector.close();
     }
     
+
+    /**
+     * Test of findAll method, of class OrientDBHubDAO.
+     */
     @Test
-    public void dummyTest(){
-        assertTrue(true);
-    }
-//
-//    /**
-//     * Test of findAll method, of class OrientDBHubDAO.
-//     */
-//    @Test
-//    public void testFindAll() {
+    public void testFindAll() {
 //        List<Hub> hubs = dao.findAll();
 //        assertTrue(hubs.isEmpty());
-//    }
+    }
 //
 //    /**
 //     * Test of findById method, of class OrientDBHubDAO.
