@@ -65,7 +65,7 @@ public class Procedure extends BaseEntity {
 
     public void setCategory(String category) {
         this.category = category;
-        firePropertyChangeEvent();
+        firePropertyChange();
     }
 
     public Value getCost() {
@@ -74,7 +74,7 @@ public class Procedure extends BaseEntity {
 
     public void setCost(Value cost) {
         this.cost = cost;
-        firePropertyChangeEvent();
+        firePropertyChange();
     }
 
     public Value getTime() {
@@ -83,7 +83,7 @@ public class Procedure extends BaseEntity {
 
     public void setTime(Value time) {
         this.time = time;
-        firePropertyChangeEvent();
+        firePropertyChange();
     }
 
     public TimeType getTimeType() {
@@ -92,7 +92,7 @@ public class Procedure extends BaseEntity {
 
     public void setTimeType(TimeType timeType) {
         this.timeType = timeType;
-        firePropertyChangeEvent();
+        firePropertyChange();
     }
 
     public Value getCotwo() {
@@ -101,11 +101,19 @@ public class Procedure extends BaseEntity {
 
     public void setCotwo(Value cotwo) {
         this.cotwo = cotwo;
-        firePropertyChangeEvent();
+        firePropertyChange();
     }
 
     @Override
     public String toString() {
         return name;
+    }
+
+    public void setCotwo(Object aValue) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setCategory(Object aValue) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

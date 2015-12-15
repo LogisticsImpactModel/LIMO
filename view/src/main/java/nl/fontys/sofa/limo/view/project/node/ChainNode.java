@@ -6,6 +6,7 @@
 package nl.fontys.sofa.limo.view.project.node;
 
 import java.awt.Image;
+import javax.swing.Action;
 import org.netbeans.api.annotations.common.StaticResource;
 import org.openide.loaders.DataNode;
 import org.openide.loaders.DataObject;
@@ -39,6 +40,12 @@ public class ChainNode extends DataNode {
     public void addChild(Node node) {
         Node[] nodes = {node};
         getChildren().add(nodes);
+        fireIconChange();
+    }
+
+    @Override
+    public Action[] getActions(boolean context) {
+        return new Action[0];
     }
 
 }

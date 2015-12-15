@@ -119,8 +119,9 @@ public final class ChainLoaderTopComponent extends TopComponent implements
     }
 
     /**
-     * Initialize the custom components of this TopComponent.
-     * Kudos to Geertjan Wielenga
+     * Initialize the custom components of this TopComponent. Kudos to Geertjan
+     * Wielenga
+     *
      * @param supplyChain the supplychain which is loaded.
      */
     void initCustomComponents(SupplyChain supplyChain) {
@@ -129,8 +130,8 @@ public final class ChainLoaderTopComponent extends TopComponent implements
         try {
             ChainToolbar toolbar = new ChainToolbar();
             add(toolbar, BorderLayout.NORTH);
-            graphScene = new ChainGraphSceneImpl(this, chain, 
-undoManager, paletteController);
+            graphScene = new ChainGraphSceneImpl(this, chain,
+                    undoManager, paletteController);
             JPanel viewPanel = new JPanel(new BorderLayout());
             JScrollPane scroll = new JScrollPane(
                     graphScene.createView(),

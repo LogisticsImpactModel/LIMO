@@ -1,5 +1,7 @@
 package nl.fontys.sofa.limo.simulation.task;
 
+import java.util.ArrayList;
+import java.util.List;
 import nl.fontys.sofa.limo.domain.component.SupplyChain;
 import nl.fontys.sofa.limo.domain.component.event.Event;
 import nl.fontys.sofa.limo.domain.component.event.ExecutionState;
@@ -53,27 +55,45 @@ public abstract class SupplyChainTester {
     }
 
     protected void buildComplexSupplyChain() {
-        start.getProcedures().add(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, new SingleValue(0)));
+        List<Procedure> procedures = new ArrayList<>();
+        procedures.add(new Procedure("loading", MANDATORY, new RangeValue(3000, 4000), new RangeValue(3, 4), TimeType.HOURS, new SingleValue(0)));
+        start.setProcedures(procedures);
 
         Distribution discreteDistribution = new DiscreteDistribution();
         discreteDistribution.setInputValue("X", 1);
         discreteDistribution.setInputValue("Y", 4);
         Event event = new Event("Too late", "You come too late to the hub.", ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
         Event subEvent = new Event("Waiting", "Waiting because you were too late.", ExecutionState.EXECUTED, always, ExecutionState.INDEPENDENT);
-        subEvent.getProcedures().add(new Procedure("waiting", "if too late", new SingleValue(0), new RangeValue(2, 3), TimeType.HOURS, new SingleValue(0)));
-        event.getEvents().add(subEvent);
-        start.getEvents().add(event);
+        List<Procedure> procedures1 = subEvent.getProcedures();
+        procedures1.add(new Procedure("waiting", "if too late", new SingleValue(0), new RangeValue(2, 3), TimeType.HOURS, new SingleValue(0)));
+        subEvent.setProcedures(procedures1);
+        List<Event> events = event.getEvents();
+        events.add(subEvent);
+        event.setEvents(events);
+        List<Event> events1 = start.getEvents();
+        events1.add(event);
+        start.setEvents(events1);
 
-        end.getProcedures().add(new Procedure("unloading", MANDATORY, new RangeValue(2000, 3000), new RangeValue(2, 3), TimeType.HOURS, new SingleValue(0)));
+        List<Procedure> procedures2 = end.getProcedures();
+        procedures2.add(new Procedure("unloading", MANDATORY, new RangeValue(2000, 3000), new RangeValue(2, 3), TimeType.HOURS, new SingleValue(0)));
+        end.setProcedures(procedures2);
         Event event2 = new Event("Damaged container", "You damage a container.", ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
-        event2.getProcedures().add(new Procedure("costs", "always", new RangeValue(3000, 4000), new SingleValue(0), TimeType.HOURS, new SingleValue(0)));
-        end.getEvents().add(event2);
+        List<Procedure> procedures3 = event2.getProcedures();
+        procedures3.add(new Procedure("costs", "always", new RangeValue(3000, 4000), new SingleValue(0), TimeType.HOURS, new SingleValue(0)));
+        event2.setProcedures(procedures3);
+        List<Event> events2 = end.getEvents();
+        events2.add(event2);
+        end.setEvents(events2);
 
         leg = new Leg();
         leg.setName(LEG);
         Event event3 = new Event("Storm", "Storm slows down the ship.", ExecutionState.INDEPENDENT, always, ExecutionState.INDEPENDENT);
-        event3.getProcedures().add(new Procedure("waiting", MANDATORY, new SingleValue(0), new RangeValue(30, 60), TimeType.MINUTES, new SingleValue(0)));
-        leg.getEvents().add(event3);
+        List<Procedure> procedures4 = event3.getProcedures();
+        procedures4.add(new Procedure("waiting", MANDATORY, new SingleValue(0), new RangeValue(30, 60), TimeType.MINUTES, new SingleValue(0)));
+        event3.setProcedures(procedures4);
+        List<Event> events3 = leg.getEvents();
+        events3.add(event3);
+        leg.setEvents(events3);
     }
 
     protected void assertComplexSupplyChain(TestCaseResult result) {

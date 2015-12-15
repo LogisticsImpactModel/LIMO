@@ -12,7 +12,6 @@ import nl.fontys.sofa.limo.view.project.SupplyProject;
 import nl.fontys.sofa.limo.view.project.node.ChainNode;
 import nl.fontys.sofa.limo.view.project.node.FolderFilterNode;
 import nl.fontys.sofa.limo.view.project.node.MasterDataNode;
-import nl.fontys.sofa.limo.view.project.node.ReportsNode;
 import nl.fontys.sofa.limo.view.project.node.SupplyChainNode;
 import org.netbeans.spi.project.ui.support.NodeList;
 import org.openide.filesystems.FileObject;
@@ -78,7 +77,7 @@ public class ChainNodeList implements NodeList<Node> {
         if (masterDataFolder != null) {
             try {
                 masterDataNode = new MasterDataNode(DataObject.find(masterDataFolder), findMasterDataFiles(masterDataFolder));
-                result.add(masterDataNode);
+                //  result.add(masterDataNode);
 
             } catch (DataObjectNotFoundException ex) {
                 Exceptions.printStackTrace(ex);
@@ -95,11 +94,11 @@ public class ChainNodeList implements NodeList<Node> {
             }
         }
         if (reportDataFolder != null) {
-            try {
-                result.add(new ReportsNode(DataObject.find(reportDataFolder).getNodeDelegate(), Children.LEAF));
+            /*  try {
+                 result.add(new ReportsNode(DataObject.find(reportDataFolder).getNodeDelegate(), Children.LEAF));
             } catch (DataObjectNotFoundException ex) {
                 Exceptions.printStackTrace(ex);
-            }
+            }*/
         }
         return result;
     }

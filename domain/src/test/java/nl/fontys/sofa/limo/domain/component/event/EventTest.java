@@ -5,6 +5,7 @@
  */
 package nl.fontys.sofa.limo.domain.component.event;
 
+import java.util.List;
 import nl.fontys.sofa.limo.domain.component.event.distribution.DiscreteDistribution;
 import nl.fontys.sofa.limo.domain.component.event.distribution.Distribution;
 import org.junit.After;
@@ -104,7 +105,9 @@ public class EventTest {
         newEvent.setId("1");
         String newEventName = "New event which is to be added";
         newEvent.setName(newEventName);
-        event.getEvents().add(newEvent);//add to list for 1st time
+        List<Event> events = event.getEvents();
+        events.add(newEvent); //add to list for 1st time
+        event.setEvents(events);
         boolean eventFoundInList = false;
         for (Event e : event.getEvents()) {
             if (e.getName().equals(newEventName)) {

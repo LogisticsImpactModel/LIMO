@@ -30,12 +30,14 @@ public class BaseEntity implements Serializable {
     protected String uniqueIdentifier;
     @Expose
     protected String description;
-    private List<PropertyChangeListener> listeners = new ArrayList<>();
+
+    protected final transient List<PropertyChangeListener> listeners = new ArrayList<>();
 
     public BaseEntity(String name, String description) {
         this.uniqueIdentifier = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
+        // this.listeners = new ArrayList<>();
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -46,15 +48,18 @@ public class BaseEntity implements Serializable {
         listeners.remove(listener);
     }
 
-    protected void firePropertyChangeEvent() {
+    protected void firePropertyChange() {
         PropertyChangeEvent event = new PropertyChangeEvent(this, "", this, this);
-        listeners.parallelStream().forEach((listern) -> {
-            listern.propertyChange(event);
-        });
+        if (listeners != null) {
+            listeners.parallelStream().forEach((listern) -> {
+                listern.propertyChange(event);
+            });
+        }
     }
 
     public BaseEntity() {
         this.uniqueIdentifier = UUID.randomUUID().toString();
+        //listeners = new ArrayList<>();
     }
 
     public String getId() {
@@ -63,7 +68,7 @@ public class BaseEntity implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-        firePropertyChangeEvent();
+        firePropertyChange();
     }
 
     public String getName() {
@@ -72,7 +77,7 @@ public class BaseEntity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-        firePropertyChangeEvent();
+        firePropertyChange();
     }
 
     public long getLastUpdate() {
@@ -89,7 +94,7 @@ public class BaseEntity implements Serializable {
 
     public void setUniqueIdentifier(String uniqueIdentifier) {
         this.uniqueIdentifier = uniqueIdentifier;
-        firePropertyChangeEvent();
+        firePropertyChange();
     }
 
     public String getDescription() {
@@ -98,7 +103,7 @@ public class BaseEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-        firePropertyChangeEvent();
+        firePropertyChange();
     }
 
 }

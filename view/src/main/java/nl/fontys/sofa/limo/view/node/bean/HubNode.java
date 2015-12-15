@@ -71,6 +71,10 @@ public class HubNode extends AbstractBeanNode<Hub> implements WidgetableNode, Pr
         bean.addPropertyChangeListener(this);
     }
 
+    public Hub getHub() {
+        return bean;
+    }
+
     @Override
     public Widget getWidget(Scene scene) {
         try {

@@ -299,6 +299,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     }
                 });
             });
+            popup.add(procedureMenu);
             popup.add(eventMenu);
             return popup;
         }

@@ -202,12 +202,6 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         return legNode.getLookup().lookup(Leg.class);
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent pce) {
-        removeChildren(); //refresh all children by re-adding them
-        setChildLegWidgets();
-    }
-
     protected LegWidget getLegWidget() {
         return this;
     }
@@ -224,6 +218,10 @@ public class LegWidget extends ConnectionWidget implements BasicWidget {
         }
         scene.removeEdge(legNode);
         scene.disconnectLegWidget(getLegWidget());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
     }
 
     /**

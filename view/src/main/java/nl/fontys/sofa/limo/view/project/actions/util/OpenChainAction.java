@@ -26,7 +26,6 @@ public class OpenChainAction extends AbstractAction {
     private final SaveChainAction save;
 
     public OpenChainAction(SupplyChain chain, CloseChainAction close, SaveChainAction save) {
-        this.tc = tc;
         this.chain = chain;
         this.close = close;
         this.save = save;
