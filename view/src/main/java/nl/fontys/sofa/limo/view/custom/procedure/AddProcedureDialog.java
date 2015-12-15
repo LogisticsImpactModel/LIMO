@@ -68,7 +68,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         addTimeButton.addActionListener(this);
         addCotwoButton.addActionListener(this);
         //DIALOG OPTIONS
-        this.setSize(250, 300);
+        this.setSize(450, 300);
         this.setModal(true);
         this.setAlwaysOnTop(true);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -126,7 +126,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         this.add(new JLabel(LIMOResourceBundle.getString("TIME_COST")), cc.xy(2, 8));
         this.add(timeTextField, cc.xyw(4, 8, 2));
         this.add(addTimeButton, cc.xy(7, 8));
-        this.add(new JLabel(LIMOResourceBundle.getString("MONEY_COST")), cc.xy(2, 10));
+        this.add(new JLabel(LIMOResourceBundle.getString("MONEY_COST_PROCEDURE")), cc.xy(2, 10));
         this.add(costTextField, cc.xyw(4, 10, 2));
         this.add(addCostButton, cc.xy(7, 10));
         this.add(new JLabel(LIMOResourceBundle.getString("CO2")), cc.xy(2, 12));

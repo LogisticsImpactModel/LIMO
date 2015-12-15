@@ -230,8 +230,6 @@ public class ProcedureComponent extends JPanel implements ActionListener, MouseL
      */
     private void initProceduresTable(List<Procedure> procedures) {
         tableProcedures = procedures;
-        // model = new DragNDropTableModel(new String[]{LIMOResourceBundle.getString("PROCEDURE"), LIMOResourceBundle.getString("CATEGORY"), LIMOResourceBundle.getString("TIME_COST"), LIMOResourceBundle.getString("TIME_TYPE"), LIMOResourceBundle.getString("MONEY_COST"), LIMOResourceBundle.getString("CO2")},
-        //         valueList, new Class[]{String.class, String.class, Value.class, TimeType.class, Value.class, Value.class});
         model = new ProcedureTableModel(procedures);
         table.setModel(model);
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
