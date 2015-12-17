@@ -63,7 +63,7 @@ public class SavableComponent extends AbstractSavable {
         return supplyChain.getName().replace(".lsc", "");
     }
 
-    private void finishSave() {
+    public void removeSavable() {
         ic.remove(this);
         unregister();
         ImageIcon link = new ImageIcon(getClass().getClassLoader().getResource("icons/gui/Link.png"));
@@ -81,7 +81,7 @@ public class SavableComponent extends AbstractSavable {
                 Object retval = DialogDisplayer.getDefault().notify(dd);
                 if (retval.equals(DialogDescriptor.YES_OPTION)) {
                     supplyChain.saveToFile();
-                    finishSave();
+                    removeSavable();
                 } else if (retval.equals(DialogDescriptor.NO_OPTION)) {
                     openFileChooser();
                 } else if (retval.equals(DialogDescriptor.CANCEL_OPTION)) {
@@ -127,7 +127,7 @@ public class SavableComponent extends AbstractSavable {
                 supplyChain.setFilepath(file.getParent() + File.separator + supplyChain.getName() + ".lsc");
             }
             supplyChain.saveToFile();
-            finishSave();
+            removeSavable();
         } else { //If no folder is selected throw an exception so the saving process is cancelled.
             throw new IOException("The supply chain " + supplyChain.getName() + " is invalid.");
         }

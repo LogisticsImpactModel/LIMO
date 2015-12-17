@@ -23,7 +23,10 @@ import nl.fontys.sofa.limo.view.chain.ChainGraphSceneImpl;
 import nl.fontys.sofa.limo.view.chain.ChainPaletteFactory;
 import nl.fontys.sofa.limo.view.chain.ChainToolbar;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
+import org.netbeans.api.actions.Savable;
 import org.netbeans.spi.palette.PaletteController;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.UndoRedo;
 import org.openide.explorer.ExplorerManager;
@@ -178,6 +181,24 @@ public final class ChainLoaderTopComponent extends TopComponent implements
             em.setSelectedNodes(new Node[]{node});
         } catch (PropertyVetoException ex) {
             Exceptions.printStackTrace(ex);
+        }
+    }
+
+    @Override
+    public boolean canClose() {
+        Savable save = getLookup().lookup(Savable.class);
+        if (save != null) {
+            NotifyDescriptor d
+                    = new NotifyDescriptor.Confirmation("This chain contains unsaved changes do you really want to close it ? ", NotifyDescriptor.YES_NO_OPTION);
+            if (DialogDisplayer.getDefault().notify(d) == NotifyDescriptor.YES_OPTION) {
+                savable.removeSavable();
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            return true;
         }
     }
 
