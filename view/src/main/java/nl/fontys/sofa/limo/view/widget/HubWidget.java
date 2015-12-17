@@ -56,6 +56,8 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     private LabelWidget procedureLabelWidget;
     private final Widget startFlagWidget;
 
+    private Scene scene;
+
     /**
      * Constructor sets up the widget by setting the display name and image.
      *
@@ -65,6 +67,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
     public HubWidget(Scene scene, HubNode beanNode) throws IOException {
         super(scene);
         this.hubNode = beanNode;
+
         setPreferredBounds(new Rectangle(widgetWidth, widgetHeight));
         setPreferredSize(new Dimension(widgetWidth, widgetHeight));
         setToolTipText(hubNode.getName());
@@ -81,6 +84,10 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                 updateLabels();
             });
         });
+        hubNode.getLookup().lookup(Hub.class).addPropertyChangeListener((evt) -> {
+            updateLabels();
+        });
+        this.scene = scene;
     }
 
     @Override
@@ -201,6 +208,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
         } else {
             eventLabelWidget.setLabel("Events: " + getHub().getEvents().size());
         }
+        scene.validate();
     }
 
     /**
@@ -291,6 +299,7 @@ public final class HubWidget extends IconNodeWidget implements BasicWidget {
                     }
                 });
             });
+            popup.add(procedureMenu);
             popup.add(eventMenu);
             return popup;
         }

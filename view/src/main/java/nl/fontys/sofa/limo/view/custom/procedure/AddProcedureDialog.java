@@ -10,19 +10,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import nl.fontys.sofa.limo.api.dao.ProcedureCategoryDAO;
+import nl.fontys.sofa.limo.api.service.provider.ProcedureService;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
 import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
 import nl.fontys.sofa.limo.domain.component.procedure.value.SingleValue;
 import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
-import nl.fontys.sofa.limo.view.custom.table.DragNDropTable;
 import nl.fontys.sofa.limo.view.custom.table.DragNDropTableModel;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
+import org.openide.util.Lookup;
 
 /**
  * This class extends the JDialog and offers the creation of new procedures.
@@ -31,22 +34,28 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
  */
 public class AddProcedureDialog extends JDialog implements ActionListener {
 
+    public static interface SaveListener {
+
+        void onSave(Procedure procedure);
+    }
+
     private JButton saveButton, cancelButton, addTimeButton, addCostButton, addCotwoButton;
     private JTextField nameTextField, costTextField, timeTextField, cotwoTextField;
     private JComboBox timeTypeCombobox, categoryCombobox;
     private Value timeValue, costValue, cotwoValue;
     private Procedure newProcedure;
-    private final DragNDropTable table;
+    private final JTable table;
     private final CellConstraints cc;
-    private JButton deleteButton;
+    private JCheckBox templateCheckbox;
+    private ProcedureService service;
+    private SaveListener listener;
 
-    public AddProcedureDialog(ProcedureCategoryDAO procedureCategoryDao, DragNDropTable dragNDropTable, JButton deleteButton) {
-        this.table = dragNDropTable;
-        this.deleteButton = deleteButton;
+    public AddProcedureDialog(ProcedureCategoryDAO procedureCategoryDao, JTable table) {
+        this.table = table;
         cc = new CellConstraints();
         //LAYOUT
         FormLayout layout = new FormLayout("5px, pref, 5px, pref, pref:grow, 5px, pref, 5px",
-                "5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px");
+                "5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref, 5px, pref:grow, pref:grow, 5px");
         this.setLayout(layout);
         //COMPONENTS
         initComponents(procedureCategoryDao.findAll().toArray());
@@ -59,7 +68,7 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         addTimeButton.addActionListener(this);
         addCotwoButton.addActionListener(this);
         //DIALOG OPTIONS
-        this.setSize(250, 300);
+        this.setSize(450, 300);
         this.setModal(true);
         this.setAlwaysOnTop(true);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -68,6 +77,11 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         int y = (screenSize.height - this.getHeight()) / 2;
         this.setLocation(x, y);
         this.setTitle(LIMOResourceBundle.getString("PROCEDURES"));
+        service = Lookup.getDefault().lookup(ProcedureService.class);
+    }
+
+    public void setListener(SaveListener listener) {
+        this.listener = listener;
     }
 
     /**
@@ -94,6 +108,9 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         addCotwoButton = new JButton("...");
         saveButton = new JButton(LIMOResourceBundle.getString("SAVE"));
         cancelButton = new JButton(LIMOResourceBundle.getString("CANCEL"));
+        templateCheckbox = new JCheckBox("Save as template");
+        // add as template by default
+        templateCheckbox.setSelected(true);
     }
 
     /**
@@ -109,14 +126,15 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
         this.add(new JLabel(LIMOResourceBundle.getString("TIME_COST")), cc.xy(2, 8));
         this.add(timeTextField, cc.xyw(4, 8, 2));
         this.add(addTimeButton, cc.xy(7, 8));
-        this.add(new JLabel(LIMOResourceBundle.getString("MONEY_COST")), cc.xy(2, 10));
+        this.add(new JLabel(LIMOResourceBundle.getString("MONEY_COST_PROCEDURE")), cc.xy(2, 10));
         this.add(costTextField, cc.xyw(4, 10, 2));
         this.add(addCostButton, cc.xy(7, 10));
         this.add(new JLabel(LIMOResourceBundle.getString("CO2")), cc.xy(2, 12));
         this.add(cotwoTextField, cc.xyw(4, 12, 2));
         this.add(addCotwoButton, cc.xy(7, 12));
-        this.add(saveButton, cc.xy(2, 14));
-        this.add(cancelButton, cc.xy(4, 14));
+        this.add(templateCheckbox, cc.xy(2, 14));
+        this.add(saveButton, cc.xy(2, 16));
+        this.add(cancelButton, cc.xy(4, 16));
     }
 
     @Override
@@ -190,9 +208,15 @@ public class AddProcedureDialog extends JDialog implements ActionListener {
             newRow.add(newProcedure.getCotwo());
             ((DragNDropTableModel) table.getModel()).addRow(newRow);
             ((DragNDropTableModel) table.getModel()).fireTableDataChanged();
+            if (templateCheckbox.isSelected()) {
+                service.insert(newProcedure);
+            }
+            if (listener != null) {
+                listener.onSave(newProcedure);
+            }
             table.revalidate();
             table.repaint();
-            deleteButton.setEnabled(true);
+            templateCheckbox.setSelected(true);
             this.dispose();
         }
     }

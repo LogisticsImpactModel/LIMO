@@ -56,7 +56,7 @@ public class AddStandardProcedureDialog extends JDialog implements ActionListene
         addTimeButton.addActionListener(this);
         addCotwoButton.addActionListener(this);
         //DIALOG OPTIONS
-        this.setSize(250, 300);
+        this.setSize(450, 300);
         this.setModal(true);
         this.setAlwaysOnTop(true);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -75,7 +75,7 @@ public class AddStandardProcedureDialog extends JDialog implements ActionListene
     private void initComponents(Object[] categories) {
         nameTextField = new JTextField();
         categoryCombobox = new JComboBox(categories);
-        if(categories.length > 0){
+        if (categories.length > 0) {
             categoryCombobox.setSelectedIndex(0);
         }
         timeTypeCombobox = new JComboBox(TimeType.values());
@@ -108,7 +108,7 @@ public class AddStandardProcedureDialog extends JDialog implements ActionListene
         this.add(new JLabel(LIMOResourceBundle.getString("TIME_COST")), cc.xy(2, 8));
         this.add(timeTextField, cc.xyw(4, 8, 2));
         this.add(addTimeButton, cc.xy(7, 8));
-        this.add(new JLabel(LIMOResourceBundle.getString("MONEY_COST")), cc.xy(2, 10));
+        this.add(new JLabel(LIMOResourceBundle.getString("MONEY_COST_PROCEDURE")), cc.xy(2, 10));
         this.add(costTextField, cc.xyw(4, 10, 2));
         this.add(addCostButton, cc.xy(7, 10));
         this.add(new JLabel(LIMOResourceBundle.getString("CO2")), cc.xy(2, 12));
@@ -180,9 +180,9 @@ public class AddStandardProcedureDialog extends JDialog implements ActionListene
             }
             TimeType timeType = (TimeType) timeTypeCombobox.getSelectedItem();
             newProcedure = new Procedure(name, category, costValue, timeValue, timeType, cotwoValue);
-            
+
             ProcedureService procedureService = Lookup.getDefault().lookup(ProcedureService.class);
-            procedureService.insert(newProcedure);   
+            procedureService.insert(newProcedure);
             this.dispose();
         }
     }

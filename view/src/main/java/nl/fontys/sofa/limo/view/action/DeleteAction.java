@@ -19,6 +19,12 @@ import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 import nl.fontys.sofa.limo.view.widget.LegWidget;
 import org.netbeans.spi.palette.PaletteController;
 
+
+/*
+This action is called when you want to delete something from the chain or catalogs
+using the garbage can or the delete button
+*/
+
 @ActionID(
         category = "File",
         id = "nl.fontys.sofa.limo.view.action.DeleteAction"
@@ -47,7 +53,8 @@ public final class DeleteAction extends AbstractAction {
         Lookup lkp = Utilities.actionsGlobalContext();
 
         ChainGraphScene scene = lkp.lookup(ChainGraphScene.class);
-
+        
+        //Remove object from the scene
         if (scene != null) {
             Set<?> objectSet = scene.getSelectedObjects();
             List<Deletable> deletableItems = new ArrayList<>();
@@ -56,6 +63,9 @@ public final class DeleteAction extends AbstractAction {
                 deletableItems.add(del);
             });
 
+            //This sort function ensures that the selected legs will be sorted above the hubs
+            //This to prevent deleting a leg which was deleted while removing a hub from the chain
+            //Since deleting a hub also removes all connected legs
             Collections.sort(deletableItems, (Object o1, Object o2) -> {
                 if (o1.getClass().equals(o2.getClass())) {
                     return 0;
@@ -74,10 +84,12 @@ public final class DeleteAction extends AbstractAction {
             deletableItems.stream().forEach((del) -> {
                 del.delete();
             });
-            scene.getScene().repaint();
+            
+            scene.validate();
             return;
         }
 
+        //This part is executed when in deleting from the catalog
         lkp.lookupAll(Deletable.class).stream().filter((del) -> (del != null)).forEach((del) -> {
             del.delete();
         });

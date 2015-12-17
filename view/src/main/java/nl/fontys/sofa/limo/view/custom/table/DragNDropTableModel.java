@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import nl.fontys.sofa.limo.domain.component.procedure.TimeType;
+import nl.fontys.sofa.limo.domain.component.procedure.value.Value;
 import nl.fontys.sofa.limo.view.util.LIMOResourceBundle;
 
 /**
@@ -78,6 +80,10 @@ public class DragNDropTableModel extends AbstractTableModel {
             if (rowIndex < getRowCount() && rowIndex >= 0) {
                 if (columnIndex < getColumnCount() && columnIndex >= 0) {
                     if (aValue instanceof String && !((String)aValue).isEmpty()) {
+                        values.get(rowIndex).set(columnIndex, aValue);
+                    }else if(aValue instanceof Value){
+                        values.get(rowIndex).set(columnIndex, aValue);
+                    }else if(aValue instanceof TimeType){
                         values.get(rowIndex).set(columnIndex, aValue);
                     }
                 }

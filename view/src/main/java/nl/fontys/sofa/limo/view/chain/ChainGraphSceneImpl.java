@@ -22,8 +22,8 @@ import nl.fontys.sofa.limo.domain.component.hub.Hub;
 import nl.fontys.sofa.limo.domain.component.leg.Leg;
 import nl.fontys.sofa.limo.domain.component.leg.MultiModeLeg;
 import nl.fontys.sofa.limo.domain.component.leg.ScheduledLeg;
-import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.domain.component.procedure.Procedure;
+import nl.fontys.sofa.limo.domain.component.type.LegType;
 import nl.fontys.sofa.limo.view.custom.panel.SelectLegTypePanel;
 import nl.fontys.sofa.limo.view.node.WidgetableNode;
 import nl.fontys.sofa.limo.view.node.bean.AbstractBeanNode;
@@ -149,9 +149,9 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
     public ChainGraphSceneImpl(DynamicExplorerManagerProvider parent, SupplyChain chain, UndoManager undoManager, PaletteController paletteController) throws IOException, IntrospectionException {
         this.ic = new InstanceContent();
         this.parent = parent;
-        chainBuilder = new ChainBuilderImpl();
-        chainBuilder.getSupplyChain().setName(chain.getName()); //sets the name of 
-        //the supplyChain so that when you load an existing supplychain and 
+        chainBuilder = new ChainBuilderImpl(chain);
+        chainBuilder.getSupplyChain().setName(chain.getName()); //sets the name of
+        //the supplyChain so that when you load an existing supplychain and
         //then save it at another location dont get a file named null.lsc
         chainBuilder.getSupplyChain().setFilepath(chain.getFilepath());
         loadedChain = chain;
@@ -445,7 +445,7 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         chainBuilder.modify();
-        revalidate();
+        validate();
 
     }
 
@@ -558,11 +558,15 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
             hitlist.forEach((w) -> {
                 if (w instanceof HubWidget) {
                     HubWidget hubWidget = (HubWidget) w;
-                    hubWidget.getHub().getEvents().add(event);
+                    List<Event> events = hubWidget.getHub().getEvents();
+                    events.add(event);
+                    hubWidget.getHub().setEvents(events);
                     hubWidget.updateLabels();
                 } else if (w instanceof LegWidget) {
                     LegWidget legWidget = (LegWidget) w;
-                    legWidget.getLeg().getEvents().add(event);
+                    List<Event> events = legWidget.getLeg().getEvents();
+                    events.add(event);
+                    legWidget.getLeg().setEvents(events);
                     legWidget.updateLabels();
                 }
             });
@@ -595,14 +599,18 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
                 }
             });
 
-            hitlist.forEach((w) -> {
+            hitlist.forEach((Widget w) -> {
                 if (w instanceof HubWidget) {
                     HubWidget hubWidget = (HubWidget) w;
-                    hubWidget.getHub().getProcedures().add(procedure);
+                    List<Procedure> procedures = hubWidget.getHub().getProcedures();
+                    procedures.add(procedure);
+                    hubWidget.getHub().setProcedures(procedures);
                     hubWidget.updateLabels();
                 } else if (w instanceof LegWidget) {
                     LegWidget legWidget = (LegWidget) w;
-                    legWidget.getLeg().getProcedures().add(procedure);
+                    List<Procedure> procedures = legWidget.getLeg().getProcedures();
+                    procedures.add(procedure);
+                    legWidget.getLeg().setProcedures(procedures);
                     legWidget.updateLabels();
                 }
             });
@@ -693,23 +701,21 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
                 if (legType == null) {
                     SelectLegTypePanel inputPane = new SelectLegTypePanel();
                     leg = inputPane.getLeg();
-                } else {
-                    if (legType == LegTypeChildFactory.MULTIMODE_LEGTYPE) {
-                        MultimodeLegWizardAction multimodeLegWizardAction;
-                        multimodeLegWizardAction = new MultimodeLegWizardAction((MultiModeLeg newLeg) -> {
-                            leg = newLeg;
-                        });
-                        multimodeLegWizardAction.actionPerformed(null);
-                    } else if (legType == LegTypeChildFactory.SCHEDULED_LEGTYPE) {
-                        ScheduledLegWizardAction scheduledLegWizardAction;
-                        scheduledLegWizardAction = new ScheduledLegWizardAction((ScheduledLeg newLeg) -> {
-                            leg = newLeg;
-                        });
-                        scheduledLegWizardAction.actionPerformed(null);
+                } else if (legType == LegTypeChildFactory.MULTIMODE_LEGTYPE) {
+                    MultimodeLegWizardAction multimodeLegWizardAction;
+                    multimodeLegWizardAction = new MultimodeLegWizardAction((MultiModeLeg newLeg) -> {
+                        leg = newLeg;
+                    });
+                    multimodeLegWizardAction.actionPerformed(null);
+                } else if (legType == LegTypeChildFactory.SCHEDULED_LEGTYPE) {
+                    ScheduledLegWizardAction scheduledLegWizardAction;
+                    scheduledLegWizardAction = new ScheduledLegWizardAction((ScheduledLeg newLeg) -> {
+                        leg = newLeg;
+                    });
+                    scheduledLegWizardAction.actionPerformed(null);
 
-                    } else {
-                        leg = new Leg(legType);
-                    }
+                } else {
+                    leg = new Leg(legType);
                 }
                 if (leg != null) {
                     try {

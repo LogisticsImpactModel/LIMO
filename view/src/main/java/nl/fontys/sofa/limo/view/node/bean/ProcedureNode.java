@@ -3,6 +3,8 @@ package nl.fontys.sofa.limo.view.node.bean;
 import java.awt.event.ActionEvent;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -26,11 +28,12 @@ import org.openide.util.Lookup;
  *
  * @author Sebastiaan Heijmann
  */
-public class ProcedureNode extends AbstractBeanNode<Procedure> {
+public class ProcedureNode extends AbstractBeanNode<Procedure> implements PropertyChangeListener {
 
     public ProcedureNode(Procedure bean) throws IntrospectionException {
         super(bean, Procedure.class);
         this.bean = bean;
+        bean.addPropertyChangeListener(this);
     }
 
     @Override
@@ -57,7 +60,7 @@ public class ProcedureNode extends AbstractBeanNode<Procedure> {
     /**
      * Open an procedure panel with the procedure for editing.
      */
-    private void editProcedure() {
+    protected void editProcedure() {
         NameDescriptionDialogInputPanel inputPane = new NameDescriptionDialogInputPanel();
         inputPane.setBeanName(bean.getName());
         inputPane.setBeanDescription(bean.getDescription());
@@ -87,7 +90,7 @@ public class ProcedureNode extends AbstractBeanNode<Procedure> {
     protected void createProperties(Procedure bean, BeanInfo info) {
         Sheet sets = getSheet();
         Sheet.Set set = getBaseEntityPropertySheet();
-        
+
         try {
             StupidProperty catProp = new StupidProperty(getBean(), String.class, "category");
             catProp.addPropertyChangeListener(getListener());
@@ -108,21 +111,21 @@ public class ProcedureNode extends AbstractBeanNode<Procedure> {
             timeProp.setDisplayName("Times");
             timeProp.setShortDescription("Times of this Procedure");
             timeProp.setValue("canEditAsText", false);
-            
+
             StupidProperty cotwoProp = new StupidProperty(getBean(), Value.class, "cotwo");
             cotwoProp.addPropertyChangeListener(getListener());
             cotwoProp.setPropertyEditorClass(ValuePropertyEditor.class);
             cotwoProp.setDisplayName("CO2");
             cotwoProp.setShortDescription("CO2 of this Procedure");
             cotwoProp.setValue("canEditAsText", false);
-            
+
             StupidProperty timeTypeProp = new StupidProperty(getBean(), TimeType.class, "timeType");
             timeTypeProp.addPropertyChangeListener(getListener());
             timeTypeProp.setPropertyEditorClass(TimeTypePropertyEditor.class);
             timeTypeProp.setDisplayName("TimeType");
             timeTypeProp.setShortDescription("TimeType of this Procedure");
             timeTypeProp.setValue("canEditAsText", false);
-            
+
             set.put(catProp);
             set.put(costProp);
             set.put(timeProp);
@@ -153,5 +156,14 @@ public class ProcedureNode extends AbstractBeanNode<Procedure> {
     public void delete() {
         ProcedureService service = Lookup.getDefault().lookup(ProcedureService.class);
         service.delete(bean);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        setDisplayName(bean.getName());
+    }
+
+    public Procedure getProcedure() {
+        return bean;
     }
 }

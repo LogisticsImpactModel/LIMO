@@ -26,8 +26,8 @@ public class ChainBuilderImpl implements ChainBuilder {
      * {@link nl.fontys.sofa.limo.domain.component.SupplyChain} and a list of
      * hubs.
      */
-    public ChainBuilderImpl() {
-        chain = new SupplyChain();
+    public ChainBuilderImpl(SupplyChain chain) {
+        this.chain = chain;
         hubList = new ArrayList<>();
         listener = new ArrayList<>();
     }
@@ -59,7 +59,7 @@ public class ChainBuilderImpl implements ChainBuilder {
     public void addHub(Hub hub) {
         hubList.add(hub);
         modify();
-
+        chain.fireAddHubEvent(hub);
     }
 
     @Override
@@ -71,6 +71,7 @@ public class ChainBuilderImpl implements ChainBuilder {
         if (hub.getPrevious() != null) {
             disconnectLeg(hub.getPrevious());
         }
+        chain.fireRemoveHubEvent(hub);
         modify();
     }
 
@@ -96,6 +97,7 @@ public class ChainBuilderImpl implements ChainBuilder {
         connection.setNext(target);
         target.setPrevious(connection);
         modify();
+        chain.fireAddLegEvent(connection);
     }
 
     @Override
@@ -103,6 +105,7 @@ public class ChainBuilderImpl implements ChainBuilder {
         leg.removeNext();
         leg.removePrevious();
         modify();
+        chain.fireRemoveLegEvent(leg);
     }
 
     /**
@@ -115,9 +118,13 @@ public class ChainBuilderImpl implements ChainBuilder {
     public boolean validate() {
         int hubCount = 1;
         Node currentNode = getStartHub();
-        if (currentNode == null || getNumberOfHubs() == 1) {
+        if (currentNode == null || getNumberOfHubs() == 0) {
+            return true;
+        }
+        if (getNumberOfHubs() == 1) {
             return false;
         }
+
         while (currentNode != null) {
             currentNode = currentNode.getNext();
             if (currentNode instanceof Hub) {
