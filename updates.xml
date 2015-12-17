@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!DOCTYPE module_updates PUBLIC "-//NetBeans//DTD Autoupdate Catalog 2.5//EN" "http://www.netbeans.org/dtds/autoupdate-catalog-2_5.dtd">
-<module_updates timestamp="36/52/13/17/12/2015">
+<module_updates timestamp="26/05/14/17/12/2015">
 
 
 
-<module codenamebase="nl.fontys.sofa.limo.LIMO.API" distribution="LIMO-API-1.8.nbm" downloadsize="196299" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
+<module codenamebase="nl.fontys.sofa.limo.LIMO.API" distribution="LIMO-API-1.8.nbm" downloadsize="196274" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
     <manifest OpenIDE-Module="nl.fontys.sofa.limo.LIMO.API" OpenIDE-Module-Display-Category="nl.fontys.sofa.limo" OpenIDE-Module-Implementation-Version="1.8" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.23.1, org.openide.util.lookup &gt; 8.24.1, nl.fontys.sofa.limo.LIMO.domain &gt; 1.8" OpenIDE-Module-Name="LIMO-API" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.8"/>
     
 </module>
 
-<module codenamebase="nl.fontys.sofa.limo.LIMO.branding" distribution="LIMO-branding-1.8.nbm" downloadsize="87484" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
+<module codenamebase="nl.fontys.sofa.limo.LIMO.branding" distribution="LIMO-branding-1.8.nbm" downloadsize="87481" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
     <manifest AutoUpdate-Essential-Module="true" OpenIDE-Module="nl.fontys.sofa.limo.LIMO.branding" OpenIDE-Module-Display-Category="nl.fontys.sofa.limo" OpenIDE-Module-Implementation-Version="1.8" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.23.1" OpenIDE-Module-Name="LIMO-branding" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.8"/>
     
 </module>
 
-<module codenamebase="nl.fontys.sofa.limo.LIMO.dependecyWrapper" distribution="LIMO-dependecyWrapper-1.8.nbm" downloadsize="7182582" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
+<module codenamebase="nl.fontys.sofa.limo.LIMO.dependecyWrapper" distribution="LIMO-dependecyWrapper-1.8.nbm" downloadsize="7182589" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
     <manifest OpenIDE-Module="nl.fontys.sofa.limo.LIMO.dependecyWrapper" OpenIDE-Module-Display-Category="nl.fontys.sofa.limo" OpenIDE-Module-Implementation-Version="1.8" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.23.1, org.netbeans.api.visual &gt; 2.42.1, org.openide.windows &gt; 6.70.1, org.openide.modules &gt; 7.42.1, org.netbeans.modules.autoupdate.services &gt; 1.45.1, org.netbeans.api.progress/1 &gt; 1.37.1, org.netbeans.modules.print &gt; 7.21.1" OpenIDE-Module-Name="LIMO-dependencyWrapper" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.8"/>
     
 </module>
 
-<module codenamebase="nl.fontys.sofa.limo.LIMO.domain" distribution="LIMO-domain-1.8.nbm" downloadsize="269746" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
+<module codenamebase="nl.fontys.sofa.limo.LIMO.domain" distribution="LIMO-domain-1.8.nbm" downloadsize="269690" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
     <manifest AutoUpdate-Essential-Module="true" OpenIDE-Module="nl.fontys.sofa.limo.LIMO.domain" OpenIDE-Module-Display-Category="nl.fontys.sofa.limo" OpenIDE-Module-Implementation-Version="1.8" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="nl.fontys.sofa.limo.LIMO.dependecyWrapper &gt; 1.8, org.openide.util &gt; 8.37.1, nl.fontys.sofa.limo.LIMO.utils &gt; 1.8, org.openide.filesystems &gt; 8.10.1" OpenIDE-Module-Name="LIMO-domain" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.8"/>
     
 </module>
 
-<module codenamebase="nl.fontys.sofa.limo.LIMO.externalTrader" distribution="LIMO-externalTrader-1.8.nbm" downloadsize="12037" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
+<module codenamebase="nl.fontys.sofa.limo.LIMO.externalTrader" distribution="LIMO-externalTrader-1.8.nbm" downloadsize="12038" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
     <manifest OpenIDE-Module="nl.fontys.sofa.limo.LIMO.externalTrader" OpenIDE-Module-Display-Category="nl.fontys.sofa.limo" OpenIDE-Module-Implementation-Version="1.8" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.23.1, nl.fontys.sofa.limo.LIMO.dependecyWrapper &gt; 1.8, nl.fontys.sofa.limo.LIMO.domain &gt; 1.8, nl.fontys.sofa.limo.LIMO.orientDB &gt; 1.8, nl.fontys.sofa.limo.LIMO.API &gt; 1.8, org.openide.util.lookup &gt; 8.24.1, nl.fontys.sofa.limo.LIMO.simulation &gt; 1.8, org.openide.util &gt; 8.37.1" OpenIDE-Module-Name="LIMO-externalTrader" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.8"/>
     
 </module>
 
-<module codenamebase="nl.fontys.sofa.limo.LIMO.orientDB" distribution="LIMO-orientDB-1.8.nbm" downloadsize="18031" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
+<module codenamebase="nl.fontys.sofa.limo.LIMO.orientDB" distribution="LIMO-orientDB-1.8.nbm" downloadsize="18027" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
     <manifest OpenIDE-Module="nl.fontys.sofa.limo.LIMO.orientDB" OpenIDE-Module-Display-Category="nl.fontys.sofa.limo" OpenIDE-Module-Implementation-Version="1.8" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.openide.util.lookup &gt; 8.24.1, nl.fontys.sofa.limo.LIMO.API &gt; 1.8, nl.fontys.sofa.limo.LIMO.dependecyWrapper &gt; 1.8, nl.fontys.sofa.limo.LIMO.domain &gt; 1.8, org.openide.modules &gt; 7.42.1, org.openide.util &gt; 8.37.1" OpenIDE-Module-Name="LIMO-orientDB" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.8"/>
     
 </module>
@@ -40,17 +40,17 @@
     
 </module>
 
-<module codenamebase="nl.fontys.sofa.limo.LIMO.simulation" distribution="LIMO-simulation-1.8.nbm" downloadsize="2275899" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
+<module codenamebase="nl.fontys.sofa.limo.LIMO.simulation" distribution="LIMO-simulation-1.8.nbm" downloadsize="2275883" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
     <manifest OpenIDE-Module="nl.fontys.sofa.limo.LIMO.simulation" OpenIDE-Module-Display-Category="nl.fontys.sofa.limo" OpenIDE-Module-Implementation-Version="1.8" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.23.1, nl.fontys.sofa.limo.LIMO.domain &gt; 1.8, org.openide.util &gt; 8.37.1, org.openide.modules &gt; 7.42.1, org.netbeans.api.progress/1 &gt; 1.37.1" OpenIDE-Module-Name="LIMO-simulation" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.8"/>
     
 </module>
 
-<module codenamebase="nl.fontys.sofa.limo.LIMO.utils" distribution="LIMO-utils-1.8.nbm" downloadsize="20528" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
+<module codenamebase="nl.fontys.sofa.limo.LIMO.utils" distribution="LIMO-utils-1.8.nbm" downloadsize="20519" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
     <manifest OpenIDE-Module="nl.fontys.sofa.limo.LIMO.utils" OpenIDE-Module-Display-Category="nl.fontys.sofa.limo" OpenIDE-Module-Implementation-Version="1.8" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.21.1" OpenIDE-Module-Name="LIMO-utils" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.8"/>
     
 </module>
 
-<module codenamebase="nl.fontys.sofa.limo.LIMO.view" distribution="LIMO-view-1.8.nbm" downloadsize="1230829" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
+<module codenamebase="nl.fontys.sofa.limo.LIMO.view" distribution="LIMO-view-1.8.nbm" downloadsize="1230799" license="8F40972E" needsrestart="false" releasedate="2015/12/17" targetcluster="limo">
     <manifest OpenIDE-Module="nl.fontys.sofa.limo.LIMO.view" OpenIDE-Module-Display-Category="nl.fontys.sofa.limo" OpenIDE-Module-Implementation-Version="1.8" OpenIDE-Module-Long-Description="&lt;undefined&gt;" OpenIDE-Module-Module-Dependencies="org.netbeans.api.annotations.common/1 &gt; 1.23.1, org.openide.windows &gt; 6.70.1, org.openide.awt &gt; 7.61.1, org.netbeans.modules.settings/1 &gt; 1.44.1, org.openide.dialogs &gt; 7.36.1, nl.fontys.sofa.limo.LIMO.API &gt; 1.8, org.openide.nodes &gt; 7.38.1, org.openide.explorer &gt; 6.56.1, org.netbeans.swing.outline &gt; 1.29.1, org.openide.actions &gt; 6.34.1, nl.fontys.sofa.limo.LIMO.domain &gt; 1.8, nl.fontys.sofa.limo.LIMO.dependecyWrapper &gt; 1.8, nl.fontys.sofa.limo.LIMO.orientDB &gt; 1.8, org.netbeans.api.visual &gt; 2.42.1, org.netbeans.spi.palette/1 &gt; 1.41.1, org.openide.io &gt; 1.44.1, org.openide.util.lookup &gt; 8.24.1, org.openide.util &gt; 8.37.1, nl.fontys.sofa.limo.LIMO.externalTrader &gt; 1.8, nl.fontys.sofa.limo.LIMO.simulation &gt; 1.8, org.openide.modules &gt; 7.42.1, nl.fontys.sofa.limo.LIMO.service &gt; 1.8, org.netbeans.modules.autoupdate.services &gt; 1.45.1, nl.fontys.sofa.limo.LIMO.utils &gt; 1.8, org.netbeans.modules.sendopts/2 &gt; 2.31.1, org.netbeans.api.progress/1 &gt; 1.37.1, org.netbeans.modules.projectuiapi/1 &gt; 1.76.1.8, org.netbeans.modules.projectapi/1 &gt; 1.57.1, org.openide.filesystems &gt; 8.10.1, org.openide.loaders &gt; 7.56.2" OpenIDE-Module-Name="LIMO-view" OpenIDE-Module-Requires="org.openide.windows.WindowManager" OpenIDE-Module-Short-Description="&lt;undefined&gt;" OpenIDE-Module-Specification-Version="1.8"/>
     
 </module>
