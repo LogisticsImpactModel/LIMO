@@ -558,11 +558,15 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
             hitlist.forEach((w) -> {
                 if (w instanceof HubWidget) {
                     HubWidget hubWidget = (HubWidget) w;
-                    hubWidget.getHub().getEvents().add(event);
+                    List<Event> events = hubWidget.getHub().getEvents();
+                    events.add(event);
+                    hubWidget.getHub().setEvents(events);
                     hubWidget.updateLabels();
                 } else if (w instanceof LegWidget) {
                     LegWidget legWidget = (LegWidget) w;
-                    legWidget.getLeg().getEvents().add(event);
+                    List<Event> events = legWidget.getLeg().getEvents();
+                    events.add(event);
+                    legWidget.getLeg().setEvents(events);
                     legWidget.updateLabels();
                 }
             });
@@ -595,14 +599,18 @@ public class ChainGraphSceneImpl extends ChainGraphScene implements PropertyChan
                 }
             });
 
-            hitlist.forEach((w) -> {
+            hitlist.forEach((Widget w) -> {
                 if (w instanceof HubWidget) {
                     HubWidget hubWidget = (HubWidget) w;
-                    hubWidget.getHub().getProcedures().add(procedure);
+                    List<Procedure> procedures = hubWidget.getHub().getProcedures();
+                    procedures.add(procedure);
+                    hubWidget.getHub().setProcedures(procedures);
                     hubWidget.updateLabels();
                 } else if (w instanceof LegWidget) {
                     LegWidget legWidget = (LegWidget) w;
-                    legWidget.getLeg().getProcedures().add(procedure);
+                    List<Procedure> procedures = legWidget.getLeg().getProcedures();
+                    procedures.add(procedure);
+                    legWidget.getLeg().setProcedures(procedures);
                     legWidget.updateLabels();
                 }
             });
