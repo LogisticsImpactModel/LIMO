@@ -31,7 +31,7 @@ echo -e "Starting to update modules\n"
   git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
   git push -fq origin gh-pages > /dev/null
 
-  echo -e "Done magic with updates\n"
+  echo -e "Done magic with updates\n "
 
 
 
